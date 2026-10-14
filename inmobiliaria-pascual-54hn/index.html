@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Inmobiliaria Pascual — Catálogo (prototipo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F6F3EC;
+  --card:#FFFFFF;
+  --night:#0F3536;
+  --night-2:#174A4A;
+  --ink:#152423;
+  --ink-2:#5A6866;
+  --line:#DCD6C8;
+  --gold:#C8963A;
+  --gold-soft:#F1E3C4;
+  --mint:#DCEBE5;
+  --wa:#1E8A4A;
+  --display:"Bricolage Grotesque","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --sans:"Instrument Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.5;font-size:16px}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:inherit}
+.wrap{max-width:1200px;margin:0 auto;padding:0 20px}
+section{scroll-margin-top:76px}
+
+.demo{background:var(--gold);color:var(--night);text-align:center;font-size:13px;font-weight:600;padding:8px 16px}
+
+header{position:sticky;top:0;z-index:30;background:var(--night);color:#fff}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:68px;gap:16px}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff}
+.logo svg{flex:none}
+.logo b{font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:-.02em;line-height:1}
+.logo small{display:block;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-top:3px}
+header nav{display:flex;gap:4px}
+header nav a{text-decoration:none;font-size:14px;font-weight:600;padding:8px 14px;border-radius:999px;color:#CFE0DC}
+header nav a:hover{background:var(--night-2);color:#fff}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:12px;padding:12px 18px;font-weight:700;font-size:15px;cursor:pointer;text-decoration:none;transition:filter .15s,transform .15s}
+.btn:hover{filter:brightness(1.08)}
+.btn:active{transform:translateY(1px)}
+.btn-wa{background:var(--wa);color:#fff}
+.btn-gold{background:var(--gold);color:var(--night)}
+.btn-night{background:var(--night);color:#fff}
+.ico{width:18px;height:18px;flex:none}
+
+/* hero */
+.hero{background:var(--night);color:#fff;padding:54px 0 0;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-120px;top:-60px;width:520px;height:520px;border-radius:50%;border:1px solid rgba(200,150,58,.25);box-shadow:0 0 0 60px rgba(200,150,58,.04),0 0 0 120px rgba(200,150,58,.03)}
+.hgrid{display:grid;grid-template-columns:1.1fr 1fr;gap:48px;align-items:start;position:relative;z-index:1}
+.since{display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:600;color:var(--gold);border:1px solid rgba(200,150,58,.45);padding:6px 12px;border-radius:999px}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(40px,5.6vw,72px);line-height:.98;letter-spacing:-.035em;margin:18px 0 18px}
+h1 span{color:var(--gold)}
+.hero p.lead{font-size:18px;color:#BFD3CF;max-width:30em;margin:0 0 26px}
+.quick{display:flex;gap:10px;flex-wrap:wrap}
+.quick a{font-size:14px;font-weight:600;text-decoration:none;padding:9px 14px;border-radius:10px;background:var(--night-2);color:#E6EFEC}
+.quick a:hover{background:#1f5c5b}
+
+.finder{background:var(--card);color:var(--ink);border-radius:20px;padding:22px;box-shadow:0 30px 60px -30px rgba(0,0,0,.6);display:grid;gap:14px;margin-bottom:-60px}
+.finder h2{font-family:var(--display);font-size:22px;margin:0;font-weight:800;letter-spacing:-.02em}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);background:var(--bg);border-radius:12px;padding:4px}
+.tabs button{border:0;background:transparent;padding:10px;border-radius:9px;font-weight:700;cursor:pointer;color:var(--ink-2)}
+.tabs button[aria-pressed="true"]{background:var(--night);color:#fff}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.finder label{display:grid;gap:4px;font-size:12px;font-weight:700;color:var(--ink-2);letter-spacing:.04em;text-transform:uppercase}
+.finder select{border:1px solid var(--line);background:#fff;border-radius:10px;padding:11px 12px;font-size:15px;font-weight:600;text-transform:none;letter-spacing:0;color:var(--ink);width:100%}
+.finder select:disabled{opacity:.45}
+
+/* listado */
+.list{padding:100px 0 70px}
+.lh{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+.lh h2{font-family:var(--display);font-size:clamp(28px,3.4vw,40px);font-weight:800;letter-spacing:-.03em;margin:0;line-height:1}
+.lh p{margin:6px 0 0;color:var(--ink-2)}
+.pills{display:flex;gap:8px;flex-wrap:wrap}
+.pill{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:7px 13px;font-size:13px;font-weight:600;cursor:pointer}
+.pill[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{all:unset;box-sizing:border-box;background:var(--card);border-radius:18px;overflow:hidden;border:1px solid var(--line);cursor:pointer;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s}
+.card:hover{transform:translateY(-4px);box-shadow:0 24px 40px -28px rgba(15,53,54,.55)}
+.card:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.art{position:relative;aspect-ratio:16/10;display:grid;place-items:center;overflow:hidden}
+.art svg{width:62%;height:auto;max-height:78%}
+.badge{position:absolute;top:12px;left:12px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:5px 9px;border-radius:7px;background:var(--night);color:#fff}
+.badge.alq{background:var(--gold);color:var(--night)}
+.state{position:absolute;top:12px;right:12px;font-size:11px;font-weight:700;padding:5px 9px;border-radius:7px;background:#fff;color:var(--ink)}
+.cb{padding:16px 18px 18px;display:flex;flex-direction:column;gap:4px;flex:1}
+.zone{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)}
+.ttl{font-family:var(--display);font-size:20px;font-weight:600;letter-spacing:-.01em;line-height:1.2}
+.pr{font-size:22px;font-weight:700;margin-top:6px}
+.pr small{font-size:13px;color:var(--ink-2);font-weight:600}
+.meta{display:flex;gap:14px;flex-wrap:wrap;color:var(--ink-2);font-size:13px;margin-top:auto;padding-top:12px;border-top:1px dashed var(--line)}
+.meta span{display:inline-flex;gap:5px;align-items:center}
+.empty{grid-column:1/-1;background:var(--card);border:1.5px dashed var(--line);border-radius:18px;padding:44px 20px;text-align:center;color:var(--ink-2)}
+.photonote{font-size:12px;color:var(--ink-2);margin-top:18px}
+
+/* tasación */
+.tas{padding:0 0 80px}
+.tbox{background:var(--gold-soft);border-radius:28px;padding:48px;display:grid;grid-template-columns:1fr 1.05fr;gap:44px;align-items:center}
+.tbox h2{font-family:var(--display);font-size:clamp(30px,3.8vw,46px);line-height:1;letter-spacing:-.03em;margin:10px 0 14px;font-weight:800;color:var(--night)}
+.tbox p{color:#5b5440;font-size:17px;margin:0}
+.kick{font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--night)}
+.tf{background:#fff;border-radius:18px;padding:24px;display:grid;gap:12px}
+.tf label{display:grid;gap:4px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-2)}
+.tf input,.tf select{border:1px solid var(--line);border-radius:10px;padding:11px 12px;font-size:15px;text-transform:none;letter-spacing:0;font-weight:500;background:#FBFAF7;width:100%}
+.tf small{color:var(--ink-2);font-size:12px}
+.perks{display:grid;gap:10px;margin-top:22px}
+.perks div{display:flex;gap:10px;align-items:center;font-weight:600;color:var(--night)}
+.perks i{width:26px;height:26px;border-radius:8px;background:var(--night);color:var(--gold);display:grid;place-items:center;font-style:normal;font-size:14px}
+
+footer{background:var(--night);color:#BFD3CF;padding:54px 0 28px}
+.fg{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:30px}
+footer h4{color:var(--gold);font-size:12px;letter-spacing:.14em;text-transform:uppercase;margin:0 0 10px}
+footer p{margin:0 0 6px}
+footer a{text-decoration:none;color:#fff;font-weight:600}
+.fl{margin-top:34px;padding-top:16px;border-top:1px solid var(--night-2);font-size:12px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+/* ficha */
+dialog{border:0;padding:0;border-radius:24px;width:min(980px,calc(100vw - 32px));max-height:calc(100vh - 32px);background:var(--card);color:var(--ink);overflow:hidden}
+dialog::backdrop{background:rgba(9,30,30,.7);backdrop-filter:blur(3px)}
+.fx{display:grid;grid-template-columns:1fr 1fr;max-height:calc(100vh - 32px)}
+.fl-art{display:grid;place-items:center;position:relative;min-height:320px}
+.fl-art svg{width:70%;height:auto}
+.fl-art .cap{position:absolute;bottom:14px;left:14px;right:14px;font-size:12px;background:rgba(255,255,255,.85);border-radius:8px;padding:6px 10px;color:var(--ink-2)}
+.fi{padding:28px;overflow-y:auto;display:flex;flex-direction:column;gap:14px}
+.fi h3{font-family:var(--display);font-size:28px;font-weight:800;letter-spacing:-.02em;line-height:1.05;margin:0}
+.fi .pr{font-size:28px;margin:0}
+.sp{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.sp div{background:var(--bg);border-radius:12px;padding:10px 12px;font-size:12px;color:var(--ink-2)}
+.sp b{display:block;font-size:16px;color:var(--ink)}
+.desc{margin:0;color:var(--ink-2)}
+.map{border:0;width:100%;height:180px;border-radius:14px;background:var(--bg)}
+.x{position:absolute;top:12px;right:12px;z-index:3;width:40px;height:40px;border-radius:50%;border:0;background:#fff;font-size:22px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.2)}
+
+@media (max-width:980px){
+  .hgrid{grid-template-columns:1fr;gap:30px}
+  .grid{grid-template-columns:1fr 1fr}
+  .tbox{grid-template-columns:1fr;padding:32px}
+  .fg{grid-template-columns:1fr 1fr}
+  .fx{grid-template-columns:1fr;overflow-y:auto}
+  .fi{overflow:visible}
+  .fl-art{min-height:220px}
+  header nav{display:none}
+}
+@media (max-width:620px){
+  .wrap{padding:0 16px}
+  .hero{padding-top:34px}
+  .hero p.lead{font-size:16px}
+  .grid{grid-template-columns:1fr}
+  .f2{grid-template-columns:1fr 1fr}
+  .tbox{padding:24px 18px;border-radius:20px}
+  .fg{grid-template-columns:1fr}
+  header .btn-wa span{display:none}
+  header .btn-wa{padding:11px}
+  .logo small{display:none}
+  dialog{width:100vw;max-width:100vw;height:100vh;max-height:100vh;border-radius:0}
+  .fx{max-height:100vh}
+  .sp{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<div class="demo" role="note">Prototipo de demostración preparado para Inmobiliaria Pascual · con propiedades reales de su web</div>
+
+<header>
+  <div class="wrap">
+    <a class="logo" href="#inicio" aria-label="Inmobiliaria Pascual, inicio">
+      <svg width="38" height="38" viewBox="0 0 38 38" aria-hidden="true"><rect width="38" height="38" rx="10" fill="#C8963A"/><path d="M9 19 19 10l10 9v10H9z" fill="none" stroke="#0F3536" stroke-width="2.4" stroke-linejoin="round"/><path d="M16 29v-6h6v6" fill="none" stroke="#0F3536" stroke-width="2.4"/></svg>
+      <span><b>Pascual</b><small>Inmobiliaria · Venado Tuerto</small></span>
+    </a>
+    <nav aria-label="Secciones">
+      <a href="#catalogo">Comprar</a>
+      <a href="#catalogo" data-jump="alquiler">Alquilar</a>
+      <a href="#tasar">Tasaciones</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <a class="btn btn-wa" id="waTop" href="#" target="_blank" rel="noopener">
+      <svg class="ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm4.5 12.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.8-1.3a.5.5 0 0 0 0-.5l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.9 11.9 0 0 0 4.6 4c1.7.7 2.3.8 3.2.7a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .1-1.3c0-.1-.2-.2-.5-.3Z"/></svg>
+      <span>WhatsApp</span></a>
+  </div>
+</header>
+
+<main id="inicio">
+<section class="hero">
+  <div class="wrap hgrid">
+    <div>
+      <span class="since">★ Desde 2014 en Venado Tuerto y alrededores</span>
+      <h1>Encontrá tu lugar en <span>Venado Tuerto.</span></h1>
+      <p class="lead">Casas, departamentos, quintas, terrenos y galpones. Filtrá por zona, precio y dormitorios, y consultá por WhatsApp con la propiedad ya indicada.</p>
+      <div class="quick">
+        <a href="#catalogo" data-q="La Cheltonia">B° La Cheltonia</a>
+        <a href="#catalogo" data-q="quinta">Casas quinta</a>
+        <a href="#catalogo" data-q="pileta">Con pileta</a>
+        <a href="#catalogo" data-q="Rosario">Deptos en Rosario</a>
+      </div>
+    </div>
+    <form class="finder" id="finder" aria-label="Buscador de propiedades">
+      <h2>¿Qué estás buscando?</h2>
+      <div class="tabs" role="group" aria-label="Operación">
+        <button type="button" data-op="venta" aria-pressed="true">Comprar</button>
+        <button type="button" data-op="alquiler" aria-pressed="false">Alquilar</button>
+        <button type="button" data-op="todas" aria-pressed="false">Todo</button>
+      </div>
+      <div class="f2">
+        <label>Tipo<select id="sTipo"><option value="">Todos</option></select></label>
+        <label>Zona<select id="sZona"><option value="">Todas</option></select></label>
+        <label>Precio hasta<select id="sPrecio">
+          <option value="">Sin límite</option><option value="50000">USD 50.000</option><option value="100000">USD 100.000</option><option value="150000">USD 150.000</option><option value="250000">USD 250.000</option></select></label>
+        <label>Dormitorios<select id="sDorm"><option value="">Cualquiera</option><option value="1">1 o más</option><option value="2">2 o más</option><option value="3">3 o más</option></select></label>
+      </div>
+      <button class="btn btn-gold" type="submit" style="padding:14px">Ver propiedades</button>
+    </form>
+  </div>
+</section>
+
+<section class="list" id="catalogo">
+  <div class="wrap">
+    <div class="lh">
+      <div>
+        <h2 id="lt">Propiedades en venta</h2>
+        <p id="lc"></p>
+      </div>
+      <div class="pills" id="pills" role="group" aria-label="Filtros rápidos">
+        <button class="pill" data-tag="pileta" aria-pressed="false">Con pileta</button>
+        <button class="pill" data-tag="cochera" aria-pressed="false">Con cochera</button>
+        <button class="pill" data-tag="financia" aria-pressed="false">Financiación / permuta</button>
+      </div>
+    </div>
+    <div class="grid" id="grid" aria-live="polite"></div>
+    <p class="photonote">En este prototipo cada propiedad se muestra con una ilustración por tipo. En la versión final van sus fotos reales, con galería en cada ficha.</p>
+  </div>
+</section>
+
+<section class="tas" id="tasar">
+  <div class="wrap">
+    <div class="tbox">
+      <div>
+        <div class="kick">Para propietarios</div>
+        <h2>¿Querés vender o alquilar? Te tasamos la propiedad.</h2>
+        <p>Dejanos los datos y te contactamos para coordinar la visita. Tasación profesional, con valores reales del mercado de Venado Tuerto.</p>
+        <div class="perks">
+          <div><i>1</i>Respuesta por WhatsApp</div>
+          <div><i>2</i>Visita y tasación profesional</div>
+          <div><i>3</i>Publicación en este catálogo</div>
+        </div>
+      </div>
+      <form class="tf" id="tf">
+        <div class="f2" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <label>Quiero<select name="op"><option>Vender</option><option>Alquilar</option><option>Solo saber cuánto vale</option></select></label>
+          <label>Tipo<select name="tipo"><option>Casa</option><option>Departamento</option><option>Terreno</option><option>Casa quinta</option><option>Galpón / local</option><option>Campo</option></select></label>
+        </div>
+        <label>Dirección o barrio<input name="dir" required placeholder="Ej.: Barrio Los Robles"></label>
+        <label>Tu nombre<input name="nombre" required autocomplete="name"></label>
+        <label>Tu teléfono<input name="tel" type="tel" autocomplete="tel" placeholder="3462 ..."></label>
+        <button class="btn btn-night" type="submit" style="padding:14px">Pedir tasación</button>
+        <small>Se abre WhatsApp con los datos cargados para enviarlos a la inmobiliaria.</small>
+      </form>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer id="contacto">
+  <div class="wrap">
+    <div class="fg">
+      <div>
+        <a class="logo" href="#inicio"><svg width="38" height="38" viewBox="0 0 38 38" aria-hidden="true"><rect width="38" height="38" rx="10" fill="#C8963A"/><path d="M9 19 19 10l10 9v10H9z" fill="none" stroke="#0F3536" stroke-width="2.4" stroke-linejoin="round"/><path d="M16 29v-6h6v6" fill="none" stroke="#0F3536" stroke-width="2.4"/></svg><span><b>Pascual</b></span></a>
+        <p style="margin-top:12px">Líderes en asesoría de inmuebles en Venado Tuerto.</p>
+      </div>
+      <div><h4>Oficina</h4><p>San Martín 110</p><p>Venado Tuerto, Santa Fe</p></div>
+      <div><h4>Horarios</h4><p>Consultas: lun. a vie. 8 a 16 h</p><p>Oficina: 8 a 14 h</p></div>
+      <div><h4>Contacto</h4>
+        <p><a href="tel:+543462500761">3462 500761</a></p>
+        <p><a id="waFoot" href="#" target="_blank" rel="noopener">3462 500965 (WhatsApp)</a></p>
+        <p><a href="mailto:aneleypascual@hotmail.com">aneleypascual@hotmail.com</a></p>
+        <p><a href="https://instagram.com/inmobiliaria_pascual_" target="_blank" rel="noopener">@inmobiliaria_pascual_</a></p>
+      </div>
+    </div>
+    <div class="fl"><span>Prototipo de demostración preparado para Inmobiliaria Pascual. Propiedades tomadas de pascualinmobiliaria.com.</span><span>Diseño: Resolviendo Kos</span></div>
+  </div>
+</footer>
+
+<dialog id="dlg" aria-labelledby="dT">
+  <button class="x" id="dX" aria-label="Cerrar">×</button>
+  <div class="fx">
+    <div class="fl-art" id="dArt"></div>
+    <div class="fi">
+      <div class="zone" id="dZ"></div>
+      <h3 id="dT"></h3>
+      <div class="pr" id="dP"></div>
+      <div class="sp" id="dS"></div>
+      <p class="desc" id="dD"></p>
+      <iframe class="map" id="dM" title="Mapa de la zona" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      <a class="btn btn-wa" id="dW" href="#" target="_blank" rel="noopener" style="padding:14px">
+        <svg class="ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm4.5 12.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.8-1.3a.5.5 0 0 0 0-.5l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.9 11.9 0 0 0 4.6 4c1.7.7 2.3.8 3.2.7a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .1-1.3c0-.1-.2-.2-.5-.3Z"/></svg>
+        Consultar por esta propiedad</a>
+    </div>
+  </div>
+</dialog>
+
+<script>
+(function(){
+const WA="5493462500965";
+/* Propiedades publicadas en pascualinmobiliaria.com (octubre 2026) */
+const P=[
+ {id:"PC01",op:"venta",tipo:"Casa",zona:"B° La Cheltonia",titulo:"Casa con piscina climatizada",precio:530000,dorm:3,banos:2,tags:["pileta","cochera","financia"],desc:"Living-comedor, lavadero, patio con piscina climatizada y cochera doble. Acepta financiación y/o permuta.",q:"Barrio La Cheltonia, Venado Tuerto"},
+ {id:"PC02",op:"venta",tipo:"Casa",zona:"Venado Tuerto",titulo:"Pueyrredón 1000 · casa con local y galpón",precio:280000,dorm:3,banos:2,lote:552,cub:348,tags:["pileta"],desc:"Local con depósito, galpón y patio con pileta. Salida a dos calles.",q:"Pueyrredón 1000, Venado Tuerto"},
+ {id:"PC03",op:"venta",tipo:"Casa",zona:"Venado Tuerto",titulo:"Lavalle 900 · casa reciclada",precio:240000,dorm:3,banos:2,tags:[],desc:"Casa reciclada con cocina-comedor, patio, lavadero e ingreso para vehículo.",q:"Lavalle 900, Venado Tuerto"},
+ {id:"PC04",op:"venta",tipo:"Casa quinta",zona:"Los Pinos",titulo:"Casa quinta en Los Pinos",precio:200000,dorm:2,banos:1,tags:["pileta","cochera"],desc:"Living-comedor, lavadero, garage, galería y pileta.",q:"Los Pinos, Venado Tuerto"},
+ {id:"PC05",op:"venta",tipo:"Casa",zona:"Venado Tuerto",titulo:"Corrientes 832",precio:135000,dorm:3,banos:1,tags:["pileta","cochera"],desc:"Cochera para 2 vehículos, quincho y patio con pileta.",q:"Corrientes 832, Venado Tuerto"},
+ {id:"PC06",op:"venta",tipo:"Casa quinta",zona:"Venado Tuerto",titulo:"Jauretche 1653 · casa quinta",precio:120000,dorm:2,banos:1,tags:["pileta","cochera"],desc:"Patio con pileta y garage para 2 vehículos.",q:"Jauretche 1653, Venado Tuerto"},
+ {id:"PC07",op:"venta",tipo:"Departamento",zona:"Venado Tuerto",titulo:"Edificio Lérida · 3 dormitorios",precio:105000,etiqueta:"Retasado",dorm:3,banos:2,tags:[],desc:"Cocina separada, dormitorio en suite y balcón sobre avenida.",q:"Venado Tuerto, Santa Fe"},
+ {id:"PC08",op:"venta",tipo:"Departamento",zona:"Venado Tuerto",titulo:"Semipiso en San Martín y Maipú",precio:85000,dorm:2,banos:1,cub:80,tags:[],desc:"Cocina-comedor, living-comedor y lavadero. 80 m².",q:"San Martín y Maipú, Venado Tuerto"},
+ {id:"PC09",op:"venta",tipo:"Galpón",zona:"Parque Industrial",titulo:"Galpón en el Parque Industrial",precio:380000,etiqueta:"Retasado",lote:3250,cub:589,tags:["financia"],desc:"Espacio verde, oficina y baños, con posibilidad de ampliar. Consultar financiación.",q:"Parque Industrial, Venado Tuerto"},
+ {id:"PC10",op:"venta",tipo:"Terreno",zona:"Venado Tuerto",titulo:"Terreno en Sigal y Sabin",precio:45000,medidas:"21,75 x 61 m",tags:["financia"],desc:"Con gas. Acepta financiación.",q:"Sigal y Sabin, Venado Tuerto"},
+ {id:"PC11",op:"venta",tipo:"Terreno",zona:"B° Santa Rosa",titulo:"Terreno en Barrio Santa Rosa",precio:45000,medidas:"26,98 x 39,52 m",tags:[],desc:"Con todos los servicios.",q:"Barrio Santa Rosa, Venado Tuerto"},
+ {id:"PC12",op:"venta",tipo:"Departamento",zona:"Rosario",titulo:"Dorrego 1494, Rosario",precio:95000,dorm:2,banos:2,tags:[],desc:"Cocina-comedor y balcón.",q:"Dorrego 1494, Rosario"},
+ {id:"PA01",op:"alquiler",tipo:"Departamento",zona:"Venado Tuerto",titulo:"Moreno 1000 · 2 dormitorios",ars:1100000,dorm:2,banos:2,tags:["cochera"],desc:"Living-comedor, cocina, balcón y cochera.",q:"Moreno 1000, Venado Tuerto"},
+ {id:"PA02",op:"alquiler",tipo:"Galpón",zona:"Venado Tuerto",titulo:"Neuquén 220 · galpón",ars:1300000,lote:421,medidas:"8,40 x 14,80 m",tags:[],desc:"Galpón sobre lote de 421 m², con patio, depósito y baño.",q:"Neuquén 220, Venado Tuerto"},
+ {id:"PA03",op:"alquiler",tipo:"Departamento",zona:"Venado Tuerto",titulo:"Departamento amoblado",ars:800000,dorm:1,banos:1,tags:[],desc:"Primer piso por escalera, totalmente amoblado y con servicios conectados. Cocina-comedor y patio.",q:"Venado Tuerto, Santa Fe"},
+ {id:"PA04",op:"alquiler",tipo:"Galpón",zona:"Venado Tuerto",titulo:"Dos galpones con oficina",ars:3000000,medidas:"15 x 30 m y 11 x 11 m",tags:["cochera"],desc:"Dos galpones, oficina con baño y playón con doble ingreso para estacionamiento y circulación de vehículos.",q:"Venado Tuerto, Santa Fe"}
+];
+
+/* ilustraciones por tipo (línea) */
+const BG={"Casa":"#DCEBE5","Casa quinta":"#E4EDD9","Departamento":"#E5E4F0","Terreno":"#F1E3C4","Galpón":"#E9E2D6"};
+const S='fill="none" stroke="#0F3536" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"';
+const ART={
+ "Casa":`<svg viewBox="0 0 200 130" aria-hidden="true"><path ${S} d="M10 118h180"/><path ${S} d="M30 118V62l55-40 55 40v56"/><path ${S} d="M70 118V86h30v32"/><rect ${S} x="112" y="74" width="18" height="18"/><path ${S} d="M140 118V80h46v38"/><path ${S} d="M146 98h34"/><path fill="#C8963A" opacity=".55" d="M150 104h30v8h-30z"/><path ${S} d="M48 60h18v18H48z"/></svg>`,
+ "Casa quinta":`<svg viewBox="0 0 200 130" aria-hidden="true"><path ${S} d="M6 118h188"/><path ${S} d="M60 118V70l40-30 40 30v48"/><path ${S} d="M90 118V94h20v24"/><path fill="#7FB3B0" opacity=".6" d="M120 108h56v8h-56z"/><path ${S} d="M118 106h60v12h-60z"/><circle ${S} cx="30" cy="70" r="16"/><path ${S} d="M30 86v32"/><circle ${S} cx="172" cy="62" r="12"/><path ${S} d="M172 74v30"/></svg>`,
+ "Departamento":`<svg viewBox="0 0 200 130" aria-hidden="true"><path ${S} d="M10 120h180"/><path ${S} d="M60 120V14h80v106"/><g ${S}><path d="M74 30h16v12H74zM110 30h16v12h-16zM74 54h16v12H74zM110 54h16v12h-16zM74 78h16v12H74zM110 78h16v12h-16z"/><path d="M92 120v-18h16v18"/></g><path fill="#C8963A" opacity=".55" d="M110 54h16v12h-16z"/></svg>`,
+ "Terreno":`<svg viewBox="0 0 200 130" aria-hidden="true"><path ${S} d="M20 100 70 70h110l-50 30z"/><path ${S} stroke-dasharray="5 6" d="M45 85h110"/><path ${S} d="M70 70V52M180 70V52M20 100V82M130 100V82"/><path fill="#C8963A" opacity=".5" d="M70 52l12 4-12 4z"/><path ${S} d="M10 118h180"/></svg>`,
+ "Galpón":`<svg viewBox="0 0 200 130" aria-hidden="true"><path ${S} d="M8 118h184"/><path ${S} d="M24 118V60q76-40 152 0v58"/><path ${S} d="M70 118V80h60v38"/><path ${S} d="M70 90h60M70 100h60M70 110h60"/><path ${S} d="M150 76h16v12h-16z"/><path fill="#C8963A" opacity=".5" d="M34 72h20v10H34z"/></svg>`
+};
+const art=t=>ART[t]||ART["Casa"];
+
+const $=s=>document.querySelector(s);
+const wa=t=>"https://wa.me/"+WA+"?text="+encodeURIComponent(t);
+const usd=n=>"USD "+n.toLocaleString("es-AR");
+const ars=n=>"$ "+n.toLocaleString("es-AR");
+const price=p=>p.op==="alquiler"?`${ars(p.ars)} <small>/ mes</small>`:usd(p.precio);
+const priceTxt=p=>p.op==="alquiler"?ars(p.ars)+" por mes":usd(p.precio);
+$("#waTop").href=wa("Hola, vi su catálogo web y quería hacer una consulta.");
+$("#waFoot").href=wa("Hola, quería hacer una consulta.");
+
+const st={op:"venta",tipo:"",zona:"",precio:"",dorm:"",tags:new Set(),q:""};
+const uniq=k=>[...new Set(P.map(p=>p[k]))].sort((a,b)=>a.localeCompare(b,"es"));
+uniq("tipo").forEach(v=>$("#sTipo").add(new Option(v,v)));
+uniq("zona").forEach(v=>$("#sZona").add(new Option(v,v)));
+
+function list(){
+  return P.filter(p=>(st.op==="todas"||p.op===st.op)&&(!st.tipo||p.tipo===st.tipo)&&(!st.zona||p.zona===st.zona)
+   &&(!st.precio||(p.op==="venta"&&p.precio<=+st.precio))&&(!st.dorm||(p.dorm||0)>=+st.dorm)
+   &&[...st.tags].every(t=>p.tags.includes(t))
+   &&(!st.q||(p.titulo+" "+p.zona+" "+p.tipo+" "+p.desc+" "+p.tags.join(" ")).toLowerCase().includes(st.q.toLowerCase())));
+}
+function meta(p){
+  const m=[];
+  if(p.dorm)m.push(`${p.dorm} dorm.`);
+  if(p.banos)m.push(`${p.banos} ${p.banos>1?"baños":"baño"}`);
+  if(p.cub)m.push(`${p.cub.toLocaleString("es-AR")} m² cub.`);
+  else if(p.lote)m.push(`Lote ${p.lote.toLocaleString("es-AR")} m²`);
+  if(p.medidas)m.push(p.medidas);
+  return m;
+}
+function render(){
+  const r=list();
+  $("#lt").textContent=st.op==="alquiler"?"Propiedades en alquiler":st.op==="venta"?"Propiedades en venta":"Todas las propiedades";
+  $("#lc").textContent=r.length+(r.length===1?" resultado":" resultados")+(st.q?` · “${st.q}”`:"");
+  $("#grid").innerHTML=r.length?r.map(p=>`
+   <button class="card" data-id="${p.id}" aria-label="Ver ${p.titulo}">
+     <div class="art" style="background:${BG[p.tipo]||"#E5E4F0"}">${art(p.tipo)}
+       <span class="badge ${p.op==="alquiler"?"alq":""}">${p.op==="alquiler"?"Alquiler":"Venta"}</span>
+       ${p.etiqueta?`<span class="state">${p.etiqueta}</span>`:""}</div>
+     <div class="cb">
+       <div class="zone">${p.tipo} · ${p.zona}</div>
+       <div class="ttl">${p.titulo}</div>
+       <div class="pr">${price(p)}</div>
+       <div class="meta">${meta(p).map(x=>`<span>${x}</span>`).join("")||"<span>Consultar detalles</span>"}</div>
+     </div>
+   </button>`).join(""):`<div class="empty">No encontramos propiedades con esos filtros.<br><br><a class="btn btn-wa" target="_blank" rel="noopener" href="${wa("Hola, estoy buscando una propiedad y no la encontré en el catálogo. Busco: ")}">Contanos qué buscás</a></div>`;
+}
+function setOp(op){
+  st.op=op;document.querySelectorAll(".tabs button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.op===op));
+  $("#sPrecio").disabled=op==="alquiler";if(op==="alquiler"){$("#sPrecio").value="";st.precio="";}
+  render();
+}
+document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>setOp(b.dataset.op));
+[["#sTipo","tipo"],["#sZona","zona"],["#sPrecio","precio"],["#sDorm","dorm"]].forEach(([s,k])=>$(s).addEventListener("change",e=>{st[k]=e.target.value;render();}));
+$("#finder").addEventListener("submit",e=>{e.preventDefault();st.q="";render();$("#catalogo").scrollIntoView();});
+document.querySelectorAll("#pills .pill").forEach(b=>b.onclick=()=>{const t=b.dataset.tag;st.tags.has(t)?st.tags.delete(t):st.tags.add(t);b.setAttribute("aria-pressed",st.tags.has(t));render();});
+document.querySelectorAll(".quick a").forEach(a=>a.addEventListener("click",()=>{st.q=a.dataset.q;setOp("todas");}));
+document.querySelectorAll("nav a[data-jump]").forEach(a=>a.addEventListener("click",()=>setOp(a.dataset.jump)));
+$("#grid").addEventListener("click",e=>{const c=e.target.closest(".card");if(c)openP(c.dataset.id);});
+
+const dlg=$("#dlg");
+function openP(id){
+  const p=P.find(x=>x.id===id);if(!p)return;
+  $("#dArt").style.background=BG[p.tipo]||"#E5E4F0";
+  $("#dArt").innerHTML=art(p.tipo)+`<span class="cap">Acá va la galería con las fotos de la propiedad.</span>`;
+  $("#dZ").textContent=p.tipo+" · "+p.zona+(p.etiqueta?" · "+p.etiqueta:"");
+  $("#dT").textContent=p.titulo;
+  $("#dP").innerHTML=price(p);
+  const s=[];
+  if(p.dorm)s.push(["Dormitorios",p.dorm]);if(p.banos)s.push(["Baños",p.banos]);
+  if(p.cub)s.push(["Cubiertos",p.cub.toLocaleString("es-AR")+" m²"]);if(p.lote)s.push(["Lote",p.lote.toLocaleString("es-AR")+" m²"]);
+  if(p.medidas)s.push(["Medidas",p.medidas]);s.push(["Operación",p.op==="alquiler"?"Alquiler":"Venta"]);
+  $("#dS").innerHTML=s.map(([a,b])=>`<div>${a}<b>${b}</b></div>`).join("");
+  $("#dD").textContent=p.desc;
+  $("#dM").src="https://maps.google.com/maps?q="+encodeURIComponent(p.q)+"&z=14&output=embed";
+  $("#dW").href=wa(`Hola, quiero consultar por: ${p.titulo} (${p.zona}, ${priceTxt(p)}). ¿Sigue disponible?`);
+  dlg.showModal();
+}
+$("#dX").onclick=()=>dlg.close();
+dlg.addEventListener("click",e=>{if(e.target===dlg)dlg.close();});
+dlg.addEventListener("close",()=>{$("#dM").src="about:blank";});
+
+$("#tf").addEventListener("submit",e=>{e.preventDefault();const d=new FormData(e.target);
+  window.open(wa(`Hola, quiero tasar una propiedad.\nQuiero: ${d.get("op")}\nTipo: ${d.get("tipo")}\nDirección/barrio: ${d.get("dir")}\nNombre: ${d.get("nombre")}${d.get("tel")?"\nTeléfono: "+d.get("tel"):""}`),"_blank","noopener");});
+render();
+})();
+</script>
+</body>
+</html>
