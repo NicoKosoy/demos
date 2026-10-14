@@ -1,0 +1,613 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Cotizador de aberturas — Acri (demo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EDF0F1;        /* aluminio claro */
+  --panel:#FFFFFF;
+  --ink:#1C2932;       /* pizarra */
+  --ink-2:#56656F;
+  --line:#CDD4D8;
+  --glass:#BFDCDD;     /* vidrio */
+  --glass-2:#93BFC1;
+  --teal:#0E5A5F;      /* acción */
+  --teal-ink:#FFFFFF;
+  --cota:#C2412D;      /* cotas de plano */
+  --radius-s:6px;
+  --radius-l:14px;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Archivo",system-ui,sans-serif;font-size:16px;line-height:1.5;font-variation-settings:"wdth" 100}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+
+/* Demo strip */
+.demo{background:var(--ink);color:#DCE4E8;font-size:13px;padding:8px 0}
+.demo .wrap{display:flex;gap:12px;justify-content:space-between;align-items:center;flex-wrap:wrap}
+.demo b{color:#fff;font-weight:600}
+
+/* Header */
+header.top{padding:22px 0 8px}
+header.top .wrap{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.brand{font-weight:800;font-size:22px;letter-spacing:-.01em;font-variation-settings:"wdth" 118}
+.brand small{display:block;font-weight:400;font-size:13px;color:var(--ink-2);letter-spacing:0;font-variation-settings:"wdth" 100}
+.facts{display:flex;gap:22px;color:var(--ink-2);font-size:14px;flex-wrap:wrap}
+.facts strong{color:var(--ink);font-weight:700}
+
+/* Hero headline */
+.hero{padding:34px 0 26px}
+.hero h1{margin:0;font-weight:750;font-size:clamp(34px,6.2vw,72px);line-height:.98;letter-spacing:-.025em;font-variation-settings:"wdth" 72;max-width:13ch}
+.hero p{margin:18px 0 0;max-width:56ch;color:var(--ink-2);font-size:18px}
+
+/* Main grid */
+.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:28px;align-items:start;padding-bottom:60px}
+@media (max-width:900px){.grid{grid-template-columns:1fr}}
+
+.form{background:var(--panel);border-radius:var(--radius-l);padding:26px;border:1px solid var(--line)}
+fieldset{border:0;margin:0 0 24px;padding:0}
+legend{font-weight:700;font-size:15px;margin-bottom:10px;padding:0}
+.hint{font-size:13px;color:var(--ink-2);margin:-4px 0 10px}
+
+/* Tipología picker */
+.types{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+@media (max-width:480px){.types{grid-template-columns:repeat(2,1fr)}}
+.types input{position:absolute;opacity:0;pointer-events:none}
+.types label{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 6px 10px;border:1.5px solid var(--line);border-radius:var(--radius-s);cursor:pointer;font-size:13px;text-align:center;line-height:1.2;background:#fff;transition:border-color .15s,background .15s}
+.types label svg{width:44px;height:44px}
+.types input:checked + label{border-color:var(--teal);background:#E6F0F0;font-weight:600}
+.types input:focus-visible + label{outline:3px solid var(--teal);outline-offset:2px}
+
+/* Measures */
+.measures{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.num label{display:block;font-size:14px;margin-bottom:6px;color:var(--ink-2)}
+.num .field{display:flex;align-items:center;border:1.5px solid var(--line);border-radius:var(--radius-s);background:#fff}
+.num input{width:100%;border:0;background:transparent;padding:11px 12px;font-size:20px;font-weight:600;font-variant-numeric:tabular-nums;font-variation-settings:"wdth" 90}
+.num input:focus{outline:none}
+.num .field:focus-within{border-color:var(--teal)}
+.num span{padding-right:12px;color:var(--ink-2);font-size:14px}
+input[type=range]{width:100%;accent-color:var(--teal);margin-top:8px}
+
+/* Segmented */
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg label{padding:9px 13px;border:1.5px solid var(--line);border-radius:999px;cursor:pointer;font-size:14px;background:#fff;display:flex;align-items:center;gap:8px}
+.seg input:checked + label{border-color:var(--teal);background:var(--teal);color:#fff}
+.seg input:focus-visible + label{outline:3px solid var(--teal);outline-offset:2px}
+.seg input:disabled + label{opacity:.4;cursor:not-allowed}
+.sw{width:14px;height:14px;border-radius:50%;border:1px solid rgba(0,0,0,.25);display:inline-block}
+
+.row{display:flex;gap:18px;flex-wrap:wrap;align-items:center}
+.check{display:flex;gap:10px;align-items:center;cursor:pointer;font-size:15px}
+.check input{width:20px;height:20px;accent-color:var(--teal)}
+.qty{display:flex;align-items:center;border:1.5px solid var(--line);border-radius:999px;background:#fff}
+.qty button{border:0;background:none;width:38px;height:38px;font-size:20px;cursor:pointer;border-radius:999px}
+.qty output{min-width:28px;text-align:center;font-weight:700;font-variant-numeric:tabular-nums}
+
+/* Preview panel */
+.preview{position:sticky;top:16px;display:flex;flex-direction:column;gap:16px}
+@media (max-width:900px){.preview{position:static}}
+.plan{background:#F7F9F9;border-radius:var(--radius-l);border:1px solid var(--line);padding:18px;position:relative;
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:24px 24px;background-position:-1px -1px}
+.plan::after{content:"";position:absolute;inset:0;border-radius:var(--radius-l);background:rgba(247,249,249,.82);pointer-events:none}
+.plan svg{position:relative;z-index:1;width:100%;height:auto;display:block}
+.plan .tag{position:absolute;z-index:2;left:18px;top:14px;font-size:13px;color:var(--ink-2)}
+
+.price{background:var(--ink);color:#fff;border-radius:var(--radius-l);padding:22px 24px}
+.price .lbl{font-size:14px;color:#AFC0C8}
+.price .amt{font-size:clamp(30px,4.6vw,44px);font-weight:750;letter-spacing:-.02em;font-variant-numeric:tabular-nums;font-variation-settings:"wdth" 80;line-height:1.1;margin:4px 0 2px}
+.price .sub{font-size:14px;color:#AFC0C8}
+.price .actions{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+.btn{border:0;border-radius:999px;padding:13px 20px;font-weight:650;cursor:pointer;font-size:15px}
+.btn-main{background:#fff;color:var(--ink)}
+.btn-main:hover{background:#E6F0F0}
+.btn-ghost{background:transparent;color:#fff;border:1.5px solid #4A5C67}
+.btn-ghost:hover{border-color:#fff}
+.btn-wa{background:var(--teal);color:#fff}
+.btn-wa:hover{background:#0B4A4E}
+
+/* List */
+.list{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-l);padding:18px 20px}
+.list h3{margin:0 0 4px;font-size:16px}
+.list .empty{color:var(--ink-2);font-size:14px;margin:4px 0 0}
+.list ul{list-style:none;margin:10px 0 0;padding:0}
+.list li{display:grid;grid-template-columns:auto 1fr auto auto;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--line);font-size:14px}
+.list li .mini{width:34px;height:34px}
+.list li .d{color:var(--ink-2);font-size:13px}
+.list li .p{font-weight:650;font-variant-numeric:tabular-nums;white-space:nowrap}
+.list li button{border:0;background:none;color:var(--ink-2);cursor:pointer;font-size:13px;text-decoration:underline}
+.total{display:flex;justify-content:space-between;align-items:baseline;border-top:2px solid var(--ink);margin-top:6px;padding-top:12px;font-weight:700;font-variant-numeric:tabular-nums}
+.list .btn-wa{width:100%;margin-top:14px}
+
+/* Steps */
+.next{border-top:1px solid var(--line);padding:46px 0 56px}
+.next h2{font-size:clamp(24px,3.2vw,34px);margin:0 0 24px;letter-spacing:-.015em;font-variation-settings:"wdth" 80}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;list-style:none;margin:0;padding:0;counter-reset:s}
+@media (max-width:760px){.steps{grid-template-columns:1fr}}
+.steps li{counter-increment:s;padding-top:14px;border-top:3px solid var(--ink)}
+.steps li::before{content:counter(s);font-weight:800;font-size:28px;font-variation-settings:"wdth" 70;display:block;margin-bottom:6px}
+.steps h3{margin:0 0 6px;font-size:17px}
+.steps p{margin:0;color:var(--ink-2);font-size:15px;max-width:38ch}
+
+footer{background:var(--ink);color:#AFC0C8;font-size:14px;padding:26px 0}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer a{color:#fff}
+
+/* Dialogs */
+dialog{border:0;border-radius:var(--radius-l);padding:0;max-width:640px;width:calc(100% - 32px);color:var(--ink);box-shadow:0 24px 60px rgba(20,32,40,.35)}
+dialog::backdrop{background:rgba(20,32,40,.55)}
+.dlg{padding:24px}
+.dlg h2{margin:0 0 6px;font-size:21px}
+.dlg p{margin:0 0 14px;color:var(--ink-2);font-size:14px}
+.wa-msg{background:#E7F3EC;border-radius:10px;padding:14px 16px;white-space:pre-wrap;font-size:14px;line-height:1.45;max-height:46vh;overflow:auto;border:1px solid #CFE3D6}
+.dlg .row{justify-content:flex-end;margin-top:16px}
+.dlg .btn-ghost{color:var(--ink);border-color:var(--line)}
+table.prices{width:100%;border-collapse:collapse;font-size:14px}
+table.prices th{text-align:left;font-weight:600;color:var(--ink-2);padding:6px 4px;border-bottom:1px solid var(--line)}
+table.prices td{padding:6px 4px;border-bottom:1px solid var(--line)}
+table.prices input{width:120px;padding:6px 8px;border:1.5px solid var(--line);border-radius:6px;font-variant-numeric:tabular-nums;text-align:right}
+.dlg-scroll{max-height:56vh;overflow:auto}
+
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:11px 18px;border-radius:999px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:50}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.admin-link{background:none;border:0;color:#fff;text-decoration:underline;cursor:pointer;font-size:13px;padding:0}
+
+.mbar{display:none}
+@media (max-width:900px){
+  .mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--ink);color:#fff;padding:10px 16px calc(10px + env(safe-area-inset-bottom));align-items:center;justify-content:space-between;gap:12px;box-shadow:0 -6px 20px rgba(20,32,40,.25)}
+  .mbar .l{font-size:12px;color:#AFC0C8}
+  .mbar .v{font-weight:750;font-size:18px;font-variant-numeric:tabular-nums;font-variation-settings:"wdth" 80}
+  .mbar button{background:#fff;color:var(--ink);border:0;border-radius:999px;padding:10px 16px;font-weight:650;white-space:nowrap}
+  body{padding-bottom:72px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media (max-width:520px){.form{padding:20px}.price{padding:20px}}
+</style>
+</head>
+<body>
+
+<div class="demo"><div class="wrap">
+  <span><b>Prototipo de demostración</b> preparado para Acri Aberturas. Los precios son de ejemplo.</span>
+  <button class="admin-link" id="openAdmin">Editar tabla de precios</button>
+</div></div>
+
+<header class="top"><div class="wrap">
+  <div class="brand">Acri Aberturas<small>Fabricamos aberturas desde 1972</small></div>
+  <div class="facts"><span><strong>5</strong> locales</span><span><strong>3</strong> fábricas</span><span><strong>6</strong> equipos de instalación</span></div>
+</div></header>
+
+<main class="wrap">
+  <section class="hero">
+    <h1>Cotizá tu abertura en un minuto.</h1>
+    <p>Elegí el tipo, cargá las medidas y mirá el precio estimado al instante. Después nos mandás el pedido por WhatsApp y coordinamos la medición.</p>
+  </section>
+
+  <div class="grid">
+    <!-- FORM -->
+    <form class="form" id="f" onsubmit="return false">
+      <fieldset>
+        <legend>Tipo de abertura</legend>
+        <div class="types" id="types"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Medidas del vano</legend>
+        <p class="hint">Si no las tenés exactas, poné un aproximado. Las confirmamos en la medición.</p>
+        <div class="measures">
+          <div class="num">
+            <label for="w">Ancho</label>
+            <div class="field"><input id="w" type="number" inputmode="numeric" min="40" max="400" step="5" value="150"><span>cm</span></div>
+            <input type="range" id="wr" min="40" max="400" step="5" value="150" aria-label="Ancho">
+          </div>
+          <div class="num">
+            <label for="h">Alto</label>
+            <div class="field"><input id="h" type="number" inputmode="numeric" min="40" max="280" step="5" value="110"><span>cm</span></div>
+            <input type="range" id="hr" min="40" max="280" step="5" value="110" aria-label="Alto">
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Línea</legend>
+        <div class="seg" id="lines"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Vidrio</legend>
+        <div class="seg" id="glass"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Color del marco</legend>
+        <div class="seg" id="colors"></div>
+      </fieldset>
+
+      <fieldset style="margin-bottom:0">
+        <legend>Extras</legend>
+        <div class="row">
+          <label class="check"><input type="checkbox" id="mosq"> Mosquitero</label>
+          <label class="check"><input type="checkbox" id="inst" checked> Con instalación</label>
+          <div class="qty" aria-label="Cantidad">
+            <button type="button" id="qm" aria-label="Restar">−</button>
+            <output id="q">1</output>
+            <button type="button" id="qp" aria-label="Sumar">+</button>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+
+    <!-- PREVIEW -->
+    <aside class="preview" aria-live="polite">
+      <div class="plan">
+        <span class="tag" id="planTag"></span>
+        <svg id="draw" viewBox="0 0 560 420" role="img" aria-label="Dibujo de la abertura elegida"></svg>
+      </div>
+
+      <div class="price">
+        <div class="lbl">Precio estimado</div>
+        <div class="amt" id="amt">—</div>
+        <div class="sub" id="sub"></div>
+        <div class="actions">
+          <button class="btn btn-main" id="add" type="button">Agregar al presupuesto</button>
+          <button class="btn btn-ghost" id="sendOne" type="button">Pedir solo esta</button>
+        </div>
+      </div>
+
+      <div class="list">
+        <h3>Tu presupuesto</h3>
+        <p class="empty" id="empty">Agregá una o varias aberturas y mandalas juntas.</p>
+        <ul id="items"></ul>
+        <div class="total" id="totalRow" hidden><span>Total estimado</span><span id="total"></span></div>
+        <button class="btn btn-wa" id="sendAll" type="button" hidden>Enviar presupuesto por WhatsApp</button>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<section class="next"><div class="wrap">
+  <h2>Qué pasa después de enviarlo</h2>
+  <ol class="steps">
+    <li><h3>Te escribimos</h3><p>Un asesor recibe tu pedido con las medidas y te responde por WhatsApp para ajustar detalles.</p></li>
+    <li><h3>Medimos en tu casa</h3><p>Vamos a tomar las medidas exactas y te pasamos el presupuesto final, sin compromiso.</p></li>
+    <li><h3>Fabricamos e instalamos</h3><p>Con la seña confirmada, fabricamos en nuestra planta e instala uno de nuestros equipos.</p></li>
+  </ol>
+</div></section>
+
+<footer><div class="wrap">
+  <span>El precio estimado es orientativo. El valor final se confirma después de la medición.</span>
+  <span>Prototipo hecho para Acri Aberturas</span>
+</div></footer>
+
+<!-- WhatsApp preview -->
+<dialog id="waDlg"><div class="dlg">
+  <h2>Así le llega el pedido al local</h2>
+  <p>En la versión final este botón abre WhatsApp directo con la sucursal elegida, con todo ya escrito.</p>
+  <div class="wa-msg" id="waMsg"></div>
+  <div class="row">
+    <button class="btn btn-ghost" id="copyMsg" type="button">Copiar mensaje</button>
+    <button class="btn btn-wa" id="closeWa" type="button">Listo</button>
+  </div>
+</div></dialog>
+
+<!-- Admin prices -->
+<dialog id="admDlg"><div class="dlg">
+  <h2>Tabla de precios</h2>
+  <p>Esto lo usa el local: cambiás un valor y el cotizador se actualiza solo. Sin tocar código.</p>
+  <div class="dlg-scroll" id="admBody"></div>
+  <div class="row">
+    <button class="btn btn-ghost" id="resetP" type="button">Volver a los de ejemplo</button>
+    <button class="btn btn-wa" id="saveP" type="button">Guardar precios</button>
+  </div>
+</div></dialog>
+
+<div class="mbar" id="mbar"><div><div class="l">Precio estimado</div><div class="v" id="mamt"></div></div><button type="button" id="mgo">Ver y pedir</button></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* ===== Config ===== */
+const WHATSAPP = ""; // número del local, ej. "5491100000000". Vacío = modo demo (muestra el mensaje).
+
+const TYPES = [
+  {id:"corr",  name:"Ventana corrediza",   mosq:true},
+  {id:"bat",   name:"Ventana de abrir",    mosq:true},
+  {id:"osc",   name:"Oscilobatiente",      mosq:true},
+  {id:"fijo",  name:"Paño fijo",           mosq:false},
+  {id:"balc",  name:"Puerta balcón",       mosq:true, door:true},
+  {id:"puer",  name:"Puerta de abrir",     mosq:false, door:true}
+];
+const LINES = [
+  {id:"std", name:"Aluminio estándar"},
+  {id:"alt", name:"Aluminio alta prestación"},
+  {id:"pvc", name:"PVC"}
+];
+const GLASS = [
+  {id:"simple", name:"Simple 4 mm"},
+  {id:"lam",    name:"Laminado 3+3"},
+  {id:"dvh",    name:"DVH (doble)"}
+];
+const COLORS = [
+  {id:"blanco",  name:"Blanco",      hex:"#F4F5F2", stroke:"#9AA4A8"},
+  {id:"natural", name:"Natural",     hex:"#B9C0C3", stroke:"#7D878C"},
+  {id:"negro",   name:"Negro",       hex:"#2A2E31", stroke:"#2A2E31"},
+  {id:"madera",  name:"Símil madera",hex:"#8A5A36", stroke:"#6B4426"}
+];
+
+const DEFAULT_PRICES = {
+  m2:{corr:260000, bat:300000, osc:380000, fijo:180000, balc:285000, puer:340000},
+  line:{std:1, alt:1.45, pvc:1.75},
+  glass:{simple:0, lam:38000, dvh:92000},
+  colorPct:{blanco:0, natural:0, negro:12, madera:18},
+  mosqM2:45000,
+  instPct:18,
+  minM2:1,
+  rangePct:8
+};
+let P = load();
+
+function load(){
+  try{ const s = localStorage.getItem("acri_prices"); if(s) return Object.assign(structuredClone(DEFAULT_PRICES), JSON.parse(s)); }catch(e){}
+  return structuredClone(DEFAULT_PRICES);
+}
+function save(){ try{ localStorage.setItem("acri_prices", JSON.stringify(P)); }catch(e){} }
+
+/* ===== State ===== */
+const S = {type:"corr", w:150, h:110, line:"std", glass:"simple", color:"blanco", mosq:false, inst:true, q:1};
+const items = [];
+
+/* ===== Helpers ===== */
+const $ = id => document.getElementById(id);
+const ars = n => "$" + Math.round(n).toLocaleString("es-AR");
+const round = n => Math.round(n/1000)*1000;
+const byId = (arr,id) => arr.find(x=>x.id===id);
+
+function calc(st){
+  const area = Math.max((st.w/100)*(st.h/100), P.minM2);
+  let unit = area * P.m2[st.type] * P.line[st.line];
+  unit += area * P.glass[st.glass];
+  unit *= 1 + (P.colorPct[st.color]||0)/100;
+  if(st.mosq && byId(TYPES,st.type).mosq) unit += area * P.mosqM2;
+  if(st.inst) unit *= 1 + P.instPct/100;
+  const total = unit * st.q;
+  const r = P.rangePct/100;
+  return {area, unit, lo:round(total*(1-r)), hi:round(total*(1+r)), mid:round(total)};
+}
+
+/* ===== Drawing ===== */
+function drawWindow(st, opts={}){
+  const VW = opts.vw||560, VH = opts.vh||420, mini = !!opts.mini;
+  const col = byId(COLORS, st.color);
+  const pad = mini ? 4 : 70;
+  const maxW = VW - pad*2, maxH = VH - pad*2 - (mini?0:10);
+  const scale = Math.min(maxW/st.w, maxH/st.h);
+  const W = st.w*scale, H = st.h*scale;
+  const x = (VW-W)/2 + (mini?0:10), y = (VH-H)/2 - (mini?0:8);
+  const fr = mini ? 2.5 : Math.max(8, Math.min(16, W*0.035)); // espesor de marco
+  const sw = mini ? 1 : 1.5;
+  const glassFill = st.glass==="dvh" ? "var(--glass-2)" : "var(--glass)";
+  let g = "";
+
+  // defs
+  g += `<defs>
+    <pattern id="mq${opts.uid||''}" width="5" height="5" patternUnits="userSpaceOnUse"><path d="M0 0H5M0 0V5" stroke="#3A4A52" stroke-width=".5" opacity=".45"/></pattern>
+    <linearGradient id="gl${opts.uid||''}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".35" stop-color="#fff" stop-opacity="0"/></linearGradient>
+  </defs>`;
+
+  // outer frame
+  g += `<rect x="${x}" y="${y}" width="${W}" height="${H}" fill="${col.hex}" stroke="${col.stroke}" stroke-width="${sw}" rx="${mini?1:2}"/>`;
+
+  const ix = x+fr, iy = y+fr, iW = W-fr*2, iH = H-fr*2;
+  const pane = (px,py,pw,ph,opt={}) => {
+    let s = `<rect x="${px}" y="${py}" width="${pw}" height="${ph}" fill="${glassFill}" stroke="${col.stroke}" stroke-width="${sw*.8}"/>`;
+    s += `<rect x="${px}" y="${py}" width="${pw}" height="${ph}" fill="url(#gl${opts.uid||''})"/>`;
+    if(st.glass==="dvh" && !mini) s += `<rect x="${px+4}" y="${py+4}" width="${pw-8}" height="${ph-8}" fill="none" stroke="#fff" stroke-opacity=".7" stroke-width="1"/>`;
+    if(st.glass==="lam" && !mini) s += `<line x1="${px+pw*.15}" y1="${py+ph*.85}" x2="${px+pw*.35}" y2="${py+ph*.65}" stroke="#fff" stroke-opacity=".8" stroke-width="2"/>`;
+    if(opt.mq) s += `<rect x="${px}" y="${py}" width="${pw}" height="${ph}" fill="url(#mq${opts.uid||''})"/>`;
+    return s;
+  };
+  const sash = (px,py,pw,ph,t=fr*.7) => `<rect x="${px}" y="${py}" width="${pw}" height="${ph}" fill="${col.hex}" stroke="${col.stroke}" stroke-width="${sw*.8}"/>` ;
+  const openLine = (pts) => `<polyline points="${pts}" fill="none" stroke="var(--ink)" stroke-width="${mini?.8:1.2}" stroke-dasharray="${mini?'2.5 2':'6 5'}" opacity=".7"/>`;
+  const handle = (hx,hy,v=true) => mini ? "" : (v ? `<rect x="${hx-2}" y="${hy-12}" width="4" height="24" rx="2" fill="var(--ink)" opacity=".8"/>` : `<rect x="${hx-12}" y="${hy-2}" width="24" height="4" rx="2" fill="var(--ink)" opacity=".8"/>`);
+  const mq = st.mosq && byId(TYPES,st.type).mosq;
+
+  const t = st.type;
+  if(t==="corr" || t==="balc"){
+    const ov = mini?1:6, hw = iW/2;
+    const s1 = fr*.6;
+    g += sash(ix, iy, hw+ov, iH) + pane(ix+s1, iy+s1, hw+ov-s1*2, iH-s1*2);
+    g += sash(ix+hw-ov, iy, hw+ov, iH) + pane(ix+hw-ov+s1, iy+s1, hw+ov-s1*2, iH-s1*2, {mq});
+    if(!mini){
+      const ay = iy+iH/2, ax = ix+hw*.5;
+      g += `<path d="M${ax-22} ${ay}H${ax+22}M${ax+14} ${ay-7}L${ax+22} ${ay}L${ax+14} ${ay+7}" stroke="var(--ink)" stroke-width="1.5" fill="none" opacity=".75"/>`;
+      const bx = ix+hw*1.5;
+      g += `<path d="M${bx+22} ${ay}H${bx-22}M${bx-14} ${ay-7}L${bx-22} ${ay}L${bx-14} ${ay+7}" stroke="var(--ink)" stroke-width="1.5" fill="none" opacity=".75"/>`;
+      g += handle(ix+hw-ov-s1/2-3, ay);
+      if(t==="balc") g += `<rect x="${ix}" y="${iy+iH*.62}" width="${iW}" height="${mini?1:3}" fill="${col.stroke}" opacity=".35"/>`;
+    }
+  } else if(t==="bat" || t==="osc"){
+    const two = st.w >= 110;
+    const n = two?2:1, pw = iW/n, s1 = fr*.6;
+    for(let i=0;i<n;i++){
+      const px = ix+pw*i;
+      g += sash(px, iy, pw, iH) + pane(px+s1, iy+s1, pw-s1*2, iH-s1*2, {mq: mq && i===n-1});
+      // apertura: triángulo hacia el lado de la bisagra (notación de plano)
+      const hingeLeft = (n===1) || i===0;
+      if(hingeLeft) g += openLine(`${px+pw-s1},${iy+s1} ${px+s1},${iy+iH/2} ${px+pw-s1},${iy+iH-s1}`);
+      else          g += openLine(`${px+s1},${iy+s1} ${px+pw-s1},${iy+iH/2} ${px+s1},${iy+iH-s1}`);
+      if(t==="osc") g += openLine(`${px+s1},${iy+s1} ${px+pw/2},${iy+iH-s1} ${px+pw-s1},${iy+s1}`);
+      g += handle(hingeLeft ? px+pw-s1-6 : px+s1+6, iy+iH/2);
+    }
+  } else if(t==="fijo"){
+    g += pane(ix, iy, iW, iH);
+    if(!mini) g += `<text x="${ix+iW/2}" y="${iy+iH/2+5}" text-anchor="middle" font-size="15" fill="var(--ink)" opacity=".55" font-family="Archivo, system-ui, sans-serif">F</text>`;
+  } else if(t==="puer"){
+    const s1 = fr*.6;
+    g += sash(ix, iy, iW, iH);
+    // puerta: vidrio superior + panel inferior
+    const gh = iH*.55;
+    g += pane(ix+s1*2, iy+s1*2, iW-s1*4, gh-s1*2);
+    g += `<rect x="${ix+s1*2}" y="${iy+gh+s1}" width="${iW-s1*4}" height="${iH-gh-s1*3}" fill="none" stroke="${col.stroke}" stroke-width="${sw*.8}"/>`;
+    g += openLine(`${ix+iW-s1},${iy+s1} ${ix+s1},${iy+iH/2} ${ix+iW-s1},${iy+iH-s1}`);
+    g += handle(ix+iW-s1*3, iy+iH*.55);
+  }
+
+  // cotas (dimension lines)
+  if(!mini){
+    const c = "var(--cota)";
+    const yb = y+H+26, xl = x-26;
+    g += `<g stroke="${c}" stroke-width="1" fill="${c}" font-family="Archivo, system-ui, sans-serif" font-size="14" font-weight="600">
+      <line x1="${x}" y1="${y+H+6}" x2="${x}" y2="${yb+6}"/>
+      <line x1="${x+W}" y1="${y+H+6}" x2="${x+W}" y2="${yb+6}"/>
+      <line x1="${x}" y1="${yb}" x2="${x+W}" y2="${yb}"/>
+      <line x1="${x-4}" y1="${yb+4}" x2="${x+4}" y2="${yb-4}" stroke-width="1.6"/>
+      <line x1="${x+W-4}" y1="${yb+4}" x2="${x+W+4}" y2="${yb-4}" stroke-width="1.6"/>
+      <text x="${x+W/2}" y="${yb+20}" text-anchor="middle" stroke="none">${st.w} cm</text>
+      <line x1="${x-6}" y1="${y}" x2="${xl-6}" y2="${y}"/>
+      <line x1="${x-6}" y1="${y+H}" x2="${xl-6}" y2="${y+H}"/>
+      <line x1="${xl}" y1="${y}" x2="${xl}" y2="${y+H}"/>
+      <line x1="${xl-4}" y1="${y+4}" x2="${xl+4}" y2="${y-4}" stroke-width="1.6"/>
+      <line x1="${xl-4}" y1="${y+H+4}" x2="${xl+4}" y2="${y+H-4}" stroke-width="1.6"/>
+      <text x="${xl-10}" y="${y+H/2}" text-anchor="middle" stroke="none" transform="rotate(-90 ${xl-10} ${y+H/2})">${st.h} cm</text>
+    </g>`;
+  }
+  return g;
+}
+
+/* ===== Build UI ===== */
+function icon(type){
+  return `<svg viewBox="0 0 60 60" aria-hidden="true">${drawWindow({type, w:type==="balc"||type==="puer"?40:70, h:type==="balc"||type==="puer"?60:50, line:"std", glass:"simple", color:"natural", mosq:false},{vw:60,vh:60,mini:true,uid:"i"+type})}</svg>`;
+}
+$("types").innerHTML = TYPES.map(t=>`<input type="radio" name="type" id="t-${t.id}" value="${t.id}" ${t.id===S.type?"checked":""}><label for="t-${t.id}">${icon(t.id)}${t.name}</label>`).join("");
+const seg = (el,name,arr,key,extra=x=>"") => $(el).innerHTML = arr.map(o=>`<input type="radio" name="${name}" id="${name}-${o.id}" value="${o.id}" ${o.id===S[key]?"checked":""}><label for="${name}-${o.id}">${extra(o)}${o.name}</label>`).join("");
+seg("lines","line",LINES,"line");
+seg("glass","glass",GLASS,"glass");
+seg("colors","color",COLORS,"color",o=>`<span class="sw" style="background:${o.hex}"></span>`);
+
+function bindPair(num, rng, key){
+  const set = v => { v = Math.max(+num.min, Math.min(+num.max, Math.round(+v||0))); S[key]=v; num.value=v; rng.value=v; render(); };
+  rng.addEventListener("input", e=>set(e.target.value));
+  num.addEventListener("change", e=>set(e.target.value));
+  num.addEventListener("input", e=>{ const v=+e.target.value; if(v>=+num.min && v<=+num.max){ S[key]=v; rng.value=v; render(); } });
+}
+bindPair($("w"),$("wr"),"w");
+bindPair($("h"),$("hr"),"h");
+
+$("f").addEventListener("change", e=>{
+  const t = e.target;
+  if(t.name==="type"){ S.type=t.value;
+    const ty = byId(TYPES,S.type);
+    if(ty.door && S.h<190){ S.h=210; $("h").value=210; $("hr").value=210; if(S.w>200 && S.type==="puer"){S.w=90;$("w").value=90;$("wr").value=90;} if(S.type==="puer" && S.w>120){S.w=90;$("w").value=90;$("wr").value=90;} }
+  }
+  if(t.name==="line") S.line=t.value;
+  if(t.name==="glass") S.glass=t.value;
+  if(t.name==="color") S.color=t.value;
+  if(t.id==="mosq") S.mosq=t.checked;
+  if(t.id==="inst") S.inst=t.checked;
+  render();
+});
+$("qm").onclick=()=>{ S.q=Math.max(1,S.q-1); render(); };
+$("qp").onclick=()=>{ S.q=Math.min(50,S.q+1); render(); };
+
+function describe(st){
+  const ty=byId(TYPES,st.type).name, li=byId(LINES,st.line).name, gl=byId(GLASS,st.glass).name, co=byId(COLORS,st.color).name;
+  const ex = [];
+  if(st.mosq && byId(TYPES,st.type).mosq) ex.push("con mosquitero");
+  ex.push(st.inst ? "con instalación" : "sin instalación");
+  return {ty, line:`${st.w} × ${st.h} cm, ${li}, vidrio ${gl}, ${co.toLowerCase()}, ${ex.join(", ")}`};
+}
+
+function render(){
+  const ty = byId(TYPES,S.type);
+  $("mosq").disabled = !ty.mosq;
+  $("mosq").parentElement.style.opacity = ty.mosq ? 1 : .45;
+  $("q").textContent = S.q;
+  $("draw").innerHTML = drawWindow(S,{uid:"main"});
+  $("planTag").textContent = `${ty.name}${S.q>1?` × ${S.q}`:""}`;
+  const c = calc(S);
+  $("amt").textContent = `${ars(c.lo)} a ${ars(c.hi)}`;
+  $("mamt").textContent = `${ars(c.lo)} a ${ars(c.hi)}`;
+  $("sub").textContent = `${c.area.toFixed(2).replace(".",",")} m² por unidad${S.q>1?`, ${S.q} unidades`:""}. ${S.inst?"Incluye instalación.":"Sin instalación."}`;
+}
+
+/* ===== List ===== */
+function renderList(){
+  $("empty").hidden = items.length>0;
+  $("totalRow").hidden = $("sendAll").hidden = items.length===0;
+  $("items").innerHTML = items.map((it,i)=>{
+    const d = describe(it), c = calc(it);
+    return `<li><svg class="mini" viewBox="0 0 60 60" aria-hidden="true">${drawWindow(it,{vw:60,vh:60,mini:true,uid:"l"+i})}</svg>
+      <div><div>${d.ty}${it.q>1?` × ${it.q}`:""}</div><div class="d">${d.line}</div></div>
+      <div class="p">${ars(c.mid)}</div>
+      <button type="button" data-rm="${i}" aria-label="Quitar ${d.ty}">Quitar</button></li>`;
+  }).join("");
+  const lo = items.reduce((s,it)=>s+calc(it).lo,0), hi = items.reduce((s,it)=>s+calc(it).hi,0);
+  $("total").textContent = `${ars(lo)} a ${ars(hi)}`;
+}
+$("items").addEventListener("click",e=>{ const i=e.target.dataset.rm; if(i!==undefined){ items.splice(+i,1); renderList(); } });
+$("add").onclick=()=>{ items.push({...S}); renderList(); toast("Agregada al presupuesto"); };
+
+/* ===== WhatsApp ===== */
+function message(list){
+  let m = "Hola Acri, quiero un presupuesto:\n\n";
+  let lo=0, hi=0;
+  list.forEach((it,i)=>{ const d=describe(it), c=calc(it); lo+=c.lo; hi+=c.hi;
+    m += `${i+1}. ${d.ty}${it.q>1?` (x${it.q})`:""}\n   ${d.line}\n   Estimado: ${ars(c.lo)} a ${ars(c.hi)}\n\n`; });
+  if(list.length>1) m += `Total estimado: ${ars(lo)} a ${ars(hi)}\n\n`;
+  m += "¿Cuándo pueden venir a medir?";
+  return m;
+}
+function send(list){
+  const m = message(list);
+  if(WHATSAPP){ window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(m)}`,"_blank","noopener"); return; }
+  $("waMsg").textContent = m; $("waDlg").showModal();
+}
+$("sendOne").onclick=()=>send([{...S}]);
+$("sendAll").onclick=()=>send(items);
+$("closeWa").onclick=()=>$("waDlg").close();
+$("copyMsg").onclick=async()=>{ try{ await navigator.clipboard.writeText($("waMsg").textContent); toast("Mensaje copiado"); }catch(e){ toast("No se pudo copiar"); } };
+
+/* ===== Admin ===== */
+function admRow(label,path,val,unit){ return `<tr><td>${label}</td><td style="text-align:right"><input data-p="${path}" type="number" value="${val}"> ${unit}</td></tr>`; }
+function openAdmin(){
+  let h = `<table class="prices"><tr><th>Precio base por m² (aluminio estándar, vidrio simple)</th><th></th></tr>`;
+  TYPES.forEach(t=> h+=admRow(t.name,`m2.${t.id}`,P.m2[t.id],"$"));
+  h += `<tr><th>Multiplicador por línea</th><th></th></tr>`;
+  LINES.forEach(l=> h+=admRow(l.name,`line.${l.id}`,P.line[l.id],"×"));
+  h += `<tr><th>Adicional de vidrio por m²</th><th></th></tr>`;
+  GLASS.forEach(g=> h+=admRow(g.name,`glass.${g.id}`,P.glass[g.id],"$"));
+  h += `<tr><th>Recargo por color</th><th></th></tr>`;
+  COLORS.forEach(c=> h+=admRow(c.name,`colorPct.${c.id}`,P.colorPct[c.id],"%"));
+  h += `<tr><th>Otros</th><th></th></tr>`;
+  h += admRow("Mosquitero por m²","mosqM2",P.mosqM2,"$");
+  h += admRow("Instalación","instPct",P.instPct,"%");
+  h += admRow("Margen del rango estimado","rangePct",P.rangePct,"%");
+  h += `</table>`;
+  $("admBody").innerHTML = h; $("admDlg").showModal();
+}
+$("openAdmin").onclick=openAdmin;
+$("saveP").onclick=()=>{
+  $("admBody").querySelectorAll("input[data-p]").forEach(inp=>{
+    const [a,b] = inp.dataset.p.split("."); const v = parseFloat(inp.value)||0;
+    if(b) P[a][b]=v; else P[a]=v;
+  });
+  save(); $("admDlg").close(); render(); renderList(); toast("Precios guardados");
+};
+$("resetP").onclick=()=>{ P = structuredClone(DEFAULT_PRICES); save(); openAdmin(); render(); renderList(); toast("Precios de ejemplo restaurados"); };
+
+let tt; function toast(t){ const el=$("toast"); el.textContent=t; el.classList.add("on"); clearTimeout(tt); tt=setTimeout(()=>el.classList.remove("on"),1800); }
+
+$("mgo").onclick=()=>document.querySelector(".preview").scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+render(); renderList();
+</script>
+</body>
+</html>
