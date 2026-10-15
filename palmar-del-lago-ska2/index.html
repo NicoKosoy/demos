@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Palmar del Lago · Eventos en Río Cuarto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Italiana&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --lagoon:#0e3a39;--deep:#0a2a29;--palm:#1f5e4a;--leaf:#3f8a68;--sand:#f2ead9;--sand2:#e6dac1;
+  --coral:#e07a4f;--sun:#f0b65a;--ink:#132423;--mist:#cfe3dc;--water:#7cc3c0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Jost',system-ui,sans-serif;background:var(--sand);color:var(--ink);font-size:17px;line-height:1.55}
+a{color:inherit}
+.demo{position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--deep);color:var(--sand);font-size:12.5px;text-align:center;padding:7px 12px;letter-spacing:.02em}
+.demo b{color:var(--sun);font-weight:500}
+.wrap{display:grid;grid-template-columns:minmax(380px,46%) 1fr;min-height:100vh}
+/* LEFT: sticky predio */
+.left{position:sticky;top:0;height:100vh;background:var(--lagoon);color:var(--sand);display:flex;flex-direction:column;overflow:hidden}
+.brand{padding:28px 34px 0;display:flex;justify-content:space-between;align-items:baseline}
+.brand h1{font-family:'Italiana',serif;font-weight:400;font-size:34px;letter-spacing:.04em}
+.brand span{font-size:12px;letter-spacing:.2em;text-transform:uppercase;opacity:.7}
+.mapbox{flex:1;position:relative;display:flex;align-items:center;justify-content:center;padding:10px 20px}
+.mapbox svg{width:100%;height:100%;max-height:72vh}
+.zone{cursor:pointer;transition:opacity .25s}
+.zone .hl{fill:var(--sun);opacity:0;transition:opacity .25s}
+.zone:hover .hl,.zone.on .hl{opacity:.28}
+.zlabel{font-family:'Jost';font-size:11px;letter-spacing:.14em;text-transform:uppercase;fill:var(--sand)}
+.legend{padding:0 34px 52px;font-size:13px;opacity:.85;display:flex;gap:18px;flex-wrap:wrap}
+.legend em{font-style:normal;color:var(--sun)}
+/* RIGHT */
+.right{padding:0 0 60px}
+section{padding:72px 64px;border-bottom:1px solid var(--sand2)}
+.kicker{font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--palm);font-weight:500;margin-bottom:14px}
+h2{font-family:'Italiana',serif;font-weight:400;font-size:clamp(34px,4.4vw,58px);line-height:1.04;color:var(--lagoon)}
+h3{font-family:'Italiana',serif;font-weight:400;font-size:28px;color:var(--lagoon)}
+.hero{padding-top:90px;min-height:92vh;display:flex;flex-direction:column;justify-content:center;background:
+ radial-gradient(1200px 400px at 110% -10%,rgba(240,182,90,.28),transparent 60%),var(--sand)}
+.hero h2{font-size:clamp(46px,6.4vw,92px)}
+.hero h2 i{font-style:normal;color:var(--coral)}
+.hero p.lead{max-width:30em;margin-top:22px;font-size:19px;font-weight:300}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:44px;border-top:1px solid var(--lagoon)}
+.facts div{padding:16px 14px 0 0}
+.facts b{display:block;font-family:'Italiana',serif;font-size:42px;font-weight:400;color:var(--lagoon);line-height:1}
+.facts span{font-size:13px;letter-spacing:.06em;color:#4b5d5b}
+.btns{display:flex;gap:12px;margin-top:36px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border-radius:999px;border:1px solid var(--lagoon);text-decoration:none;font-weight:500;font-size:15px;cursor:pointer;background:transparent;font-family:inherit;color:var(--lagoon)}
+.btn.solid{background:var(--lagoon);color:var(--sand)}
+.btn.coral{background:var(--coral);border-color:var(--coral);color:#fff}
+/* espacios */
+.spaces{margin-top:34px;display:flex;flex-direction:column}
+.sp{display:grid;grid-template-columns:60px 1fr;gap:18px;padding:22px 0;border-top:1px solid var(--sand2);cursor:pointer;transition:background .2s}
+.sp:hover,.sp.on{background:linear-gradient(90deg,rgba(124,195,192,.18),transparent)}
+.sp .n{font-family:'Italiana';font-size:34px;color:var(--coral);line-height:1}
+.sp p{color:#3d4f4d;font-size:15.5px;margin-top:4px}
+/* eventos */
+.evs{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.evs span{padding:10px 18px;border-radius:999px;background:var(--mist);color:var(--lagoon);font-size:15px}
+/* cotizador */
+.quote{background:var(--deep);color:var(--sand);border-bottom:none}
+.quote h2,.quote h3{color:var(--sand)}
+.quote .kicker{color:var(--sun)}
+.steps{display:grid;gap:30px;margin-top:36px}
+.step label.t{display:block;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--water);margin-bottom:12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:10px 16px;border-radius:999px;border:1px solid rgba(242,234,217,.3);cursor:pointer;font-size:15px;background:transparent;color:var(--sand);font-family:inherit}
+.chip.on{background:var(--sand);color:var(--deep);border-color:var(--sand)}
+.range{display:flex;align-items:center;gap:18px}
+.range input{flex:1;accent-color:var(--coral)}
+.range output{font-family:'Italiana';font-size:44px;min-width:3.2ch;text-align:right;color:var(--sun)}
+.cal{background:rgba(255,255,255,.04);border:1px solid rgba(242,234,217,.14);border-radius:14px;padding:16px}
+.calhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.calhead button{background:none;border:1px solid rgba(242,234,217,.3);color:var(--sand);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:16px}
+.calhead b{font-family:'Italiana';font-size:24px;font-weight:400;text-transform:capitalize}
+.grid7{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;font-size:13px}
+.grid7 .dn{opacity:.5;font-size:11px;letter-spacing:.1em;padding:4px 0}
+.d{padding:8px 0;border-radius:8px;opacity:.45}
+.d.sat{opacity:1;cursor:pointer;border:1px solid rgba(124,195,192,.5)}
+.d.sat.busy{opacity:.35;cursor:not-allowed;text-decoration:line-through;border-color:transparent;background:rgba(224,122,79,.18)}
+.d.sat.sel{background:var(--sun);color:var(--deep);border-color:var(--sun)}
+.d.past{opacity:.18}
+.calnote{font-size:12px;opacity:.65;margin-top:10px;display:flex;gap:14px;flex-wrap:wrap}
+.calnote i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.pk{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.pkc{border:1px solid rgba(242,234,217,.25);border-radius:14px;padding:16px;cursor:pointer;text-align:left;background:transparent;color:var(--sand);font-family:inherit}
+.pkc b{font-family:'Italiana';font-size:22px;font-weight:400;display:block}
+.pkc small{display:block;opacity:.7;font-size:13px;margin-top:6px;line-height:1.4}
+.pkc.on{background:var(--sand);color:var(--deep)}
+.ex{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ex label{display:flex;gap:10px;align-items:center;padding:12px 14px;border:1px solid rgba(242,234,217,.2);border-radius:12px;cursor:pointer;font-size:15px}
+.ex input{accent-color:var(--coral);width:18px;height:18px}
+.total{margin-top:38px;padding:28px;border-radius:18px;background:linear-gradient(135deg,var(--palm),var(--lagoon));position:relative;overflow:hidden}
+.total .row{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:12px}
+.total .pp{font-family:'Italiana';font-size:clamp(34px,4vw,52px);color:var(--sun);line-height:1}
+.total .tt{font-size:15px;opacity:.85}
+.total .sum{font-size:14px;opacity:.8;margin-top:12px}
+.total .note{font-size:12px;opacity:.6;margin-top:14px}
+.total .btn{margin-top:20px}
+/* noche */
+.night{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:34px;border-left:1px solid var(--sand2)}
+.night div{padding:0 16px 0 18px;border-right:1px solid var(--sand2)}
+.night b{font-family:'Italiana';font-size:30px;font-weight:400;color:var(--coral);display:block}
+.night p{font-size:14.5px;color:#3d4f4d}
+/* llegar */
+.arrive{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:30px;align-items:start}
+.addr{font-size:19px}
+.addr small{display:block;font-size:14px;color:#4b5d5b;margin-top:6px}
+.route{background:var(--mist);border-radius:18px;padding:18px}
+footer{padding:48px 64px 80px;font-size:14px;color:#4b5d5b}
+footer .fine{margin-top:18px;font-size:12.5px;opacity:.8;max-width:46em}
+@media (max-width:900px){
+  .wrap{grid-template-columns:1fr}
+  .left{position:relative;height:auto}
+  .brand{padding:20px 20px 0}
+  .brand h1{font-size:28px}
+  .mapbox{padding:6px 10px;height:300px}
+  .mapbox svg{max-height:290px}
+  .legend{padding:0 20px 20px;font-size:12px}
+  section{padding:52px 20px}
+  .hero{min-height:auto;padding-top:48px}
+  .facts b{font-size:32px}
+  .pk{grid-template-columns:1fr}
+  .ex{grid-template-columns:1fr}
+  .night{grid-template-columns:1fr 1fr;row-gap:22px}
+  .arrive{grid-template-columns:1fr}
+  footer{padding:36px 20px 80px}
+}
+</style>
+</head>
+<body>
+<div class="demo">Prototipo de demostración preparado para <b>Palmar del Lago Eventos</b> · precios y fechas de ejemplo</div>
+<div class="wrap">
+  <aside class="left" aria-label="Plano ilustrado del predio">
+    <div class="brand"><h1>Palmar del Lago</h1><span>Río Cuarto</span></div>
+    <div class="mapbox">
+      <svg viewBox="0 0 400 460" role="img" aria-label="Plano ilustrado: salón, jardín, cascada, pileta, pista y trencito">
+        <defs>
+          <pattern id="grass" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="2" cy="3" r=".9" fill="#2f7a5c"/><circle cx="7" cy="8" r=".7" fill="#2f7a5c"/></pattern>
+          <linearGradient id="wat" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9ad6d2"/><stop offset="1" stop-color="#3f9c98"/></linearGradient>
+        </defs>
+        <rect x="14" y="14" width="372" height="432" rx="26" fill="#164a43"/>
+        <rect x="14" y="14" width="372" height="432" rx="26" fill="url(#grass)"/>
+        <!-- camino -->
+        <path d="M200 446 C200 400 150 380 160 330 C170 280 240 270 230 220 C222 180 170 170 180 120" stroke="#e6dac1" stroke-width="9" fill="none" stroke-linecap="round" opacity=".55" stroke-dasharray="2 14"/>
+        <!-- salón -->
+        <g class="zone" data-z="salon">
+          <rect class="hl" x="40" y="34" width="200" height="104" rx="10"/>
+          <rect x="52" y="44" width="176" height="84" rx="6" fill="#f2ead9"/>
+          <rect x="52" y="44" width="176" height="18" rx="6" fill="#e07a4f"/>
+          <g fill="#0e3a39" opacity=".35"><circle cx="85" cy="92" r="9"/><circle cx="120" cy="100" r="9"/><circle cx="155" cy="92" r="9"/><circle cx="190" cy="100" r="9"/></g>
+          <text class="zlabel" x="140" y="57" text-anchor="middle" style="fill:#fff">Salón</text>
+        </g>
+        <!-- pista -->
+        <g class="zone" data-z="pista">
+          <rect class="hl" x="250" y="40" width="114" height="96" rx="10"/>
+          <g transform="translate(262 52)">
+            <rect width="90" height="72" rx="4" fill="#0a2a29"/>
+            <g fill="#f0b65a" opacity=".9"><rect x="6" y="6" width="12" height="12"/><rect x="30" y="6" width="12" height="12"/><rect x="54" y="6" width="12" height="12"/><rect x="18" y="30" width="12" height="12"/><rect x="42" y="30" width="12" height="12"/><rect x="66" y="30" width="12" height="12"/><rect x="6" y="54" width="12" height="12"/><rect x="30" y="54" width="12" height="12"/><rect x="54" y="54" width="12" height="12"/></g>
+          </g>
+          <text class="zlabel" x="307" y="150" text-anchor="middle">Pista</text>
+        </g>
+        <!-- cascada -->
+        <g class="zone" data-z="cascada">
+          <rect class="hl" x="36" y="170" width="150" height="130" rx="12"/>
+          <path d="M60 196 q20 -18 46 -6 q22 -16 50 2 l0 20 l-96 0z" fill="#8a7b62"/>
+          <path d="M80 212 l0 50 M95 212 l0 56 M110 212 l0 50 M125 212 l0 54 M140 212 l0 48" stroke="#cfeeed" stroke-width="5" stroke-linecap="round" opacity=".85"/>
+          <ellipse cx="110" cy="272" rx="62" ry="18" fill="url(#wat)"/>
+          <text class="zlabel" x="110" y="318" text-anchor="middle">Cascada</text>
+        </g>
+        <!-- pileta -->
+        <g class="zone" data-z="pileta">
+          <rect class="hl" x="228" y="180" width="140" height="110" rx="12"/>
+          <rect x="242" y="196" width="112" height="70" rx="34" fill="url(#wat)" stroke="#f2ead9" stroke-width="5"/>
+          <path d="M258 228 q10 -6 20 0 t20 0 t20 0 t20 0" stroke="#e8fbfa" stroke-width="2" fill="none" opacity=".8"/>
+          <text class="zlabel" x="298" y="290" text-anchor="middle">Pileta</text>
+        </g>
+        <!-- palmeras -->
+        <g fill="#2b7a58" stroke="#0e3a39" stroke-width="1">
+          <g transform="translate(205 160)"><path d="M0 0 l2 26" stroke="#8a6b46" stroke-width="3"/><path d="M0 0 q-16 -4 -22 8 q12 -6 22 -8z M0 0 q16 -6 22 6 q-12 -4 -22 -6z M0 0 q-6 -16 -18 -16 q10 6 18 16z M0 0 q8 -16 20 -14 q-12 4 -20 14z"/></g>
+          <g transform="translate(30 150)"><path d="M0 0 l2 24" stroke="#8a6b46" stroke-width="3"/><path d="M0 0 q-14 -4 -18 8 q10 -6 18 -8z M0 0 q14 -6 20 6 q-10 -4 -20 -6z M0 0 q-6 -14 -16 -14 q8 6 16 14z"/></g>
+          <g transform="translate(370 320)"><path d="M0 0 l2 24" stroke="#8a6b46" stroke-width="3"/><path d="M0 0 q-14 -4 -18 8 q10 -6 18 -8z M0 0 q14 -6 20 6 q-10 -4 -20 -6z M0 0 q-6 -14 -16 -14 q8 6 16 14z"/></g>
+        </g>
+        <!-- jardín / trencito -->
+        <g class="zone" data-z="jardin">
+          <rect class="hl" x="36" y="330" width="328" height="100" rx="12"/>
+          <path d="M60 400 C120 352 280 352 340 400" stroke="#e6dac1" stroke-width="3" fill="none" stroke-dasharray="6 5"/>
+          <g transform="translate(150 360)">
+            <rect x="0" y="6" width="26" height="18" rx="4" fill="#e07a4f"/><rect x="4" y="0" width="10" height="9" fill="#e07a4f"/>
+            <rect x="30" y="10" width="22" height="14" rx="3" fill="#f0b65a"/><rect x="56" y="10" width="22" height="14" rx="3" fill="#7cc3c0"/>
+            <g fill="#0a2a29"><circle cx="7" cy="26" r="4"/><circle cx="20" cy="26" r="4"/><circle cx="36" cy="26" r="3.5"/><circle cx="47" cy="26" r="3.5"/><circle cx="62" cy="26" r="3.5"/><circle cx="73" cy="26" r="3.5"/></g>
+          </g>
+          <text class="zlabel" x="200" y="420" text-anchor="middle">Jardín · trencito</text>
+        </g>
+      </svg>
+    </div>
+    <div class="legend"><span>Tocá un sector del plano</span><span>· <em id="zname">Predio completo</em></span></div>
+  </aside>
+
+  <main class="right">
+    <section class="hero" id="inicio">
+      <div class="kicker">Guardias Nacionales 2680 · Quintitas Golf</div>
+      <h2>Hasta <i>850</i> invitados entre la cascada y la pileta.</h2>
+      <p class="lead">Salón moderno, jardín grande con cascada, pileta, pista de baile y trencito para los chicos. Casamientos, cumpleaños y fiestas grandes en Río Cuarto, con todo resuelto por el mismo equipo.</p>
+      <div class="facts">
+        <div><b>850</b><span>invitados como máximo</span></div>
+        <div><b>4,6★</b><span>en reseñas públicas</span></div>
+        <div><b>5</b><span>sectores en el predio</span></div>
+      </div>
+      <div class="btns">
+        <a class="btn solid" href="#cotizar">Cotizar mi evento</a>
+        <a class="btn" href="#fechas">Ver sábados libres</a>
+      </div>
+    </section>
+
+    <section id="espacios">
+      <div class="kicker">El predio, sector por sector</div>
+      <h2>Una fiesta que se mueve por el jardín.</h2>
+      <div class="spaces">
+        <div class="sp" data-z="salon"><span class="n">01</span><div><h3>Salón</h3><p>Espacio interior moderno para la cena y la mesa principal, con luces y sonido profesionales.</p></div></div>
+        <div class="sp" data-z="cascada"><span class="n">02</span><div><h3>Cascada</h3><p>El rincón de las fotos y la recepción al aire libre, con el agua de fondo.</p></div></div>
+        <div class="sp" data-z="pileta"><span class="n">03</span><div><h3>Pileta</h3><p>Para eventos de día y para que el jardín tenga vida en verano.</p></div></div>
+        <div class="sp" data-z="pista"><span class="n">04</span><div><h3>Pista de baile</h3><p>Pensada para fiestas grandes, con iluminación y sonido del predio.</p></div></div>
+        <div class="sp" data-z="jardin"><span class="n">05</span><div><h3>Jardín y trencito</h3><p>Parque amplio y un trencito para que los chicos tengan su propia fiesta. Estacionamiento en el predio.</p></div></div>
+      </div>
+      <div class="evs">
+        <span>Casamientos</span><span>Cumpleaños</span><span>15 años</span><span>Reuniones sociales grandes</span><span>Eventos familiares al aire libre</span><span>Fiestas con chicos</span>
+      </div>
+    </section>
+
+    <section class="quote" id="cotizar">
+      <div class="kicker">Cotizador</div>
+      <h2>Sabé cuánto sale antes de escribir.</h2>
+      <div class="steps">
+        <div class="step"><label class="t">1 · Tipo de evento</label>
+          <div class="chips" id="tipo">
+            <button class="chip on" data-v="Casamiento" data-k="1.12">Casamiento</button>
+            <button class="chip" data-v="15 años" data-k="1">15 años</button>
+            <button class="chip" data-v="Cumpleaños" data-k=".92">Cumpleaños</button>
+            <button class="chip" data-v="Evento corporativo" data-k=".95">Corporativo</button>
+            <button class="chip" data-v="Evento familiar de día" data-k=".8">Familiar de día</button>
+          </div>
+        </div>
+        <div class="step"><label class="t">2 · Invitados</label>
+          <div class="range"><input id="inv" type="range" min="80" max="850" step="10" value="250" aria-label="Cantidad de invitados"><output id="invo">250</output></div>
+        </div>
+        <div class="step" id="fechas"><label class="t">3 · Fecha (sábados)</label>
+          <div class="cal">
+            <div class="calhead"><button id="prev" aria-label="Mes anterior">‹</button><b id="mes"></b><button id="next" aria-label="Mes siguiente">›</button></div>
+            <div class="grid7" id="grid"></div>
+            <div class="calnote"><span><i style="border:1px solid #7cc3c0"></i>Libre</span><span><i style="background:rgba(224,122,79,.4)"></i>Reservado</span><span>Disponibilidad de ejemplo</span></div>
+          </div>
+        </div>
+        <div class="step"><label class="t">4 · Servicio</label>
+          <div class="pk" id="pk">
+            <button class="pkc" data-v="Solo alquiler del predio" data-p="9000"><b>Predio</b><small>Alquiler con mobiliario, luces y sonido. Catering propio de ustedes.</small></button>
+            <button class="pkc on" data-v="Predio + catering" data-p="38000"><b>Con catering</b><small>Predio más menú a elección: recepción, plato principal y postre.</small></button>
+            <button class="pkc" data-v="Todo organizado" data-p="52000"><b>Todo resuelto</b><small>Catering, organización completa y ambientación del predio.</small></button>
+          </div>
+        </div>
+        <div class="step"><label class="t">5 · Extras</label>
+          <div class="ex" id="ex">
+            <label><input type="checkbox" data-v="Trencito para chicos" data-f="180000">Trencito para chicos</label>
+            <label><input type="checkbox" data-v="Recepción junto a la cascada" data-f="0">Recepción junto a la cascada</label>
+            <label><input type="checkbox" data-v="Barra de tragos" data-pp="6500">Barra de tragos</label>
+            <label><input type="checkbox" data-v="Fin de fiesta" data-pp="4500">Fin de fiesta</label>
+          </div>
+        </div>
+      </div>
+      <div class="total" aria-live="polite">
+        <div class="row"><div><div class="pp" id="pp">—</div><div class="tt">por persona, estimado</div></div><div style="text-align:right"><div class="pp" id="tot" style="font-size:clamp(26px,3vw,38px);color:var(--sand)">—</div><div class="tt">total estimado</div></div></div>
+        <div class="sum" id="sum"></div>
+        <a class="btn coral" id="wa" target="_blank" rel="noopener">Consultar por WhatsApp con estos datos</a>
+        <div class="note">Precios de ejemplo para mostrar cómo funciona. Palmar del Lago los carga y los cambia cuando quiera.</div>
+      </div>
+    </section>
+
+    <section id="noche">
+      <div class="kicker">Una noche tipo · horarios de ejemplo</div>
+      <h2>Del jardín a la pista.</h2>
+      <div class="night">
+        <div><b>21 h</b><p>Recepción afuera, con la cascada de fondo.</p></div>
+        <div><b>22 h</b><p>Entrada al salón y cena.</p></div>
+        <div><b>00 h</b><p>Pista abierta, luces y sonido del predio.</p></div>
+        <div><b>04 h</b><p>Fin de fiesta. Estacionamiento adentro.</p></div>
+      </div>
+    </section>
+
+    <section id="llegar">
+      <div class="kicker">Cómo llegar</div>
+      <h2>Quintitas Golf, Río Cuarto.</h2>
+      <div class="arrive">
+        <div class="addr">Guardias Nacionales 2680<small>X5800 Río Cuarto, Córdoba · Estacionamiento propio · Acceso para personas con movilidad reducida</small>
+          <div class="btns"><a class="btn solid" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Palmar+del+Lago+Eventos+Guardias+Nacionales+2680+Rio+Cuarto">Abrir en el mapa</a><a class="btn" href="mailto:palmarlago.eventos@gmail.com">palmarlago.eventos@gmail.com</a></div>
+        </div>
+        <div class="route">
+          <svg viewBox="0 0 300 150" width="100%" role="img" aria-label="Esquema de ubicación">
+            <path d="M10 120 C80 110 120 60 200 70 S280 40 290 30" stroke="#0e3a39" stroke-width="3" fill="none" stroke-dasharray="6 6"/>
+            <circle cx="20" cy="118" r="7" fill="#0e3a39"/><text x="32" y="140" font-size="12" font-family="Jost" fill="#0e3a39">Centro</text>
+            <circle cx="250" cy="48" r="11" fill="#e07a4f"/><text x="200" y="22" font-size="12" font-family="Jost" fill="#0e3a39">Palmar del Lago</text>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div>Palmar del Lago Eventos · Río Cuarto · WhatsApp 358 418-9669 · <a href="https://www.facebook.com/palmar.del.lago.eventos" target="_blank" rel="noopener">Facebook</a></div>
+      <div class="fine">Prototipo de demostración preparado para Palmar del Lago Eventos por Resolviendo Kos. Datos tomados de sus fichas públicas; precios, paquetes y fechas son de ejemplo. En la versión final van sus fotos y su logo.</div>
+    </footer>
+  </main>
+</div>
+<script>
+(function(){
+  const WA='5493584189669';
+  const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+  const names={salon:'Salón',cascada:'Cascada',pileta:'Pileta',pista:'Pista de baile',jardin:'Jardín y trencito'};
+  function zone(z){
+    $$('.zone').forEach(g=>g.classList.toggle('on',g.dataset.z===z));
+    $$('.sp').forEach(s=>s.classList.toggle('on',s.dataset.z===z));
+    $('#zname').textContent=names[z]||'Predio completo';
+  }
+  $$('.zone').forEach(g=>g.addEventListener('click',()=>{zone(g.dataset.z);const el=document.querySelector('.sp[data-z="'+g.dataset.z+'"]');if(el)el.scrollIntoView({behavior:'smooth',block:'center'});}));
+  $$('.sp').forEach(s=>s.addEventListener('mouseenter',()=>zone(s.dataset.z)));
+  const st={tipo:'Casamiento',k:1.12,inv:250,pk:'Predio + catering',p:38000,fecha:null};
+  function single(sel,cls,cb){$$(sel+' .'+cls).forEach(b=>b.addEventListener('click',()=>{$$(sel+' .'+cls).forEach(x=>x.classList.remove('on'));b.classList.add('on');cb(b);calc();}));}
+  single('#tipo','chip',b=>{st.tipo=b.dataset.v;st.k=+b.dataset.k});
+  single('#pk','pkc',b=>{st.pk=b.dataset.v;st.p=+b.dataset.p});
+  $('#inv').addEventListener('input',e=>{st.inv=+e.target.value;$('#invo').textContent=st.inv;calc();});
+  $$('#ex input').forEach(i=>i.addEventListener('change',calc));
+  const fmt=n=>'$ '+(Math.round(n/1000)*1000).toLocaleString('es-AR');
+  function calc(){
+    let pp=st.p*st.k; if(st.inv<150) pp*=1.1; if(st.inv>500) pp*=.93;
+    let fixed=0;const ex=[];
+    $$('#ex input:checked').forEach(i=>{ex.push(i.dataset.v);if(i.dataset.pp)pp+=+i.dataset.pp;if(i.dataset.f)fixed+=+i.dataset.f;});
+    const lo=pp*.92,hi=pp*1.08,total=pp*st.inv+fixed;
+    $('#pp').textContent=fmt(lo)+' – '+fmt(hi).replace('$ ','');
+    $('#tot').textContent=fmt(total);
+    const f=st.fecha?st.fecha.toLocaleDateString('es-AR',{weekday:'long',day:'numeric',month:'long',year:'numeric'}):'a definir';
+    $('#sum').textContent=st.tipo+' · '+st.inv+' invitados · '+st.pk+' · '+f+(ex.length?' · '+ex.join(', '):'');
+    const msg='Hola Palmar del Lago, quiero consultar por un evento.\n• Tipo: '+st.tipo+'\n• Fecha: '+f+'\n• Invitados: '+st.inv+'\n• Servicio: '+st.pk+(ex.length?'\n• Extras: '+ex.join(', '):'')+'\n• Estimado web: '+fmt(lo)+' a '+fmt(hi)+' por persona';
+    $('#wa').href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
+  }
+  // calendario
+  const today=new Date();today.setHours(0,0,0,0);
+  let view=new Date(today.getFullYear(),today.getMonth(),1);
+  function busy(d){const s=d.getFullYear()*400+d.getMonth()*31+d.getDate();return (s*7919)%5<2;}
+  function draw(){
+    const g=$('#grid');g.innerHTML='';
+    ['L','M','M','J','V','S','D'].forEach(x=>{const e=document.createElement('div');e.className='dn';e.textContent=x;g.appendChild(e);});
+    $('#mes').textContent=view.toLocaleDateString('es-AR',{month:'long',year:'numeric'});
+    const first=(view.getDay()+6)%7;for(let i=0;i<first;i++)g.appendChild(document.createElement('div'));
+    const days=new Date(view.getFullYear(),view.getMonth()+1,0).getDate();
+    for(let d=1;d<=days;d++){
+      const dt=new Date(view.getFullYear(),view.getMonth(),d);const e=document.createElement('div');e.className='d';e.textContent=d;
+      if(dt<today)e.classList.add('past');
+      else if(dt.getDay()===6){e.classList.add('sat');
+        if(busy(dt)){e.classList.add('busy');e.title='Reservado (ejemplo)';}
+        else{e.title='Libre';if(st.fecha&&+st.fecha===+dt)e.classList.add('sel');e.addEventListener('click',()=>{st.fecha=dt;draw();calc();});}
+      }
+      g.appendChild(e);
+    }
+    $('#prev').disabled=view<=new Date(today.getFullYear(),today.getMonth(),1);
+  }
+  $('#prev').addEventListener('click',()=>{view=new Date(view.getFullYear(),view.getMonth()-1,1);draw();});
+  $('#next').addEventListener('click',()=>{view=new Date(view.getFullYear(),view.getMonth()+1,1);draw();});
+  draw();calc();
+})();
+</script>
+</body>
+</html>
