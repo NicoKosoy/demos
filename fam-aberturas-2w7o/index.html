@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Cotizador PVC y aluminio — FAM Aberturas (prototipo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@500;600;700;800;900&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --frost:#E6EEF0;
+  --frost-2:#D3E0E4;
+  --panel:#FFFFFF;
+  --pine:#13343B;      /* texto y estructura */
+  --pine-2:#4E666B;
+  --cold:#5B8FB0;      /* frío */
+  --cold-l:#CFE2EC;
+  --heat:#E0922F;      /* calor que se pierde */
+  --heat-d:#B86F14;
+  --go:#1F6E5A;        /* acción */
+  --go-d:#175747;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--frost);color:var(--pine);font-family:"Hanken Grotesk",system-ui,sans-serif;font-size:16px;line-height:1.55}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--go);outline-offset:2px}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+@media (max-width:560px){.wrap{padding:0 16px}}
+h1,h2,h3{font-family:"Gabarito",system-ui,sans-serif;margin:0;letter-spacing:-.015em}
+
+.demo{background:var(--pine);color:#CFDCDF;font-size:13px}
+.demo .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-top:8px;padding-bottom:8px}
+.demo b{color:#fff;font-weight:600}
+.demo button{background:none;border:0;color:#fff;text-decoration:underline;cursor:pointer;font-size:13px;padding:0}
+
+.top .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-top:20px;padding-bottom:10px;flex-wrap:wrap}
+.logo{font-family:"Gabarito",sans-serif;font-weight:900;font-size:30px;line-height:1;letter-spacing:-.02em}
+.logo span{display:block;font-family:"Hanken Grotesk",sans-serif;font-weight:500;font-size:13px;letter-spacing:0;color:var(--pine-2);margin-top:4px}
+.top address{font-style:normal;font-size:14px;color:var(--pine-2);text-align:right}
+@media (max-width:560px){.top address{text-align:left}}
+
+.intro{padding-top:28px;padding-bottom:30px;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:40px;align-items:end}
+@media (max-width:900px){.intro{grid-template-columns:1fr;gap:14px}}
+.intro h1{font-weight:800;font-size:clamp(38px,5.4vw,70px);line-height:.98;max-width:15ch}
+.intro p{margin:0;color:var(--pine-2);font-size:18px;max-width:44ch}
+
+/* asistente */
+.app{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;background:var(--panel);border-radius:22px;overflow:hidden;box-shadow:0 1px 0 var(--frost-2),0 30px 60px -40px rgba(19,52,59,.5)}
+@media (max-width:900px){.app{grid-template-columns:1fr;border-radius:16px}}
+.wiz{padding:28px 30px 26px;display:flex;flex-direction:column;min-height:560px}
+@media (max-width:560px){.wiz{padding:22px 18px;min-height:0}}
+.prog{display:flex;gap:6px;list-style:none;margin:0 0 22px;padding:0;flex-wrap:wrap}
+.prog button{border:0;background:var(--frost);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600;cursor:pointer;color:var(--pine-2)}
+.prog button[aria-current=step]{background:var(--pine);color:#fff}
+.prog button.done{background:var(--cold-l);color:var(--pine)}
+.step h2{font-weight:700;font-size:clamp(26px,3vw,36px);line-height:1.08;margin-bottom:6px}
+.step > p{margin:0 0 18px;color:var(--pine-2)}
+.opts{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.opts.three{grid-template-columns:repeat(3,1fr)}
+@media (max-width:480px){.opts.three{grid-template-columns:repeat(2,1fr)}}
+.opts input{position:absolute;opacity:0;pointer-events:none}
+.opts label{display:flex;gap:12px;align-items:center;padding:14px;border-radius:14px;background:var(--frost);cursor:pointer;border:2px solid transparent;line-height:1.25}
+.opts label svg{flex:0 0 auto;width:44px;height:44px}
+.opts label b{display:block;font-family:"Gabarito",sans-serif;font-weight:700;font-size:17px}
+.opts label small{display:block;color:var(--pine-2);font-size:13.5px;margin-top:2px}
+.opts input:checked+label{border-color:var(--pine);background:#fff}
+.opts input:focus-visible+label{outline:3px solid var(--go);outline-offset:2px}
+.opts .sw{width:30px;height:30px;border-radius:50%;border:1px solid rgba(0,0,0,.2);flex:0 0 auto}
+.big{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.big label{display:block;font-size:14px;color:var(--pine-2);margin-bottom:4px}
+.big .bx{display:flex;align-items:baseline;gap:6px;background:var(--frost);border-radius:14px;padding:10px 14px;border:2px solid transparent}
+.big .bx:focus-within{border-color:var(--pine);background:#fff}
+.big input[type=number]{width:100%;border:0;background:none;font-family:"Gabarito",sans-serif;font-weight:700;font-size:44px;line-height:1;padding:0;font-variant-numeric:tabular-nums}
+.big input[type=number]:focus{outline:none}
+.big em{font-style:normal;color:var(--pine-2)}
+.big input[type=range]{width:100%;accent-color:var(--pine);margin-top:10px}
+.presets{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}
+.presets button{border:0;background:none;box-shadow:inset 0 0 0 1.5px var(--frost-2);border-radius:999px;padding:7px 12px;font-size:14px;cursor:pointer}
+.presets button:hover{box-shadow:inset 0 0 0 1.5px var(--pine)}
+.toggles{display:flex;flex-direction:column;gap:10px}
+.tg{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 16px;background:var(--frost);border-radius:14px;cursor:pointer}
+.tg b{font-family:"Gabarito",sans-serif;font-weight:700}
+.tg small{display:block;color:var(--pine-2);font-size:13.5px}
+.tg input{width:22px;height:22px;accent-color:var(--pine);flex:0 0 auto}
+.qty{display:inline-flex;align-items:center;background:var(--frost);border-radius:999px;margin-top:14px}
+.qty button{border:0;background:none;width:44px;height:44px;font-size:22px;cursor:pointer;border-radius:999px}
+.qty output{min-width:34px;text-align:center;font-family:"Gabarito",sans-serif;font-weight:700;font-size:20px}
+.sum-list{list-style:none;margin:0 0 6px;padding:0}
+.sum-list li{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--frost-2)}
+.sum-list span{color:var(--pine-2)}
+.sum-list button{border:0;background:none;color:var(--go);text-decoration:underline;cursor:pointer;padding:0;font-weight:600}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:auto;padding-top:26px}
+.btn{border:0;border-radius:999px;padding:13px 22px;font-weight:700;font-size:15px;cursor:pointer}
+.b-ghost{background:none;box-shadow:inset 0 0 0 1.5px var(--frost-2)}
+.b-ghost:hover{box-shadow:inset 0 0 0 1.5px var(--pine)}
+.b-pine{background:var(--pine);color:#fff}
+.b-pine:hover{background:#0C262C}
+.b-go{background:var(--go);color:#fff}
+.b-go:hover{background:var(--go-d)}
+
+/* panel térmico */
+.therm{background:linear-gradient(90deg,#DCE9EF 0%,#F3F7F8 50%,#FBF1E4 100%);padding:24px 26px;display:flex;flex-direction:column;gap:16px;border-left:1px solid var(--frost-2)}
+@media (max-width:900px){.therm{border-left:0;border-top:1px solid var(--frost-2)}}
+@media (max-width:560px){.therm{padding:20px 16px}}
+.sides{display:flex;justify-content:space-between;font-size:13px;color:var(--pine-2);font-weight:600}
+.sides .out{color:var(--cold)}
+.sides .in{color:var(--heat-d)}
+.therm svg{display:block;width:100%;height:auto}
+.loss h3{font-weight:700;font-size:18px;margin-bottom:8px}
+.bars{display:flex;flex-direction:column;gap:8px}
+.bar{display:grid;grid-template-columns:150px 1fr 64px;gap:10px;align-items:center;font-size:13.5px}
+@media (max-width:480px){.bar{grid-template-columns:110px 1fr 54px}}
+.bar .tr{height:12px;background:rgba(19,52,59,.08);border-radius:6px;overflow:hidden}
+.bar .fi{height:100%;background:var(--heat);border-radius:6px;transition:width .35s ease}
+.bar.me .fi{background:var(--pine)}
+.bar.me{font-weight:700}
+.bar .v{text-align:right;font-variant-numeric:tabular-nums}
+.loss p{margin:10px 0 0;font-size:13px;color:var(--pine-2)}
+.price{background:var(--pine);color:#fff;border-radius:16px;padding:18px 20px}
+.price .l{font-size:13px;color:#A9C1C6}
+.price .a{font-family:"Gabarito",sans-serif;font-weight:800;font-size:clamp(28px,3.4vw,38px);line-height:1.1;font-variant-numeric:tabular-nums}
+.price .s{font-size:13px;color:#A9C1C6;margin-top:2px}
+.price .r{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.price .b-light{background:#fff;color:var(--pine)}
+.price .b-line{background:none;color:#fff;box-shadow:inset 0 0 0 1.5px #49666C}
+.list{font-size:14px}
+.list ul{list-style:none;margin:0;padding:0}
+.list li{display:grid;grid-template-columns:40px 1fr auto;gap:10px;align-items:center;padding:8px 0;border-top:1px solid rgba(19,52,59,.12)}
+.list li svg{width:40px;height:36px}
+.list .d{color:var(--pine-2);font-size:12.5px}
+.list .p{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.list button.x{border:0;background:none;color:var(--pine-2);font-size:12.5px;text-decoration:underline;cursor:pointer;padding:0}
+.list .t{display:flex;justify-content:space-between;font-weight:700;padding-top:10px;border-top:2px solid var(--pine)}
+
+/* catálogo */
+.more{padding-top:64px;padding-bottom:20px}
+.more h2{font-weight:800;font-size:clamp(28px,3.6vw,44px);line-height:1.05;max-width:20ch}
+.more > p{color:var(--pine-2);max-width:56ch;margin:10px 0 22px}
+.cat{display:flex;flex-wrap:wrap;gap:10px}
+.cat label{display:inline-flex;gap:10px;align-items:center;padding:12px 16px 12px 12px;background:#fff;border-radius:999px;cursor:pointer;border:2px solid transparent;font-weight:600}
+.cat input{width:18px;height:18px;accent-color:var(--pine)}
+.cat label:has(input:checked){border-color:var(--pine)}
+.facts{padding-top:60px;padding-bottom:70px;display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+@media (max-width:820px){.facts{grid-template-columns:1fr}}
+.facts div{border-top:3px solid var(--pine);padding-top:14px}
+.facts h3{font-weight:700;font-size:20px;margin-bottom:4px}
+.facts p{margin:0;color:var(--pine-2);max-width:36ch}
+
+footer{background:var(--pine);color:#A9C1C6;font-size:14px;padding:26px 0}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer b{color:#fff;font-weight:600}
+
+dialog{border:0;border-radius:18px;padding:0;max-width:640px;width:calc(100% - 28px);color:var(--pine);box-shadow:0 30px 70px rgba(19,52,59,.4)}
+dialog::backdrop{background:rgba(19,52,59,.55)}
+.dlg{padding:24px}
+.dlg h2{font-weight:700;font-size:24px;margin-bottom:4px}
+.dlg > p{color:var(--pine-2);font-size:14px;margin:0 0 14px}
+.dlg .row{display:flex;justify-content:flex-end;gap:8px;margin-top:16px;flex-wrap:wrap}
+.wa{background:#E4F1EA;border-radius:12px;padding:14px 16px;white-space:pre-wrap;font-size:14px;line-height:1.45;max-height:46vh;overflow:auto}
+.scroll{max-height:56vh;overflow:auto}
+table.pr{width:100%;border-collapse:collapse;font-size:14px}
+table.pr th{text-align:left;padding:12px 4px 6px;border-bottom:1.5px solid var(--pine)}
+table.pr td{padding:6px 4px;border-bottom:1px solid var(--frost-2)}
+table.pr input{width:120px;padding:6px 8px;border:1.5px solid var(--frost-2);border-radius:8px;text-align:right;font-variant-numeric:tabular-nums}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,16px);background:var(--pine);color:#fff;padding:10px 18px;border-radius:999px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:60}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+@keyframes drift{from{transform:translateX(0)}to{transform:translateX(-14px)}}
+.heatwave{animation:drift 1.8s ease-in-out infinite alternate}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<div class="demo"><div class="wrap">
+  <span><b>Prototipo de demostración preparado para FAM Aberturas.</b> Los precios son de ejemplo.</span>
+  <button type="button" id="openAdm">Editar tabla de precios</button>
+</div></div>
+
+<header class="top"><div class="wrap">
+  <div class="logo">FAM<span>Aberturas de PVC y aluminio, Neuquén</span></div>
+  <address>Conquistadores del Desierto 2430<br>Parque Industrial Oeste, Neuquén</address>
+</div></header>
+
+<main>
+<section class="wrap intro">
+  <h1>Que el invierno neuquino se quede del otro lado del vidrio.</h1>
+  <p>Contestá cinco preguntas y vas a ver tu abertura, cuánto calor deja escapar comparada con una de aluminio y vidrio simple, y un precio estimado.</p>
+</section>
+
+<div class="wrap">
+<div class="app">
+  <section class="wiz" aria-label="Cotizador paso a paso">
+    <ol class="prog" id="prog"></ol>
+    <div id="steps">
+      <div class="step" data-step="0">
+        <h2>¿Qué querés cerrar?</h2>
+        <p>Elegí el tipo de abertura. Después podés sumar más.</p>
+        <div class="opts" id="types"></div>
+      </div>
+      <div class="step" data-step="1" hidden>
+        <h2>¿Cuánto mide el hueco?</h2>
+        <p>Ancho y alto del vano. Un aproximado alcanza: medimos nosotros antes de fabricar.</p>
+        <div class="big">
+          <div><label for="w">Ancho</label><div class="bx"><input id="w" type="number" inputmode="numeric" min="40" max="400" step="5"><em>cm</em></div><input id="wr" type="range" min="40" max="400" step="5" aria-label="Ancho en centímetros"></div>
+          <div><label for="h">Alto</label><div class="bx"><input id="h" type="number" inputmode="numeric" min="40" max="260" step="5"><em>cm</em></div><input id="hr" type="range" min="40" max="260" step="5" aria-label="Alto en centímetros"></div>
+        </div>
+        <div class="presets" id="presets"></div>
+        <div class="qty" aria-label="Cantidad"><button type="button" id="qm" aria-label="Una menos">−</button><output id="q">1</output><button type="button" id="qp" aria-label="Una más">+</button></div>
+      </div>
+      <div class="step" data-step="2" hidden>
+        <h2>¿PVC o aluminio?</h2>
+        <p>FAM fabrica las dos. En el dibujo vas a ver cómo cambia el calor que se pierde.</p>
+        <div class="opts" id="mats"></div>
+        <h2 style="font-size:22px;margin:22px 0 10px">Vidrio</h2>
+        <div class="opts" id="glass"></div>
+      </div>
+      <div class="step" data-step="3" hidden>
+        <h2>¿De qué color?</h2>
+        <p>El PVC viene en colores además del blanco.</p>
+        <div class="opts three" id="colors"></div>
+      </div>
+      <div class="step" data-step="4" hidden>
+        <h2>¿Algo más?</h2>
+        <p>Los extras que FAM también fabrica e instala.</p>
+        <div class="toggles">
+          <label class="tg"><span><b>Mosquitero</b><small>Malla para las hojas que abren</small></span><input type="checkbox" id="mosq"></label>
+          <label class="tg"><span><b>Cortina enrollable</b><small>Con cajón exterior</small></span><input type="checkbox" id="cort"></label>
+          <label class="tg"><span><b>Instalación</b><small>Colocación por el equipo de FAM</small></span><input type="checkbox" id="inst" checked></label>
+        </div>
+      </div>
+      <div class="step" data-step="5" hidden>
+        <h2>Así queda tu abertura</h2>
+        <p>Revisá y tocá cualquier dato para cambiarlo.</p>
+        <ul class="sum-list" id="sumList"></ul>
+      </div>
+    </div>
+    <div class="nav">
+      <button type="button" class="btn b-ghost" id="prev">Atrás</button>
+      <button type="button" class="btn b-pine" id="next">Siguiente</button>
+    </div>
+  </section>
+
+  <aside class="therm" aria-label="Vista y precio">
+    <div class="sides"><span class="out">Afuera, 0 °C</span><span class="in">Adentro, 20 °C</span></div>
+    <svg id="draw" viewBox="0 0 560 360" role="img" aria-label="Dibujo de la abertura con el calor que se escapa"></svg>
+    <div class="loss">
+      <h3 id="lossT">Calor que se escapa por esta abertura</h3>
+      <div class="bars" id="bars"></div>
+      <p>Valores típicos de referencia para carpinterías de cada material, con 20 °C adentro y 0 °C afuera. No son mediciones de FAM.</p>
+    </div>
+    <div class="price">
+      <div class="l">Precio estimado</div>
+      <div class="a" id="amt" aria-live="polite">—</div>
+      <div class="s" id="sub"></div>
+      <div class="r"><button type="button" class="btn b-light" id="add">Sumar al pedido</button><button type="button" class="btn b-line" id="sendOne">Pedir esta por WhatsApp</button></div>
+    </div>
+    <div class="list" id="listBox" hidden>
+      <ul id="items"></ul>
+      <div class="t"><span>Total estimado</span><span id="tot"></span></div>
+      <button type="button" class="btn b-go" id="sendAll" style="width:100%;margin-top:12px">Enviar el pedido por WhatsApp</button>
+    </div>
+  </aside>
+</div>
+</div>
+
+<section class="wrap more" aria-labelledby="moT">
+  <h2 id="moT">¿Estás con una obra entera? Sumá lo demás.</h2>
+  <p>Marcá lo que te interesa y va en el mismo mensaje, para que FAM te cotice todo junto.</p>
+  <div class="cat" id="cat"></div>
+</section>
+
+<section class="wrap facts">
+  <div><h3>Fábrica propia</h3><p>FAM elabora aberturas de PVC y de aluminio en su planta del Parque Industrial Oeste.</p></div>
+  <div><h3>PVC con DVH</h3><p>Ruptura de puente térmico, aislación acústica, sin mantenimiento y autoextinguible.</p></div>
+  <div><h3>Más de la mitad</h3><p>FAM cuenta que combinar PVC con DVH puede bajar más de un 50% la energía que se pierde por las ventanas.</p></div>
+</section>
+</main>
+
+<footer><div class="wrap">
+  <span>Precio orientativo. El valor final se confirma después de medir.</span>
+  <span><b>Prototipo de demostración preparado para FAM Aberturas</b></span>
+</div></footer>
+
+<dialog id="waDlg"><div class="dlg">
+  <h2>Así le llega el pedido a FAM</h2>
+  <p>En la versión final este botón abre WhatsApp con el número de FAM y el mensaje ya escrito.</p>
+  <div class="wa" id="waMsg"></div>
+  <div class="row"><button type="button" class="btn b-ghost" id="copy">Copiar mensaje</button><button type="button" class="btn b-go" data-close>Listo</button></div>
+</div></dialog>
+
+<dialog id="admDlg"><div class="dlg">
+  <h2>Tabla de precios</h2>
+  <p>La maneja FAM: cambiás un número y el cotizador se actualiza solo.</p>
+  <div class="scroll" id="admBody"></div>
+  <div class="row"><button type="button" class="btn b-ghost" id="reset">Volver a los de ejemplo</button><button type="button" class="btn b-go" id="saveP">Guardar precios</button></div>
+</div></dialog>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const WHATSAPP = ""; // en la versión final: "5492994164654"
+
+const TYPES = [
+  {id:"corr", name:"Ventana corrediza", sub:"Dos hojas que corren", w:150, h:110, mosq:true},
+  {id:"osc", name:"Oscilobatiente", sub:"Abre y bascula para ventilar", w:100, h:120, mosq:true},
+  {id:"fijo", name:"Paño fijo", sub:"Vidrio que no abre", w:120, h:120, mosq:false},
+  {id:"balc", name:"Puerta balcón", sub:"Corrediza, de piso", w:180, h:210, mosq:true},
+  {id:"puer", name:"Puerta de entrada", sub:"Con panel de PVC", w:90, h:210, mosq:false},
+  {id:"pv", name:"Puerta ventana", sub:"De abrir, vidriada", w:80, h:210, mosq:true}
+];
+const MATS = [
+  {id:"pvc", name:"PVC", sub:"Aísla más, sin mantenimiento"},
+  {id:"alu", name:"Aluminio", sub:"Perfiles finos y resistentes"}
+];
+const GLASS = [
+  {id:"simple", name:"Simple", sub:"Una sola hoja de vidrio"},
+  {id:"dvh", name:"DVH", sub:"Doble vidriado hermético"}
+];
+const COLORS = [
+  {id:"blanco", name:"Blanco", hex:"#F5F6F4", st:"#A5ADAF"},
+  {id:"madera", name:"Símil madera", hex:"#8E5E3C", st:"#6C4529"},
+  {id:"gris", name:"Gris grafito", hex:"#4A5154", st:"#2F3436"}
+];
+// coeficientes U típicos de referencia (W/m²K) de la abertura completa
+const U = {"alu-simple":5.8, "alu-dvh":3.3, "pvc-simple":4.6, "pvc-dvh":1.9};
+const ULAB = {"alu-simple":"Aluminio y simple", "alu-dvh":"Aluminio y DVH", "pvc-simple":"PVC y simple", "pvc-dvh":"PVC y DVH"};
+const EXTRA = ["Puertas de seguridad","Puertas de interior en PVC","Puertas cortafuego","Paneles de puerta y portón en PVC","Portones automáticos","Cortinas enrollables","Mosquiteros","Pisos entablonados","Decks"];
+
+const DEFAULT_PRICES = {
+  m2:{corr:240000, osc:330000, fijo:170000, balc:280000, puer:390000, pv:320000},
+  mat:{pvc:1.35, alu:1},
+  glass:{simple:0, dvh:90000},
+  color:{blanco:0, madera:20, gris:15},
+  mosq:42000, cort:105000, inst:15, minM2:1, range:8
+};
+let P = load();
+function load(){ try{ const s=localStorage.getItem("fam_precios"); if(s){ const o=JSON.parse(s), b=structuredClone(DEFAULT_PRICES); for(const k in o){ b[k]=(typeof o[k]==="object")?Object.assign(b[k],o[k]):o[k]; } return b; } }catch(e){} return structuredClone(DEFAULT_PRICES); }
+function save(){ try{ localStorage.setItem("fam_precios",JSON.stringify(P)); }catch(e){} }
+
+const S = {type:"corr", w:150, h:110, q:1, mat:"pvc", glass:"dvh", color:"blanco", mosq:false, cort:false, inst:true};
+const items=[], wants=new Set();
+let step=0;
+const STEPS=["Abertura","Medidas","Material","Color","Extras","Resumen"];
+const $=id=>document.getElementById(id);
+const by=(a,id)=>a.find(x=>x.id===id);
+const ars=n=>"$"+Math.round(n).toLocaleString("es-AR");
+const r1k=n=>Math.round(n/1000)*1000;
+
+function calc(st){
+  const t=by(TYPES,st.type), area=Math.max((st.w/100)*(st.h/100),P.minM2);
+  let u=area*P.m2[st.type]*P.mat[st.mat]+area*P.glass[st.glass];
+  u*=1+(P.color[st.color]||0)/100;
+  if(st.mosq&&t.mosq) u+=area*P.mosq;
+  if(st.cort&&st.type!=="puer") u+=area*P.cort;
+  if(st.inst) u*=1+P.inst/100;
+  const tot=u*st.q, k=P.range/100;
+  return {area,lo:r1k(tot*(1-k)),hi:r1k(tot*(1+k)),mid:r1k(tot)};
+}
+const watts=(st,key)=>U[key]*(st.w/100)*(st.h/100)*20*st.q;
+
+/* ===== dibujo ===== */
+function draw(st,o={}){
+  const VW=o.vw||560, VH=o.vh||360, mini=!!o.mini, uid=o.uid||"m", t=st.type;
+  const col=by(COLORS,st.color);
+  const pvc=st.mat==="pvc";
+  const pad=mini?3:70;
+  const sc=Math.min((VW-pad*2)/st.w,(VH-pad*2+20)/st.h);
+  const W=st.w*sc, H=st.h*sc, x=(VW-W)/2, y=(VH-H)/2;
+  const fr=mini?2.6:Math.max(8,Math.min(18,W*.045))*(pvc?1.25:.9), sw=mini?.8:1.4, rr=pvc&&!mini?4:0;
+  const dvh=st.glass==="dvh";
+  const gl=dvh?"#B9D6E0":"#D7E8EE";
+  let g=`<defs><linearGradient id="gs${uid}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".7"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>`;
+  if(!mini){ // pared
+    g+=`<rect x="0" y="${y-26}" width="${VW}" height="${H+52}" fill="#E9E3D8"/><rect x="0" y="${y-26}" width="${VW}" height="${H+52}" fill="none"/>`;
+    g+=`<rect x="${x-10}" y="${y-10}" width="${W+20}" height="${H+20}" fill="#D9D1C3"/>`;
+  }
+  const pane=(px,py,pw,ph,mq)=>{ let s=`<rect x="${px}" y="${py}" width="${pw}" height="${ph}" rx="${rr/2}" fill="${gl}" stroke="${col.st}" stroke-width="${sw*.7}"/><rect x="${px}" y="${py}" width="${pw}" height="${ph}" fill="url(#gs${uid})"/>`;
+    if(dvh&&!mini) s+=`<rect x="${px+5}" y="${py+5}" width="${Math.max(0,pw-10)}" height="${Math.max(0,ph-10)}" rx="2" fill="none" stroke="#fff" stroke-opacity=".75" stroke-width="1.2"/>`;
+    if(mq){ for(let i=px+3;i<px+pw;i+=mini?3:5) s+=`<line x1="${i}" y1="${py}" x2="${i}" y2="${py+ph}" stroke="${col.st}" stroke-width=".35" opacity=".45"/>`; }
+    return s; };
+  const sash=(px,py,pw,ph)=>`<rect x="${px}" y="${py}" width="${pw}" height="${ph}" rx="${rr}" fill="${col.hex}" stroke="${col.st}" stroke-width="${sw*.7}"/>`;
+  const sw_=(pts)=>`<polyline points="${pts}" fill="none" stroke="${col.st}" stroke-width="${mini?.7:1.2}" stroke-dasharray="${mini?'2 2':'7 5'}"/>`;
+  if(st.cort&&t!=="puer"&&!mini) g+=`<rect x="${x-6}" y="${y-30}" width="${W+12}" height="26" rx="3" fill="${col.hex}" stroke="${col.st}" stroke-width="${sw}"/>`;
+  g+=`<rect x="${x}" y="${y}" width="${W}" height="${H}" rx="${rr}" fill="${col.hex}" stroke="${col.st}" stroke-width="${sw}"/>`;
+  const ix=x+fr, iy=y+fr, iW=W-fr*2, iH=H-fr*2, s1=fr*.55, mq=st.mosq&&by(TYPES,t).mosq;
+  if(t==="corr"||t==="balc"){ const lw=iW/2; for(let i=0;i<2;i++){ const px=ix+lw*i; g+=sash(px,iy,lw,iH)+pane(px+s1,iy+s1,lw-s1*2,iH-s1*2,mq&&i===1); } }
+  else if(t==="osc"||t==="pv"){ const n=st.w>=110?2:1, lw=iW/n; for(let i=0;i<n;i++){ const px=ix+lw*i, L=(n===1)||i===0;
+      g+=sash(px,iy,lw,iH)+pane(px+s1,iy+s1,lw-s1*2,(t==="pv"?iH*.78:iH)-s1*2,mq&&i===n-1);
+      if(t==="pv") g+=`<rect x="${px+s1}" y="${iy+iH*.78}" width="${lw-s1*2}" height="${iH*.22-s1}" fill="${col.hex}" stroke="${col.st}" stroke-width="${sw*.6}"/>`;
+      g+= L?sw_(`${px+lw-s1},${iy+s1} ${px+s1},${iy+iH/2} ${px+lw-s1},${iy+iH-s1}`):sw_(`${px+s1},${iy+s1} ${px+lw-s1},${iy+iH/2} ${px+s1},${iy+iH-s1}`);
+      if(t==="osc") g+=sw_(`${px+s1},${iy+s1} ${px+lw/2},${iy+iH-s1} ${px+lw-s1},${iy+s1}`); } }
+  else if(t==="fijo"){ g+=pane(ix,iy,iW,iH,false); }
+  else if(t==="puer"){ g+=sash(ix,iy,iW,iH); const n=mini?3:5; for(let k=0;k<n;k++){ const py=iy+s1+k*(iH-s1*2)/n; g+=`<rect x="${ix+s1*1.5}" y="${py+2}" width="${iW-s1*3}" height="${(iH-s1*2)/n-4}" rx="${rr/2}" fill="none" stroke="${col.st}" stroke-width="${sw*.6}"/>`; }
+    if(!mini) g+=`<rect x="${ix+iW-s1-12}" y="${iy+iH*.48}" width="5" height="34" rx="2.5" fill="#9AA3A6"/>`; }
+  if(!mini){
+    // flechas de calor: cantidad y largo según U
+    const key=`${st.mat}-${st.glass}`, u=U[key], n=Math.round(1+u*1.1), len=26+u*9;
+    for(let i=0;i<n;i++){ const yy=y+H*(i+1)/(n+1), x0=x+W*.62;
+      g+=`<g class="heatwave" opacity="${.35+u/10}"><path d="M${x0} ${yy} C ${x0-len*.4} ${yy-8}, ${x0-len*.7} ${yy+8}, ${x0-len*1.6} ${yy}" fill="none" stroke="#E0922F" stroke-width="${2+u*.35}" stroke-linecap="round"/><path d="M${x0-len*1.6+8} ${yy-6} L${x0-len*1.6} ${yy} L${x0-len*1.6+8} ${yy+6}" fill="none" stroke="#E0922F" stroke-width="${2+u*.35}" stroke-linecap="round"/></g>`; }
+    g+=`<g fill="#5B8FB0" opacity=".55">${[[24,40],[52,96],[18,170],[60,250],[30,310],[84,30]].map(([a,b])=>`<circle cx="${a}" cy="${b}" r="2.4"/>`).join("")}</g>`;
+    g+=`<g font-family="Hanken Grotesk, sans-serif" font-size="14" font-weight="600" fill="#13343B"><text x="${x+W/2}" y="${y+H+24}" text-anchor="middle">${st.w} cm</text><text x="${x-18}" y="${y+H/2}" text-anchor="middle" transform="rotate(-90 ${x-18} ${y+H/2})">${st.h} cm</text></g>`;
+  }
+  return g;
+}
+
+/* ===== interfaz ===== */
+const ico=t=>`<svg viewBox="0 0 44 44" aria-hidden="true">${draw({type:t.id,w:t.w,h:t.h,mat:"pvc",glass:"simple",color:"blanco",q:1},{vw:44,vh:44,mini:true,uid:"i"+t.id})}</svg>`;
+const opts=(el,name,arr,pre=()=>"")=>$(el).innerHTML=arr.map(o=>`<input type="radio" name="${name}" id="${name}-${o.id}" value="${o.id}"><label for="${name}-${o.id}">${pre(o)}<span><b>${o.name}</b>${o.sub?`<small>${o.sub}</small>`:""}</span></label>`).join("");
+opts("types","type",TYPES,ico); opts("mats","mat",MATS); opts("glass","glass",GLASS); opts("colors","color",COLORS,o=>`<span class="sw" style="background:${o.hex}"></span>`);
+$("presets").innerHTML=[["Ventana de cocina",120,100],["Ventana de dormitorio",150,110],["Ventanal de living",240,200],["Puerta",90,210]].map(([n,w,h])=>`<button type="button" data-w="${w}" data-h="${h}">${n}, ${w} × ${h}</button>`).join("");
+$("cat").innerHTML=EXTRA.map((e,i)=>`<label><input type="checkbox" value="${i}">${e}</label>`).join("");
+
+function syncInputs(){
+  ["type","mat","glass","color"].forEach(k=>{ const e=document.getElementById(`${k}-${S[k]}`); if(e) e.checked=true; });
+  $("w").value=$("wr").value=S.w; $("h").value=$("hr").value=S.h;
+  ["mosq","cort","inst"].forEach(k=>$(k).checked=S[k]);
+}
+function pair(n,r,k){ const set=v=>{ v=Math.max(+n.min,Math.min(+n.max,Math.round(+v||0))); S[k]=v; n.value=r.value=v; render(); };
+  r.addEventListener("input",e=>set(e.target.value)); n.addEventListener("change",e=>set(e.target.value));
+  n.addEventListener("input",e=>{ const v=+e.target.value; if(v>=+n.min&&v<=+n.max){ S[k]=v; r.value=v; render(); } }); }
+pair($("w"),$("wr"),"w"); pair($("h"),$("hr"),"h");
+$("presets").addEventListener("click",e=>{ const b=e.target.closest("button"); if(!b) return; S.w=+b.dataset.w; S.h=+b.dataset.h; syncInputs(); render(); });
+$("steps").addEventListener("change",e=>{ const t=e.target;
+  if(t.name==="type"){ S.type=t.value; const ty=by(TYPES,S.type); S.w=ty.w; S.h=ty.h; syncInputs(); }
+  if(["mat","glass","color"].includes(t.name)) S[t.name]=t.value;
+  if(["mosq","cort","inst"].includes(t.id)) S[t.id]=t.checked;
+  render(); });
+$("qm").onclick=()=>{ S.q=Math.max(1,S.q-1); render(); };
+$("qp").onclick=()=>{ S.q=Math.min(40,S.q+1); render(); };
+$("cat").addEventListener("change",e=>{ const i=+e.target.value; e.target.checked?wants.add(i):wants.delete(i); });
+
+function go(n){ step=Math.max(0,Math.min(STEPS.length-1,n));
+  document.querySelectorAll(".step").forEach(s=>s.hidden=+s.dataset.step!==step);
+  $("prog").innerHTML=STEPS.map((s,i)=>`<li><button type="button" data-go="${i}" ${i===step?'aria-current="step"':""} class="${i<step?"done":""}">${i+1}. ${s}</button></li>`).join("");
+  $("prev").style.visibility=step===0?"hidden":"visible";
+  $("next").textContent=step===STEPS.length-1?"Sumar al pedido y cotizar otra":"Siguiente";
+  if(step===STEPS.length-1) summary();
+}
+$("prog").addEventListener("click",e=>{ const b=e.target.closest("[data-go]"); if(b) go(+b.dataset.go); });
+$("prev").onclick=()=>go(step-1);
+$("next").onclick=()=>{ if(step===STEPS.length-1){ addItem(); go(0); } else go(step+1); };
+
+function describe(st){ const t=by(TYPES,st.type), ex=[];
+  if(st.mosq&&t.mosq) ex.push("mosquitero"); if(st.cort&&st.type!=="puer") ex.push("cortina enrollable"); ex.push(st.inst?"con instalación":"sin instalación");
+  return {name:t.name, line:`${st.w} × ${st.h} cm, ${by(MATS,st.mat).name}, vidrio ${by(GLASS,st.glass).name}, ${by(COLORS,st.color).name.toLowerCase()}, ${ex.join(", ")}`}; }
+function summary(){ const d=[["Abertura",by(TYPES,S.type).name+(S.q>1?` × ${S.q}`:""),0],["Medidas",`${S.w} × ${S.h} cm`,1],["Material y vidrio",`${by(MATS,S.mat).name} con vidrio ${by(GLASS,S.glass).name}`,2],["Color",by(COLORS,S.color).name,3],["Extras",describe(S).line.split(", ").slice(4).join(", "),4]];
+  $("sumList").innerHTML=d.map(([k,v,i])=>`<li><span>${k}</span><button type="button" data-go="${i}">${v}</button></li>`).join(""); }
+$("sumList").addEventListener("click",e=>{ const b=e.target.closest("[data-go]"); if(b) go(+b.dataset.go); });
+
+function render(){
+  const t=by(TYPES,S.type);
+  $("mosq").disabled=!t.mosq; $("mosq").closest("label").style.opacity=t.mosq?1:.45;
+  $("cort").disabled=S.type==="puer"; $("cort").closest("label").style.opacity=S.type==="puer"?.45:1;
+  $("q").textContent=S.q;
+  $("draw").innerHTML=draw(S);
+  const me=`${S.mat}-${S.glass}`, ref=watts(S,"alu-simple");
+  const keys=["alu-simple","alu-dvh","pvc-simple","pvc-dvh"];
+  $("bars").innerHTML=keys.map(k=>{ const w=watts(S,k); return `<div class="bar${k===me?" me":""}"><span>${ULAB[k]}${k===me?" (tu elección)":""}</span><div class="tr"><div class="fi" style="width:${(w/ref*100).toFixed(1)}%"></div></div><span class="v">${Math.round(w)} W</span></div>`; }).join("");
+  const pct=Math.round((1-U[me]/U["alu-simple"])*100);
+  $("lossT").textContent = pct>0 ? `Esta abertura deja escapar ${pct}% menos calor que una de aluminio y vidrio simple` : "Calor que se escapa por esta abertura";
+  const c=calc(S); $("amt").textContent=`${ars(c.lo)} a ${ars(c.hi)}`;
+  $("sub").textContent=`${describe(S).name}${S.q>1?` × ${S.q}`:""}, ${c.area.toFixed(2).replace(".",",")} m² por unidad.`;
+  if(step===STEPS.length-1) summary();
+}
+
+function renderList(){
+  $("listBox").hidden=items.length===0;
+  $("items").innerHTML=items.map((it,i)=>{ const d=describe(it), c=calc(it); return `<li><svg viewBox="0 0 40 36" aria-hidden="true">${draw(it,{vw:40,vh:36,mini:true,uid:"l"+i})}</svg><div>${d.name}${it.q>1?` × ${it.q}`:""}<div class="d">${d.line}</div><button type="button" class="x" data-rm="${i}">Quitar</button></div><div class="p">${ars(c.mid)}</div></li>`; }).join("");
+  $("tot").textContent=ars(items.reduce((s,it)=>s+calc(it).mid,0));
+}
+$("items").addEventListener("click",e=>{ const i=e.target.dataset.rm; if(i!==undefined){ items.splice(+i,1); renderList(); } });
+function addItem(){ items.push({...S}); renderList(); toast(`Sumada al pedido (${items.length})`); }
+$("add").onclick=addItem;
+
+function message(list){
+  let m="Hola FAM, quiero un presupuesto:\n\n";
+  list.forEach((it,i)=>{ const d=describe(it), c=calc(it); m+=`${i+1}. ${d.name}${it.q>1?` (x${it.q})`:""}\n   ${d.line}\n   Estimado: ${ars(c.lo)} a ${ars(c.hi)}\n\n`; });
+  if(list.length>1) m+=`Total estimado: ${ars(list.reduce((s,it)=>s+calc(it).mid,0))}\n\n`;
+  if(wants.size) m+=`También me interesa: ${[...wants].map(i=>EXTRA[i].toLowerCase()).join(", ")}.\n\n`;
+  return m+"¿Cuándo pueden venir a medir?";
+}
+function send(list){ const m=message(list); if(WHATSAPP){ window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(m)}`,"_blank","noopener"); return; } $("waMsg").textContent=m; $("waDlg").showModal(); }
+$("sendOne").onclick=()=>send([{...S}]);
+$("sendAll").onclick=()=>send(items);
+$("copy").onclick=async()=>{ try{ await navigator.clipboard.writeText($("waMsg").textContent); toast("Mensaje copiado"); }catch(e){ toast("No se pudo copiar"); } };
+document.querySelectorAll("[data-close]").forEach(b=>b.onclick=()=>b.closest("dialog").close());
+
+const rowP=(l,p,v,u)=>`<tr><td>${l}</td><td style="text-align:right"><input type="number" data-p="${p}" value="${v}" aria-label="${l}"> ${u}</td></tr>`;
+function openAdm(){
+  let h=`<table class="pr"><tr><th colspan="2">Precio por m² (aluminio, vidrio simple)</th></tr>`;
+  TYPES.forEach(t=>h+=rowP(t.name,`m2.${t.id}`,P.m2[t.id],"$"));
+  h+=`<tr><th colspan="2">Multiplicador por material</th></tr>`; MATS.forEach(m=>h+=rowP(m.name,`mat.${m.id}`,P.mat[m.id],"×"));
+  h+=`<tr><th colspan="2">Adicional de vidrio por m²</th></tr>`; GLASS.forEach(g=>h+=rowP(g.name,`glass.${g.id}`,P.glass[g.id],"$"));
+  h+=`<tr><th colspan="2">Recargo por color</th></tr>`; COLORS.forEach(c=>h+=rowP(c.name,`color.${c.id}`,P.color[c.id],"%"));
+  h+=`<tr><th colspan="2">Extras</th></tr>`+rowP("Mosquitero por m²","mosq",P.mosq,"$")+rowP("Cortina enrollable por m²","cort",P.cort,"$")+rowP("Instalación","inst",P.inst,"%")+rowP("Margen del rango","range",P.range,"%");
+  $("admBody").innerHTML=h+"</table>"; $("admDlg").showModal();
+}
+$("openAdm").onclick=openAdm;
+$("saveP").onclick=()=>{ $("admBody").querySelectorAll("input[data-p]").forEach(i=>{ const [a,b]=i.dataset.p.split("."), v=parseFloat(i.value)||0; if(b) P[a][b]=v; else P[a]=v; }); save(); $("admDlg").close(); render(); renderList(); toast("Precios guardados"); };
+$("reset").onclick=()=>{ P=structuredClone(DEFAULT_PRICES); save(); openAdm(); render(); renderList(); toast("Volvimos a los precios de ejemplo"); };
+
+let tt; function toast(t){ const el=$("toast"); el.textContent=t; el.classList.add("on"); clearTimeout(tt); tt=setTimeout(()=>el.classList.remove("on"),1900); }
+syncInputs(); go(0); render(); renderList();
+</script>
+</body>
+</html>
