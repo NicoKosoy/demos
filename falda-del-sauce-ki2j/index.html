@@ -1,0 +1,597 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Falda del Sauce · Cabañas al pie de la sierra · Villa General Belgrano</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Mulish:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#efe9dc; --sheet:#f8f4ea; --sauce:#6e7f4e; --sauce2:#4f5d35; --sepia:#3b2f24; --ocre:#c88a3a; --rust:#9b4a2e; --soft:#6f6455; --rule:#d6cbb4; --sky:#c9d6d2;
+  --serif:'Cormorant Garamond', Garamond, 'Times New Roman', serif; --sans:'Mulish', 'Segoe UI', system-ui, sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--sepia);font-family:var(--sans);font-size:16px;line-height:1.6;overflow-x:hidden;
+  background-image:radial-gradient(rgba(59,47,36,.05) 1px,transparent 1px);background-size:5px 5px}
+img{max-width:100%;display:block}
+a{color:inherit}
+button,input,select{font:inherit;color:inherit}
+.proto{background:var(--sauce2);color:#f3efe3;font-size:13px;text-align:center;padding:8px 16px}
+.proto b{color:#f2d39c}
+.wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+.eyebrow{font-size:11.5px;letter-spacing:.26em;text-transform:uppercase;font-weight:800;color:var(--sauce)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:4px;padding:12px 18px;font-weight:700;font-size:14.5px;border:1.5px solid var(--sepia);background:transparent;cursor:pointer;text-decoration:none;letter-spacing:.02em}
+.btn.fill{background:var(--sepia);color:var(--sheet)}
+.btn.fill:hover{background:var(--rust);border-color:var(--rust)}
+
+/* Cabecera tipo etiqueta de herbario */
+header{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:20px 28px;max-width:1200px;margin:0 auto}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.logo svg{width:38px;height:38px}
+.logo b{font-family:var(--serif);font-size:27px;font-weight:600;line-height:1}
+.logo small{display:block;font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--soft)}
+nav{display:flex;gap:24px;font-size:14px;font-weight:600}
+nav a{text-decoration:none;color:var(--soft)}
+nav a:hover{color:var(--rust)}
+
+/* Portada: plano del predio */
+.hero{display:grid;grid-template-columns:.85fr 1.15fr;gap:40px;padding:24px 28px 70px;max-width:1200px;margin:0 auto;align-items:center}
+h1{font-family:var(--serif);font-weight:500;font-size:clamp(42px,5.4vw,74px);line-height:.98;margin:16px 0 20px;letter-spacing:-.01em}
+h1 i{color:var(--sauce)}
+.lede{font-size:17.5px;color:var(--soft);max-width:30em}
+.stats{display:flex;gap:28px;margin:26px 0;flex-wrap:wrap}
+.stats div{border-left:2px solid var(--ocre);padding-left:12px}
+.stats strong{display:block;font-family:var(--serif);font-size:32px;font-weight:600;line-height:1}
+.stats span{font-size:12.5px;color:var(--soft)}
+.plan{background:var(--sheet);border:1px solid var(--rule);padding:18px;box-shadow:0 20px 40px -24px rgba(59,47,36,.45);position:relative}
+.plan::before,.plan::after{content:"";position:absolute;width:70px;height:22px;background:rgba(200,138,58,.28);top:-10px}
+.plan::before{left:30px;transform:rotate(-4deg)}.plan::after{right:30px;transform:rotate(5deg)}
+.plan svg{width:100%;height:auto;display:block}
+.plan .lab{display:flex;justify-content:space-between;gap:10px;font-size:12px;color:var(--soft);margin-top:10px;flex-wrap:wrap}
+.cab{cursor:pointer}
+.cab rect{transition:fill .2s}
+.cab:hover rect,.cab.on rect{fill:var(--rust)}
+.cab.busy rect{fill:#b9ad97}
+.cab:focus{outline:none}
+.cab:focus-visible rect{stroke:var(--rust);stroke-width:3}
+.planbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px;font-size:13px}
+.planbar input{border:1px solid var(--rule);background:#fff;border-radius:4px;padding:7px 8px;font-size:13.5px}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;background:#e4ead9;color:var(--sauce2);padding:4px 10px;border-radius:999px;font-weight:700}
+.pill i{width:7px;height:7px;border-radius:50%;background:#4f9a5c}
+
+section{padding:80px 0}
+.head{max-width:760px;margin-bottom:40px}
+.head h2{font-family:var(--serif);font-weight:500;font-size:clamp(32px,3.8vw,52px);line-height:1.04;margin-top:10px}
+.head p{color:var(--soft);margin-top:12px;font-size:16.5px}
+
+/* Láminas de herbario */
+.plates{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+.plate{background:var(--sheet);border:1px solid var(--rule);padding:18px 18px 16px;position:relative;display:flex;flex-direction:column;transition:transform .25s, box-shadow .25s}
+.plate:hover{transform:translateY(-3px) rotate(-.3deg);box-shadow:0 18px 30px -20px rgba(59,47,36,.5)}
+.plate.on{outline:2px solid var(--rust);outline-offset:4px}
+.plate .no{position:absolute;top:12px;right:14px;font-family:var(--serif);font-size:15px;color:var(--soft);font-style:italic}
+.plate svg.leaf{width:100%;height:170px}
+.plate .ph{height:150px;margin-top:10px}
+.label{border:1px solid var(--sepia);margin-top:14px;padding:10px 12px;background:#fffdf7}
+.label h3{font-family:var(--serif);font-weight:600;font-size:26px;line-height:1}
+.label .lat{font-family:var(--serif);font-style:italic;color:var(--soft);font-size:16px}
+.label dl{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;font-size:13px;margin-top:8px}
+.label dt{color:var(--soft)}
+.plate .act{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:13px}
+.plate .act button{background:none;border:0;color:var(--rust);font-weight:800;cursor:pointer;padding:4px 0}
+.tag{display:inline-block;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;background:#f1dfc0;color:#7a4f15;border-radius:3px;padding:1px 6px;font-weight:700}
+.ph{position:relative;overflow:hidden;background:#cfd3c0}
+.ph img{width:100%;height:100%;object-fit:cover}
+.ph.noimg img{display:none}
+.ph.noimg::after{content:attr(data-label);position:absolute;inset:0;display:flex;align-items:flex-end;padding:10px 12px;color:#fff;font-family:var(--serif);font-size:17px;font-style:italic;background:
+ linear-gradient(transparent 55%,rgba(59,47,36,.45)),
+ radial-gradient(ellipse 60% 35% at 25% 78%,#7d8b5e,transparent 70%),
+ radial-gradient(ellipse 70% 40% at 80% 82%,#5f6d43,transparent 70%),
+ linear-gradient(180deg,#c9d6d2 0%,#dfe3d5 45%,#a9b08a 70%,#8a7a58 100%)}
+
+/* Fenología / temporadas */
+.feno{background:var(--sheet);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.months{display:grid;grid-template-columns:repeat(12,1fr);border:1px solid var(--rule);background:#fff}
+.mth{border-right:1px solid var(--rule);padding:10px 6px 12px;text-align:center;min-height:150px;position:relative}
+.mth:last-child{border-right:0}
+.mth b{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--soft)}
+.mth .lv{height:44px;margin:8px auto 6px;width:34px}
+.mth .st{font-family:var(--serif);font-size:15px;line-height:1.1}
+.mth.a{background:#f5ead6}
+.mth.a .st{color:var(--rust);font-weight:600}
+.mth .ev{position:absolute;left:4px;right:4px;bottom:8px;font-size:10.5px;color:var(--sauce2);font-weight:700;line-height:1.2}
+.sealist{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:28px}
+.sealist div{border-top:2px solid var(--sepia);padding-top:10px}
+.sealist .d{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--rust);font-weight:800}
+.sealist h4{font-family:var(--serif);font-size:23px;font-weight:600;margin:4px 0}
+.sealist p{font-size:14px;color:var(--soft)}
+.note{font-size:12.5px;color:var(--soft);margin-top:18px}
+
+/* Libreta de reserva */
+.notebook{display:grid;grid-template-columns:1.15fr .85fr;gap:0;background:#fff;border:1px solid var(--rule);box-shadow:0 30px 60px -40px rgba(59,47,36,.6)}
+.pageL{padding:26px;border-right:1px dashed var(--rule);background:linear-gradient(#fff 0 0) padding-box}
+.pageR{padding:26px;background:repeating-linear-gradient(#fffdf7 0 31px,#ece4d2 31px 32px)}
+.calbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.calbar select{border:1px solid var(--rule);border-radius:4px;padding:8px;background:#fff}
+.nav2 button{border:1px solid var(--rule);background:#fff;border-radius:4px;width:34px;height:34px;cursor:pointer;font-size:18px}
+.cal2{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.cal2 h5{font-family:var(--serif);font-size:21px;font-weight:600;text-transform:capitalize;margin-bottom:6px}
+.g7{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;font-size:13px;text-align:center}
+.g7 .w{font-size:10.5px;text-transform:uppercase;color:var(--soft);padding:3px 0}
+.dd{padding:7px 0;cursor:pointer;border-radius:2px}
+.dd:hover{background:#e7eedd}
+.dd.busy{color:#b8ab95;text-decoration:line-through;cursor:not-allowed;background:#f4efe4}
+.dd.past{color:#d2c7b3;cursor:default;background:none}
+.dd.hi{font-weight:800}
+.dd.in,.dd.out{background:var(--sauce2);color:#fff}
+.dd.mid{background:#dfe6cf}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--soft);margin-top:12px}
+.legend i{display:inline-block;width:11px;height:11px;margin-right:5px;vertical-align:-1px}
+.pageR h3{font-family:var(--serif);font-size:30px;font-weight:600;line-height:1.1}
+.f{display:flex;flex-direction:column;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--soft);gap:4px;margin-top:12px;font-weight:700}
+.f input,.f select{border:0;border-bottom:1.5px solid var(--sepia);background:transparent;padding:6px 2px;font-size:16px;text-transform:none;letter-spacing:0;color:var(--sepia);font-weight:400;border-radius:0}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.check{display:flex;gap:8px;align-items:flex-start;margin-top:14px;font-size:14px;cursor:pointer}
+.check input{margin-top:4px;accent-color:var(--rust)}
+.tot{margin-top:16px;font-size:14.5px}
+.tot .l{display:flex;justify-content:space-between;gap:10px;padding:2px 0}
+.tot .big{font-family:var(--serif);font-size:30px;font-weight:600;border-top:1.5px solid var(--sepia);margin-top:8px;padding-top:4px}
+.tot .dep{color:var(--rust);font-weight:800}
+.err{background:#f6e0d6;color:#7a2f16;padding:9px 11px;font-size:14px;margin-top:10px}
+.ok{background:#e3ead5;color:var(--sauce2);padding:9px 11px;font-size:14px;margin-top:10px}
+.mp{width:100%;margin-top:16px;background:#009ee3;border-color:#009ee3;color:#fff}
+.mp:disabled{opacity:.45;cursor:not-allowed}
+.fine{font-size:12px;color:var(--soft);margin-top:10px}
+
+/* Equipo */
+.team{display:grid;grid-template-columns:1fr 1.3fr;gap:50px;align-items:start}
+.team blockquote{font-family:var(--serif);font-size:clamp(28px,3vw,40px);line-height:1.12;font-weight:500}
+.team blockquote i{color:var(--sauce)}
+.people{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--sepia)}
+.people div{padding:14px 10px 14px 0;border-bottom:1px solid var(--rule)}
+.people b{font-family:var(--serif);font-size:22px;font-weight:600}
+.people span{display:block;font-size:13.5px;color:var(--soft)}
+.services{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+.services span{border:1px solid var(--rule);background:var(--sheet);padding:6px 12px;border-radius:999px;font-size:13.5px}
+
+/* Alrededores */
+.around{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.around div{background:var(--sheet);border:1px solid var(--rule);padding:18px}
+.around .k{font-family:var(--serif);font-size:34px;font-weight:600;color:var(--sauce2);line-height:1}
+.around h4{font-size:15.5px;margin:8px 0 4px}
+.around p{font-size:13.5px;color:var(--soft)}
+
+/* FAQ y mapa */
+.fm{display:grid;grid-template-columns:1.1fr .9fr;gap:44px}
+details{border-bottom:1px solid var(--rule);padding:14px 0}
+summary{font-family:var(--serif);font-size:21px;font-weight:600;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:12px}
+summary::after{content:"✿";color:var(--ocre);font-size:15px}
+details[open] summary::after{color:var(--rust)}
+details p{color:var(--soft);margin-top:6px;font-size:15px}
+.mapbox{background:var(--sheet);border:1px solid var(--rule);padding:16px}
+.mapbox svg{width:100%;height:auto}
+.mapbox p{font-size:14px;color:var(--soft);margin-top:8px}
+
+footer{background:var(--sepia);color:#efe6d4;padding:52px 0 26px;margin-top:30px}
+.fg{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:30px}
+.fg h4{font-family:var(--serif);font-size:30px;font-weight:600}
+.fg a,.fg p{display:block;color:rgba(239,230,212,.8);text-decoration:none;font-size:14.5px;margin-top:5px}
+.made{border-top:1px solid rgba(255,255,255,.15);margin-top:30px;padding-top:14px;font-size:12.5px;color:rgba(239,230,212,.55);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);opacity:0;background:var(--sepia);color:#f8f4ea;padding:14px 18px;font-size:14px;max-width:min(92vw,460px);transition:.3s;z-index:40;pointer-events:none}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+@media (max-width:960px){
+  nav{display:none}
+  .hero{grid-template-columns:1fr;gap:30px;padding-top:10px}
+  .plates{grid-template-columns:1fr 1fr}
+  .months{grid-template-columns:repeat(6,1fr)}
+  .mth:nth-child(6){border-right:0}
+  .mth:nth-child(-n+6){border-bottom:1px solid var(--rule)}
+  .sealist{grid-template-columns:1fr 1fr}
+  .notebook{grid-template-columns:1fr}
+  .pageL{border-right:0;border-bottom:1px dashed var(--rule)}
+  .team,.fm,.fg{grid-template-columns:1fr}
+  .around{grid-template-columns:1fr 1fr}
+}
+@media (max-width:560px){
+  .wrap,header,.hero{padding-left:16px;padding-right:16px}
+  .plates{grid-template-columns:1fr}
+  .months{grid-template-columns:repeat(4,1fr)}
+  .mth{min-height:128px;border-bottom:1px solid var(--rule)}
+  .mth:nth-child(4n){border-right:0}
+  .mth:nth-child(6){border-right:1px solid var(--rule)}
+  .sealist,.around{grid-template-columns:1fr}
+  .cal2{grid-template-columns:1fr}
+  .pageL,.pageR{padding:18px 14px}
+  section{padding:56px 0}
+  .logo small{display:none}
+  .people{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="proto">Prototipo de demostración preparado para <b>Falda del Sauce</b> · Disponibilidad y precios de ejemplo</div>
+
+<header>
+  <a class="logo" href="#">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 4 C20 14 20 26 20 37" stroke="#3b2f24" stroke-width="1.6" fill="none"/><g fill="#6e7f4e"><path d="M20 10 C14 12 10 16 8 22 C13 20 17 16 20 10Z"/><path d="M20 15 C26 17 30 21 32 27 C27 25 23 21 20 15Z"/><path d="M20 21 C15 23 12 27 11 32 C15 30 18 27 20 21Z"/></g></svg>
+    <span><b>Falda del Sauce</b><small>Cabañas · Villa General Belgrano</small></span>
+  </a>
+  <nav><a href="#laminas">Las cabañas</a><a href="#temporadas">Temporadas</a><a href="#reservar">Reservar</a><a href="#equipo">Quiénes somos</a><a href="#preguntas">Preguntas</a></nav>
+  <a class="btn fill" href="#reservar">Reservar</a>
+</header>
+
+<div class="hero">
+  <div>
+    <div class="eyebrow">Al pie de la sierra · desde 2011</div>
+    <h1>Seis cabañas con nombre de árbol, <i>a veinte metros</i> una de otra.</h1>
+    <p class="lede">Espinillo, Nogal, Roble, Ciprés, Algarrobo y Fresno: 65 m² cada una, para hasta seis personas, con la mejor vista a las sierras. Lejos de la ruta y a siete minutos del centro.</p>
+    <div class="stats">
+      <div><strong>2 ha</strong><span>de predio</span></div>
+      <div><strong>4,9</strong><span>de 5 en Tripadvisor</span></div>
+      <div><strong>365</strong><span>días abierto</span></div>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <a class="btn fill" href="#reservar">Ver fechas libres</a>
+      <a class="btn" href="#laminas">Recorrer las cabañas</a>
+    </div>
+  </div>
+
+  <div class="plan">
+    <div class="planbar">
+      <span class="eyebrow" style="letter-spacing:.18em">Plano del predio ·</span>
+      <label>Llego <input type="date" id="pIn" aria-label="Llegada"></label>
+      <label>Me voy <input type="date" id="pOut" aria-label="Salida"></label>
+    </div>
+    <svg viewBox="0 0 600 400" id="planSvg" role="group" aria-label="Plano del complejo con las cabañas">
+      <defs><pattern id="grass" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M2 8 l2 -4 M6 9 l1 -3" stroke="#a7b08a" stroke-width="1"/></pattern></defs>
+      <rect width="600" height="400" fill="#f1ede0"/>
+      <rect width="600" height="400" fill="url(#grass)" opacity=".7"/>
+      <path d="M0 60 Q150 20 300 45 T600 30 V0 H0Z" fill="#c9d6d2"/>
+      <path d="M0 70 Q120 30 240 58 Q330 78 420 46 Q520 18 600 50" stroke="#6f6455" stroke-width="1" fill="none" stroke-dasharray="3 4"/>
+      <text x="22" y="28" font-family="Cormorant Garamond,serif" font-style="italic" font-size="17" fill="#6f6455">la sierra</text>
+      <path d="M40 380 C120 330 170 300 260 290 S420 250 560 210" stroke="#d6cbb4" stroke-width="14" fill="none" stroke-linecap="round"/>
+      <text x="44" y="362" font-size="11" font-family="Mulish,sans-serif" fill="#6f6455" letter-spacing="2">CAMINO SERRANO · 7 MIN AL CENTRO</text>
+      <rect x="250" y="175" width="110" height="58" rx="8" fill="#9cc3c9" stroke="#6b9aa1"/><text x="305" y="209" text-anchor="middle" font-size="12" font-family="Mulish,sans-serif" fill="#2f5257" font-weight="700">PILETA</text>
+      <circle cx="430" cy="300" r="26" fill="#e7d9b6" stroke="#c8b98f"/><text x="430" y="304" text-anchor="middle" font-size="10" font-family="Mulish,sans-serif" fill="#6f6455" font-weight="700">JUEGOS</text>
+      <g id="cabs"></g>
+      <g font-family="Mulish,sans-serif" font-size="10" fill="#9b4a2e"><path d="M172 112 h56" stroke="#9b4a2e" stroke-dasharray="2 3"/><text x="180" y="106">≈ 20 m</text></g>
+    </svg>
+    <div class="lab"><span class="pill"><i></i>Calendario sincronizado con Booking y Airbnb</span><span id="planCount"></span><span>Plano ilustrativo</span></div>
+  </div>
+</div>
+
+<section id="laminas" style="padding-top:30px">
+  <div class="wrap">
+    <div class="head"><div class="eyebrow">Herbario de cabañas</div><h2>Cada lámina, una cabaña. Cada cabaña, su árbol.</h2><p>Todas con dormitorio súper king de 2 × 2 m, aire frío/calor, cochera y parrilla cubierta. La Espinillo está adaptada para movilidad reducida.</p></div>
+    <div class="plates" id="plates"></div>
+    <p class="note">Datos de faldadelsauce.com. Las fotos del complejo se usan solo en este prototipo privado.</p>
+  </div>
+</section>
+
+<section id="temporadas" class="feno">
+  <div class="wrap">
+    <div class="head"><div class="eyebrow">Calendario del año</div><h2>Cuándo se llena la sierra, mes por mes.</h2><p>Las temporadas cambian el precio solas. El huésped ve el total antes de escribir.</p></div>
+    <div class="months" id="feno"></div>
+    <div class="sealist" id="sealist"></div>
+    <p class="note">Precios por noche de ejemplo para una cabaña de 65 m² con 2 personas. Vacaciones de invierno 2027 y Oktoberfest 2027 se cargan cuando salgan las fechas oficiales.</p>
+  </div>
+</section>
+
+<section id="reservar">
+  <div class="wrap">
+    <div class="head"><div class="eyebrow">Libreta de reservas</div><h2>Fechas, cabaña, cuántos son. Y si viene el perro.</h2><p>Cobran por persona, así que el total se arma solo con la cantidad de huéspedes (bebés incluidos, como piden en sus normas).</p></div>
+    <div class="notebook">
+      <div class="pageL">
+        <div class="calbar"><strong style="font-family:var(--serif);font-size:22px">Disponibilidad</strong><select id="calU" aria-label="Cabaña"></select><span class="nav2"><button id="pv" aria-label="Anterior">‹</button> <button id="nx" aria-label="Siguiente">›</button></span></div>
+        <div class="cal2" id="cal2"></div>
+        <div class="legend"><span><i style="background:#fff;border:1px solid #d6cbb4"></i>Libre</span><span><i style="background:#f4efe4"></i>Ocupada</span><span><b>12</b> Temporada alta o finde largo</span><span><i style="background:var(--sauce2)"></i>Tu estadía</span></div>
+        <p class="fine">Tocá la llegada y después la salida.</p>
+      </div>
+      <div class="pageR">
+        <h3>Pedido de reserva</h3>
+        <div class="row2"><label class="f">Llegada<input type="date" id="qIn"></label><label class="f">Salida<input type="date" id="qOut"></label></div>
+        <div class="row2"><label class="f">Cabaña<select id="qU"></select></label><label class="f">Personas (con bebés)<select id="qPax"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select></label></div>
+        <label class="check"><input type="checkbox" id="dog"> Viajamos con perro</label>
+        <div id="dogSize" style="display:none"><label class="f">Tamaño<select id="dogS"><option value="s">Chico</option><option value="m">Mediano</option><option value="l">Grande</option></select></label></div>
+        <div id="dogMsg"></div>
+        <div id="tot"></div>
+        <button class="btn mp" id="pay" disabled>Pagar seña del 30% con Mercado Pago</button>
+        <p class="fine">Demo: en la web real abre el pago de Mercado Pago del complejo. Acá no se cobra nada ni se piden datos de tarjeta.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="equipo" style="background:var(--sheet);border-top:1px solid var(--rule)">
+  <div class="wrap team">
+    <div><div class="eyebrow">Sobre nosotras</div><blockquote style="margin-top:12px">Empezamos de a poco en 2011. Hoy son seis cabañas, un dúplex <i>a estrenar</i> y dos piletas.</blockquote>
+      <div class="services"><span>Desayuno en canasta</span><span>Pileta de 30 m²</span><span>Wi-Fi</span><span>Ping pong y metegol</span><span>Plaza de juegos</span><span>Proveeduría</span><span>Masajes en la cabaña</span><span>Cuna y sillita para bebés</span><span>Gift cards</span></div>
+    </div>
+    <div class="people">
+      <div><b>Caro</b><span>Reservas y consultas</span></div>
+      <div><b>Grace</b><span>Recepción y relaciones públicas</span></div>
+      <div><b>Vale</b><span>Mucama, desde 2017</span></div>
+      <div><b>Yunior</b><span>Mantenimiento, desde 2022</span></div>
+      <div><b>Umma y Rocco</b><span>Anfitriones principales</span></div>
+      <div><b>Las cabañas</b><span>Separadas unos 20 m entre sí</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="head"><div class="eyebrow">Alrededores</div><h2>Lo que hay para hacer, sin salir del valle.</h2></div>
+    <div class="around">
+      <div><div class="k">Oct</div><h4>Oktoberfest</h4><p>Fiesta Nacional de la Cerveza, desde 1964, en la primera quincena de octubre.</p></div>
+      <div><div class="k">Mar</div><h4>Masa Vienesa</h4><p>Semana Santa 2027: del 24 al 28 de marzo, con el feriado del 24.</p></div>
+      <div><div class="k">Jul</div><h4>Chocolate Alpino</h4><p>La fiesta de las vacaciones de invierno en el centro del pueblo.</p></div>
+      <div><div class="k">~40 km</div><h4>La Cumbrecita</h4><p>Pueblo peatonal entre pinos, arroyos y cascadas.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="preguntas" style="padding-top:20px">
+  <div class="wrap fm">
+    <div>
+      <div class="eyebrow">Preguntas frecuentes</div>
+      <details open><summary>¿Aceptan mascotas?</summary><p>Perros hasta tamaño mediano, consultando condiciones antes. Sin autorización previa no se aceptan.</p></details>
+      <details><summary>¿A qué hora es el ingreso?</summary><p>Check-in de 14 a 19 h. Check-out hasta las 10 h. En temporada baja se puede extender hasta las 17 h, según disponibilidad y con costo.</p></details>
+      <details><summary>¿Hay ropa blanca?</summary><p>Sí. Toallas de cabaña cada 2 días; sábanas y toallones de pileta cada 4 días.</p></details>
+      <details><summary>¿El desayuno está incluido?</summary><p>Sí, llega a la mañana en una canasta.</p></details>
+      <details><summary>¿Cómo se paga?</summary><p>Efectivo, transferencia, débito o tarjetas por Mercado Pago.</p></details>
+      <details><summary>¿Pueden venir visitas?</summary><p>No se permiten personas no alojadas, y todos los pasajeros (bebés incluidos) tienen que figurar en la reserva.</p></details>
+    </div>
+    <div class="mapbox">
+      <div class="eyebrow" style="margin-bottom:8px">Cómo llegar</div>
+      <svg viewBox="0 0 400 280" role="img" aria-label="Mapa esquemático desde la terminal de Villa General Belgrano hasta Falda del Sauce">
+        <rect width="400" height="280" fill="#f1ede0"/>
+        <path d="M0 70 Q100 40 200 64 T400 50 V0 H0Z" fill="#c9d6d2"/>
+        <path d="M30 240 L150 190 L210 150 C240 130 270 120 320 96" stroke="#9b4a2e" stroke-width="3.5" fill="none" stroke-dasharray="7 5"/>
+        <rect x="18" y="232" width="18" height="18" fill="#3b2f24"/><text x="44" y="246" font-size="13" font-family="Mulish,sans-serif" fill="#3b2f24">Centro y terminal</text>
+        <circle cx="320" cy="96" r="10" fill="#6e7f4e"/><circle cx="320" cy="96" r="4" fill="#fff"/>
+        <text x="236" y="84" font-size="17" font-family="Cormorant Garamond,serif" font-weight="600" fill="#3b2f24">Falda del Sauce</text>
+        <text x="120" y="172" font-size="11" font-family="Mulish,sans-serif" fill="#9b4a2e" transform="rotate(-28 120 172)">~20 cuadras · camino serrano</text>
+      </svg>
+      <p>A unas 20 cuadras de la terminal y del centro, unos 7 minutos por camino serrano. <a href="https://g.page/faldadel-sauce" target="_blank" rel="noopener" style="color:var(--rust);font-weight:800">Abrir en Google Maps →</a></p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="fg">
+      <div><h4>Falda del Sauce</h4><p>Cabañas al pie de la sierra · Villa General Belgrano, Valle de Calamuchita, Córdoba</p></div>
+      <div><p style="color:#fff;font-weight:700">Reservas</p><a href="https://wa.me/5491141695250" target="_blank" rel="noopener">WhatsApp 11 4169-5250</a><a href="mailto:info@faldadelsauce.com">info@faldadelsauce.com</a></div>
+      <div><p style="color:#fff;font-weight:700">Redes</p><a href="https://www.instagram.com/faldadelsaucecabanas" target="_blank" rel="noopener">Instagram @faldadelsaucecabanas</a></div>
+    </div>
+    <div class="made"><span>Prototipo de demostración preparado para Falda del Sauce por Resolviendo Kos · resolviendokos.com</span><span>No es la web oficial del complejo</span></div>
+  </div>
+</footer>
+<div class="toast" id="toast"></div>
+
+<script>
+/* Motor de demo: temporadas, disponibilidad de ejemplo y cotización. Sin conexión a ningún servicio. */
+const RK = (function(){
+  const DAY = 86400000;
+  const pad = n => String(n).padStart(2,'0');
+  const iso = d => d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+  const parse = s => { const [y,m,d] = s.split('-').map(Number); return new Date(y, m-1, d); };
+  const addDays = (d,n) => new Date(d.getFullYear(), d.getMonth(), d.getDate()+n);
+  const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  const DIAS = ['lu','ma','mi','ju','vi','sá','do'];
+  const fmtDate = (d, opt) => {
+    if (typeof d === 'string') d = parse(d);
+    return d.getDate()+' de '+MESES[d.getMonth()] + (opt && opt.year ? ' de '+d.getFullYear() : '');
+  };
+  const short = d => { if (typeof d==='string') d=parse(d); return d.getDate()+'/'+(d.getMonth()+1); };
+  const money = n => '$ ' + Math.round(n).toLocaleString('es-AR');
+  function hash(str){ let h = 2166136261; for (let i=0;i<str.length;i++){ h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); } return (h>>>0)/4294967295; }
+
+  function make(cfg){
+    const seasons = cfg.seasons.map(s => Object.assign({}, s, {f: parse(s.from), t: parse(s.to)}));
+    const today = cfg.today ? parse(cfg.today) : new Date();
+    const t0 = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    function seasonFor(d){
+      if (typeof d === 'string') d = parse(d);
+      let best = null;
+      for (const s of seasons){ if (d >= s.f && d <= s.t){ if (!best || (s.prio||0) > (best.prio||0)) best = s; } }
+      return best || cfg.base;
+    }
+    function unit(id){ return cfg.units.find(u => u.id === id); }
+    function priceNight(u, d){ const s = seasonFor(d); return Math.round(u.price * (s.mult || 1) / 100) * 100; }
+    // Ocupación de ejemplo, determinística, más alta en temporada alta.
+    function busy(u, d){
+      if (typeof d === 'string') d = parse(d);
+      if (d < t0) return true;
+      const s = seasonFor(d);
+      const load = s.load != null ? s.load : 0.25;
+      // bloques de estadías: agrupamos por tramos de 3 días para que se vea realista
+      const block = Math.floor((d - parse('2026-01-01')) / DAY / 3);
+      return hash(u.id + ':' + block) < load;
+    }
+    function freeRange(u, a, b){ for (let d = parse(a); d < parse(b); d = addDays(d,1)) if (busy(u,d)) return false; return true; }
+    function minNights(a){ const s = seasonFor(a); return s.min || cfg.minDefault || 1; }
+    function quote(uid, a, b, guests){
+      const u = unit(uid); if (!u || !a || !b) return null;
+      const A = parse(a), B = parse(b); const nights = Math.round((B - A)/DAY);
+      if (nights <= 0) return {error:'La salida tiene que ser después del ingreso.'};
+      const lines = {}; let total = 0;
+      for (let i=0;i<nights;i++){ const d = addDays(A,i); const s = seasonFor(d); const p = priceNight(u,d); total += p; const k = s.name; lines[k] = lines[k] || {n:0, p:0, name:s.name}; lines[k].n++; lines[k].p += p; }
+      let extra = 0;
+      if (cfg.perPerson && guests > (cfg.perPerson.included||2)) { extra = (guests - (cfg.perPerson.included||2)) * cfg.perPerson.amount * nights; total += extra; }
+      const out = {unit:u, nights, lines:Object.values(lines), extra, total, deposit: Math.round(total * (cfg.deposit||0.3) / 100) * 100};
+      if (guests > u.cap) out.error = u.name + ' es para ' + u.cap + ' personas como máximo.';
+      else if (nights < minNights(A)) out.error = 'En ' + seasonFor(A).name.toLowerCase() + ' la estadía mínima es de ' + minNights(A) + ' noches.';
+      else if (!freeRange(u, a, b)) out.error = u.name + ' no está libre en todas esas noches. Probá otra unidad o corré las fechas.';
+      return out;
+    }
+    function month(y, m){ // m 0-11, devuelve celdas con lunes primero
+      const first = new Date(y, m, 1); const offset = (first.getDay()+6)%7; const days = new Date(y, m+1, 0).getDate();
+      const cells = []; for (let i=0;i<offset;i++) cells.push(null);
+      for (let d=1; d<=days; d++) cells.push(new Date(y, m, d));
+      return cells;
+    }
+    return {cfg, seasonFor, unit, priceNight, busy, freeRange, quote, month, minNights, today:t0};
+  }
+  return {make, iso, parse, addDays, fmtDate, short, money, MESES, DIAS, hash};
+})();
+
+/* Temporadas 2026-27 con fechas reales del calendario (feriados nacionales y fiestas del pueblo). Precios de ejemplo. */
+const SEASONS_VGB = [
+  {id:'nov', name:'Finde largo de noviembre', from:'2026-11-21', to:'2026-11-22', mult:1.25, load:.75, min:2, prio:2},
+  {id:'dic', name:'Finde largo de diciembre', from:'2026-12-05', to:'2026-12-07', mult:1.25, load:.75, min:2, prio:2},
+  {id:'fiestas', name:'Temporada intermedia', from:'2026-12-15', to:'2027-01-01', mult:1.15, load:.45, prio:1},
+  {id:'alta', name:'Temporada alta de verano', from:'2027-01-02', to:'2027-02-28', mult:1.5, load:.62, min:3, prio:1},
+  {id:'carnaval', name:'Carnaval', from:'2027-02-06', to:'2027-02-08', mult:1.6, load:.9, min:3, prio:3},
+  {id:'marzo', name:'Temporada intermedia', from:'2027-03-01', to:'2027-03-15', mult:1.15, load:.35, prio:1},
+  {id:'santa', name:'Semana Santa', from:'2027-03-24', to:'2027-03-27', mult:1.4, load:.85, min:3, prio:3}
+];
+const BASE_VGB = {id:'baja', name:'Temporada baja', mult:1, load:.22};
+
+const W = 'https://faldadelsauce.com/wp-content/uploads/';
+const LEAF = {
+  espinillo:'<g fill="#6e7f4e"><path d="M100 20 V150" stroke="#3b2f24" stroke-width="1.4" fill="none"/>'+Array.from({length:9},(_,i)=>`<ellipse cx="${88-i%2*0}" cy="${30+i*13}" rx="9" ry="3.2" transform="rotate(-20 88 ${30+i*13})"/><ellipse cx="112" cy="${30+i*13}" rx="9" ry="3.2" transform="rotate(20 112 ${30+i*13})"/>`).join('')+'<circle cx="100" cy="18" r="6" fill="#d9a62e"/><circle cx="92" cy="22" r="4" fill="#d9a62e"/></g>',
+  nogal:'<g fill="#6e7f4e"><path d="M100 150 V25" stroke="#3b2f24" stroke-width="1.6" fill="none"/><ellipse cx="100" cy="30" rx="13" ry="24"/>'+[0,1,2].map(i=>`<ellipse cx="74" cy="${70+i*28}" rx="24" ry="11" transform="rotate(-18 74 ${70+i*28})"/><ellipse cx="126" cy="${70+i*28}" rx="24" ry="11" transform="rotate(18 126 ${70+i*28})"/>`).join('')+'</g>',
+  roble:'<g fill="#6e7f4e"><path d="M100 155 V30" stroke="#3b2f24" stroke-width="1.6" fill="none"/><path d="M100 22 C80 26 86 40 74 44 C62 48 76 60 66 66 C56 74 74 82 66 92 C60 102 78 106 74 118 C72 130 92 132 100 140 C108 132 128 130 126 118 C122 106 140 102 134 92 C126 82 144 74 134 66 C124 60 138 48 126 44 C114 40 120 26 100 22Z"/></g><circle cx="122" cy="150" r="7" fill="#9b6a2e"/><path d="M115 146 h14 v-4 h-14z" fill="#6f4a1e"/>',
+  cipres:'<g><path d="M100 160 V20" stroke="#3b2f24" stroke-width="1.4"/><path d="M100 14 C84 40 80 90 88 150 L112 150 C120 90 116 40 100 14Z" fill="#4f5d35"/><path d="M100 30 C92 60 90 100 94 140" stroke="#6e7f4e" stroke-width="3" fill="none"/></g>',
+  algarrobo:'<g fill="#6e7f4e"><path d="M100 150 V30" stroke="#3b2f24" stroke-width="1.4" fill="none"/>'+Array.from({length:14},(_,i)=>`<rect x="${i%2?102:82}" y="${30+Math.floor(i/2)*16}" width="16" height="3" rx="1.5" transform="rotate(${i%2?12:-12} 100 ${30+Math.floor(i/2)*16})"/>`).join('')+'</g><path d="M128 60 C150 80 148 120 136 150" stroke="#c88a3a" stroke-width="7" fill="none" stroke-linecap="round"/>',
+  fresno:'<g fill="#6e7f4e"><path d="M100 155 V22" stroke="#3b2f24" stroke-width="1.4" fill="none"/><ellipse cx="100" cy="28" rx="8" ry="16"/>'+[0,1,2,3].map(i=>`<ellipse cx="80" cy="${56+i*24}" rx="18" ry="7" transform="rotate(-25 80 ${56+i*24})"/><ellipse cx="120" cy="${56+i*24}" rx="18" ry="7" transform="rotate(25 120 ${56+i*24})"/>`).join('')+'</g>',
+  chica:'<g fill="none" stroke="#3b2f24" stroke-width="1.4"><rect x="62" y="60" width="76" height="70"/><path d="M56 62 L100 26 L144 62"/><rect x="90" y="96" width="20" height="34"/></g><g fill="#6e7f4e"><ellipse cx="40" cy="128" rx="14" ry="22"/><ellipse cx="162" cy="124" rx="12" ry="26"/></g>',
+  duplex:'<g fill="none" stroke="#3b2f24" stroke-width="1.4" stroke-dasharray="4 3"><rect x="58" y="44" width="84" height="96"/><path d="M52 46 L100 12 L148 46"/><path d="M58 92 H142"/></g><text x="100" y="160" text-anchor="middle" font-family="Cormorant Garamond,serif" font-style="italic" font-size="15" fill="#9b4a2e">a estrenar</text>'
+};
+const CABS = [
+  {id:'espinillo', no:'I', name:'Espinillo', lat:'Vachellia caven', cap:6, price:98000, m2:65, extra:'Adaptada para movilidad reducida', x:70, y:95},
+  {id:'nogal', no:'II', name:'Nogal', lat:'Juglans regia', cap:6, price:98000, m2:65, x:150, y:120},
+  {id:'roble', no:'III', name:'Roble', lat:'Quercus robur', cap:6, price:98000, m2:65, x:240, y:100},
+  {id:'cipres', no:'IV', name:'Ciprés', lat:'Cupressus sempervirens', cap:6, price:98000, m2:65, x:390, y:110},
+  {id:'algarrobo', no:'V', name:'Algarrobo', lat:'Neltuma alba', cap:6, price:98000, m2:65, x:470, y:150},
+  {id:'fresno', no:'VI', name:'Fresno', lat:'Fraxinus excelsior', cap:6, price:98000, m2:65, x:500, y:240},
+  {id:'chica', no:'VII', name:'Cabaña de 40 m²', lat:'nórdica y minimalista', cap:3, capTbc:true, price:78000, m2:40, extra:'Ducha escocesa de 3 jets', x:120, y:250, img:W+'2025/12/Falda-del-Sauce-Complejo-de-Cabanas-Cabana-con-Vista-a-Las-Sierras-en-Villa-General-Belgrano-2.jpg'},
+  {id:'duplex', no:'VIII', name:'Dúplex', lat:'a estrenar', cap:null, x:320, y:300}
+];
+const BOOKABLE = CABS.filter(c => c.cap);
+const eng = RK.make({units: BOOKABLE, seasons: SEASONS_VGB, base: BASE_VGB, deposit: .3, perPerson: {included: 2, amount: 14000}, today: RK.iso(new Date())});
+const $ = s => document.querySelector(s);
+const toast = t => { const e = $('#toast'); e.textContent = t; e.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(() => e.classList.remove('on'), 4200); };
+const fb = img => { img.addEventListener('error', () => img.closest('.ph').classList.add('noimg')); };
+
+const MIN = RK.iso(new Date()), MAX = '2027-04-30';
+const dIn = RK.iso(RK.addDays(new Date(), 26)), dOut = RK.iso(RK.addDays(new Date(), 29));
+['#pIn','#pOut','#qIn','#qOut'].forEach(s => { $(s).min = MIN; $(s).max = MAX; });
+$('#pIn').value = dIn; $('#pOut').value = dOut; $('#qIn').value = dIn; $('#qOut').value = dOut;
+
+/* Plano */
+function drawPlan(){
+  const a = $('#pIn').value, b = $('#pOut').value; let free = 0;
+  $('#cabs').innerHTML = CABS.map(c => {
+    const u = c.cap ? eng.unit(c.id) : null;
+    const ok = u ? (a && b && b > a ? eng.freeRange(u, a, b) : true) : false;
+    if (ok) free++;
+    const w = c.m2 === 40 ? 44 : c.cap ? Math.max(58, c.name.length * 8.6 + 12) : 66, h = c.m2 === 40 ? 30 : 38;
+    return `<g class="cab ${u && !ok ? 'busy' : ''}" data-id="${c.id}" tabindex="0" role="button" aria-label="${c.name}${u ? (ok ? ', libre' : ', ocupada') : ', a estrenar'}">
+      <rect x="${c.x - w/2}" y="${c.y - h/2}" width="${w}" height="${h}" rx="3" fill="${c.cap ? '#6e7f4e' : '#fff'}" stroke="#3b2f24" stroke-width="${c.cap ? 0 : 1.4}" ${c.cap ? '' : 'stroke-dasharray="4 3"'}/>
+      <text x="${c.x}" y="${c.y + 4}" text-anchor="middle" font-family="Cormorant Garamond,serif" font-weight="600" font-size="${c.cap ? 15 : 13}" fill="${c.cap ? '#fff' : '#3b2f24'}">${c.cap ? c.name.replace('Cabaña de ','') : 'Dúplex'}</text>
+      ${u ? `<text x="${c.x}" y="${c.y + h/2 + 13}" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" font-weight="700" fill="${ok ? '#4f5d35' : '#9b4a2e'}">${ok ? 'LIBRE' : 'OCUPADA'}</text>` : ''}
+    </g>`;
+  }).join('');
+  $('#planCount').textContent = free + ' de ' + BOOKABLE.length + ' libres en esas fechas';
+}
+['#pIn','#pOut'].forEach(s => $(s).addEventListener('change', drawPlan));
+function pick(id){
+  document.querySelectorAll('.plate').forEach(p => p.classList.toggle('on', p.dataset.id === id));
+  const c = CABS.find(x => x.id === id);
+  if (c && c.cap){ $('#qU').value = id; $('#calU').value = id; $('#qIn').value = $('#pIn').value; $('#qOut').value = $('#pOut').value; drawCal(); quote(); }
+  document.querySelector(`.plate[data-id="${id}"]`).scrollIntoView({behavior:'smooth', block:'center'});
+}
+$('#cabs').addEventListener('click', e => { const g = e.target.closest('.cab'); if (g) pick(g.dataset.id); });
+$('#cabs').addEventListener('keydown', e => { if (e.key === 'Enter'){ const g = e.target.closest('.cab'); if (g) pick(g.dataset.id); } });
+
+/* Láminas */
+$('#plates').innerHTML = CABS.map(c => `<article class="plate" data-id="${c.id}">
+  <span class="no">Lám. ${c.no}</span>
+  ${c.img ? `<div class="ph" data-label="${c.name}"><img loading="lazy" src="${c.img}" alt="${c.name}"></div>` : `<svg class="leaf" viewBox="0 0 200 170" aria-hidden="true">${LEAF[c.id]}</svg>`}
+  <div class="label"><h3>${c.name}</h3><div class="lat">${c.lat}</div>
+  <dl>${c.cap ? `<dt>Superficie</dt><dd>${c.m2} m²</dd><dt>Capacidad</dt><dd>hasta ${c.cap} ${c.capTbc ? '<span class="tag">a confirmar</span>' : '(bebés incluidos)'}</dd>` : '<dt>Estado</dt><dd>Recién construido · <span class="tag">datos a cargar</span></dd>'}
+  ${c.m2 === 65 ? '<dt>Dormitorio</dt><dd>Súper king 2 × 2 m + 2 divanes y 2 cuchetas</dd>' : ''}
+  ${c.m2 === 40 ? '<dt>Cama</dt><dd>Súper king o 2 individuales + sillón cama</dd>' : ''}
+  ${c.extra ? `<dt>Además</dt><dd>${c.extra}</dd>` : ''}</dl></div>
+  <div class="act"><span>${c.cap ? 'Desde ' + RK.money(c.price) + ' / noche <span class="tag">ejemplo</span>' : ''}</span>${c.cap ? `<button data-go="${c.id}">Ver fechas →</button>` : ''}</div>
+</article>`).join('');
+document.querySelectorAll('.plate .ph img').forEach(fb);
+$('#plates').addEventListener('click', e => { const b = e.target.closest('[data-go]'); if (!b) return; $('#qU').value = b.dataset.go; $('#calU').value = b.dataset.go; drawCal(); quote(); location.hash = '#reservar'; });
+
+/* Fenología */
+const FENO = [
+  ['ene','Alta','🌿','verano', true],['feb','Alta','🌿','Carnaval 6–9', true],['mar','Intermedia','🍂','Masa Vienesa 24–28', true],['abr','Baja','🍂',''],['may','Baja','🍂',''],['jun','Baja','🍃',''],
+  ['jul','Invierno','❄','Chocolate Alpino', true],['ago','Baja','🍃',''],['sep','Baja','🌱',''],['oct','Oktoberfest','🌱','Fiesta de la Cerveza', true],['nov','Baja','🌱','Finde 21–23'],['dic','Intermedia','🌿','Finde 5–8']
+];
+const leafSvg = (c) => `<svg class="lv" viewBox="0 0 34 44" aria-hidden="true"><path d="M17 42 V6" stroke="#3b2f24" stroke-width="1"/><path d="M17 6 C5 14 4 30 17 38 C30 30 29 14 17 6Z" fill="${c}"/></svg>`;
+const COL = {Alta:'#4f5d35', Intermedia:'#8f9a5e', Baja:'#c8b98f', Invierno:'#9fb2b5', Oktoberfest:'#c88a3a'};
+$('#feno').innerHTML = FENO.map(m => `<div class="mth ${m[4] ? 'a' : ''}"><b>${m[0]}</b>${leafSvg(COL[m[1]] || '#c8b98f')}<div class="st">${m[1]}</div><div class="ev">${m[3]}</div></div>`).join('');
+const ref = eng.unit('nogal');
+const SL = [['21 y 22 nov','Finde largo','Mínimo 2 noches.','2026-11-21'],['5 al 8 dic','Finde largo','Lunes 7 no laborable, martes 8 feriado.','2026-12-05'],['2 ene al 28 feb','Temporada alta','Mínimo 3 noches.','2027-01-10'],['24 al 28 mar','Semana Santa','Fiesta de la Masa Vienesa. Mínimo 3 noches.','2027-03-25']];
+$('#sealist').innerHTML = SL.map(s => `<div><div class="d">${s[0]}</div><h4>${s[1]}</h4><p>${s[2]}</p><p style="color:var(--sepia);font-weight:700;margin-top:4px">${RK.money(eng.priceNight(ref, s[3]))} / noche</p></div>`).join('');
+
+/* Calendario */
+const opts = BOOKABLE.map(c => `<option value="${c.id}">${c.name} · hasta ${c.cap}</option>`).join('');
+$('#calU').innerHTML = opts; $('#qU').innerHTML = opts;
+let off = 0;
+function drawCal(){
+  const u = eng.unit($('#calU').value); const a = $('#qIn').value, b = $('#qOut').value; const now = new Date(); let h = '';
+  for (let k = 0; k < 2; k++){
+    const y = new Date(now.getFullYear(), now.getMonth() + off + k, 1);
+    h += `<div><h5>${RK.MESES[y.getMonth()]} ${y.getFullYear()}</h5><div class="g7">${RK.DIAS.map(d => `<div class="w">${d}</div>`).join('')}${eng.month(y.getFullYear(), y.getMonth()).map(d => {
+      if (!d) return '<div></div>';
+      const s = RK.iso(d), past = d < eng.today, busy = !past && eng.busy(u, d), se = eng.seasonFor(d);
+      let c = past ? 'past' : busy ? 'busy' : ''; if ((se.mult||1) >= 1.25 && !past) c += ' hi';
+      if (s === a) c += ' in'; else if (s === b) c += ' out'; else if (a && b && s > a && s < b) c += ' mid';
+      return `<div class="dd ${c}" data-d="${s}" title="${se.name}">${d.getDate()}</div>`;
+    }).join('')}</div></div>`;
+  }
+  $('#cal2').innerHTML = h;
+}
+$('#pv').onclick = () => { if (off > 0){ off--; drawCal(); } };
+$('#nx').onclick = () => { if (off < 5){ off++; drawCal(); } };
+$('#calU').onchange = () => { $('#qU').value = $('#calU').value; drawCal(); quote(); };
+$('#cal2').addEventListener('click', e => {
+  const c = e.target.closest('.dd'); if (!c || c.classList.contains('past') || c.classList.contains('busy')) return;
+  const d = c.dataset.d, a = $('#qIn').value, b = $('#qOut').value;
+  if (!a || b || d <= a){ $('#qIn').value = d; $('#qOut').value = ''; } else $('#qOut').value = d;
+  drawCal(); quote();
+});
+
+/* Perro */
+$('#dog').onchange = () => { $('#dogSize').style.display = $('#dog').checked ? '' : 'none'; dogMsg(); quote(); };
+$('#dogS').onchange = () => { dogMsg(); quote(); };
+function dogMsg(){
+  const m = $('#dogMsg');
+  if (!$('#dog').checked){ m.innerHTML = ''; return; }
+  m.innerHTML = $('#dogS').value === 'l' ? '<div class="err">Por ahora aceptan perros hasta tamaño mediano. Escribinos y lo vemos.</div>' : '<div class="ok">Perros hasta tamaño mediano, con autorización previa: lo dejamos anotado en el pedido.</div>';
+}
+
+/* Cotización */
+function quote(){
+  const r = eng.quote($('#qU').value, $('#qIn').value, $('#qOut').value, +$('#qPax').value); const box = $('#tot'), pay = $('#pay');
+  if (!r){ box.innerHTML = '<p class="fine" style="margin-top:14px">Elegí llegada y salida para ver el total.</p>'; pay.disabled = true; return; }
+  if (r.error && !r.lines){ box.innerHTML = `<div class="err">${r.error}</div>`; pay.disabled = true; return; }
+  const bigDog = $('#dog').checked && $('#dogS').value === 'l';
+  box.innerHTML = `<div class="tot">${r.lines.map(l => `<div class="l"><span>${l.n} ${l.n === 1 ? 'noche' : 'noches'} · ${l.name}</span><span>${RK.money(l.p)}</span></div>`).join('')}
+    ${r.extra ? `<div class="l"><span>Personas adicionales (${+$('#qPax').value - 2})</span><span>${RK.money(r.extra)}</span></div>` : ''}
+    <div class="l big"><span>Total</span><span>${RK.money(r.total)}</span></div>
+    <div class="l dep"><span>Seña 30%</span><span>${RK.money(r.deposit)}</span></div>
+    <div class="l" style="color:var(--soft)"><span>Saldo al llegar</span><span>${RK.money(r.total - r.deposit)}</span></div></div>${r.error ? `<div class="err">${r.error}</div>` : ''}`;
+  pay.disabled = !!r.error || bigDog;
+}
+['#qIn','#qOut','#qPax'].forEach(s => $(s).addEventListener('change', () => { drawCal(); quote(); }));
+$('#qU').onchange = () => { $('#calU').value = $('#qU').value; drawCal(); quote(); };
+$('#pay').onclick = () => toast('Demo: acá se abriría Mercado Pago para la seña. La reserva se bloquea al instante también en Booking y Airbnb.');
+
+drawPlan(); drawCal(); quote();
+</script>
+</body>
+</html>
