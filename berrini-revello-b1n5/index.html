@@ -1,0 +1,733 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Berrini Negocios Inmobiliarios | Propiedades por dirección en Villa María</title>
+<meta name="description" content="Prototipo de demostración: la cartera de Berrini Negocios Inmobiliarios ordenada por calle y número, con plano del centro y los barrios de Villa María.">
+<link rel="icon" href="https://www.inmobiliariaberrini.com.ar/wp-content/uploads/2019/09/cropped-70556581_2536017443107695_1329828385735573504_n-1-270x270.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=Red+Hat+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --hueso:#FAFAF7;
+  --papel:#F2F1EB;
+  --verde:#1E4D3A;
+  --verde-hondo:#163B2C;
+  --verde-suave:#E3EBE5;
+  --ocre:#C8902E;
+  --ocre-suave:#F4E7CF;
+  --pizarra:#4A4F55;
+  --tinta:#15201B;
+  --linea:rgba(21,32,27,.13);
+  --linea-fuerte:rgba(21,32,27,.28);
+  --serif:"Spectral",Georgia,"Bitstream Charter",serif;
+  --sans:"Red Hat Text",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --gutter:clamp(16px,3.2vw,44px);
+  --barra:58px;
+  color-scheme:light;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--hueso);color:var(--tinta);font-family:var(--sans);font-size:16px;line-height:1.55;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:var(--verde)}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--ocre);outline-offset:2px;border-radius:3px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* aviso demo */
+.demo{background:var(--ocre-suave);color:var(--tinta);font-size:.86rem;padding:8px var(--gutter);border-bottom:1px solid rgba(200,144,46,.4)}
+.demo strong{font-weight:600}
+
+/* cabecera */
+.cab{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px var(--gutter);border-bottom:1px solid var(--linea)}
+.marca{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:var(--verde)}
+.marca b{font-family:var(--serif);font-weight:600;font-size:1.65rem;letter-spacing:-.01em;line-height:1}
+.marca span{font-size:.86rem;color:var(--pizarra)}
+.cab nav{display:flex;gap:22px;align-items:center;font-size:.95rem}
+.cab nav a{text-decoration:none;color:var(--tinta)}
+.cab nav a:hover{color:var(--verde);text-decoration:underline;text-underline-offset:4px}
+.cab .tel{color:var(--verde);font-weight:600}
+
+/* intro */
+.intro{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:24px 48px;padding:40px var(--gutter) 30px;align-items:end}
+.intro h1{font-family:var(--serif);font-weight:400;font-size:clamp(2.1rem,4.6vw,3.9rem);line-height:1.04;letter-spacing:-.015em;margin:0;color:var(--verde)}
+.intro h1 span{display:block}
+.intro h1 span:nth-child(2){padding-left:1.1em}
+.intro h1 span:nth-child(3){padding-left:2.2em}
+.intro p{margin:0 0 .7em;max-width:44ch;color:var(--pizarra)}
+.intro .ofi{font-family:var(--serif);font-size:1.12rem;color:var(--tinta);margin:0}
+
+/* barra de filtros */
+.filtros{position:sticky;top:0;z-index:20;background:rgba(250,250,247,.96);backdrop-filter:blur(6px);border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);padding:10px var(--gutter);display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center}
+.seg{display:inline-flex;border:1px solid var(--linea-fuerte);border-radius:999px;padding:3px;background:#fff}
+.seg button{border:0;background:transparent;padding:6px 14px;border-radius:999px;cursor:pointer;font-size:.92rem;color:var(--pizarra)}
+.seg button[aria-pressed="true"]{background:var(--verde);color:#fff}
+.campo{display:flex;align-items:center;gap:6px;font-size:.88rem;color:var(--pizarra)}
+.campo select{appearance:none;-webkit-appearance:none;border:1px solid var(--linea-fuerte);background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%234A4F55' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 10px center;border-radius:8px;padding:6px 28px 6px 10px;font-size:.92rem;color:var(--tinta);cursor:pointer}
+.cuenta{margin-left:auto;font-size:.9rem;color:var(--pizarra)}
+.vista{display:none}
+
+/* pantalla dividida */
+.split{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);border-bottom:1px solid var(--linea)}
+.lista{list-style:none;margin:0;padding:0}
+.fila{display:grid;grid-template-columns:30px 112px minmax(0,1fr) auto;gap:16px;align-items:center;padding:14px var(--gutter) 14px var(--gutter);border-bottom:1px solid var(--linea);cursor:pointer;position:relative;background:transparent;transition:background-color .15s}
+.fila:last-child{border-bottom:0}
+.fila.on{background:var(--verde-suave)}
+.fila .num{font-family:var(--serif);font-size:.95rem;width:28px;height:28px;border-radius:50%;border:1px solid var(--verde);color:var(--verde);display:grid;place-items:center;line-height:1}
+.fila.on .num{background:var(--verde);color:#fff}
+.mini,.gal-main,.gal-tira button,.h-foto{position:relative}
+img.ft{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.mini{width:112px;height:76px;border-radius:4px;overflow:hidden;background:var(--verde)}
+.mini img{width:100%;height:100%;object-fit:cover}
+.fila h3{margin:0;font-family:var(--serif);font-weight:500;font-size:1.45rem;line-height:1.12;letter-spacing:-.005em}
+.fila h3 a{color:var(--tinta);text-decoration:none}
+.fila h3 a::after{content:"";position:absolute;inset:0}
+.fila h3 a:focus-visible{outline:none}
+.fila:has(h3 a:focus-visible){outline:3px solid var(--ocre);outline-offset:-3px}
+.fila .que{margin:2px 0 4px;font-size:.92rem;color:var(--pizarra)}
+.datos{display:flex;flex-wrap:wrap;gap:4px 14px;margin:0;padding:0;list-style:none;font-size:.88rem;color:var(--tinta)}
+.datos li{white-space:nowrap}
+.precio{font-size:.86rem;color:var(--verde);font-weight:600;text-align:right;white-space:nowrap}
+.precio small{display:block;font-weight:400;color:var(--pizarra)}
+.vacio{padding:36px var(--gutter);max-width:52ch}
+.vacio h3{font-family:var(--serif);font-weight:500;font-size:1.5rem;margin:0 0 6px}
+.vacio p{margin:0 0 14px;color:var(--pizarra)}
+
+/* placeholder tipográfico */
+.ph{width:100%;height:100%;background:var(--verde);color:#F3EFE3;display:flex;flex-direction:column;justify-content:flex-end;padding:8px 9px;font-family:var(--serif);line-height:1.02;overflow:hidden;position:relative}
+.ph::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 23px,rgba(255,255,255,.06) 23px 24px),repeating-linear-gradient(0deg,transparent 0 23px,rgba(255,255,255,.06) 23px 24px)}
+.ph b{font-weight:500;font-size:1.02rem;position:relative}
+.ph i{font-style:italic;font-size:.74rem;color:var(--ocre);position:relative;margin-top:3px}
+.mini .ph{padding:6px 7px}
+.mini .ph b{font-size:.84rem}
+.mini .ph i{font-size:.66rem}
+.ph.grande{padding:28px 30px}
+.ph.grande b{font-size:clamp(2rem,5vw,3.4rem);font-weight:400}
+.ph.grande i{font-size:1.05rem}
+
+/* plano */
+.plano-col{border-left:1px solid var(--linea);background:var(--papel)}
+.plano-pega{position:sticky;top:var(--barra)}
+.plano-wrap{padding:14px 14px 8px}
+.plano-wrap svg{width:100%;height:auto;max-height:calc(100vh - var(--barra) - 64px);display:block;margin:0 auto;border-radius:4px}
+.plano-pie{display:flex;justify-content:space-between;gap:12px;padding:0 18px 12px;font-size:.8rem;color:var(--pizarra)}
+.plano-pie .ofi-ref::before{content:"";display:inline-block;width:9px;height:9px;background:var(--ocre);margin-right:6px;vertical-align:0}
+svg .manzana{fill:#E4E1D6;stroke:none}
+svg .calle{stroke:#FAFAF7;stroke-width:8}
+svg .calle.bv{stroke-width:15}
+svg .bv-cantero{stroke:#CFDACF;stroke-width:3}
+svg .nombre{font-family:var(--sans);font-size:13px;fill:#4A4F55;paint-order:stroke;stroke:#FAFAF7;stroke-width:4px;stroke-linejoin:round}
+svg .nombre.fuerte{fill:var(--tinta);font-weight:600}
+svg .zona{font-family:var(--serif);font-style:italic;font-size:24px;fill:#1E4D3A;paint-order:stroke;stroke:rgba(250,250,247,.85);stroke-width:5px;stroke-linejoin:round}
+svg .rio{fill:#D8E3E4}
+svg .rio-txt{font-family:var(--serif);font-style:italic;font-size:15px;fill:#5D7A7D}
+svg .pin{cursor:pointer}
+svg .pin circle{fill:#fff;stroke:var(--verde);stroke-width:2.5;transition:r .15s}
+svg .pin text{font-family:var(--serif);font-size:16px;font-weight:600;fill:var(--verde);text-anchor:middle;dominant-baseline:central;pointer-events:none}
+svg .pin .etq{opacity:0;transition:opacity .15s}
+svg .pin .etq rect{fill:var(--tinta)}
+svg .pin .etq text{fill:#fff;font-family:var(--serif);font-weight:500;font-size:16px;text-anchor:start}
+svg .pin.on circle{fill:var(--verde);r:19}
+svg .pin.on > text{fill:#fff}
+svg .pin.on .etq{opacity:1}
+svg .pin.off{opacity:.18;pointer-events:none}
+svg .pin:focus{outline:none}
+svg .pin:focus-visible circle{stroke:var(--ocre);stroke-width:4}
+
+/* tasación */
+.tasa{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:32px 56px;padding:64px var(--gutter);max-width:1240px}
+.tasa h2{font-family:var(--serif);font-weight:400;font-size:clamp(1.9rem,3.4vw,2.7rem);line-height:1.08;margin:0 0 14px;color:var(--verde)}
+.tasa p{margin:0 0 12px;color:var(--pizarra);max-width:42ch}
+.form{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px 16px;background:#fff;border:1px solid var(--linea);border-radius:10px;padding:22px}
+.form label{display:flex;flex-direction:column;gap:5px;font-size:.88rem;color:var(--pizarra)}
+.form input,.form select,.form textarea{border:1px solid var(--linea-fuerte);border-radius:7px;padding:9px 11px;background:var(--hueso);font-size:1rem;color:var(--tinta);min-width:0;width:100%}
+.form input[name="dir"]{font-family:var(--serif);font-size:1.2rem}
+.c6{grid-column:span 6}.c3{grid-column:span 3}.c2{grid-column:span 2}
+.form .acciones{grid-column:span 6;display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center}
+.form .nota{font-size:.82rem;color:var(--pizarra);margin:0}
+.error{color:#9B2C1F;font-size:.85rem;min-height:1em}
+.btn{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:10px 18px;font-weight:600;font-size:.95rem;text-decoration:none;cursor:pointer;border:1px solid transparent}
+.btn-wa{background:var(--verde);color:#fff}
+.btn-wa:hover{background:var(--verde-hondo)}
+.btn-borde{background:transparent;color:var(--verde);border-color:var(--verde)}
+.btn-borde:hover{background:var(--verde-suave)}
+.btn svg{width:18px;height:18px;flex:none}
+
+/* pie */
+.pie{border-top:1px solid var(--linea);padding:36px var(--gutter) 28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:24px;font-size:.93rem;color:var(--pizarra)}
+.pie h4{font-family:var(--serif);font-weight:500;font-size:1.2rem;color:var(--tinta);margin:0 0 6px}
+.pie p{margin:0 0 4px}
+.pie a{color:var(--verde)}
+.pie .firma{grid-column:1/-1;font-size:.82rem;border-top:1px solid var(--linea);padding-top:16px}
+
+/* ficha */
+dialog.ficha{width:min(1080px,100%);max-width:100%;max-height:100%;height:auto;margin:auto 0 auto auto;padding:0;border:0;background:var(--hueso);color:var(--tinta);box-shadow:-20px 0 60px rgba(21,32,27,.18);min-height:100vh}
+dialog.ficha::backdrop{background:rgba(21,32,27,.45)}
+.f-top{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px var(--gutter);background:var(--hueso);border-bottom:1px solid var(--linea)}
+.f-top .cod{font-size:.85rem;color:var(--pizarra)}
+.cerrar{border:1px solid var(--linea-fuerte);background:#fff;border-radius:999px;padding:6px 14px;cursor:pointer;font-size:.92rem}
+.f-cuerpo{padding:22px var(--gutter) 40px}
+.f-cab{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 24px;align-items:end;margin-bottom:18px}
+.f-cab h2{font-family:var(--serif);font-weight:400;font-size:clamp(2.1rem,5vw,3.4rem);line-height:1;margin:0;color:var(--verde);letter-spacing:-.015em}
+.f-cab p{margin:6px 0 0;color:var(--pizarra)}
+.f-cab .precio{font-size:1.05rem;text-align:left}
+.f-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:28px}
+.gal-main{aspect-ratio:16/10;border-radius:6px;overflow:hidden;background:var(--verde)}
+.gal-main img{width:100%;height:100%;object-fit:cover}
+.gal-tira{display:flex;gap:8px;margin-top:8px;overflow-x:auto;padding-bottom:4px}
+.gal-tira button{flex:none;width:76px;height:52px;padding:0;border:2px solid transparent;border-radius:4px;overflow:hidden;cursor:pointer;background:var(--verde)}
+.gal-tira button[aria-current="true"]{border-color:var(--ocre)}
+.gal-tira img{width:100%;height:100%;object-fit:cover}
+.gal-tira .ph{padding:4px}
+.gal-tira .ph b{font-size:.62rem}
+.gal-cont{font-size:.82rem;color:var(--pizarra);margin:6px 0 0}
+.tabla{margin:0;display:grid;grid-template-columns:auto 1fr;gap:0;border-top:1px solid var(--linea)}
+.tabla dt,.tabla dd{padding:9px 0;border-bottom:1px solid var(--linea);margin:0;font-size:.95rem}
+.tabla dt{color:var(--pizarra);padding-right:18px}
+.tabla dd{font-weight:500}
+.carac{display:flex;flex-wrap:wrap;gap:6px;padding:0;margin:14px 0 0;list-style:none}
+.carac li{border:1px solid var(--linea-fuerte);border-radius:999px;padding:3px 11px;font-size:.86rem}
+.f-desc{margin:16px 0 0;color:var(--tinta);max-width:60ch}
+.f-acc{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.f-fuente{font-size:.82rem;color:var(--pizarra);margin-top:12px}
+.f-mapa{margin-top:28px;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:28px;align-items:start}
+.f-mapa iframe{width:100%;height:300px;border:0;border-radius:6px;background:var(--papel)}
+.f-mapa h3,.parecidas h3{font-family:var(--serif);font-weight:500;font-size:1.35rem;margin:0 0 8px}
+.f-mapa .plano-mini{border:1px solid var(--linea);border-radius:6px;background:var(--papel);padding:6px}
+.f-mapa .plano-mini svg{width:100%;height:auto;display:block}
+.parecidas{margin-top:32px}
+.parecidas ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0 24px;border-top:1px solid var(--linea)}
+.parecidas button{width:100%;text-align:left;display:grid;grid-template-columns:72px 1fr;gap:12px;align-items:center;padding:12px 0;border:0;border-bottom:1px solid var(--linea);background:transparent;cursor:pointer}
+.parecidas .mini{width:72px;height:50px}
+.parecidas b{font-family:var(--serif);font-weight:500;font-size:1.12rem;display:block;line-height:1.15}
+.parecidas span{font-size:.85rem;color:var(--pizarra)}
+.parecidas button:hover b{color:var(--verde);text-decoration:underline;text-underline-offset:3px}
+
+#hoja{display:none}
+.desliza{display:none}
+@media (max-width:700px){.desliza{display:inline}}
+
+@media (max-width:1100px){
+  .fila{grid-template-columns:28px 88px minmax(0,1fr);}
+  .mini{width:88px;height:62px}
+  .fila .precio{grid-column:3;text-align:left;display:flex;gap:8px;align-items:baseline;margin:-6px 0 0}
+  .fila .precio small{display:inline}
+  .fila h3{font-size:1.3rem}
+}
+@media (max-width:960px){
+  .cab nav a:not(.tel){display:none}
+  .intro{grid-template-columns:1fr;padding-top:28px}
+  .vista{display:inline-flex}
+  .split{grid-template-columns:1fr}
+  .split[data-vista="lista"] .plano-col{display:none}
+  .split[data-vista="plano"] .lista-col{display:none}
+  .plano-col{border-left:0}
+  .plano-pega{position:static;height:auto}
+  .plano-wrap{padding:8px;overflow-x:auto}
+  .plano-wrap svg{width:max(100%,680px);max-width:none;max-height:none;height:auto}
+  .filtros{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding:8px 16px}
+  .filtros::-webkit-scrollbar{display:none}
+  .filtros > *{flex:none}
+  .vista{order:-1}
+  .cuenta{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .f-grid,.f-mapa{grid-template-columns:minmax(0,1fr)}
+  .tasa{grid-template-columns:1fr;padding-top:48px;padding-bottom:48px}
+  dialog.ficha{margin:0;width:100%}
+}
+@media (max-width:560px){
+  .marca span{display:none}
+  .intro h1 span:nth-child(2),.intro h1 span:nth-child(3){padding-left:0}
+  .filtros{gap:8px}
+  .campo span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .campo select{padding:6px 24px 6px 9px;font-size:.88rem}
+  .fila{grid-template-columns:26px 76px minmax(0,1fr);gap:12px;padding:12px 16px}
+  .mini{width:76px;height:56px}
+  .mini .ph b{font-size:.74rem}
+  .mini .ph i{display:none}
+  .fila h3{font-size:1.2rem}
+  .c3,.c2{grid-column:span 6}
+  .form{padding:16px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition:none !important;animation:none !important;scroll-behavior:auto !important}
+}
+
+/* ficha imprimible: una hoja A4 */
+@media print{
+  @page{size:A4;margin:13mm 14mm}
+  html,body{background:#fff !important}
+  body > *:not(#hoja){display:none !important}
+  dialog{display:none !important}
+  #hoja{display:block;color:#15201B;font-family:var(--sans);font-size:10.5pt;line-height:1.4}
+  #hoja *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .h-cab{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:1.5pt solid #1E4D3A;padding-bottom:6pt;margin-bottom:10pt}
+  .h-cab b{font-family:var(--serif);font-size:20pt;font-weight:600;color:#1E4D3A;line-height:1}
+  .h-cab span{font-size:9pt;color:#4A4F55;text-align:right}
+  .h-tit{font-family:var(--serif);font-size:30pt;font-weight:400;color:#1E4D3A;margin:0;line-height:1}
+  .h-sub{margin:3pt 0 9pt;color:#4A4F55;font-size:11pt}
+  .h-foto{height:92mm;border-radius:2mm;overflow:hidden;background:#1E4D3A;margin-bottom:9pt}
+  .h-foto img{width:100%;height:100%;object-fit:cover}
+  .h-foto .ph.grande b{font-size:30pt}
+  .h-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:9mm}
+  .h-grid .tabla dt,.h-grid .tabla dd{padding:4pt 0;font-size:10pt}
+  .h-grid .carac li{font-size:8.5pt;padding:1pt 7pt}
+  .h-grid .f-desc{font-size:9.5pt;margin-top:8pt}
+  .h-plano{border:0.75pt solid #ccc;border-radius:2mm;background:#F2F1EB;padding:2mm}
+  .h-plano svg{width:100%;height:auto;display:block}
+  .h-plano p{font-size:8pt;color:#4A4F55;margin:2pt 0 0}
+  .h-contacto{margin-top:9pt;border-top:0.75pt solid #ccc;padding-top:7pt;display:grid;grid-template-columns:1fr 1fr 1fr;gap:6mm;font-size:9pt}
+  .h-contacto b{display:block;font-family:var(--serif);font-size:11pt;color:#1E4D3A}
+  .h-pie{margin-top:7pt;font-size:7.5pt;color:#6A6F74}
+  .h-grid,.h-foto,.h-contacto{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<div class="demo" role="note">Prototipo de demostración preparado para <strong>Berrini Negocios Inmobiliarios</strong> por Resolviendo Kos. Las propiedades y fotos salen de su web y de sus avisos en Zonaprop; no es el sitio oficial.</div>
+
+<header class="cab">
+  <a class="marca" href="#top" aria-label="Berrini Negocios Inmobiliarios, inicio"><b>Berrini</b><span>Negocios Inmobiliarios</span></a>
+  <nav aria-label="Principal">
+    <a href="#propiedades">Propiedades</a>
+    <a href="#tasar">Tasá tu propiedad</a>
+    <a href="#contacto">Contacto</a>
+    <a class="tel" href="tel:+543534522842">(0353) 452-2842</a>
+  </nav>
+</header>
+
+<main id="top">
+<section class="intro" aria-labelledby="titular">
+  <h1 id="titular"><span>Santa Fe 2130.</span><span>Mendoza 1566.</span><span>Catamarca 1259.</span></h1>
+  <div>
+    <p>En Villa María una casa se busca por la calle y el número. Así ordenamos la cartera: cada propiedad en la lista y en el plano del centro y los barrios.</p>
+    <p class="ofi">Oficina en Lisandro de la Torre 42, Villa María.</p>
+  </div>
+</section>
+
+<section id="propiedades" aria-label="Propiedades">
+  <div class="filtros" role="group" aria-label="Filtrar propiedades">
+    <div class="seg" role="group" aria-label="Operación">
+      <button type="button" data-op="venta" aria-pressed="true">Venta</button>
+      <button type="button" data-op="alquiler" aria-pressed="false">Alquiler</button>
+    </div>
+    <label class="campo"><span>Tipo</span>
+      <select id="f-tipo"><option value="">Todos los tipos</option><option>Casa</option><option>Departamento</option></select>
+    </label>
+    <label class="campo"><span>Barrio</span>
+      <select id="f-barrio"><option value="">Todos los barrios</option></select>
+    </label>
+    <label class="campo"><span>Dormitorios</span>
+      <select id="f-dorm"><option value="">Cualquier cantidad</option><option value="1">1 dormitorio</option><option value="2">2 dormitorios</option><option value="3">3 dormitorios</option><option value="4">4 o más</option></select>
+    </label>
+    <div class="seg vista" role="group" aria-label="Vista">
+      <button type="button" data-vista="lista" aria-pressed="true">Lista</button>
+      <button type="button" data-vista="plano" aria-pressed="false">Plano</button>
+    </div>
+    <p class="cuenta" id="cuenta" aria-live="polite"></p>
+  </div>
+
+  <div class="split" id="split" data-vista="lista">
+    <div class="lista-col">
+      <ol class="lista" id="lista"></ol>
+      <div class="vacio" id="vacio" hidden></div>
+    </div>
+    <div class="plano-col">
+      <div class="plano-pega">
+        <div class="plano-wrap" id="plano"></div>
+        <div class="plano-pie"><span>Plano esquemático, no a escala. Tocá un número para ver la ficha<span class="desliza">; en el celular, deslizá el plano para recorrerlo</span>.</span><span class="ofi-ref">Oficina Berrini</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="tasa" id="tasar" aria-labelledby="tasa-t">
+  <div>
+    <h2 id="tasa-t">Tasá tu propiedad</h2>
+    <p>Pasanos la dirección y lo básico de la casa o el departamento. Con eso coordinamos la visita para tasarla, sea para vender o para alquilar.</p>
+    <p>El formulario no guarda nada: arma el mensaje y lo abrís en WhatsApp para mandarlo vos.</p>
+  </div>
+  <form class="form" id="form-tasa" novalidate>
+    <label class="c6">Dirección
+      <input name="dir" id="t-dir" autocomplete="street-address" placeholder="Ej.: Entre Ríos 1486" required>
+    </label>
+    <label class="c3">Barrio
+      <input name="barrio" placeholder="Ej.: Ameghino">
+    </label>
+    <label class="c3">Tipo
+      <select name="tipo"><option>Casa</option><option>Departamento</option><option>Dúplex</option><option>Local comercial</option><option>Terreno</option><option>Cochera</option></select>
+    </label>
+    <label class="c2">Dormitorios
+      <select name="dorm"><option value="">—</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5 o más</option></select>
+    </label>
+    <label class="c2">m² cubiertos
+      <input name="m2" inputmode="numeric" placeholder="Ej.: 120">
+    </label>
+    <label class="c2">Quiero
+      <select name="fin"><option value="vender">Vender</option><option value="alquilar">Alquilar</option></select>
+    </label>
+    <label class="c6">Tu nombre
+      <input name="nombre" autocomplete="name">
+    </label>
+    <div class="acciones">
+      <button class="btn btn-wa" type="submit"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.6.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.4-.3z"/></svg>Enviar por WhatsApp</button>
+      <p class="nota" id="t-nota">Va a ventas, 15-4086066.</p>
+      <p class="error c6" id="t-error" role="alert"></p>
+    </div>
+  </form>
+</section>
+</main>
+
+<footer class="pie" id="contacto">
+  <div>
+    <h4>Berrini Negocios Inmobiliarios</h4>
+    <p>Lisandro de la Torre 42</p>
+    <p>Villa María, Córdoba</p>
+  </div>
+  <div>
+    <h4>Teléfonos fijos</h4>
+    <p><a href="tel:+543534522842">(0353) 452-2842</a></p>
+    <p><a href="tel:+543534521193">(0353) 452-1193</a></p>
+  </div>
+  <div>
+    <h4>Ventas</h4>
+    <p><a href="https://wa.me/5493534086066">15-4086066</a> y <a href="https://wa.me/5493535082492">15-5082492</a></p>
+    <h4 style="margin-top:12px">Alquileres</h4>
+    <p><a href="https://wa.me/5493535082492">15-5082492</a></p>
+  </div>
+  <div>
+    <h4>Correo</h4>
+    <p><a href="mailto:berrininegociosinmobiliarios@hotmail.com">berrininegociosinmobiliarios@hotmail.com</a></p>
+    <p><a href="https://www.facebook.com/inmobiliariaberrini.berrinirevello" rel="noopener" target="_blank">Facebook</a></p>
+  </div>
+  <p class="firma">Prototipo de demostración preparado para Berrini Negocios Inmobiliarios por Resolviendo Kos. Precios a consultar, tal como figuran en sus publicaciones.</p>
+</footer>
+
+<dialog class="ficha" id="ficha" aria-labelledby="f-tit">
+  <div class="f-top">
+    <span class="cod" id="f-cod"></span>
+    <button type="button" class="cerrar" id="f-cerrar">Cerrar</button>
+  </div>
+  <div class="f-cuerpo" id="f-cuerpo"></div>
+</dialog>
+
+<div id="hoja" aria-hidden="true"></div>
+
+<script>
+(function(){
+"use strict";
+var U = "https://www.inmobiliariaberrini.com.ar/wp-content/uploads/";
+var ZP = "https://www.zonaprop.com.ar/propiedades/clasificado/";
+var WA_VENTAS = "5493534086066", WA_ALQ = "5493535082492";
+
+/* Propiedades reales: web de Berrini y avisos de Zonaprop (octubre 2026). Sin precios publicados. */
+var P = [
+ {id:"santa-fe-2130", dir:"Santa Fe 2130", op:"venta", tipo:"Casa", barrio:"Ameghino", que:"Casa reciclada en 2021", dorm:[2], banos:"1", cub:"139 m²", terreno:"245 m²",
+  carac:["Cocina","Living-comedor","Patio","Garage","Con escritura"],
+  desc:"Casa impecable en barrio Ameghino. Refaccionada en 2021, con instalaciones nuevas de agua, gas y electricidad según norma vigente, tanque de agua y sistema cloacal. Se puede vender amoblada: cocina, heladera, lavarropas, camas, placares, alarma y 2 aires acondicionados.",
+  cod:"21913", fuente:"https://www.inmobiliariaberrini.com.ar/properties/venta-casa-en-b-ameghino-santa-fe-2130-2-dorm/",
+  fotos:["2026/01/FB_IMG_1768258312874","2026/01/FB_IMG_1768258318635","2026/01/FB_IMG_1768258321249","2026/01/FB_IMG_1768258324060","2026/01/FB_IMG_1768258329338","2026/01/FB_IMG_1768258335726","2026/01/FB_IMG_1768258327394","2026/01/FB_IMG_1768258344151","2026/01/FB_IMG_1768258346233","2026/01/FB_IMG_1768258315965"].map(function(f){return U+f+"-1110x623.jpg";}),
+  x:159, y:210},
+ {id:"salta-1729", dir:"Salta 1729", op:"venta", tipo:"Departamento", barrio:"Ameghino", que:"Departamento en 2º piso", dorm:[1], banos:"1, con antebaño", piso:"2º",
+  carac:["Estar-comedor","Cocina","Balcón","Antebaño"],
+  desc:"Departamento de un dormitorio en segundo piso, con estar-comedor, cocina, baño con antebaño y balcón.",
+  cod:"22660", fuente:"https://www.inmobiliariaberrini.com.ar/properties/venta-dpto-en-b-ameghino-salta-1729-1-dorm/",
+  fotos:[U+"2026/09/FB_IMG_1790104439687-1110x623.jpg",U+"2026/09/FB_IMG_1790104446236-1110x623.jpg",U+"2026/09/FB_IMG_1790104450400-1110x623.jpg",U+"2026/09/FB_IMG_1790104444165-1110x623.jpg",U+"2026/09/FB_IMG_1790104448117.jpg"],
+  x:328, y:280},
+ {id:"jujuy-1620", dir:"Jujuy 1620", op:"venta", tipo:"Casa", barrio:"Ameghino", que:"Casa con garage y patio de luz", dorm:[3], banos:"1, más baño de servicio", cub:"130 m²", terreno:"10 x 20 m",
+  carac:["Cocina","Comedor","Estar","Patio de luz","Garage"],
+  desc:"Casa en barrio Ameghino con tres dormitorios, baño y baño de servicio, cocina, comedor, estar, patio de luz y garage.",
+  cod:"21550", fuente:"https://www.inmobiliariaberrini.com.ar/properties/venta-casa-en-b-ameghino-3-dorm-jujuy-1620/",
+  fotos:["1-11a","1-11111-11","2-12","3-12","4-12","5-12","6-12","7-12","8-12","9-12"].map(function(f){return U+"2025/09/"+f+"-1110x623.jpg";}),
+  x:374, y:350},
+ {id:"jujuy-1363", dir:"Jujuy 1363", op:"venta", tipo:"Departamento", barrio:"Centro", que:"Dos departamentos en el mismo inmueble", dorm:[1], dormTxt:"2 unidades de 1 dorm.", banos:"1 por unidad",
+  carac:["Planta baja con patio","Primer piso con terraza","Cocina-comedor amplia"],
+  desc:"Se venden juntos dos departamentos de un dormitorio. El de planta baja tiene cocina-comedor amplia, baño y patio; el del primer piso, cocina-comedor amplia, baño y terraza.",
+  cod:"22668", fuente:"https://www.inmobiliariaberrini.com.ar/properties/venta-dpto-en-b-centro-jujuy-1363-1-dorm/",
+  fotos:[U+"2026/09/FB_IMG_1790104764949-1110x623.jpg",U+"2026/09/FB_IMG_1790104771165-1110x623.jpg",U+"2026/09/FB_IMG_1790104769239.jpg",U+"2026/09/FB_IMG_1790104767235.jpg",U+"2026/09/FB_IMG_1790104783318.jpg",U+"2026/09/FB_IMG_1790104787619.jpg"],
+  x:482, y:350},
+ {id:"catamarca-1259", dir:"Catamarca 1259", edificio:"Edificio Copahue 7", op:"venta", tipo:"Departamento", barrio:"Centro", que:"Edificio Copahue 7, terminado", dorm:[1,2], dormTxt:"1 y 2 dorm.", banos:"1", cub:"58 a 63 m²", cochera:"En unidades de 2 dorm.",
+  carac:["Edificio terminado","Pleno centro","Unidades de 1 y 2 dormitorios"],
+  desc:"Departamentos en el Edificio Copahue 7, en pleno centro de Villa María. Unidades de 1 y 2 dormitorios, de 58 a 63 m²; el aviso de 2 dormitorios incluye cochera.",
+  fuente:ZP+"veclapin-edificio-copahue-7-en-pleno-centro-de-villa-maria-51346877.html", fotos:[], x:525, y:420},
+ {id:"mendoza-1566", dir:"Mendoza 1566", edificio:"Piso 9", op:"venta", tipo:"Departamento", barrio:"Lamadrid", que:"Departamento en piso 9", dorm:[3], banos:"2", cub:"140 m²", cochera:"1", piso:"9º",
+  carac:["Piso 9","Cochera","2 baños"],
+  desc:"Departamento de tres dormitorios y 140 m² en el noveno piso, con dos baños y cochera, en barrio General Lamadrid.",
+  fuente:ZP+"veclapin-venta:-excelente-depto-3-dorm-b-lamadrid-mendoza-1566-57103831.html", fotos:[], x:431, y:560},
+ {id:"bv-espana-340", dir:"Bv. España 340", edificio:"Edificio Alto Boulevard", op:"venta", tipo:"Departamento", barrio:"Centro", que:"Edificio Alto Boulevard", dorm:[2], banos:"2", cub:"62 m²", cochera:"1",
+  carac:["Sobre el bulevar","Cochera","2 baños"],
+  desc:"Departamento de dos dormitorios en el Edificio Alto Boulevard, sobre Bv. España, con dos baños y cochera.",
+  fuente:ZP+"veclapin-venta-dpto-en-villa-maria:-edificio-alto-boulevard-50422449.html", fotos:[], x:634, y:345},
+ {id:"entre-rios-1486", dir:"Entre Ríos 1486", op:"venta", tipo:"Casa", barrio:"Centro", que:"Casa de cinco dormitorios", dorm:[5], banos:"3", cub:"215 m²", cochera:"1",
+  carac:["5 dormitorios","3 baños","Cochera"],
+  desc:"Casa en el centro con cinco dormitorios, tres baños y cochera, sobre 215 m².",
+  fuente:ZP+"veclcain-venta-casa-en-b-centro-5-dorm-entre-rios-1486-51363474.html", fotos:[], x:430, y:490},
+ {id:"m-moreno-471", dir:"M. Moreno 471", op:"venta", tipo:"Casa", barrio:"Centro Sur", que:"Casa amplia con piscina", dorm:[3], banos:"2", cub:"202,84 m²", terreno:"13 x 28,78 m (374,27 m²)",
+  carac:["Estar","Estudio","Habitación multiuso","Comedor principal","Cocina-comedor","Lavadero","Garage","Patio de luz","Patio con piscina","Depósito"],
+  desc:"Amplia casa en barrio Centro Sur: estar, habitación multiuso, estudio, garage, patio de luz, comedor principal, cocina-comedor, tres dormitorios, dos baños, lavadero y patio con piscina y depósito.",
+  cod:"22603", fuente:"https://www.inmobiliariaberrini.com.ar/properties/venta-casa-en-b-centro-sur-m-moreno-471-3-dorm/",
+  fotos:["FB_IMG_1787536010243-1","FB_IMG_1787536013148-1","FB_IMG_1787536020585-1","FB_IMG_1787536022667-1","FB_IMG_1787536025097-1","FB_IMG_1787536028066-1","FB_IMG_1787536033989","FB_IMG_1787536039232","FB_IMG_1787536042742","FB_IMG_1787536045601"].map(function(f){return U+"2026/08/"+f+".jpg";}),
+  x:742, y:443},
+ {id:"uspallata-y-solis", dir:"Uspallata y Solís", op:"venta", tipo:"Casa", barrio:"Palermo", que:"Casa en esquina, lote de 375 m²", dorm:[3], banos:"3", cub:"250 m²", terreno:"375 m²", cochera:"2",
+  carac:["Esquina","2 cocheras","3 baños"],
+  desc:"Casa de tres dormitorios y 250 m² cubiertos sobre un terreno de 375 m², en la esquina de Uspallata y Solís, barrio Palermo. Tres baños y dos cocheras.",
+  fuente:ZP+"veclcain-casa-con-3-dorm.-de-250-m-sup2--en-venta-en-barrio-57963766.html", fotos:[], x:690, y:760}
+];
+P.forEach(function(p,i){p.n=i+1;});
+
+var $ = function(s,c){return (c||document).querySelector(s);};
+var esc = function(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});};
+function dormTxt(p){return p.dormTxt || (p.dorm[0]+" dorm.");}
+function ph(p,grande){return '<div class="ph'+(grande?' grande':'')+'" role="img" aria-label="'+esc(p.dir)+', sin foto"><b>'+esc(p.dir)+'</b><i>'+esc(p.edificio||p.barrio)+'</i></div>';}
+function foto(p,src,grande,alt){
+  if(!src) return ph(p,grande);
+  /* la dirección tipográfica queda debajo: si la foto tarda o no carga, nunca hay un hueco */
+  return ph(p,grande).replace(' role="img" aria-label="'+esc(p.dir)+', sin foto"',' aria-hidden="true"')+'<img class="ft" src="'+esc(src)+'" alt="'+esc(alt||p.dir)+'" loading="lazy" decoding="async" data-ph="1">';
+}
+/* si una foto no carga, va la dirección tipográfica */
+document.addEventListener("error",function(e){
+  var t=e.target;
+  if(t && t.tagName==="IMG" && t.dataset.ph){
+    var ph=t.previousElementSibling; if(ph){ph.setAttribute("role","img");ph.setAttribute("aria-label",(t.alt||"Foto")+", no disponible");ph.removeAttribute("aria-hidden");}
+    t.remove();
+  }
+},true);
+function waLink(p){
+  var num = p.op==="alquiler"?WA_ALQ:WA_VENTAS;
+  var txt = "Hola, vi en la web la propiedad de "+p.dir+(p.edificio&&p.edificio.indexOf("Edificio")===0?" ("+p.edificio+")":"")+", barrio "+p.barrio+". Quería consultar el precio y coordinar una visita.";
+  return "https://wa.me/"+num+"?text="+encodeURIComponent(txt);
+}
+var WA_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.6.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.4-.3z"/></svg>';
+
+/* ---------- plano esquemático ---------- */
+var NS="http://www.w3.org/2000/svg";
+function planoSVG(opts){
+  opts=opts||{};
+  var W=800,H=860,s=[];
+  s.push('<svg xmlns="'+NS+'" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+(opts.aria||"Plano esquemático de Villa María con las propiedades numeradas")+'">');
+  s.push('<rect x="0" y="0" width="'+W+'" height="'+H+'" fill="#EAE8DF"/>');
+  /* manzanas */
+  var Hs=[[140,"Buenos Aires"],[210,"Santa Fe"],[280,"Salta"],[350,"Jujuy"],[420,"Catamarca"],[490,"Entre Ríos"],[560,"Mendoza"],[630,"Santiago del Estero"],[700,""],[770,""]];
+  var Vx=[]; for(var x=60;x<=790;x+=46){Vx.push(x);}
+  s.push('<rect class="manzana" x="40" y="96" width="750" height="744" rx="2"/>');
+  /* zonas */
+  var Z=[[44,100,356,360,"Ameghino",170,252],[400,100,320,430,"Centro",420,252],[720,300,70,380,"",0,0],[290,530,290,306,"Lamadrid",300,612],[580,690,210,150,"Palermo",600,734]];
+  var zfill={Ameghino:"rgba(200,144,46,.2)",Centro:"rgba(30,77,58,.15)",Lamadrid:"rgba(74,79,85,.13)",Palermo:"rgba(200,144,46,.2)","":"rgba(30,77,58,.08)"};
+  Z.forEach(function(z){s.push('<rect x="'+z[0]+'" y="'+z[1]+'" width="'+z[2]+'" height="'+z[3]+'" fill="'+zfill[z[4]]+'"/>');});
+  /* calles */
+  Hs.forEach(function(h){s.push('<line class="calle" x1="40" y1="'+h[0]+'" x2="790" y2="'+h[0]+'"/>');});
+  Vx.forEach(function(x){s.push('<line class="calle" x1="'+x+'" y1="96" x2="'+x+'" y2="840"/>');});
+  /* bulevares y calles con nombre */
+  var V=[[592,"Lisandro de la Torre",false],[634,"Bv. España",true],[700,"Bv. Sarmiento",true],[742,"M. Moreno",false]];
+  V.forEach(function(v){
+    s.push('<line class="calle'+(v[2]?' bv':'')+'" x1="'+v[0]+'" y1="96" x2="'+v[0]+'" y2="'+(v[0]>680?680:840)+'"/>');
+    if(v[2]) s.push('<line class="bv-cantero" x1="'+v[0]+'" y1="100" x2="'+v[0]+'" y2="'+(v[0]>680?676:836)+'"/>');
+  });
+  /* Palermo: Uspallata y Solís */
+  s.push('<line class="calle" x1="560" y1="760" x2="790" y2="760"/><line class="calle" x1="690" y1="690" x2="690" y2="840"/>');
+  /* río */
+  s.push('<path class="rio" d="M0 0H800V58C700 76 600 54 480 70S260 92 140 72 30 66 0 76Z"/>');
+  s.push('<text class="rio-txt" x="70" y="40">Río Ctalamochita</text>');
+  s.push('<text class="nombre" x="44" y="91">Costanera</text>');
+  /* nombres */
+  Hs.forEach(function(h){ if(h[1]) s.push('<text class="nombre" x="46" y="'+(h[0]-6)+'">'+h[1]+'</text>'); });
+  V.forEach(function(v){ s.push('<text class="nombre fuerte" transform="translate('+(v[0]+(v[2]?11:6))+' 104) rotate(90)">'+v[1]+'</text>'); });
+  s.push('<text class="nombre fuerte" x="566" y="754">Uspallata</text><text class="nombre fuerte" transform="translate(696 790) rotate(90)">Solís</text>');
+  Z.forEach(function(z){ if(z[4]) s.push('<text class="zona" x="'+z[5]+'" y="'+z[6]+'">'+z[4]+'</text>'); });
+  s.push('<text class="zona" transform="translate(782 560) rotate(-90)">Centro Sur</text>');
+  /* oficina: Lisandro de la Torre 42 */
+  s.push('<g aria-label="Oficina de Berrini, Lisandro de la Torre 42"><rect x="584" y="112" width="16" height="16" fill="#C8902E" stroke="#FAFAF7" stroke-width="2"/><text class="nombre fuerte" x="578" y="126" text-anchor="end">Oficina</text></g>');
+  /* pines */
+  var lista = opts.solo ? P.filter(function(p){return p.id===opts.solo;}) : P;
+  var otros = opts.solo ? P.filter(function(p){return p.id!==opts.solo;}) : [];
+  otros.forEach(function(p){ s.push('<circle cx="'+p.x+'" cy="'+p.y+'" r="5" fill="#1E4D3A" opacity=".35"/>'); });
+  lista.forEach(function(p){
+    var w = Math.round(p.dir.length*8.6+24), left = p.x + w + 26 > W;
+    var ex = left ? p.x-24-w : p.x+24;
+    s.push('<g class="pin'+(opts.solo?' on':'')+'" data-id="'+p.id+'"'+(opts.solo?'':' tabindex="0" role="button" aria-label="'+p.n+'. '+esc(p.dir)+', '+esc(p.tipo.toLowerCase())+' en '+esc(p.barrio)+'. Ver ficha"')+'>');
+    s.push('<circle cx="'+p.x+'" cy="'+p.y+'" r="15"/><text x="'+p.x+'" y="'+(p.y+.5)+'">'+p.n+'</text>');
+    s.push('<g class="etq"><rect x="'+ex+'" y="'+(p.y-16)+'" width="'+w+'" height="32" rx="3"/><text x="'+(ex+11)+'" y="'+(p.y+.5)+'" dominant-baseline="central">'+esc(p.dir)+'</text></g>');
+    s.push('</g>');
+  });
+  if(!opts.solo) s.push('<g class="capa" pointer-events="none"></g>');
+  s.push('</svg>');
+  return s.join("");
+}
+
+/* ---------- lista y filtros ---------- */
+var estado={op:"venta",tipo:"",barrio:"",dorm:""};
+var barrios=[]; P.forEach(function(p){if(barrios.indexOf(p.barrio)<0)barrios.push(p.barrio);});
+var selB=$("#f-barrio"); barrios.forEach(function(b){var o=document.createElement("option");o.textContent=b;selB.appendChild(o);});
+
+function pasa(p){
+  if(p.op!==estado.op) return false;
+  if(estado.tipo && p.tipo!==estado.tipo) return false;
+  if(estado.barrio && p.barrio!==estado.barrio) return false;
+  if(estado.dorm){var d=+estado.dorm; if(!p.dorm.some(function(x){return d===4?x>=4:x===d;})) return false;}
+  return true;
+}
+function datosLi(p){
+  var a=[dormTxt(p)];
+  if(p.banos) a.push(p.banos.charAt(0)+(p.banos.charAt(0)==="1"?" baño":" baños"));
+  if(p.cub) a.push(p.cub+(p.tipo==="Casa"?" cub.":""));
+  if(p.terreno && p.tipo==="Casa") a.push("lote "+p.terreno.replace(/ \(.*\)/,""));
+  if(p.cochera) a.push("cochera");
+  return a.map(function(x){return "<li>"+esc(x)+"</li>";}).join("");
+}
+function render(){
+  var vis=P.filter(pasa), ul=$("#lista");
+  ul.innerHTML=vis.map(function(p){
+    return '<li class="fila" data-id="'+p.id+'">'+
+      '<span class="num" aria-hidden="true">'+p.n+'</span>'+
+      '<div class="mini">'+foto(p,p.fotos[0],false,"")+'</div>'+
+      '<div><h3><a href="#'+p.id+'">'+esc(p.dir)+'</a></h3><p class="que">'+esc(p.tipo)+' en '+esc(p.barrio)+'. '+esc(p.que)+'</p><ul class="datos">'+datosLi(p)+'</ul></div>'+
+      '<p class="precio">Consultar precio<small>'+(p.op==="venta"?"Venta":"Alquiler")+'</small></p>'+
+    '</li>';
+  }).join("");
+  var vacio=$("#vacio");
+  if(!vis.length){
+    vacio.hidden=false;
+    if(estado.op==="alquiler"){
+      vacio.innerHTML='<h3>Los alquileres se consultan por WhatsApp</h3><p>En este prototipo cargamos la cartera de venta publicada. Para departamentos y casas en alquiler, escribile directo a la línea de alquileres, 15-5082492.</p><a class="btn btn-wa" href="https://wa.me/'+WA_ALQ+'?text='+encodeURIComponent("Hola, estoy buscando una propiedad en alquiler en Villa María. ¿Qué tienen disponible?")+'" target="_blank" rel="noopener">'+WA_SVG+'Consultar alquileres</a>';
+    } else {
+      vacio.innerHTML='<h3>Ninguna propiedad cumple todos los filtros</h3><p>Probá sacar el barrio o la cantidad de dormitorios.</p><button type="button" class="btn btn-borde" id="limpiar">Ver todas las propiedades</button>';
+      $("#limpiar").onclick=function(){estado.tipo=estado.barrio=estado.dorm="";$("#f-tipo").value=$("#f-barrio").value=$("#f-dorm").value="";render();};
+    }
+  } else vacio.hidden=true;
+  var n=vis.length;
+  $("#cuenta").textContent = n ? (n===1?"1 propiedad":n+" propiedades")+(estado.op==="venta"?" en venta":" en alquiler") : "";
+  document.querySelectorAll("#plano .pin").forEach(function(g){g.classList.toggle("off",!vis.some(function(p){return p.id===g.dataset.id;}));});
+}
+$("#plano").innerHTML=planoSVG();
+
+document.querySelectorAll("[data-op]").forEach(function(b){b.addEventListener("click",function(){
+  estado.op=b.dataset.op; document.querySelectorAll("[data-op]").forEach(function(x){x.setAttribute("aria-pressed",x===b);}); render();
+});});
+$("#f-tipo").onchange=function(){estado.tipo=this.value;render();};
+$("#f-barrio").onchange=function(){estado.barrio=this.value;render();};
+$("#f-dorm").onchange=function(){estado.dorm=this.value;render();};
+document.querySelectorAll("[data-vista]").forEach(function(b){b.addEventListener("click",function(){
+  $("#split").dataset.vista=b.dataset.vista; document.querySelectorAll("[data-vista]").forEach(function(x){x.setAttribute("aria-pressed",x===b);});
+  if(b.dataset.vista==="plano"){var pw=$("#plano"); pw.scrollLeft=(pw.scrollWidth-pw.clientWidth)/2;}
+});});
+
+/* resaltar lista <-> plano */
+function marcar(id,on){
+  var f=document.querySelector('.fila[data-id="'+id+'"]'), g=document.querySelector('#plano .pin[data-id="'+id+'"]');
+  if(f) f.classList.toggle("on",on);
+  if(g){ g.classList.toggle("on",on);
+    var capa=document.querySelector("#plano .capa");
+    if(capa){ capa.innerHTML=""; if(on){ var c=g.cloneNode(true); c.removeAttribute("tabindex"); c.removeAttribute("role"); c.removeAttribute("aria-label"); c.removeAttribute("data-id"); c.setAttribute("aria-hidden","true"); capa.appendChild(c); } }
+  }
+}
+var lista=$("#lista");
+lista.addEventListener("mouseover",function(e){var f=e.target.closest(".fila");if(f)marcar(f.dataset.id,true);});
+lista.addEventListener("mouseout",function(e){var f=e.target.closest(".fila");if(f&&!f.contains(e.relatedTarget))marcar(f.dataset.id,false);});
+lista.addEventListener("focusin",function(e){var f=e.target.closest(".fila");if(f)marcar(f.dataset.id,true);});
+lista.addEventListener("focusout",function(e){var f=e.target.closest(".fila");if(f)marcar(f.dataset.id,false);});
+lista.addEventListener("click",function(e){var f=e.target.closest(".fila");if(f){e.preventDefault();abrir(f.dataset.id);}});
+var plano=$("#plano");
+plano.addEventListener("mouseover",function(e){var g=e.target.closest(".pin");if(g)marcar(g.dataset.id,true);});
+plano.addEventListener("mouseout",function(e){var g=e.target.closest(".pin");if(g&&!g.contains(e.relatedTarget))marcar(g.dataset.id,false);});
+plano.addEventListener("focusin",function(e){var g=e.target.closest(".pin");if(g)marcar(g.dataset.id,true);});
+plano.addEventListener("focusout",function(e){var g=e.target.closest(".pin");if(g)marcar(g.dataset.id,false);});
+plano.addEventListener("click",function(e){var g=e.target.closest(".pin");if(g)abrir(g.dataset.id);});
+plano.addEventListener("keydown",function(e){var g=e.target.closest(".pin");if(g&&(e.key==="Enter"||e.key===" ")){e.preventDefault();abrir(g.dataset.id);}});
+
+/* ---------- ficha ---------- */
+var dlg=$("#ficha"), actual=null, origen=null;
+function tabla(p){
+  var r=[["Operación",p.op==="venta"?"Venta":"Alquiler"],["Tipo",p.tipo],["Barrio",p.barrio]];
+  if(p.edificio) r.push([p.edificio.indexOf("Edificio")===0?"Edificio":"Piso",p.edificio.replace("Edificio ","").replace("Piso ","")+(p.edificio.indexOf("Piso")===0?"º":"")]);
+  else if(p.piso) r.push(["Piso",p.piso]);
+  r.push(["Dormitorios",p.dormTxt||String(p.dorm[0])]);
+  if(p.banos) r.push(["Baños",p.banos]);
+  if(p.cub) r.push([p.tipo==="Casa"?"Sup. cubierta":"Superficie",p.cub]);
+  if(p.terreno) r.push(["Terreno",p.terreno]);
+  if(p.cochera) r.push(["Cochera",p.cochera]);
+  r.push(["Precio","Consultar precio"]);
+  return '<dl class="tabla">'+r.map(function(x){return "<dt>"+esc(x[0])+"</dt><dd>"+esc(x[1])+"</dd>";}).join("")+"</dl>";
+}
+function parecidas(p){
+  return P.filter(function(q){return q.id!==p.id;}).map(function(q){
+    var s=(q.barrio===p.barrio?2:0)+(q.tipo===p.tipo?2:0)+(q.dorm.some(function(d){return p.dorm.indexOf(d)>=0;})?1:0);
+    return {q:q,s:s};
+  }).sort(function(a,b){return b.s-a.s||a.q.n-b.q.n;}).slice(0,3).map(function(o){return o.q;});
+}
+function abrir(id){
+  var p=P.find(function(x){return x.id===id;}); if(!p) return;
+  if(!dlg.open) origen=document.activeElement;
+  actual=p;
+  $("#f-cod").textContent = (p.cod?"Código "+p.cod+". ":"")+"Propiedad "+p.n+" del plano";
+  var tira = p.fotos.length>1 ? '<div class="gal-tira" role="group" aria-label="Fotos">'+p.fotos.map(function(f,i){return '<button type="button" data-i="'+i+'" aria-label="Foto '+(i+1)+' de '+p.fotos.length+'"'+(i===0?' aria-current="true"':'')+'>'+foto(p,f,false,"")+'</button>';}).join("")+'</div>' : "";
+  var mapa = "https://www.google.com/maps?q="+encodeURIComponent(p.dir.replace(/ y /," y ")+" Villa Maria Cordoba").replace(/%20/g,"+")+"&output=embed";
+  var par = parecidas(p);
+  $("#f-cuerpo").innerHTML =
+    '<div class="f-cab"><div><h2 id="f-tit">'+esc(p.dir)+'</h2><p>'+esc(p.tipo)+' en '+esc(p.barrio)+', Villa María. '+esc(p.que)+'.</p></div><p class="precio">Consultar precio</p></div>'+
+    '<div class="f-grid"><div><div class="gal-main" id="gal-main">'+foto(p,p.fotos[0],true,"Foto 1 de "+p.dir)+'</div>'+tira+
+      (p.fotos.length?'<p class="gal-cont">Fotos publicadas por Berrini en su web.</p>':'<p class="gal-cont">Este aviso no tiene fotos en la web de Berrini; pedilas por WhatsApp.</p>')+'</div>'+
+      '<div>'+tabla(p)+'<ul class="carac">'+p.carac.map(function(c){return "<li>"+esc(c)+"</li>";}).join("")+'</ul>'+
+      '<p class="f-desc">'+esc(p.desc)+'</p>'+
+      '<div class="f-acc"><a class="btn btn-wa" href="'+waLink(p)+'" target="_blank" rel="noopener" id="f-wa">'+WA_SVG+'Consultar por WhatsApp</a><button type="button" class="btn btn-borde" id="f-print">Imprimir ficha</button></div>'+
+      '<p class="f-fuente">Publicada en <a href="'+esc(p.fuente)+'" target="_blank" rel="noopener">'+(p.fuente.indexOf("zonaprop")>0?"Zonaprop":"inmobiliariaberrini.com.ar")+'</a>.</p></div></div>'+
+    '<div class="f-mapa"><div><h3>'+esc(p.dir)+' en Google Maps</h3><iframe title="Mapa de '+esc(p.dir)+', Villa María" src="'+mapa+'" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>'+
+      '<div><h3>En el plano</h3><div class="plano-mini">'+planoSVG({solo:p.id,aria:"Ubicación de "+p.dir+" en el plano esquemático"})+'</div></div></div>'+
+    '<div class="parecidas"><h3>Propiedades parecidas</h3><ul>'+par.map(function(q){return '<li><button type="button" data-id="'+q.id+'"><div class="mini">'+foto(q,q.fotos[0],false,"")+'</div><div><b>'+esc(q.dir)+'</b><span>'+esc(q.tipo)+' en '+esc(q.barrio)+', '+esc(dormTxt(q))+'</span></div></button></li>';}).join("")+'</ul></div>';
+  var tiraEl=$(".gal-tira",dlg);
+  if(tiraEl) tiraEl.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;var i=+b.dataset.i;
+    $("#gal-main").innerHTML=foto(p,p.fotos[i],true,"Foto "+(i+1)+" de "+p.dir);
+    tiraEl.querySelectorAll("button").forEach(function(x){x.removeAttribute("aria-current");}); b.setAttribute("aria-current","true");});
+  $(".parecidas",dlg).addEventListener("click",function(e){var b=e.target.closest("button");if(b){abrir(b.dataset.id);dlg.scrollTop=0;$("#f-cerrar").focus();}});
+  $("#f-print").onclick=imprimir;
+  if(!dlg.open){dlg.showModal();}
+  dlg.scrollTop=0;
+  $("#f-cerrar").focus();
+  if(location.hash!=="#"+p.id) history.replaceState(null,"","#"+p.id);
+}
+function cerrar(){dlg.close();}
+$("#f-cerrar").onclick=cerrar;
+dlg.addEventListener("click",function(e){if(e.target===dlg)cerrar();});
+dlg.addEventListener("close",function(){history.replaceState(null,"",location.pathname+location.search);if(origen&&origen.focus)origen.focus();});
+
+/* ---------- hoja A4 ---------- */
+function armarHoja(p){
+  $("#hoja").innerHTML=
+    '<div class="h-cab"><b>Berrini Negocios Inmobiliarios</b><span>Lisandro de la Torre 42, Villa María<br>(0353) 452-2842 / 452-1193</span></div>'+
+    '<h1 class="h-tit">'+esc(p.dir)+'</h1><p class="h-sub">'+esc(p.tipo)+' en '+esc(p.barrio)+', Villa María. '+esc(p.que)+'. Consultar precio.</p>'+
+    '<div class="h-foto">'+foto(p,p.fotos[0],true,p.dir).replace(' loading="lazy"','')+'</div>'+
+    '<div class="h-grid"><div>'+tabla(p)+'<ul class="carac">'+p.carac.map(function(c){return "<li>"+esc(c)+"</li>";}).join("")+'</ul><p class="f-desc">'+esc(p.desc)+'</p></div>'+
+    '<div class="h-plano">'+planoSVG({solo:p.id,aria:"Plano"})+'<p>Plano esquemático, no a escala. El cuadrado ocre es la oficina.</p></div></div>'+
+    '<div class="h-contacto"><div><b>Ventas</b>15-4086066 / 15-5082492</div><div><b>Alquileres</b>15-5082492</div><div><b>Correo</b>berrininegociosinmobiliarios@hotmail.com</div></div>'+
+    '<p class="h-pie">'+(p.cod?"Código "+p.cod+". ":"")+'Fuente: '+esc(p.fuente)+'. Prototipo de demostración preparado para Berrini Negocios Inmobiliarios por Resolviendo Kos.</p>';
+}
+function imprimir(){ if(actual){armarHoja(actual); window.print();} }
+window.addEventListener("beforeprint",function(){ if(actual) armarHoja(actual); });
+
+/* ---------- tasación ---------- */
+var form=$("#form-tasa");
+form.fin.addEventListener("change",function(){$("#t-nota").textContent = this.value==="alquilar"?"Va a alquileres, 15-5082492.":"Va a ventas, 15-4086066.";});
+form.addEventListener("submit",function(e){
+  e.preventDefault();
+  var f=form, dir=f.dir.value.trim();
+  if(!dir){$("#t-error").textContent="Falta la dirección: con calle y número alcanza.";f.dir.focus();return;}
+  $("#t-error").textContent="";
+  var l=["Hola, quiero tasar una propiedad para "+(f.fin.value==="alquilar"?"alquilar":"vender")+"."];
+  l.push("Dirección: "+dir+(f.barrio.value.trim()?" (barrio "+f.barrio.value.trim()+")":""));
+  l.push("Tipo: "+f.tipo.value);
+  if(f.dorm.value) l.push("Dormitorios: "+f.dorm.value);
+  if(f.m2.value.trim()) l.push("Superficie cubierta: "+f.m2.value.trim()+" m²");
+  if(f.nombre.value.trim()) l.push("Soy "+f.nombre.value.trim()+".");
+  var url="https://wa.me/"+(f.fin.value==="alquilar"?WA_ALQ:WA_VENTAS)+"?text="+encodeURIComponent(l.join("\n"));
+  window.open(url,"_blank","noopener");
+});
+
+render();
+if(location.hash){var h=location.hash.slice(1); if(P.some(function(p){return p.id===h;})) abrir(h);}
+})();
+</script>
+</body>
+</html>
