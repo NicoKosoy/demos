@@ -1,0 +1,736 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Pachanavira · Cabañas y suites en Nono</title>
+<meta name="description" content="Prototipo de demostración: web de reservas directas para Pachanavira, cabañas y suites en Nono, Traslasierra.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --monte:#1E3A2C;
+  --monte-2:#2B4D3B;
+  --granito:#262A26;
+  --piedra:#E3E5DE;
+  --piedra-2:#CDD1C6;
+  --papel:#F7F8F4;
+  --agua:#238C8A;
+  --agua-claro:#7FCBC6;
+  --jarilla:#B6BF3F;
+  --jarilla-osc:#7C8424;
+  --ocaso:#5F4F86;
+  --ocaso-claro:#A898CF;
+  --t-prim:var(--jarilla);
+  --t-dic:var(--agua);
+  --t-alta:var(--ocaso);
+  --display:"Bricolage Grotesque","Avenir Next Condensed","Helvetica Neue",sans-serif;
+  --texto:"Source Serif 4","Iowan Old Style","Georgia",serif;
+  --rail:300px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--papel);color:var(--granito);font-family:var(--texto);font-size:18px;line-height:1.62;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:var(--agua);text-underline-offset:3px}
+:focus-visible{outline:3px solid var(--agua);outline-offset:3px}
+h1,h2,h3,h4{font-family:var(--display);line-height:1.04;margin:0;color:var(--monte);letter-spacing:-.015em}
+button,input,select{font:inherit}
+.vis{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* aviso prototipo */
+.aviso{margin-left:var(--rail);background:var(--granito);color:#e9ebe5;font-family:var(--display);font-size:13.5px;padding:8px 18px;text-align:center;position:relative;z-index:30}
+.aviso b{color:var(--jarilla);font-weight:600}
+
+/* ------- RAIL (tablero de estaciones) ------- */
+.rail{position:fixed;top:0;left:0;bottom:0;width:var(--rail);background:var(--monte);color:#E8EDE6;display:flex;flex-direction:column;padding:26px 24px 20px;z-index:20;overflow-y:auto}
+.rail .logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff}
+.rail .logo img{width:74px;height:auto;background:#F7F8F4;border-radius:10px;padding:4px 6px}
+.rail .logo span{font-family:var(--display);font-weight:800;font-size:23px;line-height:1}
+.rail .logo small{display:block;font-weight:400;font-size:13px;color:var(--agua-claro);margin-top:3px}
+.tira{margin:28px 0 18px;display:flex;flex-direction:column;gap:6px;position:relative}
+.tira h2{font-size:14px;color:#BFD0C3;font-weight:600;margin-bottom:6px;letter-spacing:0}
+.est{border:0;text-align:left;cursor:pointer;background:rgba(255,255,255,.05);color:#E8EDE6;border-radius:12px;padding:12px 14px 12px 18px;position:relative;transition:background .25s, transform .25s}
+.est::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:5px;border-radius:0 4px 4px 0;background:var(--c)}
+.est .n{font-family:var(--display);font-weight:600;font-size:17px;display:block}
+.est .f{font-size:14px;color:#BFD0C3;display:block}
+.est .p{font-family:var(--display);font-size:14px;color:var(--c);display:block;margin-top:2px}
+.est[data-k="prim"]{--c:var(--jarilla)}
+.est[data-k="dic"]{--c:var(--agua-claro)}
+.est[data-k="alta"]{--c:var(--ocaso-claro)}
+.est.on{background:rgba(255,255,255,.14);transform:translateX(6px)}
+.est.on .f{color:#fff}
+.est .m{display:none}
+.est.on .m{display:block;font-size:13px;color:#fff;opacity:.85;margin-top:4px}
+.meses{display:grid;grid-template-columns:repeat(6,1fr);gap:3px;margin-top:10px}
+.meses i{font-style:normal;font-family:var(--display);font-size:11px;text-align:center;color:#9FB3A5;border-top:3px solid var(--c);padding-top:3px}
+.rail nav{display:flex;flex-direction:column;gap:2px;margin-top:6px}
+.rail nav a{color:#DCE5DD;text-decoration:none;font-family:var(--display);font-size:15px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.rail nav a:hover,.rail nav a.act{color:var(--jarilla)}
+.rail .cta{margin-top:auto;padding-top:18px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;cursor:pointer;font-family:var(--display);font-weight:600;font-size:16px;border-radius:999px;padding:13px 22px;text-decoration:none;transition:filter .2s}
+.btn:hover{filter:brightness(1.08)}
+.btn-j{background:var(--jarilla);color:var(--granito)}
+.btn-a{background:var(--agua);color:#fff}
+.btn-o{background:transparent;color:var(--monte);box-shadow:inset 0 0 0 2px var(--monte)}
+.rail .btn{width:100%}
+.rail .wa{display:block;text-align:center;margin-top:10px;font-family:var(--display);font-size:14px;color:var(--agua-claro)}
+
+main{margin-left:var(--rail)}
+.wrap{max-width:1040px;margin:0 auto;padding:0 44px}
+section{padding:92px 0;scroll-margin-top:20px}
+
+/* hero */
+.hero{position:relative;min-height:88vh;display:grid;align-items:end;padding:0;color:#fff;overflow:hidden;background:var(--monte-2)}
+.hero .ph{position:absolute;inset:0}
+.hero .ph img{width:100%;height:100%;object-fit:cover}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,34,26,.15) 0%,rgba(18,34,26,.0) 35%,rgba(18,34,26,.78) 100%)}
+.hero .in{position:relative;z-index:2;padding:0 44px 56px;max-width:1040px;margin:0 auto;width:100%}
+.hero h1{color:#fff;font-size:clamp(42px,6.4vw,88px);font-weight:800;max-width:13ch;letter-spacing:-.03em}
+.hero p{font-size:20px;max-width:44ch;margin:20px 0 28px;color:#EEF3EE}
+.hero .datos{display:flex;flex-wrap:wrap;gap:10px 26px;margin-top:30px;font-family:var(--display);font-size:15px;color:#DDE8DF}
+.hero .datos b{display:block;font-size:30px;color:#fff;font-weight:800;line-height:1.1}
+
+/* unidades */
+.sec-h{display:grid;grid-template-columns:1fr 1.2fr;gap:40px;align-items:end;margin-bottom:46px}
+.sec-h h2{font-size:clamp(34px,4vw,54px);font-weight:800}
+.sec-h p{margin:0;color:#4C534C}
+.unidad{display:grid;grid-template-columns:1.05fr 1fr;gap:0;background:#fff;border-radius:22px;overflow:hidden;margin-bottom:26px;box-shadow:0 1px 0 var(--piedra-2)}
+.unidad:nth-child(even){grid-template-columns:1fr 1.05fr}
+.unidad:nth-child(even) .u-ph{order:2}
+.u-ph{position:relative;min-height:330px;background:repeating-linear-gradient(135deg,var(--piedra) 0 14px,var(--piedra-2) 14px 15px)}
+.u-ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.u-ph .cap{position:absolute;left:14px;top:14px;background:var(--papel);color:var(--monte);font-family:var(--display);font-weight:600;font-size:14px;padding:6px 12px;border-radius:999px}
+.u-tx{padding:32px 34px}
+.u-tx h3{font-size:30px;font-weight:800}
+.u-tx .sub{font-family:var(--display);color:var(--agua);font-size:15px;margin:6px 0 14px}
+.u-tx ul{margin:0 0 18px;padding:0;list-style:none;font-size:16.5px}
+.u-tx li{padding:6px 0;border-bottom:1px dashed var(--piedra-2)}
+.barras{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px}
+.barra{border-radius:10px;padding:8px 10px;background:var(--piedra);font-family:var(--display);font-size:13px;line-height:1.25;border-top:4px solid var(--c)}
+.barra b{display:block;font-size:17px;color:var(--granito)}
+.barra[data-k="prim"]{--c:var(--jarilla)}
+.barra[data-k="dic"]{--c:var(--agua)}
+.barra[data-k="alta"]{--c:var(--ocaso)}
+.u-tx .acc{display:flex;gap:10px;flex-wrap:wrap}
+
+/* tarifario */
+.tarifario{background:var(--piedra)}
+.tabla{width:100%;border-collapse:separate;border-spacing:0 6px;font-family:var(--display)}
+.tabla th{font-weight:600;text-align:left;font-size:15px;padding:6px 12px;color:#4C534C}
+.tabla thead th{vertical-align:bottom}
+.tabla thead th span{display:block;font-weight:400;font-size:13px}
+.tabla thead th.k-prim{box-shadow:inset 0 -4px var(--jarilla)}
+.tabla thead th.k-dic{box-shadow:inset 0 -4px var(--agua)}
+.tabla thead th.k-alta{box-shadow:inset 0 -4px var(--ocaso)}
+.tabla tbody th{background:#fff;border-radius:12px 0 0 12px;color:var(--monte);font-size:16px}
+.tabla td{background:#fff;padding:0}
+.tabla td:last-child{border-radius:0 12px 12px 0}
+.tabla td button{width:100%;border:0;background:transparent;padding:14px 12px;text-align:left;font-family:var(--display);font-size:17px;font-weight:600;color:var(--granito);cursor:pointer;border-radius:10px}
+.tabla td button:hover,.tabla td button:focus-visible{background:var(--agua);color:#fff}
+.tab-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.nota{font-size:15.5px;color:#4C534C;margin-top:18px;max-width:70ch}
+
+/* cotizador */
+.cotiza{background:var(--monte);color:#E8EDE6}
+.cotiza h2{color:#fff}
+.cotiza .sec-h p{color:#C7D5CA}
+.cz{display:grid;grid-template-columns:1.15fr .85fr;gap:26px;align-items:start}
+.panel{background:var(--monte-2);border-radius:22px;padding:26px}
+.cal-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.cal-top h3{color:#fff;font-size:22px;font-weight:600;text-transform:capitalize}
+.cal-top button{border:0;background:rgba(255,255,255,.1);color:#fff;width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:18px}
+.cal-top button:disabled{opacity:.3;cursor:default}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal .dw{font-family:var(--display);font-size:12px;text-align:center;color:#9FB3A5;padding-bottom:4px}
+.dia{aspect-ratio:1/1;border:0;border-radius:10px;background:rgba(255,255,255,.07);color:#fff;font-family:var(--display);font-size:15px;cursor:pointer;position:relative;padding:0}
+.dia::after{content:"";position:absolute;left:22%;right:22%;bottom:5px;height:3px;border-radius:2px;background:var(--c,transparent)}
+.dia[data-k="prim"]{--c:var(--jarilla)}
+.dia[data-k="dic"]{--c:var(--agua-claro)}
+.dia[data-k="alta"]{--c:var(--ocaso-claro)}
+.dia.ocu{background:transparent;color:#6F8576;text-decoration:line-through;cursor:not-allowed}
+.dia.ocu::after{display:none}
+.dia.pas{opacity:.25;cursor:default}
+.dia.sel{background:var(--jarilla);color:var(--granito);font-weight:800}
+.dia.rng{background:rgba(182,191,63,.32)}
+.dia.vacio{background:transparent;cursor:default}
+.leyenda{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:14px;font-size:14px;color:#C7D5CA;font-family:var(--display)}
+.leyenda i{display:inline-block;width:14px;height:4px;border-radius:2px;vertical-align:middle;margin-right:6px}
+.sync{display:flex;gap:10px;align-items:center;margin-top:16px;padding:12px 14px;border-radius:12px;background:rgba(127,203,198,.12);font-size:15px;color:#DDEDEB}
+.sync svg{flex:none}
+.campos{display:grid;grid-template-columns:1fr 1fr;gap:12px 14px}
+.campo{display:flex;flex-direction:column;gap:5px}
+.campo.full{grid-column:1/-1}
+.campo label{font-family:var(--display);font-size:14px;color:#C7D5CA}
+.campo select,.campo input{background:#fff;color:var(--granito);border:0;border-radius:10px;padding:11px 12px;font-family:var(--display);font-size:16px;width:100%}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:15px;color:#DDE8DF;cursor:pointer}
+.check.campo{flex-direction:row}
+.check input{width:20px;height:20px;accent-color:var(--jarilla);margin-top:3px;flex:none}
+.res{margin-top:20px;background:var(--papel);color:var(--granito);border-radius:18px;padding:20px}
+.res .lin{display:flex;justify-content:space-between;gap:10px;font-family:var(--display);font-size:15.5px;padding:6px 0;border-bottom:1px solid var(--piedra)}
+.res .lin span:first-child{color:#4C534C}
+.res .tot{font-size:22px;font-weight:800;border-bottom:0;padding-top:12px}
+.res .sena{background:var(--agua);color:#fff;border-radius:12px;padding:12px 14px;margin-top:10px;display:flex;justify-content:space-between;font-family:var(--display);font-weight:600}
+.res .aviso-r{font-size:14.5px;color:#7A3B24;background:#F6E6DA;border-radius:10px;padding:10px 12px;margin-top:10px;display:none}
+.res .aviso-r.show{display:block}
+.res .btn{width:100%;margin-top:14px}
+.res .chico{font-size:13.5px;color:#5A615A;margin-top:10px}
+.mp{display:inline-block;background:#fff;color:#009EE3;font-weight:800;border-radius:6px;padding:1px 6px;font-size:13px;margin-left:4px}
+
+/* predio */
+.servs{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:2px solid var(--monte)}
+.serv{padding:22px 22px 26px 0;border-bottom:1px solid var(--piedra-2)}
+.serv h3{font-size:21px;font-weight:600;margin-bottom:6px}
+.serv p{margin:0;font-size:16px;color:#4C534C}
+.galeria{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:30px 0 6px;margin-top:20px}
+.galeria figure{flex:0 0 auto;width:min(360px,78vw);margin:0;scroll-snap-align:start;border-radius:16px;overflow:hidden;background:repeating-linear-gradient(135deg,var(--piedra) 0 14px,var(--piedra-2) 14px 15px);aspect-ratio:4/3;position:relative}
+.galeria img{width:100%;height:100%;object-fit:cover}
+.galeria figcaption{position:absolute;left:10px;bottom:10px;background:rgba(30,58,44,.86);color:#fff;font-family:var(--display);font-size:13.5px;padding:4px 10px;border-radius:999px}
+.tour{display:flex;gap:18px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-top:26px;padding:20px 24px;border-radius:18px;background:var(--piedra)}
+.tour p{margin:0;font-family:var(--display);font-size:18px;color:var(--monte)}
+
+/* eventos */
+.eventos{background:var(--granito);color:#E8EDE6}
+.eventos h2{color:#fff}
+.ev{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.ev .ph{border-radius:20px;overflow:hidden;aspect-ratio:5/4;background:var(--monte-2)}
+.ev .ph img{width:100%;height:100%;object-fit:cover}
+.ev p{color:#CBD2CB}
+.ev .cifra{font-family:var(--display);font-size:72px;font-weight:800;color:var(--jarilla);line-height:1}
+.ev .cifra small{font-size:20px;color:#fff;font-weight:600;display:block;margin-top:4px}
+
+/* nono */
+.lugares{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.lugar{padding:22px 24px;border-radius:18px;background:#fff;box-shadow:0 1px 0 var(--piedra-2);display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:start}
+.lugar .km{font-family:var(--display);font-weight:800;font-size:15px;color:var(--agua);background:rgba(35,140,138,.1);border-radius:10px;padding:8px 10px;white-space:nowrap}
+.lugar h3{font-size:21px;font-weight:600;margin-bottom:4px}
+.lugar p{margin:0;font-size:16px;color:#4C534C}
+
+/* faq */
+.faq{background:var(--piedra)}
+details{background:#fff;border-radius:14px;margin-bottom:10px;padding:0 22px}
+summary{cursor:pointer;font-family:var(--display);font-weight:600;font-size:18px;color:var(--monte);padding:18px 0;list-style:none;display:flex;justify-content:space-between;gap:12px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-size:24px;line-height:1;color:var(--agua)}
+details[open] summary::after{content:"–"}
+details p{margin:0 0 18px;font-size:16.5px;color:#4C534C}
+
+/* llegar */
+.llegar{display:grid;grid-template-columns:1fr 1.2fr;gap:34px;align-items:start}
+.mapa{border-radius:20px;overflow:hidden;aspect-ratio:4/3;background:var(--piedra)}
+.mapa iframe{width:100%;height:100%;border:0}
+.rutas{margin:0;padding:0;list-style:none}
+.rutas li{padding:14px 0;border-bottom:1px solid var(--piedra-2);font-size:16.5px}
+.rutas b{font-family:var(--display);color:var(--monte)}
+
+footer{background:var(--monte);color:#C7D5CA;padding:50px 0 90px;font-family:var(--display);font-size:15px}
+footer .fg{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:28px}
+footer a{color:#fff}
+footer h4{color:var(--jarilla);font-size:16px;margin-bottom:8px}
+footer .proto{margin-top:34px;padding-top:18px;border-top:1px solid rgba(255,255,255,.12);font-size:13.5px}
+
+/* barra móvil */
+.mbar{display:none}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(200px);opacity:0;visibility:hidden;background:var(--granito);color:#fff;font-family:var(--display);padding:14px 20px;border-radius:14px;z-index:60;max-width:min(92vw,520px);transition:transform .35s}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1;visibility:visible}
+
+/* ---------- responsive ---------- */
+@media (max-width:1100px){
+  :root{--rail:250px}
+  .wrap{padding:0 30px}
+  .hero .in{padding:0 30px 46px}
+  .unidad,.unidad:nth-child(even){grid-template-columns:1fr}
+  .unidad:nth-child(even) .u-ph{order:0}
+  .cz{grid-template-columns:1fr}
+}
+@media (max-width:820px){
+  body{font-size:17px}
+  .rail{position:sticky;top:0;bottom:auto;width:100%;height:auto;flex-direction:row;align-items:center;padding:8px 12px;gap:10px;overflow:visible}
+  .rail .logo img{width:46px;padding:2px 4px;border-radius:8px}
+  .rail .logo span{display:none}
+  .tira{margin:0;flex-direction:row;flex:1;gap:5px;min-width:0}
+  .tira h2,.meses,.rail nav,.rail .cta,.est .m{display:none!important}
+  .est{flex:1;padding:6px 6px 7px 10px;border-radius:9px;min-width:0}
+  .est::before{top:6px;bottom:6px;width:4px}
+  .est .n{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .est .f{display:none}
+  .est .p{font-size:12px;white-space:nowrap}
+  .est{overflow:hidden}
+  .est .xs{display:none}
+  .est.on{transform:none}
+  main{margin-left:0}
+  .aviso{margin-left:0;font-size:12.5px;padding:7px 12px}
+  .wrap{padding:0 18px}
+  section{padding:64px 0;scroll-margin-top:70px}
+  .hero{min-height:78vh}
+  .hero .in{padding:0 18px 34px}
+  .hero p{font-size:18px}
+  .hero .datos{display:grid;grid-template-columns:1fr 1fr;gap:14px 18px}
+  .sec-h{grid-template-columns:1fr;gap:12px;margin-bottom:30px}
+  .u-ph{min-height:240px}
+  .u-tx{padding:24px 20px}
+  .servs{grid-template-columns:1fr}
+  .ev,.llegar,.lugares{grid-template-columns:1fr}
+  .campos{grid-template-columns:1fr 1fr}
+  .panel{padding:18px 14px}
+  footer .fg{grid-template-columns:1fr}
+  .mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:40;gap:8px;padding:10px 12px;background:rgba(247,248,244,.96);backdrop-filter:blur(6px);box-shadow:0 -1px 0 var(--piedra-2)}
+  .mbar .btn{flex:1;padding:12px 10px;font-size:15px}
+  .toast{bottom:84px}
+}
+@media (max-width:560px){
+  .tabla{border-spacing:0 4px}
+  .tabla th{padding:6px 6px;font-size:13px}
+  .tabla thead th span{font-size:11px}
+  .tabla tbody th{font-size:13.5px;line-height:1.2}
+  .tabla td button{padding:11px 6px;font-size:14.5px}
+}
+@media (max-width:400px){
+  .barras{grid-template-columns:1fr 1fr 1fr;gap:5px}
+  .barra{padding:7px 6px;font-size:11.5px}
+  .barra b{font-size:14.5px}
+}
+</style>
+</head>
+<body>
+
+<div class="aviso" role="note"><b>Prototipo de demostración preparado para Pachanavira</b> · hecho por Resolviendo Kos para mostrar cómo se vería su web de reservas directas. Fechas ocupadas y pagos son de ejemplo.</div>
+
+<aside class="rail" aria-label="Temporadas y navegación">
+  <a class="logo" href="#inicio">
+    <img src="https://www.pachanavira.com.ar/wp-content/uploads/2022/05/Pachanavira-logo-1024x600.png" alt="Pachanavira" onerror="this.style.display='none'">
+    <span>Pachanavira<small>Cabañas y suites en Nono</small></span>
+  </a>
+  <div class="tira" id="tira">
+    <h2>Sus temporadas 2026-27</h2>
+    <button class="est" data-k="prim" type="button"><span class="n">Primavera</span><span class="f">1 sep – 30 nov 2026</span><span class="p"><span class="xs">desde </span>$110.000<span class="xs"> / noche</span></span><span class="m">Mínimo 2 noches</span></button>
+    <button class="est" data-k="dic" type="button"><span class="n">Diciembre</span><span class="f">1 – 27 dic 2026</span><span class="p"><span class="xs">desde </span>$130.000<span class="xs"> / noche</span></span><span class="m">Mínimo 2 noches</span></button>
+    <button class="est" data-k="alta" type="button"><span class="n">Verano</span><span class="f">28 dic 2026 – 28 feb 2027</span><span class="p"><span class="xs">desde </span>$180.000<span class="xs"> / noche</span></span><span class="m">Mínimo 7 noches</span></button>
+    <div class="meses" aria-hidden="true">
+      <i style="--c:var(--jarilla)">sep</i><i style="--c:var(--jarilla)">oct</i><i style="--c:var(--jarilla)">nov</i><i style="--c:var(--agua-claro)">dic</i><i style="--c:var(--ocaso-claro)">ene</i><i style="--c:var(--ocaso-claro)">feb</i>
+    </div>
+  </div>
+  <nav aria-label="Secciones">
+    <a href="#unidades">Cabañas y suites</a>
+    <a href="#tarifas">Tarifas</a>
+    <a href="#reservar">Disponibilidad y reserva</a>
+    <a href="#predio">El predio</a>
+    <a href="#eventos">Quincho y eventos</a>
+    <a href="#nono">Nono</a>
+    <a href="#preguntas">Preguntas</a>
+    <a href="#llegar">Cómo llegar</a>
+  </nav>
+  <div class="cta">
+    <a class="btn btn-j" href="#reservar">Ver fechas libres</a>
+    <a class="wa" href="https://wa.me/5493513904580" target="_blank" rel="noopener">WhatsApp (351) 390-4580</a>
+  </div>
+</aside>
+
+<main>
+  <header class="hero" id="inicio">
+    <div class="ph"><img src="https://www.pachanavira.com.ar/wp-content/uploads/2026/08/DJI_20260822_204054_289.jpg" alt="Vista aérea del complejo Pachanavira en Nono" onerror="this.src='https://www.pachanavira.com.ar/wp-content/uploads/2022/06/mas-fotos-parque.jpg'"></div>
+    <div class="in">
+      <h1>Pileta climatizada los doce meses, en lo alto de Nono</h1>
+      <p>Tres hectáreas con senderos entre las cabañas, a 250 metros de la Ruta 14. Elegí fechas, mirá qué unidad está libre y dejá la reserva con seña.</p>
+      <a class="btn btn-j" href="#reservar">Ver fechas libres</a>
+      <div class="datos">
+        <div><b>3 ha</b>de parque</div>
+        <div><b>5</b>tipos de unidad</div>
+        <div><b>40</b>personas en el quincho</div>
+        <div><b>30%</b>de seña para confirmar</div>
+      </div>
+    </div>
+  </header>
+
+  <section id="unidades" data-k="prim">
+    <div class="wrap">
+      <div class="sec-h">
+        <h2>Dos suites y tres cabañas</h2>
+        <p>Todas con aire frío/calor, cocina equipada, asador propio y cochera techada. Las cabañas de dos ambientes están en bloques dobles, separadas entre sí.</p>
+      </div>
+      <div id="lista-u"></div>
+    </div>
+  </section>
+
+  <section id="tarifas" class="tarifario">
+    <div class="wrap">
+      <div class="sec-h">
+        <h2>Tarifas 2026-27</h2>
+        <p>Precio por noche publicado por el complejo, por unidad y cantidad de personas. Tocá un precio para cargarlo en el cotizador.</p>
+      </div>
+      <div class="tab-scroll">
+        <table class="tabla" id="tabla">
+          <thead><tr>
+            <th scope="col">Unidad</th>
+            <th scope="col" class="k-prim">Primavera<span>1 sep – 30 nov</span></th>
+            <th scope="col" class="k-dic">Diciembre<span>1 – 27 dic</span></th>
+            <th scope="col" class="k-alta">Verano<span>28 dic – 28 feb</span></th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="nota">Con el 30% de seña por transferencia se congela la tarifa; el saldo se abona al ingresar. Estadía mínima: 2 noches en temporada baja y 7 noches del 28 de diciembre al 28 de febrero. Desayuno incluido en algunos períodos. Las tarifas pueden cambiar sin previo aviso.</p>
+    </div>
+  </section>
+
+  <section id="reservar" class="cotiza">
+    <div class="wrap">
+      <div class="sec-h">
+        <h2>Fechas libres y cotización al instante</h2>
+        <p>Elegí la unidad, marcá el día de llegada y el de salida en el calendario. El total respeta sus reglas: tarifa por temporada y por personas, mínimo de noches, cuna y mascota.</p>
+      </div>
+      <div class="cz">
+        <div class="panel">
+          <div class="cal-top">
+            <button type="button" id="prev" aria-label="Mes anterior">‹</button>
+            <h3 id="mes" aria-live="polite"></h3>
+            <button type="button" id="next" aria-label="Mes siguiente">›</button>
+          </div>
+          <div class="cal" id="cal" role="grid"></div>
+          <div class="leyenda">
+            <span><i style="background:var(--jarilla)"></i>Primavera</span>
+            <span><i style="background:var(--agua-claro)"></i>Diciembre</span>
+            <span><i style="background:var(--ocaso-claro)"></i>Verano</span>
+            <span style="text-decoration:line-through;color:#8FA596">12</span><span>Ocupado</span>
+          </div>
+          <div class="sync">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7FCBC6" stroke-width="2" aria-hidden="true"><path d="M21 12a9 9 0 0 1-15.5 6.2M3 12A9 9 0 0 1 18.5 5.8"/><path d="M18 2v4h-4M6 22v-4h4"/></svg>
+            <span>Este calendario se sincroniza con Booking y Airbnb: lo que se reserva en una plataforma se bloquea acá, sin dobles reservas. <em>(En el prototipo las fechas ocupadas son de ejemplo.)</em></span>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="campos">
+            <div class="campo full"><label for="f-u">Unidad</label><select id="f-u"></select></div>
+            <div class="campo"><label for="f-in">Llegada</label><input type="date" id="f-in" min="2026-10-19" max="2027-02-27"></div>
+            <div class="campo"><label for="f-out">Salida</label><input type="date" id="f-out" min="2026-10-20" max="2027-02-28"></div>
+            <div class="campo"><label for="f-ad">Personas (desde 2 años)</label><select id="f-ad"></select></div>
+            <div class="campo"><label for="f-cu">Bebés en cuna</label><select id="f-cu"><option value="0">0</option><option value="1">1</option></select></div>
+            <label class="check campo full"><input type="checkbox" id="f-pet"> Viajo con una mascota pequeña (una por unidad, con cargo extra)</label>
+          </div>
+          <div class="res" id="res" aria-live="polite">
+            <div id="res-lineas"></div>
+            <div class="aviso-r" id="res-aviso"></div>
+            <button class="btn btn-a" type="button" id="btn-res">Pedir reserva y pagar seña <span class="mp">Mercado Pago</span></button>
+            <p class="chico">Demo: no se cobra nada. En la versión real la seña se paga con Mercado Pago y la reserva llega al complejo para confirmar.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="predio">
+    <div class="wrap">
+      <div class="sec-h">
+        <h2>Un parque para no salir del complejo</h2>
+        <p>Senderos que conectan cada cabaña con los espacios comunes y personal atento todo el día.</p>
+      </div>
+      <div class="servs">
+        <div class="serv"><h3>Piletas climatizadas</h3><p>Abiertas todo el año, también en invierno.</p></div>
+        <div class="serv"><h3>Club house</h3><p>Ping-pong y pool para las tardes de lluvia.</p></div>
+        <div class="serv"><h3>Gimnasio</h3><p>Para no cortar la rutina en vacaciones.</p></div>
+        <div class="serv"><h3>Zona deportiva</h3><p>Fútbol, básquet y vóley.</p></div>
+        <div class="serv"><h3>Juegos infantiles</h3><p>Con arenero, a la vista de los grandes.</p></div>
+        <div class="serv"><h3>Servicios</h3><p>Desayuno, ropa blanca, mucama y wifi.</p></div>
+      </div>
+      <div class="galeria" id="galeria" tabindex="0" aria-label="Fotos del complejo"></div>
+      <div class="tour">
+        <p>Recorrelo antes de llegar con el tour 360°.</p>
+        <a class="btn btn-o" href="https://guia360.com.ar/files/galerias/969pachanaviracabaas/index.html" target="_blank" rel="noopener">Abrir el tour 360°</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="eventos" class="eventos">
+    <div class="wrap ev">
+      <div class="ph"><img src="https://www.pachanavira.com.ar/wp-content/uploads/2022/06/mas-fotos-quincho.jpg" alt="Quincho climatizado de Pachanavira" onerror="this.src='https://www.pachanavira.com.ar/wp-content/uploads/2022/06/fotos-evento1-01.jpg'"></div>
+      <div>
+        <div class="cifra">40<small>personas en el quincho climatizado</small></div>
+        <h2 style="margin-top:26px;font-size:clamp(30px,3.4vw,44px)">Cumpleaños, reencuentros y la fiesta de fin de año</h2>
+        <p>El quincho tiene parrilla, horno chileno y vajilla completa. Además, el complejo organiza su propia fiesta de fin de año para huéspedes y vecinos del valle.</p>
+        <a class="btn btn-j" href="https://www.pachanavira.com.ar/tenes-ganas-de-divertirte-organizamos-la-unica-fiesta-de-fin-de-ano-de-todo-el-valle-de-traslasierra-conoce-mas/" target="_blank" rel="noopener">Ver la fiesta de fin de año</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="nono">
+    <div class="wrap">
+      <div class="sec-h">
+        <h2>Nono, en el corazón de Traslasierra</h2>
+        <p>Un pueblo de calles tranquilas, ríos de arena y las Altas Cumbres de fondo.</p>
+      </div>
+      <div class="lugares">
+        <div class="lugar"><span class="km">Pueblo</span><div><h3>Plaza e iglesia de Nono</h3><p>El centro histórico, con su plaza arbolada y la capilla frente a ella.</p></div></div>
+        <div class="lugar"><span class="km">Río</span><div><h3>Río Chico de Nono</h3><p>Playas de arena y ollas para pasar el día, cerca del pueblo.</p></div></div>
+        <div class="lugar"><span class="km">Paseo</span><div><h3>Juntura de los ríos</h3><p>Donde el río Chico se encuentra con el río de los Sauces.</p></div></div>
+        <div class="lugar"><span class="km">Museo</span><div><h3>Museo Rocsen</h3><p>El museo polifacético de Juan Santiago Bouchon, a las afueras de Nono.</p></div></div>
+        <div class="lugar"><span class="km">Sierra</span><div><h3>Paso de las Tropas</h3><p>Paraje serrano en las afueras de Nono, camino a la sierra.</p></div></div>
+        <div class="lugar"><span class="km">Valle</span><div><h3>Mina Clavero y las Altas Cumbres</h3><p>A pocos minutos por la Ruta 14; el Camino de las Altas Cumbres sube hacia Córdoba.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="preguntas" class="faq">
+    <div class="wrap">
+      <div class="sec-h"><h2>Preguntas frecuentes</h2><p>Lo que más se pregunta por WhatsApp, respondido antes de escribir.</p></div>
+      <details><summary>¿Se aceptan mascotas?</summary><p>Sí, una mascota pequeña por unidad, con cargo extra. El monto se confirma con el complejo.</p></details>
+      <details><summary>¿Cómo se reserva y cuánto es la seña?</summary><p>Con el 30% del total se congela la tarifa. Hoy la seña es por transferencia; en esta web se paga con Mercado Pago. El saldo se abona al ingresar.</p></details>
+      <details><summary>¿Cuál es la estadía mínima?</summary><p>2 noches en temporada baja y 7 noches del 28 de diciembre de 2026 al 28 de febrero de 2027.</p></details>
+      <details><summary>¿Los chicos pagan?</summary><p>Los menores de 2 años que duermen en cuna no pagan. La disponibilidad de cuna se confirma con el complejo.</p></details>
+      <details><summary>¿Incluye ropa blanca y limpieza?</summary><p>Sí: ropa blanca, servicio de mucama y wifi. El desayuno está incluido en algunos períodos.</p></details>
+      <details><summary>¿A qué hora es el ingreso y la salida?</summary><p>Horarios a confirmar con el complejo.</p></details>
+      <details><summary>¿La pileta está abierta en invierno?</summary><p>Sí, las piletas son climatizadas y funcionan todo el año.</p></details>
+    </div>
+  </section>
+
+  <section id="llegar">
+    <div class="wrap llegar">
+      <div>
+        <h2 style="font-size:clamp(32px,3.6vw,48px);margin-bottom:18px">Cómo llegar</h2>
+        <ul class="rutas">
+          <li><b>Dirección</b><br>Calle Las Moras s/n (acceso a Las Calles), Nono, Traslasierra, Córdoba.</li>
+          <li><b>Desde Córdoba capital</b><br>Unos 150 km por el Camino de las Altas Cumbres hasta Mina Clavero y luego Ruta 14 hacia Nono.</li>
+          <li><b>Referencia</b><br>A unos 250 metros de la Ruta 14, en la zona alta de Nono.</li>
+          <li><b>Complejo habilitado</b><br>Por la Dirección de Turismo de Nono.</li>
+        </ul>
+      </div>
+      <div class="mapa"><iframe title="Mapa de Pachanavira en Nono" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=Pachanavira%20Nono%20C%C3%B3rdoba&z=14&output=embed"></iframe></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="fg">
+        <div><h4>Pachanavira</h4>Cabañas y suites en Nono, Traslasierra.<br>Calle Las Moras s/n, Nono, Córdoba.</div>
+        <div><h4>Contacto</h4><a href="https://wa.me/5493513904580" target="_blank" rel="noopener">WhatsApp (351) 390-4580</a><br><a href="mailto:info@pachanavira.com.ar">info@pachanavira.com.ar</a></div>
+        <div><h4>Redes</h4><a href="https://www.instagram.com/cabanas_pachanavira_nono/" target="_blank" rel="noopener">Instagram</a><br><a href="https://www.facebook.com/pachanavirasuites" target="_blank" rel="noopener">Facebook</a></div>
+      </div>
+      <p class="proto">Prototipo de demostración preparado para Pachanavira por Resolviendo Kos (resolviendokos.com). Las fotos y tarifas son del complejo; la disponibilidad y el pago son de ejemplo.</p>
+    </div>
+  </footer>
+</main>
+
+<div class="mbar"><a class="btn btn-o" href="https://wa.me/5493513904580" target="_blank" rel="noopener">WhatsApp</a><a class="btn btn-j" href="#reservar">Ver fechas libres</a></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function(){
+  var B='https://www.pachanavira.com.ar/wp-content/uploads/';
+  var U=[
+    {id:'sp',n:'Suite exclusiva parejas',sub:'Monoambiente con vista a las Altas Cumbres',min:2,max:2,
+     img:B+'2022/06/Suite-%E2%80%93-monoambiente-exclusivo-parejas01.jpg',
+     f:['Para 2 personas','Galería con asador y cochera techada','Aire frío/calor, ventilador de techo, TV LED con DirecTV','Cocina con anafe de 2 hornallas, heladera y microondas'],
+     p:{2:[110000,130000,180000]}},
+    {id:'st',n:'Suite para 3',sub:'Monoambiente para tres',min:3,max:3,
+     img:B+'2022/06/2-suite-monoambiente-3-personas-4.jpeg',
+     f:['Para 3 personas','Asador propio y cochera techada','Aire frío/calor','Cocina equipada'],
+     p:{3:[130000,150000,200000]}},
+    {id:'c2',n:'Cabaña de 2 ambientes',sub:'Una planta, en bloque doble',min:2,max:5,
+     img:B+'2022/06/4.jpg',
+     f:['De 2 a 5 personas (tarifa según ocupación)','Dormitorio con cama matrimonial; dos camas individuales en el living','Aire frío/calor y calefactor de tiro balanceado','Asador propio y cochera techada'],
+     p:{2:[140000,160000,220000],3:[150000,175000,240000],4:[170000,195000,270000],5:[180000,205000,290000]}},
+    {id:'c34',n:'Cabaña de 3 ambientes para 4',sub:'Dos plantas',min:2,max:4,
+     img:B+'2022/06/DSCN0805.jpg',
+     f:['Hasta 4 personas','Dos dormitorios, cocina-comedor','Asador propio y cochera techada','Aire frío/calor'],
+     p:{4:[200000,230000,310000]}},
+    {id:'c35',n:'Cabaña de 3 ambientes para 5',sub:'Una planta',min:2,max:5,
+     img:B+'2022/06/caba%C3%B1a-5.jpg',
+     f:['Hasta 5 personas','Dormitorio matrimonial + dormitorio con dos camas, quinta cama en el comedor','Aire frío/calor en ambos dormitorios, TV LED con DirecTV','Asador propio y cochera techada'],
+     p:{5:[200000,250000,330000]}}
+  ];
+  var K=['prim','dic','alta'];
+  function $(s){return document.querySelector(s)}
+  function fmt(n){return '$'+n.toLocaleString('es-AR')}
+  function fb(img){img.onerror=null;img.style.display='none'}
+
+  /* unidades */
+  var lu=$('#lista-u');
+  U.forEach(function(u){
+    var occ=Object.keys(u.p).map(Number);
+    var lo=Math.min.apply(null,occ);
+    var bars=K.map(function(k,i){var vals=occ.map(function(o){return u.p[o][i]});return '<div class="barra" data-k="'+k+'">'+['Primavera','Diciembre','Verano'][i]+'<b>'+fmt(Math.min.apply(null,vals))+'</b></div>'}).join('');
+    var cap=u.max===u.min?u.max+' personas':(occ.length>1?occ[0]+' a '+u.max+' personas':'hasta '+u.max+' personas');
+    var el=document.createElement('article');el.className='unidad';
+    el.innerHTML='<div class="u-ph"><img loading="lazy" src="'+u.img+'" alt="'+u.n+' en Pachanavira"><span class="cap">'+cap+'</span></div>'+
+      '<div class="u-tx"><h3>'+u.n+'</h3><div class="sub">'+u.sub+'</div><ul>'+u.f.map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul>'+
+      '<div class="barras">'+bars+'</div><div class="acc"><button class="btn btn-a" type="button" data-u="'+u.id+'">Ver fechas libres</button></div></div>';
+    el.querySelector('img').addEventListener('error',function(){fb(this)});
+    lu.appendChild(el);
+  });
+
+  /* tarifario */
+  var tb=$('#tabla tbody');
+  U.forEach(function(u){
+    Object.keys(u.p).forEach(function(o){
+      var tr=document.createElement('tr');
+      var lbl=u.n+(Object.keys(u.p).length>1?', '+o+' personas':'');
+      tr.innerHTML='<th scope="row">'+lbl+'</th>'+u.p[o].map(function(v,i){return '<td><button type="button" data-u="'+u.id+'" data-o="'+o+'" data-s="'+i+'" aria-label="'+lbl+', '+['primavera','diciembre','verano'][i]+': '+fmt(v)+'">'+fmt(v)+'</button></td>'}).join('');
+      tb.appendChild(tr);
+    });
+  });
+
+  /* galería */
+  var G=[['2026/08/IMG_1029.jpg','El complejo'],['2022/06/mas-fotos-exterior.jpg','Exterior'],['2022/06/mas-fotos-parque.jpg','El parque'],['2022/06/mas-fotos-club-house-1.jpeg','Club house'],['2022/06/mas-fotos-quincho-2.jpg','Quincho'],['2022/06/mas-fotos-juegos-infantiles.jpeg','Juegos infantiles'],['2022/06/mas-fotos-nieve.jpg','Nono nevado'],['2026/08/IMG_1094.jpg','Atardecer'],['2022/06/mas-fotos-cabana-de-afuera.jpg','Las cabañas']];
+  var gal=$('#galeria');
+  G.forEach(function(g){var f=document.createElement('figure');f.innerHTML='<img loading="lazy" src="'+B+g[0]+'" alt="'+g[1]+' de Pachanavira"><figcaption>'+g[1]+'</figcaption>';f.querySelector('img').addEventListener('error',function(){fb(this)});gal.appendChild(f)});
+
+  /* temporadas */
+  function season(d){ // d: Date (night)
+    var t=d.getTime();
+    if(t<Date.UTC(2026,8,1)) return -1;
+    if(t<Date.UTC(2026,11,1)) return 0;
+    if(t<Date.UTC(2026,11,28)) return 1;
+    if(t<Date.UTC(2027,2,1)) return 2;
+    return -1;
+  }
+  function ymd(d){return d.toISOString().slice(0,10)}
+  function parse(s){if(!s)return null;var p=s.split('-');return new Date(Date.UTC(+p[0],+p[1]-1,+p[2]))}
+  var HOY=Date.UTC(2026,9,19);
+
+  /* ocupación de ejemplo determinística por unidad */
+  function ocupado(uid,d){
+    var t=d.getTime();
+    var h=0,s=uid+ymd(d).slice(0,7);for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;
+    var day=d.getUTCDate();
+    var seed=h%9;
+    var blocks=[[ (seed%5)+3, 3],[ (seed%7)+13, 2+(seed%3)],[ (seed%4)+22, 3]];
+    if(season(d)===2){blocks.push([ (seed%3)+1, 6]);}
+    for(var j=0;j<blocks.length;j++){if(day>=blocks[j][0]&&day<blocks[j][0]+blocks[j][1])return true}
+    return false;
+  }
+
+  var st={u:'c2',ad:4,cu:0,pet:false,inn:null,out:null,mes:Date.UTC(2026,9,1)};
+  var su=$('#f-u');
+  U.forEach(function(u){var o=document.createElement('option');o.value=u.id;o.textContent=u.n;su.appendChild(o)});
+  function unidad(){return U.filter(function(u){return u.id===st.u})[0]}
+  function llenarPersonas(){
+    var u=unidad(),sa=$('#f-ad');sa.innerHTML='';
+    for(var i=1;i<=u.max;i++){var o=document.createElement('option');o.value=i;o.textContent=i;sa.appendChild(o)}
+    if(st.ad>u.max)st.ad=u.max;if(st.ad<1)st.ad=1;sa.value=st.ad;
+  }
+  function tarifaNoche(u,ad,s){
+    var occ=Object.keys(u.p).map(Number).sort(function(a,b){return a-b});
+    var o=occ[0];for(var i=0;i<occ.length;i++){if(occ[i]>=ad){o=occ[i];break}o=occ[i]}
+    return u.p[o][s];
+  }
+
+  /* calendario */
+  var MES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  function renderCal(){
+    var m=new Date(st.mes),y=m.getUTCFullYear(),mo=m.getUTCMonth();
+    $('#mes').textContent=MES[mo]+' '+y;
+    $('#prev').disabled=st.mes<=Date.UTC(2026,9,1);
+    $('#next').disabled=st.mes>=Date.UTC(2027,1,1);
+    var c=$('#cal');c.innerHTML='';
+    ['lu','ma','mi','ju','vi','sá','do'].forEach(function(d){var e=document.createElement('div');e.className='dw';e.textContent=d;c.appendChild(e)});
+    var first=new Date(Date.UTC(y,mo,1)).getUTCDay();first=(first+6)%7;
+    for(var i=0;i<first;i++){var v=document.createElement('span');v.className='dia vacio';c.appendChild(v)}
+    var dim=new Date(Date.UTC(y,mo+1,0)).getUTCDate();
+    var a=st.inn?parse(st.inn).getTime():null,b=st.out?parse(st.out).getTime():null;
+    for(var dd=1;dd<=dim;dd++){
+      var d=new Date(Date.UTC(y,mo,dd)),t=d.getTime(),s=season(d);
+      var bt=document.createElement('button');bt.type='button';bt.className='dia';bt.textContent=dd;
+      if(s>=0)bt.dataset.k=K[s];
+      bt.dataset.d=ymd(d);
+      if(t<HOY||s<0&&t>Date.UTC(2027,1,28)){bt.classList.add('pas');bt.disabled=true}
+      else if(ocupado(st.u,d)){bt.classList.add('ocu');bt.setAttribute('aria-label',dd+' ocupado');bt.dataset.ocu='1'}
+      if(a&&t===a||b&&t===b)bt.classList.add('sel');
+      else if(a&&b&&t>a&&t<b)bt.classList.add('rng');
+      c.appendChild(bt);
+    }
+  }
+  $('#cal').addEventListener('click',function(e){
+    var bt=e.target.closest('.dia');if(!bt||bt.disabled||!bt.dataset.d)return;
+    if(bt.dataset.ocu){toast('Esa noche ya está ocupada en esta unidad. Probá otra fecha u otra unidad.');return}
+    var d=bt.dataset.d;
+    if(!st.inn||st.out||d<=st.inn){st.inn=d;st.out=null}
+    else{
+      // verificar que no haya noches ocupadas en el medio
+      var x=parse(st.inn),y=parse(d),bloq=false;
+      for(var t=x.getTime();t<y.getTime();t+=864e5){if(ocupado(st.u,new Date(t))){bloq=true;break}}
+      if(bloq){toast('Hay noches ocupadas entre esas fechas. Elegí otra salida.');return}
+      st.out=d;
+    }
+    sync();
+  });
+  $('#prev').addEventListener('click',function(){var m=new Date(st.mes);st.mes=Date.UTC(m.getUTCFullYear(),m.getUTCMonth()-1,1);renderCal()});
+  $('#next').addEventListener('click',function(){var m=new Date(st.mes);st.mes=Date.UTC(m.getUTCFullYear(),m.getUTCMonth()+1,1);renderCal()});
+
+  /* cálculo */
+  function calcular(){
+    var u=unidad(),L=$('#res-lineas'),av=$('#res-aviso'),btn=$('#btn-res');
+    av.classList.remove('show');av.textContent='';
+    if(!st.inn||!st.out){
+      L.innerHTML='<div class="lin"><span>Unidad</span><span>'+u.n+'</span></div><div class="lin"><span>Fechas</span><span>'+(st.inn?'Llegada '+fecha(st.inn)+' · elegí la salida':'Elegí llegada y salida')+'</span></div>';
+      btn.disabled=true;btn.style.opacity=.5;marcar(st.inn?season(parse(st.inn)):null);return;
+    }
+    var a=parse(st.inn),b=parse(st.out),n=0,tot=0,ss={},hayAlta=false,fuera=false;
+    for(var t=a.getTime();t<b.getTime();t+=864e5){var s=season(new Date(t));if(s<0){fuera=true;continue}n++;ss[s]=(ss[s]||0)+1;tot+=tarifaNoche(u,st.ad,s);if(s===2)hayAlta=true}
+    var minN=hayAlta?7:2;
+    var lines='<div class="lin"><span>Unidad</span><span>'+u.n+'</span></div>'+
+      '<div class="lin"><span>Fechas</span><span>'+fecha(st.inn)+' al '+fecha(st.out)+'</span></div>'+
+      '<div class="lin"><span>Huéspedes</span><span>'+st.ad+(st.ad===1?' persona':' personas')+(st.cu?' + bebé en cuna (sin cargo)':'')+'</span></div>';
+    ['Primavera','Diciembre','Verano'].forEach(function(nm,i){if(ss[i])lines+='<div class="lin"><span>'+ss[i]+(ss[i]>1?' noches ':' noche ')+nm.toLowerCase()+' × '+fmt(tarifaNoche(u,st.ad,i))+'</span><span>'+fmt(ss[i]*tarifaNoche(u,st.ad,i))+'</span></div>'});
+    if(st.pet)lines+='<div class="lin"><span>Mascota pequeña</span><span>cargo a confirmar</span></div>';
+    lines+='<div class="lin tot"><span>Total</span><span>'+fmt(tot)+'</span></div>';
+    lines+='<div class="sena"><span>Seña 30% hoy</span><span>'+fmt(Math.round(tot*.3))+'</span></div>';
+    lines+='<div class="lin"><span>Saldo al ingresar</span><span>'+fmt(tot-Math.round(tot*.3))+'</span></div>';
+    L.innerHTML=lines;
+    var ok=true;
+    if(n<minN){ok=false;av.textContent=hayAlta?'Del 28 de diciembre al 28 de febrero la estadía mínima es de 7 noches. Sumá '+(minN-n)+(minN-n>1?' noches.':' noche.'):'La estadía mínima es de 2 noches.';av.classList.add('show')}
+    if(fuera){ok=false;av.textContent='Las tarifas desde marzo de 2027 todavía no están publicadas: consultalas por WhatsApp.';av.classList.add('show')}
+    btn.disabled=!ok;btn.style.opacity=ok?1:.5;
+    marcar(season(a));
+  }
+  function fecha(s){var p=s.split('-');return +p[2]+'/'+(+p[1])}
+  function marcar(s){document.querySelectorAll('.est').forEach(function(e,i){e.classList.toggle('on',s===i)})}
+
+  function sync(){
+    $('#f-u').value=st.u;llenarPersonas();$('#f-cu').value=st.cu;$('#f-pet').checked=st.pet;
+    $('#f-in').value=st.inn||'';$('#f-out').value=st.out||'';
+    renderCal();calcular();
+  }
+  $('#f-u').addEventListener('change',function(){st.u=this.value;sync()});
+  $('#f-ad').addEventListener('change',function(){st.ad=+this.value;calcular()});
+  $('#f-cu').addEventListener('change',function(){st.cu=+this.value;calcular()});
+  $('#f-pet').addEventListener('change',function(){st.pet=this.checked;calcular()});
+  function setFechas(){
+    var i=$('#f-in').value,o=$('#f-out').value;
+    st.inn=i||null;st.out=(o&&i&&o>i)?o:null;
+    if(st.inn){var d=parse(st.inn);st.mes=Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),1)}
+    renderCal();calcular();
+  }
+  $('#f-in').addEventListener('change',setFechas);$('#f-out').addEventListener('change',setFechas);
+
+  /* atajos desde unidades, tarifario y tira */
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('[data-u]');
+    if(b&&!b.closest('#cal')){
+      st.u=b.dataset.u;
+      if(b.dataset.o)st.ad=+b.dataset.o;
+      if(b.dataset.s){var s=+b.dataset.s;st.inn=null;st.out=null;st.mes=[Date.UTC(2026,10,1),Date.UTC(2026,11,1),Date.UTC(2027,0,1)][s];marcar(s)}
+      sync();if(b.dataset.s)marcar(+b.dataset.s);
+      document.getElementById('reservar').scrollIntoView();
+    }
+  });
+  document.querySelectorAll('.est').forEach(function(e,i){e.addEventListener('click',function(){st.inn=null;st.out=null;st.mes=[Date.UTC(2026,10,1),Date.UTC(2026,11,1),Date.UTC(2027,0,1)][i];sync();marcar(i);document.getElementById('reservar').scrollIntoView()})});
+
+  $('#btn-res').addEventListener('click',function(){
+    if(this.disabled)return;
+    toast('Demo: acá se abriría Mercado Pago para pagar la seña y la reserva quedaría pendiente de confirmación por el complejo.');
+  });
+  var tt;function toast(m){var t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(tt);tt=setTimeout(function(){t.classList.remove('show')},4200)}
+
+  /* nav activa */
+  if('IntersectionObserver' in window){
+    var links={};document.querySelectorAll('.rail nav a').forEach(function(a){links[a.getAttribute('href').slice(1)]=a});
+    var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting&&links[en.target.id]){Object.keys(links).forEach(function(k){links[k].classList.remove('act')});links[en.target.id].classList.add('act')}})},{rootMargin:'-40% 0px -55% 0px'});
+    document.querySelectorAll('main section').forEach(function(s){io.observe(s)});
+  }
+  sync();
+})();
+</script>
+</body>
+</html>
