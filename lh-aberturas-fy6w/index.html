@@ -1,0 +1,783 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>LH Aberturas · Cotizador</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chivo:ital,wght@0,300;0,400;0,600;0,800;0,900;1,400&family=Chivo+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --tinta:#0E1A1A; --vidrio:#DCEBE8; --vidrio-2:#C5DEDA; --canto:#2E7D6B; --canto-2:#25685A;
+  --blanco:#FAFBFA; --ambar:#D98B2B; --gris:#5E6B6A; --linea:#0E1A1A1F; --linea-2:#0E1A1A33;
+  --glass:#D3E7E3; --glass-2:#BCDAD3; --ink:#0E1A1A; --cota:#2E7D6B;
+  --sans:"Chivo", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --mono:"Chivo Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--blanco);color:var(--tinta);font-family:var(--sans);font-size:16px;line-height:1.5;overflow-x:hidden}
+img{max-width:100%;display:block}
+button,input,select{font:inherit;color:inherit}
+a{color:inherit}
+.wrap{max-width:1240px;margin:0 auto;padding:0 28px}
+.mono{font-family:var(--mono);font-size:.78rem;letter-spacing:.02em;text-transform:uppercase}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* Aviso de prototipo */
+.proto{background:var(--tinta);color:var(--blanco);font-size:.86rem}
+.proto .wrap{display:flex;gap:16px;align-items:center;justify-content:space-between;padding-top:9px;padding-bottom:9px;flex-wrap:wrap}
+.proto b{color:var(--ambar);font-weight:600}
+.proto button{background:none;border:1px solid #FAFBFA55;color:var(--blanco);padding:5px 12px;cursor:pointer;font-size:.8rem}
+.proto button:hover{border-color:var(--ambar);color:var(--ambar)}
+
+/* Cabecera */
+header.top{border-bottom:1px solid var(--tinta)}
+header.top .wrap{display:grid;grid-template-columns:repeat(12,1fr);gap:20px;align-items:center;padding-top:16px;padding-bottom:16px}
+.brand{grid-column:span 4;display:flex;align-items:center;gap:12px;text-decoration:none}
+.brand img{height:40px;width:auto}
+.brand .txt{font-weight:900;font-size:1.35rem;letter-spacing:-.02em;line-height:1}
+.brand .txt small{display:block;font-weight:400;font-size:.72rem;letter-spacing:.04em;color:var(--gris);margin-top:3px;font-family:var(--mono);text-transform:uppercase}
+.brand.has-logo .txt{display:none}
+nav.main{grid-column:span 8;display:flex;justify-content:flex-end;gap:28px}
+nav.main a{text-decoration:none;font-size:.9rem}
+nav.main a span{font-family:var(--mono);font-size:.72rem;color:var(--canto);margin-right:6px}
+nav.main a:hover{color:var(--canto)}
+
+/* Portada en grilla suiza */
+.hero{border-bottom:1px solid var(--tinta)}
+.hero .wrap{display:grid;grid-template-columns:repeat(12,1fr);gap:20px;padding-top:44px;padding-bottom:0}
+.hero .nums{grid-column:1/-1;display:grid;grid-template-columns:repeat(12,1fr);gap:20px;align-items:end}
+.num{font-weight:900;letter-spacing:-.06em;line-height:.8;font-size:clamp(4.6rem,12.4vw,10.8rem)}
+.num.n1{grid-column:1/7}
+.num.n2{grid-column:7/13;text-align:right;color:transparent;-webkit-text-stroke:2px var(--canto)}
+.cap{grid-column:span 6;display:flex;justify-content:space-between;border-top:1px solid var(--tinta);padding-top:8px;margin-top:14px}
+.cap.r{text-align:right}
+.hero h1{grid-column:1/8;font-size:clamp(1.9rem,3.4vw,3.05rem);font-weight:800;letter-spacing:-.03em;line-height:1.04;margin:46px 0 0}
+.hero h1 em{font-style:normal;color:var(--canto)}
+.hero .lead{grid-column:8/13;align-self:end;margin:46px 0 0;color:#2A3635;font-size:1.02rem}
+.hero .lead a{display:inline-block;margin-top:14px;background:var(--tinta);color:var(--blanco);text-decoration:none;padding:12px 18px;font-weight:600}
+.hero .lead a:hover{background:var(--canto)}
+.index{grid-column:1/-1;display:grid;grid-template-columns:repeat(6,1fr);border-top:1px solid var(--tinta);margin-top:44px}
+.index div{padding:14px 14px 18px 0;border-right:1px solid var(--linea-2);margin-right:14px}
+.index div:last-child{border-right:0}
+.index .mono{color:var(--canto)}
+.index strong{display:block;font-weight:600;font-size:1.02rem;margin-top:4px}
+
+/* Encabezados de sección */
+.sec{padding:70px 0;border-bottom:1px solid var(--tinta)}
+.sh{display:grid;grid-template-columns:repeat(12,1fr);gap:20px;margin-bottom:34px;align-items:end}
+.sh .n{grid-column:span 2;font-family:var(--mono);font-size:.82rem;color:var(--canto);border-top:3px solid var(--canto);padding-top:8px}
+.sh h2{grid-column:span 6;margin:0;font-size:clamp(1.6rem,2.6vw,2.3rem);font-weight:800;letter-spacing:-.025em;line-height:1.08}
+.sh p{grid-column:span 4;margin:0;color:var(--gris);font-size:.95rem}
+
+/* Cotizador */
+.q{display:grid;grid-template-columns:repeat(12,1fr);gap:20px}
+.ctrl{grid-column:span 4}
+.stage{grid-column:span 8;display:flex;flex-direction:column;gap:20px}
+fieldset{border:0;margin:0 0 22px;padding:0}
+legend{font-family:var(--mono);font-size:.74rem;text-transform:uppercase;letter-spacing:.04em;color:var(--gris);margin-bottom:8px;padding:0}
+.types{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--linea-2);border-left:1px solid var(--linea-2)}
+.types input,.seg input{position:absolute;opacity:0;pointer-events:none}
+.types label{border-right:1px solid var(--linea-2);border-bottom:1px solid var(--linea-2);padding:10px 6px 8px;font-size:.8rem;line-height:1.2;text-align:center;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;min-height:92px;justify-content:flex-start}
+.types svg{width:46px;height:46px}
+.types input:checked+label{background:var(--tinta);color:var(--blanco)}
+.types input:checked+label svg *{}
+.types input:focus-visible+label,.seg input:focus-visible+label{outline:2px solid var(--ambar);outline-offset:-2px}
+.seg{display:flex;flex-wrap:wrap;gap:0;border:1px solid var(--linea-2)}
+.seg label{flex:1 1 auto;padding:9px 10px;font-size:.84rem;cursor:pointer;border-right:1px solid var(--linea-2);display:flex;align-items:center;gap:7px;justify-content:center;white-space:nowrap}
+.seg label:last-of-type{border-right:0}
+.seg input:checked+label{background:var(--tinta);color:var(--blanco)}
+.sw{width:13px;height:13px;border:1px solid #0003;display:inline-block}
+.dim{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.dim label{display:block;font-size:.8rem;color:var(--gris)}
+.dim .row{display:flex;align-items:center;border-bottom:2px solid var(--tinta)}
+.dim input[type=number]{width:100%;border:0;background:none;font-size:1.6rem;font-weight:800;padding:2px 0;letter-spacing:-.02em}
+.dim input[type=number]:focus{outline:none}
+.dim .row:focus-within{border-color:var(--canto)}
+.dim .u{font-family:var(--mono);font-size:.8rem;color:var(--gris)}
+.dim input[type=range]{width:100%;accent-color:var(--canto);margin-top:6px}
+.checks label{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--linea);font-size:.9rem;cursor:pointer}
+.checks input{accent-color:var(--canto);margin-top:4px;width:16px;height:16px}
+.checks small{display:block;color:var(--gris);font-size:.78rem}
+.qty{display:flex;align-items:center;gap:0;border:1px solid var(--linea-2);width:max-content}
+.qty button{width:42px;height:40px;border:0;background:none;cursor:pointer;font-size:1.2rem}
+.qty button:hover{background:var(--vidrio)}
+.qty span{min-width:44px;text-align:center;font-weight:800;font-size:1.1rem}
+
+.plan{background:#fff;border:1px solid var(--tinta);position:relative}
+.plan .bar{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid var(--tinta);padding:8px 12px}
+.plan .bar span{font-family:var(--mono);font-size:.74rem;text-transform:uppercase}
+.plan svg.draw{width:100%;height:auto;display:block;background:
+  linear-gradient(var(--linea) 1px,transparent 1px) 0 0/20px 20px,
+  linear-gradient(90deg,var(--linea) 1px,transparent 1px) 0 0/20px 20px}
+.plan .stamp{position:absolute;right:12px;bottom:10px;font-family:var(--mono);font-size:.68rem;text-transform:uppercase;color:var(--gris);text-align:right;line-height:1.35}
+
+/* Laboratorio de vidrio */
+.lab{border:1px solid var(--tinta);background:var(--vidrio)}
+.lab .hd{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:10px 14px;border-bottom:1px solid var(--tinta);flex-wrap:wrap}
+.lab .hd strong{font-weight:800;font-size:1.05rem;letter-spacing:-.01em}
+.lab .hd .mono{color:var(--canto-2)}
+.glasses{display:grid;grid-template-columns:repeat(4,1fr)}
+.gl{border-right:1px solid var(--linea-2);padding:12px 14px 14px;cursor:pointer;background:none;border-top:0;border-bottom:0;border-left:0;text-align:left;position:relative}
+.gl:last-child{border-right:0}
+.gl:hover{background:#ffffff66}
+.gl[aria-pressed=true]{background:var(--blanco);box-shadow:inset 0 4px 0 var(--canto)}
+.gl .t{font-weight:800;font-size:.98rem;display:block}
+.gl .s{font-family:var(--mono);font-size:.7rem;color:var(--gris);display:block;margin-bottom:10px}
+.gl .chip{width:100%;height:34px;margin-bottom:10px;border:1px solid #0E1A1A33;position:relative;overflow:hidden}
+.gl .chip i{position:absolute;inset:0}
+.bars{display:grid;gap:6px}
+.b{display:grid;grid-template-columns:72px 1fr;align-items:center;gap:8px;font-size:.74rem}
+.b .track{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;height:8px}
+.b .track span{background:#0E1A1A1A}
+.b .track span.on{background:var(--canto)}
+.gl[aria-pressed=true] .b .track span.on{background:var(--tinta)}
+.gl .add{display:block;margin-top:10px;font-family:var(--mono);font-size:.72rem;color:var(--canto-2)}
+.lab .ft{border-top:1px solid var(--tinta);padding:9px 14px;font-size:.78rem;color:#2A3635}
+
+/* Precio */
+.price{display:grid;grid-template-columns:repeat(8,1fr);gap:20px;border-top:3px solid var(--tinta);padding-top:14px}
+.price .l{grid-column:span 5}
+.price .r{grid-column:span 3;display:flex;flex-direction:column;gap:8px;justify-content:flex-end}
+.amt{font-size:clamp(1.8rem,3.3vw,2.7rem);font-weight:900;letter-spacing:-.04em;line-height:1}
+.sub{color:var(--gris);font-size:.86rem;margin-top:6px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;border:1px solid var(--tinta);background:var(--tinta);color:var(--blanco);cursor:pointer;font-weight:600;text-decoration:none;font-size:.92rem}
+.btn:hover{background:var(--canto);border-color:var(--canto)}
+.btn.ghost{background:none;color:var(--tinta)}
+.btn.ghost:hover{background:var(--vidrio);color:var(--tinta);border-color:var(--tinta)}
+.btn.amber{background:var(--ambar);border-color:var(--ambar);color:var(--tinta)}
+.btn.amber:hover{background:#c27a22;border-color:#c27a22}
+
+/* Pedido */
+.ped{display:grid;grid-template-columns:repeat(12,1fr);gap:20px}
+.ped .list{grid-column:span 8}
+.ped aside{grid-column:span 4;border-left:1px solid var(--tinta);padding-left:20px}
+table.items{width:100%;border-collapse:collapse}
+table.items th{font-family:var(--mono);font-weight:500;font-size:.72rem;text-transform:uppercase;text-align:left;color:var(--gris);border-bottom:1px solid var(--tinta);padding:6px 8px 6px 0}
+table.items td{border-bottom:1px solid var(--linea-2);padding:10px 8px 10px 0;vertical-align:middle;font-size:.9rem}
+table.items td.pos{font-family:var(--mono);color:var(--canto);width:44px}
+table.items td.mini{width:58px}
+table.items td.mini svg{width:50px;height:50px;display:block}
+table.items td.p{text-align:right;font-weight:800;white-space:nowrap}
+table.items td .d{color:var(--gris);font-size:.8rem}
+table.items button{background:none;border:0;color:var(--gris);cursor:pointer;text-decoration:underline;font-size:.78rem}
+.empty{border:1px dashed var(--linea-2);padding:28px;color:var(--gris);text-align:center}
+.tot{display:flex;justify-content:space-between;align-items:baseline;border-top:3px solid var(--tinta);margin-top:16px;padding-top:10px;font-weight:800;font-size:1.2rem}
+aside h3{margin:0 0 8px;font-size:1.05rem;font-weight:800}
+aside p{margin:0 0 14px;font-size:.9rem;color:#2A3635}
+aside .acts{display:grid;gap:8px}
+aside .note{font-size:.78rem;color:var(--gris);margin-top:14px;border-top:1px solid var(--linea-2);padding-top:10px}
+
+/* Obras: hoja de contactos */
+.sheet{display:grid;grid-template-columns:repeat(6,1fr);gap:0;border-top:1px solid var(--tinta);border-left:1px solid var(--tinta);background:var(--tinta)}
+.sheet figure{margin:0;position:relative;aspect-ratio:3/4;overflow:hidden;border-right:1px solid var(--tinta);border-bottom:1px solid var(--tinta);background:
+  linear-gradient(135deg,transparent 0 46%,#ffffff55 46% 49%,transparent 49% 58%,#ffffff33 58% 60%,transparent 60%),var(--vidrio)}
+.sheet figure:nth-child(3n){background-color:var(--glass-2)}
+.sheet figure:nth-child(4n+1){background-color:#E6EFED}
+.sheet img{width:100%;height:100%;object-fit:cover;position:relative;z-index:1}
+.sheet figcaption{position:absolute;left:0;bottom:0;z-index:2;font-family:var(--mono);font-size:.66rem;background:var(--tinta);color:var(--blanco);padding:3px 6px}
+.sheet figure .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:2.4rem;color:#0E1A1A22;letter-spacing:-.04em}
+.sheetnote{display:flex;justify-content:space-between;gap:20px;margin-top:12px;font-size:.84rem;color:var(--gris);flex-wrap:wrap}
+
+/* Local */
+.local{display:grid;grid-template-columns:repeat(12,1fr);gap:20px}
+.local .big{grid-column:span 7;font-weight:900;letter-spacing:-.05em;line-height:.86;font-size:clamp(3.2rem,9vw,7.5rem)}
+.local .big span{display:block;font-size:.32em;letter-spacing:-.02em;font-weight:600;margin-top:16px;line-height:1.1}
+.local dl{grid-column:span 5;margin:0;display:grid;grid-template-columns:110px 1fr;border-top:1px solid var(--tinta)}
+.local dt,.local dd{margin:0;padding:12px 0;border-bottom:1px solid var(--linea-2);font-size:.95rem}
+.local dt{font-family:var(--mono);font-size:.74rem;text-transform:uppercase;color:var(--gris);padding-top:15px}
+.local dd a{color:var(--canto-2);font-weight:600}
+.timeline{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--tinta);margin-top:30px}
+.timeline div{padding:14px 20px 0 0}
+.timeline .mono{color:var(--canto)}
+.timeline p{margin:4px 0 0;font-size:.92rem}
+
+footer{padding:26px 0 90px;font-size:.82rem;color:var(--gris)}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+
+/* Barra móvil */
+.mbar{display:none}
+
+/* Diálogos */
+dialog{border:1px solid var(--tinta);padding:0;max-width:640px;width:calc(100% - 24px);background:var(--blanco);color:var(--tinta)}
+dialog::backdrop{background:#0E1A1Aaa}
+dialog .dh{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--tinta)}
+dialog .dh h3{margin:0;font-size:1.1rem;font-weight:800}
+dialog .db{padding:14px 18px;max-height:62vh;overflow:auto}
+dialog .df{display:flex;gap:8px;justify-content:flex-end;padding:12px 18px;border-top:1px solid var(--tinta);flex-wrap:wrap}
+.xbtn{background:none;border:0;font-size:1.4rem;cursor:pointer;line-height:1}
+table.prices{width:100%;border-collapse:collapse;font-size:.88rem}
+table.prices th{text-align:left;font-family:var(--mono);font-weight:500;font-size:.72rem;text-transform:uppercase;color:var(--canto-2);padding:14px 0 6px;border-bottom:1px solid var(--tinta)}
+table.prices td{padding:6px 0;border-bottom:1px solid var(--linea)}
+table.prices input{width:120px;border:1px solid var(--linea-2);padding:5px 7px;text-align:right;background:#fff}
+table.prices input.wide{width:180px;text-align:left}
+pre.msg{white-space:pre-wrap;font-family:var(--mono);font-size:.8rem;background:var(--vidrio);padding:14px;margin:0;border:1px solid var(--linea-2)}
+.toast{position:fixed;left:50%;bottom:84px;transform:translate(-50%,20px);background:var(--tinta);color:var(--blanco);padding:10px 16px;font-size:.88rem;opacity:0;transition:.25s;pointer-events:none;z-index:50}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+@media (max-width:980px){
+  .ctrl,.stage{grid-column:1/-1}
+  .q{gap:28px}
+  .glasses{grid-template-columns:repeat(2,1fr)}
+  .gl:nth-child(2){border-right:0}
+  .gl:nth-child(-n+2){border-bottom:1px solid var(--linea-2)}
+  .ped .list,.ped aside{grid-column:1/-1}
+  .ped aside{border-left:0;padding-left:0;border-top:1px solid var(--tinta);padding-top:16px}
+  .sheet{grid-template-columns:repeat(4,1fr)}
+  .local .big,.local dl{grid-column:1/-1}
+}
+@media (max-width:640px){
+  .wrap{padding:0 16px}
+  nav.main{display:none}
+  .brand{grid-column:1/-1}
+  .hero .wrap{padding-top:28px}
+  .num.n1,.num.n2{grid-column:1/-1;text-align:left}
+  .num.n2{-webkit-text-stroke:1.5px var(--canto)}
+  .cap{grid-column:1/-1}
+  .cap.r{text-align:left}
+  .hero h1,.hero .lead{grid-column:1/-1}
+  .hero h1{margin-top:26px}
+  .hero .lead{margin-top:14px}
+  .index{grid-template-columns:repeat(2,1fr)}
+  .index div{border-right:0;border-bottom:1px solid var(--linea-2)}
+  .sec{padding:48px 0}
+  .sh .n,.sh h2,.sh p{grid-column:1/-1}
+  .types label{min-height:84px;font-size:.76rem}
+  .glasses{grid-template-columns:1fr 1fr}
+  .gl{padding:10px}
+  .b{grid-template-columns:1fr;gap:3px}
+  .price .l,.price .r{grid-column:1/-1}
+  .sheet{grid-template-columns:repeat(3,1fr)}
+  .timeline{grid-template-columns:1fr}
+  .local dl{grid-template-columns:90px 1fr}
+  table.items td.mini{display:none}
+  .mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--tinta);color:var(--blanco);padding:10px 16px;justify-content:space-between;align-items:center;gap:10px}
+  .mbar .l{font-family:var(--mono);font-size:.66rem;text-transform:uppercase;color:#FAFBFAaa}
+  .mbar .v{font-weight:800;font-size:1rem}
+  .mbar button{background:var(--ambar);border:0;color:var(--tinta);font-weight:700;padding:10px 14px;cursor:pointer}
+  .seg label{font-size:.8rem;padding:9px 8px}
+  .plan .stamp{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<div class="proto"><div class="wrap">
+  <span><b>Prototipo de demostración preparado para LH Aberturas.</b> Los precios son de ejemplo.</span>
+  <button type="button" id="openAdmin">Editar tabla de precios</button>
+</div></div>
+
+<header class="top"><div class="wrap">
+  <a class="brand" id="brand" href="#">
+    <img src="https://www.aberturaslh.com.ar/Imagenes/logo.png" alt="LH Aberturas" onload="this.parentElement.classList.add('has-logo')" onerror="this.remove()">
+    <span class="txt">LH Aberturas<small>Río Cuarto · Córdoba</small></span>
+  </a>
+  <nav class="main" aria-label="Secciones">
+    <a href="#cotizar"><span>01</span>Cotizar</a>
+    <a href="#vidrio"><span>02</span>Vidrio</a>
+    <a href="#pedido"><span>03</span>Pedido</a>
+    <a href="#obras"><span>04</span>Obras</a>
+    <a href="#local"><span>05</span>El local</a>
+  </nav>
+</div></header>
+
+<section class="hero"><div class="wrap">
+  <div class="nums">
+    <div class="num n1">2002</div>
+    <div class="num n2" aria-hidden="true">2967</div>
+    <div class="cap mono"><span>Año en que empezamos</span><span>Río Cuarto</span></div>
+    <div class="cap r mono"><span>Av. Sabattini</span><span>Aberturas + Vidrios LH</span></div>
+  </div>
+  <h1>Vidrio y aluminio bajo el mismo techo. <em>Cotizá la abertura con el vidrio que necesita.</em></h1>
+  <div class="lead">
+    Empezamos en 2002 en un local chico. Hoy tenemos salón de ventas y área de fabricación en Av. Sabattini 2967. Elegí el tipo, cargá las medidas y compará vidrios: el precio estimado cambia al instante.
+    <br><a href="#cotizar">Empezar a cotizar</a>
+  </div>
+  <div class="index" aria-label="Lo que hacemos">
+    <div><span class="mono">01</span><strong>Aberturas</strong></div>
+    <div><span class="mono">02</span><strong>Cortinas</strong></div>
+    <div><span class="mono">03</span><strong>Mosquiteros</strong></div>
+    <div><span class="mono">04</span><strong>Piel de vidrio</strong></div>
+    <div><span class="mono">05</span><strong>Frente de vidrio</strong></div>
+    <div><span class="mono">06</span><strong>Vidrieras</strong></div>
+  </div>
+</div></section>
+
+<section class="sec" id="cotizar"><div class="wrap">
+  <div class="sh">
+    <div class="n">01 / Cotizador</div>
+    <h2>Dibujá la abertura y mirá cuánto sale.</h2>
+    <p>El plano se arma con tus medidas. Sirve para casas y también para frentes de local y vidrieras.</p>
+  </div>
+
+  <form class="q" id="f" onsubmit="return false">
+    <div class="ctrl">
+      <fieldset>
+        <legend>Tipo</legend>
+        <div class="types" id="types"></div>
+      </fieldset>
+      <fieldset>
+        <legend>Medidas del vano</legend>
+        <div class="dim">
+          <div><label for="w">Ancho</label><div class="row"><input id="w" type="number" min="40" max="600" value="150" inputmode="numeric"><span class="u">cm</span></div><input id="wr" type="range" min="40" max="600" value="150" aria-label="Ancho"></div>
+          <div><label for="h">Alto</label><div class="row"><input id="h" type="number" min="40" max="320" value="110" inputmode="numeric"><span class="u">cm</span></div><input id="hr" type="range" min="40" max="320" value="110" aria-label="Alto"></div>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Línea de aluminio</legend>
+        <div class="seg" id="lines"></div>
+      </fieldset>
+      <fieldset>
+        <legend>Color</legend>
+        <div class="seg" id="colors"></div>
+      </fieldset>
+      <fieldset class="checks">
+        <legend>Adicionales</legend>
+        <label><input type="checkbox" id="cort"><span>Cortina de enrollar<small>Con cajón arriba de la abertura</small></span></label>
+        <label><input type="checkbox" id="mosq"><span>Mosquitero<small>Solo en hojas que abren o corren</small></span></label>
+        <label><input type="checkbox" id="inst" checked><span>Instalación<small>Colocación en obra en Río Cuarto</small></span></label>
+      </fieldset>
+      <fieldset>
+        <legend>Cantidad</legend>
+        <div class="qty"><button type="button" id="qm" aria-label="Menos">−</button><span id="q">1</span><button type="button" id="qp" aria-label="Más">+</button></div>
+      </fieldset>
+    </div>
+
+    <div class="stage">
+      <div class="plan">
+        <div class="bar"><span id="planTag">Ventana corrediza</span><span id="planGlass">Vidrio float simple</span></div>
+        <svg class="draw" id="draw" viewBox="0 0 560 420" role="img" aria-label="Plano de la abertura con medidas"></svg>
+        <div class="stamp">LH Aberturas<br>Av. Sabattini 2967</div>
+      </div>
+
+      <div class="lab" id="vidrio">
+        <div class="hd"><strong>02 · Laboratorio de vidrio</strong><span class="mono">Tocá un vidrio para probarlo en tu abertura</span></div>
+        <div class="glasses" id="glasses"></div>
+        <div class="ft">Comparación orientativa entre vidrios, de 1 a 5. El vidrio final depende del tamaño del paño y del uso; lo confirmamos al medir.</div>
+      </div>
+
+      <div class="price">
+        <div class="l">
+          <div class="mono" style="color:var(--gris)">Precio estimado</div>
+          <div class="amt" id="amt">$0</div>
+          <div class="sub" id="sub"></div>
+        </div>
+        <div class="r">
+          <button type="button" class="btn" id="add">Agregar al pedido</button>
+          <button type="button" class="btn ghost" id="sendOne">Pedir solo esta</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div></section>
+
+<section class="sec" id="pedido"><div class="wrap">
+  <div class="sh">
+    <div class="n">03 / Pedido</div>
+    <h2>Toda la obra en una sola lista.</h2>
+    <p>Cada abertura lleva su código de posición. Al enviar, a LH le llega la lista completa con medidas, vidrio y adicionales.</p>
+  </div>
+  <div class="ped">
+    <div class="list">
+      <div class="empty" id="empty">Todavía no agregaste aberturas. Configurá una arriba y tocá “Agregar al pedido”.</div>
+      <table class="items" id="itemsT" hidden>
+        <thead><tr><th>Pos.</th><th class="sr">Dibujo</th><th>Abertura</th><th style="text-align:right">Estimado</th><th><span class="sr">Quitar</span></th></tr></thead>
+        <tbody id="items"></tbody>
+      </table>
+      <div class="tot" id="totalRow" hidden><span>Total estimado</span><span id="total"></span></div>
+    </div>
+    <aside>
+      <h3>Enviar el pedido</h3>
+      <p>Lo mandás por mail a LH con todo cargado. Después coordinan la visita para medir.</p>
+      <div class="acts">
+        <button type="button" class="btn" id="sendMail">Enviar por mail</button>
+        <button type="button" class="btn ghost" id="copyAll">Copiar pedido</button>
+        <button type="button" class="btn amber" id="sendWa" hidden>Enviar por WhatsApp</button>
+      </div>
+      <div class="note" id="waNote">El envío por WhatsApp se activa cargando el número del local en la tabla de precios.</div>
+    </aside>
+  </div>
+</div></section>
+
+<section class="sec" id="obras"><div class="wrap">
+  <div class="sh">
+    <div class="n">04 / Obras</div>
+    <h2>Hoja de contactos: obras de septiembre de 2025.</h2>
+    <p>Fotos tomadas de la sección Obras de aberturaslh.com.ar.</p>
+  </div>
+  <div class="sheet" id="sheet"></div>
+  <div class="sheetnote"><span>54 fotos publicadas en el sitio de LH.</span><a href="https://aberturaslh.com.ar/obras.php" target="_blank" rel="noopener">Ver todas las obras</a></div>
+</div></section>
+
+<section class="sec" id="local"><div class="wrap">
+  <div class="sh">
+    <div class="n">05 / El local</div>
+    <h2>De un local chico a salón de ventas con fábrica.</h2>
+    <p>Empresa familiar de Río Cuarto.</p>
+  </div>
+  <div class="local">
+    <div class="big">Sabattini<br>2967<span>Aberturas LH y Vidrios LH, en la misma dirección.</span></div>
+    <dl>
+      <dt>Dirección</dt><dd>Av. Sabattini 2967, Río Cuarto, Córdoba · <a href="https://www.google.com/maps/search/?api=1&query=Av.+Sabattini+2967+R%C3%ADo+Cuarto" target="_blank" rel="noopener">Ver mapa</a></dd>
+      <dt>Teléfono</dt><dd><a href="tel:+543584651929">(0358) 465-1929</a></dd>
+      <dt>Mail</dt><dd><a href="mailto:aberturas_lh@hotmail.com">aberturas_lh@hotmail.com</a></dd>
+      <dt>Hacemos</dt><dd>Aberturas, cortinas, mosquiteros, piel de vidrio, frentes de vidrio y vidrieras.</dd>
+    </dl>
+    <div class="timeline">
+      <div><span class="mono">2002</span><p>Arrancamos en Río Cuarto en un local chico.</p></div>
+      <div><span class="mono">Después</span><p>Crecimos a un salón de ventas con área de fabricación.</p></div>
+      <div><span class="mono">Siempre</span><p>Herramientas, maquinaria y capacitación del equipo al día.</p></div>
+    </div>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <span>Prototipo de demostración preparado para LH Aberturas. Precios de ejemplo, no son una cotización.</span>
+  <span>Hecho por Resolviendo Kos · resolviendokos.com</span>
+</div></footer>
+
+<div class="mbar" id="mbar"><div><div class="l">Precio estimado</div><div class="v" id="mamt"></div></div><button type="button" id="mgo">Ver precio</button></div>
+
+<dialog id="admDlg">
+  <div class="dh"><h3>Tabla de precios</h3><button class="xbtn" type="button" id="closeAdm" aria-label="Cerrar">×</button></div>
+  <div class="db" id="admBody"></div>
+  <div class="df"><button class="btn ghost" type="button" id="resetP">Restaurar ejemplo</button><button class="btn" type="button" id="saveP">Guardar precios</button></div>
+</dialog>
+
+<dialog id="msgDlg">
+  <div class="dh"><h3 id="msgTitle">Pedido</h3><button class="xbtn" type="button" id="closeMsg" aria-label="Cerrar">×</button></div>
+  <div class="db"><pre class="msg" id="msgTxt"></pre></div>
+  <div class="df"><button class="btn ghost" type="button" id="copyMsg">Copiar</button><a class="btn" id="mailLink" href="#">Abrir el mail</a></div>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const MAIL = "aberturas_lh@hotmail.com";
+
+const TYPES = [
+  {id:"corr", name:"Ventana corrediza", mosq:true},
+  {id:"bat",  name:"Ventana de abrir",  mosq:true},
+  {id:"fijo", name:"Paño fijo",         mosq:false},
+  {id:"balc", name:"Puerta balcón",     mosq:true, door:true},
+  {id:"puer", name:"Puerta de abrir",   mosq:false, door:true},
+  {id:"vidr", name:"Vidriera / frente de local", mosq:false, shop:true}
+];
+const LINES = [
+  {id:"std", name:"Estándar"},
+  {id:"alt", name:"Alta prestación"}
+];
+const GLASS = [
+  {id:"float", name:"Float simple", spec:"4 mm", r:{luz:5,term:1,acus:1,seg:1}, tint:"#D3E7E3", note:"El más económico."},
+  {id:"lam",   name:"Laminado 3+3", spec:"dos hojas + PVB", r:{luz:4,term:1,acus:3,seg:4}, tint:"#CFE4DF", note:"Si se rompe, queda pegado."},
+  {id:"dvh",   name:"DVH", spec:"doble con cámara", r:{luz:4,term:4,acus:3,seg:2}, tint:"#BCDAD3", note:"Aísla frío y calor."},
+  {id:"temp",  name:"Templado", spec:"6 mm", r:{luz:5,term:1,acus:2,seg:4}, tint:"#C9E2DD", note:"Más resistente al golpe."}
+];
+const BARS = [["luz","Luz"],["term","Térmica"],["acus","Acústica"],["seg","Seguridad"]];
+const COLORS = [
+  {id:"blanco",  name:"Blanco",  hex:"#F4F5F2", stroke:"#8E9A9A"},
+  {id:"natural", name:"Natural", hex:"#B9C0C3", stroke:"#76828A"},
+  {id:"negro",   name:"Negro",   hex:"#2A2E31", stroke:"#2A2E31"},
+  {id:"bronce",  name:"Bronce",  hex:"#5A4636", stroke:"#3E2F23"}
+];
+const DEFAULT_PRICES = {
+  m2:{corr:250000, bat:290000, fijo:170000, balc:275000, puer:330000, vidr:230000},
+  line:{std:1, alt:1.4},
+  glass:{float:0, lam:38000, dvh:92000, temp:70000},
+  colorPct:{blanco:0, natural:0, negro:12, bronce:10},
+  mosqM2:45000, cortM2:85000, instPct:18, minM2:1, rangePct:8,
+  wa:""
+};
+let P = load();
+function load(){
+  try{ const s = localStorage.getItem("lh_prices"); if(s){ const o=JSON.parse(s); const d=structuredClone(DEFAULT_PRICES);
+    for(const k in o){ if(d[k]&&typeof d[k]==="object") Object.assign(d[k],o[k]); else d[k]=o[k]; } return d; } }catch(e){}
+  return structuredClone(DEFAULT_PRICES);
+}
+function save(){ try{ localStorage.setItem("lh_prices", JSON.stringify(P)); }catch(e){} }
+
+const S = {type:"corr", w:150, h:110, line:"std", glass:"float", color:"blanco", mosq:false, cort:false, inst:true, q:1};
+const items = [];
+
+const $ = id => document.getElementById(id);
+const ars = n => "$" + Math.round(n).toLocaleString("es-AR");
+const round = n => Math.round(n/1000)*1000;
+const byId = (a,id) => a.find(x=>x.id===id);
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function calc(st){
+  const area = Math.max((st.w/100)*(st.h/100), P.minM2);
+  const ty = byId(TYPES,st.type);
+  let unit = area * P.m2[st.type] * P.line[st.line];
+  unit += area * P.glass[st.glass];
+  unit *= 1 + (P.colorPct[st.color]||0)/100;
+  if(st.mosq && ty.mosq) unit += area * P.mosqM2;
+  if(st.cort && !ty.shop && st.type!=="puer") unit += (st.w/100)*Math.max(st.h/100+0.25,1) * P.cortM2;
+  if(st.inst) unit *= 1 + P.instPct/100;
+  const total = unit * st.q, r = P.rangePct/100;
+  return {area, lo:round(total*(1-r)), hi:round(total*(1+r)), mid:round(total)};
+}
+const cortOk = st => !byId(TYPES,st.type).shop && st.type!=="puer";
+
+/* ===== Dibujo ===== */
+function drawWindow(st, o={}){
+  const VW=o.vw||560, VH=o.vh||420, mini=!!o.mini, uid=o.uid||"";
+  const col = byId(COLORS, st.color), gl = byId(GLASS, st.glass);
+  const hasCort = st.cort && cortOk(st);
+  const pad = mini?4:70;
+  const boxH = hasCort ? (mini?6:Math.max(16,Math.min(30,VH*.07))) : 0;
+  const maxW = VW-pad*2, maxH = VH-pad*2-(mini?0:10)-boxH;
+  const sc = Math.min(maxW/st.w, maxH/st.h);
+  const W = st.w*sc, H = st.h*sc;
+  const x = (VW-W)/2+(mini?0:10), y = (VH-H)/2-(mini?0:8)+boxH/2;
+  const fr = mini?2.5:Math.max(8,Math.min(16,W*.035)), sw = mini?1:1.5;
+  let g = `<defs>
+    <pattern id="mq${uid}" width="5" height="5" patternUnits="userSpaceOnUse"><path d="M0 0H5M0 0V5" stroke="#3A4A52" stroke-width=".5" opacity=".45"/></pattern>
+    <linearGradient id="gl${uid}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".6"/><stop offset=".35" stop-color="#fff" stop-opacity="0"/></linearGradient>
+  </defs>`;
+  g += `<rect x="${x}" y="${y}" width="${W}" height="${H}" fill="${col.hex}" stroke="${col.stroke}" stroke-width="${sw}"/>`;
+  const ix=x+fr, iy=y+fr, iW=W-fr*2, iH=H-fr*2;
+  const pane=(px,py,pw,ph,op={})=>{
+    let s=`<rect x="${px}" y="${py}" width="${pw}" height="${ph}" fill="${gl.tint}" stroke="${col.stroke}" stroke-width="${sw*.8}"/>`;
+    s+=`<rect x="${px}" y="${py}" width="${pw}" height="${ph}" fill="url(#gl${uid})"/>`;
+    if(!mini){
+      if(st.glass==="dvh") s+=`<rect x="${px+5}" y="${py+5}" width="${Math.max(0,pw-10)}" height="${Math.max(0,ph-10)}" fill="none" stroke="#fff" stroke-opacity=".85" stroke-width="1.2"/>`;
+      if(st.glass==="lam") s+=`<line x1="${px+pw*.12}" y1="${py+ph*.88}" x2="${px+pw*.32}" y2="${py+ph*.68}" stroke="#fff" stroke-opacity=".9" stroke-width="2"/><line x1="${px+pw*.18}" y1="${py+ph*.9}" x2="${px+pw*.38}" y2="${py+ph*.7}" stroke="#fff" stroke-opacity=".6" stroke-width="1"/>`;
+      if(st.glass==="temp") s+=`<text x="${px+8}" y="${py+ph-8}" font-size="10" font-family="Chivo Mono, monospace" fill="#2E7D6B" opacity=".9">T</text>`;
+    }
+    if(op.mq) s+=`<rect x="${px}" y="${py}" width="${pw}" height="${ph}" fill="url(#mq${uid})"/>`;
+    return s;
+  };
+  const sash=(px,py,pw,ph)=>`<rect x="${px}" y="${py}" width="${pw}" height="${ph}" fill="${col.hex}" stroke="${col.stroke}" stroke-width="${sw*.8}"/>`;
+  const openLine=pts=>`<polyline points="${pts}" fill="none" stroke="var(--ink)" stroke-width="${mini?.8:1.2}" stroke-dasharray="${mini?'2.5 2':'6 5'}" opacity=".7"/>`;
+  const handle=(hx,hy)=>mini?"":`<rect x="${hx-2}" y="${hy-12}" width="4" height="24" rx="2" fill="var(--ink)" opacity=".8"/>`;
+  const ty = byId(TYPES,st.type), mq = st.mosq && ty.mosq, t = st.type;
+  const s1 = fr*.6;
+
+  if(t==="corr"||t==="balc"){
+    const ov=mini?1:6, hw=iW/2;
+    g+=sash(ix,iy,hw+ov,iH)+pane(ix+s1,iy+s1,hw+ov-s1*2,iH-s1*2);
+    g+=sash(ix+hw-ov,iy,hw+ov,iH)+pane(ix+hw-ov+s1,iy+s1,hw+ov-s1*2,iH-s1*2,{mq});
+    if(!mini){
+      const ay=iy+iH/2, ax=ix+hw*.5, bx=ix+hw*1.5;
+      g+=`<path d="M${ax-22} ${ay}H${ax+22}M${ax+14} ${ay-7}L${ax+22} ${ay}L${ax+14} ${ay+7}" stroke="var(--ink)" stroke-width="1.5" fill="none" opacity=".75"/>`;
+      g+=`<path d="M${bx+22} ${ay}H${bx-22}M${bx-14} ${ay-7}L${bx-22} ${ay}L${bx-14} ${ay+7}" stroke="var(--ink)" stroke-width="1.5" fill="none" opacity=".75"/>`;
+      g+=handle(ix+hw-ov-s1/2-3,ay);
+    }
+  } else if(t==="bat"){
+    const n=st.w>=110?2:1, pw=iW/n;
+    for(let i=0;i<n;i++){
+      const px=ix+pw*i, left=(n===1)||i===0;
+      g+=sash(px,iy,pw,iH)+pane(px+s1,iy+s1,pw-s1*2,iH-s1*2,{mq:mq&&i===n-1});
+      g+= left ? openLine(`${px+pw-s1},${iy+s1} ${px+s1},${iy+iH/2} ${px+pw-s1},${iy+iH-s1}`) : openLine(`${px+s1},${iy+s1} ${px+pw-s1},${iy+iH/2} ${px+s1},${iy+iH-s1}`);
+      g+=handle(left?px+pw-s1-6:px+s1+6,iy+iH/2);
+    }
+  } else if(t==="fijo"){
+    g+=pane(ix,iy,iW,iH);
+    if(!mini) g+=`<text x="${ix+iW/2}" y="${iy+iH/2+5}" text-anchor="middle" font-size="15" fill="var(--ink)" opacity=".55" font-family="Chivo, sans-serif">F</text>`;
+  } else if(t==="puer"){
+    g+=sash(ix,iy,iW,iH);
+    const gh=iH*.55;
+    g+=pane(ix+s1*2,iy+s1*2,iW-s1*4,gh-s1*2);
+    g+=`<rect x="${ix+s1*2}" y="${iy+gh+s1}" width="${iW-s1*4}" height="${iH-gh-s1*3}" fill="none" stroke="${col.stroke}" stroke-width="${sw*.8}"/>`;
+    g+=openLine(`${ix+iW-s1},${iy+s1} ${ix+s1},${iy+iH/2} ${ix+iW-s1},${iy+iH-s1}`);
+    g+=handle(ix+iW-s1*3,iy+iH*.55);
+  } else if(t==="vidr"){
+    // frente de local: paños fijos + puerta central + paño superior (banderola)
+    const n = Math.max(3, Math.min(5, Math.round(st.w/110)));
+    const topH = st.h>=220 ? iH*.18 : 0;
+    const pw = iW/n, mid = Math.floor(n/2), mul = mini?1:Math.max(3,fr*.4);
+    if(topH){ g+=pane(ix,iy,iW,topH-mul/2); g+=`<rect x="${ix}" y="${iy+topH-mul/2}" width="${iW}" height="${mul}" fill="${col.hex}" stroke="${col.stroke}" stroke-width="${sw*.6}"/>`; }
+    const by=iy+topH+(topH?mul/2:0), bh=iH-topH-(topH?mul/2:0);
+    for(let i=0;i<n;i++){
+      const px=ix+pw*i;
+      if(i===mid){
+        g+=sash(px,by,pw,bh)+pane(px+s1,by+s1,pw-s1*2,bh-s1*2);
+        g+=openLine(`${px+pw-s1},${by+s1} ${px+s1},${by+bh/2} ${px+pw-s1},${by+bh-s1}`);
+        if(!mini) g+=`<rect x="${px+pw-s1-7}" y="${by+bh*.42}" width="4" height="${Math.min(60,bh*.22)}" rx="2" fill="var(--ink)" opacity=".8"/>`;
+      } else {
+        g+=pane(px,by,pw,bh);
+        if(i<n-1 && i!==mid-1) g+=`<rect x="${px+pw-mul/2}" y="${by}" width="${mul}" height="${bh}" fill="${col.hex}" stroke="${col.stroke}" stroke-width="${sw*.6}"/>`;
+        if(!mini) g+=`<text x="${px+pw/2}" y="${by+bh/2+5}" text-anchor="middle" font-size="13" fill="var(--ink)" opacity=".45" font-family="Chivo, sans-serif">F</text>`;
+      }
+    }
+  }
+
+  if(hasCort){
+    g+=`<rect x="${x-2}" y="${y-boxH}" width="${W+4}" height="${boxH}" fill="${col.hex}" stroke="${col.stroke}" stroke-width="${sw}"/>`;
+    if(!mini){
+      const down = iH*.32;
+      g+=`<rect x="${ix}" y="${iy}" width="${iW}" height="${down}" fill="${col.hex}" opacity=".92"/>`;
+      for(let yy=iy+6; yy<iy+down; yy+=6) g+=`<line x1="${ix}" y1="${yy}" x2="${ix+iW}" y2="${yy}" stroke="${col.stroke}" stroke-width=".7" opacity=".7"/>`;
+      g+=`<text x="${x+W/2}" y="${y-boxH/2+4}" text-anchor="middle" font-size="10" font-family="Chivo Mono, monospace" fill="${st.color==='negro'||st.color==='bronce'?'#fff':'#0E1A1A'}" opacity=".75">CAJÓN CORTINA</text>`;
+    }
+  }
+
+  if(!mini){
+    const c="var(--cota)", yb=y+H+26, xl=x-26, top=y-boxH;
+    g+=`<g stroke="${c}" stroke-width="1" fill="${c}" font-family="Chivo Mono, monospace" font-size="13" font-weight="500">
+      <line x1="${x}" y1="${y+H+6}" x2="${x}" y2="${yb+6}"/><line x1="${x+W}" y1="${y+H+6}" x2="${x+W}" y2="${yb+6}"/>
+      <line x1="${x}" y1="${yb}" x2="${x+W}" y2="${yb}"/>
+      <line x1="${x-4}" y1="${yb+4}" x2="${x+4}" y2="${yb-4}" stroke-width="1.6"/><line x1="${x+W-4}" y1="${yb+4}" x2="${x+W+4}" y2="${yb-4}" stroke-width="1.6"/>
+      <text x="${x+W/2}" y="${yb+20}" text-anchor="middle" stroke="none">${st.w} cm</text>
+      <line x1="${x-6}" y1="${y}" x2="${xl-6}" y2="${y}"/><line x1="${x-6}" y1="${y+H}" x2="${xl-6}" y2="${y+H}"/>
+      <line x1="${xl}" y1="${y}" x2="${xl}" y2="${y+H}"/>
+      <line x1="${xl-4}" y1="${y+4}" x2="${xl+4}" y2="${y-4}" stroke-width="1.6"/><line x1="${xl-4}" y1="${y+H+4}" x2="${xl+4}" y2="${y+H-4}" stroke-width="1.6"/>
+      <text x="${xl-10}" y="${y+H/2}" text-anchor="middle" stroke="none" transform="rotate(-90 ${xl-10} ${y+H/2})">${st.h} cm</text>
+    </g>`;
+  }
+  return g;
+}
+
+/* ===== Armado de la interfaz ===== */
+function icon(type){
+  const door = type==="balc"||type==="puer";
+  const st = {type, w:type==="vidr"?90:door?40:70, h:type==="vidr"?60:door?60:50, line:"std", glass:"float", color:"natural", mosq:false, cort:false};
+  return `<svg viewBox="0 0 60 60" aria-hidden="true">${drawWindow(st,{vw:60,vh:60,mini:true,uid:"i"+type})}</svg>`;
+}
+$("types").innerHTML = TYPES.map(t=>`<input type="radio" name="type" id="t-${t.id}" value="${t.id}" ${t.id===S.type?"checked":""}><label for="t-${t.id}">${icon(t.id)}${t.name}</label>`).join("");
+const seg=(el,name,arr,key,extra=()=>"")=>$(el).innerHTML=arr.map(o=>`<input type="radio" name="${name}" id="${name}-${o.id}" value="${o.id}" ${o.id===S[key]?"checked":""}><label for="${name}-${o.id}">${extra(o)}${o.name}</label>`).join("");
+seg("lines","line",LINES,"line");
+seg("colors","color",COLORS,"color",o=>`<span class="sw" style="background:${o.hex}"></span>`);
+
+function renderGlasses(){
+  $("glasses").innerHTML = GLASS.map(g=>{
+    const bars = BARS.map(([k,l])=>`<div class="b"><span>${l}</span><span class="track" aria-label="${l} ${g.r[k]} de 5">${[1,2,3,4,5].map(i=>`<span class="${i<=g.r[k]?"on":""}"></span>`).join("")}</span></div>`).join("");
+    const add = P.glass[g.id] ? `+ ${ars(P.glass[g.id])} por m²` : "Incluido en el precio base";
+    const chip = g.id==="dvh" ? `<i style="background:${g.tint}"></i><i style="inset:5px;border:1.5px solid #fff;"></i>` :
+                 g.id==="lam" ? `<i style="background:${g.tint}"></i><i style="top:50%;height:2px;background:#ffffffcc"></i>` :
+                 `<i style="background:${g.tint}"></i><i style="background:linear-gradient(135deg,#fff8,transparent 40%)"></i>`;
+    return `<button type="button" class="gl" data-g="${g.id}" aria-pressed="${g.id===S.glass}">
+      <span class="t">${g.name}</span><span class="s">${g.spec} · ${g.note}</span>
+      <span class="chip" style="display:block">${chip}</span>
+      <span class="bars">${bars}</span><span class="add">${add}</span></button>`;
+  }).join("");
+}
+$("glasses").addEventListener("click",e=>{ const b=e.target.closest(".gl"); if(!b) return; S.glass=b.dataset.g; render(); });
+
+function bindPair(num,rng,key){
+  const set=v=>{ v=Math.max(+num.min,Math.min(+num.max,Math.round(+v||0))); S[key]=v; num.value=v; rng.value=v; render(); };
+  rng.addEventListener("input",e=>set(e.target.value));
+  num.addEventListener("change",e=>set(e.target.value));
+  num.addEventListener("input",e=>{ const v=+e.target.value; if(v>=+num.min&&v<=+num.max){ S[key]=v; rng.value=v; render(); } });
+}
+bindPair($("w"),$("wr"),"w"); bindPair($("h"),$("hr"),"h");
+function setDims(w,h){ S.w=w; S.h=h; $("w").value=$("wr").value=w; $("h").value=$("hr").value=h; }
+
+$("f").addEventListener("change",e=>{
+  const t=e.target;
+  if(t.name==="type"){ S.type=t.value; const ty=byId(TYPES,S.type);
+    if(ty.shop){ if(S.w<240||S.h<220) setDims(320,260); }
+    else if(ty.door){ if(S.h<190) setDims(S.type==="puer"?90:Math.min(S.w,200),210); if(S.type==="puer"&&S.w>120) setDims(90,S.h); }
+    else if(S.w>300||S.h>200) setDims(150,110);
+  }
+  if(t.name==="line") S.line=t.value;
+  if(t.name==="color") S.color=t.value;
+  if(t.id==="mosq") S.mosq=t.checked;
+  if(t.id==="cort") S.cort=t.checked;
+  if(t.id==="inst") S.inst=t.checked;
+  render();
+});
+$("qm").onclick=()=>{ S.q=Math.max(1,S.q-1); render(); };
+$("qp").onclick=()=>{ S.q=Math.min(50,S.q+1); render(); };
+
+function describe(st){
+  const ty=byId(TYPES,st.type), ex=[];
+  if(st.mosq&&ty.mosq) ex.push("con mosquitero");
+  if(st.cort&&cortOk(st)) ex.push("con cortina de enrollar");
+  ex.push(st.inst?"con instalación":"sin instalación");
+  return {ty:ty.name, line:`${st.w} × ${st.h} cm · línea ${byId(LINES,st.line).name.toLowerCase()} · vidrio ${byId(GLASS,st.glass).name.toLowerCase()} · ${byId(COLORS,st.color).name.toLowerCase()} · ${ex.join(", ")}`};
+}
+
+function render(){
+  const ty=byId(TYPES,S.type);
+  $("mosq").disabled=!ty.mosq; $("mosq").closest("label").style.opacity=ty.mosq?1:.45;
+  $("cort").disabled=!cortOk(S); $("cort").closest("label").style.opacity=cortOk(S)?1:.45;
+  $("q").textContent=S.q;
+  $("draw").innerHTML=drawWindow(S,{uid:"main"});
+  $("planTag").textContent=`${ty.name}${S.q>1?` × ${S.q}`:""}`;
+  $("planGlass").textContent=`Vidrio ${byId(GLASS,S.glass).name.toLowerCase()}`;
+  renderGlasses();
+  const c=calc(S);
+  $("amt").textContent=`${ars(c.lo)} a ${ars(c.hi)}`;
+  $("mamt").textContent=`${ars(c.lo)} a ${ars(c.hi)}`;
+  $("sub").textContent=`${c.area.toFixed(2).replace(".",",")} m² por unidad${S.q>1?`, ${S.q} unidades`:""}. ${S.inst?"Incluye instalación.":"Sin instalación."} Precio orientativo: el valor final se confirma al medir.`;
+}
+
+/* ===== Pedido ===== */
+const posCode = (it,i) => (it.type==="vidr"?"VL":it.type==="puer"?"P":it.type==="balc"?"PB":"V") + (i+1);
+function renderList(){
+  const has=items.length>0;
+  $("empty").hidden=has; $("itemsT").hidden=!has; $("totalRow").hidden=!has;
+  $("items").innerHTML=items.map((it,i)=>{ const d=describe(it), c=calc(it);
+    return `<tr><td class="pos">${posCode(it,i)}</td><td class="mini"><svg viewBox="0 0 60 60" aria-hidden="true">${drawWindow(it,{vw:60,vh:60,mini:true,uid:"l"+i})}</svg></td>
+      <td><div><strong>${d.ty}</strong>${it.q>1?` × ${it.q}`:""}</div><div class="d">${d.line}</div></td>
+      <td class="p">${ars(c.mid)}</td><td><button type="button" data-rm="${i}">Quitar</button></td></tr>`; }).join("");
+  const lo=items.reduce((s,it)=>s+calc(it).lo,0), hi=items.reduce((s,it)=>s+calc(it).hi,0);
+  $("total").textContent=`${ars(lo)} a ${ars(hi)}`;
+}
+$("items").addEventListener("click",e=>{ const i=e.target.dataset.rm; if(i!==undefined){ items.splice(+i,1); renderList(); } });
+$("add").onclick=()=>{ items.push({...S}); renderList(); toast("Agregada al pedido"); };
+
+function message(list){
+  let m="Hola LH Aberturas, quiero un presupuesto:\n\n", lo=0, hi=0;
+  list.forEach((it,i)=>{ const d=describe(it), c=calc(it); lo+=c.lo; hi+=c.hi;
+    m+=`${posCode(it,i)}. ${d.ty}${it.q>1?` (x${it.q})`:""}\n   ${d.line}\n   Estimado: ${ars(c.lo)} a ${ars(c.hi)}\n\n`; });
+  if(list.length>1) m+=`Total estimado: ${ars(lo)} a ${ars(hi)}\n\n`;
+  m+="¿Cuándo pueden venir a medir?";
+  return m;
+}
+function mailHref(m){ return `mailto:${MAIL}?subject=${encodeURIComponent("Pedido de presupuesto desde la web")}&body=${encodeURIComponent(m)}`; }
+function showMsg(list,title){ const m=message(list); $("msgTitle").textContent=title; $("msgTxt").textContent=m; $("mailLink").href=mailHref(m); $("msgDlg").showModal(); }
+function current(){ return items.length?items:[{...S}]; }
+$("sendOne").onclick=()=>{ if(P.wa){ sendWa([{...S}]); } else showMsg([{...S}],"Pedido de esta abertura"); };
+$("sendMail").onclick=()=>showMsg(current(), items.length?"Pedido completo":"Pedido de esta abertura");
+$("copyAll").onclick=()=>copy(message(current()));
+function sendWa(list){ const n=String(P.wa).replace(/\D/g,""); if(!n) return; window.open(`https://wa.me/${n}?text=${encodeURIComponent(message(list))}`,"_blank","noopener"); }
+$("sendWa").onclick=()=>sendWa(current());
+$("copyMsg").onclick=()=>copy($("msgTxt").textContent);
+$("closeMsg").onclick=()=>$("msgDlg").close();
+async function copy(t){ try{ await navigator.clipboard.writeText(t); toast("Pedido copiado"); }catch(e){ toast("No se pudo copiar"); } }
+function syncWa(){ const on=!!String(P.wa).replace(/\D/g,""); $("sendWa").hidden=!on; $("waNote").textContent= on ? "WhatsApp activo con el número cargado en la tabla de precios." : "El envío por WhatsApp se activa cargando el número del local en la tabla de precios."; }
+
+/* ===== Tabla de precios ===== */
+function row(label,path,val,unit,cls=""){ return `<tr><td>${label}</td><td style="text-align:right"><input class="${cls}" data-p="${path}" ${cls?'type="text" inputmode="tel" placeholder="549358..."':'type="number"'} value="${esc(val)}"> ${unit}</td></tr>`; }
+function openAdmin(){
+  let h=`<table class="prices"><tr><th colspan="2">Precio base por m² (línea estándar, vidrio float)</th></tr>`;
+  TYPES.forEach(t=>h+=row(t.name,`m2.${t.id}`,P.m2[t.id],"$"));
+  h+=`<tr><th colspan="2">Multiplicador por línea</th></tr>`; LINES.forEach(l=>h+=row(l.name,`line.${l.id}`,P.line[l.id],"×"));
+  h+=`<tr><th colspan="2">Adicional de vidrio por m²</th></tr>`; GLASS.forEach(g=>h+=row(g.name,`glass.${g.id}`,P.glass[g.id],"$"));
+  h+=`<tr><th colspan="2">Recargo por color</th></tr>`; COLORS.forEach(c=>h+=row(c.name,`colorPct.${c.id}`,P.colorPct[c.id],"%"));
+  h+=`<tr><th colspan="2">Adicionales</th></tr>`;
+  h+=row("Mosquitero por m²","mosqM2",P.mosqM2,"$"); h+=row("Cortina de enrollar por m²","cortM2",P.cortM2,"$");
+  h+=row("Instalación","instPct",P.instPct,"%"); h+=row("Margen del rango estimado","rangePct",P.rangePct,"%");
+  h+=`<tr><th colspan="2">WhatsApp del local</th></tr>`; h+=row("Número (con 549, sin espacios)","wa",P.wa,"","wide");
+  h+=`</table>`;
+  $("admBody").innerHTML=h; $("admDlg").showModal();
+}
+$("openAdmin").onclick=openAdmin;
+$("closeAdm").onclick=()=>$("admDlg").close();
+$("saveP").onclick=()=>{
+  $("admBody").querySelectorAll("input[data-p]").forEach(inp=>{ const [a,b]=inp.dataset.p.split(".");
+    if(a==="wa"){ P.wa=inp.value.replace(/\D/g,""); return; }
+    const v=parseFloat(inp.value)||0; if(b) P[a][b]=v; else P[a]=v; });
+  save(); $("admDlg").close(); render(); renderList(); syncWa(); toast("Precios guardados");
+};
+$("resetP").onclick=()=>{ P=structuredClone(DEFAULT_PRICES); save(); openAdmin(); render(); renderList(); syncWa(); toast("Precios de ejemplo restaurados"); };
+
+/* ===== Obras ===== */
+const OBRAS=["IMG-20250924-WA0028","IMG-20250924-WA0016","IMG-20250924-WA0007","IMG-20250924-WA0049","IMG-20250928-WA0050","IMG-20250924-WA0041","IMG-20250924-WA0013","IMG-20250928-WA0052","IMG-20250924-WA0035","IMG-20250928-WA0051","IMG-20250924-WA0027","IMG-20250924-WA0012"];
+$("sheet").innerHTML=OBRAS.map((f,i)=>`<figure><span class="ph" aria-hidden="true">${String(i+1).padStart(2,"0")}</span><img loading="lazy" src="https://aberturaslh.com.ar/imgs_obras/${f}.jpg" alt="Obra de LH Aberturas, foto ${i+1}" onerror="this.remove()"><figcaption>${String(i+1).padStart(2,"0")} · ${f.slice(4,8)}.${f.slice(8,10)}.${f.slice(10,12)}</figcaption></figure>`).join("");
+
+let tt; function toast(t){ const el=$("toast"); el.textContent=t; el.classList.add("on"); clearTimeout(tt); tt=setTimeout(()=>el.classList.remove("on"),1800); }
+$("mgo").onclick=()=>document.querySelector(".price").scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:"center"});
+
+render(); renderList(); syncWa();
+</script>
+</body>
+</html>
