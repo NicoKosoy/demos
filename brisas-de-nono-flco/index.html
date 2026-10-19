@@ -1,0 +1,777 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Brisas de Nono · Cabañas y suites frente a los Nonos</title>
+<meta name="description" content="Prototipo de demostración: web de reservas directas para Brisas de Nono, cabañas y suites en Nono, Traslasierra, Córdoba.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --aire:#EDF1F0;
+  --aire-2:#E1E8E7;
+  --papel:#F8FAF9;
+  --cerro:#8C7AA0;
+  --cerro-claro:#B9ABC8;
+  --sombra:#3D3350;
+  --sombra-2:#2C2540;
+  --pasto:#D3A84C;
+  --pasto-claro:#EBCF8C;
+  --salvia:#6F8F80;
+  --salvia-claro:#A9C2B5;
+  --tinta:#272132;
+  --tinta-2:#5A5366;
+  --linea:#CFD6D5;
+  --ok:#3E7D5E;
+  --ocupado:#C9C2D1;
+  --display:"Marcellus","Trajan Pro","Optima",Georgia,serif;
+  --texto:"DM Sans","Avenir Next","Segoe UI","Helvetica Neue",system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-snap-type:y proximity;scroll-padding-top:60px;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--aire);color:var(--tinta);font-family:var(--texto);font-size:17px;line-height:1.6;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:var(--sombra);text-underline-offset:3px}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--pasto);outline-offset:3px}
+h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.08;margin:0}
+p{margin:0 0 1em}
+.wrap{width:min(1180px,100% - 32px);margin-inline:auto}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* aviso */
+.aviso{background:var(--sombra-2);color:#E8E3EE;font-size:13.5px;text-align:center;padding:8px 16px;position:relative;z-index:30}
+.aviso strong{color:var(--pasto-claro);font-weight:500}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:20;background:rgba(237,241,240,.86);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(61,51,80,.08)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:60px}
+.marca{font-family:var(--display);font-size:22px;white-space:nowrap;color:var(--sombra);text-decoration:none;display:flex;align-items:center;gap:10px}
+.marca svg{width:34px;height:18px}
+.nav ul{display:flex;gap:26px;list-style:none;margin:0;padding:0;font-size:15px}
+.nav ul a{text-decoration:none;color:var(--tinta-2)}
+.nav ul a:hover{color:var(--sombra)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:999px;padding:12px 22px;font-weight:500;cursor:pointer;text-decoration:none;transition:background .2s,transform .2s}
+.btn-pasto{background:var(--pasto);color:var(--sombra-2)}
+.btn-pasto:hover{background:var(--pasto-claro)}
+.btn-sombra{background:var(--sombra);color:#fff}
+.btn-sombra:hover{background:var(--sombra-2)}
+.btn-linea{background:transparent;border:1.5px solid currentColor;color:var(--sombra)}
+.nav .btn{padding:9px 18px;font-size:15px}
+@media (max-width:860px){.nav ul{display:none}}
+@media (max-width:760px){.nav .btn{display:none}.etiqueta-cerro{display:none}}
+
+/* portada */
+.portada{position:relative;min-height:max(min(92vh,860px),640px);display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;
+  background:linear-gradient(180deg,#C9D4DD 0%,#E7D9D8 38%,#F2D6B4 62%,#EDE3D2 78%,var(--aire) 100%);scroll-snap-align:start}
+.cielo-texto{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;padding-top:clamp(56px,11vh,120px)}
+.portada h1{font-size:clamp(54px,11.5vw,168px);color:var(--sombra);letter-spacing:-.01em}
+.portada .bajada{max-width:34ch;font-size:clamp(18px,2vw,22px);color:var(--tinta);margin-top:18px}
+.sello{display:inline-flex;align-items:baseline;gap:10px;margin-top:22px;background:rgba(255,255,255,.55);border-radius:999px;padding:8px 18px;font-size:15px;color:var(--tinta-2)}
+.sello b{font-family:var(--display);font-size:24px;color:var(--sombra);font-weight:400}
+.horizonte{position:relative;width:100%;height:clamp(200px,34vw,420px);margin-top:auto}
+.horizonte svg{position:absolute;inset:0;width:100%;height:100%}
+.etiqueta-cerro{position:absolute;font-size:13px;color:#fff;background:rgba(44,37,64,.55);padding:3px 10px;border-radius:999px;white-space:nowrap}
+.portada-acciones{position:relative;z-index:2;background:var(--sombra);color:#EEE9F3}
+.portada-acciones .wrap{display:flex;flex-wrap:wrap;gap:16px 32px;align-items:center;justify-content:space-between;padding:20px 0}
+.portada-acciones p{margin:0;max-width:60ch;color:#D9D2E2}
+.portada-acciones .grupo{display:flex;gap:12px;flex-wrap:wrap}
+.portada-acciones .btn-linea{color:#fff}
+
+/* intro */
+.intro{padding:clamp(64px,10vw,120px) 0 40px}
+.intro .wrap{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(32px,6vw,90px);align-items:end}
+.intro h2{font-size:clamp(34px,4.6vw,58px);color:var(--sombra)}
+.intro p{color:var(--tinta-2);max-width:52ch}
+.indice{list-style:none;padding:0;margin:24px 0 0;border-top:1px solid var(--linea)}
+.indice li{border-bottom:1px solid var(--linea)}
+.indice a{display:flex;justify-content:space-between;gap:12px;padding:14px 2px;text-decoration:none;color:var(--tinta)}
+.indice a span:last-child{color:var(--tinta-2);font-size:15px}
+.indice a:hover{color:var(--sombra);background:rgba(140,122,160,.08)}
+@media (max-width:860px){.intro .wrap{grid-template-columns:1fr}}
+
+/* relatos */
+.relato{min-height:100vh;min-height:100svh;scroll-snap-align:start;display:grid;grid-template-columns:1.25fr 1fr;background:var(--papel);border-top:1px solid var(--linea)}
+.relato:nth-of-type(even){grid-template-columns:1fr 1.25fr}
+.relato:nth-of-type(even) .foto{order:2}
+.foto{position:relative;overflow:hidden;min-height:360px;background:
+  radial-gradient(120% 80% at 30% 20%,var(--cerro-claro),transparent 60%),
+  linear-gradient(160deg,var(--cerro) 0%,var(--sombra) 100%)}
+.foto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.foto .respaldo{position:absolute;left:0;right:0;bottom:0;width:100%;height:45%;opacity:.9}
+.foto.sin-foto img{display:none}
+.foto figcaption{position:absolute;left:16px;bottom:16px;z-index:2;font-size:13px;color:#fff;background:rgba(44,37,64,.6);padding:4px 12px;border-radius:999px}
+.relato .texto{padding:clamp(32px,6vw,80px);display:flex;flex-direction:column;justify-content:center}
+.relato .tipo{font-size:15px;color:var(--salvia);font-weight:500;margin-bottom:10px}
+.relato h3{font-size:clamp(40px,5vw,68px);color:var(--sombra);margin-bottom:18px}
+.relato .lead{font-size:19px;color:var(--tinta);max-width:40ch}
+.datos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 22px;margin:22px 0 28px;padding:0;list-style:none}
+.datos li{border-top:1px solid var(--linea);padding-top:10px;font-size:15px;color:var(--tinta-2)}
+.datos b{display:block;font-family:var(--display);font-weight:400;font-size:22px;color:var(--tinta)}
+.relato .acciones{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.chk{display:inline-flex;align-items:center;gap:8px;font-size:15px;color:var(--tinta-2);cursor:pointer;padding:10px 6px}
+.chk input{width:18px;height:18px;accent-color:var(--sombra)}
+@media (max-width:860px){
+  .relato,.relato:nth-of-type(even){grid-template-columns:1fr;min-height:100svh;grid-template-rows:minmax(46svh,1fr) auto}
+  .relato:nth-of-type(even) .foto{order:0}
+  .foto{min-height:46svh}
+  .relato .texto{padding:28px 16px 40px}
+  .relato h3{font-size:44px}
+}
+
+/* comparador */
+.seccion{padding:clamp(72px,10vw,128px) 0;scroll-snap-align:start}
+.cab{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:18px;margin-bottom:36px}
+.cab h2{font-size:clamp(36px,5vw,64px);color:var(--sombra);max-width:16ch}
+.cab p{max-width:46ch;color:var(--tinta-2);margin:0}
+.comparador{background:var(--sombra);color:#EEE9F3}
+.comparador .cab h2{color:#fff}
+.comparador .cab p{color:#CFC6DA}
+.selectores{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:center;margin-bottom:26px}
+.selectores .vs{font-family:var(--display);font-size:28px;color:var(--pasto)}
+.selector{display:flex;flex-wrap:wrap;gap:8px}
+.selector button{border:1.5px solid rgba(255,255,255,.28);background:transparent;color:#EEE9F3;border-radius:999px;padding:8px 14px;cursor:pointer;font-size:15px}
+.selector button[aria-pressed="true"]{background:var(--pasto);border-color:var(--pasto);color:var(--sombra-2)}
+.selector button:disabled{opacity:.35;cursor:not-allowed}
+.tabla-comp{width:100%;border-collapse:collapse;font-size:16px}
+.tabla-comp th,.tabla-comp td{padding:14px 12px;border-top:1px solid rgba(255,255,255,.14);text-align:left;vertical-align:top}
+.tabla-comp thead th{font-family:var(--display);font-weight:400;font-size:26px;color:#fff;border-top:0}
+.tabla-comp tbody th{font-weight:500;color:#B9AEC8;width:24%}
+.tabla-comp td{width:38%}
+.tabla-comp tr.dif td{color:#fff}
+.tabla-comp tr.dif td::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--pasto);margin-right:10px;vertical-align:middle}
+.tabla-comp tr.igual td{color:#9D93AB}
+.leyenda{font-size:14px;color:#B9AEC8;margin-top:14px}
+.leyenda i{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--pasto);margin-right:6px}
+.comp-acciones td{border-top:1px solid rgba(255,255,255,.14)}
+.comp-acciones .btn{padding:9px 16px;font-size:15px}
+@media (max-width:700px){
+  .selectores{grid-template-columns:1fr}
+  .selectores .vs{text-align:center;font-size:22px}
+  .tabla-comp{font-size:14.5px}
+  .tabla-comp th,.tabla-comp td{padding:11px 6px}
+  .tabla-comp thead th{font-size:19px}
+  .tabla-comp tbody th{width:28%}
+}
+
+/* reserva */
+.reserva{background:var(--aire)}
+.reserva-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:28px;align-items:start}
+.panel{background:var(--papel);border:1px solid var(--linea);border-radius:20px;padding:clamp(18px,3vw,30px)}
+.sync{display:flex;gap:10px;align-items:center;font-size:14px;color:var(--tinta-2);background:var(--aire-2);border-radius:12px;padding:10px 14px;margin-bottom:18px}
+.sync .punto{width:9px;height:9px;border-radius:50%;background:var(--ok);flex:none;box-shadow:0 0 0 4px rgba(62,125,94,.18)}
+.cal-cab{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.cal-cab h3{font-size:26px;color:var(--sombra)}
+.cal-cab .flechas{display:flex;gap:8px}
+.cal-cab button{width:40px;height:40px;border-radius:50%;border:1px solid var(--linea);background:#fff;cursor:pointer;font-size:18px}
+.cal-cab button:disabled{opacity:.35;cursor:default}
+.meses{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.mes h4{font-family:var(--display);font-weight:400;font-size:20px;margin:0 0 8px;color:var(--tinta)}
+.dias{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;text-align:center}
+.dias .dsem{font-size:12px;color:var(--tinta-2);padding:4px 0}
+.dia{aspect-ratio:1;border:0;border-radius:9px;background:#fff;cursor:pointer;font-size:14px;position:relative;padding:0;min-width:0}
+.dia:hover:not(:disabled){background:var(--cerro-claro)}
+.dia.ocupado{background:repeating-linear-gradient(135deg,var(--ocupado) 0 3px,#E7E3EC 3px 7px);color:#8D8598;cursor:not-allowed;text-decoration:line-through}
+.dia.pasado{background:transparent;color:#B7B2BE;cursor:default}
+.dia.temporada::after{content:"";position:absolute;left:30%;right:30%;bottom:4px;height:3px;border-radius:2px;background:var(--pasto)}
+.dia.sel{background:var(--sombra)!important;color:#fff}
+.dia.rango{background:var(--cerro-claro)}
+.dia.vacio{visibility:hidden}
+.cal-ley{display:flex;flex-wrap:wrap;gap:16px;font-size:13px;color:var(--tinta-2);margin-top:14px}
+.cal-ley span{display:inline-flex;align-items:center;gap:6px}
+.cal-ley i{width:14px;height:14px;border-radius:4px;display:inline-block;background:#fff;border:1px solid var(--linea)}
+.cal-ley i.o{background:repeating-linear-gradient(135deg,var(--ocupado) 0 3px,#E7E3EC 3px 7px)}
+.cal-ley i.t{background:#fff;position:relative}
+.cal-ley i.t::after{content:"";position:absolute;left:3px;right:3px;bottom:2px;height:3px;background:var(--pasto);border-radius:2px}
+.campo{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.campo label{font-size:14px;color:var(--tinta-2);font-weight:500}
+.campo select{border:1px solid var(--linea);border-radius:12px;padding:12px;background:#fff}
+.contador{display:flex;align-items:center;gap:0;border:1px solid var(--linea);border-radius:12px;background:#fff;width:max-content}
+.contador button{width:44px;height:44px;border:0;background:transparent;cursor:pointer;font-size:20px}
+.contador output{min-width:40px;text-align:center;font-weight:500}
+.fechas-sel{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.fechas-sel div{border:1px solid var(--linea);border-radius:12px;padding:10px 12px;background:#fff}
+.fechas-sel small{display:block;color:var(--tinta-2);font-size:12.5px}
+.fechas-sel strong{font-weight:500}
+.desglose{border-top:1px solid var(--linea);margin-top:6px;padding-top:14px;font-size:15px}
+.desglose .fila{display:flex;justify-content:space-between;gap:12px;padding:4px 0;color:var(--tinta-2)}
+.desglose .total{color:var(--tinta);font-weight:700;font-size:18px;border-top:1px dashed var(--linea);margin-top:8px;padding-top:10px}
+.desglose .sena{color:var(--sombra);font-weight:700}
+.msg{font-size:14px;border-radius:12px;padding:10px 14px;margin:12px 0 0;display:none}
+.msg.err{display:block;background:#F6E6E3;color:#8A3326}
+.msg.info{display:block;background:var(--aire-2);color:var(--tinta-2)}
+.btn-mp{width:100%;margin-top:16px;background:#009EE3;color:#fff;border-radius:14px;padding:15px}
+.btn-mp:hover{background:#0086c2}
+.btn-mp:disabled{background:#9CCDE3;cursor:not-allowed}
+.nota{font-size:13px;color:var(--tinta-2);margin-top:10px}
+@media (max-width:960px){.reserva-grid{grid-template-columns:1fr}}
+@media (max-width:600px){.meses{grid-template-columns:1fr}.mes+.mes{display:none}.dia{font-size:13px;border-radius:7px}}
+
+/* temporadas */
+.temporadas{background:var(--papel)}
+.franja{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border-top:2px solid var(--sombra)}
+.tramo{padding:18px 16px 22px;border-right:1px solid var(--linea);position:relative}
+.tramo:last-child{border-right:0}
+.tramo .cuando{font-size:14px;color:var(--salvia);font-weight:500}
+.tramo h3{font-size:24px;color:var(--sombra);margin:6px 0 10px}
+.tramo .precios{list-style:none;padding:0;margin:0;font-size:14.5px;color:var(--tinta-2)}
+.tramo .precios li{display:flex;justify-content:space-between;gap:8px;padding:3px 0;border-bottom:1px dotted var(--linea)}
+.tramo .precios b{color:var(--tinta);font-weight:500;white-space:nowrap}
+.tramo.alta{background:linear-gradient(180deg,rgba(211,168,76,.16),transparent 70%)}
+.ilustrativo{display:inline-block;margin-top:18px;font-size:14px;color:var(--tinta-2);background:var(--aire-2);border-radius:999px;padding:6px 14px}
+@media (max-width:960px){.franja{grid-template-columns:1fr 1fr}.tramo{border-bottom:1px solid var(--linea)}}
+@media (max-width:560px){.franja{grid-template-columns:1fr}.tramo{border-right:0}}
+
+/* servicios */
+.servicios-lista{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:0;border-top:1px solid var(--linea)}
+.servicio{display:flex;gap:16px;align-items:flex-start;padding:22px 8px;border-bottom:1px solid var(--linea)}
+.servicio svg{width:30px;height:30px;flex:none;color:var(--salvia)}
+.servicio h3{font-family:var(--texto);font-weight:500;font-size:17px;line-height:1.3;margin:2px 0 4px}
+.servicio p{margin:0;font-size:15px;color:var(--tinta-2)}
+.destacado{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:34px}
+.destacado .bloque{border-radius:20px;padding:26px;min-height:200px;display:flex;flex-direction:column;justify-content:flex-end;color:#fff;position:relative;overflow:hidden}
+.destacado .b1{background:linear-gradient(160deg,#5E86A0,#2F4E66)}
+.destacado .b2{background:linear-gradient(160deg,var(--salvia),#3E5A4D)}
+.destacado .bloque h3{font-size:30px;margin-bottom:6px}
+.destacado .bloque p{margin:0;color:rgba(255,255,255,.85);max-width:36ch}
+.destacado svg.ondas{position:absolute;right:-10px;top:14px;width:180px;opacity:.35}
+@media (max-width:700px){.destacado{grid-template-columns:1fr}}
+
+/* nono */
+.nono{background:var(--sombra-2);color:#E8E3EE}
+.nono .cab h2{color:#fff}
+.nono .cab p{color:#BFB5CC}
+.rumbos{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.12);border-radius:20px;overflow:hidden}
+.rumbo{background:var(--sombra-2);padding:26px}
+.rumbo .dist{font-size:14px;color:var(--pasto-claro)}
+.rumbo h3{font-size:26px;color:#fff;margin:6px 0 10px}
+.rumbo p{margin:0;color:#C9C0D6;font-size:15.5px}
+
+/* ubicacion + faq */
+.dos{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,64px);align-items:start}
+.mapa{border-radius:20px;overflow:hidden;border:1px solid var(--linea);background:var(--aire-2);aspect-ratio:4/3}
+.mapa iframe{width:100%;height:100%;border:0;display:block}
+.ruta{list-style:none;padding:0;margin:20px 0 0}
+.ruta li{padding:12px 0;border-top:1px solid var(--linea);color:var(--tinta-2);font-size:15.5px}
+.ruta li b{color:var(--tinta);font-weight:500;display:block}
+details{border-top:1px solid var(--linea);padding:4px 0}
+details:last-of-type{border-bottom:1px solid var(--linea)}
+summary{cursor:pointer;padding:14px 0;font-weight:500;list-style:none;display:flex;justify-content:space-between;gap:12px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-family:var(--display);font-size:24px;line-height:1;color:var(--cerro)}
+details[open] summary::after{content:"–"}
+details p{color:var(--tinta-2);font-size:15.5px}
+@media (max-width:860px){.dos{grid-template-columns:1fr}}
+
+/* pie */
+.pie{background:var(--sombra);color:#D9D2E2;padding:56px 0 90px;font-size:15px}
+.pie .wrap{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:28px}
+.pie h2{font-size:34px;color:#fff;margin-bottom:10px}
+.pie a{color:#fff}
+.pie .proto{grid-column:1/-1;border-top:1px solid rgba(255,255,255,.15);padding-top:20px;font-size:13.5px;color:#B5AAC4}
+@media (max-width:760px){.pie .wrap{grid-template-columns:1fr}}
+
+/* barra celular */
+.barra{display:none}
+@media (max-width:760px){
+  .barra{display:grid;grid-template-columns:1fr 1fr;gap:10px;position:fixed;left:0;right:0;bottom:0;z-index:25;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:rgba(248,250,249,.95);border-top:1px solid var(--linea);backdrop-filter:blur(8px)}
+  .barra .btn{padding:12px 10px;font-size:15px}
+}
+
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(39,33,50,.55);display:none;align-items:center;justify-content:center;z-index:50;padding:16px}
+.modal.abierto{display:flex}
+.modal .caja{background:var(--papel);border-radius:22px;max-width:440px;width:100%;padding:28px;box-shadow:0 30px 80px rgba(39,33,50,.35)}
+.modal h3{font-size:30px;color:var(--sombra);margin-bottom:10px}
+.modal p{color:var(--tinta-2)}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(20px);background:var(--sombra-2);color:#fff;padding:10px 18px;border-radius:999px;font-size:14.5px;opacity:0;pointer-events:none;transition:.25s;z-index:60;max-width:calc(100% - 32px);text-align:center}
+.toast.ver{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+
+<div class="aviso" role="note"><strong>Prototipo de demostración preparado para Brisas de Nono.</strong> Precios, disponibilidad y pagos son de ejemplo.</div>
+
+<nav class="nav" aria-label="Principal">
+  <div class="wrap">
+    <a class="marca" href="#inicio" aria-label="Brisas de Nono, inicio">
+      <svg viewBox="0 0 34 18" aria-hidden="true"><path d="M0 18 L8 7 L12 11 L19 3 L26 10 L29 8 L34 18Z" fill="#8C7AA0"/><path d="M0 18 L10 11 L15 14 L22 8 L34 18Z" fill="#3D3350"/></svg>
+      Brisas de Nono
+    </a>
+    <ul>
+      <li><a href="#unidades">Cabañas y suites</a></li>
+      <li><a href="#comparar">Comparar</a></li>
+      <li><a href="#temporadas">Temporadas</a></li>
+      <li><a href="#servicios">Servicios</a></li>
+      <li><a href="#nono">Nono</a></li>
+    </ul>
+    <a class="btn btn-sombra" href="#reservar">Ver disponibilidad</a>
+  </div>
+</nav>
+
+<header class="portada" id="inicio">
+  <div class="cielo-texto wrap">
+    <h1>Brisas de Nono</h1>
+    <p class="bajada">Cabañas y suites con jacuzzi frente a los cerros Nonos, a pocos metros de la plaza del pueblo.</p>
+    <span class="sello"><b>4,6</b> con más de 700 opiniones de huéspedes</span>
+  </div>
+  <div class="horizonte" aria-hidden="true">
+    <svg viewBox="0 0 1440 420" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#B9ABC8"/><stop offset="1" stop-color="#A897BB"/></linearGradient>
+        <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8C7AA0"/><stop offset="1" stop-color="#6E5E86"/></linearGradient>
+        <linearGradient id="g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4A3F60"/><stop offset="1" stop-color="#3D3350"/></linearGradient>
+      </defs>
+      <path d="M0 230 C120 200 200 150 300 160 C380 168 430 120 520 110 C610 100 650 150 740 140 C840 128 900 70 1000 80 C1090 90 1150 140 1240 130 C1320 122 1380 150 1440 140 L1440 420 L0 420Z" fill="url(#g1)"/>
+      <path d="M0 300 C90 280 170 230 260 220 C330 212 380 250 450 236 C530 220 560 150 640 130 C700 116 740 160 790 170 C850 182 880 120 930 110 C990 98 1030 170 1100 200 C1180 232 1260 220 1330 240 C1380 254 1410 260 1440 262 L1440 420 L0 420Z" fill="url(#g2)"/>
+      <path d="M0 360 C140 340 260 300 380 310 C500 320 560 290 660 296 C760 302 820 330 940 320 C1060 310 1160 290 1260 300 C1350 309 1400 330 1440 336 L1440 420 L0 420Z" fill="url(#g3)"/>
+      <g fill="#3D3350">
+        <path d="M120 360 l10 -34 l10 34z M160 352 l8 -26 l8 26z M1240 302 l9 -30 l9 30z M1270 306 l7 -22 l7 22z" opacity=".75"/>
+      </g>
+    </svg>
+    <span class="etiqueta-cerro" style="left:63%;top:14%">Los Nonos</span>
+  </div>
+  <div class="portada-acciones">
+    <div class="wrap">
+      <p>Dos cabañas, dos suites, pileta exterior y pileta climatizada cubierta. Elegí fechas y mirá qué unidad está libre.</p>
+      <div class="grupo">
+        <a class="btn btn-pasto" href="#reservar">Elegir fechas</a>
+        <a class="btn btn-linea" href="#unidades">Recorrer las unidades</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="intro" id="unidades" aria-labelledby="t-unidades">
+  <div class="wrap">
+    <div>
+      <h2 id="t-unidades">Cuatro maneras de quedarse en Brisas</h2>
+      <p style="margin-top:18px">Cabañas para familias y grupos de hasta seis, y suites para dos o tres con jacuzzi. Todas con aire frío/calor, cocina equipada y asador propio.</p>
+    </div>
+    <ul class="indice">
+      <li><a href="#u-cab6"><span>Cabaña para 6</span><span>2 plantas · 2 dormitorios</span></a></li>
+      <li><a href="#u-cab4"><span>Cabaña para 4</span><span>1 o 2 plantas · 1 dormitorio</span></a></li>
+      <li><a href="#u-trad"><span>Suite Tradicional</span><span>Jacuzzi y horno</span></a></li>
+      <li><a href="#u-prem"><span>Suite Premium</span><span>Jacuzzi, galería o balcón</span></a></li>
+    </ul>
+  </div>
+</section>
+
+<div id="relatos"></div>
+
+<section class="seccion comparador" id="comparar" aria-labelledby="t-comp">
+  <div class="wrap">
+    <div class="cab">
+      <h2 id="t-comp">¿Cabaña o suite? Ponelas lado a lado</h2>
+      <p>Elegí dos unidades y mirá en qué se diferencian. Lo que cambia queda marcado.</p>
+    </div>
+    <div class="selectores">
+      <div class="selector" id="selA" role="group" aria-label="Primera unidad"></div>
+      <span class="vs" aria-hidden="true">o</span>
+      <div class="selector" id="selB" role="group" aria-label="Segunda unidad"></div>
+    </div>
+    <table class="tabla-comp" id="tablaComp"></table>
+    <p class="leyenda"><i></i>Diferencia entre las dos unidades elegidas</p>
+  </div>
+</section>
+
+<section class="seccion reserva" id="reservar" aria-labelledby="t-res">
+  <div class="wrap">
+    <div class="cab">
+      <h2 id="t-res">Disponibilidad y pedido de reserva</h2>
+      <p>Tocá el día de llegada y después el de salida. El total se calcula con la temporada de cada noche.</p>
+    </div>
+    <div class="reserva-grid">
+      <div class="panel">
+        <div class="sync"><span class="punto" aria-hidden="true"></span>Calendario de ejemplo. En la versión final se sincroniza con Booking y Airbnb, así no hay dobles reservas.</div>
+        <div class="cal-cab">
+          <h3 id="calUnidad">Cabaña para 6</h3>
+          <div class="flechas">
+            <button type="button" id="prevMes" aria-label="Mes anterior">‹</button>
+            <button type="button" id="nextMes" aria-label="Mes siguiente">›</button>
+          </div>
+        </div>
+        <div class="meses" id="meses"></div>
+        <div class="cal-ley">
+          <span><i></i>Libre</span>
+          <span><i class="o"></i>Ocupado</span>
+          <span><i class="t"></i>Temporada alta o fin de semana largo</span>
+        </div>
+      </div>
+      <div class="panel" aria-live="polite">
+        <div class="campo">
+          <label for="unidad">Unidad</label>
+          <select id="unidad"></select>
+        </div>
+        <div class="fechas-sel">
+          <div><small>Llegada</small><strong id="fIn">Elegí en el calendario</strong></div>
+          <div><small>Salida</small><strong id="fOut">—</strong></div>
+        </div>
+        <div class="campo">
+          <label id="lPers">Personas</label>
+          <div class="contador" role="group" aria-labelledby="lPers">
+            <button type="button" id="menos" aria-label="Una persona menos">−</button>
+            <output id="pers">2</output>
+            <button type="button" id="mas" aria-label="Una persona más">+</button>
+          </div>
+        </div>
+        <div class="desglose" id="desglose">
+          <div class="fila"><span>Elegí fechas para ver el total</span><span></span></div>
+        </div>
+        <p class="msg" id="msg"></p>
+        <button class="btn btn-mp" id="pagar" disabled>Pagar seña del 30% con Mercado Pago</button>
+        <p class="nota">Demo: no se cobra nada. En la versión final la seña confirma la reserva y el saldo se abona al llegar.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="seccion temporadas" id="temporadas" aria-labelledby="t-temp">
+  <div class="wrap">
+    <div class="cab">
+      <h2 id="t-temp">Temporadas 2026 – 2027</h2>
+      <p>Cada noche toma el precio de su temporada. Los importes son de ejemplo: el complejo carga los suyos.</p>
+    </div>
+    <div class="franja" id="franja"></div>
+    <span class="ilustrativo">Precios ilustrativos por noche, en pesos, para mostrar cómo funciona el tarifario.</span>
+  </div>
+</section>
+
+<section class="seccion" id="servicios" aria-labelledby="t-serv">
+  <div class="wrap">
+    <div class="cab">
+      <h2 id="t-serv">Dos piletas, para enero y para julio</h2>
+      <p>La exterior para los días de calor y la climatizada cubierta para cuando el clima no acompaña.</p>
+    </div>
+    <div class="destacado">
+      <div class="bloque b1">
+        <svg class="ondas" viewBox="0 0 180 60" aria-hidden="true"><path d="M0 20 q15 -12 30 0 t30 0 t30 0 t30 0 t30 0 t30 0 M0 40 q15 -12 30 0 t30 0 t30 0 t30 0 t30 0 t30 0" stroke="#fff" stroke-width="3" fill="none"/></svg>
+        <h3>Pileta climatizada y cubierta</h3>
+        <p>Para usar fuera del verano, también en las vacaciones de invierno.</p>
+      </div>
+      <div class="bloque b2">
+        <svg class="ondas" viewBox="0 0 180 60" aria-hidden="true"><circle cx="150" cy="22" r="16" stroke="#fff" stroke-width="3" fill="none"/><path d="M0 46 q15 -12 30 0 t30 0 t30 0 t30 0 t30 0 t30 0" stroke="#fff" stroke-width="3" fill="none"/></svg>
+        <h3>Pileta exterior amplia</h3>
+        <p>Rodeada de parque, con los Nonos de fondo.</p>
+      </div>
+    </div>
+    <div class="servicios-lista" id="servicios-lista"></div>
+  </div>
+</section>
+
+<section class="seccion nono" id="nono" aria-labelledby="t-nono">
+  <div class="wrap">
+    <div class="cab">
+      <h2 id="t-nono">Qué hay cerca en Nono</h2>
+      <p>Pueblo chico de Traslasierra, con la plaza a pocos metros del complejo y los balnearios del río a mano.</p>
+    </div>
+    <div class="rumbos">
+      <article class="rumbo"><span class="dist">En el pueblo</span><h3>Plaza de Nono</h3><p>El centro del pueblo, con la iglesia, casonas antiguas y la feria de artesanos en temporada.</p></article>
+      <article class="rumbo"><span class="dist">Cerca del complejo</span><h3>Río Los Sauces y río Chico</h3><p>Balnearios de arena y piedra para pasar el día en verano.</p></article>
+      <article class="rumbo"><span class="dist">Al borde del pueblo</span><h3>Juntura de los ríos</h3><p>El punto donde el río Chico de Nono se une con el río de los Sauces.</p></article>
+      <article class="rumbo"><span class="dist">Frente al complejo</span><h3>Reserva Natural y los Nonos</h3><p>Los dos cerros que le dan nombre al pueblo, con senderos para caminar.</p></article>
+      <article class="rumbo"><span class="dist">A pocos kilómetros</span><h3>Museo Rocsen</h3><p>El museo de Juan Santiago Bouchon, con miles de piezas de todo el mundo. Un clásico de Traslasierra.</p></article>
+      <article class="rumbo"><span class="dist">Camino a las sierras</span><h3>Paso de las Tropas</h3><p>Paraje serrano con río y pozones, ideal para una tarde fuera del pueblo.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="seccion" id="ubicacion" aria-labelledby="t-ubi">
+  <div class="wrap dos">
+    <div>
+      <div class="cab" style="margin-bottom:20px"><h2 id="t-ubi">Cómo llegar</h2></div>
+      <div class="mapa">
+        <iframe title="Mapa de Brisas de Nono" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Brisas%20de%20Nono%2C%20Ayllu%2C%20Nono%2C%20C%C3%B3rdoba&output=embed"></iframe>
+      </div>
+      <ul class="ruta">
+        <li><b>Dirección</b>Ayllu s/n, Nono, Córdoba. A pocos metros de la plaza y muy cerca del río Los Sauces.</li>
+        <li><b>Desde Córdoba capital (unos 150 km)</b>Por el Camino de las Altas Cumbres (RP 34) hasta Mina Clavero y desde ahí por la RP 14 hacia el sur hasta Nono.</li>
+        <li><b>Desde Mina Clavero</b>Unos minutos por la RP 14 hacia el sur.</li>
+      </ul>
+    </div>
+    <div>
+      <div class="cab" style="margin-bottom:20px"><h2>Preguntas frecuentes</h2></div>
+      <details open><summary>¿Aceptan mascotas?</summary><p>Sí, Brisas de Nono es pet friendly. Las condiciones (tamaño, cantidad) se confirman al reservar.</p></details>
+      <details><summary>¿Incluye ropa blanca?</summary><p>Sí, sábanas y toallas incluidas. Además hay limpieza diaria de la cabaña.</p></details>
+      <details><summary>¿A qué hora es el check-in y el check-out?</summary><p>A confirmar con el complejo. En la versión final se muestra acá y en el mail de confirmación.</p></details>
+      <details><summary>¿Hay cochera?</summary><p>Sí, cocheras cubiertas para guardar el auto.</p></details>
+      <details><summary>¿Qué hay para los chicos?</summary><p>Plaza de juegos y sala de juegos con pool, metegol y ping pong.</p></details>
+      <details><summary>¿Cómo se paga la reserva?</summary><p>En este prototipo, con una seña del 30% por Mercado Pago y el saldo al llegar. Las condiciones finales las define el complejo.</p></details>
+    </div>
+  </div>
+</section>
+
+<footer class="pie">
+  <div class="wrap">
+    <div>
+      <h2>Brisas de Nono</h2>
+      <p>Cabañas y suites en Nono, Traslasierra, Córdoba.</p>
+    </div>
+    <div>
+      <p><a href="https://wa.me/5493585090349" rel="noopener">WhatsApp 3585 09-0349</a><br>Teléfono 3585 09-0357<br><a href="mailto:info@brisasdenono.com.ar">info@brisasdenono.com.ar</a></p>
+    </div>
+    <div>
+      <p><a href="https://www.instagram.com/brisasdenono/" rel="noopener">Instagram @brisasdenono</a><br><a href="https://www.facebook.com/brisasdenono/" rel="noopener">Facebook</a></p>
+    </div>
+    <p class="proto">Prototipo de demostración preparado para Brisas de Nono por Resolviendo Kos. Precios, disponibilidad y pagos son ilustrativos. Fotos: Brisas de Nono.</p>
+  </div>
+</footer>
+
+<div class="barra">
+  <a class="btn btn-linea" href="https://wa.me/5493585090349" rel="noopener">WhatsApp</a>
+  <a class="btn btn-sombra" href="#reservar">Reservar</a>
+</div>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTit">
+  <div class="caja">
+    <h3 id="mTit">Pedido enviado</h3>
+    <p id="mTxt"></p>
+    <p class="nota">Esto es una demostración: no se hizo ningún cobro ni reserva real.</p>
+    <button class="btn btn-sombra" id="cerrar" type="button">Listo</button>
+  </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function(){
+  "use strict";
+  var IMG = "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1400,fit=crop/heoV6BoJRYFJHHBj/";
+  var UNIDADES = [
+    {id:"cab6", nombre:"Cabaña para 6", tipo:"Cabaña · familias y grupos", cap:6, base:150000,
+     lead:"Dos plantas, dos dormitorios y dos baños: cada uno tiene su lugar y nadie hace fila a la mañana.",
+     foto:"whatsapp-image-2026-02-19-at-15.28.24-lPNqPd5Wchp6045X.jpeg",
+     ficha:{cap:"Hasta 6 personas", plantas:"2 plantas", dorm:"2 dormitorios", banos:"2 baños", jacuzzi:"No", cocina:"Cocina con horno", exterior:"Galería cubierta con asador", clima:"2 aires frío/calor", camas:"A confirmar con el complejo"}},
+    {id:"cab4", nombre:"Cabaña para 4", tipo:"Cabaña · familias chicas", cap:4, base:110000,
+     lead:"Un dormitorio y dos sommiers en el estar. Hay versiones en una y en dos plantas.",
+     foto:"whatsapp-image-2026-02-19-at-15.29.17-doWdsR1kxj0fWY3o.jpeg",
+     ficha:{cap:"Hasta 4 personas", plantas:"1 o 2 plantas", dorm:"1 dormitorio + estar", banos:"A confirmar", jacuzzi:"No", cocina:"Cocina con horno", exterior:"Galería cubierta con asador", clima:"Aire frío/calor", camas:"2 sommiers en el estar + dormitorio"}},
+    {id:"trad", nombre:"Suite Tradicional", tipo:"Suite · parejas", cap:3, base:90000,
+     lead:"Monoambiente con jacuzzi y cocina con horno, para una escapada de a dos (o tres).",
+     foto:"whatsapp-image-2026-02-19-at-15.31.30-r5uajGUqEPDNTjLH.jpeg",
+     ficha:{cap:"Hasta 3 personas", plantas:"Monoambiente", dorm:"Ambiente único", banos:"1 baño", jacuzzi:"Sí", cocina:"Cocina con horno", exterior:"Galería cubierta con asador", clima:"Aire frío/calor", camas:"Cama matrimonial + sommier individual"}},
+    {id:"prem", nombre:"Suite Premium", tipo:"Suite · parejas", cap:3, base:100000,
+     lead:"La suite moderna: jacuzzi, anafe eléctrico, y según el piso, galería amplia o balcón con vista al parque.",
+     foto:"whatsapp-image-2026-02-19-at-15.33.05-2-Ez3bMzl8eHdehYUC.jpeg",
+     ficha:{cap:"Hasta 3 personas", plantas:"Monoambiente moderno", dorm:"Ambiente único", banos:"1 baño", jacuzzi:"Sí", cocina:"Anafe eléctrico (sin horno)", exterior:"PB: galería amplia con asador · PA: balcón con asador y vista al parque", clima:"Aire frío/calor", camas:"Cama matrimonial + sommier individual"}}
+  ];
+  var FILAS = [["cap","Capacidad"],["plantas","Plantas"],["dorm","Dormitorios"],["banos","Baños"],["jacuzzi","Jacuzzi"],["cocina","Cocina"],["exterior","Exterior"],["clima","Climatización"],["camas","Camas"]];
+
+  // temporadas (fechas reales, precios ilustrativos via multiplicador)
+  var TEMPORADAS = [
+    {id:"finde", nombre:"Fin de semana largo", cuando:"21 al 23 de noviembre de 2026", desde:"2026-11-21", hasta:"2026-11-23", mult:1.2, alta:true},
+    {id:"verano", nombre:"Verano", cuando:"26 de diciembre de 2026 al 28 de febrero de 2027", desde:"2026-12-26", hasta:"2027-02-28", mult:1.4, alta:true},
+    {id:"santa", nombre:"Semana Santa", cuando:"25 al 28 de marzo de 2027", desde:"2027-03-25", hasta:"2027-03-28", mult:1.25, alta:true},
+    {id:"invierno", nombre:"Vacaciones de invierno", cuando:"Julio de 2027", desde:"2027-07-01", hasta:"2027-07-31", mult:1.15, alta:true},
+    {id:"media", nombre:"Resto del año", cuando:"Días fuera de las temporadas", mult:1, alta:false}
+  ];
+
+  function $(s){return document.querySelector(s)}
+  function fmt(n){return "$ " + Math.round(n).toLocaleString("es-AR")}
+  function iso(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+  function temporadaDe(d){var s=iso(d);for(var i=0;i<TEMPORADAS.length;i++){var t=TEMPORADAS[i];if(t.desde&&s>=t.desde&&s<=t.hasta)return t}return TEMPORADAS[4]}
+  function precioNoche(u,d){var t=temporadaDe(d);var p=u.base*t.mult;var dow=d.getDay();if(t.id==="media"&&(dow===5||dow===6))p*=1.1;return Math.round(p/1000)*1000}
+  function toast(t){var el=$("#toast");el.textContent=t;el.classList.add("ver");clearTimeout(toast._t);toast._t=setTimeout(function(){el.classList.remove("ver")},2200)}
+
+  // relatos
+  var relatosHtml = UNIDADES.map(function(u,i){
+    var f=u.ficha;
+    return '<section class="relato" id="u-'+u.id+'" aria-labelledby="h-'+u.id+'">'+
+      '<figure class="foto" style="margin:0">'+
+        '<svg class="respaldo" viewBox="0 0 400 180" preserveAspectRatio="none" aria-hidden="true"><path d="M0 120 C60 90 110 60 170 70 C230 80 260 40 320 50 C360 56 380 80 400 78 L400 180 L0 180Z" fill="rgba(255,255,255,.18)"/><path d="M0 150 C80 130 150 110 220 120 C290 130 340 110 400 118 L400 180 L0 180Z" fill="rgba(44,37,64,.5)"/></svg>'+
+        '<img src="'+IMG+u.foto+'" alt="'+u.nombre+' en Brisas de Nono" loading="lazy" onerror="this.parentNode.classList.add(\'sin-foto\')">'+
+        '<figcaption>Foto del complejo</figcaption>'+
+      '</figure>'+
+      '<div class="texto">'+
+        '<span class="tipo">'+u.tipo+'</span>'+
+        '<h3 id="h-'+u.id+'">'+u.nombre+'</h3>'+
+        '<p class="lead">'+u.lead+'</p>'+
+        '<ul class="datos">'+
+          '<li><b>'+u.cap+'</b>personas como máximo</li>'+
+          '<li><b>'+f.plantas+'</b>'+f.dorm.toLowerCase()+'</li>'+
+          '<li><b>'+(f.jacuzzi==="Sí"?"Jacuzzi":"Asador")+'</b>'+(f.jacuzzi==="Sí"?"en la suite":"en la galería cubierta")+'</li>'+
+          '<li><b>'+(u.id==="prem"?"Anafe":"Horno")+'</b>cocina equipada</li>'+
+        '</ul>'+
+        '<div class="acciones">'+
+          '<button class="btn btn-sombra" type="button" data-reservar="'+u.id+'">Ver fechas libres</button>'+
+          '<label class="chk"><input type="checkbox" data-comparar="'+u.id+'"> Comparar</label>'+
+        '</div>'+
+      '</div>'+
+    '</section>';
+  }).join("");
+  $("#relatos").outerHTML = relatosHtml;
+
+  // comparador
+  var compA="cab6", compB="trad";
+  function pintarSelectores(){
+    ["A","B"].forEach(function(lado){
+      var cont=$("#sel"+lado), actual=lado==="A"?compA:compB, otro=lado==="A"?compB:compA;
+      cont.innerHTML=UNIDADES.map(function(u){return '<button type="button" data-lado="'+lado+'" data-u="'+u.id+'" aria-pressed="'+(u.id===actual)+'"'+(u.id===otro?" disabled":"")+'>'+u.nombre+'</button>'}).join("");
+    });
+    document.querySelectorAll("[data-comparar]").forEach(function(c){c.checked=(c.dataset.comparar===compA||c.dataset.comparar===compB)});
+  }
+  function porId(id){for(var i=0;i<UNIDADES.length;i++)if(UNIDADES[i].id===id)return UNIDADES[i]}
+  function pintarTabla(){
+    var a=porId(compA), b=porId(compB);
+    var h='<thead><tr><th scope="col"><span class="sr" style="position:absolute;left:-9999px">Característica</span></th><th scope="col">'+a.nombre+'</th><th scope="col">'+b.nombre+'</th></tr></thead><tbody>';
+    FILAS.forEach(function(r){var va=a.ficha[r[0]], vb=b.ficha[r[0]];h+='<tr class="'+(va===vb?"igual":"dif")+'"><th scope="row">'+r[1]+'</th><td>'+va+'</td><td>'+vb+'</td></tr>'});
+    h+='<tr class="comp-acciones"><th scope="row">Reservar</th><td><button class="btn btn-pasto" type="button" data-reservar="'+a.id+'">Elegir esta</button></td><td><button class="btn btn-pasto" type="button" data-reservar="'+b.id+'">Elegir esta</button></td></tr></tbody>';
+    $("#tablaComp").innerHTML=h;
+  }
+  document.addEventListener("click",function(e){
+    var b=e.target.closest("[data-lado]");
+    if(b){if(b.dataset.lado==="A")compA=b.dataset.u;else compB=b.dataset.u;pintarSelectores();pintarTabla();return}
+    var r=e.target.closest("[data-reservar]");
+    if(r){elegirUnidad(r.dataset.reservar);document.getElementById("reservar").scrollIntoView({behavior:"smooth"});toast(porId(r.dataset.reservar).nombre+" cargada en la reserva")}
+  });
+  document.addEventListener("change",function(e){
+    var c=e.target.closest("[data-comparar]");
+    if(!c)return;
+    var id=c.dataset.comparar;
+    if(c.checked){ if(id!==compA&&id!==compB){compB=compA;compA=id} }
+    else{ if(id===compA||id===compB){ var otro=id===compA?compB:compA; var alt=UNIDADES.filter(function(u){return u.id!==otro&&u.id!==id})[0].id; if(id===compA)compA=alt;else compB=alt; } }
+    pintarSelectores();pintarTabla();
+    toast("Comparando "+porId(compA).nombre+" y "+porId(compB).nombre);
+  });
+  pintarSelectores();pintarTabla();
+
+  // disponibilidad de ejemplo (determinística)
+  function hash(s){var h=2166136261;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return (h>>>0)}
+  var ocupadoCache={};
+  function ocupado(uid,d){
+    var k=uid+iso(d); if(k in ocupadoCache)return ocupadoCache[k];
+    var t=temporadaDe(d), semana=Math.floor((d-new Date(2026,0,4))/(7*864e5));
+    var bloque=hash(uid+":"+semana+":"+(d.getDay()>=4?"f":"s"))%100;
+    var umbral=t.alta?(t.id==="verano"?52:40):18;
+    if(d.getDay()===5||d.getDay()===6)umbral+=10;
+    var v=bloque<umbral; ocupadoCache[k]=v; return v;
+  }
+
+  var HOY=new Date(); HOY.setHours(0,0,0,0);
+  var LIMITE=new Date(2027,7,0);
+  var vista=new Date(HOY.getFullYear(),HOY.getMonth(),1);
+  var unidad=UNIDADES[0], llegada=null, salida=null, personas=2;
+  var MESES=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+
+  var sel=$("#unidad");
+  sel.innerHTML=UNIDADES.map(function(u){return '<option value="'+u.id+'">'+u.nombre+' (hasta '+u.cap+')</option>'}).join("");
+  sel.addEventListener("change",function(){elegirUnidad(sel.value)});
+
+  function elegirUnidad(id){
+    unidad=porId(id); sel.value=id; $("#calUnidad").textContent=unidad.nombre;
+    if(personas>unidad.cap)personas=unidad.cap;
+    if(llegada&&salida&&rangoOcupado(llegada,salida)){salida=null}
+    if(llegada&&ocupado(unidad.id,llegada)){llegada=null;salida=null}
+    pintarCal();calcular();
+  }
+  function rangoOcupado(a,b){for(var d=new Date(a);d<b;d.setDate(d.getDate()+1)){if(ocupado(unidad.id,d))return true}return false}
+
+  function mesHtml(y,m){
+    var primero=new Date(y,m,1), dias=new Date(y,m+1,0).getDate(), off=(primero.getDay()+6)%7;
+    var h='<div class="mes"><h4>'+MESES[m]+' '+y+'</h4><div class="dias">';
+    ["lu","ma","mi","ju","vi","sá","do"].forEach(function(d){h+='<span class="dsem">'+d+'</span>'});
+    for(var i=0;i<off;i++)h+='<span class="dia vacio"></span>';
+    for(var dd=1;dd<=dias;dd++){
+      var d=new Date(y,m,dd), cls="dia", dis=false, lab=dd+" de "+MESES[m];
+      if(d<HOY){cls+=" pasado";dis=true}
+      else if(ocupado(unidad.id,d)){cls+=" ocupado";dis=true;lab+=", ocupado"}
+      if(!dis&&temporadaDe(d).alta)cls+=" temporada";
+      if(llegada&&+d===+llegada)cls+=" sel";
+      if(salida&&+d===+salida)cls+=" sel";
+      if(llegada&&salida&&d>llegada&&d<salida)cls+=" rango";
+      // permitir elegir como salida un día ocupado (sale a la mañana)
+      if(dis&&llegada&&!salida&&d>llegada&&d>=HOY&&!rangoOcupado(llegada,d)){dis=false}
+      h+='<button type="button" class="'+cls+'" data-fecha="'+iso(d)+'" aria-label="'+lab+'"'+(dis?" disabled":"")+'>'+dd+'</button>';
+    }
+    return h+'</div></div>';
+  }
+  function pintarCal(){
+    var y=vista.getFullYear(), m=vista.getMonth(), m2=new Date(y,m+1,1);
+    $("#meses").innerHTML=mesHtml(y,m)+mesHtml(m2.getFullYear(),m2.getMonth());
+    $("#prevMes").disabled = (y===HOY.getFullYear()&&m===HOY.getMonth());
+    $("#nextMes").disabled = (new Date(y,m+1,1)>=new Date(LIMITE.getFullYear(),LIMITE.getMonth(),1));
+  }
+  $("#prevMes").addEventListener("click",function(){vista.setMonth(vista.getMonth()-1);pintarCal()});
+  $("#nextMes").addEventListener("click",function(){vista.setMonth(vista.getMonth()+1);pintarCal()});
+  $("#meses").addEventListener("click",function(e){
+    var b=e.target.closest("[data-fecha]"); if(!b||b.disabled)return;
+    var p=b.dataset.fecha.split("-"), d=new Date(+p[0],+p[1]-1,+p[2]);
+    if(!llegada||salida||d<=llegada){ if(ocupado(unidad.id,d))return; llegada=d; salida=null; }
+    else { if(rangoOcupado(llegada,d)){msg("err","Hay noches ocupadas en ese rango. Probá otra salida u otra unidad.");return} salida=d; }
+    pintarCal();calcular();
+  });
+
+  $("#menos").addEventListener("click",function(){if(personas>1){personas--;calcular()}});
+  $("#mas").addEventListener("click",function(){if(personas<unidad.cap){personas++;calcular()}else{msg("err",unidad.nombre+" admite hasta "+unidad.cap+" personas. Para más, probá la Cabaña para 6.")}});
+
+  function msg(tipo,t){var el=$("#msg");el.className="msg "+tipo;el.textContent=t}
+  function fechaLarga(d){return d.getDate()+" de "+MESES[d.getMonth()]}
+  var ultimo=null;
+  function calcular(){
+    $("#pers").textContent=personas;
+    $("#fIn").textContent=llegada?fechaLarga(llegada):"Elegí en el calendario";
+    $("#fOut").textContent=salida?fechaLarga(salida):(llegada?"Elegí la salida":"—");
+    var pagar=$("#pagar"), des=$("#desglose");
+    $("#msg").className="msg";
+    if(!llegada||!salida){des.innerHTML='<div class="fila"><span>'+(llegada?"Ahora tocá el día de salida":"Elegí fechas para ver el total")+'</span><span></span></div>';pagar.disabled=true;ultimo=null;return}
+    var porTemp={}, total=0, noches=0;
+    for(var d=new Date(llegada);d<salida;d.setDate(d.getDate()+1)){var t=temporadaDe(d), p=precioNoche(unidad,d);total+=p;noches++;porTemp[t.nombre]=porTemp[t.nombre]||{n:0,s:0};porTemp[t.nombre].n++;porTemp[t.nombre].s+=p}
+    var h='<div class="fila"><span>'+unidad.nombre+' · '+personas+(personas===1?" persona":" personas")+'</span><span></span></div>';
+    Object.keys(porTemp).forEach(function(k){h+='<div class="fila"><span>'+porTemp[k].n+(porTemp[k].n===1?" noche":" noches")+' · '+k+'</span><span>'+fmt(porTemp[k].s)+'</span></div>'});
+    var sena=total*0.3;
+    h+='<div class="fila total"><span>Total ('+noches+(noches===1?" noche":" noches")+')</span><span>'+fmt(total)+'</span></div>';
+    h+='<div class="fila sena"><span>Seña 30% para confirmar</span><span>'+fmt(sena)+'</span></div>';
+    h+='<div class="fila"><span>Saldo al llegar</span><span>'+fmt(total-sena)+'</span></div>';
+    des.innerHTML=h; pagar.disabled=false;
+    ultimo={total:total,sena:sena,noches:noches};
+    msg("info","Precios ilustrativos. El complejo define tarifas y condiciones reales.");
+  }
+  $("#pagar").addEventListener("click",function(){
+    if(!ultimo)return;
+    $("#mTxt").textContent="Pediste "+unidad.nombre+" del "+fechaLarga(llegada)+" al "+fechaLarga(salida)+" ("+ultimo.noches+(ultimo.noches===1?" noche":" noches")+", "+personas+(personas===1?" persona":" personas")+"). Seña de "+fmt(ultimo.sena)+" por Mercado Pago. Brisas de Nono recibe el aviso y el calendario se bloquea también en Booking y Airbnb.";
+    $("#modal").classList.add("abierto");$("#cerrar").focus();
+  });
+  function cerrarModal(){$("#modal").classList.remove("abierto")}
+  $("#cerrar").addEventListener("click",cerrarModal);
+  $("#modal").addEventListener("click",function(e){if(e.target.id==="modal")cerrarModal()});
+  document.addEventListener("keydown",function(e){if(e.key==="Escape")cerrarModal()});
+
+  // franja de temporadas
+  $("#franja").innerHTML=TEMPORADAS.map(function(t){
+    var lista=UNIDADES.map(function(u){return '<li><span>'+u.nombre+'</span><b>'+fmt(Math.round(u.base*t.mult/1000)*1000)+'</b></li>'}).join("");
+    return '<div class="tramo'+(t.alta?" alta":"")+'"><span class="cuando">'+t.cuando+'</span><h3>'+t.nombre+'</h3><ul class="precios">'+lista+'</ul></div>';
+  }).join("");
+
+  // servicios reales
+  var ICON={
+    agua:'<path d="M3 17c2 0 2-1.5 4.5-1.5S10 17 12 17s2.5-1.5 4.5-1.5S19 17 21 17M3 21c2 0 2-1.5 4.5-1.5S10 21 12 21s2.5-1.5 4.5-1.5S19 21 21 21M8 13V5a2 2 0 0 1 4 0M16 13V5a2 2 0 0 0-4 0M8 9h8"/>',
+    pata:'<circle cx="7" cy="9" r="2"/><circle cx="12" cy="6" r="2"/><circle cx="17" cy="9" r="2"/><path d="M8 17c0-3 2-5 4-5s4 2 4 5c0 2-2 2-4 2s-4 0-4-2z"/>',
+    limp:'<path d="M4 20h16M7 20l2-9h6l2 9M10 11V4h4v7"/>',
+    juego:'<rect x="3" y="8" width="18" height="10" rx="3"/><path d="M8 11v4M6 13h4M15 12h.01M17 14h.01"/>',
+    plaza:'<path d="M4 21V9l8-5 8 5v12M9 21v-6h6v6"/>',
+    auto:'<path d="M3 12l2-5h14l2 5v5H3zM7 17v2M17 17v2M3 12h18"/>',
+    wifi:'<path d="M2 9a15 15 0 0 1 20 0M5 13a10 10 0 0 1 14 0M8.5 16.5a5 5 0 0 1 7 0M12 20h.01"/>',
+    ropa:'<path d="M8 3l4 2 4-2 4 4-3 3v11H7V10L4 7z"/>',
+    pesa:'<path d="M6 7v10M18 7v10M3 10v4M21 10v4M6 12h12"/>'
+  };
+  var SERV=[
+    ["agua","Pileta climatizada y cubierta","Para cuando el clima no acompaña."],
+    ["agua","Pileta exterior amplia","Para los días de calor."],
+    ["pata","Pet friendly","Se aceptan mascotas."],
+    ["limp","Limpieza diaria","De la cabaña o suite."],
+    ["ropa","Ropa blanca incluida","Sábanas y toallas."],
+    ["juego","Sala de juegos","Pool, metegol y ping pong."],
+    ["plaza","Plaza de juegos","Un espacio seguro para los más chicos."],
+    ["pesa","Máquinas de ejercicio","Al aire libre."],
+    ["auto","Cocheras cubiertas","Para guardar el auto."],
+    ["wifi","WiFi","En todo el complejo."]
+  ];
+  $("#servicios-lista").innerHTML=SERV.map(function(s){return '<div class="servicio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+ICON[s[0]]+'</svg><div><h3>'+s[1]+'</h3><p>'+s[2]+'</p></div></div>'}).join("");
+
+  pintarCal();calcular();
+})();
+</script>
+</body>
+</html>
