@@ -121,14 +121,14 @@ $filtro = preg_match('/^[a-z0-9-]{3,80}$/', (string) ($_GET['p'] ?? '')) ? (stri
 
 $k = $pdo->query('SELECT COUNT(DISTINCT prospecto) AS prospectos, COUNT(*) AS visitas,
     COALESCE(AVG(segundos), 0) AS promedio,
-    SUM(CASE WHEN inicio >= ' . strtotime('-7 days') . ' THEN 1 ELSE 0 END) AS semana FROM visitas')->fetch();
+    SUM(CASE WHEN inicio >= ' . strtotime('-7 days') . ' THEN 1 ELSE 0 END) AS semana FROM visitas WHERE prospecto NOT LIKE \'prueba-%\'')->fetch();
 
 $por_prospecto = $pdo->query('SELECT prospecto, MAX(negocio) AS negocio, MIN(inicio) AS primera, MAX(inicio) AS ultima,
     COUNT(*) AS visitas, SUM(segundos) AS total, COUNT(DISTINCT visitante) AS personas,
     GROUP_CONCAT(DISTINCT dispositivo) AS dispositivos
-    FROM visitas GROUP BY prospecto ORDER BY ultima DESC')->fetchAll();
+    FROM visitas WHERE prospecto NOT LIKE \'prueba-%\' GROUP BY prospecto ORDER BY ultima DESC')->fetchAll();
 
-$q = $pdo->prepare('SELECT * FROM visitas ' . ($filtro ? 'WHERE prospecto = ? ' : '') . 'ORDER BY inicio DESC LIMIT 300');
+$q = $pdo->prepare('SELECT * FROM visitas WHERE ' . ($filtro ? 'prospecto = ? ' : "prospecto NOT LIKE 'prueba-%' ") . 'ORDER BY inicio DESC LIMIT 300');
 $q->execute($filtro ? [$filtro] : []);
 $ultimas = $q->fetchAll();
 ?><!doctype html><html lang="es-AR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Visitas a las demos</title><style><?= $css ?></style></head>

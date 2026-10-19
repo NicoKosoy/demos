@@ -16,6 +16,8 @@ if (isset($_GET['estado'])) {
         'mail' => function_exists('mail'),
         'datos_escribibles' => $ok_datos,
         'base' => $ok_datos && (bool) db(),
+        // Visitas de prueba (prospecto "prueba-..."): no salen en el panel ni disparan avisos.
+        'pruebas' => $ok_datos ? db()->query("SELECT COUNT(*) AS visitas, COALESCE(MAX(segundos), 0) AS segundos FROM visitas WHERE prospecto LIKE 'prueba-%'")->fetch() : null,
     ]);
     exit;
 }
@@ -57,6 +59,10 @@ if ($evento === 'inicio') {
     $pdo->prepare('INSERT OR IGNORE INTO visitas (id, prospecto, negocio, inicio, ultimo, dispositivo, sistema, navegador, pantalla, origen, visitante)
         VALUES (:id, :prospecto, :negocio, :inicio, :ultimo, :dispositivo, :sistema, :navegador, :pantalla, :origen, :visitante)')->execute($v);
 
+    if (str_starts_with($prospecto, 'prueba-')) {
+        http_response_code(204);
+        exit;
+    }
     // Primera vez que este prospecto abre su demo: un solo aviso por prospecto.
     $nuevo = $pdo->prepare('INSERT OR IGNORE INTO avisos (prospecto, enviado, ok) VALUES (?, ?, 0)');
     $nuevo->execute([$prospecto, $ahora]);
