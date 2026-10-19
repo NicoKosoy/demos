@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Naser Eventos · Salones en San Martín 8500, Neuquén</title>
+<meta name="description" content="Prototipo de demostración preparado para Naser Eventos.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --noche:#0f1b2d;
+  --noche2:#16263d;
+  --pista:#f2a900;
+  --baliza:#d6453d;
+  --estepa:#c9a26b;
+  --nube:#f4f6f8;
+  --gris:#8b97a8;
+  --linea:rgba(244,246,248,.14);
+  --display:'Unbounded',ui-sans-serif,sans-serif;
+  --text:'Lexend',ui-sans-serif,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--noche);color:var(--nube);font-family:var(--text);font-weight:300;line-height:1.6;font-size:17px;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--pista);outline-offset:3px}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+
+/* aviso de prototipo */
+.aviso{background:var(--pista);color:var(--noche);font-size:14px;font-weight:500;text-align:center;padding:8px 16px}
+
+/* cabecera */
+header{position:sticky;top:0;z-index:20;background:rgba(15,27,45,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--linea)}
+.cab{display:flex;align-items:center;justify-content:space-between;gap:16px;height:64px}
+.marca{font-family:var(--display);font-weight:800;font-size:20px;letter-spacing:-.01em;text-decoration:none;display:flex;align-items:baseline;gap:8px}
+.marca small{font-family:var(--text);font-weight:400;font-size:13px;color:var(--gris)}
+nav{display:flex;gap:24px;font-size:15px}
+nav a{text-decoration:none;color:var(--gris)}
+nav a:hover{color:var(--nube)}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--pista);color:var(--noche);font-weight:600;border:0;border-radius:999px;padding:11px 20px;text-decoration:none;cursor:pointer;font-size:15px}
+.btn:hover{background:#ffbd1f}
+.btn.sec{background:transparent;color:var(--nube);border:1px solid var(--linea)}
+@media(max-width:860px){nav{display:none}}
+
+/* portada: tablero de salidas */
+.portada{padding-top:64px;padding-bottom:72px;display:grid;grid-template-columns:1fr 1.15fr;gap:48px;align-items:center}
+.portada h1{font-family:var(--display);font-weight:800;font-size:clamp(34px,5vw,60px);line-height:1.04;letter-spacing:-.02em}
+.portada p.bajada{color:#c5ceda;margin-top:20px;max-width:46ch;font-size:18px}
+.portada .acc{display:flex;gap:12px;margin-top:28px;flex-wrap:wrap}
+.tablero{background:#0a1320;border:1px solid var(--linea);border-radius:14px;padding:18px 18px 12px;box-shadow:0 30px 60px rgba(0,0,0,.35)}
+.tablero-cab{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px;gap:12px}
+.tablero-cab h2{font-family:var(--display);font-weight:600;font-size:15px;color:var(--pista)}
+.tablero-cab span{font-size:13px;color:var(--gris)}
+.filas{display:grid;gap:6px}
+.fila{display:grid;grid-template-columns:96px 1fr 104px;gap:8px;align-items:center;background:var(--noche2);border-radius:6px;padding:10px 12px;border:1px solid transparent;cursor:pointer;text-align:left;width:100%}
+.fila:hover{border-color:var(--pista)}
+.fila[disabled]{cursor:default;opacity:.62}
+.fila[disabled]:hover{border-color:transparent}
+.fila .f{font-family:var(--display);font-weight:600;font-size:14px;letter-spacing:.02em}
+.fila .ev{font-size:14px;color:#c5ceda;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fila .est{font-family:var(--display);font-size:12px;font-weight:600;text-align:center;border-radius:4px;padding:4px 0}
+.est.libre{background:rgba(242,169,0,.16);color:var(--pista)}
+.est.ocup{background:rgba(214,69,61,.16);color:#f08a83}
+.fila.sel{border-color:var(--pista);background:#1d3150}
+.flap{display:inline-block;animation:flap .5s steps(4) both}
+@keyframes flap{0%{transform:rotateX(90deg);opacity:0}100%{transform:none;opacity:1}}
+.tablero .pie{font-size:12px;color:var(--gris);margin-top:10px}
+@media(max-width:900px){.portada{grid-template-columns:1fr;padding-top:40px}}
+@media(max-width:420px){.fila{grid-template-columns:82px 1fr 88px;padding:9px 10px}.fila .ev{font-size:13px}}
+
+/* franja de datos reales */
+.datos{border-top:1px solid var(--linea);border-bottom:1px solid var(--linea)}
+.datos .wrap{display:grid;grid-template-columns:repeat(4,1fr)}
+.dato{padding:22px 20px;border-right:1px solid var(--linea)}
+.dato:last-child{border-right:0}
+.dato b{font-family:var(--display);font-weight:600;font-size:20px;display:block}
+.dato span{font-size:14px;color:var(--gris)}
+@media(max-width:760px){.datos .wrap{grid-template-columns:1fr 1fr}.dato:nth-child(2){border-right:0}.dato:nth-child(-n+2){border-bottom:1px solid var(--linea)}}
+
+section{padding:88px 0}
+.tit{font-family:var(--display);font-weight:600;font-size:clamp(26px,3.4vw,38px);line-height:1.12;letter-spacing:-.015em;max-width:22ch}
+.intro{color:#c5ceda;max-width:60ch;margin-top:14px}
+
+/* plano configurable */
+.plano-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:40px;margin-top:40px;align-items:start}
+.plano{background:#0a1320;border:1px solid var(--linea);border-radius:14px;padding:16px}
+.plano svg{width:100%;height:auto;display:block}
+.mod{cursor:pointer;transition:fill .25s, stroke .25s}
+.mod rect,.mod path{fill:#14233a;stroke:#2a3d5c;stroke-width:2}
+.mod.on rect,.mod.on path{fill:rgba(242,169,0,.18);stroke:var(--pista)}
+.mod text{fill:var(--nube);font-family:var(--display);font-size:15px;font-weight:600;pointer-events:none}
+.mod text.m2{font-family:var(--text);font-weight:400;font-size:13px;fill:var(--gris)}
+.mod.on text.m2{fill:var(--pista)}
+.toggles{display:grid;gap:10px}
+.tg{display:flex;justify-content:space-between;align-items:center;gap:12px;border:1px solid var(--linea);border-radius:10px;padding:14px 16px;cursor:pointer;background:transparent;text-align:left;width:100%}
+.tg[aria-pressed="true"]{border-color:var(--pista);background:rgba(242,169,0,.07)}
+.tg b{font-weight:500;display:block}
+.tg small{color:var(--gris);font-size:13px}
+.tg .sw{width:40px;height:22px;border-radius:99px;background:#2a3d5c;position:relative;flex:none}
+.tg .sw::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:var(--nube);transition:transform .2s}
+.tg[aria-pressed="true"] .sw{background:var(--pista)}
+.tg[aria-pressed="true"] .sw::after{transform:translateX(18px)}
+.capac{margin-top:18px;border-top:1px solid var(--linea);padding-top:18px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.capac b{font-family:var(--display);font-size:24px;font-weight:600;display:block}
+.capac span{font-size:13px;color:var(--gris)}
+.nota{font-size:13px;color:var(--gris);margin-top:12px}
+@media(max-width:900px){.plano-grid{grid-template-columns:1fr}}
+
+/* menús como tarjetas de embarque */
+.menus{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:40px}
+.pase{background:var(--nube);color:var(--noche);border-radius:14px;display:grid;grid-template-columns:1fr 128px;overflow:hidden;position:relative}
+.pase .cuerpo{padding:26px 26px 22px}
+.pase .talon{border-left:2px dashed #c8d0da;padding:26px 16px;display:flex;flex-direction:column;justify-content:space-between;background:#e9edf2}
+.pase h3{font-family:var(--display);font-weight:800;font-size:26px;letter-spacing:-.01em}
+.pase .tipo{font-size:14px;color:#55627a;margin-bottom:6px}
+.pase ol{list-style:none;margin-top:18px;display:grid;gap:7px;counter-reset:p}
+.pase li{display:flex;gap:12px;align-items:baseline;font-size:15px;font-weight:400;counter-increment:p}
+.pase li::before{content:counter(p,decimal-leading-zero);font-family:var(--display);font-size:11px;color:#8a94a6;width:20px;flex:none}
+.talon b{font-family:var(--display);font-size:13px;font-weight:600}
+.talon span{font-size:12px;color:#55627a;display:block}
+.talon .codigo{height:56px;background:repeating-linear-gradient(90deg,var(--noche) 0 2px,transparent 2px 4px,var(--noche) 4px 5px,transparent 5px 8px);border-radius:2px;opacity:.85}
+.pase button{margin-top:20px}
+@media(max-width:820px){.menus{grid-template-columns:1fr}}
+@media(max-width:420px){.pase{grid-template-columns:1fr 92px}.pase .cuerpo{padding:22px 18px}.pase h3{font-size:22px}}
+
+/* cotizador */
+.coti{background:var(--noche2);border-top:1px solid var(--linea);border-bottom:1px solid var(--linea)}
+.coti-grid{display:grid;grid-template-columns:1.2fr .9fr;gap:40px;margin-top:40px;align-items:start}
+.paso{border-top:1px solid var(--linea);padding:22px 0}
+.paso:first-child{border-top:0;padding-top:0}
+.paso h3{font-family:var(--display);font-weight:600;font-size:16px;margin-bottom:12px;display:flex;gap:12px;align-items:baseline}
+.paso h3 i{font-style:normal;color:var(--pista);font-size:13px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--linea);background:transparent;border-radius:999px;padding:9px 16px;cursor:pointer;font-size:15px}
+.chip[aria-pressed="true"]{background:var(--pista);border-color:var(--pista);color:var(--noche);font-weight:500}
+.rango{display:flex;align-items:center;gap:16px}
+input[type=range]{flex:1;accent-color:var(--pista);height:28px}
+.inv{font-family:var(--display);font-size:28px;font-weight:600;min-width:80px;text-align:right}
+input[type=date]{background:var(--noche);border:1px solid var(--linea);border-radius:10px;padding:10px 14px;color-scheme:dark}
+.extras{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ex{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--linea);border-radius:10px;padding:12px;cursor:pointer;font-size:15px}
+.ex input{accent-color:var(--pista);margin-top:5px}
+.ex small{display:block;color:var(--gris);font-size:13px}
+@media(max-width:560px){.extras{grid-template-columns:1fr}}
+.ticket{position:sticky;top:88px;background:var(--nube);color:var(--noche);border-radius:16px;padding:26px}
+.ticket h3{font-family:var(--display);font-size:15px;font-weight:600;color:#55627a}
+.ticket .total{font-family:var(--display);font-weight:800;font-size:clamp(28px,3.4vw,38px);letter-spacing:-.02em;margin:6px 0 2px}
+.ticket .pp{font-size:15px;color:#55627a}
+.ticket dl{margin-top:18px;border-top:1px dashed #c8d0da;padding-top:14px;display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:14px}
+.ticket dt{color:#55627a}
+.ticket dd{text-align:right;font-weight:500}
+.ticket .btn{width:100%;justify-content:center;margin-top:20px;background:var(--noche);color:var(--nube)}
+.ticket .btn:hover{background:#1d3150}
+.ticket .ej{font-size:12px;color:#6b778c;margin-top:12px}
+@media(max-width:900px){.coti-grid{grid-template-columns:1fr}.ticket{position:static}}
+
+/* eventos */
+.ev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:40px;border:1px solid var(--linea);border-radius:14px;overflow:hidden}
+.ev-col{padding:28px;border-right:1px solid var(--linea)}
+.ev-col:last-child{border-right:0}
+.ev-col h3{font-family:var(--display);font-weight:600;font-size:19px;margin-bottom:12px}
+.ev-col ul{list-style:none;display:grid;gap:6px;color:#c5ceda;font-size:15px}
+.ev-col p{color:#c5ceda;font-size:15px}
+.ev-col.concierto{background:linear-gradient(160deg,rgba(214,69,61,.14),transparent 70%)}
+@media(max-width:860px){.ev-grid{grid-template-columns:1fr}.ev-col{border-right:0;border-bottom:1px solid var(--linea)}.ev-col:last-child{border-bottom:0}}
+
+/* galería */
+.galeria{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 24px 18px;margin-top:36px}
+.galeria figure{flex:0 0 min(78vw,440px);aspect-ratio:4/3;border-radius:12px;overflow:hidden;scroll-snap-align:start;background:linear-gradient(135deg,#16263d,#24395a);position:relative}
+.galeria img{width:100%;height:100%;object-fit:cover}
+.galeria figure.sinfoto::after{content:attr(data-alt);position:absolute;inset:auto 16px 14px 16px;font-size:14px;color:var(--gris)}
+
+/* llegar */
+.llegar{display:grid;grid-template-columns:1fr 1.2fr;gap:40px;align-items:center}
+.llegar iframe{width:100%;height:340px;border:0;border-radius:14px;filter:grayscale(.3) contrast(1.05)}
+.contacto{display:grid;gap:10px;margin-top:24px;font-size:16px}
+.contacto a{text-decoration:none;border-bottom:1px solid var(--linea);padding-bottom:10px;display:flex;justify-content:space-between;gap:12px}
+.contacto a span{color:var(--gris)}
+@media(max-width:860px){.llegar{grid-template-columns:1fr}}
+
+footer{border-top:1px solid var(--linea);padding:36px 0 48px;color:var(--gris);font-size:14px}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.flota{position:fixed;right:16px;bottom:16px;z-index:30;display:none}
+@media(max-width:860px){.flota{display:inline-flex}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="aviso" role="note">Prototipo de demostración preparado para Naser Eventos. Precios y fechas de ejemplo.</div>
+
+<header>
+  <div class="wrap cab">
+    <a class="marca" href="#">Naser <small>Eventos</small></a>
+    <nav aria-label="Secciones">
+      <a href="#salones">Salones</a>
+      <a href="#menus">Menús</a>
+      <a href="#cotizar">Cotizar</a>
+      <a href="#eventos">Eventos</a>
+      <a href="#llegar">Cómo llegar</a>
+    </nav>
+    <a class="btn" href="#cotizar">Cotizar mi evento</a>
+  </div>
+</header>
+
+<main>
+  <div class="wrap portada">
+    <div>
+      <h1>1.092 m² para festejar, junto al aeropuerto de Neuquén.</h1>
+      <p class="bajada">Dos salones en San Martín 8500 que se usan juntos o por separado y se abren al verde. Catering propio, sonido, luces y DJ de la casa, desde 2009.</p>
+      <div class="acc">
+        <a class="btn" href="#cotizar">Ver precio estimado</a>
+        <a class="btn sec" href="#salones">Armar el salón</a>
+      </div>
+    </div>
+    <div class="tablero" aria-labelledby="tab-tit">
+      <div class="tablero-cab">
+        <h2 id="tab-tit">Próximos sábados</h2>
+        <span>Tocá una fecha libre para cotizarla</span>
+      </div>
+      <div class="filas" id="filas"></div>
+      <p class="pie">Disponibilidad de ejemplo. El salón la actualiza desde su panel.</p>
+    </div>
+  </div>
+
+  <div class="datos">
+    <div class="wrap">
+      <div class="dato"><b>523 m²</b><span>Salón 1</span></div>
+      <div class="dato"><b>569 m²</b><span>Superficie conectada</span></div>
+      <div class="dato"><b>4,4 en Google</b><span>con más de 240 reseñas</span></div>
+      <div class="dato"><b>Desde 2009</b><span>Grupo Naser</span></div>
+    </div>
+  </div>
+
+  <section id="salones">
+    <div class="wrap">
+      <h2 class="tit">Abrí solo lo que tu fiesta necesita.</h2>
+      <p class="intro">El salón tiene tres espacios que se combinan en uno grande o se usan por separado, y un solado amplio que se extiende hacia la zona verde. Prendé y apagá cada parte y mirá cuánta gente entra.</p>
+      <div class="plano-grid">
+        <div class="plano">
+          <svg viewBox="0 0 640 420" role="img" aria-label="Plano esquemático de los salones">
+            <defs>
+              <pattern id="pasto" width="12" height="12" patternUnits="userSpaceOnUse"><path d="M2 10 L4 4 M7 11 L9 5" stroke="#3c5a3a" stroke-width="1.2"/></pattern>
+            </defs>
+            <rect x="0" y="0" width="640" height="420" rx="10" fill="#0a1320"/>
+            <g class="mod on" data-mod="s1" tabindex="-1">
+              <rect x="30" y="40" width="270" height="220" rx="6"/>
+              <text x="52" y="78">Salón 1</text>
+              <text class="m2" x="52" y="100">523 m²</text>
+            </g>
+            <g class="mod on" data-mod="s2">
+              <rect x="310" y="40" width="300" height="220" rx="6"/>
+              <text x="332" y="78">Salón 2</text>
+              <text class="m2" x="332" y="100">569 m²</text>
+            </g>
+            <g class="mod" data-mod="verde">
+              <path d="M30 272 H610 V392 H30 Z" style="fill:url(#pasto)"/>
+              <text x="52" y="318">Solado y zona verde</text>
+              <text class="m2" x="52" y="340">extensión al aire libre</text>
+            </g>
+            <g opacity=".6" stroke="#4a5d7c" stroke-width="2" fill="none">
+              <path d="M300 120 v60"/>
+              <circle cx="560" cy="210" r="18"/>
+              <path d="M548 210 h24 M560 198 v24"/>
+            </g>
+            <text x="532" y="246" fill="#8b97a8" font-family="Lexend" font-size="11">pista</text>
+          </svg>
+        </div>
+        <div>
+          <div class="toggles">
+            <button class="tg" data-mod="s1" aria-pressed="true"><span><b>Salón 1</b><small>523 m², climatizado</small></span><span class="sw" aria-hidden="true"></span></button>
+            <button class="tg" data-mod="s2" aria-pressed="true"><span><b>Salón 2</b><small>569 m², conectado al Salón 1</small></span><span class="sw" aria-hidden="true"></span></button>
+            <button class="tg" data-mod="verde" aria-pressed="false"><span><b>Solado y zona verde</b><small>Para recepción o cóctel afuera</small></span><span class="sw" aria-hidden="true"></span></button>
+          </div>
+          <div class="capac" aria-live="polite">
+            <div><b id="cap-m2">1.092</b><span>m² cubiertos</span></div>
+            <div><b id="cap-ban">780</b><span>con cena sentada</span></div>
+            <div><b id="cap-coc">1.210</b><span>en formato cóctel</span></div>
+          </div>
+          <p class="nota">Capacidad aproximada a 1,4 m² por invitado en banquete y 0,9 m² en cóctel. Naser la confirma según la armada de mesas.</p>
+          <button class="btn" style="margin-top:18px" id="usar-plano">Cotizar con esta armada</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="menus" style="padding-top:24px">
+    <div class="wrap">
+      <h2 class="tit">Dos formas de servir la noche.</h2>
+      <p class="intro">Los menús de Naser, tal como los arma su cocina. Elegí uno y pasa directo al presupuesto.</p>
+      <div class="menus">
+        <article class="pase">
+          <div class="cuerpo">
+            <p class="tipo">Cena con platos a la mesa</p>
+            <h3>Tradicional</h3>
+            <ol>
+              <li>Recepción</li><li>Entrada</li><li>Plato principal</li><li>Postre</li><li>Mesa dulce</li><li>Fin de fiesta</li><li>Bebidas y barra de tragos</li><li>Brindis</li>
+            </ol>
+            <button class="btn" data-menu="tradicional" style="background:var(--noche);color:var(--nube)">Cotizar con Tradicional</button>
+          </div>
+          <div class="talon" aria-hidden="true">
+            <div><b>Salón</b><span>1 + 2</span></div>
+            <div><b>Tiempos</b><span>8</span></div>
+            <div class="codigo"></div>
+          </div>
+        </article>
+        <article class="pase">
+          <div class="cuerpo">
+            <p class="tipo">Recorrido de bocados, todos de pie</p>
+            <h3>Finger Food</h3>
+            <ol>
+              <li>Recepción</li><li>Plato principal</li><li>Mesa dulce</li><li>Fin de fiesta</li><li>Bebidas y barra de tragos</li><li>Brindis</li>
+            </ol>
+            <button class="btn" data-menu="finger" style="background:var(--noche);color:var(--nube)">Cotizar con Finger Food</button>
+          </div>
+          <div class="talon" aria-hidden="true">
+            <div><b>Formato</b><span>Cóctel</span></div>
+            <div><b>Tiempos</b><span>6</span></div>
+            <div class="codigo"></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="coti" id="cotizar">
+    <div class="wrap">
+      <h2 class="tit">Tu presupuesto en un minuto.</h2>
+      <p class="intro">Elegí el tipo de evento, la fecha, cuántos son y el menú. Te mostramos un rango estimado y le mandás todo armado a Naser por WhatsApp.</p>
+      <div class="coti-grid">
+        <div>
+          <div class="paso">
+            <h3><i>1</i>Tipo de evento</h3>
+            <div class="chips" id="tipos">
+              <button class="chip" data-v="Casamiento" aria-pressed="true">Casamiento</button>
+              <button class="chip" data-v="15 años" aria-pressed="false">15 años</button>
+              <button class="chip" data-v="Egresados" aria-pressed="false">Egresados</button>
+              <button class="chip" data-v="Cumpleaños" aria-pressed="false">Cumpleaños</button>
+              <button class="chip" data-v="Cena de fin de año" aria-pressed="false">Cena de fin de año</button>
+              <button class="chip" data-v="Evento corporativo" aria-pressed="false">Corporativo o congreso</button>
+            </div>
+          </div>
+          <div class="paso">
+            <h3><i>2</i>Fecha</h3>
+            <input type="date" id="fecha" aria-label="Fecha del evento">
+            <p class="nota" id="fecha-est"></p>
+          </div>
+          <div class="paso">
+            <h3><i>3</i>Invitados</h3>
+            <div class="rango">
+              <input type="range" id="inv" min="50" max="900" step="10" value="220" aria-label="Cantidad de invitados">
+              <span class="inv" id="inv-n">220</span>
+            </div>
+            <p class="nota" id="inv-salon"></p>
+          </div>
+          <div class="paso">
+            <h3><i>4</i>Menú</h3>
+            <div class="chips" id="menus">
+              <button class="chip" data-v="tradicional" aria-pressed="true">Tradicional</button>
+              <button class="chip" data-v="finger" aria-pressed="false">Finger Food</button>
+            </div>
+          </div>
+          <div class="paso">
+            <h3><i>5</i>Sumá si querés</h3>
+            <div class="extras" id="extras">
+              <label class="ex"><input type="checkbox" value="deco" data-pp="9000"><span>Decoración ampliada<small>Centros de mesa y ambientación</small></span></label>
+              <label class="ex"><input type="checkbox" value="mesa" data-pp="7000"><span>Mesa dulce temática<small>Diseñada para tu evento</small></span></label>
+              <label class="ex"><input type="checkbox" value="multi" data-fijo="380000"><span>Pantallas y multimedia<small>Video, fotos y presentaciones</small></span></label>
+              <label class="ex"><input type="checkbox" value="dmx" data-fijo="450000"><span>Show de luces con operador<small>Cabezales móviles, DMX y humo</small></span></label>
+            </div>
+          </div>
+        </div>
+        <aside class="ticket" aria-live="polite">
+          <h3 id="tk-tipo">Casamiento</h3>
+          <div class="total" id="tk-total">$0</div>
+          <div class="pp" id="tk-pp">por persona</div>
+          <dl>
+            <dt>Fecha</dt><dd id="tk-fecha">a definir</dd>
+            <dt>Invitados</dt><dd id="tk-inv">220</dd>
+            <dt>Salón</dt><dd id="tk-salon">Salón 1</dd>
+            <dt>Menú</dt><dd id="tk-menu">Tradicional</dd>
+            <dt>Incluye</dt><dd>Mozos, DJ, sonido y luces</dd>
+          </dl>
+          <a class="btn" id="tk-wa" href="#" target="_blank" rel="noopener">Enviar por WhatsApp</a>
+          <p class="ej">Valores de ejemplo para mostrar cómo funciona. Naser los reemplaza por su lista de precios y los edita cuando quiere.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section id="eventos">
+    <div class="wrap">
+      <h2 class="tit">Del brindis de egresados al congreso de empresa.</h2>
+      <div class="ev-grid">
+        <div class="ev-col">
+          <h3>Sociales</h3>
+          <ul><li>Casamientos</li><li>15 años</li><li>Cumpleaños</li><li>Egresados</li></ul>
+        </div>
+        <div class="ev-col">
+          <h3>Corporativos</h3>
+          <ul><li>Eventos institucionales</li><li>Cenas de negocios y de fin de año</li><li>Jornadas de equipo y capacitaciones</li><li>Congresos, seminarios y auditorio</li></ul>
+        </div>
+        <div class="ev-col concierto">
+          <h3>Escenario para conciertos</h3>
+          <p>Por estos salones pasaron Raúl Lavié con «Vuelvo al Sur» y Caseneuve. Y de la misma cocina nació La Yunta, el restaurante de Naser.</p>
+        </div>
+      </div>
+    </div>
+    <div class="galeria" aria-label="Fotos de los salones">
+      <figure data-alt="Frente de Naser Eventos"><img loading="lazy" src="https://www.eventosnaser.com.ar/wp-content/uploads/2021/11/frente_1200x720-1.jpg" alt="Frente de Naser Eventos"></figure>
+      <figure data-alt="Salón 1"><img loading="lazy" src="https://www.eventosnaser.com.ar/wp-content/uploads/2021/11/s1_03.jpg" alt="Salón 1 armado para un evento"></figure>
+      <figure data-alt="Salón 1"><img loading="lazy" src="https://www.eventosnaser.com.ar/wp-content/uploads/2021/11/s1_05.jpg" alt="Salón 1"></figure>
+      <figure data-alt="Salón"><img loading="lazy" src="https://www.eventosnaser.com.ar/wp-content/uploads/2022/03/20220209_03.jpg" alt="Salón con mesas"></figure>
+      <figure data-alt="Salón"><img loading="lazy" src="https://www.eventosnaser.com.ar/wp-content/uploads/2022/03/20220209_10.jpg" alt="Salón"></figure>
+      <figure data-alt="Catering"><img loading="lazy" src="https://www.eventosnaser.com.ar/wp-content/uploads/2021/11/restaurant00025.jpg" alt="Plato del catering de Naser"></figure>
+      <figure data-alt="Catering"><img loading="lazy" src="https://www.eventosnaser.com.ar/wp-content/uploads/2022/03/MG_4707.jpg" alt="Catering"></figure>
+    </div>
+  </section>
+
+  <section id="llegar" style="padding-top:24px">
+    <div class="wrap llegar">
+      <div>
+        <h2 class="tit">San Martín 8500, Neuquén.</h2>
+        <p class="intro">Cerca del aeropuerto, en una zona de chacras con poco tránsito y estacionamiento privado.</p>
+        <div class="contacto">
+          <a href="https://wa.me/5492994216148" target="_blank" rel="noopener">WhatsApp <span>299 421-6148</span></a>
+          <a href="tel:+542994441494">Teléfono <span>299 444-1494</span></a>
+          <a href="mailto:info@eventosnaser.com.ar">Mail <span>info@eventosnaser.com.ar</span></a>
+          <a href="https://www.instagram.com/naser.eventos/" target="_blank" rel="noopener">Instagram <span>@naser.eventos</span></a>
+        </div>
+      </div>
+      <iframe title="Mapa de Naser Eventos" loading="lazy" src="https://maps.google.com/maps?q=San%20Mart%C3%ADn%208500%2C%20Neuqu%C3%A9n&z=14&output=embed"></iframe>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Prototipo de demostración preparado para Naser Eventos por Resolviendo Kos.</span>
+    <span>Precios, fechas y capacidades de ejemplo.</span>
+  </div>
+</footer>
+<a class="btn flota" href="#cotizar">Cotizar</a>
+
+<script>
+(function(){
+  const WA='5492994216148';
+  const fmt=n=>'$'+Math.round(n).toLocaleString('es-AR');
+  const $=s=>document.querySelector(s);
+  const st={tipo:'Casamiento',fecha:'',inv:220,menu:'tradicional',mods:{s1:true,s2:true,verde:false}};
+
+  /* ---- tablero de sábados ---- */
+  const hoy=new Date();hoy.setHours(0,0,0,0);
+  const sab=new Date(hoy);sab.setDate(hoy.getDate()+((6-hoy.getDay()+7)%7||7));
+  const eventos=['Casamiento','15 años','Egresados','Cena de empresa','Casamiento','Cumpleaños de 50','15 años','Casamiento'];
+  const dias=['dom','lun','mar','mié','jue','vie','sáb'];
+  const meses=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  const filas=$('#filas');
+  const ocupadas=new Set();
+  for(let i=0;i<8;i++){
+    const d=new Date(sab);d.setDate(sab.getDate()+i*7);
+    const seed=(d.getDate()*31+d.getMonth()*17)%10;
+    const ocup=seed<5;
+    const iso=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    if(ocup) ocupadas.add(iso);
+    const b=document.createElement('button');
+    b.className='fila';b.type='button';b.dataset.iso=iso;
+    if(ocup) b.disabled=true;
+    b.innerHTML='<span class="f"><span class="flap" style="animation-delay:'+(i*90)+'ms">'+dias[d.getDay()]+' '+d.getDate()+' '+meses[d.getMonth()]+'</span></span>'+
+      '<span class="ev">'+(ocup?eventos[i]+' reservado':'Salón 1 y Salón 2')+'</span>'+
+      '<span class="est '+(ocup?'ocup':'libre')+'"><span class="flap" style="animation-delay:'+(i*90+200)+'ms">'+(ocup?'Reservado':'Libre')+'</span></span>';
+    if(!ocup) b.addEventListener('click',()=>{setFecha(iso);document.getElementById('cotizar').scrollIntoView({behavior:'smooth'});});
+    filas.appendChild(b);
+  }
+  const fechaIn=$('#fecha');
+  fechaIn.min=hoy.toISOString().slice(0,10);
+  function setFecha(iso){st.fecha=iso;fechaIn.value=iso;calc();}
+  fechaIn.addEventListener('change',()=>{st.fecha=fechaIn.value;calc();});
+
+  /* ---- plano ---- */
+  const M2={s1:523,s2:569};
+  function plano(){
+    document.querySelectorAll('.mod').forEach(g=>g.classList.toggle('on',!!st.mods[g.dataset.mod]));
+    document.querySelectorAll('.tg').forEach(b=>b.setAttribute('aria-pressed',String(!!st.mods[b.dataset.mod])));
+    const m2=(st.mods.s1?M2.s1:0)+(st.mods.s2?M2.s2:0);
+    const ext=st.mods.verde?1.25:1;
+    $('#cap-m2').textContent=m2.toLocaleString('es-AR');
+    $('#cap-ban').textContent=Math.floor(m2/1.4/10)*10;
+    $('#cap-coc').textContent=(Math.floor(m2*ext/0.9/10)*10).toLocaleString('es-AR');
+  }
+  function toggle(k){
+    st.mods[k]=!st.mods[k];
+    if(!st.mods.s1&&!st.mods.s2){st.mods[k==='s1'?'s2':'s1']=true;}
+    plano();calc();
+  }
+  document.querySelectorAll('.tg').forEach(b=>b.addEventListener('click',()=>toggle(b.dataset.mod)));
+  document.querySelectorAll('.mod').forEach(g=>g.addEventListener('click',()=>toggle(g.dataset.mod)));
+  $('#usar-plano').addEventListener('click',()=>{
+    const m2=(st.mods.s1?M2.s1:0)+(st.mods.s2?M2.s2:0);
+    const cap=Math.floor(m2/1.4/10)*10;
+    if(st.inv>cap){st.inv=cap;$('#inv').value=cap;}
+    calc();document.getElementById('cotizar').scrollIntoView({behavior:'smooth'});
+  });
+
+  /* ---- chips ---- */
+  function chips(id,key){
+    document.querySelectorAll('#'+id+' .chip').forEach(c=>c.addEventListener('click',()=>{
+      document.querySelectorAll('#'+id+' .chip').forEach(x=>x.setAttribute('aria-pressed','false'));
+      c.setAttribute('aria-pressed','true');st[key]=c.dataset.v;calc();
+    }));
+  }
+  chips('tipos','tipo');chips('menus','menu');
+  document.querySelectorAll('[data-menu]').forEach(b=>b.addEventListener('click',()=>{
+    st.menu=b.dataset.menu;
+    document.querySelectorAll('#menus .chip').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.v===st.menu)));
+    calc();document.getElementById('cotizar').scrollIntoView({behavior:'smooth'});
+  }));
+  $('#inv').addEventListener('input',e=>{st.inv=+e.target.value;calc();});
+  document.querySelectorAll('#extras input').forEach(i=>i.addEventListener('change',calc));
+
+  /* ---- cálculo (precios de ejemplo) ---- */
+  const BASE={tradicional:128000,finger:98000};
+  const FACT={'Casamiento':1.08,'15 años':1,'Egresados':.9,'Cumpleaños':.95,'Cena de fin de año':.92,'Evento corporativo':.97};
+  function salonPara(n){
+    if(n>370 || (st.mods.s1&&st.mods.s2&&n>370)) return 'Salón 1 + Salón 2';
+    return st.mods.s1?'Salón 1':'Salón 2';
+  }
+  function calc(){
+    $('#inv-n').textContent=st.inv;
+    let pp=BASE[st.menu]*(FACT[st.tipo]||1);
+    if(st.inv<120) pp*=1.12; else if(st.inv>400) pp*=.94;
+    let fijo=0;const ex=[];
+    document.querySelectorAll('#extras input:checked').forEach(i=>{
+      if(i.dataset.pp) pp+=+i.dataset.pp; if(i.dataset.fijo) fijo+=+i.dataset.fijo;
+      ex.push(i.parentElement.querySelector('span').firstChild.textContent.trim());
+    });
+    let fdesc='a definir';
+    if(st.fecha){
+      const d=new Date(st.fecha+'T12:00:00');
+      fdesc=d.toLocaleDateString('es-AR',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+      if(d.getDay()===6) pp*=1.05; else if(d.getDay()<5) pp*=.9;
+      const est=ocupadas.has(st.fecha)?'Esa fecha figura reservada en el ejemplo. Probá con otra.':(d.getDay()===6?'Sábado con disponibilidad en el ejemplo.':'Día de semana: el ejemplo aplica un 10% menos.');
+      $('#fecha-est').textContent=est;
+    } else $('#fecha-est').textContent='Elegila acá o tocá un sábado libre en el tablero.';
+    const salon=salonPara(st.inv);
+    $('#inv-salon').textContent=st.inv>370?'Para más de 370 invitados conviene abrir los dos salones.':'Entra cómodo en un solo salón.';
+    const total=pp*st.inv+fijo;
+    const lo=total*.92, hi=total*1.08;
+    $('#tk-tipo').textContent=st.tipo;
+    $('#tk-total').textContent=fmt(Math.round(lo/10000)*10000)+' a '+fmt(Math.round(hi/10000)*10000);
+    $('#tk-pp').textContent='entre '+fmt(Math.round(pp*.92/500)*500)+' y '+fmt(Math.round(pp*1.08/500)*500)+' por persona';
+    $('#tk-fecha').textContent=fdesc;
+    $('#tk-inv').textContent=st.inv;
+    $('#tk-salon').textContent=salon;
+    $('#tk-menu').textContent=st.menu==='finger'?'Finger Food':'Tradicional';
+    const msg='Hola Naser, quiero consultar por un evento.\n'+
+      'Tipo: '+st.tipo+'\nFecha: '+fdesc+'\nInvitados: '+st.inv+'\nSalón: '+salon+
+      '\nMenú: '+(st.menu==='finger'?'Finger Food':'Tradicional')+
+      (ex.length?'\nExtras: '+ex.join(', '):'')+
+      '\nEstimado que vi en la web: '+fmt(Math.round(lo/10000)*10000)+' a '+fmt(Math.round(hi/10000)*10000)+'\n¿Tienen disponibilidad?';
+    $('#tk-wa').href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
+  }
+
+  /* fotos que no cargan: dejamos el fondo con el nombre */
+  document.querySelectorAll('.galeria img').forEach(img=>{
+    img.addEventListener('error',()=>{img.parentElement.classList.add('sinfoto');img.remove();});
+  });
+
+  plano();calc();
+})();
+</script>
+</body>
+</html>
