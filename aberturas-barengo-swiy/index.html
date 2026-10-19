@@ -1,0 +1,881 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Aberturas Barengo · El showroom en casa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Red+Hat+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --crema:#F4EEE4; --crema-2:#EAE1D3; --papel:#FBF8F2;
+  --nogal:#6B4A33; --nogal-2:#8A6447; --salvia:#7A8B6F; --salvia-2:#DDE3D6;
+  --carbon:#222222; --tinta:#3A332D; --gris:#7C746B; --linea:#D9CFBF;
+  --vidrio:#CFE0E2; --vidrio-2:#B7D0D4; --cota:#6B4A33;
+  --wa:#1F7A4D;
+  --serif:"Crimson Pro", Georgia, serif;
+  --sans:"Red Hat Display", system-ui, sans-serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--crema);color:var(--carbon);font-family:var(--sans);font-size:16px;line-height:1.5;overflow-x:hidden}
+img{max-width:100%;display:block}
+button,input,select{font:inherit;color:inherit}
+.wrap{max-width:1240px;margin:0 auto;padding:0 20px}
+a{color:inherit}
+
+/* aviso prototipo */
+.proto{background:var(--carbon);color:#EFE8DC;font-size:13.5px}
+.proto .wrap{display:flex;gap:12px;align-items:center;justify-content:space-between;padding-top:9px;padding-bottom:9px;flex-wrap:wrap}
+.proto b{color:#fff;font-weight:700}
+.proto button{background:none;border:1px solid #6d665d;border-radius:999px;padding:4px 12px;color:#EFE8DC;cursor:pointer;font-size:13px}
+.proto button:hover{border-color:#EFE8DC}
+
+/* cabecera */
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:18px;padding-bottom:18px;border-bottom:1px solid var(--linea)}
+.brand{display:flex;align-items:center;gap:12px;min-width:0;text-decoration:none}
+.brand img{height:40px;width:auto}
+.brand .txt{display:none;font-family:var(--serif);font-size:26px;font-weight:600;letter-spacing:-.01em;color:var(--nogal)}
+.brand.noimg .txt{display:block}
+.brand.noimg img{display:none}
+.top nav{display:flex;gap:18px;font-size:14px;font-weight:600;color:var(--tinta)}
+.top nav a{text-decoration:none}
+.top nav a:hover{color:var(--nogal)}
+
+/* intro */
+.intro{padding:46px 0 28px}
+.intro .wrap{display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:end}
+.kick{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--salvia)}
+h1{font-family:var(--serif);font-weight:500;font-size:clamp(38px,6.2vw,76px);line-height:.98;letter-spacing:-.02em;margin:12px 0 0;color:var(--carbon)}
+h1 em{font-style:italic;color:var(--nogal)}
+.intro p.lead{font-size:17px;color:var(--tinta);margin:0}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.facts span{border:1px solid var(--linea);background:var(--papel);border-radius:999px;padding:5px 12px;font-size:13px;font-weight:600;color:var(--tinta)}
+
+/* casa + configurador */
+.studio{padding:10px 0 40px}
+.studio .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:28px;align-items:start}
+.house-card{position:sticky;top:16px;background:var(--papel);border:1px solid var(--linea);border-radius:22px;padding:18px 18px 14px}
+.house-card h2,.panel h2,.sec h2{font-family:var(--serif);font-weight:500;font-size:28px;line-height:1.05;margin:0;letter-spacing:-.01em}
+.house-card .hint{font-size:14px;color:var(--gris);margin:6px 0 10px}
+#house{width:100%;height:auto;display:block}
+.room{cursor:pointer;outline:none}
+.room .bg{fill:#F7F1E7;stroke:var(--tinta);stroke-width:1.4;transition:fill .2s}
+.room:hover .bg{fill:#EFE5D5}
+.room.on .bg{fill:var(--salvia-2);stroke:var(--salvia)}
+.room:focus-visible .bg{stroke:var(--nogal);stroke-width:3}
+.room .lbl{font-family:var(--sans);font-size:12.5px;font-weight:700;fill:var(--tinta);letter-spacing:.04em;text-transform:uppercase;pointer-events:none}
+.room .sub{font-family:var(--serif);font-size:13px;font-style:italic;fill:var(--gris);pointer-events:none}
+.room .badge{fill:var(--nogal)}
+.room .badgeT{fill:#fff;font:700 11px var(--sans);pointer-events:none}
+.rooms-legend{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.rooms-legend button{border:1px solid var(--linea);background:#fff;border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600;cursor:pointer}
+.rooms-legend button[aria-pressed="true"]{background:var(--carbon);color:#fff;border-color:var(--carbon)}
+
+.panel{background:var(--papel);border:1px solid var(--linea);border-radius:22px;overflow:hidden}
+.panel-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;padding:18px 22px 6px;flex-wrap:wrap}
+.panel-head .rm{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--salvia)}
+.stage{position:relative;background:linear-gradient(#F1EADE,#ECE3D4);margin:10px 22px 0;border-radius:16px;border:1px solid var(--linea)}
+.stage svg{width:100%;height:auto;display:block}
+.stage .tag{position:absolute;left:12px;top:10px;background:#fff;border:1px solid var(--linea);border-radius:999px;padding:3px 10px;font-size:12.5px;font-weight:700}
+.stage .ctag{position:absolute;right:12px;top:10px;font-family:var(--serif);font-style:italic;font-size:15px;color:var(--tinta)}
+.ctrls{padding:16px 22px 6px;display:grid;gap:16px}
+.row{display:grid;gap:8px}
+.row>label.t,.row>.t{font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--gris)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg label{border:1px solid var(--linea);background:#fff;border-radius:12px;padding:8px 12px;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;line-height:1.2}
+.seg label small{display:block;font-weight:500;color:var(--gris);font-size:12px}
+.seg input:checked+label{border-color:var(--carbon);background:var(--carbon);color:#fff}
+.seg input:checked+label small{color:#d9d2c6}
+.seg input:focus-visible+label{outline:2px solid var(--nogal);outline-offset:2px}
+.seg input:disabled+label{opacity:.4;cursor:not-allowed}
+.seg.types label{flex-direction:column;align-items:flex-start;min-width:112px}
+.seg.types svg{width:44px;height:44px}
+.dims{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.dim{display:grid;gap:6px}
+.dim .in{display:flex;align-items:center;gap:8px}
+.dim input[type=number]{width:84px;border:1px solid var(--linea);border-radius:10px;padding:7px 9px;background:#fff;font-weight:600}
+.dim input[type=range]{flex:1;min-width:0;accent-color:var(--nogal)}
+.sw{width:22px;height:22px;border-radius:50%;border:1px solid rgba(0,0,0,.2);flex:none}
+.sw.wood{background-image:repeating-linear-gradient(100deg,rgba(255,255,255,.14) 0 2px,transparent 2px 6px,rgba(0,0,0,.12) 6px 7px,transparent 7px 11px)!important}
+.sw.peltre{background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.18) 0 1px,transparent 1px 3px)!important}
+.swatches label{padding:6px 11px 6px 6px;border-radius:999px}
+.extras{display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+.chk{display:flex;align-items:center;gap:8px;font-weight:600;font-size:14px;cursor:pointer}
+.chk input{width:18px;height:18px;accent-color:var(--nogal)}
+.qty{display:flex;align-items:center;border:1px solid var(--linea);border-radius:999px;background:#fff}
+.qty button{border:0;background:none;width:34px;height:34px;font-size:18px;cursor:pointer}
+.qty span{min-width:26px;text-align:center;font-weight:700}
+.note{font-size:13.5px;color:var(--gris);font-style:italic;font-family:var(--serif);font-size:15.5px}
+
+.price{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;margin:8px 22px 22px;padding:16px 18px;background:var(--carbon);color:#F4EEE4;border-radius:16px}
+.price .l{font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;color:#bdb3a5;font-weight:700}
+.price .v{font-family:var(--serif);font-size:clamp(26px,3.4vw,36px);font-weight:500;line-height:1.1}
+.price .s{font-size:13px;color:#cfc6b8}
+.price .acts{display:flex;flex-direction:column;gap:8px}
+.btn{border:0;border-radius:999px;padding:11px 18px;font-weight:700;font-size:14.5px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;white-space:nowrap}
+.btn-light{background:#F4EEE4;color:var(--carbon)}
+.btn-light:hover{background:#fff}
+.btn-wa{background:var(--wa);color:#fff}
+.btn-wa:hover{filter:brightness(1.08)}
+.btn-ghost{background:transparent;border:1px solid #6b635a;color:#F4EEE4}
+.btn-line{background:#fff;border:1px solid var(--linea);color:var(--carbon)}
+
+/* obras en este color */
+.obras{background:var(--carbon);color:#F1EADF;padding:44px 0 46px}
+.obras .head{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap}
+.obras h2{font-family:var(--serif);font-weight:500;font-size:clamp(30px,4vw,46px);line-height:1;margin:8px 0 0}
+.obras h2 em{color:#E2C9AE}
+.obras p{color:#C9BFB1;max-width:520px;margin:10px 0 0}
+.palette{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 18px}
+.palette button{display:flex;align-items:center;gap:8px;border:1px solid #4a443e;background:#2c2a28;color:#F1EADF;border-radius:999px;padding:5px 12px 5px 5px;cursor:pointer;font-size:13.5px;font-weight:600}
+.palette .sw{border-color:rgba(255,255,255,.35)}
+.palette button[aria-pressed="true"]{background:#F1EADF;color:var(--carbon);border-color:#F1EADF}
+.palette .grp{width:100%;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#9d9387;font-weight:700;margin-top:6px}
+.strip{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+.ph{position:relative;aspect-ratio:3/4;border-radius:14px;overflow:hidden;background:var(--c,#888)}
+.ph::before{content:"";position:absolute;inset:0;background:var(--tex,none)}
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ph .cap{position:absolute;left:0;right:0;bottom:0;padding:22px 10px 9px;font-size:12px;font-weight:600;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.55))}
+.ph .fb{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.ph .fb svg{width:62%;height:auto;opacity:.9}
+.ph.loaded .fb{display:none}
+.obras .foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:16px;font-size:14px;color:#b6ac9f}
+.obras .foot button{background:none;border:1px solid #6b635a;color:#F1EADF;border-radius:999px;padding:8px 14px;cursor:pointer;font-weight:600}
+
+/* lista de la casa */
+.sec{padding:46px 0}
+.list-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);gap:28px;align-items:start}
+.sec .kick{display:block;margin-bottom:6px}
+ul.items{list-style:none;margin:16px 0 0;padding:0;border-top:1px solid var(--linea)}
+ul.items li{display:grid;grid-template-columns:62px minmax(0,1fr) auto auto;gap:14px;align-items:center;padding:14px 0;border-bottom:1px solid var(--linea)}
+ul.items .mini{width:62px;height:62px;background:#fff;border:1px solid var(--linea);border-radius:12px}
+ul.items .r{font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--salvia)}
+ul.items .n{font-weight:700}
+ul.items .d{font-size:13.5px;color:var(--gris)}
+ul.items .p{font-family:var(--serif);font-size:20px;white-space:nowrap}
+ul.items button{border:0;background:none;color:var(--gris);text-decoration:underline;cursor:pointer;font-size:13px}
+.empty{padding:22px;border:1px dashed var(--linea);border-radius:16px;color:var(--gris);margin-top:16px;font-family:var(--serif);font-size:18px;font-style:italic}
+.sumcard{background:var(--papel);border:1px solid var(--linea);border-radius:20px;padding:20px;position:sticky;top:16px}
+.sumcard .l{font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--gris)}
+.sumcard .v{font-family:var(--serif);font-size:34px;line-height:1.1;margin:4px 0 6px}
+.sumcard .rooms{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 16px}
+.sumcard .rooms span{font-size:12.5px;background:var(--salvia-2);border-radius:999px;padding:3px 10px;font-weight:600}
+.sumcard .btn{width:100%}
+.sumcard small{display:block;color:var(--gris);margin-top:10px;font-size:13px}
+
+/* sucursales */
+.visit{border-top:1px solid var(--linea)}
+.visit .grid{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:24px;margin-top:6px}
+.visit .card{background:var(--papel);border:1px solid var(--linea);border-radius:20px;padding:20px}
+.visit .card h3{font-family:var(--serif);font-weight:600;font-size:24px;margin:0 0 4px}
+.visit .card p{margin:4px 0;color:var(--tinta);font-size:15px}
+.visit .big{font-family:var(--serif);font-size:clamp(26px,3vw,34px);line-height:1.12;margin:0}
+.steps{counter-reset:s;list-style:none;padding:0;margin:16px 0 0;display:grid;gap:10px}
+.steps li{counter-increment:s;display:grid;grid-template-columns:30px 1fr;gap:10px;font-size:15px;color:var(--tinta)}
+.steps li::before{content:counter(s);width:26px;height:26px;border-radius:50%;background:var(--nogal);color:#fff;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+
+footer{background:var(--crema-2);padding:26px 0 90px;font-size:13.5px;color:var(--gris)}
+footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+/* barra móvil */
+.mbar{display:none}
+@media (max-width:900px){
+  .intro .wrap,.studio .wrap,.list-grid,.visit .grid{grid-template-columns:1fr}
+  .house-card,.sumcard{position:static}
+  .strip{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .top nav{display:none}
+  .mbar{display:flex;position:fixed;left:10px;right:10px;bottom:10px;z-index:20;background:var(--carbon);color:#F4EEE4;border-radius:16px;padding:10px 12px 10px 16px;align-items:center;justify-content:space-between;gap:10px;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+  .mbar .l{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#bdb3a5;font-weight:700}
+  .mbar .v{font-family:var(--serif);font-size:19px;line-height:1.1}
+  .mbar button{background:#F4EEE4;color:var(--carbon);border:0;border-radius:999px;padding:9px 14px;font-weight:700;font-size:14px}
+}
+@media (max-width:560px){
+  .wrap{padding:0 16px}
+  .intro{padding-top:30px}
+  .panel-head,.ctrls{padding-left:14px;padding-right:14px}
+  .stage{margin:10px 14px 0}
+  .price{margin:8px 14px 16px;grid-template-columns:1fr}
+  .price .acts{flex-direction:row;flex-wrap:wrap}
+  .price .acts .btn{flex:1}
+  .dims{grid-template-columns:1fr}
+  .seg.types label{min-width:0;flex:1 1 calc(50% - 6px)}
+  ul.items li{grid-template-columns:52px minmax(0,1fr) auto;row-gap:4px}
+  ul.items .mini{width:52px;height:52px}
+  ul.items li button{grid-column:2}
+  .strip{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .brand img{height:32px}
+}
+
+/* diálogos */
+dialog{border:0;border-radius:20px;padding:0;max-width:min(640px,calc(100vw - 24px));width:100%;background:var(--papel);color:var(--carbon);box-shadow:0 30px 80px rgba(0,0,0,.35)}
+dialog::backdrop{background:rgba(34,34,34,.55)}
+.dlg-h{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 20px;border-bottom:1px solid var(--linea)}
+.dlg-h h3{margin:0;font-family:var(--serif);font-weight:600;font-size:24px}
+.dlg-h button{border:0;background:none;font-size:22px;cursor:pointer;line-height:1}
+.dlg-b{padding:8px 20px 6px;max-height:62vh;overflow:auto}
+.dlg-f{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;padding:14px 20px;border-top:1px solid var(--linea)}
+table.prices{width:100%;border-collapse:collapse;font-size:14px}
+table.prices th{text-align:left;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--salvia);padding:16px 0 6px}
+table.prices td{padding:6px 0;border-bottom:1px solid var(--linea)}
+table.prices input{width:110px;border:1px solid var(--linea);border-radius:8px;padding:5px 8px;text-align:right;background:#fff}
+pre.wa{white-space:pre-wrap;font-family:var(--sans);font-size:14px;background:#fff;border:1px solid var(--linea);border-radius:12px;padding:14px;margin:12px 0}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(20px);background:var(--carbon);color:#fff;padding:10px 16px;border-radius:999px;font-weight:600;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:40}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="proto"><div class="wrap">
+  <span><b>Prototipo de demostración preparado para Aberturas Barengo.</b> Los precios son de ejemplo.</span>
+  <button type="button" id="openAdmin">Editar tabla de precios</button>
+</div></div>
+
+<header class="top"><div class="wrap">
+  <a class="brand" id="brand" href="#casa" aria-label="Aberturas Barengo">
+    <img src="https://www.aberturasab.com.ar/images/LOGO-TOP.png" alt="Aberturas AB" onerror="this.parentElement.classList.add('noimg')">
+    <span class="txt">Aberturas Barengo</span>
+  </a>
+  <nav><a href="#casa">La casa</a><a href="#obras">Colores reales</a><a href="#lista">Tu lista</a><a href="#visita">Showroom</a></nav>
+</div></header>
+
+<section class="intro"><div class="wrap">
+  <div>
+    <span class="kick">Showroom de Río Cuarto · Godoy Cruz 275</span>
+    <h1>Los 150 m² que simulan una casa, <em>ahora en el celular.</em></h1>
+  </div>
+  <div>
+    <p class="lead">Tocá un ambiente, elegí aluminio o PVC, la calidad y el color, y cargá las medidas. Ves el dibujo y un precio estimado al instante. Hoy un presupuesto por formulario puede tardar hasta una semana; acá tenés una idea en un minuto y nos la mandás por WhatsApp.</p>
+    <div class="facts"><span>+30 años en el rubro</span><span>Aluminio + PVC + WPC</span><span>Vidriería propia</span><span>Villa María y Río Cuarto</span></div>
+  </div>
+</div></section>
+
+<section class="studio" id="casa"><div class="wrap">
+  <div class="house-card">
+    <h2>Recorré la casa</h2>
+    <p class="hint">Cada ambiente trae la abertura que más se pide ahí. Se puede cambiar todo.</p>
+    <svg id="house" viewBox="0 0 640 470" role="group" aria-label="Corte de una casa con sus ambientes"></svg>
+    <div class="rooms-legend" id="legend" role="group" aria-label="Ambientes"></div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head">
+      <div>
+        <div class="rm" id="roomName">Living</div>
+        <h2 id="roomTitle">Puerta balcón al patio</h2>
+      </div>
+    </div>
+    <div class="stage">
+      <span class="tag" id="planTag">Puerta balcón</span>
+      <span class="ctag" id="colTag">Anodizado Natural</span>
+      <svg id="draw" viewBox="0 0 560 420" role="img" aria-label="Plano de la abertura con medidas"></svg>
+    </div>
+
+    <form class="ctrls" id="f" onsubmit="return false">
+      <div class="row"><span class="t">Abertura</span><div class="seg types" id="types"></div></div>
+      <div class="row"><span class="t">Material</span><div class="seg" id="mats"></div></div>
+      <div class="row" id="tierRow"><span class="t">Calidad</span><div class="seg" id="tiers"></div></div>
+      <div class="dims">
+        <div class="dim"><label class="t" for="w" style="font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--gris)">Ancho (cm)</label>
+          <div class="in"><input type="number" id="w" min="40" max="400" value="240"><input type="range" id="wr" min="40" max="400" value="240" aria-label="Ancho"></div></div>
+        <div class="dim"><label class="t" for="h" style="font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--gris)">Alto (cm)</label>
+          <div class="in"><input type="number" id="h" min="30" max="260" value="210"><input type="range" id="hr" min="30" max="260" value="210" aria-label="Alto"></div></div>
+      </div>
+      <div class="row" id="colorRow"><span class="t" id="colorT">Color</span><div class="seg swatches" id="colors"></div></div>
+      <div class="row" id="glassRow"><span class="t">Vidrio (de nuestra vidriería)</span><div class="seg" id="glass"></div></div>
+      <div class="extras">
+        <label class="chk"><input type="checkbox" id="mosq"> Mosquitero</label>
+        <label class="chk"><input type="checkbox" id="inst" checked> Con colocación</label>
+        <div class="qty" aria-label="Cantidad"><button type="button" id="qm" aria-label="Menos">−</button><span id="q">1</span><button type="button" id="qp" aria-label="Más">+</button></div>
+      </div>
+      <p class="note" id="wpcNote" hidden>Las puertas interiores de WPC se eligen con el catálogo DNOR 2026: terminaciones y modelos se ven en el showroom.</p>
+    </form>
+
+    <div class="price">
+      <div>
+        <div class="l">Precio estimado</div>
+        <div class="v" id="amt">—</div>
+        <div class="s" id="sub"></div>
+      </div>
+      <div class="acts">
+        <button class="btn btn-light" type="button" id="add">Sumar a la casa</button>
+        <button class="btn btn-ghost" type="button" id="sendOne">Pedir solo esta</button>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<section class="obras" id="obras"><div class="wrap">
+  <div class="head">
+    <div>
+      <span class="kick" style="color:#A9B89E">Obras reales en este color</span>
+      <h2 id="obrasTitle">Así queda el <em>Anodizado Natural</em></h2>
+      <p>Las fotos son de la galería 2026 de Aberturas AB, ordenadas por color. Elegí uno y se carga en el configurador.</p>
+    </div>
+  </div>
+  <div class="palette" id="palette"></div>
+  <div class="strip" id="strip"></div>
+  <div class="foot"><span id="obrasCount"></span><button type="button" id="moreObras">Ver más fotos de este color</button></div>
+</div></section>
+
+<section class="sec" id="lista"><div class="wrap list-grid">
+  <div>
+    <span class="kick">Tu lista</span>
+    <h2>La casa, abertura por abertura</h2>
+    <div class="empty" id="empty">Todavía no sumaste nada. Configurá un ambiente y tocá “Sumar a la casa”.</div>
+    <ul class="items" id="items"></ul>
+  </div>
+  <aside class="sumcard">
+    <div class="l">Total estimado</div>
+    <div class="v" id="total">$0</div>
+    <div class="rooms" id="roomsDone"></div>
+    <button class="btn btn-wa" type="button" id="sendAll">Mandar la lista por WhatsApp</button>
+    <small>Llega al local con medidas, material, calidad, color y vidrio de cada ambiente. El valor final se confirma después de medir.</small>
+  </aside>
+</div></section>
+
+<section class="sec visit" id="visita"><div class="wrap">
+  <div class="grid">
+    <div>
+      <span class="kick">Después, en persona</span>
+      <p class="big">Sin box ni escritorios: en el showroom se prueban las tipologías, se comparan cerramientos y se tocan los foliados.</p>
+      <ol class="steps">
+        <li>Nos llega tu lista por WhatsApp con todo cargado.</li>
+        <li>Coordinamos la medición en obra.</li>
+        <li>Confirmamos el presupuesto final con los precios del día.</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>Río Cuarto</h3>
+      <p>Godoy Cruz 275</p>
+      <p>Showroom de 150 m²</p>
+      <p style="color:var(--gris);font-size:14px">presupuestos@aberturasab.com.ar</p>
+    </div>
+    <div class="card">
+      <h3>Villa María</h3>
+      <p>Pissis 1229</p>
+      <p>Fábrica y vidriería propia</p>
+      <p style="color:var(--gris);font-size:14px">@aberturasbarengo</p>
+    </div>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <span>Prototipo de demostración preparado para Aberturas Barengo. Precios de ejemplo, no son una oferta.</span>
+  <span>Hecho por Resolviendo Kos · resolviendokos.com</span>
+</div></footer>
+
+<div class="mbar" id="mbar"><div><div class="l">Estimado</div><div class="v" id="mamt"></div></div><button type="button" id="mgo">Ver lista</button></div>
+
+<dialog id="admDlg" aria-labelledby="admT">
+  <div class="dlg-h"><h3 id="admT">Tabla de precios</h3><button type="button" id="closeAdm" aria-label="Cerrar">×</button></div>
+  <div class="dlg-b" id="admBody"></div>
+  <div class="dlg-f"><button class="btn btn-line" type="button" id="resetP">Volver a los de ejemplo</button><button class="btn btn-wa" type="button" id="saveP">Guardar precios</button></div>
+</dialog>
+
+<dialog id="waDlg" aria-labelledby="waT">
+  <div class="dlg-h"><h3 id="waT">Mensaje para WhatsApp</h3><button type="button" id="closeWa" aria-label="Cerrar">×</button></div>
+  <div class="dlg-b"><pre class="wa" id="waMsg"></pre></div>
+  <div class="dlg-f"><button class="btn btn-line" type="button" id="copyMsg">Copiar</button><a class="btn btn-wa" id="waGo" target="_blank" rel="noopener">Abrir WhatsApp</a></div>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+"use strict";
+const WHATSAPP = "5493534787569";
+const PHOTO_BASE = "https://www.aberturasab.com.ar/images/obras2026/";
+
+/* ===== Catálogo ===== */
+const TYPES = [
+  {id:"balc", name:"Puerta balcón", sub:"corrediza", mosq:true, door:true, mats:["alu","pvc"]},
+  {id:"corr", name:"Ventana corrediza", sub:"2 hojas", mosq:true, mats:["alu","pvc"]},
+  {id:"bat",  name:"Ventana de abrir", sub:"batiente", mosq:true, mats:["alu","pvc"]},
+  {id:"osc",  name:"Oscilobatiente", sub:"abre y bascula", mosq:true, mats:["alu","pvc"]},
+  {id:"ban",  name:"Banderola", sub:"ventilación", mosq:true, mats:["alu","pvc"]},
+  {id:"fijo", name:"Paño fijo", sub:"sin apertura", mosq:false, mats:["alu","pvc"]},
+  {id:"puer", name:"Puerta de frente", sub:"de abrir", mosq:false, door:true, mats:["alu","pvc"]},
+  {id:"int",  name:"Puerta interior", sub:"Línea Interior", mosq:false, door:true, mats:["wpc"]}
+];
+const MATS = [
+  {id:"alu", name:"Aluminio", sub:"Línea Exterior"},
+  {id:"pvc", name:"PVC", sub:"Línea Exterior"},
+  {id:"wpc", name:"WPC", sub:"Línea Interior"}
+];
+const TIERS = [
+  {id:"int", name:"Intermedia"},
+  {id:"alta", name:"Alta"},
+  {id:"prem", name:"Premium"}
+];
+const GLASS = [
+  {id:"simple", name:"Float 4 mm"},
+  {id:"lam", name:"Laminado 3+3"},
+  {id:"dvh", name:"DVH"}
+];
+/* Colores reales de la galería 2026 (carpeta y cantidad de fotos tal como están publicadas) */
+const COLORS = {
+  alu:[
+    {id:"Anodizado-Natural", name:"Anodizado Natural", hex:"#B9BCBA", stroke:"#80868A", n:20},
+    {id:"Anodizado-Peltre-Lijado", name:"Anodizado Peltre Lijado", hex:"#8D8A83", stroke:"#5F5C56", n:20, tex:"peltre"},
+    {id:"Blanco", name:"Blanco", hex:"#F4F4F1", stroke:"#A3A7A8", n:19},
+    {id:"Grey-Silver", name:"Grey Silver", hex:"#A5AAAE", stroke:"#6E7479", n:6},
+    {id:"Negro-Mate", name:"Negro Mate", hex:"#29292B", stroke:"#141415", n:19},
+    {id:"Roble-Blanco", name:"Roble Blanco", hex:"#D9CCB6", stroke:"#A39278", n:4, tex:"wood"}
+  ],
+  pvc:[
+    {id:"Blanco", name:"Blanco", hex:"#F4F4F1", stroke:"#A3A7A8", n:26},
+    {id:"Black-Brown", name:"Black Brown", hex:"#3A2E28", stroke:"#211915", n:23, tex:"wood"},
+    {id:"Monument", name:"Monument", hex:"#4B5054", stroke:"#2D3134", n:22},
+    {id:"Negro-Mate", name:"Negro Mate", hex:"#29292B", stroke:"#141415", n:14},
+    {id:"Nogal", name:"Nogal", hex:"#6B4A33", stroke:"#46301F", n:27, tex:"wood"},
+    {id:"Roble-Dorado", name:"Roble Dorado", hex:"#A86B35", stroke:"#764920", n:14, tex:"wood"},
+    {id:"Turner-Oak-Malt", name:"Turner Oak Malt", hex:"#9C7752", stroke:"#6E5134", n:14, tex:"wood"},
+    {id:"Winchester", name:"Winchester", hex:"#B48C60", stroke:"#83613D", n:11, tex:"wood"}
+  ],
+  wpc:[ {id:"catalogo", name:"Según catálogo DNOR", hex:"#E9E2D6", stroke:"#9C9284", n:0} ]
+};
+
+/* Ambientes del corte */
+const ROOMS = [
+  {id:"living", name:"Living", title:"Puerta balcón al patio", def:{type:"balc", w:240, h:210, mat:"alu"}},
+  {id:"dorm", name:"Dormitorio", title:"Ventana del dormitorio", def:{type:"corr", w:150, h:110, mat:"pvc"}},
+  {id:"cocina", name:"Cocina", title:"Ventana sobre la mesada", def:{type:"osc", w:100, h:80, mat:"alu"}},
+  {id:"bano", name:"Baño", title:"Banderola del baño", def:{type:"ban", w:60, h:40, mat:"alu"}},
+  {id:"ingreso", name:"Ingreso", title:"Puerta de frente", def:{type:"puer", w:90, h:210, mat:"alu"}},
+  {id:"interior", name:"Interiores", title:"Puertas de paso", def:{type:"int", w:80, h:200, mat:"wpc"}}
+];
+
+const DEFAULT_PRICES = {
+  m2:{balc:270000, corr:250000, bat:290000, osc:360000, ban:300000, fijo:175000, puer:330000},
+  intUnit:185000,
+  mat:{alu:1, pvc:1.6},
+  tier:{int:1, alta:1.35, prem:1.75},
+  glass:{simple:0, lam:38000, dvh:90000},
+  colorPct:{liso:0, oscuro:10, foliado:18},
+  mosqM2:45000,
+  instPct:18,
+  minM2:.6,
+  rangePct:8
+};
+function colorGroup(c){ if(c.tex==="wood") return "foliado"; if(/Negro|Grey|Monument|Peltre/.test(c.id)) return "oscuro"; return "liso"; }
+
+let P = load();
+function load(){
+  try{ const s = localStorage.getItem("barengo_prices"); if(s){ const o=JSON.parse(s); const b=structuredClone(DEFAULT_PRICES); for(const k in o){ if(typeof o[k]==="object" && o[k] && b[k]) Object.assign(b[k],o[k]); else b[k]=o[k]; } return b; } }catch(e){}
+  return structuredClone(DEFAULT_PRICES);
+}
+function save(){ try{ localStorage.setItem("barengo_prices", JSON.stringify(P)); }catch(e){} }
+
+/* ===== Estado ===== */
+const $ = id => document.getElementById(id);
+const byId = (arr,id) => arr.find(x=>x.id===id);
+const ars = n => "$" + Math.round(n).toLocaleString("es-AR");
+const round = n => Math.round(n/1000)*1000;
+
+let room = "living";
+const states = {};
+ROOMS.forEach(r=>{ states[r.id] = {room:r.id, type:r.def.type, w:r.def.w, h:r.def.h, mat:r.def.mat, tier:"alta", color: COLORS[r.def.mat][0].id, glass: r.def.mat==="wpc"?"simple":"dvh", mosq:false, inst:true, q: r.id==="interior"?3:1}; });
+states.dorm.color = "Nogal";
+const S = () => states[room];
+const items = [];
+
+function colorOf(st){ return byId(COLORS[st.mat], st.color) || COLORS[st.mat][0]; }
+
+function calc(st){
+  const r = P.rangePct/100;
+  let unit;
+  if(st.type==="int"){
+    unit = P.intUnit * (st.w>90 ? 1.2 : 1);
+    if(st.inst) unit *= 1 + P.instPct/100;
+  } else {
+    const area = Math.max((st.w/100)*(st.h/100), P.minM2);
+    unit = area * P.m2[st.type] * P.mat[st.mat] * P.tier[st.tier];
+    unit += area * P.glass[st.glass];
+    unit *= 1 + (P.colorPct[colorGroup(colorOf(st))]||0)/100;
+    if(st.mosq && byId(TYPES,st.type).mosq) unit += area * P.mosqM2;
+    if(st.inst) unit *= 1 + P.instPct/100;
+  }
+  const total = unit * st.q;
+  const area = (st.w/100)*(st.h/100);
+  return {area, unit, lo:round(total*(1-r)), hi:round(total*(1+r)), mid:round(total)};
+}
+
+/* ===== Dibujo ===== */
+function drawWindow(st, opts={}){
+  const VW = opts.vw||560, VH = opts.vh||420, mini = !!opts.mini, uid = opts.uid||"";
+  const col = colorOf(st);
+  const pad = mini ? 4 : 70;
+  const maxW = VW - pad*2, maxH = VH - pad*2 - (mini?0:10);
+  const scale = Math.min(maxW/st.w, maxH/st.h);
+  const W = st.w*scale, H = st.h*scale;
+  const x = (VW-W)/2 + (mini?0:10), y = (VH-H)/2 - (mini?0:8);
+  const fr = mini ? 2.5 : Math.max(8, Math.min(16, W*0.035));
+  const sw = mini ? 1 : 1.5;
+  const glassFill = st.glass==="dvh" ? "var(--vidrio-2)" : "var(--vidrio)";
+  const frameFill = col.tex==="wood" ? `url(#wd${uid})` : col.tex==="peltre" ? `url(#pl${uid})` : col.hex;
+  let g = `<defs>
+    <pattern id="mq${uid}" width="5" height="5" patternUnits="userSpaceOnUse"><path d="M0 0H5M0 0V5" stroke="#3A4A52" stroke-width=".5" opacity=".45"/></pattern>
+    <linearGradient id="gl${uid}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".6"/><stop offset=".38" stop-color="#fff" stop-opacity="0"/></linearGradient>
+    <pattern id="wd${uid}" width="${mini?6:22}" height="${mini?6:22}" patternUnits="userSpaceOnUse" patternTransform="rotate(8)"><rect width="22" height="22" fill="${col.hex}"/><path d="M0 4H22M0 11H22M0 17H22" stroke="#000" stroke-opacity=".14" stroke-width="${mini?.5:1}"/><path d="M0 8H22" stroke="#fff" stroke-opacity=".12" stroke-width="${mini?.5:1.4}"/></pattern>
+    <pattern id="pl${uid}" width="4" height="4" patternUnits="userSpaceOnUse"><rect width="4" height="4" fill="${col.hex}"/><path d="M0 1H4" stroke="#fff" stroke-opacity=".16" stroke-width=".6"/></pattern>
+  </defs>`;
+  g += `<rect x="${x}" y="${y}" width="${W}" height="${H}" fill="${frameFill}" stroke="${col.stroke}" stroke-width="${sw}" rx="${mini?1:2}"/>`;
+  const ix = x+fr, iy = y+fr, iW = W-fr*2, iH = H-fr*2;
+  const pane = (px,py,pw,ph,o={}) => {
+    let s = `<rect x="${px}" y="${py}" width="${pw}" height="${ph}" fill="${glassFill}" stroke="${col.stroke}" stroke-width="${sw*.8}"/>`;
+    s += `<rect x="${px}" y="${py}" width="${pw}" height="${ph}" fill="url(#gl${uid})"/>`;
+    if(st.glass==="dvh" && !mini && pw>14 && ph>14) s += `<rect x="${px+4}" y="${py+4}" width="${pw-8}" height="${ph-8}" fill="none" stroke="#fff" stroke-opacity=".75" stroke-width="1"/>`;
+    if(st.glass==="lam" && !mini) s += `<line x1="${px+pw*.15}" y1="${py+ph*.85}" x2="${px+pw*.35}" y2="${py+ph*.65}" stroke="#fff" stroke-opacity=".85" stroke-width="2"/>`;
+    if(o.mq) s += `<rect x="${px}" y="${py}" width="${pw}" height="${ph}" fill="url(#mq${uid})"/>`;
+    return s;
+  };
+  const sash = (px,py,pw,ph) => `<rect x="${px}" y="${py}" width="${pw}" height="${ph}" fill="${frameFill}" stroke="${col.stroke}" stroke-width="${sw*.8}"/>`;
+  const openLine = pts => `<polyline points="${pts}" fill="none" stroke="var(--carbon)" stroke-width="${mini?.8:1.2}" stroke-dasharray="${mini?'2.5 2':'6 5'}" opacity=".65"/>`;
+  const hcol = /Negro|Black|Monument/.test(col.id) ? "#C9C2B6" : "var(--carbon)";
+  const handle = (hx,hy,v=true) => mini ? "" : (v ? `<rect x="${hx-2}" y="${hy-12}" width="4" height="24" rx="2" fill="${hcol}" opacity=".85"/>` : `<rect x="${hx-12}" y="${hy-2}" width="24" height="4" rx="2" fill="${hcol}" opacity=".85"/>`);
+  const mq = st.mosq && byId(TYPES,st.type).mosq;
+  const t = st.type, s1 = fr*.6;
+
+  if(t==="corr" || t==="balc"){
+    const ov = mini?1:6, hw = iW/2;
+    g += sash(ix, iy, hw+ov, iH) + pane(ix+s1, iy+s1, hw+ov-s1*2, iH-s1*2);
+    g += sash(ix+hw-ov, iy, hw+ov, iH) + pane(ix+hw-ov+s1, iy+s1, hw+ov-s1*2, iH-s1*2, {mq});
+    if(!mini){
+      const ay = iy+iH/2, ax = ix+hw*.5, bx = ix+hw*1.5;
+      g += `<path d="M${ax-22} ${ay}H${ax+22}M${ax+14} ${ay-7}L${ax+22} ${ay}L${ax+14} ${ay+7}" stroke="var(--carbon)" stroke-width="1.5" fill="none" opacity=".7"/>`;
+      g += `<path d="M${bx+22} ${ay}H${bx-22}M${bx-14} ${ay-7}L${bx-22} ${ay}L${bx-14} ${ay+7}" stroke="var(--carbon)" stroke-width="1.5" fill="none" opacity=".7"/>`;
+      g += handle(ix+hw-ov-s1/2-3, ay);
+    }
+  } else if(t==="bat" || t==="osc"){
+    const n = st.w >= 110 ? 2 : 1, pw = iW/n;
+    for(let i=0;i<n;i++){
+      const px = ix+pw*i;
+      g += sash(px, iy, pw, iH) + pane(px+s1, iy+s1, pw-s1*2, iH-s1*2, {mq: mq && i===n-1});
+      const hingeLeft = (n===1) || i===0;
+      g += hingeLeft ? openLine(`${px+pw-s1},${iy+s1} ${px+s1},${iy+iH/2} ${px+pw-s1},${iy+iH-s1}`) : openLine(`${px+s1},${iy+s1} ${px+pw-s1},${iy+iH/2} ${px+s1},${iy+iH-s1}`);
+      if(t==="osc") g += openLine(`${px+s1},${iy+s1} ${px+pw/2},${iy+iH-s1} ${px+pw-s1},${iy+s1}`);
+      g += handle(hingeLeft ? px+pw-s1-6 : px+s1+6, iy+iH/2);
+    }
+  } else if(t==="ban"){
+    g += sash(ix, iy, iW, iH) + pane(ix+s1, iy+s1, iW-s1*2, iH-s1*2, {mq});
+    g += openLine(`${ix+s1},${iy+iH-s1} ${ix+iW/2},${iy+s1} ${ix+iW-s1},${iy+iH-s1}`);
+    g += handle(ix+iW/2, iy+iH-s1-6, false);
+  } else if(t==="fijo"){
+    g += pane(ix, iy, iW, iH);
+    if(!mini) g += `<text x="${ix+iW/2}" y="${iy+iH/2+6}" text-anchor="middle" font-size="16" fill="var(--carbon)" opacity=".5" font-family="Red Hat Display, sans-serif" font-weight="700">F</text>`;
+  } else if(t==="puer"){
+    g += sash(ix, iy, iW, iH);
+    const gw = Math.max(iW*.22, 6);
+    g += pane(ix+iW/2-gw/2, iy+s1*3, gw, iH*.62);
+    g += `<rect x="${ix+s1*2}" y="${iy+iH*.72}" width="${iW-s1*4}" height="${iH*.24}" fill="none" stroke="${col.stroke}" stroke-width="${sw*.8}"/>`;
+    g += openLine(`${ix+iW-s1},${iy+s1} ${ix+s1},${iy+iH/2} ${ix+iW-s1},${iy+iH-s1}`);
+    g += handle(ix+iW-s1*3, iy+iH*.52);
+  } else if(t==="int"){
+    g += `<rect x="${ix}" y="${iy}" width="${iW}" height="${iH}" fill="#F3EEE6" stroke="${col.stroke}" stroke-width="${sw*.8}"/>`;
+    if(!mini){
+      g += `<rect x="${ix+iW*.16}" y="${iy+iH*.08}" width="${iW*.68}" height="${iH*.38}" fill="none" stroke="#B9AE9E" stroke-width="1.2"/>`;
+      g += `<rect x="${ix+iW*.16}" y="${iy+iH*.54}" width="${iW*.68}" height="${iH*.38}" fill="none" stroke="#B9AE9E" stroke-width="1.2"/>`;
+      g += `<circle cx="${ix+iW-14}" cy="${iy+iH*.5}" r="4" fill="var(--carbon)" opacity=".75"/>`;
+    }
+    g += openLine(`${ix+iW},${iy} ${ix},${iy+iH/2} ${ix+iW},${iy+iH}`);
+  }
+  if(!mini){
+    const c = "var(--cota)", yb = y+H+26, xl = x-26;
+    g += `<g stroke="${c}" stroke-width="1" fill="${c}" font-family="Red Hat Display, sans-serif" font-size="14" font-weight="700">
+      <line x1="${x}" y1="${y+H+6}" x2="${x}" y2="${yb+6}"/><line x1="${x+W}" y1="${y+H+6}" x2="${x+W}" y2="${yb+6}"/>
+      <line x1="${x}" y1="${yb}" x2="${x+W}" y2="${yb}"/>
+      <line x1="${x-4}" y1="${yb+4}" x2="${x+4}" y2="${yb-4}" stroke-width="1.6"/><line x1="${x+W-4}" y1="${yb+4}" x2="${x+W+4}" y2="${yb-4}" stroke-width="1.6"/>
+      <text x="${x+W/2}" y="${yb+20}" text-anchor="middle" stroke="none">${st.w} cm</text>
+      <line x1="${x-6}" y1="${y}" x2="${xl-6}" y2="${y}"/><line x1="${x-6}" y1="${y+H}" x2="${xl-6}" y2="${y+H}"/>
+      <line x1="${xl}" y1="${y}" x2="${xl}" y2="${y+H}"/>
+      <line x1="${xl-4}" y1="${y+4}" x2="${xl+4}" y2="${y-4}" stroke-width="1.6"/><line x1="${xl-4}" y1="${y+H+4}" x2="${xl+4}" y2="${y+H-4}" stroke-width="1.6"/>
+      <text x="${xl-10}" y="${y+H/2}" text-anchor="middle" stroke="none" transform="rotate(-90 ${xl-10} ${y+H/2})">${st.h} cm</text>
+    </g>`;
+  }
+  return g;
+}
+
+/* ===== Casa en corte ===== */
+const HOUSE_RECTS = {
+  dorm:    {x:120, y:132, w:200, h:120, sub:"planta alta"},
+  bano:    {x:320, y:132, w:110, h:120, sub:"planta alta"},
+  interior:{x:430, y:132, w:90,  h:120, sub:"pasillo"},
+  ingreso: {x:60,  y:252, w:110, h:150, sub:"planta baja"},
+  living:  {x:170, y:252, w:220, h:150, sub:"planta baja"},
+  cocina:  {x:390, y:252, w:190, h:150, sub:"planta baja"}
+};
+function houseGlyph(id, r){
+  const cx = r.x + r.w/2;
+  const ink = "var(--tinta)";
+  const glass = `fill="var(--vidrio)" stroke="${ink}" stroke-width="1.2"`;
+  switch(id){
+    case "living": return `<rect x="${cx-46}" y="${r.y+46}" width="92" height="${r.h-46}" ${glass}/><line x1="${cx}" y1="${r.y+46}" x2="${cx}" y2="${r.y+r.h}" stroke="${ink}" stroke-width="1.2"/>`;
+    case "dorm": return `<rect x="${cx-34}" y="${r.y+42}" width="68" height="44" ${glass}/><line x1="${cx}" y1="${r.y+42}" x2="${cx}" y2="${r.y+86}" stroke="${ink}" stroke-width="1.2"/>`;
+    case "cocina": return `<rect x="${cx-26}" y="${r.y+44}" width="52" height="40" ${glass}/><rect x="${r.x+16}" y="${r.y+r.h-44}" width="${r.w-32}" height="10" fill="${ink}" opacity=".18"/>`;
+    case "bano": return `<rect x="${cx-18}" y="${r.y+40}" width="36" height="20" ${glass}/>`;
+    case "ingreso": return `<rect x="${cx-20}" y="${r.y+50}" width="40" height="${r.h-50}" fill="#E7DCCB" stroke="${ink}" stroke-width="1.2"/><circle cx="${cx+12}" cy="${r.y+r.h-48}" r="2.6" fill="${ink}"/>`;
+    case "interior": return `<rect x="${cx-16}" y="${r.y+46}" width="32" height="${r.h-46}" fill="#F3EEE6" stroke="${ink}" stroke-width="1.2"/>`;
+  }
+  return "";
+}
+function renderHouse(){
+  const doneRooms = new Set(items.map(i=>i.room));
+  let g = `<polygon points="100,132 330,30 560,132" fill="#E7DCCB" stroke="var(--tinta)" stroke-width="1.4"/>
+    <line x1="80" y1="132" x2="580" y2="132" stroke="var(--tinta)" stroke-width="2"/>
+    <rect x="20" y="402" width="600" height="10" fill="var(--salvia)" opacity=".45"/>
+    <line x1="10" y1="402" x2="630" y2="402" stroke="var(--tinta)" stroke-width="2"/>
+    <text x="330" y="96" text-anchor="middle" font-family="Crimson Pro, serif" font-style="italic" font-size="17" fill="var(--nogal)">la casa del showroom</text>`;
+  ROOMS.forEach(rm=>{
+    const r = HOUSE_RECTS[rm.id];
+    const n = items.filter(i=>i.room===rm.id).reduce((s,i)=>s+i.q,0);
+    g += `<g class="room ${room===rm.id?"on":""}" data-room="${rm.id}" tabindex="0" role="button" aria-label="${rm.name}${n?`, ${n} en la lista`:""}" aria-pressed="${room===rm.id}">
+      <rect class="bg" x="${r.x}" y="${r.y}" width="${r.w}" height="${r.h}"/>
+      <text class="lbl" x="${r.x+10}" y="${r.y+20}">${rm.name}</text>
+      <text class="sub" x="${r.x+10}" y="${r.y+36}">${r.sub}</text>
+      ${houseGlyph(rm.id, r)}
+      ${n?`<circle class="badge" cx="${r.x+r.w-16}" cy="${r.y+16}" r="10"/><text class="badgeT" x="${r.x+r.w-16}" y="${r.y+20}" text-anchor="middle">${n}</text>`:""}
+    </g>`;
+  });
+  $("house").innerHTML = g;
+  $("legend").innerHTML = ROOMS.map(rm=>`<button type="button" data-room="${rm.id}" aria-pressed="${room===rm.id}">${rm.name}${doneRooms.has(rm.id)?" ✓":""}</button>`).join("");
+}
+function pickRoom(id){
+  room = id;
+  renderHouse(); buildControls(); render();
+}
+$("house").addEventListener("click", e=>{ const g=e.target.closest(".room"); if(g) pickRoom(g.dataset.room); });
+$("house").addEventListener("keydown", e=>{ if((e.key==="Enter"||e.key===" ") && e.target.closest(".room")){ e.preventDefault(); pickRoom(e.target.closest(".room").dataset.room); } });
+$("legend").addEventListener("click", e=>{ const b=e.target.closest("button"); if(b) pickRoom(b.dataset.room); });
+
+/* ===== Controles ===== */
+function icon(type){
+  const door = type==="balc"||type==="puer"||type==="int";
+  const st = {type, w:door?40:70, h:door?60:(type==="ban"?34:50), mat:type==="int"?"wpc":"alu", tier:"int", color:type==="int"?"catalogo":"Anodizado-Natural", glass:"simple", mosq:false};
+  return `<svg viewBox="0 0 60 60" aria-hidden="true">${drawWindow(st,{vw:60,vh:60,mini:true,uid:"i"+type})}</svg>`;
+}
+function seg(el, name, arr, cur, extra=o=>"", dis=o=>false){
+  $(el).innerHTML = arr.map(o=>`<input type="radio" name="${name}" id="${name}-${o.id}" value="${o.id}" ${o.id===cur?"checked":""} ${dis(o)?"disabled":""}><label for="${name}-${o.id}">${extra(o)}<span>${o.name}${o.sub?`<small>${o.sub}</small>`:""}</span></label>`).join("");
+}
+function buildControls(){
+  const st = S(), rm = byId(ROOMS, room);
+  $("roomName").textContent = rm.name;
+  $("roomTitle").textContent = rm.title;
+  $("types").innerHTML = TYPES.map(t=>`<input type="radio" name="type" id="t-${t.id}" value="${t.id}" ${t.id===st.type?"checked":""}><label for="t-${t.id}">${icon(t.id)}<span>${t.name}<small>${t.sub}</small></span></label>`).join("");
+  const isInt = st.type==="int";
+  seg("mats","mat",MATS,st.mat,()=>"",o=> isInt ? o.id!=="wpc" : o.id==="wpc");
+  seg("tiers","tier",TIERS,st.tier);
+  seg("colors","color",COLORS[st.mat],st.color,o=>`<span class="sw ${o.tex||""}" style="background:${o.hex}"></span>`);
+  seg("glass","glass",GLASS,st.glass);
+  $("tierRow").hidden = isInt; $("glassRow").hidden = isInt;
+  $("colorT").textContent = st.mat==="pvc" ? "Color o foliado" : "Color";
+  $("wpcNote").hidden = !isInt;
+  ["w","wr"].forEach(k=>{ $(k).value = st.w; }); ["h","hr"].forEach(k=>{ $(k).value = st.h; });
+  $("mosq").checked = st.mosq; $("inst").checked = st.inst;
+  syncPalette();
+}
+function bindPair(num, rng, key){
+  const set = v => { v = Math.max(+num.min, Math.min(+num.max, Math.round(+v||0))); S()[key]=v; num.value=v; rng.value=v; render(); };
+  rng.addEventListener("input", e=>set(e.target.value));
+  num.addEventListener("change", e=>set(e.target.value));
+  num.addEventListener("input", e=>{ const v=+e.target.value; if(v>=+num.min && v<=+num.max){ S()[key]=v; rng.value=v; render(); } });
+}
+bindPair($("w"),$("wr"),"w");
+bindPair($("h"),$("hr"),"h");
+
+$("f").addEventListener("change", e=>{
+  const t = e.target, st = S();
+  if(t.name==="type"){
+    const ty = byId(TYPES,t.value), was = st.type; st.type = t.value;
+    if(!ty.mats.includes(st.mat)){ st.mat = ty.mats[0]; st.color = COLORS[st.mat][0].id; }
+    if(was==="int" && t.value!=="int"){ st.glass="dvh"; }
+    if(ty.door && st.h<190){ st.h = 210; }
+    if(t.value==="puer" || t.value==="int"){ if(st.w>110) st.w = t.value==="int"?80:90; if(st.h<190) st.h = t.value==="int"?200:210; }
+    if(t.value==="ban" && (st.h>80 || st.w>140)){ st.w=60; st.h=40; }
+    if(!ty.door && was && byId(TYPES,was).door && st.h>=190){ st.h = 110; if(st.w<100) st.w=150; }
+    buildControls();
+  }
+  if(t.name==="mat"){ st.mat=t.value; if(!byId(COLORS[st.mat],st.color)) st.color = COLORS[st.mat][0].id; buildControls(); }
+  if(t.name==="tier") st.tier=t.value;
+  if(t.name==="color"){ st.color=t.value; syncPalette(); }
+  if(t.name==="glass") st.glass=t.value;
+  if(t.id==="mosq") st.mosq=t.checked;
+  if(t.id==="inst") st.inst=t.checked;
+  render();
+});
+$("qm").onclick=()=>{ const st=S(); st.q=Math.max(1,st.q-1); render(); };
+$("qp").onclick=()=>{ const st=S(); st.q=Math.min(50,st.q+1); render(); };
+
+function describe(st){
+  const ty = byId(TYPES,st.type).name, ma = byId(MATS,st.mat).name, co = colorOf(st).name;
+  const parts = [`${st.w} × ${st.h} cm`, ma];
+  if(st.type!=="int"){ parts.push(`calidad ${byId(TIERS,st.tier).name.toLowerCase()}`); parts.push(co); parts.push(`vidrio ${byId(GLASS,st.glass).name}`); }
+  else parts.push("terminación a elegir del catálogo DNOR");
+  if(st.mosq && byId(TYPES,st.type).mosq) parts.push("con mosquitero");
+  parts.push(st.inst ? "con colocación" : "sin colocación");
+  return {ty, line: parts.join(", ")};
+}
+
+function render(){
+  const st = S(), ty = byId(TYPES,st.type);
+  $("mosq").disabled = !ty.mosq;
+  $("mosq").parentElement.style.opacity = ty.mosq ? 1 : .45;
+  $("q").textContent = st.q;
+  $("draw").innerHTML = drawWindow(st,{uid:"main"});
+  $("planTag").textContent = `${ty.name}${st.q>1?` × ${st.q}`:""}`;
+  $("colTag").textContent = colorOf(st).name;
+  const c = calc(st);
+  $("amt").textContent = `${ars(c.lo)} a ${ars(c.hi)}`;
+  $("mamt").textContent = items.length ? listTotals().txt : `${ars(c.lo)} a ${ars(c.hi)}`;
+  $("sub").textContent = st.type==="int" ? `${st.q} ${st.q>1?"puertas":"puerta"} de paso. ${st.inst?"Incluye colocación.":"Sin colocación."}` : `${c.area.toFixed(2).replace(".",",")} m² por unidad${st.q>1?`, ${st.q} unidades`:""}. ${st.inst?"Incluye colocación.":"Sin colocación."}`;
+}
+
+/* ===== Obras reales por color ===== */
+let palMat = "alu", palColor = "Anodizado-Natural", palPage = 0;
+function syncPalette(){
+  const st = S();
+  if(st.mat==="wpc") return;
+  palMat = st.mat; palColor = st.color; palPage = 0;
+  renderPalette(); renderStrip();
+}
+function renderPalette(){
+  let h = "";
+  [["alu","Aluminio"],["pvc","PVC"]].forEach(([m,label])=>{
+    h += `<span class="grp">${label}</span>`;
+    h += COLORS[m].map(c=>`<button type="button" data-m="${m}" data-c="${c.id}" aria-pressed="${palMat===m && palColor===c.id}"><span class="sw ${c.tex||""}" style="background:${c.hex}"></span>${c.name}</button>`).join("");
+  });
+  $("palette").innerHTML = h;
+}
+function texFor(c){
+  if(c.tex==="wood") return "repeating-linear-gradient(97deg,rgba(255,255,255,.08) 0 3px,transparent 3px 9px,rgba(0,0,0,.12) 9px 10px,transparent 10px 17px)";
+  if(c.tex==="peltre") return "repeating-linear-gradient(0deg,rgba(255,255,255,.12) 0 1px,transparent 1px 4px)";
+  return "linear-gradient(135deg,rgba(255,255,255,.25),transparent 55%)";
+}
+function fallbackSvg(c,i){
+  const dark = /Negro|Black|Monument|Nogal/.test(c.id);
+  const ink = dark ? "#F4EEE4" : "#222";
+  const kinds = ["corr","bat","balc","osc","fijo","puer"];
+  const k = kinds[i % kinds.length];
+  const g = drawWindow({type:k, w:k==="balc"||k==="puer"?90:140, h:k==="balc"||k==="puer"?200:110, mat:palMat, tier:"int", color:c.id, glass:"dvh", mosq:false},{vw:120,vh:160,mini:true,uid:"fb"+i});
+  return `<svg viewBox="0 0 120 160" aria-hidden="true"><rect x="6" y="6" width="108" height="148" rx="8" fill="none" stroke="${ink}" stroke-opacity=".25"/>${g}</svg>`;
+}
+function renderStrip(){
+  const c = byId(COLORS[palMat], palColor);
+  const per = 6, start = palPage*per;
+  const nums = [];
+  for(let i=0;i<per;i++){ const n = ((start+i) % c.n) + 1; nums.push(n); }
+  $("obrasTitle").innerHTML = `Así queda el <em>${c.name}</em>`;
+  $("obrasCount").textContent = `${c.n} fotos de obras en ${c.name} (${palMat==="alu"?"aluminio":"PVC"}) en su galería 2026.`;
+  $("strip").innerHTML = nums.map((n,i)=>`<figure class="ph" style="--c:${c.hex};--tex:${texFor(c)};margin:0">
+      <div class="fb">${fallbackSvg(c,i+start)}</div>
+      <img loading="lazy" alt="Obra de Aberturas AB en ${c.name}, foto ${n}" src="${PHOTO_BASE}${palMat}2026/${c.id}/FOTO-${n}.jpg" onload="this.parentElement.classList.add('loaded')" onerror="this.remove()">
+      <figcaption class="cap">Obra en ${c.name}</figcaption>
+    </figure>`).join("");
+  $("moreObras").hidden = c.n <= per;
+}
+$("palette").addEventListener("click", e=>{
+  const b = e.target.closest("button"); if(!b) return;
+  palMat = b.dataset.m; palColor = b.dataset.c; palPage = 0;
+  // cargar en el configurador si el ambiente admite ese material
+  const st = S();
+  if(st.type!=="int"){ st.mat = palMat; st.color = palColor; buildControls(); render(); toast(`${byId(COLORS[palMat],palColor).name} cargado en ${byId(ROOMS,room).name.toLowerCase()}`); }
+  renderPalette(); renderStrip();
+});
+$("moreObras").onclick = ()=>{ palPage++; renderStrip(); };
+
+/* ===== Lista ===== */
+function listTotals(){
+  const lo = items.reduce((s,it)=>s+calc(it).lo,0), hi = items.reduce((s,it)=>s+calc(it).hi,0);
+  return {lo,hi,txt:`${ars(lo)} a ${ars(hi)}`};
+}
+function renderList(){
+  $("empty").hidden = items.length>0;
+  $("items").innerHTML = items.map((it,i)=>{
+    const d = describe(it), c = calc(it);
+    return `<li><svg class="mini" viewBox="0 0 60 60" aria-hidden="true">${drawWindow(it,{vw:60,vh:60,mini:true,uid:"l"+i})}</svg>
+      <div><div class="r">${byId(ROOMS,it.room).name}</div><div class="n">${d.ty}${it.q>1?` × ${it.q}`:""}</div><div class="d">${d.line}</div></div>
+      <div class="p">${ars(c.mid)}</div>
+      <button type="button" data-rm="${i}" aria-label="Quitar ${d.ty}">Quitar</button></li>`;
+  }).join("");
+  const t = listTotals();
+  $("total").textContent = items.length ? t.txt : "$0";
+  const rooms = [...new Set(items.map(i=>i.room))];
+  $("roomsDone").innerHTML = rooms.map(r=>`<span>${byId(ROOMS,r).name}</span>`).join("");
+  $("sendAll").disabled = items.length===0;
+  $("sendAll").style.opacity = items.length ? 1 : .5;
+  $("mgo").textContent = items.length ? `Ver lista (${items.length})` : "Ver lista";
+  renderHouse(); render();
+}
+$("items").addEventListener("click", e=>{ const i=e.target.dataset.rm; if(i!==undefined){ items.splice(+i,1); renderList(); } });
+$("add").onclick = ()=>{
+  items.push({...S()});
+  renderList();
+  const next = ROOMS.find(r=>!items.some(i=>i.room===r.id));
+  toast(next ? `Sumado. ¿Seguimos con ${next.name.toLowerCase()}?` : "Sumado a la casa");
+};
+
+/* ===== WhatsApp ===== */
+function message(list){
+  let m = "Hola Barengo, armé mi casa en el cotizador y quiero un presupuesto:\n\n";
+  list.forEach((it,i)=>{ const d=describe(it), c=calc(it);
+    m += `${i+1}. ${byId(ROOMS,it.room).name}: ${d.ty}${it.q>1?` (x${it.q})`:""}\n   ${d.line}\n   Estimado: ${ars(c.lo)} a ${ars(c.hi)}\n\n`; });
+  if(list.length>1){ const t = list.reduce((a,it)=>{const c=calc(it);a.lo+=c.lo;a.hi+=c.hi;return a;},{lo:0,hi:0}); m += `Total estimado: ${ars(t.lo)} a ${ars(t.hi)}\n\n`; }
+  m += "¿Cuándo pueden venir a medir?";
+  return m;
+}
+function send(list){
+  if(!list.length) return;
+  const m = message(list);
+  $("waMsg").textContent = m;
+  $("waGo").href = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(m)}`;
+  $("waDlg").showModal();
+}
+$("sendOne").onclick = ()=>send([{...S()}]);
+$("sendAll").onclick = ()=>send(items);
+$("closeWa").onclick = ()=>$("waDlg").close();
+$("copyMsg").onclick = async()=>{ try{ await navigator.clipboard.writeText($("waMsg").textContent); toast("Mensaje copiado"); }catch(e){ toast("No se pudo copiar"); } };
+$("mgo").onclick = ()=>{ const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches; (items.length ? $("lista") : document.querySelector(".price")).scrollIntoView({behavior: reduce?"auto":"smooth"}); };
+
+/* ===== Tabla de precios ===== */
+function admRow(label,path,val,unit){ return `<tr><td>${label}</td><td style="text-align:right;white-space:nowrap"><input data-p="${path}" type="number" step="any" value="${val}" aria-label="${label}"> ${unit}</td></tr>`; }
+function openAdmin(){
+  let h = `<table class="prices"><tr><th colspan="2">Precio base por m² (aluminio, calidad intermedia, float)</th></tr>`;
+  TYPES.filter(t=>t.id!=="int").forEach(t=> h+=admRow(t.name,`m2.${t.id}`,P.m2[t.id],"$"));
+  h += `<tr><th colspan="2">Línea Interior</th></tr>` + admRow("Puerta interior WPC (por unidad)","intUnit",P.intUnit,"$");
+  h += `<tr><th colspan="2">Multiplicador por material</th></tr>`;
+  h += admRow("Aluminio","mat.alu",P.mat.alu,"×") + admRow("PVC","mat.pvc",P.mat.pvc,"×");
+  h += `<tr><th colspan="2">Multiplicador por calidad</th></tr>`;
+  TIERS.forEach(t=> h+=admRow(t.name,`tier.${t.id}`,P.tier[t.id],"×"));
+  h += `<tr><th colspan="2">Adicional de vidrio por m²</th></tr>`;
+  GLASS.forEach(g=> h+=admRow(g.name,`glass.${g.id}`,P.glass[g.id],"$"));
+  h += `<tr><th colspan="2">Recargo por color</th></tr>`;
+  h += admRow("Blanco y anodizado natural","colorPct.liso",P.colorPct.liso,"%");
+  h += admRow("Negro, grises, peltre, Monument","colorPct.oscuro",P.colorPct.oscuro,"%");
+  h += admRow("Foliados símil madera","colorPct.foliado",P.colorPct.foliado,"%");
+  h += `<tr><th colspan="2">Otros</th></tr>`;
+  h += admRow("Mosquitero por m²","mosqM2",P.mosqM2,"$") + admRow("Colocación","instPct",P.instPct,"%") + admRow("Superficie mínima","minM2",P.minM2,"m²") + admRow("Margen del rango","rangePct",P.rangePct,"%");
+  h += `</table>`;
+  $("admBody").innerHTML = h; $("admDlg").showModal();
+}
+$("openAdmin").onclick = openAdmin;
+$("closeAdm").onclick = ()=>$("admDlg").close();
+$("saveP").onclick = ()=>{
+  $("admBody").querySelectorAll("input[data-p]").forEach(inp=>{
+    const [a,b] = inp.dataset.p.split("."); const v = parseFloat(inp.value); if(isNaN(v)) return;
+    if(b) P[a][b]=v; else P[a]=v;
+  });
+  save(); $("admDlg").close(); renderList(); toast("Precios guardados");
+};
+$("resetP").onclick = ()=>{ P = structuredClone(DEFAULT_PRICES); save(); openAdmin(); renderList(); toast("Precios de ejemplo restaurados"); };
+
+let tt; function toast(t){ const el=$("toast"); el.textContent=t; el.classList.add("on"); clearTimeout(tt); tt=setTimeout(()=>el.classList.remove("on"),2000); }
+
+/* inicio */
+renderHouse(); buildControls(); renderPalette(); renderStrip(); renderList();
+</script>
+</body>
+</html>
