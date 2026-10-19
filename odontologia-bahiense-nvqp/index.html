@@ -1,0 +1,795 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Consultorio Odontológico Bahiense · Prototipo</title>
+<meta name="description" content="Prototipo de demostración para el Consultorio Odontológico Bahiense, Ingeniero Luigi 57, Bahía Blanca.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Hanken+Grotesk:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FAF6EF; --sand:#F1E8D8; --sand-2:#E6D8BF; --line:#D9CBB2;
+  --ink:#14293A; --muted:#4D5C68; --blue:#1F587D; --blue-deep:#123A55; --sky:#D5E7F1; --sky-2:#A9CDE0;
+  --coral:#D2775C; --coral-ink:#A3492F; --coral-soft:#F6DCD1; --ok:#2F6B4F;
+  --serif:"Young Serif", "Georgia", "Times New Roman", serif;
+  --sans:"Hanken Grotesk", "Segoe UI", "Helvetica Neue", Helvetica, sans-serif;
+  --r:18px; --hdr:64px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.55;overflow-x:hidden}
+img,svg{display:block;max-width:100%}
+a{color:var(--blue)}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:400;line-height:1.1;margin:0;letter-spacing:-.01em}
+p{margin:0}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--coral);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.eyebrow{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--coral-ink)}
+
+/* demo strip */
+.demo{background:var(--blue-deep);color:#EAF3F8;font-size:13px;text-align:center;padding:7px 16px;line-height:1.35}
+.demo b{font-weight:600;color:#fff}
+
+/* header */
+header.top{position:sticky;top:0;z-index:40;background:rgba(250,246,239,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:24px;height:var(--hdr)}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);min-width:0}
+.brand svg{flex:none}
+.brand span{font-family:var(--serif);font-size:18px;line-height:1.05}
+.brand small{display:block;font-family:var(--sans);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+nav.main{margin-left:auto;display:flex;gap:22px}
+nav.main a{color:var(--ink);text-decoration:none;font-size:15px;font-weight:500}
+nav.main a:hover{color:var(--blue)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:999px;padding:12px 20px;font-weight:600;font-size:15.5px;cursor:pointer;text-decoration:none;transition:transform .15s ease, background .2s ease, box-shadow .2s ease;line-height:1.2}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--blue-deep);color:#fff}
+.btn-primary:hover{background:var(--blue);box-shadow:0 6px 18px -8px rgba(18,58,85,.6)}
+.btn-coral{background:var(--coral-ink);color:#fff}
+.btn-coral:hover{background:#8d3d26}
+.btn-ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
+.btn-ghost:hover{background:var(--ink);color:var(--paper)}
+.btn-sm{padding:8px 14px;font-size:14px}
+.top .btn{flex:none}
+
+/* hero */
+.hero{padding:64px 0 40px;position:relative}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center}
+.hero h1{font-size:clamp(38px,5.4vw,68px);margin:16px 0 22px}
+.hero h1 em{font-style:normal;color:var(--coral-ink)}
+.hero .lede{font-size:19px;color:var(--muted);max-width:34em}
+.facts{display:flex;flex-wrap:wrap;gap:10px;margin:26px 0 30px;padding:0;list-style:none}
+.facts li{background:var(--sand);border-radius:999px;padding:7px 14px;font-size:14.5px;font-weight:500}
+.facts li b{font-family:var(--serif);font-weight:400;color:var(--blue-deep)}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px}
+.family{background:var(--sky);border-radius:28px;padding:28px 24px 22px;position:relative;overflow:hidden}
+.family::after{content:"";position:absolute;inset:auto -40px -80px auto;width:220px;height:220px;border-radius:50%;background:var(--sky-2);opacity:.5}
+.family svg{position:relative;z-index:1;width:100%;height:auto}
+.family figcaption{position:relative;z-index:1;font-size:14px;color:var(--blue-deep);margin-top:6px}
+
+/* para quien */
+.who{margin-top:44px;background:#fff;border:1px solid var(--line);border-radius:24px;padding:24px;display:grid;grid-template-columns:260px 1fr;gap:24px;align-items:start}
+.who h2{font-size:26px}
+.who p.hint{color:var(--muted);font-size:15px;margin-top:6px}
+.seg{display:flex;flex-wrap:wrap;gap:8px}
+.seg button{border:1.5px solid var(--line);background:var(--paper);border-radius:999px;padding:9px 16px;cursor:pointer;font-weight:600;font-size:15px;display:inline-flex;align-items:center;gap:8px}
+.seg button svg{width:18px;height:18px}
+.seg button[aria-pressed="true"]{background:var(--blue-deep);border-color:var(--blue-deep);color:#fff}
+.seg button:hover{border-color:var(--blue)}
+.who-result{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px}
+.who-result .chip{display:inline-flex;align-items:center;gap:8px;background:var(--sand);border:0;border-radius:12px;padding:8px 12px;font-size:14.5px;cursor:pointer;font-weight:500;text-align:left}
+.who-result .chip:hover{background:var(--sand-2)}
+.who-result .chip i{font-style:normal;color:var(--coral-ink);font-weight:700}
+.who-result .empty{color:var(--muted);font-size:15px}
+
+/* recorrido */
+section{scroll-margin-top:calc(var(--hdr) + 12px)}
+.sec-head{max-width:720px;margin-bottom:36px}
+.sec-head h2{font-size:clamp(32px,4vw,48px);margin:10px 0 14px}
+.sec-head p{color:var(--muted);font-size:18px}
+#recorrido{padding:80px 0 40px}
+.journey{display:grid;grid-template-columns:210px minmax(0,1fr);gap:48px;align-items:start}
+.journey>*{min-width:0}
+.ruler{position:sticky;top:calc(var(--hdr) + 28px);padding-left:30px}
+.ruler::before{content:"";position:absolute;left:9px;top:8px;bottom:8px;width:2px;background:repeating-linear-gradient(var(--line) 0 6px,transparent 6px 12px)}
+.ruler ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.ruler button{position:relative;display:block;width:100%;text-align:left;background:none;border:0;padding:10px 12px;border-radius:12px;cursor:pointer}
+.ruler button::before{content:"";position:absolute;left:-27px;top:16px;width:12px;height:12px;border-radius:50%;background:var(--paper);border:2px solid var(--sky-2);transition:all .2s}
+.ruler button .age{display:block;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.ruler button .lbl{font-family:var(--serif);font-size:21px}
+.ruler button[aria-current="true"]{background:var(--sky)}
+.ruler button[aria-current="true"]::before{background:var(--coral);border-color:var(--coral);transform:scale(1.25)}
+.ruler .note{font-size:13px;color:var(--muted);margin-top:18px;padding:0 12px}
+
+.stage{padding:8px 0 56px;transition:opacity .3s}
+.stage + .stage{border-top:1px solid var(--line);padding-top:40px}
+.stage.dim{opacity:.38}
+.stage-head{display:flex;align-items:flex-end;gap:18px;margin-bottom:22px}
+.stage-head svg{width:64px;height:64px;flex:none}
+.stage-head h3{font-size:34px}
+.stage-head p{color:var(--muted);font-size:16px;margin-top:4px}
+.treat{display:grid;grid-template-columns:1fr auto;gap:8px 24px;padding:20px 0;border-top:1px dashed var(--line);align-items:start}
+.treat:first-of-type{border-top:0}
+.treat h4{font-size:24px;display:flex;flex-wrap:wrap;align-items:baseline;gap:10px}
+.treat p{color:var(--muted);margin-top:6px;max-width:40em}
+.tag{font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:var(--coral-soft);color:var(--coral-ink);padding:3px 9px;border-radius:999px}
+.tag.blue{background:var(--sky);color:var(--blue-deep)}
+.also{margin-top:14px;font-size:14.5px;color:var(--muted)}
+.also button{background:none;border:0;padding:0;color:var(--blue);font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:3px;font-size:14.5px}
+.always{background:var(--blue-deep);color:#EAF3F8;border-radius:28px;padding:34px;margin-top:8px}
+.always h3{font-size:30px;color:#fff}
+.always > p{color:#C9DCE8;margin-top:8px}
+.always .row{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:24px}
+.always .item{border-top:2px solid rgba(255,255,255,.25);padding-top:14px}
+.always .item h4{font-size:21px;color:#fff}
+.always .item p{color:#C9DCE8;font-size:15px;margin:6px 0 12px}
+.always .btn-link{background:none;border:0;color:#FFD8C9;font-weight:600;cursor:pointer;padding:0;font-size:15px;text-decoration:underline;text-underline-offset:3px}
+
+/* consultorio */
+#consultorio{padding:80px 0;background:var(--sand)}
+.clinic{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.plan{background:var(--paper);border-radius:28px;padding:24px;border:1px solid var(--line)}
+.plan figcaption{font-size:14px;color:var(--muted);margin-top:10px}
+.scanner{margin-top:26px;display:flex;gap:16px;align-items:flex-start;background:var(--paper);border-radius:20px;padding:18px 20px}
+.scanner svg{flex:none;width:52px;height:52px}
+.scanner h3{font-size:21px}
+.scanner p{color:var(--muted);font-size:15.5px;margin-top:4px}
+.pros{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:22px}
+.pro{background:var(--paper);border-radius:20px;padding:18px;display:flex;gap:14px;align-items:center}
+.mono{flex:none;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font-family:var(--serif);font-size:20px;color:#fff;background:var(--blue)}
+.mono.c{background:var(--coral-ink)}
+.pro h3{font-size:19px}
+.pro p{font-size:14.5px;color:var(--muted)}
+.values{margin-top:56px;display:grid;grid-template-columns:1.1fr 2fr;gap:40px;align-items:start}
+.values blockquote{margin:0;font-family:var(--serif);font-size:26px;line-height:1.25}
+.values ul{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:0 28px}
+.values li{padding:14px 0;border-top:1px solid var(--line);font-size:16px}
+.values li b{display:block;font-family:var(--serif);font-weight:400;font-size:20px}
+
+/* agenda */
+#agenda{padding:88px 0}
+.agenda{display:grid;grid-template-columns:300px 1fr;gap:0;background:#fff;border:1px solid var(--line);border-radius:28px;overflow:hidden;box-shadow:0 30px 60px -40px rgba(20,41,58,.45)}
+.ag-side{background:var(--blue-deep);color:#EAF3F8;padding:30px 26px}
+.ag-side h3{font-size:28px;color:#fff}
+.ag-side p{color:#C9DCE8;font-size:15px;margin-top:10px}
+.steps{list-style:none;padding:0;margin:26px 0 0;counter-reset:s}
+.steps li{counter-increment:s;display:flex;gap:12px;align-items:center;padding:9px 0;color:#9DB8CA;font-size:15px}
+.steps li::before{content:counter(s);width:28px;height:28px;border-radius:50%;display:grid;place-items:center;border:1.5px solid #5D86A2;font-size:13px;font-weight:700;flex:none}
+.steps li.on{color:#fff;font-weight:600}
+.steps li.on::before{background:var(--coral);border-color:var(--coral);color:#fff}
+.steps li.done{color:#C9DCE8}
+.steps li.done::before{content:"✓";background:#2C5C7C;border-color:#2C5C7C;color:#fff}
+.ag-badge{display:inline-block;margin-top:22px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;background:rgba(255,255,255,.1);padding:6px 10px;border-radius:8px}
+.ag-main{padding:30px 32px;min-width:0}
+.ag-main h4{font-size:26px;margin-bottom:6px}
+.ag-main .sub{color:var(--muted);font-size:15.5px;margin-bottom:20px}
+.member{border:1.5px solid var(--line);border-radius:18px;padding:16px;margin-bottom:14px;background:var(--paper)}
+.member-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:10px}
+.member-top b{font-family:var(--serif);font-weight:400;font-size:19px}
+.member .seg button{padding:7px 12px;font-size:14px;background:#fff}
+.member .seg button[aria-pressed="true"]{background:var(--blue-deep);color:#fff}
+.field{display:flex;flex-direction:column;gap:6px;margin-top:12px}
+.field label{font-size:14px;font-weight:600}
+.field select,.field input{border:1.5px solid var(--line);border-radius:12px;padding:11px 12px;background:#fff;width:100%;min-width:0}
+.field input:focus,.field select:focus{border-color:var(--blue);outline:none;box-shadow:0 0 0 3px var(--sky)}
+.field .err{color:var(--coral-ink);font-size:13.5px;min-height:0}
+.field.bad input{border-color:var(--coral-ink)}
+.link-btn{background:none;border:0;color:var(--coral-ink);font-weight:600;cursor:pointer;font-size:14px;padding:4px}
+.add{width:100%;border:1.5px dashed var(--blue);background:var(--sky);color:var(--blue-deep);border-radius:16px;padding:14px;font-weight:600;cursor:pointer}
+.add:disabled{opacity:.5;cursor:not-allowed}
+.tip{display:flex;gap:10px;font-size:14.5px;color:var(--muted);margin-top:14px;align-items:flex-start}
+.tip svg{flex:none;margin-top:2px}
+.ag-nav{display:flex;justify-content:space-between;gap:12px;margin-top:24px;padding-top:20px;border-top:1px solid var(--line)}
+.ag-err{color:var(--coral-ink);font-size:14.5px;margin-top:10px;min-height:1px}
+.opts{display:grid;gap:8px}
+.opt{display:flex;align-items:center;gap:12px;border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;cursor:pointer;background:#fff}
+.opt:hover{border-color:var(--blue)}
+.opt input{accent-color:var(--blue-deep);width:18px;height:18px;flex:none}
+.opt span small{display:block;color:var(--muted);font-size:13.5px}
+.opt:has(input:checked){border-color:var(--blue-deep);background:var(--sky)}
+.days{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.day{border:1.5px solid var(--line);background:#fff;border-radius:14px;padding:10px 6px;cursor:pointer;text-align:center}
+.day small{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700}
+.day b{display:block;font-family:var(--serif);font-weight:400;font-size:24px}
+.day span{font-size:12.5px;color:var(--muted)}
+.day:hover{border-color:var(--blue)}
+.day[aria-pressed="true"]{background:var(--blue-deep);border-color:var(--blue-deep);color:#fff}
+.day[aria-pressed="true"] small,.day[aria-pressed="true"] span{color:#C9DCE8}
+.props{display:grid;gap:10px}
+.prop{display:grid;grid-template-columns:1fr 150px;gap:16px;align-items:center;border:1.5px solid var(--line);border-radius:16px;padding:14px 16px;background:#fff;cursor:pointer;text-align:left}
+.prop:hover{border-color:var(--blue)}
+.prop[aria-pressed="true"]{border-color:var(--blue-deep);background:var(--sky)}
+.prop .when{font-family:var(--serif);font-size:22px}
+.prop ul{list-style:none;padding:0;margin:6px 0 0;font-size:14px;color:var(--muted)}
+.prop ul li b{color:var(--ink);font-weight:600}
+.mini{width:150px;height:auto}
+.summary{background:var(--paper);border-radius:18px;padding:18px;border:1px solid var(--line)}
+.summary dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:15px}
+.summary dt{color:var(--muted)}
+.summary dd{margin:0;font-weight:600}
+.done-grid{display:grid;grid-template-columns:1fr 290px;gap:24px;align-items:start}
+.phone{background:#E9E2D6;border-radius:26px;padding:12px;border:6px solid var(--ink)}
+.phone-top{display:flex;align-items:center;gap:8px;background:#1F4E45;color:#fff;margin:-12px -12px 12px;padding:10px 12px;border-radius:18px 18px 0 0;font-size:13.5px}
+.phone-top i{width:26px;height:26px;border-radius:50%;background:var(--sky);display:grid;place-items:center;color:var(--blue-deep);font-style:normal;font-family:var(--serif);font-size:13px}
+.bubble{background:#fff;border-radius:4px 14px 14px 14px;padding:10px 12px;font-size:14px;line-height:1.45;white-space:pre-line;box-shadow:0 1px 1px rgba(0,0,0,.08)}
+.bubble time{display:block;text-align:right;font-size:11px;color:#7a8a90;margin-top:4px}
+.phone .when{font-size:12px;text-align:center;color:#5d6a70;margin-bottom:8px;background:#fff8;border-radius:8px;padding:3px}
+.confirm-ok{display:flex;gap:12px;align-items:center;margin-bottom:16px}
+.confirm-ok svg{flex:none}
+
+/* faq */
+#preguntas{padding:80px 0;background:var(--sand)}
+.faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 40px}
+details{border-top:1px solid var(--line);padding:4px 0}
+summary{list-style:none;cursor:pointer;padding:16px 36px 16px 0;position:relative;font-weight:600;font-size:17px}
+summary::-webkit-details-marker{display:none}
+summary small{display:block;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--coral-ink);font-weight:700;margin-bottom:2px}
+summary::after{content:"+";position:absolute;right:4px;top:50%;transform:translateY(-50%);font-family:var(--serif);font-size:26px;color:var(--blue)}
+details[open] summary::after{content:"–"}
+details p{color:var(--muted);padding:0 0 18px;max-width:40em}
+
+/* contacto */
+#contacto{padding:80px 0 60px}
+.contact{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:stretch}
+.addr{font-family:var(--serif);font-size:clamp(34px,4.6vw,56px);line-height:1.05}
+.clist{list-style:none;padding:0;margin:28px 0 0}
+.clist li{display:grid;grid-template-columns:120px 1fr;gap:12px;padding:14px 0;border-top:1px solid var(--line)}
+.clist li span{color:var(--muted);font-size:14px;text-transform:uppercase;letter-spacing:.1em;font-weight:700;padding-top:2px}
+.clist a{font-weight:600;word-break:break-word}
+.mapcard{background:var(--sky);border-radius:28px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.mapcard svg{width:100%;height:auto;border-radius:18px}
+footer{border-top:1px solid var(--line);padding:28px 0 40px;font-size:14px;color:var(--muted)}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(14px);transition:opacity .6s ease, transform .6s ease}
+.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}.rv{opacity:1;transform:none}}
+
+/* responsive */
+@media (max-width:980px){
+  nav.main{display:none}
+  .top .btn{margin-left:auto}
+  .hero-grid,.clinic,.contact,.values{grid-template-columns:1fr}
+  .who{grid-template-columns:1fr}
+  .agenda{grid-template-columns:1fr}
+  .ag-side{padding:22px}
+  .steps{display:flex;gap:6px;margin-top:16px;flex-wrap:wrap}
+  .steps li{font-size:0;padding:0}
+  .steps li.on{font-size:14px;padding-right:8px}
+  .done-grid{grid-template-columns:1fr}
+  .phone{max-width:320px}
+}
+@media (max-width:820px){
+  .journey{grid-template-columns:minmax(0,1fr);gap:0}
+  .ruler{position:sticky;top:var(--hdr);z-index:30;padding:8px 0;background:var(--paper);margin:0 -24px 18px;padding-left:16px;padding-right:16px;border-bottom:1px solid var(--line)}
+  .ruler::before,.ruler .note{display:none}
+  .ruler ol{flex-direction:row;gap:6px;overflow-x:auto;scrollbar-width:none}
+  .ruler ol::-webkit-scrollbar{display:none}
+  .ruler li{flex:none}
+  .ruler button{padding:6px 12px;border:1.5px solid var(--line);border-radius:999px;background:#fff}
+  .ruler button::before{display:none}
+  .ruler button .age{display:none}
+  .ruler button .lbl{font-size:16px;font-family:var(--sans);font-weight:600}
+  .ruler button[aria-current="true"]{background:var(--blue-deep);border-color:var(--blue-deep);color:#fff}
+  .stage{scroll-margin-top:calc(var(--hdr) + 64px)}
+  .always .row{grid-template-columns:1fr}
+  .faq-grid{grid-template-columns:1fr}
+  .values ul{grid-template-columns:1fr}
+}
+@media (max-width:560px){
+  body{font-size:16px}
+  .wrap{padding:0 16px}
+  .ruler{margin:0 -16px 16px}
+  .brand span{font-size:15.5px}
+  .brand small{font-size:10px}
+  .top .btn{padding:9px 13px;font-size:13.5px}
+  .hero{padding:36px 0 24px}
+  .hero .lede{font-size:17px}
+  .who{padding:18px}
+  .treat{grid-template-columns:1fr}
+  .treat .btn{justify-self:start}
+  .stage-head h3{font-size:28px}
+  .stage-head svg{width:50px;height:50px}
+  .always{padding:24px 20px}
+  .pros{grid-template-columns:1fr}
+  .ag-main{padding:22px 16px}
+  .days{grid-template-columns:repeat(3,1fr)}
+  .prop{grid-template-columns:1fr}
+  .mini{width:100%;max-width:220px}
+  .clist li{grid-template-columns:1fr;gap:2px}
+  .ag-nav .btn{padding:11px 16px}
+}
+</style>
+</head>
+<body>
+
+<div class="demo" role="note">Prototipo de demostración preparado para <b>Consultorio Odontológico Bahiense</b> · los turnos de esta página son de ejemplo</div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#inicio" aria-label="Consultorio Odontológico Bahiense, inicio">
+      <svg width="38" height="38" viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="29" fill="#123A55"/><path d="M19 18c0-4 6-6 11-3 5-3 11-1 11 3 1 8-2 12-3 19-1 6-3 8-4.5 3.5-.8-3-4.2-3-5 0C27 45 25 43 24 37c-1-7-4-11-5-19z" fill="#FAF6EF"/><path d="M18 46h24" stroke="#D2775C" stroke-width="2.5" stroke-linecap="round"/></svg>
+      <span>Odontología Bahiense<small>Ing. Luigi 57 · Bahía Blanca</small></span>
+    </a>
+    <nav class="main" aria-label="Principal">
+      <a href="#recorrido">Tratamientos</a>
+      <a href="#consultorio">Consultorio</a>
+      <a href="#agenda">Turno en familia</a>
+      <a href="#preguntas">Preguntas</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <button class="btn btn-primary" data-book="evaluacion">Reservá tu evaluación</button>
+  </div>
+</header>
+
+<main id="inicio">
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="rv">
+        <span class="eyebrow">Consultorio Odontológico Bahiense</span>
+        <h1>Más de 20 años cuidando a <em>toda la familia</em>, en tres consultorios de Ingeniero Luigi 57.</h1>
+        <p class="lede">De la primera consulta de los chicos a los implantes y prótesis de los abuelos: un mismo equipo, especializado en rehabilitación, restauración y estética dental, con un enfoque humano y personalizado.</p>
+        <ul class="facts" aria-label="Datos del consultorio">
+          <li><b>+20</b> años de experiencia</li>
+          <li><b>3</b> consultorios</li>
+          <li>Escáner intraoral</li>
+        </ul>
+        <div class="hero-cta">
+          <button class="btn btn-primary" data-book="evaluacion">Reservá tu evaluación</button>
+          <a class="btn btn-ghost" href="#agenda" data-family>Pedí un turno en familia</a>
+        </div>
+      </div>
+      <figure class="family rv" style="margin:0">
+        <svg viewBox="0 0 440 300" role="img" aria-labelledby="famT">
+          <title id="famT">Ilustración: cuatro dientes de distintos tamaños, uno por cada etapa de la vida</title>
+          <path d="M20 250 Q220 200 420 250" fill="none" stroke="#123A55" stroke-width="2" stroke-dasharray="4 7" opacity=".5"/>
+          <!-- chico -->
+          <g transform="translate(36 168) scale(1.05)">
+            <path d="M10 8C10 2 20 0 30 4c10-4 20-2 20 4 2 14-4 22-6 36-2 12-6 16-9 6-2-8-8-8-10 0-3 10-7 6-9-6C14 30 8 22 10 8z" fill="#FAF6EF" stroke="#123A55" stroke-width="2.5" stroke-linejoin="round"/>
+            <circle cx="22" cy="20" r="2.2" fill="#123A55"/><circle cx="38" cy="20" r="2.2" fill="#123A55"/><path d="M24 28q6 5 12 0" fill="none" stroke="#D2775C" stroke-width="2.5" stroke-linecap="round"/>
+          </g>
+          <!-- adolescente con brackets -->
+          <g transform="translate(118 112) scale(1.5)">
+            <path d="M10 8C10 2 20 0 30 4c10-4 20-2 20 4 2 14-4 22-6 36-2 12-6 16-9 6-2-8-8-8-10 0-3 10-7 6-9-6C14 30 8 22 10 8z" fill="#FAF6EF" stroke="#123A55" stroke-width="1.8" stroke-linejoin="round"/>
+            <path d="M12 22h36" stroke="#1F587D" stroke-width="1.6"/><rect x="18" y="19" width="6" height="6" rx="1.2" fill="#1F587D"/><rect x="36" y="19" width="6" height="6" rx="1.2" fill="#1F587D"/>
+          </g>
+          <!-- adulto -->
+          <g transform="translate(222 70) scale(1.95)">
+            <path d="M10 8C10 2 20 0 30 4c10-4 20-2 20 4 2 14-4 22-6 36-2 12-6 16-9 6-2-8-8-8-10 0-3 10-7 6-9-6C14 30 8 22 10 8z" fill="#FAF6EF" stroke="#123A55" stroke-width="1.4" stroke-linejoin="round"/>
+            <path d="M17 11q4-4 9-3" fill="none" stroke="#A9CDE0" stroke-width="2.4" stroke-linecap="round"/>
+          </g>
+          <!-- mayor con implante -->
+          <g transform="translate(340 120)">
+            <path d="M8 6C8 1 16 0 24 3c8-3 16-2 16 3 1 8-1 12-2 16H10C9 18 7 14 8 6z" fill="#FAF6EF" stroke="#123A55" stroke-width="2.5" stroke-linejoin="round" transform="scale(1.6)"/>
+            <g transform="translate(26 38)"><rect x="5" y="0" width="16" height="8" rx="2" fill="#123A55"/>
+            <path d="M6 10h14M7 16h12M8 22h10M9 28h8M10 34h6" stroke="#123A55" stroke-width="3" stroke-linecap="round"/></g>
+          </g>
+          <g font-family="Hanken Grotesk, Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#123A55" letter-spacing="1.5">
+            <text x="46" y="285">CHICOS</text><text x="132" y="285">ADOLESC.</text><text x="246" y="285">ADULTOS</text><text x="350" y="285">MAYORES</text>
+          </g>
+        </svg>
+        <figcaption>Un mismo lugar para cada etapa de la vida.</figcaption>
+      </figure>
+    </div>
+
+    <div class="who rv" id="para-quien">
+      <div>
+        <h2>¿Para quién es la consulta?</h2>
+        <p class="hint">Elegí y te mostramos los tratamientos que suelen corresponder a esa etapa.</p>
+      </div>
+      <div>
+        <div class="seg" role="group" aria-label="¿Para quién es?" id="whoSeg"></div>
+        <div class="who-result" id="whoResult" aria-live="polite"><span class="empty">Tocá una opción para filtrar los tratamientos.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="recorrido">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="eyebrow">Tratamientos · un recorrido por edades</span>
+      <h2>Cada etapa trae sus consultas. Las atendemos todas en el mismo lugar.</h2>
+      <p>Ubicamos cada tratamiento en el momento de la vida en el que suele aparecer. Es orientativo: el plan siempre se define en la consulta de evaluación.</p>
+    </div>
+    <div class="journey">
+      <nav class="ruler" aria-label="Etapas de la vida">
+        <ol id="ruler"></ol>
+        <p class="note">Las edades son de referencia.</p>
+      </nav>
+      <div id="stages"></div>
+    </div>
+  </div>
+</section>
+
+<section id="consultorio">
+  <div class="wrap">
+    <div class="clinic">
+      <div class="rv">
+        <span class="eyebrow">El consultorio</span>
+        <h2 style="font-size:clamp(32px,4vw,48px);margin:10px 0 14px">Tres consultorios, un mismo equipo y la historia de toda la familia.</h2>
+        <p style="color:var(--muted);font-size:18px">Nuestra misión es brindar atención odontológica integral, con un enfoque humano y personalizado. Un equipo especializado en rehabilitación, restauración y estética dental.</p>
+        <div class="pros">
+          <div class="pro"><div class="mono c" aria-hidden="true">MA</div><div><h3>Dra. Martina Arguelles</h3><p>Ortodoncia</p></div></div>
+          <div class="pro"><div class="mono" aria-hidden="true">ER</div><div><h3>Dr. Emiliano Reyes</h3><p>Odontólogo</p></div></div>
+        </div>
+        <div class="scanner">
+          <svg viewBox="0 0 52 52" aria-hidden="true"><rect width="52" height="52" rx="14" fill="#D5E7F1"/><path d="M12 36l18-18 6 6-18 18h-6z" fill="#123A55"/><rect x="31" y="11" width="11" height="11" rx="3" transform="rotate(45 36.5 16.5)" fill="#D2775C"/><path d="M40 30l4 2M38 34l3 4M42 26h4" stroke="#1F587D" stroke-width="2" stroke-linecap="round"/></svg>
+          <div><h3>Escáner intraoral</h3><p>Registra la boca en formato digital. Hace la experiencia más cómoda y más rápida en restauraciones, ortodoncia e implantes.</p></div>
+        </div>
+      </div>
+      <figure class="plan rv" style="margin:0">
+        <svg viewBox="0 0 480 340" role="img" aria-labelledby="planT">
+          <title id="planT">Plano ilustrativo: tres consultorios y sala de espera</title>
+          <rect x="10" y="10" width="460" height="320" rx="20" fill="#FAF6EF" stroke="#123A55" stroke-width="3"/>
+          <g stroke="#123A55" stroke-width="3"><path d="M160 10v170M320 10v170M10 180h120M190 180h100M350 180h120"/></g>
+          <g font-family="Young Serif, Georgia, serif" fill="#123A55" text-anchor="middle">
+            <text x="85" y="60" font-size="44">1</text><text x="240" y="60" font-size="44">2</text><text x="395" y="60" font-size="44">3</text>
+          </g>
+          <g font-family="Hanken Grotesk, Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#4D5C68" text-anchor="middle" letter-spacing="1.2">
+            <text x="85" y="82">CONSULTORIO</text><text x="240" y="82">CONSULTORIO</text><text x="395" y="82">CONSULTORIO</text>
+            <text x="240" y="300">SALA DE ESPERA · ING. LUIGI 57</text>
+          </g>
+          <g fill="#D5E7F1" stroke="#1F587D" stroke-width="2">
+            <path d="M55 150c0-22 14-34 30-34s30 12 30 34z"/><path d="M210 150c0-22 14-34 30-34s30 12 30 34z"/><path d="M365 150c0-22 14-34 30-34s30 12 30 34z"/>
+          </g>
+          <g fill="#D2775C"><circle cx="60" cy="250" r="12"/><circle cx="92" cy="256" r="8"/><circle cx="118" cy="250" r="10"/></g>
+          <g fill="none" stroke="#E6D8BF" stroke-width="10" stroke-linecap="round"><path d="M200 240h80M200 262h80M340 240h80M340 262h80"/></g>
+        </svg>
+        <figcaption>Ilustración del recorrido. Con tres consultorios, la familia puede atenderse en turnos seguidos el mismo día.</figcaption>
+      </figure>
+    </div>
+
+    <div class="values rv">
+      <blockquote>“Atención integral, con un enfoque humano y personalizado.”</blockquote>
+      <ul>
+        <li><b>Excelencia clínica</b>Diagnóstico y tratamiento cuidados en cada etapa.</li>
+        <li><b>Empatía</b>Escuchar primero, explicar siempre.</li>
+        <li><b>Integridad y transparencia</b>Sabés qué se te propone y por qué.</li>
+        <li><b>Innovación y mejora continua</b>Herramientas como el escáner intraoral.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="agenda">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="eyebrow">Turno en familia</span>
+      <h2>Sumá a quien tengas que traer. Te proponemos turnos seguidos, el mismo día.</h2>
+      <p>Mamá y los dos chicos, o el abuelo y su nieta: elegís quiénes vienen y para qué, y la agenda busca horarios uno detrás del otro en los tres consultorios. Un solo recordatorio para todos.</p>
+    </div>
+    <div class="agenda rv" id="agendaBox">
+      <aside class="ag-side">
+        <h3>Agenda online</h3>
+        <p>Hoy los turnos se piden por teléfono, WhatsApp o mail. Así podría verse la reserva desde la web.</p>
+        <ol class="steps" id="steps">
+          <li>Quiénes y qué tratamiento</li><li>Profesional</li><li>Día</li><li>Horario</li><li>Datos</li><li>Confirmación</li>
+        </ol>
+        <span class="ag-badge">Agenda de ejemplo · no se envía nada</span>
+      </aside>
+      <div class="ag-main" id="agMain" tabindex="-1" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<section id="preguntas">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="eyebrow">Preguntas frecuentes</span>
+      <h2>Lo que más se pregunta, tratamiento por tratamiento.</h2>
+      <p>Respuestas generales. Cada caso se evalúa en consulta.</p>
+    </div>
+    <div class="faq-grid" id="faq"></div>
+  </div>
+</section>
+
+<section id="contacto">
+  <div class="wrap">
+    <div class="contact">
+      <div class="rv">
+        <span class="eyebrow">Dónde estamos</span>
+        <p class="addr" style="margin-top:12px">Ingeniero Luigi 57,<br>Bahía Blanca.</p>
+        <ul class="clist">
+          <li><span>Teléfono</span><a href="tel:+542914027590">291 402-7590</a></li>
+          <li><span>WhatsApp</span><a href="https://wa.me/5492914027590" target="_blank" rel="noopener">Escribinos por WhatsApp</a></li>
+          <li><span>Mail</span><a href="mailto:odontologiabahiense@gmail.com">odontologiabahiense@gmail.com</a></li>
+          <li><span>Instagram</span><a href="https://www.instagram.com/odontologia_bahiense/" target="_blank" rel="noopener">@odontologia_bahiense</a></li>
+          <li><span>Horarios</span><div>Horarios a confirmar. Consultá por teléfono o WhatsApp.</div></li>
+        </ul>
+      </div>
+      <div class="mapcard rv">
+        <svg viewBox="0 0 400 260" role="img" aria-labelledby="mapT">
+          <title id="mapT">Mapa ilustrativo con la ubicación en Ingeniero Luigi 57</title>
+          <rect width="400" height="260" fill="#FAF6EF"/>
+          <g stroke="#E6D8BF" stroke-width="18"><path d="M-10 70h420M-10 190h420M90-10v280M300-10v280"/></g>
+          <path d="M-10 130h420" stroke="#A9CDE0" stroke-width="26"/>
+          <text x="20" y="135" font-family="Hanken Grotesk, Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#123A55" letter-spacing="1.5">ING. LUIGI</text>
+          <g transform="translate(196 72)"><path d="M0 0c-14 0-24 10-24 23 0 17 24 37 24 37s24-20 24-37C24 10 14 0 0 0z" fill="#A3492F"/><circle cy="22" r="8" fill="#fff"/></g>
+          <rect x="222" y="74" width="62" height="26" rx="13" fill="#123A55"/><text x="253" y="92" text-anchor="middle" font-family="Young Serif, Georgia, serif" font-size="15" fill="#fff">57</text>
+        </svg>
+        <a class="btn btn-primary" href="https://www.google.com/maps/search/?api=1&query=Ingeniero+Luigi+57,+Bah%C3%ADa+Blanca" target="_blank" rel="noopener">Abrir en Google Maps</a>
+        <button class="btn btn-ghost" data-book="evaluacion">Reservá tu evaluación</button>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Consultorio Odontológico Bahiense · Ingeniero Luigi 57, Bahía Blanca · También en Facebook e Instagram</span>
+    <span>Prototipo de demostración. Agenda y recordatorios de ejemplo.</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+"use strict";
+var TYPES=[
+  {id:"chico",l:"Chicos",one:"Chico/a",age:"Primeros dientes",desc:"Prevención, caries y seguimiento del crecimiento.",ico:"M10 8C10 2 20 0 30 4c10-4 20-2 20 4 2 14-4 22-6 36-2 12-6 16-9 6-2-8-8-8-10 0-3 10-7 6-9-6C14 30 8 22 10 8z",sc:.7},
+  {id:"adolescente",l:"Adolescentes",one:"Adolescente",age:"Desde los 12, aprox.",desc:"Mordida, maxilares en crecimiento y ortodoncia.",sc:.85},
+  {id:"adulto",l:"Adultos",one:"Adulto/a",age:"Desde los 18",desc:"Estética, conductos y salud de las encías.",sc:1},
+  {id:"mayor",l:"Mayores",one:"Mayor",age:"60 +",desc:"Reponer y restaurar piezas dentales.",sc:1}
+];
+var TOOTH="M10 8C10 2 20 0 30 4c10-4 20-2 20 4 2 14-4 22-6 36-2 12-6 16-9 6-2-8-8-8-10 0-3 10-7 6-9-6C14 30 8 22 10 8z";
+var T={
+  evaluacion:{n:"Consulta de evaluación",d:"La primera visita: revisión general, charla sobre lo que te preocupa y un plan de tratamiento explicado paso a paso.",st:["chico","adolescente","adulto","mayor"]},
+  odontopediatria:{n:"Odontopediatría",d:"Atención de los más chicos: tratamiento de caries, prevención y seguimiento del desarrollo dental.",st:["chico"],home:"chico"},
+  ortopedia:{n:"Ortopedia",d:"Guía el crecimiento de los maxilares en chicos y adolescentes con aparatos.",st:["chico","adolescente"],home:"chico"},
+  ortodoncia:{n:"Ortodoncia",d:"Corrige maloclusiones con brackets o alineadores invisibles.",st:["adolescente","adulto"],home:"adolescente",scan:1},
+  carillas:{n:"Carillas",d:"Láminas finas que se adhieren al frente del diente para modificar su forma o su color.",st:["adulto"],home:"adulto",scan:1},
+  blanqueamiento:{n:"Blanqueamiento",d:"Aclara el color de los dientes. Puede ser interno o externo, según el caso.",st:["adulto","mayor"],home:"adulto"},
+  endodoncia:{n:"Endodoncia",d:"Tratamiento de conducto, para conservar una pieza cuando la pulpa está comprometida.",st:["adolescente","adulto","mayor"],home:"adulto"},
+  periodoncia:{n:"Periodoncia",d:"Cuidado de las encías: sangrado, sensibilidad o movilidad de los dientes.",st:["adulto","mayor"],home:"adulto"},
+  implantes:{n:"Implantes dentales",d:"Reemplazan piezas dentales ausentes.",st:["adulto","mayor"],home:"mayor",scan:1},
+  protesis:{n:"Prótesis",d:"Coronas, puentes, prótesis e incrustaciones para restaurar o reponer piezas.",st:["adulto","mayor"],home:"mayor",scan:1},
+  profilaxis:{n:"Profilaxis",d:"Limpieza profesional que retira placa bacteriana y sarro.",st:["chico","adolescente","adulto","mayor"]},
+  general:{n:"Odontología general",d:"Controles, diagnóstico y los tratamientos de todos los días.",st:["chico","adolescente","adulto","mayor"]}
+};
+var PROS=[
+  {id:"indistinto",n:"Primer profesional disponible",s:"Te asignamos según agenda"},
+  {id:"arguelles",n:"Dra. Martina Arguelles",s:"Ortodoncia"},
+  {id:"reyes",n:"Dr. Emiliano Reyes",s:"Odontólogo"}
+];
+function el(h){var d=document.createElement("div");d.innerHTML=h.trim();return d.firstChild;}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+function typeOf(id){for(var i=0;i<TYPES.length;i++)if(TYPES[i].id===id)return TYPES[i];}
+function proOf(id){for(var i=0;i<PROS.length;i++)if(PROS[i].id===id)return PROS[i];}
+function toothIcon(id){
+  var extra="";
+  if(id==="adolescente")extra='<path d="M12 22h36" stroke="#1F587D" stroke-width="2.4"/><rect x="18" y="19" width="6" height="6" rx="1.2" fill="#1F587D"/><rect x="36" y="19" width="6" height="6" rx="1.2" fill="#1F587D"/>';
+  if(id==="chico")extra='<circle cx="22" cy="20" r="2.4" fill="#123A55"/><circle cx="38" cy="20" r="2.4" fill="#123A55"/><path d="M24 28q6 5 12 0" fill="none" stroke="#D2775C" stroke-width="2.6" stroke-linecap="round"/>';
+  if(id==="adulto")extra='<path d="M17 11q4-4 9-3" fill="none" stroke="#A9CDE0" stroke-width="3" stroke-linecap="round"/>';
+  if(id==="mayor")return '<svg viewBox="0 0 60 60" aria-hidden="true"><path d="M10 6c0-5 8-6 20-3 12-3 20-2 20 3 1 8-1 12-2 16H12C11 18 9 14 10 6z" fill="#FAF6EF" stroke="#123A55" stroke-width="2.6" stroke-linejoin="round"/><rect x="22" y="26" width="16" height="6" rx="2" fill="#123A55"/><path d="M23 36h14M24 42h12M26 48h8M27 54h6" stroke="#123A55" stroke-width="3" stroke-linecap="round"/></svg>';
+  return '<svg viewBox="0 0 60 60" aria-hidden="true"><path d="'+TOOTH+'" fill="#FAF6EF" stroke="#123A55" stroke-width="2.6" stroke-linejoin="round"/>'+extra+'</svg>';
+}
+
+/* ---------- recorrido ---------- */
+var ruler=document.getElementById("ruler"), stagesBox=document.getElementById("stages");
+TYPES.forEach(function(t){
+  ruler.appendChild(el('<li><button type="button" data-stage="'+t.id+'"><span class="age">'+t.age+'</span><span class="lbl">'+t.l+'</span></button></li>'));
+  var home=[],also=[];
+  Object.keys(T).forEach(function(k){var x=T[k];if(x.home===t.id)home.push(k);else if(x.home&&x.st.indexOf(t.id)>-1)also.push(k);});
+  var h='<article class="stage" id="etapa-'+t.id+'" data-stage="'+t.id+'"><div class="stage-head">'+toothIcon(t.id)+'<div><span class="eyebrow">'+t.age+'</span><h3>'+t.l+'</h3><p>'+t.desc+'</p></div></div>';
+  home.forEach(function(k){var x=T[k];
+    h+='<div class="treat"><div><h4>'+x.n+(x.scan?' <span class="tag blue">Con escáner intraoral</span>':'')+'</h4><p>'+x.d+'</p></div><button class="btn btn-ghost btn-sm" data-book="'+k+'" data-type="'+t.id+'">Reservá tu evaluación</button></div>';
+  });
+  if(also.length){h+='<p class="also">También en esta etapa: '+also.map(function(k){return '<button type="button" data-book="'+k+'" data-type="'+t.id+'">'+T[k].n+'</button>';}).join(" · ")+' y, siempre, profilaxis y controles.</p>';}
+  h+='</article>';
+  stagesBox.appendChild(el(h));
+});
+stagesBox.appendChild(el('<div class="always rv"><span class="eyebrow" style="color:#FFC9B5">En todas las etapas</span><h3>Lo que acompaña a toda la familia</h3><p>Más allá de la edad, hay consultas que conviene sostener en el tiempo.</p><div class="row">'+
+  ["evaluacion","profilaxis","general"].map(function(k){return '<div class="item"><h4>'+T[k].n+'</h4><p>'+T[k].d+'</p><button class="btn-link" data-book="'+k+'">Reservar →</button></div>';}).join("")+'</div></div>'));
+
+ruler.addEventListener("click",function(e){var b=e.target.closest("button[data-stage]");if(!b)return;
+  document.getElementById("etapa-"+b.dataset.stage).scrollIntoView({behavior:"smooth",block:"start"});});
+var rb=ruler.querySelectorAll("button");
+function setCurrent(id){rb.forEach(function(b){var on=b.dataset.stage===id;b.setAttribute("aria-current",on?"true":"false");
+  if(on&&window.innerWidth<=820){var ol=ruler;var off=b.parentNode.offsetLeft-16;if(Math.abs(ol.scrollLeft-off)>4)ol.scrollTo({left:off,behavior:"smooth"});}});}
+setCurrent("chico");
+if("IntersectionObserver" in window){
+  var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting)setCurrent(en.target.dataset.stage);});},{rootMargin:"-35% 0px -55% 0px"});
+  document.querySelectorAll(".stage").forEach(function(s){io.observe(s);});
+}
+
+/* ---------- para quién ---------- */
+var whoSeg=document.getElementById("whoSeg"), whoResult=document.getElementById("whoResult"), whoSel=null;
+TYPES.forEach(function(t){whoSeg.appendChild(el('<button type="button" aria-pressed="false" data-who="'+t.id+'">'+toothIcon(t.id)+t.l+'</button>'));});
+whoSeg.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;
+  whoSel=(whoSel===b.dataset.who)?null:b.dataset.who;
+  whoSeg.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",x.dataset.who===whoSel?"true":"false");});
+  document.querySelectorAll(".stage").forEach(function(s){s.classList.toggle("dim",!!whoSel&&s.dataset.stage!==whoSel);});
+  if(!whoSel){whoResult.innerHTML='<span class="empty">Tocá una opción para filtrar los tratamientos.</span>';return;}
+  var list=Object.keys(T).filter(function(k){return T[k].st.indexOf(whoSel)>-1;});
+  whoResult.innerHTML=list.map(function(k){return '<button class="chip" data-book="'+k+'" data-type="'+whoSel+'">'+T[k].n+' <i aria-hidden="true">→</i><span class="sr">: reservar</span></button>';}).join("")+
+   '<a class="chip" href="#etapa-'+whoSel+'" style="text-decoration:none;color:var(--blue-deep);background:var(--sky)">Ver la etapa completa ↓</a>';
+});
+
+/* ---------- agenda ---------- */
+var S, main=document.getElementById("agMain"), stepsEl=document.getElementById("steps");
+function reset(trat,type){
+  type=type||(trat&&T[trat]&&T[trat].home)||"adulto";
+  if(trat&&T[trat]&&T[trat].st.indexOf(type)<0)type=T[trat].st[0];
+  S={step:1,members:[{type:type,trat:trat||"evaluacion",prof:"indistinto",name:""}],day:null,prop:null,resp:"",wa:"",err:""};
+}
+reset();
+function tratsFor(type){return Object.keys(T).filter(function(k){return T[k].st.indexOf(type)>-1;});}
+function fmtDay(d,o){return d.toLocaleDateString("es-AR",o||{weekday:"long",day:"numeric",month:"long"});}
+function hm(m){return Math.floor(m/60)+":"+("0"+(m%60)).slice(-2);}
+function hash(s){var h=7;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return h;}
+function days(){var out=[],d=new Date();d.setHours(0,0,0,0);while(out.length<10){d.setDate(d.getDate()+1);var w=d.getDay();if(w>0&&w<6)out.push(new Date(d));}return out;}
+var BLOCKS=[[540,750],[900,1170]]; /* 9:00–12:30 / 15:00–19:30 (ejemplo) */
+function proposals(day){
+  var n=S.members.length, key=day.toDateString(), out=[];
+  BLOCKS.forEach(function(b){
+    for(var t=b[0];t+30*n<=b[1];t+=30){
+      var ok=true;
+      for(var k=0;k<n;k++){if(hash(key+(t+30*k))%3===0){ok=false;break;}}
+      if(ok){
+        var off=hash(key+t)%3, alt=hash(key+"p"+t)%2;
+        var items=S.members.map(function(m,k){
+          var p=m.prof!=="indistinto"?m.prof:((k+alt)%2?"reyes":"arguelles");
+          return {start:t+30*k,room:((off+k)%3)+1,pro:p};
+        });
+        out.push({start:t,end:t+30*n,items:items});
+      }
+    }
+  });
+  /* espaciar: no más de 5 */
+  var pick=[];out.forEach(function(p){if(pick.length<5&&(!pick.length||p.start-pick[pick.length-1].start>=60))pick.push(p);});
+  return pick;
+}
+function miniPlan(items){
+  var s='<svg class="mini" viewBox="0 0 150 80" aria-hidden="true"><rect x="2" y="2" width="146" height="76" rx="10" fill="#FAF6EF" stroke="#123A55" stroke-width="2"/><path d="M50 2v46M100 2v46M2 48h146" stroke="#123A55" stroke-width="2"/>';
+  for(var r=1;r<=3;r++)s+='<text x="'+(r*50-40)+'" y="16" font-size="10" font-family="Hanken Grotesk,sans-serif" font-weight="700" fill="#4D5C68">C'+r+'</text>';
+  items.forEach(function(it,k){var cx=it.room*50-25;s+='<circle cx="'+cx+'" cy="30" r="11" fill="'+(k%2?"#1F587D":"#D2775C")+'"/><text x="'+cx+'" y="34" text-anchor="middle" font-size="11" font-weight="700" fill="#fff" font-family="Hanken Grotesk,sans-serif">'+(k+1)+'</text>';});
+  s+='<text x="75" y="68" text-anchor="middle" font-size="9" font-family="Hanken Grotesk,sans-serif" fill="#4D5C68" letter-spacing="1">ING. LUIGI 57</text></svg>';
+  return s;
+}
+function nav(back,nextLabel){
+  return '<p class="ag-err" role="alert">'+esc(S.err||"")+'</p><div class="ag-nav">'+(back?'<button class="btn btn-ghost" data-act="back">← Volver</button>':'<span></span>')+'<button class="btn btn-primary" data-act="next">'+(nextLabel||"Continuar →")+'</button></div>';
+}
+function memberLabel(m,k){return m.name||("Persona "+(k+1));}
+function render(focus){
+  stepsEl.querySelectorAll("li").forEach(function(li,i){li.className=(i+1===S.step)?"on":(i+1<S.step?"done":"");});
+  var h="";
+  if(S.step===1){
+    h+='<h4>¿Quiénes vienen y para qué?</h4><p class="sub">Elegí la etapa de cada persona y el tratamiento. Si no sabés qué necesitás, dejá “Consulta de evaluación”.</p>';
+    S.members.forEach(function(m,k){
+      h+='<div class="member" data-m="'+k+'"><div class="member-top"><b>Persona '+(k+1)+'</b>'+(k?'<button class="link-btn" data-act="rm" data-m="'+k+'">Quitar</button>':'')+'</div>';
+      h+='<div class="seg" role="group" aria-label="Etapa de la persona '+(k+1)+'">'+TYPES.map(function(t){return '<button type="button" data-act="type" data-m="'+k+'" data-v="'+t.id+'" aria-pressed="'+(m.type===t.id)+'">'+t.one+'</button>';}).join("")+'</div>';
+      h+='<div class="field"><label for="tr'+k+'">Tratamiento</label><select id="tr'+k+'" data-act="trat" data-m="'+k+'">'+tratsFor(m.type).map(function(id){return '<option value="'+id+'"'+(m.trat===id?" selected":"")+'>'+T[id].n+'</option>';}).join("")+'</select></div></div>';
+    });
+    h+='<button class="add" data-act="add"'+(S.members.length>=4?" disabled":"")+'>+ Sumar a alguien de la familia</button>';
+    h+='<p class="tip"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="8" fill="#D5E7F1"/><path d="M9 5v5M9 12.5v.5" stroke="#123A55" stroke-width="2" stroke-linecap="round"/></svg><span>'+(S.members.length>1?"Van a ser "+S.members.length+" turnos seguidos el mismo día, con un solo recordatorio.":"Hasta 4 personas por reserva: turnos seguidos el mismo día y un solo recordatorio.")+'</span></p>';
+    h+=nav(false);
+  }
+  if(S.step===2){
+    h+='<h4>¿Con quién?</h4><p class="sub">Podés elegir profesional para cada persona o dejar que la agenda asigne el primero disponible.</p>';
+    S.members.forEach(function(m,k){
+      h+='<fieldset class="member" style="margin-inline:0"><legend class="sr">Profesional para la persona '+(k+1)+'</legend><div class="member-top"><b>Persona '+(k+1)+' · '+T[m.trat].n+'</b></div><div class="opts">';
+      PROS.forEach(function(p){h+='<label class="opt"><input type="radio" name="pro'+k+'" value="'+p.id+'" data-act="pro" data-m="'+k+'"'+(m.prof===p.id?" checked":"")+'><span>'+p.n+'<small>'+p.s+'</small></span></label>';});
+      h+='</div></fieldset>';
+    });
+    h+=nav(true);
+  }
+  if(S.step===3){
+    h+='<h4>Elegí el día</h4><p class="sub">Días hábiles de la agenda de ejemplo. Los horarios reales del consultorio están a confirmar.</p><div class="days" role="group" aria-label="Días disponibles">';
+    days().forEach(function(d){var on=S.day&&S.day.toDateString()===d.toDateString();var n=proposals(d).length;
+      h+='<button type="button" class="day" data-act="day" data-v="'+d.toISOString()+'" aria-pressed="'+!!on+'"'+(n?'':' disabled style="opacity:.45;cursor:not-allowed"')+'><small>'+fmtDay(d,{weekday:"short"}).replace(".","")+'</small><b>'+d.getDate()+'</b><span>'+(n?n+(n>1?" opciones":" opción"):"completo")+'</span></button>';});
+    h+='</div>'+nav(true);
+  }
+  if(S.step===4){
+    var ps=proposals(S.day);
+    h+='<h4>'+(S.members.length>1?"Turnos seguidos para "+S.members.length+" personas":"Elegí el horario")+'</h4><p class="sub">'+esc(fmtDay(S.day))+'. '+(S.members.length>1?"Cada propuesta reúne todos los turnos en un mismo bloque; el plano muestra en qué consultorio se atiende cada uno.":"Horarios de ejemplo.")+'</p><div class="props" role="group" aria-label="Propuestas de horario">';
+    ps.forEach(function(p,i){var on=S.prop&&S.prop.start===p.start;
+      h+='<button type="button" class="prop" data-act="prop" data-i="'+i+'" aria-pressed="'+!!on+'"><div><div class="when">'+hm(p.start)+' a '+hm(p.end)+' h</div><ul>'+p.items.map(function(it,k){return '<li><b>'+(k+1)+'. '+hm(it.start)+'</b> · '+esc(T[S.members[k].trat].n)+' · Consultorio '+it.room+' · '+proOf(it.pro).n+'</li>';}).join("")+'</ul></div>'+miniPlan(p.items)+'</button>';});
+    h+='</div>'+nav(true);
+  }
+  if(S.step===5){
+    h+='<h4>Tus datos</h4><p class="sub">Para confirmar y mandar un único recordatorio.</p><form id="dataForm" novalidate>';
+    h+='<div class="field" id="f-resp"><label for="resp">Nombre y apellido de quien reserva</label><input id="resp" autocomplete="name" value="'+esc(S.resp)+'"><span class="err"></span></div>';
+    h+='<div class="field" id="f-wa"><label for="wa">WhatsApp (con código de área)</label><input id="wa" type="tel" inputmode="tel" autocomplete="tel" placeholder="291 555-1234" value="'+esc(S.wa)+'"><span class="err"></span></div>';
+    S.members.forEach(function(m,k){h+='<div class="field" id="f-n'+k+'"><label for="n'+k+'">Nombre de la persona '+(k+1)+' · '+T[m.trat].n+'</label><input id="n'+k+'" value="'+esc(m.name)+'"'+(k===0?' placeholder="Si sos vos, repetí tu nombre"':'')+'><span class="err"></span></div>';});
+    h+='</form>'+nav(true,"Confirmar turno"+(S.members.length>1?"s":""));
+  }
+  if(S.step===6){
+    var p=S.prop, d=S.day, rem=new Date(d.getTime());rem.setDate(rem.getDate()-1);
+    var lines=p.items.map(function(it,k){return "• "+hm(it.start)+" h — "+S.members[k].name+": "+T[S.members[k].trat].n+" (Consultorio "+it.room+", "+proOf(it.pro).n+")";}).join("\n");
+    var msg="¡Hola, "+S.resp.split(" ")[0]+"! Te recordamos "+(S.members.length>1?"los turnos":"el turno")+" de mañana, "+fmtDay(d)+", en Consultorio Odontológico Bahiense (Ingeniero Luigi 57):\n"+lines+"\nSi necesitás reprogramar, respondé este mensaje.";
+    var real="Hola, quisiera pedir "+(S.members.length>1?"turnos":"un turno")+" para: "+S.members.map(function(m){return m.name+" ("+T[m.trat].n+")";}).join(", ")+". Vi el "+fmtDay(d)+" a las "+hm(p.start)+" h. Mi nombre es "+S.resp+".";
+    h+='<div class="confirm-ok"><svg width="44" height="44" viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="21" fill="#2F6B4F"/><path d="M13 22.5l6 6 12-13" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg><div><h4 style="margin:0">¡Listo! '+(S.members.length>1?"Turnos reservados":"Turno reservado")+' (demo)</h4><p class="sub" style="margin:2px 0 0">Esto es una simulación: no se reservó ni se envió nada.</p></div></div>';
+    h+='<div class="done-grid"><div class="summary"><dl><dt>Día</dt><dd>'+esc(fmtDay(d))+'</dd><dt>Bloque</dt><dd>'+hm(p.start)+' a '+hm(p.end)+' h</dd><dt>Lugar</dt><dd>Ingeniero Luigi 57, Bahía Blanca</dd>';
+    p.items.forEach(function(it,k){h+='<dt>'+hm(it.start)+' h</dt><dd>'+esc(S.members[k].name)+' · '+T[S.members[k].trat].n+'<br><span style="font-weight:400;color:var(--muted)">Consultorio '+it.room+' · '+proOf(it.pro).n+'</span></dd>';});
+    h+='<dt>Contacto</dt><dd>'+esc(S.resp)+' · '+esc(S.wa)+'</dd></dl>'+miniPlan(p.items).replace('class="mini"','class="mini" style="margin-top:14px"')+'</div>';
+    h+='<div><div class="phone" aria-label="Vista previa del recordatorio por WhatsApp"><div class="phone-top"><i>OB</i><span>Odontología Bahiense</span></div><div class="when">Llegaría el '+esc(fmtDay(rem,{weekday:"long",day:"numeric",month:"short"}))+', '+hm(p.start)+' h (24 h antes)</div><div class="bubble">'+esc(msg)+'<time>'+hm(p.start)+'</time></div></div>';
+    h+='<p class="sub" style="margin-top:10px;font-size:13.5px">Un solo recordatorio para toda la familia. Vista previa: no se envía.</p></div></div>';
+    h+='<div class="ag-nav"><button class="btn btn-ghost" data-act="restart">Nueva reserva</button><a class="btn btn-coral" target="_blank" rel="noopener" href="https://wa.me/5492914027590?text='+encodeURIComponent(real)+'">Pedirlo de verdad por WhatsApp</a></div>';
+  }
+  main.innerHTML=h;
+  if(focus)main.focus({preventScroll:true});
+}
+function readForm(){
+  var f=document.getElementById("dataForm");if(!f)return;
+  S.resp=document.getElementById("resp").value.trim();S.wa=document.getElementById("wa").value.trim();
+  S.members.forEach(function(m,k){m.name=document.getElementById("n"+k).value.trim();});
+}
+function validate(){
+  S.err="";
+  if(S.step===3&&!S.day)S.err="Elegí un día para seguir.";
+  if(S.step===4&&!S.prop)S.err="Elegí una de las propuestas de horario.";
+  if(S.step===5){
+    readForm();var bad=[];
+    function mark(id,msg){var f=document.getElementById(id);f.classList.toggle("bad",!!msg);f.querySelector(".err").textContent=msg||"";var i=f.querySelector("input");i.setAttribute("aria-invalid",msg?"true":"false");if(msg)bad.push(i);}
+    mark("f-resp",S.resp.length<3?"Ingresá tu nombre.":"");
+    var dig=S.wa.replace(/\D/g,"");mark("f-wa",(dig.length<10||dig.length>13)?"Ingresá un número válido con código de área (ej. 291 555-1234).":"");
+    S.members.forEach(function(m,k){mark("f-n"+k,m.name.length<2?"Ingresá el nombre.":"");});
+    if(bad.length){bad[0].focus();return false;}
+  }
+  return !S.err;
+}
+main.addEventListener("click",function(e){
+  var b=e.target.closest("[data-act]");if(!b||b.tagName==="SELECT"||b.tagName==="INPUT")return;
+  var a=b.dataset.act,k=+b.dataset.m;
+  if(a==="type"){var m=S.members[k];m.type=b.dataset.v;if(T[m.trat].st.indexOf(m.type)<0)m.trat="evaluacion";render();return;}
+  if(a==="add"){var last=S.members[S.members.length-1];S.members.push({type:S.members.length===1&&last.type==="adulto"?"chico":"adulto",trat:"evaluacion",prof:"indistinto",name:""});S.prop=null;render();return;}
+  if(a==="rm"){S.members.splice(k,1);S.prop=null;render();return;}
+  if(a==="day"){S.day=new Date(b.dataset.v);S.prop=null;S.err="";render();return;}
+  if(a==="prop"){S.prop=proposals(S.day)[+b.dataset.i];S.err="";render();return;}
+  if(a==="back"){if(S.step===5)readForm();S.err="";S.step--;render(true);return;}
+  if(a==="restart"){reset();render(true);return;}
+  if(a==="next"){
+    if(!validate()){if(S.step!==5)render();return;}
+    if(S.step===3&&S.prop&&!proposals(S.day).some(function(p){return p.start===S.prop.start;}))S.prop=null;
+    S.step++;render(true);
+    document.getElementById("agendaBox").scrollIntoView({behavior:"smooth",block:"start"});
+  }
+});
+main.addEventListener("change",function(e){
+  var t=e.target;if(t.dataset.act==="trat")S.members[+t.dataset.m].trat=t.value;
+  if(t.dataset.act==="pro"){S.members[+t.dataset.m].prof=t.value;S.prop=null;}
+});
+render();
+
+document.addEventListener("click",function(e){
+  var b=e.target.closest("[data-book]");
+  if(b){e.preventDefault();reset(b.dataset.book,b.dataset.type);render(true);
+    document.getElementById("agenda").scrollIntoView({behavior:"smooth"});return;}
+  var f=e.target.closest("[data-family]");
+  if(f){e.preventDefault();reset();S.members.push({type:"chico",trat:"evaluacion",prof:"indistinto",name:""});render(true);document.getElementById("agenda").scrollIntoView({behavior:"smooth"});}
+});
+
+/* ---------- FAQ ---------- */
+var FAQ=[
+  ["Odontopediatría","¿Desde cuándo conviene la primera consulta de los chicos?","En general se recomienda una primera visita cuando aparecen los primeros dientes o en los primeros años. Sirve para prevenir, acostumbrarlos al consultorio y seguir su desarrollo dental. En la consulta te orientamos según cada chico."],
+  ["Ortopedia","¿En qué se diferencia de la ortodoncia?","La ortopedia busca guiar el crecimiento de los maxilares mientras el chico o adolescente todavía está creciendo, con aparatos. La ortodoncia trabaja sobre la posición de los dientes. Muchas veces una prepara el terreno para la otra; lo define la evaluación."],
+  ["Ortodoncia","¿Brackets o alineadores invisibles?","Depende del tipo de maloclusión, de la edad y de tus preferencias. En la consulta se analizan las dos alternativas y se explica qué se puede esperar de cada una en tu caso."],
+  ["Carillas","¿Hay que desgastar el diente?","Según el tipo de carilla y el estado del diente puede hacer falta una preparación mínima o ninguna. Se define y se explica antes de empezar."],
+  ["Blanqueamiento","¿Interno o externo?","El externo actúa sobre la superficie de los dientes. El interno se usa en piezas que cambiaron de color desde adentro, por ejemplo después de un tratamiento de conducto. Primero se revisa que la boca esté sana."],
+  ["Endodoncia","¿Cómo es un tratamiento de conducto?","Se hace con anestesia local y busca conservar la pieza cuando la pulpa está comprometida. Después puede haber algo de sensibilidad unos días; el profesional te indica cómo manejarla y cuándo controlar."],
+  ["Periodoncia","Me sangran las encías al cepillarme, ¿es para consultar?","Sí, conviene no dejarlo pasar. El sangrado, la sensibilidad o la movilidad de los dientes pueden tener distintas causas y es importante que las evalúe un profesional."],
+  ["Implantes","¿Cualquier persona puede hacerse un implante?","No siempre. Hace falta evaluar el hueso, las encías y la salud general. Con eso se arma un plan y se conversan las alternativas, como prótesis o puentes."],
+  ["Prótesis","¿Qué diferencia hay entre corona, puente e incrustación?","La corona cubre un diente dañado; el puente repone una pieza ausente apoyándose en los dientes vecinos; la incrustación restaura una parte del diente. Cuál conviene depende de cada situación."],
+  ["Profilaxis","¿Cada cuánto conviene hacer una limpieza?","Lo más habitual es una o dos veces por año, pero la frecuencia la indica el profesional según tus encías y tu acumulación de sarro."],
+  ["Escáner intraoral","¿Para qué sirve?","Registra la boca en formato digital. En el consultorio lo usamos porque hace la experiencia más cómoda y más rápida en restauraciones, ortodoncia e implantes."],
+  ["Turnos","¿Cómo pido turno hoy?","Por teléfono o WhatsApp al 291 402-7590, o por mail a odontologiabahiense@gmail.com. La agenda online de esta página es una demostración."]
+];
+var faq=document.getElementById("faq"),half=Math.ceil(FAQ.length/2),cols=[el("<div></div>"),el("<div></div>")];
+FAQ.forEach(function(q,i){cols[i<half?0:1].appendChild(el('<details><summary><small>'+q[0]+'</small>'+q[1]+'</summary><p>'+q[2]+'</p></details>'));});
+faq.appendChild(cols[0]);faq.appendChild(cols[1]);
+
+/* reveal */
+var rv=document.querySelectorAll(".rv");
+if("IntersectionObserver" in window){var io2=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add("in");io2.unobserve(en.target);}});},{rootMargin:"0px 0px -8% 0px"});rv.forEach(function(r){io2.observe(r);});}
+else rv.forEach(function(r){r.classList.add("in");});
+})();
+</script>
+</body>
+</html>
