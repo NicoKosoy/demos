@@ -1,0 +1,966 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#F2F7F8">
+<title>KeepBahía · Ortodoncia invisible en Bahía Blanca</title>
+<meta name="description" content="Prototipo de demostración para KeepBahía: alineadores invisibles KeepSmiling con la Dra. María Luján Khoury, Laprida 262, Bahía Blanca.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Gelasio:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ice:#F2F7F8; --paper:#FFFFFF; --frost:#E4F1F2;
+  --aqua:#8ED8D4; --aqua-glass:rgba(110,205,200,.20); --aqua-line:rgba(14,124,122,.35); --aqua-deep:#0B6A69;
+  --ink:#1E2528; --ink2:#3A4549; --muted:#55626A; --line:rgba(30,37,40,.13);
+  --coral:#FF6B57; --coral-soft:#FFE4DF;
+  --sans:"Familjen Grotesk","Helvetica Neue","Segoe UI",Helvetica,sans-serif;
+  --serif:"Gelasio",Georgia,"Times New Roman",serif;
+  --hh:64px; --r:22px;
+  --pad:clamp(16px,4vw,56px);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:var(--ice);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img,svg{display:block;max-width:100%}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--coral);outline-offset:3px;border-radius:8px}
+.wrap{max-width:1240px;margin:0 auto;padding:0 var(--pad)}
+.serif{font-family:var(--serif);font-style:italic;font-weight:400;letter-spacing:-.01em}
+.eyebrow{font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--aqua-deep)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* demo notice */
+.demo{background:var(--ink);color:#D8E6E8;font-size:13px;text-align:center;padding:7px 16px;line-height:1.35}
+.demo b{color:#fff;font-weight:600}
+.demo i{font-style:normal;color:var(--aqua)}
+
+/* header */
+header.top{position:sticky;top:0;z-index:40;height:var(--hh);background:rgba(242,247,248,.78);backdrop-filter:blur(14px) saturate(1.3);-webkit-backdrop-filter:blur(14px) saturate(1.3);border-bottom:1px solid var(--line)}
+header.top .wrap{height:100%;display:flex;align-items:center;gap:24px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:700;font-size:21px;letter-spacing:-.02em}
+.logo svg{width:30px;height:30px}
+.logo span em{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--aqua-deep)}
+nav.main{display:flex;gap:22px;margin-left:auto;font-size:15px}
+nav.main a{text-decoration:none;color:var(--ink2);padding:6px 0;border-bottom:1px solid transparent}
+nav.main a:hover{border-color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;border:0;border-radius:999px;padding:13px 22px;font-weight:600;font-size:16px;text-decoration:none;transition:transform .2s ease,box-shadow .2s ease,background .2s;line-height:1.1;text-align:center}
+.btn-coral{background:var(--coral);color:var(--ink);box-shadow:0 8px 24px -10px rgba(255,107,87,.8)}
+.btn-coral:hover{transform:translateY(-2px);box-shadow:0 14px 30px -12px rgba(255,107,87,.9)}
+.btn-ghost{background:rgba(255,255,255,.6);color:var(--ink);border:1px solid var(--line)}
+.btn-ghost:hover{background:#fff}
+.btn-ink{background:var(--ink);color:#fff}
+.btn-ink:hover{transform:translateY(-2px)}
+.btn-sm{padding:10px 16px;font-size:15px}
+.btn .arr{transition:transform .2s}
+.btn:hover .arr{transform:translateX(3px)}
+header .btn{white-space:nowrap;gap:0}
+
+/* hero */
+.hero{position:relative;padding:clamp(40px,7vw,96px) 0 clamp(48px,6vw,80px);overflow:hidden}
+.hero::before{content:"";position:absolute;inset:-20% -10% auto auto;width:70vw;height:70vw;max-width:900px;max-height:900px;background:radial-gradient(closest-side,rgba(142,216,212,.55),rgba(142,216,212,0));pointer-events:none}
+.hero .wrap{position:relative;display:grid;grid-template-columns:1.08fr .92fr;gap:clamp(24px,4vw,64px);align-items:center}
+.hero h1{font-size:clamp(40px,5.2vw,76px);line-height:.96;letter-spacing:-.035em;font-weight:600;margin:18px 0 24px}
+.hero h1 .serif{color:var(--aqua-deep);font-size:1.02em}
+.hero h1 .n22{display:inline-block;position:relative}
+.hero h1 .n22::after{content:"";position:absolute;left:-.04em;right:-.04em;bottom:.06em;height:.16em;background:var(--coral);opacity:.85;z-index:-1;border-radius:4px}
+.hero .lede{font-size:clamp(18px,1.6vw,21px);color:var(--ink2);max-width:36em}
+.hero .lede b{color:var(--ink);font-weight:600}
+.hero .ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.hero .facts{display:flex;flex-wrap:wrap;gap:8px 10px;margin-top:34px;padding:0;list-style:none}
+.hero .facts li{font-size:14px;padding:7px 13px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.55)}
+.archstage{position:relative;aspect-ratio:1/1;max-width:560px;width:100%;justify-self:center}
+.archstage svg{width:100%;height:100%}
+.archstage .tag{position:absolute;font-size:13px;background:rgba(255,255,255,.75);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid var(--line);padding:8px 12px;border-radius:14px;line-height:1.25}
+.archstage .tag b{display:block;font-size:20px;letter-spacing:-.02em}
+.archstage .t1{left:0;top:12%}
+.archstage .t2{right:0;bottom:16%}
+.layer{animation:float 7s ease-in-out infinite}
+.layer.l2{animation-delay:-2.3s}
+.layer.l3{animation-delay:-4.6s}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+/* sections */
+section{scroll-margin-top:calc(var(--hh) + 8px)}
+.sec{padding:clamp(64px,9vw,128px) 0}
+.sec-head{display:grid;grid-template-columns:1fr 1fr;gap:24px 48px;align-items:end;margin-bottom:clamp(32px,4vw,56px)}
+.sec-head h2{font-size:clamp(34px,4.6vw,62px);line-height:1;letter-spacing:-.03em;font-weight:600;margin-top:12px}
+.sec-head p{color:var(--ink2);max-width:34em}
+
+/* journey */
+.journey{position:relative;background:linear-gradient(180deg,var(--ice),var(--frost))}
+.j-intro{padding-top:clamp(64px,9vw,120px)}
+.j-stick{position:relative}
+.j-track{display:grid;gap:20px;padding:0 var(--pad) 64px}
+.panel{position:relative;border-radius:var(--r);background:rgba(255,255,255,.62);border:1px solid rgba(255,255,255,.9);box-shadow:0 30px 60px -40px rgba(14,80,80,.45),inset 0 1px 0 #fff;padding:clamp(22px,3vw,44px);display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,3vw,48px);align-items:center;overflow:hidden}
+.panel .step{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--muted);font-weight:500}
+.panel .step i{font-style:normal;display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;border:1px solid var(--aqua-line);color:var(--aqua-deep);font-weight:600;background:var(--aqua-glass)}
+.panel h3{font-size:clamp(28px,3.4vw,48px);line-height:1.02;letter-spacing:-.03em;font-weight:600;margin:16px 0 14px}
+.panel p{color:var(--ink2);max-width:30em}
+.panel ul{list-style:none;margin-top:18px;display:flex;flex-wrap:wrap;gap:8px}
+.panel ul li{font-size:14px;padding:6px 12px;border-radius:999px;background:var(--aqua-glass);color:var(--aqua-deep);font-weight:500}
+.panel .art{aspect-ratio:4/3;border-radius:16px;background:linear-gradient(160deg,#fff,var(--frost));border:1px solid var(--line);display:grid;place-items:center;overflow:hidden;position:relative}
+.panel .art svg{width:92%;height:92%}
+.j-dots{display:none}
+.scanline{animation:scan 3.6s ease-in-out infinite}
+@keyframes scan{0%,100%{transform:translateY(0)}50%{transform:translateY(190px)}}
+@media (min-width:960px){
+  .journey .j-scroll{height:300vh}
+  .j-stick{position:sticky;top:var(--hh);height:calc(100vh - var(--hh));overflow:hidden;display:flex;flex-direction:column;justify-content:center}
+  .j-track{display:flex;gap:28px;padding:0 var(--pad);will-change:transform}
+  .panel{flex:0 0 min(1100px,84vw);min-height:min(560px,calc(100vh - var(--hh) - 140px))}
+  .j-dots{display:flex;gap:10px;align-items:center;padding:22px var(--pad) 0}
+  .j-dots button{border:1px solid var(--line);background:rgba(255,255,255,.6);border-radius:999px;padding:7px 14px;font-size:14px;color:var(--ink2);transition:all .25s}
+  .j-dots button[aria-current="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .j-dots .bar{flex:1;height:2px;background:var(--line);border-radius:2px;position:relative;overflow:hidden;margin-left:8px}
+  .j-dots .bar span{position:absolute;inset:0 auto 0 0;width:0;background:var(--aqua-deep)}
+}
+
+/* day clock */
+.day .grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,5vw,72px);align-items:center}
+.clock{position:relative;max-width:540px;width:100%;justify-self:center}
+.clock svg{width:100%;height:auto;overflow:visible}
+.clock .mk{cursor:pointer}
+.clock .mk circle.dot{transition:r .2s}
+.clock .mk:hover circle.dot,.clock .mk.on circle.dot{r:13}
+.clock .mk:focus{outline:none}
+.clock .mk:focus-visible circle.ring{stroke:var(--coral);stroke-width:3}
+.moment{border-radius:var(--r);background:#fff;border:1px solid var(--line);padding:clamp(22px,3vw,36px);min-height:250px}
+.moment .when{font-size:15px;color:var(--muted);font-variant-numeric:tabular-nums}
+.moment h3{font-size:clamp(26px,2.8vw,36px);letter-spacing:-.025em;line-height:1.05;margin:8px 0 12px;font-weight:600}
+.moment p{color:var(--ink2)}
+.moment .state{display:inline-flex;align-items:center;gap:8px;margin-top:18px;font-size:14px;font-weight:600;padding:6px 12px;border-radius:999px}
+.state.on{background:var(--aqua-glass);color:var(--aqua-deep)}
+.state.off{background:var(--coral-soft);color:#9A2F20}
+.mlist{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.mlist button{border:1px solid var(--line);background:rgba(255,255,255,.6);border-radius:999px;padding:7px 12px;font-size:14px}
+.mlist button[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:14px;color:var(--muted);margin-top:16px}
+.legend span{display:inline-flex;align-items:center;gap:8px}
+.legend i{width:22px;height:8px;border-radius:4px;display:inline-block}
+
+/* treatments */
+.tx{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.tx-list{border-top:1px solid var(--line)}
+.tx-row{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.2fr) auto;gap:20px 40px;padding:clamp(22px,3vw,36px) 0;border-bottom:1px solid var(--line);align-items:center;position:relative}
+.tx-row::before{content:"";position:absolute;inset:0 calc(var(--pad) * -1);background:linear-gradient(90deg,var(--aqua-glass),transparent 70%);opacity:0;transition:opacity .3s;pointer-events:none}
+.tx-row:hover::before{opacity:1}
+.tx-row h3{font-size:clamp(30px,3.8vw,52px);letter-spacing:-.03em;line-height:1;font-weight:600;position:relative}
+.tx-row h3 small{display:block;font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:var(--aqua-deep);font-weight:600;margin-bottom:8px}
+.tx-row p{color:var(--ink2);position:relative}
+.tx-row .acts{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;position:relative}
+.tx-row.eval h3 .serif{color:var(--aqua-deep)}
+
+/* advantages */
+.adv{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;margin-top:8px}
+.adv li{list-style:none;position:relative;border-radius:18px;padding:22px 18px 24px;background:linear-gradient(170deg,rgba(255,255,255,.85),rgba(228,241,242,.6));border:1px solid rgba(255,255,255,.95);box-shadow:0 18px 40px -30px rgba(14,80,80,.5);transition:transform .3s}
+.adv li:hover{transform:translateY(-6px)}
+.adv svg{width:44px;height:44px;margin-bottom:16px}
+.adv b{display:block;font-size:19px;letter-spacing:-.015em;line-height:1.15;margin-bottom:6px}
+.adv span{font-size:15px;color:var(--ink2)}
+.adv-note{margin-top:18px;font-size:15px;color:var(--muted)}
+
+/* planner */
+.planner{background:linear-gradient(180deg,var(--frost),var(--ice))}
+.pl{display:grid;grid-template-columns:minmax(0,360px) minmax(0,1fr);gap:clamp(20px,3vw,40px);align-items:start}
+.pl-ctrl{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:24px;display:grid;gap:22px}
+.fld label,.fld .lab{display:block;font-size:14px;font-weight:600;margin-bottom:8px}
+.fld .hint{font-size:13px;color:var(--muted);margin-top:6px}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{flex:1 1 auto;border:1px solid var(--line);background:var(--ice);border-radius:12px;padding:10px 12px;font-size:15px;font-weight:500;transition:all .2s}
+.seg button[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+input[type=date],input[type=text],input[type=tel],textarea,select{width:100%;border:1px solid rgba(30,37,40,.28);background:#fff;border-radius:12px;padding:12px 14px;font-size:16px}
+input[type=range]{width:100%;accent-color:var(--aqua-deep)}
+.range-val{font-variant-numeric:tabular-nums;font-weight:600}
+.pl-out{background:rgba(255,255,255,.7);border:1px solid #fff;border-radius:var(--r);padding:clamp(20px,3vw,32px);box-shadow:0 30px 60px -45px rgba(14,80,80,.5);min-width:0}
+.pl-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:22px}
+.pl-stats div{border-radius:16px;background:var(--ice);padding:14px}
+.pl-stats b{display:block;font-size:clamp(24px,2.6vw,34px);letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}
+.pl-stats span{font-size:13px;color:var(--muted)}
+.months{display:grid;gap:6px;max-height:420px;overflow:auto;padding-right:4px}
+.mrow{display:grid;grid-template-columns:76px minmax(0,1fr);gap:10px;align-items:center;font-size:13px}
+.mrow .ml{color:var(--muted);text-transform:capitalize;font-variant-numeric:tabular-nums}
+.mrow .bar{position:relative;height:30px;border-radius:9px;background:linear-gradient(90deg,rgba(14,106,105,.06),rgba(14,106,105,.02));border:1px solid rgba(30,37,40,.06)}
+.chip{position:absolute;top:4px;height:20px;width:20px;margin-left:-10px;border-radius:7px;background:var(--aqua-glass);border:1.5px solid var(--aqua-deep);display:grid;place-items:center;font-size:10px;font-weight:700;color:var(--aqua-deep);font-variant-numeric:tabular-nums}
+.chip.ctl{background:var(--coral);border-color:var(--coral);color:var(--ink)}
+.chip.start{background:var(--ink);border-color:var(--ink);color:#fff}
+.pl-legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin:14px 0 4px}
+.pl-legend span{display:inline-flex;gap:6px;align-items:center}
+.pl-legend i{width:14px;height:14px;border-radius:5px;border:1.5px solid var(--aqua-deep);background:var(--aqua-glass)}
+.pl-legend i.c{background:var(--coral);border-color:var(--coral)}
+.pl-legend i.s{background:var(--ink);border-color:var(--ink)}
+.next{margin-top:18px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.next div{font-size:14px;padding:10px 12px;border-radius:12px;background:#fff;border:1px solid var(--line)}
+.next div b{display:block;font-size:13px;color:var(--muted);font-weight:500}
+.next div.ctl{border-color:var(--coral);background:var(--coral-soft)}
+.price{margin-top:22px;display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:20px}
+.price .pv{font-size:clamp(22px,2.4vw,30px);font-weight:600;letter-spacing:-.02em}
+.price .pv small{display:block;font-size:13px;font-weight:400;color:var(--muted);letter-spacing:0}
+.disclaim{font-size:13.5px;color:var(--muted);margin-top:14px;max-width:60em}
+
+/* agenda */
+.agenda{background:var(--ink);color:#EEF5F6;position:relative;overflow:hidden}
+.agenda::before{content:"";position:absolute;right:-20vw;top:-20vw;width:60vw;height:60vw;border-radius:50%;background:radial-gradient(closest-side,rgba(142,216,212,.22),transparent);pointer-events:none}
+.agenda .sec-head p{color:#C6D3D6}
+.agenda .eyebrow{color:var(--aqua)}
+.ag{position:relative;display:grid;grid-template-columns:240px minmax(0,1fr);gap:clamp(20px,3vw,40px)}
+.ag-steps{list-style:none;display:grid;gap:4px;align-content:start}
+.ag-steps li{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;color:#9FB0B4;font-size:15px}
+.ag-steps li i{font-style:normal;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(255,255,255,.25);font-size:13px;flex:none}
+.ag-steps li.cur{background:rgba(255,255,255,.08);color:#fff}
+.ag-steps li.cur i{background:var(--aqua);color:var(--ink);border-color:var(--aqua)}
+.ag-steps li.done{color:#D6E3E5}
+.ag-steps li.done i{background:rgba(142,216,212,.25);border-color:transparent;color:var(--aqua)}
+.ag-steps li small{display:block;font-size:12.5px;color:var(--aqua);margin-top:2px}
+.ag-box{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:var(--r);padding:clamp(18px,3vw,34px);min-height:420px;min-width:0}
+.ag-box h3{font-size:clamp(22px,2.4vw,30px);letter-spacing:-.02em;font-weight:600;margin-bottom:6px}
+.ag-box .sub{color:#B9C8CB;font-size:15px;margin-bottom:20px}
+.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.opt{text-align:left;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.04);border-radius:16px;padding:16px;color:#fff;transition:all .2s}
+.opt:hover{border-color:var(--aqua);background:rgba(142,216,212,.08)}
+.opt[aria-pressed="true"]{border-color:var(--aqua);background:rgba(142,216,212,.16);box-shadow:inset 0 0 0 1px var(--aqua)}
+.opt b{display:block;font-size:17px;margin-bottom:3px}
+.opt span{font-size:14px;color:#B9C8CB}
+.days{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:8px}
+.days button,.slots button{border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.04);color:#fff;border-radius:14px;padding:10px 6px;text-align:center;font-variant-numeric:tabular-nums;transition:all .2s}
+.days button small{display:block;font-size:12px;color:#B9C8CB;text-transform:capitalize}
+.days button b{display:block;font-size:22px;line-height:1.1}
+.days button:disabled,.slots button:disabled{opacity:.35;cursor:not-allowed;text-decoration:line-through}
+.days button[aria-pressed="true"],.slots button[aria-pressed="true"]{background:var(--aqua);color:var(--ink);border-color:var(--aqua)}
+.days button[aria-pressed="true"] small{color:var(--ink)}
+.days button:not(:disabled):hover,.slots button:not(:disabled):hover{border-color:var(--aqua)}
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:8px}
+.slots h4{grid-column:1/-1;font-size:13px;color:#B9C8CB;font-weight:500;margin-top:6px}
+.ag-nav{display:flex;justify-content:space-between;gap:10px;margin-top:24px;flex-wrap:wrap}
+.ag-nav .btn-ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.3)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+.form{display:grid;gap:14px;max-width:520px}
+.form label{font-size:14px;font-weight:600;display:block;margin-bottom:6px}
+.form input,.form textarea{background:rgba(255,255,255,.95);color:var(--ink);border-color:transparent}
+.form .err{font-size:13.5px;color:#FFB4A8;margin-top:6px;min-height:0}
+.form input[aria-invalid="true"]{box-shadow:0 0 0 2px var(--coral)}
+.pro{display:flex;gap:16px;align-items:center;border:1px solid var(--aqua);background:rgba(142,216,212,.12);border-radius:18px;padding:18px;max-width:560px}
+.pro .av{width:64px;height:64px;border-radius:50%;flex:none;display:grid;place-items:center;background:linear-gradient(140deg,var(--aqua),#d8f3f1);color:var(--ink);font-weight:700;font-size:22px}
+.pro b{font-size:18px;display:block}
+.pro span{font-size:14px;color:#C6D3D6}
+.conf{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,320px);gap:24px;align-items:start}
+.summary{list-style:none;display:grid;gap:0;border-top:1px solid rgba(255,255,255,.15)}
+.summary li{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.15);font-size:15px}
+.summary li span{color:#B9C8CB}
+.summary li b{text-align:right}
+.ok{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.ok svg{width:42px;height:42px;flex:none}
+.phone{background:#E9E2D8;border-radius:24px;padding:14px;color:var(--ink);box-shadow:0 30px 60px -30px rgba(0,0,0,.6)}
+.phone .ph-top{display:flex;align-items:center;gap:10px;background:#1F5C55;color:#fff;margin:-14px -14px 12px;padding:12px 14px;border-radius:24px 24px 0 0;font-size:14px}
+.phone .ph-top .av{width:30px;height:30px;border-radius:50%;background:var(--aqua);display:grid;place-items:center;color:var(--ink);font-weight:700;font-size:12px}
+.phone .ph-top small{display:block;font-size:11.5px;opacity:.8}
+.bubble{background:#fff;border-radius:4px 14px 14px 14px;padding:10px 12px 18px;font-size:14px;line-height:1.45;position:relative;max-width:94%}
+.bubble time{position:absolute;right:10px;bottom:4px;font-size:11px;color:#7A8589}
+.phone .when{font-size:11.5px;text-align:center;margin-bottom:10px;color:#5d5a55;background:rgba(255,255,255,.6);border-radius:8px;padding:3px 8px;width:max-content;max-width:100%;margin-inline:auto}
+.demo-note{font-size:13px;color:#9FB0B4;margin-top:12px}
+
+/* doctor */
+.doc .grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(24px,5vw,80px);align-items:center}
+.monogram{aspect-ratio:4/5;border-radius:28px;background:linear-gradient(160deg,#fff,var(--frost));border:1px solid var(--line);position:relative;overflow:hidden;display:grid;place-items:center;max-width:440px;width:100%}
+.monogram svg{width:100%;height:100%;position:absolute;inset:0}
+.monogram .mono{position:relative;font-family:var(--serif);font-style:italic;font-size:clamp(90px,12vw,160px);color:var(--aqua-deep);letter-spacing:-.04em;line-height:1}
+.monogram .cap{position:absolute;left:18px;bottom:16px;right:18px;font-size:13px;color:var(--muted)}
+.doc h2{font-size:clamp(34px,4.4vw,58px);line-height:1;letter-spacing:-.03em;font-weight:600;margin:14px 0 20px}
+.doc p{color:var(--ink2);font-size:18px;max-width:34em}
+.creds{list-style:none;margin-top:26px;display:grid;gap:0;border-top:1px solid var(--line);max-width:560px}
+.creds li{display:flex;gap:16px;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--line);font-size:16px}
+.creds li span{color:var(--muted)}
+.creds li b{font-weight:600;text-align:right}
+
+/* faq */
+.faq-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.faq-tabs button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:9px 16px;font-size:15px}
+.faq-tabs button[aria-selected="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.faq details{border-bottom:1px solid var(--line)}
+.faq details:first-child{border-top:1px solid var(--line)}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:20px;align-items:center;padding:20px 0;font-size:clamp(18px,1.8vw,22px);font-weight:500;letter-spacing:-.01em}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary .pm{flex:none;width:32px;height:32px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;transition:transform .25s,background .25s}
+.faq details[open] summary .pm{transform:rotate(45deg);background:var(--aqua-glass)}
+.faq .ans{padding:0 0 22px;color:var(--ink2);max-width:46em}
+.faq .ans b{color:var(--ink)}
+.faq-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:clamp(24px,5vw,72px)}
+
+/* contact */
+.contact{background:#fff;border-top:1px solid var(--line)}
+.ct{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(24px,4vw,64px);align-items:stretch}
+.ct h2{font-size:clamp(40px,6vw,84px);line-height:.95;letter-spacing:-.035em;font-weight:600;margin:12px 0 26px}
+.ct-list{list-style:none;display:grid;border-top:1px solid var(--line)}
+.ct-list li{display:grid;grid-template-columns:120px minmax(0,1fr);gap:16px;padding:16px 0;border-bottom:1px solid var(--line);align-items:baseline}
+.ct-list li span{font-size:14px;color:var(--muted)}
+.ct-list li a{text-decoration-color:var(--aqua-line);text-underline-offset:3px;overflow-wrap:anywhere}
+.ct-list li small{display:block;font-size:13px;color:var(--muted)}
+.mapcard{border-radius:var(--r);background:var(--ice);border:1px solid var(--line);position:relative;overflow:hidden;min-height:340px}
+.mapcard svg{position:absolute;inset:0;width:100%;height:100%}
+.mapcard .pin{position:absolute;left:50%;top:46%;transform:translate(-50%,-100%);background:var(--ink);color:#fff;padding:10px 14px;border-radius:14px;font-size:14px;white-space:nowrap;box-shadow:0 14px 30px -14px rgba(0,0,0,.6)}
+.mapcard .pin::after{content:"";position:absolute;left:50%;bottom:-7px;margin-left:-7px;border:7px solid transparent;border-bottom:0;border-top-color:var(--ink)}
+.mapcard .go{position:absolute;left:16px;right:16px;bottom:16px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;background:rgba(255,255,255,.85);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-radius:16px;padding:12px 14px;font-size:14px}
+footer{padding:36px 0 48px;font-size:14px;color:var(--muted)}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(18px);transition:opacity .8s ease,transform .8s ease}
+.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .rv{opacity:1;transform:none;transition:none}
+  .layer,.scanline{animation:none}
+}
+
+/* responsive */
+@media (max-width:1100px){
+  nav.main{display:none}
+  header .btn{margin-left:auto}
+  .adv{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (max-width:959px){
+  .hero .wrap{grid-template-columns:1fr}
+  .archstage{max-width:440px}
+  .panel{grid-template-columns:1fr}
+  .day .grid,.doc .grid,.faq-grid,.ct{grid-template-columns:1fr}
+  .pl{grid-template-columns:1fr}
+  .ag{grid-template-columns:1fr}
+  .ag-steps{display:flex;overflow-x:auto;gap:6px;padding-bottom:4px;scrollbar-width:none}
+  .ag-steps li{flex:none;padding:8px 10px;font-size:14px}
+  .ag-steps li:not(.cur) .lbl{display:none}
+  .ag-steps li small{display:none}
+  .conf{grid-template-columns:1fr}
+  .sec-head{grid-template-columns:1fr}
+  .tx-row{grid-template-columns:1fr}
+  .tx-row .acts{justify-content:flex-start}
+  .monogram{max-width:360px;aspect-ratio:5/4}
+}
+@media (max-width:640px){
+  body{font-size:16px}
+  :root{--hh:58px}
+  .logo{font-size:19px}
+  header .btn{padding:9px 14px;font-size:14px}
+  .adv{grid-template-columns:1fr 1fr}
+  .adv li:last-child{grid-column:1/-1}
+  .pl-stats{grid-template-columns:1fr 1fr}
+  .opts{grid-template-columns:1fr}
+  .ct-list li{grid-template-columns:1fr;gap:2px}
+  .archstage .tag{font-size:12px;padding:6px 10px}
+  .archstage .tag b{font-size:17px}
+  .mrow{grid-template-columns:58px minmax(0,1fr)}
+  .chip{width:16px;height:16px;margin-left:-8px;font-size:8.5px;top:6px;border-radius:5px}
+}
+@media (max-width:380px){
+  header .btn .long{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="demo" role="note"><b>Prototipo de demostración preparado para KeepBahía</b> · <i>contenido real de keepbahia.ar; agenda y recordatorios de ejemplo, no se envía nada</i></div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#inicio" aria-label="KeepBahía, inicio">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><rect x="3" y="7" width="26" height="26" rx="9" fill="rgba(110,205,200,.35)" stroke="#0B6A69" stroke-width="1.5"/><rect x="11" y="3" width="26" height="26" rx="9" fill="rgba(255,255,255,.6)" stroke="#1E2528" stroke-width="1.5"/></svg>
+      <span>Keep<em>Bahía</em></span>
+    </a>
+    <nav class="main" aria-label="Secciones">
+      <a href="#etapas">Etapas</a>
+      <a href="#dia">Un día</a>
+      <a href="#tratamientos">Tratamientos</a>
+      <a href="#planificador">Planificador</a>
+      <a href="#preguntas">Preguntas</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <a class="btn btn-coral btn-sm" href="#agenda" data-book="eval-adultos">Reservá<span class="long">&nbsp;tu evaluación</span></a>
+  </div>
+</header>
+
+<main id="inicio">
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <p class="eyebrow">Ortodoncia invisible · Bahía Blanca</p>
+      <h1>Se usan <span class="n22">22&nbsp;horas</span> por día. Se planifican <span class="serif">en&nbsp;3D</span> antes de empezar.</h1>
+      <p class="lede">Alineadores transparentes KeepSmiling a medida, sin brackets, para <b>adultos, adolescentes y niños</b>. Con la <b>Dra. María Luján Khoury</b>, odontóloga UBA especializada en ortodoncia con alineadores, en Laprida 262.</p>
+      <div class="ctas">
+        <a class="btn btn-coral" href="#agenda" data-book="eval-adultos">Reservá tu evaluación <span class="arr">→</span></a>
+        <a class="btn btn-ghost" href="#planificador">Planificá tus placas</a>
+      </div>
+      <ul class="facts" aria-label="Datos clave">
+        <li>Acreditada KeepSmiling Black</li>
+        <li>Escaneo 3D</li>
+        <li>Alineadores en menos de un mes</li>
+      </ul>
+    </div>
+    <div class="archstage" aria-hidden="true">
+      <svg id="heroArch" viewBox="0 0 500 500"></svg>
+      <div class="tag t1"><b>cada 10–12 días</b>cambiás de placa en casa</div>
+      <div class="tag t2"><b>control</b>cada 2 o 3 placas</div>
+    </div>
+  </div>
+</section>
+
+<!-- JOURNEY -->
+<section class="journey" id="etapas" aria-labelledby="etapas-t">
+  <div class="wrap j-intro">
+    <div class="sec-head">
+      <div>
+        <p class="eyebrow">El recorrido</p>
+        <h2 id="etapas-t">Tres etapas, <span class="serif">de la consulta</span> a tu primera placa.</h2>
+      </div>
+      <p>Así trabaja KeepBahía: primero se evalúa el caso, después se escanea y se planifica digitalmente, y por último se entregan los alineadores con seguimiento profesional.</p>
+    </div>
+  </div>
+  <div class="j-scroll">
+    <div class="j-stick">
+      <div class="j-track" id="jTrack">
+        <article class="panel" aria-labelledby="p1t">
+          <div>
+            <p class="step"><i>1</i>Etapa uno</p>
+            <h3 id="p1t">Consulta de evaluación</h3>
+            <p>Se evalúa tu caso con radiografías y tomografía, y se definen los objetivos del tratamiento junto con la doctora.</p>
+            <ul><li>Radiografías</li><li>Tomografía</li><li>Objetivos del tratamiento</li></ul>
+            <p style="margin-top:22px"><a class="btn btn-ink btn-sm" href="#agenda" data-book="eval-adultos">Reservar evaluación <span class="arr">→</span></a></p>
+          </div>
+          <div class="art">
+            <svg viewBox="0 0 400 300" aria-hidden="true">
+              <rect x="30" y="40" width="340" height="190" rx="22" fill="#1E2528" opacity=".92"/>
+              <g id="xrayArch"></g>
+              <g stroke="#8ED8D4" stroke-width="1" opacity=".5">
+                <line x1="50" y1="135" x2="350" y2="135" stroke-dasharray="3 5"/>
+                <line x1="200" y1="58" x2="200" y2="214" stroke-dasharray="3 5"/>
+              </g>
+              <g font-family="Familjen Grotesk, Helvetica, sans-serif" font-size="12" fill="#1E2528">
+                <rect x="40" y="246" width="96" height="30" rx="15" fill="rgba(110,205,200,.3)"/><text x="88" y="265" text-anchor="middle">radiografía</text>
+                <rect x="146" y="246" width="96" height="30" rx="15" fill="rgba(110,205,200,.3)"/><text x="194" y="265" text-anchor="middle">tomografía</text>
+                <rect x="252" y="246" width="108" height="30" rx="15" fill="#FF6B57"/><text x="306" y="265" text-anchor="middle">objetivos</text>
+              </g>
+            </svg>
+          </div>
+        </article>
+        <article class="panel" aria-labelledby="p2t">
+          <div>
+            <p class="step"><i>2</i>Etapa dos</p>
+            <h3 id="p2t">Escaneo 3D y planificación</h3>
+            <p>Se toma un escaneo digital de tu boca y se planifica el tratamiento. Antes de empezar, podés ver la secuencia en 3D de cómo se moverán tus dientes, placa por placa.</p>
+            <ul><li>Escaneo digital</li><li>Secuencia en 3D</li><li>Modelos 3D impresos</li></ul>
+          </div>
+          <div class="art">
+            <svg viewBox="0 0 400 300" aria-hidden="true">
+              <defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="rgba(14,106,105,.12)"/></pattern>
+              <linearGradient id="scanG" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#8ED8D4" stop-opacity="0"/><stop offset="1" stop-color="#8ED8D4" stop-opacity=".7"/></linearGradient></defs>
+              <rect width="400" height="300" fill="url(#grid)"/>
+              <g id="wireArch"></g>
+              <g class="scanline"><rect x="40" y="20" width="320" height="40" fill="url(#scanG)"/><line x1="40" y1="60" x2="360" y2="60" stroke="#0B6A69" stroke-width="1.5"/></g>
+            </svg>
+          </div>
+        </article>
+        <article class="panel" aria-labelledby="p3t">
+          <div>
+            <p class="step"><i>3</i>Etapa tres</p>
+            <h3 id="p3t">Entrega de alineadores</h3>
+            <p>En menos de un mes recibís tus alineadores. Desde ahí, cambiás de placa en casa cada 10 a 12 días y venís a control cada 2 o 3 placas, con seguimiento profesional.</p>
+            <ul><li>Menos de un mes</li><li>Cambio en casa</li><li>Seguimiento profesional</li></ul>
+            <p style="margin-top:22px"><a class="btn btn-ink btn-sm" href="#planificador">Ver un calendario de ejemplo <span class="arr">→</span></a></p>
+          </div>
+          <div class="art">
+            <svg viewBox="0 0 400 300" aria-hidden="true"><g id="stackArch"></g></svg>
+          </div>
+        </article>
+      </div>
+      <div class="j-dots" role="group" aria-label="Ir a etapa">
+        <button type="button" data-i="0" aria-current="true">1 · Evaluación</button>
+        <button type="button" data-i="1">2 · Escaneo 3D</button>
+        <button type="button" data-i="2">3 · Entrega</button>
+        <div class="bar"><span id="jBar"></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DAY CLOCK -->
+<section class="sec day" id="dia" aria-labelledby="dia-t">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <p class="eyebrow">Un día con alineadores</p>
+        <h2 id="dia-t">22 horas puestos. <span class="serif">El resto, para comer.</span></h2>
+      </div>
+      <p>Los alineadores son removibles: los sacás para comer y cepillarte, y los volvés a colocar. Tocá cada momento del reloj para ver qué pasa en un día de ejemplo.</p>
+    </div>
+    <div class="grid">
+      <div class="clock">
+        <svg id="clock" viewBox="-40 -40 480 480" role="group" aria-label="Reloj de 24 horas con un día de ejemplo"></svg>
+      </div>
+      <div>
+        <div class="moment" aria-live="polite" id="moment"></div>
+        <div class="mlist" id="mlist" role="group" aria-label="Momentos del día"></div>
+        <div class="legend"><span><i style="background:#0B6A69"></i>Con alineadores (≈22 h)</span><span><i style="background:#FF6B57"></i>Sin alineadores, para comer</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TREATMENTS -->
+<section class="sec tx" id="tratamientos" aria-labelledby="tx-t">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <p class="eyebrow">Tratamientos</p>
+        <h2 id="tx-t">Alineadores KeepSmiling <span class="serif">para cada edad.</span></h2>
+      </div>
+      <p>Todos los tratamientos empiezan con una consulta de evaluación. La duración y el plan los define la doctora según cada caso.</p>
+    </div>
+    <div class="tx-list">
+      <div class="tx-row rv">
+        <h3><small>Adultos</small>A medida, sin brackets</h3>
+        <p>Alineadores invisibles hechos a medida para corregir la posición de los dientes sin brackets. Prácticamente invisibles y removibles para comer y cepillarte.</p>
+        <div class="acts"><button class="btn btn-ghost btn-sm" type="button" data-plan="adulto">Plan de ejemplo</button><a class="btn btn-coral btn-sm" href="#agenda" data-book="eval-adultos">Reservar</a></div>
+      </div>
+      <div class="tx-row rv">
+        <h3><small>Adolescentes</small>Con la escuela y el deporte</h3>
+        <p>Alineadores pensados para ser compatibles con la vida escolar y deportiva. Se sacan para comer y se vuelven a colocar después del cepillado.</p>
+        <div class="acts"><button class="btn btn-ghost btn-sm" type="button" data-plan="adolescente">Plan de ejemplo</button><a class="btn btn-coral btn-sm" href="#agenda" data-book="eval-adolescentes">Reservar</a></div>
+      </div>
+      <div class="tx-row rv">
+        <h3><small>Niños</small>Tratamientos tempranos</h3>
+        <p>Tratamientos tempranos para corregir hábitos y guiar el desarrollo, con alineadores transparentes y seguimiento de la doctora.</p>
+        <div class="acts"><button class="btn btn-ghost btn-sm" type="button" data-plan="nino">Plan de ejemplo</button><a class="btn btn-coral btn-sm" href="#agenda" data-book="eval-ninos">Reservar</a></div>
+      </div>
+      <div class="tx-row eval rv">
+        <h3><small>Primer paso</small>Consulta de <span class="serif">evaluación</span></h3>
+        <p>Se evalúa tu caso con radiografías y tomografía, se definen los objetivos y se arma el plan. Es el punto de partida de cualquier tratamiento.</p>
+        <div class="acts"><a class="btn btn-ink btn-sm" href="#agenda" data-book="eval-adultos">Reservar evaluación <span class="arr">→</span></a></div>
+      </div>
+    </div>
+
+    <div style="margin-top:clamp(56px,7vw,96px)">
+      <p class="eyebrow" style="margin-bottom:18px">Por qué alineadores</p>
+      <ul class="adv">
+        <li class="rv"><svg viewBox="0 0 44 44" aria-hidden="true"><rect x="5" y="10" width="34" height="24" rx="12" fill="rgba(110,205,200,.25)" stroke="#0B6A69" stroke-width="1.5" stroke-dasharray="3 3"/></svg><b>Prácticamente invisibles</b><span>Transparentes, casi no se notan al hablar.</span></li>
+        <li class="rv"><svg viewBox="0 0 44 44" aria-hidden="true"><rect x="5" y="16" width="34" height="18" rx="9" fill="rgba(110,205,200,.25)" stroke="#0B6A69" stroke-width="1.5"/><path d="M22 4v10M17 9l5 5 5-5" stroke="#FF6B57" stroke-width="2" fill="none" stroke-linecap="round"/></svg><b>Removibles</b><span>Los sacás para comer y para cepillarte.</span></li>
+        <li class="rv"><svg viewBox="0 0 44 44" aria-hidden="true"><path d="M22 5l15 8.5v17L22 39 7 30.5v-17z" fill="rgba(110,205,200,.25)" stroke="#0B6A69" stroke-width="1.5"/><path d="M7 13.5L22 22l15-8.5M22 22v17" stroke="#0B6A69" stroke-width="1.2" fill="none"/></svg><b>Planificación digital</b><span>Con modelos 3D impresos.</span></li>
+        <li class="rv"><svg viewBox="0 0 44 44" aria-hidden="true"><rect x="7" y="9" width="30" height="28" rx="6" fill="rgba(110,205,200,.25)" stroke="#0B6A69" stroke-width="1.5"/><path d="M7 17h30" stroke="#0B6A69" stroke-width="1.5"/><circle cx="22" cy="27" r="3" fill="#FF6B57"/></svg><b>Menos visitas</b><span>Sin ajustes de brackets.</span></li>
+        <li class="rv"><svg viewBox="0 0 44 44" aria-hidden="true"><path d="M8 26c4-10 24-10 28 0" stroke="#0B6A69" stroke-width="1.5" fill="rgba(110,205,200,.25)"/><circle cx="22" cy="14" r="4" fill="none" stroke="#FF6B57" stroke-width="2"/></svg><b>Más cómodos</b><span>Sin roce de brackets.</span></li>
+      </ul>
+      <p class="adv-note">Como contrapartida, los alineadores pueden ser algo más caros que los brackets. Lo vemos con vos en la evaluación.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PLANNER -->
+<section class="sec planner" id="planificador" aria-labelledby="pl-t">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <p class="eyebrow">Planificador de placas</p>
+        <h2 id="pl-t">Mirá cómo sería <span class="serif">tu calendario.</span></h2>
+      </div>
+      <p>Elegí perfil y fecha estimada de inicio. Te mostramos un calendario de ejemplo con los cambios de placa y los controles. Es orientativo: la duración real la define la evaluación.</p>
+    </div>
+    <div class="pl">
+      <form class="pl-ctrl" id="plForm" onsubmit="return false">
+        <div class="fld">
+          <span class="lab" id="plProfL">Perfil</span>
+          <div class="seg" role="group" aria-labelledby="plProfL" id="plProf">
+            <button type="button" data-v="nino" aria-pressed="false">Niño</button>
+            <button type="button" data-v="adolescente" aria-pressed="false">Adolescente</button>
+            <button type="button" data-v="adulto" aria-pressed="true">Adulto</button>
+          </div>
+        </div>
+        <div class="fld">
+          <label for="plDate">Inicio estimado (primera placa)</label>
+          <input type="date" id="plDate">
+          <p class="hint">Los alineadores se entregan en menos de un mes desde el escaneo.</p>
+        </div>
+        <div class="fld">
+          <label for="plDur">Duración de ejemplo: <span class="range-val" id="plDurV">12 meses</span></label>
+          <input type="range" id="plDur" min="6" max="30" step="1" value="12" aria-describedby="plDurH">
+          <p class="hint" id="plDurH">Entre 6 meses y 2 años y medio, según la complejidad.</p>
+        </div>
+        <div class="fld">
+          <span class="lab" id="plIntL">Cambio de placa cada</span>
+          <div class="seg" role="group" aria-labelledby="plIntL" id="plInt">
+            <button type="button" data-v="10" aria-pressed="false">10 días</button>
+            <button type="button" data-v="11" aria-pressed="true">11 días</button>
+            <button type="button" data-v="12" aria-pressed="false">12 días</button>
+          </div>
+        </div>
+        <div class="fld">
+          <span class="lab" id="plCtlL">Control cada</span>
+          <div class="seg" role="group" aria-labelledby="plCtlL" id="plCtl">
+            <button type="button" data-v="2" aria-pressed="false">2 placas</button>
+            <button type="button" data-v="3" aria-pressed="true">3 placas</button>
+          </div>
+        </div>
+      </form>
+      <div class="pl-out" aria-live="polite">
+        <div class="pl-stats">
+          <div><b id="sPl">—</b><span>placas (ejemplo)</span></div>
+          <div><b id="sCt">—</b><span>controles en el consultorio</span></div>
+          <div><b id="sHr">22 h</b><span>de uso por día</span></div>
+          <div><b id="sEnd">—</b><span>última placa (ejemplo)</span></div>
+        </div>
+        <div class="pl-legend"><span><i class="s"></i>Inicio</span><span><i></i>Cambio de placa en casa</span><span><i class="c"></i>Cambio + control</span></div>
+        <div class="months" id="months" role="list" aria-label="Calendario de ejemplo por mes"></div>
+        <p class="eyebrow" style="margin-top:22px">Próximas fechas de ejemplo</p>
+        <div class="next" id="next"></div>
+        <div class="price">
+          <div class="pv" id="price"></div>
+          <a class="btn btn-coral" href="#agenda" id="plBook">Reservar consulta de evaluación <span class="arr">→</span></a>
+        </div>
+        <p class="disclaim">Calendario ilustrativo calculado con los intervalos que publica KeepBahía (cambio cada 10 a 12 días, control cada 2 o 3 placas, uso de 22 horas por día). La cantidad de placas, la duración y el costo final los define la doctora en la consulta de evaluación.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AGENDA -->
+<section class="sec agenda" id="agenda" aria-labelledby="ag-t">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <p class="eyebrow">Agenda de ejemplo</p>
+        <h2 id="ag-t">Pedí tu turno <span class="serif">sin esperar respuesta.</span></h2>
+      </div>
+      <p>Hoy los turnos se piden solo por WhatsApp. Así podría funcionar una agenda online: elegís, confirmás y te llega un recordatorio 24 h antes. Es una demostración: los días y horarios son de ejemplo (horarios reales a confirmar) y no se envía nada.</p>
+    </div>
+    <div class="ag">
+      <ol class="ag-steps" id="agSteps">
+        <li data-s="0"><i>1</i><div class="lbl">Tratamiento<small></small></div></li>
+        <li data-s="1"><i>2</i><div class="lbl">Profesional<small></small></div></li>
+        <li data-s="2"><i>3</i><div class="lbl">Día<small></small></div></li>
+        <li data-s="3"><i>4</i><div class="lbl">Horario<small></small></div></li>
+        <li data-s="4"><i>5</i><div class="lbl">Tus datos<small></small></div></li>
+        <li data-s="5"><i>6</i><div class="lbl">Confirmación</div></li>
+      </ol>
+      <div class="ag-box" id="agBox" tabindex="-1"></div>
+    </div>
+  </div>
+</section>
+
+<!-- DOCTOR -->
+<section class="sec doc" id="profesional" aria-labelledby="doc-t">
+  <div class="wrap grid">
+    <div class="monogram rv" aria-hidden="true">
+      <svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice"><g id="monoArch"></g></svg>
+      <span class="mono">MLK</span>
+      <span class="cap">Ilustración · sin fotografía</span>
+    </div>
+    <div>
+      <p class="eyebrow">Quién te atiende</p>
+      <h2 id="doc-t">Dra. María Luján <span class="serif">Khoury</span></h2>
+      <p>Odontóloga egresada de la UBA, especializada en ortodoncia con alineadores transparentes. Trabaja con tecnología digital y escaneo 3D para planificar tratamientos para todas las edades.</p>
+      <ul class="creds">
+        <li><span>Formación</span><b>Odontóloga, UBA</b></li>
+        <li><span>Especialidad</span><b>Ortodoncia con alineadores</b></li>
+        <li><span>Acreditación</span><b>KeepSmiling Black</b></li>
+        <li><span>Pacientes</span><b>Niños, adolescentes y adultos</b></li>
+      </ul>
+      <p style="margin-top:26px"><a class="btn btn-ink" href="#agenda" data-book="eval-adultos">Reservá tu evaluación con la doctora <span class="arr">→</span></a></p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="sec" id="preguntas" aria-labelledby="faq-t" style="padding-top:0">
+  <div class="wrap faq-grid">
+    <div>
+      <p class="eyebrow">Preguntas frecuentes</p>
+      <h2 id="faq-t" style="font-size:clamp(34px,4.4vw,58px);line-height:1;letter-spacing:-.03em;font-weight:600;margin-top:12px">Lo que más <span class="serif">se pregunta.</span></h2>
+      <p style="color:var(--ink2);margin-top:16px;max-width:24em">Respuestas basadas en lo que publica KeepBahía. Cada caso se confirma en la consulta de evaluación.</p>
+    </div>
+    <div>
+      <div class="faq-tabs" role="tablist" aria-label="Temas">
+        <button role="tab" type="button" aria-selected="true" data-t="uso">Uso diario</button>
+        <button role="tab" type="button" aria-selected="false" data-t="tiempo">Duración y controles</button>
+        <button role="tab" type="button" aria-selected="false" data-t="costo">Costos</button>
+        <button role="tab" type="button" aria-selected="false" data-t="perfil">Por edad</button>
+      </div>
+      <div class="faq" id="faq" role="tabpanel"></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="sec contact" id="contacto" aria-labelledby="ct-t">
+  <div class="wrap ct">
+    <div>
+      <p class="eyebrow">Contacto</p>
+      <h2 id="ct-t">Laprida 262, <span class="serif">Bahía Blanca.</span></h2>
+      <ul class="ct-list">
+        <li><span>Dirección</span><div>Laprida 262, Bahía Blanca, Buenos Aires</div></li>
+        <li><span>Turnos</span><div><a href="https://keepbahia.ar/" target="_blank" rel="noopener">Escribinos por WhatsApp</a><small>Hoy los turnos se piden solo por WhatsApp (enlace de contacto desde keepbahia.ar).</small></div></li>
+        <li><span>Mail</span><div><a href="mailto:khourylujan@hotmail.com">khourylujan@hotmail.com</a></div></li>
+        <li><span>Instagram</span><div><a href="https://www.instagram.com/marialujankhoury/" target="_blank" rel="noopener">@marialujankhoury</a></div></li>
+        <li><span>Horarios</span><div>Horarios a confirmar<small>No están publicados; la agenda de esta página es de ejemplo.</small></div></li>
+      </ul>
+    </div>
+    <div class="mapcard">
+      <svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <rect width="400" height="400" fill="#E9F3F4"/>
+        <g stroke="#fff" stroke-width="14" fill="none" stroke-linecap="square">
+          <path d="M-20 90L420 60"/><path d="M-20 200L420 175"/><path d="M-20 310L420 290"/>
+          <path d="M70 -20L95 420"/><path d="M200 -20L215 420"/><path d="M320 -20L340 420"/>
+        </g>
+        <path d="M-20 400L420 120" stroke="#fff" stroke-width="22"/>
+        <g stroke="rgba(14,106,105,.18)" stroke-width="1" fill="none">
+          <path d="M-20 90L420 60"/><path d="M-20 200L420 175"/><path d="M200 -20L215 420"/>
+        </g>
+        <circle cx="205" cy="184" r="60" fill="rgba(110,205,200,.25)"/>
+        <circle cx="205" cy="184" r="28" fill="rgba(110,205,200,.35)"/>
+        <circle cx="205" cy="184" r="7" fill="#FF6B57" stroke="#fff" stroke-width="3"/>
+      </svg>
+      <div class="pin">KeepBahía · Laprida 262</div>
+      <div class="go"><span>Plano ilustrativo</span><a class="btn btn-ink btn-sm" href="https://www.google.com/maps/search/?api=1&query=Laprida+262+Bah%C3%ADa+Blanca" target="_blank" rel="noopener">Abrir en Google Maps</a></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>KeepBahía · Ortodoncia invisible · Dra. María Luján Khoury · Laprida 262, Bahía Blanca</span>
+    <span>Prototipo de demostración preparado para KeepBahía por Resolviendo Kos</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+'use strict';
+var NS='http://www.w3.org/2000/svg';
+var $=function(s,c){return (c||document).querySelector(s)};
+var $$=function(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s))};
+
+/* ---------- arch generator ---------- */
+function teeth(cx,cy,rx,ry,opt){
+  opt=opt||{};var n=14,out='';
+  for(var i=0;i<n;i++){
+    var t=Math.PI*(0.04+0.92*i/(n-1));
+    var x=cx-rx*Math.cos(t), y=cy-ry*Math.sin(t);
+    var dx=rx*Math.sin(t), dy=-ry*Math.cos(t);
+    var ang=Math.atan2(dy,dx)*180/Math.PI;
+    var k=Math.abs(i-(n-1)/2)/((n-1)/2); // 0 front, 1 back
+    var w=(opt.s||1)*(16+k*16), h=(opt.s||1)*(20+k*10);
+    out+='<rect x="'+(-w/2).toFixed(1)+'" y="'+(-h/2).toFixed(1)+'" width="'+w.toFixed(1)+'" height="'+h.toFixed(1)+'" rx="'+(w*0.42).toFixed(1)+'" transform="translate('+x.toFixed(1)+' '+y.toFixed(1)+') rotate('+ang.toFixed(1)+')" fill="'+(opt.fill||'none')+'" stroke="'+(opt.stroke||'none')+'" stroke-width="'+(opt.sw||1)+'"'+(opt.dash?' stroke-dasharray="'+opt.dash+'"':'')+'/>';
+  }
+  return out;
+}
+function shell(cx,cy,rx,ry,pad,o){
+  // aligner shell: outer arc band
+  var a=[],b=[],n=40;
+  for(var i=0;i<=n;i++){var t=Math.PI*(0.02+0.96*i/n);a.push([cx-(rx+pad)*Math.cos(t),cy-(ry+pad)*Math.sin(t)]);b.unshift([cx-(rx-pad)*Math.cos(t),cy-(ry-pad)*Math.sin(t)]);}
+  var p=a.concat(b).map(function(q,i){return (i?'L':'M')+q[0].toFixed(1)+' '+q[1].toFixed(1)}).join('')+'Z';
+  return '<path d="'+p+'" fill="'+o.fill+'" stroke="'+o.stroke+'" stroke-width="'+(o.sw||1.2)+'" stroke-linejoin="round"/>';
+}
+// hero
+var h='';
+h+='<defs><radialGradient id="hg" cx="50%" cy="40%" r="60%"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#E4F1F2" stop-opacity="0"/></radialGradient></defs>';
+h+='<circle cx="250" cy="250" r="230" fill="url(#hg)"/>';
+h+='<circle cx="250" cy="250" r="226" fill="none" stroke="rgba(30,37,40,.12)"/>';
+h+='<circle cx="250" cy="250" r="190" fill="none" stroke="rgba(30,37,40,.07)" stroke-dasharray="2 6"/>';
+for(var hh=0;hh<24;hh++){var an=hh/24*Math.PI*2-Math.PI/2;var r1=226,r2=hh%6===0?212:219;h+='<line x1="'+(250+r1*Math.cos(an)).toFixed(1)+'" y1="'+(250+r1*Math.sin(an)).toFixed(1)+'" x2="'+(250+r2*Math.cos(an)).toFixed(1)+'" y2="'+(250+r2*Math.sin(an)).toFixed(1)+'" stroke="rgba(30,37,40,.35)" stroke-width="'+(hh%6===0?1.6:1)+'"/>';}
+// 22h arc
+var arcR=226,a0=-Math.PI/2,a1=a0+Math.PI*2*22/24;
+h+='<path d="M'+(250+arcR*Math.cos(a0))+' '+(250+arcR*Math.sin(a0))+' A'+arcR+' '+arcR+' 0 1 1 '+(250+arcR*Math.cos(a1)).toFixed(1)+' '+(250+arcR*Math.sin(a1)).toFixed(1)+'" fill="none" stroke="#0B6A69" stroke-width="3" stroke-linecap="round"/>';
+h+='<path d="M'+(250+arcR*Math.cos(a1)).toFixed(1)+' '+(250+arcR*Math.sin(a1)).toFixed(1)+' A'+arcR+' '+arcR+' 0 0 1 250 '+(250-arcR)+'" fill="none" stroke="#FF6B57" stroke-width="3" stroke-linecap="round"/>';
+h+='<g class="layer l3" opacity=".55">'+shell(250,300,150,160,24,{fill:'rgba(142,216,212,.10)',stroke:'rgba(14,106,105,.25)'})+'</g>';
+h+='<g class="layer l2" transform="translate(0 -14)">'+'<g>'+shell(250,300,150,160,24,{fill:'rgba(142,216,212,.18)',stroke:'rgba(14,106,105,.35)'})+'</g></g>';
+h+='<g class="layer">'+teeth(250,300,150,160,{fill:'rgba(255,255,255,.92)',stroke:'rgba(30,37,40,.35)',sw:1})+shell(250,300,150,160,22,{fill:'rgba(142,216,212,.28)',stroke:'#0B6A69',sw:1.4})+'</g>';
+h+='<text x="250" y="250" text-anchor="middle" font-family="Gelasio, Georgia, serif" font-style="italic" font-size="64" fill="#1E2528">22<tspan font-size="26" dx="4">h</tspan></text>';
+h+='<text x="250" y="280" text-anchor="middle" font-family="Familjen Grotesk, Helvetica, sans-serif" font-size="13" letter-spacing="2" fill="#55626A">POR DÍA</text>';
+$('#heroArch').innerHTML=h;
+$('#xrayArch').innerHTML=teeth(200,190,120,110,{fill:'rgba(230,245,246,.75)',stroke:'rgba(142,216,212,.9)',sw:1})+teeth(200,82,120,-50,{fill:'rgba(230,245,246,.35)',stroke:'rgba(142,216,212,.6)',sw:1,s:.85});
+$('#wireArch').innerHTML=shell(200,250,130,170,26,{fill:'rgba(142,216,212,.12)',stroke:'#0B6A69',sw:1})+teeth(200,250,130,170,{stroke:'#0B6A69',sw:1,fill:'rgba(255,255,255,.5)'})+shell(200,250,130,170,10,{fill:'none',stroke:'rgba(14,106,105,.35)',sw:.8});
+var st='';
+for(var k=4;k>=0;k--){st+='<g transform="translate('+(k*14)+' '+(-k*12)+')" opacity="'+(1-k*0.16)+'">'+shell(165,262,120,150,20,{fill:k===0?'rgba(142,216,212,.35)':'rgba(255,255,255,.55)',stroke:k===0?'#0B6A69':'rgba(14,106,105,.45)',sw:1.2})+'</g>';}
+st+='<g font-family="Familjen Grotesk, Helvetica, sans-serif" font-size="12" fill="#1E2528"><rect x="270" y="236" width="110" height="34" rx="17" fill="#FF6B57"/><text x="325" y="257" text-anchor="middle">menos de 1 mes</text></g>';
+$('#stackArch').innerHTML=st;
+$('#monoArch').innerHTML='<g opacity=".5">'+shell(200,330,150,190,26,{fill:'rgba(142,216,212,.18)',stroke:'rgba(14,106,105,.3)'})+teeth(200,330,150,190,{fill:'rgba(255,255,255,.6)',stroke:'rgba(14,106,105,.25)'})+'</g>';
+
+/* ---------- reveal ---------- */
+if('IntersectionObserver' in window){
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:.12});
+  $$('.rv').forEach(function(el){io.observe(el)});
+}else{$$('.rv').forEach(function(el){el.classList.add('in')})}
+
+/* ---------- journey horizontal ---------- */
+var jScroll=$('.j-scroll'),track=$('#jTrack'),dots=$$('.j-dots button'),bar=$('#jBar');
+var mq=window.matchMedia('(min-width:960px)');
+function jUpdate(){
+  if(!mq.matches){track.style.transform='';return;}
+  var r=jScroll.getBoundingClientRect();
+  var total=jScroll.offsetHeight-window.innerHeight;
+  var p=Math.min(1,Math.max(0,-r.top/Math.max(1,total)));
+  var vw=track.parentNode.clientWidth;
+  var max=Math.max(0,track.scrollWidth-vw);
+  track.style.transform='translate3d('+(-p*max).toFixed(1)+'px,0,0)';
+  var idx=Math.round(p*2);
+  dots.forEach(function(d,i){d.setAttribute('aria-current',i===idx?'true':'false')});
+  if(bar)bar.style.width=(p*100)+'%';
+}
+dots.forEach(function(d){d.addEventListener('click',function(){
+  var i=+d.getAttribute('data-i');var total=jScroll.offsetHeight-window.innerHeight;
+  var top=jScroll.getBoundingClientRect().top+window.pageYOffset;
+  window.scrollTo({top:top+total*i/2+2,behavior:'smooth'});
+})});
+window.addEventListener('scroll',jUpdate,{passive:true});
+window.addEventListener('resize',jUpdate);
+jUpdate();
+
+/* ---------- day clock ---------- */
+var MOMENTS=[
+  {h:7.5,t:'07:30',n:'Al despertar',d:'Llevás puestos los alineadores desde la noche. Se usan unas 22 horas por día, así que también se duerme con ellos.',on:true},
+  {h:8,t:'08:00',n:'Desayuno',d:'Para comer, los retirás. Después te cepillás y los volvés a colocar.',on:false,end:8.67},
+  {h:10.5,t:'10:30',n:'Mate o agua',d:'Con los alineadores puestos se puede tomar agua, mate y bebidas. No hace falta sacarlos.',on:true},
+  {h:13,t:'13:00',n:'Almuerzo',d:'Se retiran para comer, cepillado y de nuevo a su lugar. Son removibles justamente para esto.',on:false,end:13.67},
+  {h:16.5,t:'16:30',n:'Escuela, trabajo, deporte',d:'Al ser transparentes y removibles, acompañan la vida escolar, deportiva y laboral. Sin brackets que rocen.',on:true},
+  {h:21,t:'21:00',n:'Cena',d:'Se retiran para cenar, te cepillás y los volvés a colocar.',on:false,end:21.67},
+  {h:22.5,t:'22:30',n:'Día de cambio de placa',d:'Cada 10 a 12 días cambiás de placa en casa. Al colocar una placa nueva puede sentirse una leve presión.',on:true}
+];
+var C=200,R=170,clk=$('#clock'),cs='';
+function pt(hr,rad){var a=hr/24*Math.PI*2-Math.PI/2;return [C+rad*Math.cos(a),C+rad*Math.sin(a)]}
+function arc(h0,h1,rad,color,w,cap){var p0=pt(h0,rad),p1=pt(h1,rad);var large=(h1-h0)>12?1:0;return '<path d="M'+p0[0].toFixed(1)+' '+p0[1].toFixed(1)+' A'+rad+' '+rad+' 0 '+large+' 1 '+p1[0].toFixed(1)+' '+p1[1].toFixed(1)+'" fill="none" stroke="'+color+'" stroke-width="'+w+'" stroke-linecap="'+(cap||'butt')+'"/>'}
+cs+='<circle cx="200" cy="200" r="198" fill="#fff" stroke="rgba(30,37,40,.1)"/>';
+cs+='<circle cx="200" cy="200" r="'+R+'" fill="none" stroke="rgba(14,106,105,.12)" stroke-width="26"/>';
+var offs=MOMENTS.filter(function(m){return !m.on});
+var cur=0;offs.forEach(function(m){cs+=arc(cur,m.h,R,'#0B6A69',26);cs+=arc(m.h,m.end,R,'#FF6B57',26);cur=m.end});
+cs+=arc(cur,24,R,'#0B6A69',26);
+for(var i=0;i<24;i++){var p0=pt(i,R-22),p1=pt(i,R-(i%6===0?34:28));cs+='<line x1="'+p0[0].toFixed(1)+'" y1="'+p0[1].toFixed(1)+'" x2="'+p1[0].toFixed(1)+'" y2="'+p1[1].toFixed(1)+'" stroke="rgba(30,37,40,.35)" stroke-width="'+(i%6===0?1.6:1)+'"/>';
+ if(i%3===0){var pl=pt(i,R-50);cs+='<text x="'+pl[0].toFixed(1)+'" y="'+(pl[1]+4).toFixed(1)+'" text-anchor="middle" font-size="12" font-family="Familjen Grotesk, Helvetica, sans-serif" fill="#55626A">'+(i<10?'0':'')+i+'</text>';}}
+cs+='<text x="200" y="196" text-anchor="middle" font-family="Gelasio, Georgia, serif" font-style="italic" font-size="58" fill="#1E2528">22 h</text>';
+cs+='<text x="200" y="224" text-anchor="middle" font-family="Familjen Grotesk, Helvetica, sans-serif" font-size="13" fill="#55626A" letter-spacing="1.5">DÍA DE EJEMPLO</text>';
+MOMENTS.forEach(function(m,i){var p=pt(m.h,R+38),q=pt(m.h,R+13);
+  cs+='<g class="mk" tabindex="0" role="button" data-i="'+i+'" aria-label="'+m.t+' '+m.n+'"><line x1="'+q[0].toFixed(1)+'" y1="'+q[1].toFixed(1)+'" x2="'+p[0].toFixed(1)+'" y2="'+p[1].toFixed(1)+'" stroke="rgba(30,37,40,.3)"/><circle class="ring" cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="18" fill="#F2F7F8" stroke="rgba(30,37,40,.2)"/><circle class="dot" cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="9" fill="'+(m.on?'#0B6A69':'#FF6B57')+'"/></g>';});
+cs+='<g id="hand"><line x1="200" y1="200" x2="200" y2="60" stroke="#1E2528" stroke-width="2" stroke-linecap="round"/><circle cx="200" cy="200" r="5" fill="#1E2528"/></g>';
+clk.innerHTML=cs;
+var mlist=$('#mlist');
+MOMENTS.forEach(function(m,i){var b=document.createElement('button');b.type='button';b.textContent=m.t+' · '+m.n;b.setAttribute('data-i',i);b.setAttribute('aria-pressed','false');b.addEventListener('click',function(){showMoment(i)});mlist.appendChild(b)});
+function showMoment(i){var m=MOMENTS[i];
+  $('#moment').innerHTML='<p class="when">'+m.t+' h</p><h3>'+m.n+'</h3><p>'+m.d+'</p><span class="state '+(m.on?'on':'off')+'">'+(m.on?'Con alineadores puestos':'Sin alineadores, un rato')+'</span>';
+  $$('.mk',clk).forEach(function(g){g.classList.toggle('on',+g.getAttribute('data-i')===i)});
+  $$('button',mlist).forEach(function(b){b.setAttribute('aria-pressed',+b.getAttribute('data-i')===i?'true':'false')});
+  var hand=$('#hand');hand.setAttribute('transform','rotate('+(m.h/24*360).toFixed(1)+' 200 200)');
+}
+$$('.mk',clk).forEach(function(g){var i=+g.getAttribute('data-i');g.addEventListener('click',function(){showMoment(i)});g.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();showMoment(i)}})});
+showMoment(2);
+
+/* ---------- dates helpers ---------- */
+var MES=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+var MESL=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+var DIA=['dom','lun','mar','mié','jue','vie','sáb'];
+var DIAL=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+function addDays(d,n){var x=new Date(d.getFullYear(),d.getMonth(),d.getDate()+n);return x}
+function fmt(d){return d.getDate()+' '+MES[d.getMonth()]}
+function fmtY(d){return MES[d.getMonth()]+' '+String(d.getFullYear()).slice(2)}
+function iso(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+
+/* ---------- planner ---------- */
+var PROF={nino:{n:'Niño',p:'Kids: USD 3.800',s:'ambos maxilares · valor publicado',book:'eval-ninos'},adolescente:{n:'Adolescente',p:'Teens: USD 4.200',s:'ambos maxilares · valor publicado',book:'eval-adolescentes'},adulto:{n:'Adulto',p:'Adultos: consultá en la evaluación',s:'el valor se define según tu caso',book:'eval-adultos'}};
+var pl={prof:'adulto',interval:11,ctl:3,months:12,start:addDays(new Date(),30)};
+var dateIn=$('#plDate');dateIn.value=iso(pl.start);dateIn.min=iso(new Date());
+function seg(id,key,num){$$('#'+id+' button').forEach(function(b){b.addEventListener('click',function(){$$('#'+id+' button').forEach(function(x){x.setAttribute('aria-pressed','false')});b.setAttribute('aria-pressed','true');pl[key]=num?+b.getAttribute('data-v'):b.getAttribute('data-v');renderPlan()})})}
+seg('plProf','prof');seg('plInt','interval',1);seg('plCtl','ctl',1);
+dateIn.addEventListener('change',function(){var v=dateIn.value.split('-');if(v.length===3){pl.start=new Date(+v[0],+v[1]-1,+v[2]);renderPlan()}});
+var dur=$('#plDur');dur.addEventListener('input',function(){pl.months=+dur.value;renderPlan()});
+function setProfile(p){pl.prof=p;$$('#plProf button').forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-v')===p?'true':'false')});renderPlan()}
+function renderPlan(){
+  var m=pl.months;$('#plDurV').textContent=m<12?m+' meses':(m===12?'1 año':(m%12===0?(m/12)+' años':(Math.floor(m/12)+' año'+(m>=24?'s':'')+' y '+(m%12)+' m')));
+  var start=pl.start, end=new Date(start.getFullYear(),start.getMonth()+m,start.getDate());
+  var days=Math.round((end-start)/864e5);
+  var n=Math.max(1,Math.ceil(days/pl.interval));
+  var ev=[];for(var i=0;i<n;i++){var d=addDays(start,i*pl.interval);ev.push({n:i+1,d:d,ctl:i>0&&i%pl.ctl===0,start:i===0})}
+  var ctls=ev.filter(function(e){return e.ctl}).length;
+  $('#sPl').textContent=n;$('#sCt').textContent=ctls;$('#sEnd').textContent=fmtY(ev[ev.length-1].d);
+  // month rows
+  var rows={},order=[];ev.forEach(function(e){var k=e.d.getFullYear()*12+e.d.getMonth();if(!rows[k]){rows[k]=[];order.push(k)}rows[k].push(e)});
+  var html='';order.forEach(function(k){var y=Math.floor(k/12),mo=k%12;var dim=new Date(y,mo+1,0).getDate();
+    html+='<div class="mrow" role="listitem"><span class="ml">'+MES[mo]+' '+String(y).slice(2)+'</span><div class="bar">';
+    rows[k].forEach(function(e){var left=((e.d.getDate()-0.5)/dim*100).toFixed(2);html+='<span class="chip'+(e.start?' start':e.ctl?' ctl':'')+'" style="left:'+left+'%" title="Placa '+e.n+' · '+fmt(e.d)+(e.ctl?' · control':'')+'">'+e.n+'</span>'});
+    html+='</div></div>'});
+  $('#months').innerHTML=html;
+  var nx='';ev.slice(0,8).forEach(function(e){nx+='<div class="'+(e.ctl?'ctl':'')+'"><b>'+DIA[e.d.getDay()]+' '+fmt(e.d)+'</b>'+(e.start?'Placa 1 · inicio':'Placa '+e.n+(e.ctl?' + control':' en casa'))+'</div>'});
+  $('#next').innerHTML=nx;
+  var P=PROF[pl.prof];$('#price').innerHTML=esc(P.p)+'<small>'+esc(P.s)+'</small>';
+  $('#plBook').setAttribute('data-book',P.book);
+}
+renderPlan();
+$$('[data-plan]').forEach(function(b){b.addEventListener('click',function(){setProfile(b.getAttribute('data-plan'));document.getElementById('planificador').scrollIntoView({behavior:'smooth'})})});
+
+/* ---------- agenda ---------- */
+var TX=[
+  {id:'eval-adultos',n:'Evaluación · Adultos',d:'Primera consulta para alineadores a medida',dur:'45 min'},
+  {id:'eval-adolescentes',n:'Evaluación · Adolescentes',d:'Primera consulta, compatible con la escuela',dur:'45 min'},
+  {id:'eval-ninos',n:'Evaluación · Niños',d:'Tratamientos tempranos y hábitos',dur:'45 min'},
+  {id:'control',n:'Control de alineadores',d:'Para pacientes en tratamiento (cada 2 o 3 placas)',dur:'20 min'}
+];
+var DOC='Dra. María Luján Khoury';
+var A={step:0,tx:null,day:null,slot:null,name:'',wa:''};
+var box=$('#agBox'),steps=$$('#agSteps li');
+function seeded(n){var x=Math.sin(n*9301+49297)*233280;return x-Math.floor(x)}
+function workdays(){var out=[],d=addDays(new Date(),1);while(out.length<12){if(d.getDay()!==0&&d.getDay()!==6)out.push(d);d=addDays(d,1)}return out}
+var SL=['09:00','09:45','10:30','11:15','12:00','15:00','15:45','16:30','17:15','18:00'];
+function txById(id){for(var i=0;i<TX.length;i++)if(TX[i].id===id)return TX[i];return null}
+function stepUI(){steps.forEach(function(li,i){li.classList.toggle('cur',i===A.step);li.classList.toggle('done',i<A.step);
+  var sm=$('small',li);if(!sm)return;var v='';if(i===0&&A.tx)v=txById(A.tx).n;if(i===1&&A.step>1)v='Dra. Khoury';if(i===2&&A.day)v=DIA[A.day.getDay()]+' '+fmt(A.day);if(i===3&&A.slot)v=A.slot+' h';if(i===4&&A.step>4)v=A.name;sm.textContent=i<A.step||(i===A.step&&v)?v:'';
+  if(i===A.step)li.setAttribute('aria-current','step');else li.removeAttribute('aria-current');})}
+function nav(canNext,nextLabel){return '<div class="ag-nav">'+(A.step>0?'<button type="button" class="btn btn-ghost btn-sm" data-act="back">← Volver</button>':'<span></span>')+'<button type="button" class="btn btn-coral" data-act="next"'+(canNext?'':' disabled')+'>'+(nextLabel||'Continuar')+' <span class="arr">→</span></button></div>'}
+function render(focus){
+  var s=A.step,h='';
+  if(s===0){h='<h3>¿Qué turno necesitás?</h3><p class="sub">Si es tu primera vez, empezá por la consulta de evaluación.</p><div class="opts">';
+    TX.forEach(function(t){h+='<button type="button" class="opt" data-tx="'+t.id+'" aria-pressed="'+(A.tx===t.id)+'"><b>'+t.n+'</b><span>'+t.d+'</span></button>'});h+='</div>'+nav(!!A.tx)}
+  else if(s===1){h='<h3>Profesional</h3><p class="sub">En KeepBahía atiende una sola profesional.</p><div class="pro"><div class="av">MLK</div><div><b>'+DOC+'</b><span>Odontóloga UBA · Ortodoncia con alineadores · Acreditada KeepSmiling Black</span></div></div>'+nav(true)}
+  else if(s===2){h='<h3>Elegí el día</h3><p class="sub">Próximos días hábiles · agenda de ejemplo, horarios reales a confirmar.</p><div class="days">';
+    workdays().forEach(function(d,i){var full=seeded(d.getDate()+d.getMonth()*31)<.18;var sel=A.day&&iso(A.day)===iso(d);h+='<button type="button" data-day="'+iso(d)+'"'+(full?' disabled aria-label="'+DIAL[d.getDay()]+' '+d.getDate()+', sin turnos"':' aria-label="'+DIAL[d.getDay()]+' '+d.getDate()+' de '+MESL[d.getMonth()]+'"')+' aria-pressed="'+!!sel+'"><small>'+DIA[d.getDay()]+'</small><b>'+d.getDate()+'</b><small>'+MES[d.getMonth()]+'</small></button>'});
+    h+='</div>'+nav(!!A.day)}
+  else if(s===3){h='<h3>Elegí el horario</h3><p class="sub">'+DIAL[A.day.getDay()]+' '+A.day.getDate()+' de '+MESL[A.day.getMonth()]+' · horarios de ejemplo.</p><div class="slots"><h4>Mañana</h4>';
+    var base=A.day.getDate()*7+A.day.getMonth();
+    SL.forEach(function(t,i){if(i===5)h+='<h4>Tarde</h4>';var taken=seeded(base+i*3.7)<.3;h+='<button type="button" data-slot="'+t+'"'+(taken?' disabled aria-label="'+t+' ocupado"':'')+' aria-pressed="'+(A.slot===t)+'">'+t+'</button>'});
+    h+='</div>'+nav(!!A.slot)}
+  else if(s===4){h='<h3>Tus datos</h3><p class="sub">Para confirmar el turno y mandarte el recordatorio (demo: no se guarda ni se envía nada).</p><form class="form" id="agForm" novalidate>'+
+    '<div><label for="fName">Nombre y apellido</label><input id="fName" type="text" autocomplete="name" value="'+esc(A.name)+'" aria-describedby="eName"><p class="err" id="eName"></p></div>'+
+    '<div><label for="fWa">WhatsApp</label><input id="fWa" type="tel" inputmode="tel" autocomplete="tel" placeholder="Ej.: 291 4xx xxxx" value="'+esc(A.wa)+'" aria-describedby="eWa"><p class="err" id="eWa"></p></div>'+
+    '</form>'+nav(true,'Confirmar turno')}
+  else if(s===5){var t=txById(A.tx),first=(A.name.split(' ')[0]||A.name);var rem=addDays(A.day,-1);
+    h='<div class="conf"><div><div class="ok"><svg viewBox="0 0 42 42" aria-hidden="true"><circle cx="21" cy="21" r="20" fill="#8ED8D4"/><path d="M12 21.5l6 6 12-13" stroke="#1E2528" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><h3>¡Listo, '+esc(first)+'! Tu turno quedó reservado.</h3></div>'+
+    '<ul class="summary"><li><span>Turno</span><b>'+t.n+'</b></li><li><span>Profesional</span><b>'+DOC+'</b></li><li><span>Día</span><b>'+DIAL[A.day.getDay()]+' '+A.day.getDate()+' de '+MESL[A.day.getMonth()]+'</b></li><li><span>Horario</span><b>'+A.slot+' h</b></li><li><span>Lugar</span><b>Laprida 262, Bahía Blanca</b></li><li><span>WhatsApp</span><b>'+esc(A.wa)+'</b></li></ul>'+
+    '<p class="demo-note">Demostración: no se reservó ningún turno real ni se envió ningún mensaje. Hoy los turnos se piden por WhatsApp.</p>'+
+    '<div class="ag-nav"><button type="button" class="btn btn-ghost btn-sm" data-act="reset">Hacer otra reserva</button></div></div>'+
+    '<div class="phone" aria-label="Vista previa del recordatorio por WhatsApp"><div class="ph-top"><span class="av">KB</span><div>KeepBahía<small>recordatorio automático · demo</small></div></div><p class="when">'+DIAL[rem.getDay()]+' '+rem.getDate()+' de '+MESL[rem.getMonth()]+' · 24 h antes</p>'+
+    '<div class="bubble">Hola '+esc(first)+' 👋 Te recordamos tu turno de <b>'+t.n+'</b> mañana, '+DIAL[A.day.getDay()]+' '+A.day.getDate()+', a las <b>'+A.slot+' h</b> con la '+DOC+', en Laprida 262. '+(A.tx==='control'?'Traé tus alineadores y el estuche.':'Si tenés radiografías o estudios previos, traelos.')+' Si no podés venir, respondé este mensaje para reprogramar.<time>'+A.slot+'</time></div></div></div>'}
+  box.innerHTML=h;stepUI();
+  if(focus){box.focus({preventScroll:true});var bt=box.getBoundingClientRect().top;if(bt<0||bt>window.innerHeight*0.6){window.scrollTo({top:bt+window.pageYOffset-80,behavior:'smooth'})}}
+}
+function go(n){A.step=n;render(true)}
+box.addEventListener('click',function(e){
+  var b=e.target.closest('button');if(!b||b.disabled)return;
+  if(b.hasAttribute('data-tx')){A.tx=b.getAttribute('data-tx');render();return}
+  if(b.hasAttribute('data-day')){var v=b.getAttribute('data-day').split('-');A.day=new Date(+v[0],+v[1]-1,+v[2]);A.slot=null;render();return}
+  if(b.hasAttribute('data-slot')){A.slot=b.getAttribute('data-slot');render();return}
+  var act=b.getAttribute('data-act');
+  if(act==='back'){if(A.step===4)saveForm();go(A.step-1)}
+  else if(act==='next'){if(A.step===4){if(!validate())return}go(A.step+1)}
+  else if(act==='reset'){A={step:0,tx:null,day:null,slot:null,name:'',wa:''};render(true)}
+});
+function saveForm(){var n=$('#fName'),w=$('#fWa');if(n)A.name=n.value.trim();if(w)A.wa=w.value.trim()}
+function validate(){saveForm();var ok=true;var n=$('#fName'),w=$('#fWa');
+  var nOk=A.name.length>=3&&/[a-záéíóúñü]/i.test(A.name);n.setAttribute('aria-invalid',!nOk);$('#eName').textContent=nOk?'':'Escribí tu nombre (mínimo 3 letras).';
+  var digits=A.wa.replace(/\D/g,'');var wOk=digits.length>=8&&digits.length<=15&&/^[\d\s+()\-]+$/.test(A.wa);w.setAttribute('aria-invalid',!wOk);$('#eWa').textContent=wOk?'':'Ingresá un WhatsApp válido (8 a 15 números, con característica).';
+  if(!nOk){n.focus();ok=false}else if(!wOk){w.focus();ok=false}return ok}
+render();
+// preload from any [data-book]
+document.addEventListener('click',function(e){var a=e.target.closest('[data-book]');if(!a)return;
+  A={step:1,tx:a.getAttribute('data-book'),day:null,slot:null,name:A.name,wa:A.wa};render();
+});
+})();
+</script>
+</body>
+</html>
