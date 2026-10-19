@@ -1,0 +1,763 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Jardines del Cielo en Nono</title>
+<meta name="description" content="Prototipo de demostración: web de reservas directas para Jardines del Cielo Cabañas & Apart Suites, Nono, Traslasierra, Córdoba.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Eczar:wght@400;500;600;700;800&family=Figtree:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cal:#ECE9E1;
+  --cal-2:#E2DDD1;
+  --cal-3:#D3CCBC;
+  --adobe:#9C6B48;
+  --adobe-2:#B8875F;
+  --algarrobo:#3E2B1F;
+  --algarrobo-2:#5A4334;
+  --cielo:#5E86A8;
+  --cielo-claro:#C9D8E4;
+  --tinta:#284563;
+  --chanar:#6B7350;
+  --blanco:#FBFAF7;
+  --display:"Eczar","Georgia",serif;
+  --texto:"Figtree","Segoe UI","Helvetica Neue",system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--cal);color:var(--algarrobo);font-family:var(--texto);font-size:17px;line-height:1.6;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:var(--tinta);text-underline-offset:3px}
+:focus-visible{outline:3px solid var(--cielo);outline-offset:2px}
+h1,h2,h3{font-family:var(--display);font-weight:600;line-height:1.08;margin:0;color:var(--algarrobo)}
+p{margin:0 0 1em}
+.wrap{max-width:1240px;margin:0 auto;padding:0 32px}
+@media (max-width:640px){.wrap{padding:0 16px}}
+
+/* aviso */
+.aviso{background:var(--algarrobo);color:var(--cal);font-size:14px;text-align:center;padding:8px 16px}
+.aviso strong{font-weight:600}
+
+/* barra */
+.barra{position:sticky;top:0;z-index:30;background:rgba(236,233,225,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--cal-3)}
+.barra .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:64px}
+.marca{font-family:var(--display);font-size:22px;font-weight:700;text-decoration:none;color:var(--algarrobo);line-height:1}
+.marca small{display:block;font-family:var(--texto);font-size:12px;font-weight:500;color:var(--algarrobo-2);letter-spacing:.02em}
+.barra nav{display:flex;gap:22px;font-size:15px}
+.barra nav a{text-decoration:none;color:var(--algarrobo-2)}
+.barra nav a:hover{color:var(--tinta)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:3px;font:600 16px/1 var(--texto);padding:14px 22px;cursor:pointer;text-decoration:none;transition:background .2s}
+.btn-adobe{background:var(--adobe);color:var(--blanco)}
+.btn-adobe:hover{background:var(--algarrobo-2)}
+.btn-linea{background:transparent;color:var(--algarrobo);box-shadow:inset 0 0 0 1.5px var(--algarrobo)}
+.btn-linea:hover{background:var(--cal-2)}
+.barra .btn{padding:11px 18px;font-size:15px}
+@media (max-width:860px){.barra nav{display:none}}
+
+/* portada */
+.portada{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);min-height:calc(100vh - 100px);max-height:860px}
+.portada-foto{position:relative;overflow:hidden;background:var(--algarrobo-2)}
+.portada-foto img{width:100%;height:100%;object-fit:cover}
+.portada-foto figcaption{position:absolute;left:20px;bottom:18px;color:var(--blanco);font-size:13px;text-shadow:0 1px 6px rgba(0,0,0,.6)}
+.portada-texto{padding:64px 56px 48px;display:flex;flex-direction:column;justify-content:space-between;gap:40px;border-left:1px solid var(--cal-3)}
+.portada h1{font-size:clamp(38px,4.6vw,64px);font-weight:600;letter-spacing:-.01em}
+.portada .bajada{font-size:19px;color:var(--algarrobo-2);max-width:34ch;margin-top:24px}
+.portada .acciones{display:flex;gap:12px;flex-wrap:wrap}
+.datos-portada{display:grid;grid-template-columns:repeat(2,1fr);gap:0;border-top:1px solid var(--cal-3)}
+.datos-portada div{padding:14px 0;border-bottom:1px solid var(--cal-3);font-size:15px}
+.datos-portada div:nth-child(odd){padding-right:12px}
+.datos-portada b{display:block;font-family:var(--display);font-size:22px;font-weight:600;color:var(--tinta)}
+@media (max-width:900px){
+  .portada{grid-template-columns:1fr;max-height:none;min-height:0}
+  .portada-foto{height:56vh;min-height:320px}
+  .portada-texto{padding:36px 16px 40px;border-left:0}
+}
+
+/* secciones */
+section{padding:96px 0}
+@media (max-width:640px){section{padding:64px 0}}
+.cabeza{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:48px;align-items:end;margin-bottom:48px}
+.cabeza h2{font-size:clamp(32px,3.6vw,50px)}
+.cabeza p{color:var(--algarrobo-2);margin:0;max-width:52ch}
+@media (max-width:820px){.cabeza{grid-template-columns:1fr;gap:16px}}
+
+/* filtro */
+.filtro{display:flex;flex-wrap:wrap;align-items:center;gap:20px 32px;background:var(--blanco);border:1px solid var(--cal-3);padding:20px 24px;margin-bottom:40px}
+.filtro h3{font-size:24px}
+.paso{display:flex;align-items:center;gap:10px;font-size:15px}
+.paso button{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--algarrobo);background:none;font:600 18px/1 var(--texto);color:var(--algarrobo);cursor:pointer}
+.paso button:hover{background:var(--cal-2)}
+.paso output{min-width:22px;text-align:center;font-family:var(--display);font-size:22px;font-weight:600}
+.filtro .resultado{flex:1 1 260px;font-size:15px;color:var(--algarrobo-2)}
+
+/* fichas */
+.fichas{display:grid;gap:28px}
+.ficha{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr) minmax(0,.8fr);background:var(--blanco);border:1px solid var(--cal-3);transition:opacity .3s, box-shadow .3s}
+.ficha.no-sirve{opacity:.42}
+.ficha.sirve{box-shadow:inset 4px 0 0 var(--chanar)}
+.ficha .foto{position:relative;min-height:300px;background:var(--cal-2);overflow:hidden}
+.ficha .foto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.foto.sin-foto img{display:none}
+.foto.sin-foto::after{content:attr(data-nombre);position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:20px;font:600 24px/1.2 var(--display);color:var(--adobe);background:repeating-linear-gradient(135deg,var(--cal-2) 0 12px,var(--cal) 12px 24px)}
+.ficha .plano{padding:22px 22px 16px;border-left:1px solid var(--cal-3);border-right:1px solid var(--cal-3);background:
+  linear-gradient(var(--cielo-claro) 1px,transparent 1px) 0 0/20px 20px,
+  linear-gradient(90deg,var(--cielo-claro) 1px,transparent 1px) 0 0/20px 20px,#F6F8FA;display:flex;flex-direction:column;gap:10px}
+.plano svg{width:100%;height:auto}
+.plano .room{fill:rgba(255,255,255,.75);stroke:var(--tinta);stroke-width:2.2;cursor:pointer;transition:fill .15s}
+.plano .room:hover,.plano .room.activo{fill:#E6EEF5}
+.plano .room:focus{outline:none;fill:#DCE7F1}
+.plano text{font-family:var(--texto);font-size:10.5px;fill:var(--tinta);pointer-events:none}
+.plano .mueble{fill:none;stroke:var(--tinta);stroke-width:1.2;pointer-events:none}
+.plano .agua{fill:var(--cielo-claro);stroke:var(--tinta);stroke-width:1.2;pointer-events:none}
+.plano .nota{font-size:14px;line-height:1.45;color:var(--tinta);min-height:3em}
+.plano .nota b{font-weight:600}
+.plantas{display:flex;gap:6px}
+.plantas button{font:500 13px/1 var(--texto);padding:7px 11px;border:1px solid var(--tinta);background:none;color:var(--tinta);border-radius:2px;cursor:pointer}
+.plantas button[aria-pressed="true"]{background:var(--tinta);color:var(--blanco)}
+.ficha .info{padding:24px 24px 22px;display:flex;flex-direction:column;gap:14px}
+.ficha h3{font-size:27px}
+.ficha .cap{font-size:15px;color:var(--adobe);font-weight:600}
+.ficha dl{margin:0;font-size:14.5px;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.ficha dt{color:var(--algarrobo-2)}
+.ficha dd{margin:0}
+.ficha .info .btn{margin-top:auto;align-self:flex-start;padding:11px 16px;font-size:15px}
+@media (max-width:1020px){
+  .ficha{grid-template-columns:1fr 1fr}
+  .ficha .foto{grid-column:1/-1;min-height:260px}
+  .ficha .plano{border-left:0}
+  .ficha .info{border-top:0}
+}
+@media (max-width:640px){
+  .ficha{grid-template-columns:1fr}
+  .ficha .plano{border-right:0;border-top:1px solid var(--cal-3);border-bottom:1px solid var(--cal-3)}
+  .ficha .foto{min-height:230px}
+}
+
+/* parque */
+.parque{background:var(--chanar);color:var(--cal)}
+.parque h2,.parque h3{color:var(--blanco)}
+.parque .cabeza p{color:#E3E5D8}
+.arboles{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid rgba(255,255,255,.3)}
+.arbol{padding:22px 18px 8px 0;border-right:1px solid rgba(255,255,255,.18)}
+.arbol:last-child{border-right:0}
+.arbol h3{font-size:26px;margin-bottom:6px}
+.arbol p{font-size:14.5px;color:#E3E5D8;margin:0}
+.galeria{display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:220px 220px;gap:10px;margin-top:48px}
+.galeria .foto{position:relative;overflow:hidden;background:rgba(0,0,0,.15)}
+.galeria .foto:first-child{grid-row:1/3}
+.galeria img{width:100%;height:100%;object-fit:cover}
+.servicios{display:flex;flex-wrap:wrap;gap:8px 28px;margin-top:40px;font-size:15.5px;color:#EEF0E6;list-style:none;padding:0}
+.servicios li::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--adobe-2);margin-right:10px;vertical-align:middle}
+@media (max-width:820px){
+  .arboles{grid-template-columns:1fr 1fr}
+  .arbol{border-right:0;border-bottom:1px solid rgba(255,255,255,.18);padding-right:12px}
+  .galeria{grid-template-columns:1fr 1fr;grid-template-rows:200px 140px 140px}
+  .galeria .foto:first-child{grid-column:1/-1;grid-row:auto}
+}
+
+/* reserva */
+.reserva-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:32px;align-items:start}
+@media (max-width:960px){.reserva-grid{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:640px){.calendario{padding:16px 12px}.simulador{padding:22px 16px}.dias{gap:3px}}
+.cal-unidad select{flex:1 1 200px;min-width:0;width:100%}
+.calendario{background:var(--blanco);border:1px solid var(--cal-3);padding:22px}
+.cal-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.cal-top h3{font-size:26px;text-transform:capitalize}
+.cal-nav{display:flex;gap:6px}
+.cal-nav button{width:38px;height:38px;border:1px solid var(--cal-3);background:var(--cal);border-radius:3px;cursor:pointer;font-size:18px;color:var(--algarrobo)}
+.cal-nav button:disabled{opacity:.35;cursor:default}
+.cal-unidad{display:flex;align-items:center;gap:10px;font-size:14.5px;margin-bottom:14px;flex-wrap:wrap}
+select,input[type=date]{font:500 15px var(--texto);color:var(--algarrobo);background:var(--cal);border:1px solid var(--cal-3);border-radius:3px;padding:10px 12px;min-height:44px;max-width:100%}
+.dias{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.dias .dn{font-size:12.5px;text-align:center;color:var(--algarrobo-2);padding-bottom:4px}
+.dia{aspect-ratio:1/1;border:0;border-radius:3px;background:var(--cal);font:500 15px var(--texto);color:var(--algarrobo);cursor:pointer;position:relative}
+.dia:hover:not(:disabled){background:var(--cielo-claro)}
+.dia:disabled{cursor:default}
+.dia.ocupado{background:repeating-linear-gradient(135deg,var(--cal-2) 0 4px,var(--cal-3) 4px 6px);color:#9b8f80;text-decoration:line-through}
+.dia.pasado{background:transparent;color:#b9b0a3}
+.dia.vacio{background:transparent;cursor:default}
+.dia.alta::after{content:"";position:absolute;left:50%;bottom:5px;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:var(--adobe)}
+.dia.sel{background:var(--tinta);color:var(--blanco)}
+.dia.rango{background:#D4E0EA}
+.leyenda{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:var(--algarrobo-2);margin-top:14px}
+.leyenda span::before{content:"";display:inline-block;width:12px;height:12px;border-radius:2px;margin-right:6px;vertical-align:-1px;background:var(--cal)}
+.leyenda .l-oc::before{background:repeating-linear-gradient(135deg,var(--cal-2) 0 3px,var(--cal-3) 3px 5px)}
+.leyenda .l-sel::before{background:var(--tinta)}
+.leyenda .l-alta::before{background:var(--adobe);border-radius:50%;width:7px;height:7px;margin-left:3px}
+.sync{display:flex;gap:10px;align-items:flex-start;margin-top:16px;padding:12px 14px;background:#E8EFF5;border-left:3px solid var(--cielo);font-size:14px;color:var(--tinta)}
+.sync svg{flex:none;margin-top:2px}
+
+.simulador{background:var(--algarrobo);color:var(--cal);padding:28px}
+.simulador h3{color:var(--blanco);font-size:28px;margin-bottom:18px}
+.campo{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;font-size:14px;color:#D9CFC3}
+.fila2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.simulador select,.simulador input{background:#4D392B;border-color:#6A5444;color:var(--blanco);width:100%}
+.simulador input::-webkit-calendar-picker-indicator{filter:invert(1)}
+.total{border-top:1px solid #6A5444;margin-top:8px;padding-top:16px;font-size:15px}
+.total .linea{display:flex;justify-content:space-between;gap:12px;padding:3px 0}
+.total .grande{font-family:var(--display);font-size:30px;font-weight:600;color:var(--blanco)}
+.total .sena{color:#F0C9A6}
+.aviso-sim{font-size:13px;color:#BFB2A3;margin:12px 0 18px}
+.error{color:#FFB9A0;font-size:14px;min-height:1.4em}
+.btn-mp{width:100%;background:#009EE3;color:#fff}
+.btn-mp:hover{background:#0087c2}
+
+/* temporadas */
+.temporadas{width:100%;border-collapse:collapse;font-size:15.5px;background:var(--blanco);border:1px solid var(--cal-3)}
+.temporadas th,.temporadas td{padding:14px 16px;text-align:left;border-bottom:1px solid var(--cal-3);vertical-align:top}
+.temporadas thead th{font-weight:600;font-size:14px;color:var(--algarrobo-2);background:var(--cal-2)}
+.temporadas td:first-child{font-family:var(--display);font-size:20px;font-weight:600}
+.temporadas .num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.tabla-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.nota-precio{font-size:14px;color:var(--algarrobo-2);margin-top:14px}
+
+/* nono */
+.nono-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:0;border-top:2px solid var(--algarrobo)}
+.lugar{padding:22px 22px 22px 0;border-bottom:1px solid var(--cal-3)}
+.lugar h3{font-size:24px;margin-bottom:6px}
+.lugar p{font-size:15px;color:var(--algarrobo-2);margin:0}
+.lugar .dist{display:block;font-size:13.5px;color:var(--adobe);font-weight:600;margin-bottom:4px}
+
+/* faq + mapa */
+.faq-mapa{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px}
+@media (max-width:900px){.faq-mapa{grid-template-columns:1fr}}
+details{border-bottom:1px solid var(--cal-3);padding:16px 0}
+summary{cursor:pointer;font-family:var(--display);font-size:21px;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:16px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-family:var(--texto);font-weight:400;color:var(--adobe)}
+details[open] summary::after{content:"–"}
+details p{margin:10px 0 0;color:var(--algarrobo-2);font-size:15.5px}
+.mapa{border:1px solid var(--cal-3);background:var(--cal-2);aspect-ratio:4/3;width:100%}
+.llegar{font-size:15.5px;color:var(--algarrobo-2);margin-top:16px}
+.llegar b{color:var(--algarrobo)}
+
+footer{background:var(--algarrobo);color:#D9CFC3;padding:56px 0 32px;font-size:15px}
+footer .wrap{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:32px}
+footer h3{color:var(--blanco);font-size:26px;margin-bottom:8px}
+footer a{color:#F0C9A6}
+footer .pie{grid-column:1/-1;border-top:1px solid #5A4334;padding-top:20px;font-size:13px;color:#A8998A}
+@media (max-width:760px){footer .wrap{grid-template-columns:1fr}}
+
+.barra-movil{display:none}
+@media (max-width:640px){
+  .barra-movil{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:40;gap:8px;padding:10px 12px;background:var(--cal);border-top:1px solid var(--cal-3)}
+  .barra-movil .btn{flex:1;padding:13px 10px;font-size:15px}
+  body{padding-bottom:70px}
+}
+
+.modal{position:fixed;inset:0;background:rgba(30,20,14,.6);display:none;align-items:center;justify-content:center;z-index:60;padding:16px}
+.modal.abierto{display:flex}
+.modal-caja{background:var(--blanco);max-width:460px;width:100%;padding:28px;border-top:5px solid #009EE3}
+.modal-caja h3{font-size:26px;margin-bottom:10px}
+.modal-caja p{font-size:15.5px;color:var(--algarrobo-2)}
+.modal-caja .resumen{background:var(--cal);padding:14px;font-size:15px;margin:14px 0}
+</style>
+</head>
+<body>
+
+<div class="aviso" role="note"><strong>Prototipo de demostración preparado para Jardines del Cielo.</strong> Precios y disponibilidad de ejemplo.</div>
+
+<header class="barra">
+  <div class="wrap">
+    <a class="marca" href="#inicio">Jardines del Cielo<small>Cabañas &amp; Apart Suites en Nono</small></a>
+    <nav aria-label="Secciones">
+      <a href="#casas">Las casas</a>
+      <a href="#parque">El parque</a>
+      <a href="#reservar">Disponibilidad</a>
+      <a href="#temporadas">Temporadas</a>
+      <a href="#nono">Nono</a>
+      <a href="#preguntas">Preguntas</a>
+    </nav>
+    <a class="btn btn-adobe" href="#reservar">Ver disponibilidad</a>
+  </div>
+</header>
+
+<main id="inicio">
+<div class="portada">
+  <figure class="portada-foto" style="margin:0">
+    <img src="https://jardinesdelcielo.com.ar/wp-content/uploads/2023/06/complejodecabanasnono-7.jpg" alt="Cabañas de Jardines del Cielo entre árboles nativos, en Nono" fetchpriority="high">
+    <figcaption>Las Moras y Enrique Wulff, Nono</figcaption>
+  </figure>
+  <div class="portada-texto">
+    <div>
+      <h1>Casas como las de los primeros inmigrantes de Nono, entre 420 árboles nativos.</h1>
+      <p class="bajada">Seis cabañas y ocho apart suites en dos hectáreas de monte serrano, a 1 km del río Chico. Elegí fechas, mirá qué está libre y pedí tu reserva sin esperar respuesta.</p>
+      <div class="acciones">
+        <a class="btn btn-adobe" href="#reservar">Ver disponibilidad</a>
+        <a class="btn btn-linea" href="#casas">Conocer las casas</a>
+      </div>
+    </div>
+    <div class="datos-portada">
+      <div><b>6 cabañas</b>de 1 o 2 dormitorios</div>
+      <div><b>8 apart suites</b>con opción de jacuzzi para dos</div>
+      <div><b>+18 m</b>entre una cabaña y otra</div>
+      <div><b>Directo</b>con los dueños, sin intermediarios</div>
+    </div>
+  </div>
+</div>
+
+<section id="casas">
+  <div class="wrap">
+    <div class="cabeza">
+      <h2>El álbum de las casas</h2>
+      <p>Cada unidad con su foto y su plano. Tocá un ambiente del plano para ver qué camas tiene. Contanos cuántos son y te marcamos las que les sirven.</p>
+    </div>
+
+    <div class="filtro" role="group" aria-label="¿Cuántos son?">
+      <h3>¿Cuántos son?</h3>
+      <div class="paso"><span>Adultos</span><button type="button" data-paso="ad" data-d="-1" aria-label="Un adulto menos">−</button><output id="f-ad">2</output><button type="button" data-paso="ad" data-d="1" aria-label="Un adulto más">+</button></div>
+      <div class="paso"><span>Menores</span><button type="button" data-paso="me" data-d="-1" aria-label="Un menor menos">−</button><output id="f-me">0</output><button type="button" data-paso="me" data-d="1" aria-label="Un menor más">+</button></div>
+      <p class="resultado" id="f-res" aria-live="polite"></p>
+    </div>
+
+    <div class="fichas" id="fichas"></div>
+  </div>
+</section>
+
+<section class="parque" id="parque">
+  <div class="wrap">
+    <div class="cabeza">
+      <h2>Dos hectáreas de monte que se dejaron en pie</h2>
+      <p>El complejo se construyó respetando la vegetación de Traslasierra: más de 420 árboles nativos entre las casas, con sombra de sobra para la siesta.</p>
+    </div>
+    <div class="arboles">
+      <div class="arbol"><h3>Chañar</h3><p>Corteza verde que se pela en tiras.</p></div>
+      <div class="arbol"><h3>Algarrobo</h3><p>El árbol de la sombra grande en el monte serrano.</p></div>
+      <div class="arbol"><h3>Moradillo</h3><p>Típico de las laderas del valle.</p></div>
+      <div class="arbol"><h3>Acacia</h3><p>Flor amarilla en primavera.</p></div>
+      <div class="arbol"><h3>Tala</h3><p>Copa densa y espinas finas.</p></div>
+    </div>
+    <div class="galeria">
+      <div class="foto" data-nombre="Jardines del Cielo"><img loading="lazy" src="https://jardinesdelcielo.com.ar/wp-content/uploads/2023/06/complejodecabanasnono-1.jpg" alt="Vista del parque del complejo"></div>
+      <div class="foto" data-nombre="La pileta"><img loading="lazy" src="https://jardinesdelcielo.com.ar/wp-content/uploads/2023/06/complejodecabanasnono-3.jpg" alt="Sector de pileta y solárium"></div>
+      <div class="foto" data-nombre="Las casas"><img loading="lazy" src="https://jardinesdelcielo.com.ar/wp-content/uploads/2023/06/complejodecabanasnono-4.jpg" alt="Cabaña entre los árboles"></div>
+      <div class="foto" data-nombre="Atardecer en el río"><img loading="lazy" src="https://jardinesdelcielo.com.ar/wp-content/uploads/2023/05/atardecer-en-el-rio-los.jpg" alt="Atardecer en el río cerca de Nono"></div>
+      <div class="foto" data-nombre="Nono"><img loading="lazy" src="https://jardinesdelcielo.com.ar/wp-content/uploads/2023/05/nono-01.jpg" alt="Paisaje de Nono"></div>
+    </div>
+    <ul class="servicios">
+      <li>Pileta con sector para chicos y solárium</li>
+      <li>Cerco perimetral</li>
+      <li>Juegos infantiles</li>
+      <li>Canchas de vóley y fútbol</li>
+      <li>Desayuno serrano</li>
+      <li>Ropa blanca y mucama</li>
+      <li>Wifi y DirecTV</li>
+      <li>Asador y cochera en cada unidad</li>
+    </ul>
+  </div>
+</section>
+
+<section id="reservar">
+  <div class="wrap">
+    <div class="cabeza">
+      <h2>Disponibilidad y pedido de reserva</h2>
+      <p>Elegí la casa, marcá la llegada y la salida en el calendario y mirá el total al instante. La seña se paga con Mercado Pago y la reserva queda tomada.</p>
+    </div>
+    <div class="reserva-grid">
+      <div class="calendario">
+        <div class="cal-unidad"><label for="cal-u">Ver calendario de</label><select id="cal-u"></select></div>
+        <div class="cal-top">
+          <h3 id="cal-mes"></h3>
+          <div class="cal-nav"><button type="button" id="cal-prev" aria-label="Mes anterior">‹</button><button type="button" id="cal-next" aria-label="Mes siguiente">›</button></div>
+        </div>
+        <div class="dias" id="cal-dias"></div>
+        <div class="leyenda"><span>Libre</span><span class="l-oc">Ocupado</span><span class="l-sel">Tus fechas</span><span class="l-alta">Temporada alta</span></div>
+        <div class="sync">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12a9 9 0 0 1-15.5 6.2M3 12A9 9 0 0 1 18.5 5.8"/><path d="M21 4v5h-5M3 20v-5h5"/></svg>
+          <span>Este calendario se sincroniza con Booking y Airbnb: cuando entra una reserva por cualquier lado, la fecha se bloquea en todos. En esta demo los ocupados son de ejemplo.</span>
+        </div>
+      </div>
+
+      <form class="simulador" id="sim" novalidate>
+        <h3>Tu estadía</h3>
+        <div class="fila2">
+          <label class="campo">Llegada<input type="date" id="s-in" required></label>
+          <label class="campo">Salida<input type="date" id="s-out" required></label>
+        </div>
+        <div class="fila2">
+          <label class="campo">Adultos<select id="s-ad"></select></label>
+          <label class="campo">Menores<select id="s-me"></select></label>
+        </div>
+        <label class="campo">Unidad<select id="s-u"></select></label>
+        <p class="error" id="s-err" aria-live="polite"></p>
+        <div class="total" id="s-total" aria-live="polite"></div>
+        <p class="aviso-sim">Precios de ejemplo para la demo. Desayuno serrano, ropa blanca y mucama incluidos.</p>
+        <button class="btn btn-mp" type="submit">Pagar seña del 30% con Mercado Pago</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section id="temporadas" style="padding-top:0">
+  <div class="wrap">
+    <div class="cabeza">
+      <h2>Temporadas 2026–2027</h2>
+      <p>Las fechas son las del calendario real; los importes son ilustrativos para mostrar cómo se verían publicados. El complejo carga sus tarifas y el simulador las usa solo.</p>
+    </div>
+    <div class="tabla-scroll">
+      <table class="temporadas" id="tabla-temp"></table>
+    </div>
+    <p class="nota-precio">Importes por noche y por unidad, en pesos, de ejemplo. Estadías mínimas y promociones para clientes frecuentes se configuran por temporada.</p>
+  </div>
+</section>
+
+<section id="nono" style="background:var(--cal-2)">
+  <div class="wrap">
+    <div class="cabeza">
+      <h2>Nono, uno de los pueblos más antiguos del valle</h2>
+      <p>Fundado entre fines del siglo XVIII y principios del XIX, conserva su plaza, sus calles viejas y dos ríos a pocos minutos.</p>
+    </div>
+    <div class="nono-grid">
+      <div class="lugar"><span class="dist">a 1 km</span><h3>Río Chico de Nono</h3><p>Playas de arena y piedra para pasar la tarde.</p></div>
+      <div class="lugar"><span class="dist">a 2,5 km</span><h3>Plaza e iglesia</h3><p>El centro del pueblo, con sus casonas y calles de antes.</p></div>
+      <div class="lugar"><span class="dist">en el pueblo</span><h3>Juntura de los ríos</h3><p>Donde el río Chico se encuentra con el río de los Sauces.</p></div>
+      <div class="lugar"><span class="dist">a minutos del pueblo</span><h3>Museo Rocsen</h3><p>El museo polifacético de Juan Santiago Bouchon, en las sierras de Nono.</p></div>
+      <div class="lugar"><span class="dist">por Las Moras</span><h3>Paso de las Tropas</h3><p>Balneario natural de río al que se llega por el mismo camino del complejo.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="preguntas">
+  <div class="wrap">
+    <div class="faq-mapa">
+      <div>
+        <h2 style="font-size:clamp(32px,3.6vw,50px);margin-bottom:20px">Preguntas frecuentes</h2>
+        <details><summary>¿Incluye ropa blanca y limpieza?</summary><p>Sí. Todas las unidades tienen ropa blanca, servicio de mucama, wifi y DirecTV.</p></details>
+        <details><summary>¿Qué trae el desayuno serrano?</summary><p>Dulces caseros, manteca, pan y otras especialidades de la casa.</p></details>
+        <details><summary>¿Se puede ir con mascotas?</summary><p>A confirmar con el complejo.</p></details>
+        <details><summary>¿A qué hora es el ingreso y la salida?</summary><p>A confirmar con el complejo. En la versión final se muestra acá y en el mail de confirmación.</p></details>
+        <details><summary>¿Es seguro para chicos?</summary><p>La pileta tiene sector para niños y el predio tiene cerco perimetral. Hay juegos infantiles y canchas.</p></details>
+        <details><summary>¿Cómo se confirma la reserva?</summary><p>Con la seña del 30% por Mercado Pago. El saldo se abona al llegar. Las condiciones de cancelación las define el complejo.</p></details>
+      </div>
+      <div>
+        <h2 style="font-size:clamp(32px,3.6vw,50px);margin-bottom:20px">Cómo llegar</h2>
+        <iframe class="mapa" title="Mapa de Jardines del Cielo en Nono" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Jardines+del+Cielo+Caba%C3%B1as+Nono+C%C3%B3rdoba&output=embed"></iframe>
+        <p class="llegar"><b>Las Moras (camino a Paso de las Tropas) km 1,2, esquina Enrique Wulff, Nono.</b> Desde Córdoba son unos 150 km por el camino de las Altas Cumbres hasta Mina Clavero y luego la ruta 14 hasta Nono. En el pueblo, tomá Las Moras hacia Paso de las Tropas.</p>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <h3>Jardines del Cielo</h3>
+      <p>Cabañas &amp; Apart Suites en Nono, Traslasierra, Córdoba.<br>Alquiler directo con los dueños.</p>
+    </div>
+    <div>
+      <p><a href="mailto:info@jardinesdelcielo.com.ar">info@jardinesdelcielo.com.ar</a><br>Tel. 0351 519-2341</p>
+    </div>
+    <div>
+      <p><a href="https://www.instagram.com/jardines_del_cielo/" rel="noopener" target="_blank">Instagram @jardines_del_cielo</a><br><a href="https://jardinesdelcielo.com.ar" rel="noopener" target="_blank">jardinesdelcielo.com.ar</a></p>
+    </div>
+    <p class="pie">Prototipo de demostración preparado para Jardines del Cielo por Resolviendo Kos. Fotos de jardinesdelcielo.com.ar. Precios, disponibilidad y pago son de ejemplo.</p>
+  </div>
+</footer>
+
+<div class="barra-movil">
+  <a class="btn btn-linea" href="#casas">Las casas</a>
+  <a class="btn btn-adobe" href="#reservar">Reservar</a>
+</div>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="m-tit">
+  <div class="modal-caja">
+    <h3 id="m-tit">Pedido de reserva listo</h3>
+    <div class="resumen" id="m-res"></div>
+    <p>En la versión final, este botón abre el pago de la seña en Mercado Pago, bloquea las fechas en Booking y Airbnb y les avisa a ustedes y al huésped por mail. Esto es una demo: no se cobra nada.</p>
+    <button class="btn btn-adobe" type="button" id="m-cerrar">Entendido</button>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var U = "https://jardinesdelcielo.com.ar/wp-content/uploads/";
+/* Plano: viewBox 0 0 300 200. Rooms: [x,y,w,h,nombre,detalle,muebles] muebles: [tipo,x,y] */
+var UNIDADES = [
+  {id:"c6", nombre:"Cabaña 2 dormitorios", sub:"en una planta", cap:6, base:140000,
+   foto:U+"2024/08/Cabana6pax_2dorm_1-3-5_-16.jpg",
+   datos:[["Dormitorios","2, con placard, aire y calefactor"],["Camas","sommier, 2 individuales y sofá cama con cama marinera"],["Baño","amplio, con antebaño"],["Cocina","horno, heladera con freezer, microondas"],["Afuera","galería, asador y cochera"]],
+   plantas:{"Planta":[
+     [6,6,110,92,"Dormitorio principal","Sommier matrimonial, placard amplio, aire acondicionado, ventilador de techo y calefactor de tiro balanceado.",[["d",28,40]]],
+     [116,6,92,92,"Dormitorio 2","Dos camas individuales con colchón de resortes, placard, aire y calefactor.",[["s",132,36],["s",168,36]]],
+     [208,6,86,60,"Baño","Baño amplio con antebaño.",[]],
+     [208,66,86,32,"Antebaño","Antebaño con espacio de guardado.",[]],
+     [6,98,170,96,"Estar comedor","Sillones, sofá cama con cama marinera (2 plazas extra), TV LED 43\" con DirecTV, ventilador y calefactor.",[["f",20,150],["m",110,120]]],
+     [176,98,118,96,"Cocina","Horno, heladera con congelador, microondas y vajilla completa.",[["k",190,126]]]
+   ]}},
+  {id:"c6pa", nombre:"Cabaña 2 dormitorios", sub:"en dos plantas", cap:6, base:140000,
+   foto:U+"2023/05/cabana02-nono-jardines-1.jpg",
+   datos:[["Planta alta","dormitorio con 3 camas individuales"],["Planta baja","dormitorio matrimonial, estar, cocina y baño"],["Camas","sommier + 3 individuales + sofá cama"],["Cocina","horno, heladera con freezer, microondas"],["Afuera","galería, asador y cochera"]],
+   plantas:{
+    "Planta baja":[
+     [6,6,120,96,"Dormitorio matrimonial","Sommier, placard amplio, aire acondicionado, ventilador y calefactor de tiro balanceado.",[["d",34,40]]],
+     [126,6,80,96,"Baño","Baño amplio.",[]],
+     [206,6,88,96,"Escalera","Sube al dormitorio de planta alta.",[["e",222,28]]],
+     [6,102,180,92,"Estar comedor","Sillones, sofá cama, TV LED 43\" con DirecTV, ventilador y calefactor.",[["f",20,150],["m",116,122]]],
+     [186,102,108,92,"Cocina","Horno, heladera con congelador, microondas y vajilla completa.",[["k",198,130]]]
+    ],
+    "Planta alta":[
+     [40,30,220,140,"Dormitorio de planta alta","Tres camas individuales con colchón de resortes, placard, aire acondicionado y calefactor.",[["s",70,70],["s",130,70],["s",190,70]]]
+    ]}},
+  {id:"c4", nombre:"Cabaña 1 dormitorio", sub:"para cuatro", cap:4, base:110000,
+   foto:U+"2023/05/cabana07-nono-jardines-1.jpg",
+   datos:[["Dormitorio","matrimonial con sommier y placard"],["Living","2 sofás cama, separado a medias del comedor"],["Baño","amplio, con ducha"],["Cocina","horno, heladera con freezer, microondas"],["Afuera","galería, asador y cochera"]],
+   plantas:{"Planta":[
+     [6,6,130,96,"Dormitorio","Sommier matrimonial, placard amplio, aire, ventilador y calefactor de tiro balanceado.",[["d",40,40]]],
+     [136,6,72,96,"Baño","Baño amplio con ducha.",[]],
+     [208,6,86,96,"Cocina","Horno, heladera con congelador, microondas y vajilla completa.",[["k",210,30]]],
+     [6,102,140,92,"Living","Dos sofás cama y un pequeño armario, con calefactor propio.",[["f",18,150],["f",80,150]]],
+     [146,102,148,92,"Comedor","TV LED 43\" con DirecTV y ventilador de techo.",[["m",196,124]]]
+   ]}},
+  {id:"s2j", nombre:"Apart suite con jacuzzi", sub:"para dos", cap:2, base:95000,
+   foto:U+"2023/06/apartsuites04-nono-1.jpg",
+   datos:[["Dormitorio","sommier king, ventanal al parque"],["Jacuzzi","privado"],["Baño","baño y toilette"],["Cocina","anafe eléctrico, pava, tostadora, microondas"],["Afuera","galería, parrilla y cochera cubierta"]],
+   plantas:{"Planta":[
+     [6,6,160,110,"Dormitorio con jacuzzi","Sommier king, jacuzzi, TV LED 43\", aire acondicionado, calefactor y placard. Ventanal al parque.",[["k2",30,30],["j",112,60]]],
+     [166,6,128,60,"Baño","Baño completo.",[]],
+     [166,66,128,50,"Toilette","Medio baño independiente.",[]],
+     [6,116,120,78,"Estar","Dos sillones y mesa ratona.",[["f",20,160]]],
+     [126,116,168,78,"Cocina comedor","Anafe eléctrico, microondas, pava eléctrica, tostadora, heladera con freezer y ventilador.",[["m",200,134]]]
+   ]}},
+  {id:"s3", nombre:"Apart suite", sub:"hasta tres", cap:3, base:90000,
+   foto:U+"2023/06/apartsuites03-nono-1.jpg",
+   datos:[["Dormitorio","cama king + 1 individual"],["Ambientes","dormitorio, estar y cocina comedor"],["Baño","con antebaño"],["Cocina","anafe eléctrico, microondas, copas"],["Afuera","galería, parrilla y cochera cubierta"]],
+   plantas:{"Planta":[
+     [6,6,170,110,"Dormitorio","Cama king y una individual, aire, TV LED 43\" con DirecTV, calefactor y placard. Ventanal al parque.",[["k2",24,30],["s",120,40]]],
+     [176,6,118,110,"Baño","Baño con antebaño.",[]],
+     [6,116,120,78,"Estar","Dos sillones y mesa ratona.",[["f",20,160]]],
+     [126,116,168,78,"Cocina comedor","Anafe eléctrico, microondas, pava, tostadora, vajilla, copas y heladera con freezer. Salida directa a la galería.",[["m",200,134]]]
+   ]}},
+  {id:"s4m", nombre:"Apart suite con cama marinera", sub:"hasta cuatro", cap:4, base:105000,
+   foto:U+"2023/06/apartsuites01-nono-1.jpg",
+   datos:[["Dormitorio","king 180×200 + individual con cama marinera"],["Ambientes","dormitorio, estar y cocina comedor"],["Baño","con antebaño"],["Cocina","anafe eléctrico, microondas, copas"],["Afuera","galería, parrilla y cochera cubierta"]],
+   plantas:{"Planta":[
+     [6,6,170,110,"Dormitorio","Cama king de 180×200 y una individual de 90×200 con cama marinera. Aire, TV 43\", calefactor y placard.",[["k2",24,30],["s",122,40]]],
+     [176,6,118,110,"Baño","Baño con antebaño.",[]],
+     [6,116,120,78,"Estar","Dos sillones y mesa ratona.",[["f",20,160]]],
+     [126,116,168,78,"Cocina comedor","Comedor para la familia, anafe eléctrico, microondas, pava, tostadora y heladera con freezer.",[["m",200,134]]]
+   ]}},
+  {id:"s4", nombre:"Apart suite", sub:"hasta cuatro", cap:4, base:105000,
+   foto:U+"2023/06/apartsuites02-nono-1.jpg",
+   datos:[["Dormitorio","sommier king + 2 individuales"],["Ambientes","dormitorio, estar y cocina comedor"],["Baño","amplio, con antebaño"],["Clima","aire y ventilador de techo"],["Afuera","galería con juego de jardín"]],
+   plantas:{"Planta":[
+     [6,6,180,110,"Dormitorio","Sommier king y dos individuales, aire acondicionado y ventilador de techo.",[["k2",20,30],["s",112,40],["s",146,40]]],
+     [186,6,108,110,"Baño","Baño amplio con antebaño.",[]],
+     [6,116,120,78,"Estar","Living con ventanal al parque.",[["f",20,160]]],
+     [126,116,168,78,"Cocina comedor","Cocina equipada y comedor.",[["m",200,134]]]
+   ]}}
+];
+
+/* Temporadas reales (fechas) con factor de ejemplo */
+var TEMPS = [
+  {n:"Finde largo de noviembre", d:"21 al 23 de noviembre de 2026", desde:"2026-11-21", hasta:"2026-11-23", f:1.25},
+  {n:"Verano", d:"26 de diciembre de 2026 al 28 de febrero de 2027", desde:"2026-12-26", hasta:"2027-02-28", f:1.45},
+  {n:"Semana Santa", d:"25 al 28 de marzo de 2027", desde:"2027-03-25", hasta:"2027-03-28", f:1.3},
+  {n:"Vacaciones de invierno", d:"julio de 2027", desde:"2027-07-05", hasta:"2027-07-30", f:1.2},
+  {n:"Resto del año", d:"fuera de las fechas anteriores", desde:null, hasta:null, f:1}
+];
+var HOY = new Date(2026,9,19);
+
+function iso(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function parse(s){var p=s.split("-");return new Date(+p[0],+p[1]-1,+p[2]);}
+function plata(n){return "$ "+Math.round(n).toLocaleString("es-AR");}
+function temporada(s){for(var i=0;i<TEMPS.length-1;i++){if(s>=TEMPS[i].desde&&s<=TEMPS[i].hasta)return TEMPS[i];}return TEMPS[TEMPS.length-1];}
+function redondeo(n){return Math.round(n/1000)*1000;}
+function uById(id){for(var i=0;i<UNIDADES.length;i++)if(UNIDADES[i].id===id)return UNIDADES[i];}
+
+/* ocupación de ejemplo, determinística */
+function ocupado(u,s){
+  var h=0,k=u.id+s;for(var i=0;i<k.length;i++){h=(h*31+k.charCodeAt(i))>>>0;}
+  var d=parse(s), dow=d.getDay();
+  var t=temporada(s), base = t.f>1.3?0.42:(dow===5||dow===6?0.3:0.1);
+  // bloques: agrupar en tramos de 3 días
+  var bloque=Math.floor((d-new Date(2026,0,1))/864e5/3);
+  var hb=0,kb=u.id+bloque;for(var j=0;j<kb.length;j++){hb=(hb*17+kb.charCodeAt(j))>>>0;}
+  return (hb%100)/100<base;
+}
+
+/* ---------- Fichas + planos ---------- */
+var NS="http://www.w3.org/2000/svg";
+function el(t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);return e;}
+function mueble(g,m){
+  var t=m[0],x=m[1],y=m[2];
+  if(t==="d"){g.appendChild(el("rect",{x:x,y:y,width:44,height:40,rx:2,"class":"mueble"}));g.appendChild(el("rect",{x:x+4,y:y+3,width:16,height:8,rx:2,"class":"mueble"}));g.appendChild(el("rect",{x:x+24,y:y+3,width:16,height:8,rx:2,"class":"mueble"}));}
+  else if(t==="k2"){g.appendChild(el("rect",{x:x,y:y,width:52,height:44,rx:2,"class":"mueble"}));g.appendChild(el("rect",{x:x+5,y:y+3,width:19,height:8,rx:2,"class":"mueble"}));g.appendChild(el("rect",{x:x+28,y:y+3,width:19,height:8,rx:2,"class":"mueble"}));}
+  else if(t==="s"){g.appendChild(el("rect",{x:x,y:y,width:22,height:40,rx:2,"class":"mueble"}));g.appendChild(el("rect",{x:x+3,y:y+3,width:16,height:8,rx:2,"class":"mueble"}));}
+  else if(t==="f"){g.appendChild(el("rect",{x:x,y:y,width:52,height:18,rx:3,"class":"mueble"}));g.appendChild(el("line",{x1:x,y1:y+6,x2:x+52,y2:y+6,"class":"mueble"}));}
+  else if(t==="m"){g.appendChild(el("rect",{x:x,y:y,width:40,height:26,rx:2,"class":"mueble"}));}
+  else if(t==="k"){g.appendChild(el("rect",{x:x,y:y,width:80,height:16,"class":"mueble"}));g.appendChild(el("circle",{cx:x+14,cy:y+8,r:4,"class":"mueble"}));g.appendChild(el("circle",{cx:x+26,cy:y+8,r:4,"class":"mueble"}));}
+  else if(t==="j"){g.appendChild(el("ellipse",{cx:x+20,cy:y+16,rx:22,ry:16,"class":"agua"}));}
+  else if(t==="e"){for(var i=0;i<6;i++)g.appendChild(el("line",{x1:x,y1:y+i*12,x2:x+56,y2:y+i*12,"class":"mueble"}));}
+}
+function dibujarPlano(svg,rooms,nota){
+  while(svg.firstChild)svg.removeChild(svg.firstChild);
+  rooms.forEach(function(r,i){
+    var g=el("g",{});
+    var rect=el("rect",{x:r[0],y:r[1],width:r[2],height:r[3],"class":"room",tabindex:"0",role:"button","aria-label":r[4]});
+    g.appendChild(rect);
+    (r[6]||[]).forEach(function(m){mueble(g,m);});
+    var tx=el("text",{x:r[0]+7,y:r[1]+15});tx.textContent=r[4];g.appendChild(tx);
+    function act(){svg.querySelectorAll(".room").forEach(function(o){o.classList.remove("activo");});rect.classList.add("activo");nota.innerHTML="<b>"+r[4]+".</b> "+r[5];}
+    rect.addEventListener("click",act);
+    rect.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();act();}});
+    svg.appendChild(g);
+  });
+  nota.textContent="Tocá un ambiente para ver el detalle.";
+}
+var cont=document.getElementById("fichas");
+UNIDADES.forEach(function(u){
+  var art=document.createElement("article");art.className="ficha";art.id="u-"+u.id;
+  var foto=document.createElement("div");foto.className="foto";foto.setAttribute("data-nombre",u.nombre+" "+u.sub);
+  var img=document.createElement("img");img.loading="lazy";img.src=u.foto;img.alt=u.nombre+" "+u.sub+" en Jardines del Cielo";foto.appendChild(img);
+  var plano=document.createElement("div");plano.className="plano";
+  var nombres=Object.keys(u.plantas);
+  if(nombres.length>1){
+    var pl=document.createElement("div");pl.className="plantas";pl.setAttribute("role","group");pl.setAttribute("aria-label","Planta");
+    nombres.forEach(function(n,i){var b=document.createElement("button");b.type="button";b.textContent=n;b.setAttribute("aria-pressed",i===0?"true":"false");
+      b.addEventListener("click",function(){pl.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed","false");});b.setAttribute("aria-pressed","true");dibujarPlano(svg,u.plantas[n],nota);});pl.appendChild(b);});
+    plano.appendChild(pl);
+  }
+  var svg=el("svg",{viewBox:"0 0 300 200",role:"img","aria-label":"Plano de "+u.nombre+" "+u.sub});
+  plano.appendChild(svg);
+  var nota=document.createElement("p");nota.className="nota";nota.setAttribute("aria-live","polite");plano.appendChild(nota);
+  dibujarPlano(svg,u.plantas[nombres[0]],nota);
+  var info=document.createElement("div");info.className="info";
+  var dl="<dl>"+u.datos.map(function(d){return "<dt>"+d[0]+"</dt><dd>"+d[1]+"</dd>";}).join("")+"</dl>";
+  info.innerHTML="<div><h3>"+u.nombre+" "+u.sub+"</h3><p class='cap' style='margin:4px 0 0'>Hasta "+u.cap+" personas, desde "+plata(u.base)+" la noche (ejemplo)</p></div>"+dl+"<button type='button' class='btn btn-adobe' data-elegir='"+u.id+"'>Ver fechas libres</button>";
+  art.appendChild(foto);art.appendChild(plano);art.appendChild(info);cont.appendChild(art);
+});
+
+/* fallback fotos */
+document.querySelectorAll(".foto img").forEach(function(img){
+  function f(){img.parentNode.classList.add("sin-foto");}
+  img.addEventListener("error",f);
+  if(img.complete&&img.naturalWidth===0&&img.src)f();
+});
+var pimg=document.querySelector(".portada-foto img");
+function pf(){pimg.style.display="none";pimg.parentNode.style.background="repeating-linear-gradient(135deg,#5A4334 0 14px,#4c3829 14px 28px)";}
+pimg.addEventListener("error",pf);if(pimg.complete&&pimg.naturalWidth===0)pf();
+
+/* filtro */
+var F={ad:2,me:0};
+function filtrar(){
+  document.getElementById("f-ad").textContent=F.ad;document.getElementById("f-me").textContent=F.me;
+  var n=F.ad+F.me, sirven=[];
+  UNIDADES.forEach(function(u){var a=document.getElementById("u-"+u.id);var ok=u.cap>=n;a.classList.toggle("sirve",ok);a.classList.toggle("no-sirve",!ok);if(ok)sirven.push(u);});
+  var r=document.getElementById("f-res");
+  if(sirven.length)r.textContent="Para "+n+(n===1?" persona":" personas")+" les sirven "+sirven.length+" de los 7 tipos de unidad. Las demás quedan atenuadas.";
+  else r.textContent="Son "+n+": ninguna unidad sola alcanza. Combinen dos cabañas (por ejemplo, una de 6 y una de 4) y lo coordinamos en el pedido.";
+}
+document.querySelectorAll("[data-paso]").forEach(function(b){b.addEventListener("click",function(){
+  var k=b.getAttribute("data-paso"),d=+b.getAttribute("data-d");F[k]=Math.max(k==="ad"?1:0,Math.min(12,F[k]+d));filtrar();
+  sAd.value=Math.min(F.ad,10);sMe.value=Math.min(F.me,8);calcular();
+});});
+
+/* ---------- Calendario ---------- */
+var calU=document.getElementById("cal-u"), sU=document.getElementById("s-u"), sAd=document.getElementById("s-ad"), sMe=document.getElementById("s-me");
+UNIDADES.forEach(function(u){
+  [calU,sU].forEach(function(s){var o=document.createElement("option");o.value=u.id;o.textContent=u.nombre+" "+u.sub+" ("+u.cap+")";s.appendChild(o);});
+});
+for(var i=1;i<=10;i++){var o=document.createElement("option");o.value=i;o.textContent=i;sAd.appendChild(o);}
+for(var j=0;j<=8;j++){var o2=document.createElement("option");o2.value=j;o2.textContent=j;sMe.appendChild(o2);}
+sAd.value=2;
+var mes=new Date(2026,9,1), MIN=new Date(2026,9,1), MAX=new Date(2027,6,1);
+var selIn=null, selOut=null;
+var MESES=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+function pintar(){
+  var u=uById(calU.value);
+  document.getElementById("cal-mes").textContent=MESES[mes.getMonth()]+" "+mes.getFullYear();
+  document.getElementById("cal-prev").disabled=mes<=MIN;
+  document.getElementById("cal-next").disabled=mes>=MAX;
+  var box=document.getElementById("cal-dias");box.innerHTML="";
+  ["lu","ma","mi","ju","vi","sá","do"].forEach(function(d){var s=document.createElement("div");s.className="dn";s.textContent=d;box.appendChild(s);});
+  var primero=(mes.getDay()+6)%7;
+  for(var k=0;k<primero;k++){var v=document.createElement("span");v.className="dia vacio";box.appendChild(v);}
+  var ult=new Date(mes.getFullYear(),mes.getMonth()+1,0).getDate();
+  for(var d=1;d<=ult;d++){
+    var f=new Date(mes.getFullYear(),mes.getMonth(),d), s=iso(f);
+    var b=document.createElement("button");b.type="button";b.className="dia";b.textContent=d;b.setAttribute("data-f",s);
+    var lab=d+" de "+MESES[mes.getMonth()];
+    if(f<HOY){b.classList.add("pasado");b.disabled=true;}
+    else if(ocupado(u,s)){b.classList.add("ocupado");b.disabled=true;lab+=", ocupado";}
+    else lab+=", libre";
+    if(temporada(s).f>1&&f>=HOY)b.classList.add("alta");
+    if(selIn&&s===selIn||selOut&&s===selOut)b.classList.add("sel");
+    else if(selIn&&selOut&&s>selIn&&s<selOut)b.classList.add("rango");
+    b.setAttribute("aria-label",lab);
+    b.addEventListener("click",clickDia);
+    box.appendChild(b);
+  }
+}
+function libreRango(u,a,b){var d=parse(a),fin=parse(b);while(d<fin){if(ocupado(u,iso(d)))return false;d.setDate(d.getDate()+1);}return true;}
+function clickDia(e){
+  var s=e.currentTarget.getAttribute("data-f");
+  if(!selIn||selOut||s<=selIn){selIn=s;selOut=null;}
+  else{ if(!libreRango(uById(calU.value),selIn,s)){selIn=s;selOut=null;} else selOut=s; }
+  sIn.value=selIn||"";sOut.value=selOut||"";sU.value=calU.value;
+  pintar();calcular();
+}
+document.getElementById("cal-prev").addEventListener("click",function(){mes=new Date(mes.getFullYear(),mes.getMonth()-1,1);pintar();});
+document.getElementById("cal-next").addEventListener("click",function(){mes=new Date(mes.getFullYear(),mes.getMonth()+1,1);pintar();});
+calU.addEventListener("change",function(){sU.value=calU.value;pintar();calcular();});
+
+/* ---------- Simulador ---------- */
+var sIn=document.getElementById("s-in"), sOut=document.getElementById("s-out");
+sIn.min=iso(HOY);sOut.min=iso(HOY);
+function calcular(){
+  var err=document.getElementById("s-err"), tot=document.getElementById("s-total");
+  err.textContent="";tot.innerHTML="";
+  var u=uById(sU.value), n=+sAd.value+ +sMe.value;
+  if(n>u.cap){err.textContent="La "+u.nombre.toLowerCase()+" "+u.sub+" es hasta "+u.cap+" personas. Elegí otra unidad o sumá una segunda.";return null;}
+  if(!sIn.value||!sOut.value){tot.innerHTML="<div class='linea'><span>Elegí llegada y salida para ver el total.</span></div>";return null;}
+  if(sOut.value<=sIn.value){err.textContent="La salida tiene que ser después de la llegada.";return null;}
+  if(sIn.value<iso(HOY)){err.textContent="La llegada no puede ser anterior a hoy.";return null;}
+  if(!libreRango(u,sIn.value,sOut.value)){err.textContent="Hay noches ocupadas en ese rango para esta unidad. Mirá el calendario y probá otras fechas u otra unidad.";return null;}
+  var d=parse(sIn.value),fin=parse(sOut.value),noches=0,total=0,porT={};
+  while(d<fin){var t=temporada(iso(d));var p=redondeo(u.base*t.f);total+=p;noches++;porT[t.n]=(porT[t.n]||0)+1;d.setDate(d.getDate()+1);}
+  var det=Object.keys(porT).map(function(k){return porT[k]+" en "+k.toLowerCase();}).join(", ");
+  var sena=Math.round(total*0.3);
+  tot.innerHTML="<div class='linea'><span>"+noches+(noches===1?" noche":" noches")+" ("+det+")</span></div>"+
+    "<div class='linea'><span>Total estadía</span><span class='grande'>"+plata(total)+"</span></div>"+
+    "<div class='linea sena'><span>Seña 30% para confirmar</span><b>"+plata(sena)+"</b></div>"+
+    "<div class='linea'><span>Saldo al llegar</span><span>"+plata(total-sena)+"</span></div>";
+  return {u:u,noches:noches,total:total,sena:sena,n:n};
+}
+[sIn,sOut,sAd,sMe].forEach(function(x){x.addEventListener("change",function(){
+  if(x===sIn||x===sOut){selIn=sIn.value||null;selOut=sOut.value||null;if(selIn){var f=parse(selIn);mes=new Date(f.getFullYear(),f.getMonth(),1);if(mes<MIN)mes=MIN;if(mes>MAX)mes=MAX;}pintar();}
+  calcular();});});
+sU.addEventListener("change",function(){calU.value=sU.value;pintar();calcular();});
+document.querySelectorAll("[data-elegir]").forEach(function(b){b.addEventListener("click",function(){
+  var id=b.getAttribute("data-elegir");calU.value=id;sU.value=id;pintar();calcular();
+  document.getElementById("reservar").scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
+});});
+var modal=document.getElementById("modal");
+document.getElementById("sim").addEventListener("submit",function(e){
+  e.preventDefault();var r=calcular();
+  if(!r){if(!document.getElementById("s-err").textContent)document.getElementById("s-err").textContent="Elegí llegada y salida en el calendario o en los campos de fecha.";return;}
+  var f1=parse(sIn.value),f2=parse(sOut.value);
+  document.getElementById("m-res").innerHTML="<b>"+r.u.nombre+" "+r.u.sub+"</b><br>"+f1.getDate()+" de "+MESES[f1.getMonth()]+" al "+f2.getDate()+" de "+MESES[f2.getMonth()]+", "+r.n+(r.n===1?" persona":" personas")+"<br>Total "+plata(r.total)+", seña "+plata(r.sena);
+  modal.classList.add("abierto");document.getElementById("m-cerrar").focus();
+});
+function cerrar(){modal.classList.remove("abierto");}
+document.getElementById("m-cerrar").addEventListener("click",cerrar);
+modal.addEventListener("click",function(e){if(e.target===modal)cerrar();});
+document.addEventListener("keydown",function(e){if(e.key==="Escape")cerrar();});
+
+/* ---------- Tabla temporadas ---------- */
+var tabla=document.getElementById("tabla-temp");
+var cols=[["c6","Cabaña 6"],["c4","Cabaña 4"],["s2j","Suite jacuzzi"],["s3","Suite 3"],["s4","Suite 4"]];
+var h="<thead><tr><th scope='col'>Temporada</th><th scope='col'>Fechas</th>"+cols.map(function(c){return "<th scope='col'>"+c[1]+"</th>";}).join("")+"</tr></thead><tbody>";
+TEMPS.forEach(function(t){h+="<tr><td>"+t.n+"</td><td>"+t.d+"</td>"+cols.map(function(c){return "<td class='num'>"+plata(redondeo(uById(c[0]).base*t.f))+"</td>";}).join("")+"</tr>";});
+tabla.innerHTML=h+"</tbody>";
+
+filtrar();pintar();calcular();
+})();
+</script>
+</body>
+</html>
