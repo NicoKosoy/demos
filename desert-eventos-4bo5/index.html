@@ -1,0 +1,1133 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#121633">
+<title>Desert Eventos · Gala o Classic, en Vistalba</title>
+<meta name="description" content="Prototipo de demostración preparado para Desert Eventos.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Reddit+Sans:wght@400;500;600;700&family=Reddit+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:dark;
+  --noche:#121633;
+  --cielo:#1d2350;
+  --cielo2:#262d63;
+  --arena:#d9b98a;
+  --oro:#c9a24a;
+  --oro-claro:#e2c47a;
+  --luna:#f3efe6;
+  --luna-2:#c9c6d6;
+  --atardecer:#e07d6a;
+  --linea:rgba(243,239,230,.14);
+  --linea-oro:rgba(201,162,74,.45);
+  --display:'Cinzel',Georgia,serif;
+  --text:'Reddit Sans',system-ui,sans-serif;
+  --mono:'Reddit Mono',ui-monospace,monospace;
+  --gw:.5; /* peso de Gala en el duelo (0 a 1) */
+  --ease:cubic-bezier(.65,0,.25,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;background:#121633}
+body{background:#121633;color:#f3efe6;font-family:var(--text);font-size:17px;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+a{color:inherit}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid #e2c47a;outline-offset:3px;border-radius:4px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrap{max-width:1200px;margin:0 auto;padding:0 20px}
+.is-off,[hidden]{display:none!important}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.kicker{font-family:var(--mono);font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;color:#d9b98a}
+h2.titulo{font-family:var(--display);font-weight:600;font-size:clamp(30px,5vw,52px);line-height:1.08;letter-spacing:.02em;color:#f3efe6;margin:.35em 0 .4em}
+h2.titulo em{font-style:normal;color:#c9a24a}
+.lead{color:#c9c6d6;max-width:60ch}
+section{position:relative}
+.sec{padding:88px 0}
+
+/* cielo: estrellas fijas (no aleatorias) */
+.estrellas{background-image:
+  radial-gradient(1.2px 1.2px at 8% 12%,#f3efe6 60%,transparent),
+  radial-gradient(1px 1px at 22% 40%,#d9b98a 60%,transparent),
+  radial-gradient(1.4px 1.4px at 37% 8%,#f3efe6 60%,transparent),
+  radial-gradient(1px 1px at 51% 28%,#f3efe6 60%,transparent),
+  radial-gradient(1.2px 1.2px at 66% 14%,#d9b98a 60%,transparent),
+  radial-gradient(1px 1px at 78% 36%,#f3efe6 60%,transparent),
+  radial-gradient(1.5px 1.5px at 91% 9%,#f3efe6 60%,transparent),
+  radial-gradient(1px 1px at 14% 70%,#f3efe6 60%,transparent),
+  radial-gradient(1px 1px at 46% 62%,#d9b98a 60%,transparent),
+  radial-gradient(1.2px 1.2px at 84% 66%,#f3efe6 60%,transparent);
+  background-size:520px 360px}
+
+/* aviso */
+.aviso{background:#c9a24a;color:#121633;font-size:14px;font-weight:600;text-align:center;padding:8px 16px;line-height:1.4}
+
+/* cabecera */
+.cab{position:sticky;top:0;z-index:30;background:rgba(18,22,51,.9);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(201,162,74,.25)}
+.cab .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:64px}
+.marca{display:flex;align-items:center;gap:10px;text-decoration:none;min-width:0}
+.marca img{height:40px;width:auto}
+.marca .marca-txt{font-family:var(--display);font-weight:700;font-size:21px;letter-spacing:.22em;color:#c9a24a}
+.marca .marca-sub{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:#d9b98a;text-transform:uppercase}
+.nav{display:flex;gap:22px;font-size:14.5px}
+.nav a{text-decoration:none;color:#c9c6d6;padding:6px 0}
+.nav a:hover{color:#f3efe6}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:0 20px;border-radius:999px;border:1px solid #c9a24a;background:#c9a24a;color:#121633;font-weight:700;text-decoration:none;cursor:pointer;font-size:15.5px;transition:background .2s,color .2s,transform .2s}
+.btn:hover{background:#e2c47a}
+.btn.ghost{background:transparent;color:#e2c47a}
+.btn.ghost:hover{background:rgba(201,162,74,.14)}
+.btn.chico{min-height:40px;padding:0 16px;font-size:14px}
+@media (max-width:900px){.nav{display:none}}
+
+/* ===== PORTADA: el duelo ===== */
+.intro{padding-top:34px;padding-bottom:22px;text-align:center}
+.intro h1{font-family:var(--display);font-weight:600;font-size:clamp(27px,4.4vw,50px);line-height:1.12;letter-spacing:.015em;max-width:22ch;margin:.4em auto .3em}
+.intro h1 .num{font-family:var(--display)}
+.intro h1 b{color:#c9a24a;font-weight:600}
+.intro p{color:#c9c6d6;max-width:56ch;margin:0 auto}
+.duelo{position:relative;display:flex;height:min(76vh,680px);min-height:520px;margin:0 auto;max-width:1440px;isolation:isolate}
+.mitad{position:relative;flex:var(--grow) 1 0;min-width:0;transition:flex-grow 1.1s var(--ease);container-type:inline-size;background:#1d2350}
+.mitad.gala{--grow:var(--gw);background:linear-gradient(160deg,#262d63,#121633 70%)}
+.mitad.classic{--grow:calc(1 - var(--gw));background:linear-gradient(200deg,#1d2350,#121633 70%)}
+.mitad .foto{position:absolute;inset:0;overflow:hidden}
+.mitad .foto img{width:100%;height:100%;object-fit:cover;transform:scale(1.04);transition:transform 1.4s var(--ease),filter .8s}
+.mitad .foto::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,22,51,.25) 0%,rgba(18,22,51,.1) 35%,rgba(18,22,51,.88) 100%)}
+.mitad.atenuada .foto img{filter:saturate(.45) brightness(.6)}
+.mitad.elegida .foto img{transform:scale(1)}
+.mitad .rotulo{position:absolute;left:0;right:0;bottom:0;padding:28px clamp(18px,4cqi,44px) 78px;z-index:2}
+.mitad.gala .rotulo{text-align:left}
+.mitad.classic .rotulo{text-align:right}
+.mitad .nombre{font-family:var(--display);font-weight:700;font-size:min(17cqi,108px);line-height:.95;letter-spacing:.06em;color:#f3efe6;text-shadow:0 2px 30px rgba(18,22,51,.6);white-space:nowrap}
+.mitad .specs{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:12px;font-family:var(--mono);font-size:13.5px;letter-spacing:.08em;text-transform:uppercase;color:#d9b98a}
+.mitad.classic .specs{justify-content:flex-end}
+.mitad .specs b{color:#f3efe6;font-weight:600}
+.sello{display:inline-block;margin-bottom:12px;font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;padding:6px 12px;border:1px solid #c9a24a;color:#121633;background:#c9a24a;border-radius:999px;opacity:0;transform:translateY(8px);transition:opacity .5s,transform .5s}
+.mitad.elegida .sello{opacity:1;transform:none}
+.sello.alerta{background:#e07d6a;border-color:#e07d6a}
+.divisor{position:absolute;top:0;bottom:0;right:0;width:2px;transform:translateX(1px);background:linear-gradient(180deg,transparent,#c9a24a 12%,#c9a24a 88%,transparent);z-index:5}
+.medalla{position:absolute;top:44%;right:0;transform:translate(50%,-50%);z-index:6;width:64px;height:64px;border-radius:50%;background:#121633;border:1px solid #c9a24a;display:grid;place-items:center;font-family:var(--display);font-size:22px;color:#c9a24a;box-shadow:0 0 0 6px rgba(18,22,51,.55)}
+.control{position:relative;z-index:8;max-width:880px;margin:-46px auto 0;padding:0 16px}
+.control-in{background:#1d2350;border:1px solid rgba(201,162,74,.45);border-radius:18px;padding:18px 22px;display:grid;grid-template-columns:1fr auto;gap:10px 24px;align-items:center;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+.control label{font-size:14.5px;color:#c9c6d6;display:flex;justify-content:space-between;gap:12px}
+.control label .num{color:#f3efe6;font-size:18px;font-weight:600}
+.veredicto-mini{font-size:14.5px;color:#c9c6d6;text-align:right}
+.veredicto-mini b{display:block;font-family:var(--display);font-size:24px;color:#c9a24a;letter-spacing:.08em}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:30px;background:transparent;cursor:pointer}
+input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:4px;background:linear-gradient(90deg,#c9a24a var(--p,50%),rgba(243,239,230,.18) var(--p,50%))}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;margin-top:-10px;border-radius:50%;background:#f3efe6;border:3px solid #c9a24a}
+input[type=range]::-moz-range-track{height:4px;border-radius:4px;background:rgba(243,239,230,.18)}
+input[type=range]::-moz-range-progress{height:4px;background:#c9a24a}
+input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#f3efe6;border:3px solid #c9a24a}
+
+@media (max-width:760px){
+  .duelo{flex-direction:column;height:640px;min-height:0}
+  .mitad .nombre{font-size:min(19cqi,76px)}
+  .mitad .rotulo{padding:18px 18px 22px}
+  .mitad.classic .rotulo{text-align:left}
+  .mitad.classic .specs{justify-content:flex-start}
+  .mitad .specs{font-size:12.5px}
+  .divisor{top:auto;left:0;right:0;bottom:0;width:auto;height:2px;transform:translateY(1px);background:linear-gradient(90deg,transparent,#c9a24a 12%,#c9a24a 88%,transparent)}
+  .medalla{top:auto;bottom:0;right:22px;transform:translateY(50%);width:52px;height:52px;font-size:19px}
+  .control{margin-top:-22px}
+  .control-in{grid-template-columns:1fr;padding:16px}
+  .veredicto-mini{text-align:left}
+}
+
+/* animación de entrada: el telón se abre y el divisor baja */
+.intro > *,.mitad .rotulo,.control-in{animation:sube .9s var(--ease) both}
+.intro h1{animation-delay:.08s}.intro p{animation-delay:.16s}
+.mitad.gala .rotulo{animation-delay:.55s}.mitad.classic .rotulo{animation-delay:.7s}
+.control-in{animation-delay:.9s}
+.divisor{animation:traza 1.2s var(--ease) .3s both;transform-origin:top}
+.mitad .foto{animation:abre 1.3s var(--ease) both}
+.mitad.gala .foto{clip-path:inset(0 0 0 0)}
+@keyframes sube{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes traza{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 0 0)}}
+@keyframes abre{from{opacity:0;clip-path:inset(0 50% 0 50%)}to{opacity:1;clip-path:inset(0 0 0 0)}}
+
+/* ===== MEDIDOR ===== */
+.medidor{background:linear-gradient(180deg,#121633,#1d2350 60%,#121633)}
+.med-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:start;margin-top:30px}
+.contador{border-top:1px solid rgba(243,239,230,.14);padding:22px 0}
+.contador:last-of-type{border-bottom:1px solid rgba(243,239,230,.14)}
+.contador-top{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.contador-top > div:first-child{flex:1 1 220px}
+.contador h3{font-size:17px;font-weight:600}
+.contador .ayuda{font-size:14px;color:#c9c6d6;margin-top:2px}
+.stepper{display:flex;align-items:center;gap:6px}
+.stepper button{width:44px;height:44px;border-radius:50%;border:1px solid rgba(201,162,74,.45);background:transparent;color:#e2c47a;font-size:22px;line-height:1;cursor:pointer}
+.stepper button:hover{background:rgba(201,162,74,.14)}
+.stepper input{width:110px;height:56px;text-align:center;font-family:var(--mono);font-size:34px;font-weight:600;background:transparent;border:0;border-bottom:2px solid #c9a24a;color:#f3efe6;-moz-appearance:textfield}
+.stepper input::-webkit-inner-spin-button{-webkit-appearance:none}
+.escala{position:relative;height:46px;margin-top:18px}
+.escala .riel{position:absolute;left:0;right:0;top:16px;height:8px;border-radius:8px;background:rgba(243,239,230,.1)}
+.escala .zona{position:absolute;top:16px;height:8px;border-radius:8px}
+.zona.c{background:#d9b98a}
+.zona.g{background:#c9a24a;opacity:.55}
+.zona.g.alta{top:26px;height:5px;opacity:.8}
+.escala .marca-pos{position:absolute;top:6px;width:2px;height:30px;background:#f3efe6;transition:left .5s var(--ease);box-shadow:0 0 0 3px rgba(18,22,51,.8)}
+.escala .marca-pos.fuera{background:#e07d6a}
+.escala .tics{position:absolute;left:0;right:0;top:36px;font-family:var(--mono);font-size:11px;color:#c9c6d6}
+.escala .tics span{position:absolute;transform:translateX(-50%)}
+.leyenda{display:flex;gap:16px;flex-wrap:wrap;margin-top:14px;font-size:13px;color:#c9c6d6}
+.leyenda i{display:inline-block;width:18px;height:6px;border-radius:4px;margin-right:6px;vertical-align:middle}
+.fallo{position:sticky;top:84px;background:#121633;border:1px solid rgba(201,162,74,.45);border-radius:22px;padding:28px;overflow:hidden}
+.fallo::before{content:"";position:absolute;inset:0;opacity:.6;pointer-events:none}
+.fallo .kicker{position:relative}
+.fallo .gran{position:relative;font-family:var(--display);font-weight:700;font-size:clamp(46px,7vw,76px);letter-spacing:.08em;color:#c9a24a;line-height:1;margin:10px 0 14px;transition:color .3s}
+.fallo.fuera .gran{color:#e07d6a}
+.fallo p{position:relative;color:#c9c6d6}
+.fallo p b{color:#f3efe6}
+.fallo .nota{margin-top:10px;font-size:14.5px;color:#d9b98a}
+.fallo .alerta-txt{margin-top:10px;font-size:15px;color:#e07d6a;font-weight:600}
+.fallo .totales{display:flex;gap:26px;margin:20px 0;position:relative}
+.fallo .totales div{font-size:13px;color:#c9c6d6}
+.fallo .totales .num{display:block;font-size:28px;color:#f3efe6;font-weight:600}
+.fallo .acciones{display:flex;gap:10px;flex-wrap:wrap;position:relative}
+@media (max-width:860px){.med-grid{grid-template-columns:1fr}.fallo{position:relative;top:0}}
+
+/* ===== PARA QUÉ NOCHE ===== */
+.tabs{display:flex;gap:4px;border-bottom:1px solid rgba(243,239,230,.14);margin-top:26px;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;background:none;border:0;border-bottom:2px solid transparent;padding:14px 16px;font-family:var(--display);font-size:18px;font-weight:600;letter-spacing:.06em;color:#c9c6d6;cursor:pointer;min-height:48px}
+.tab[aria-selected=true]{color:#c9a24a;border-bottom-color:#c9a24a}
+.panel{display:grid;grid-template-columns:1.25fr 1fr;gap:34px;padding-top:34px;align-items:start}
+.panel[hidden]{display:none}
+.collage{display:grid;grid-template-columns:1.4fr 1fr;grid-template-rows:220px 220px;gap:10px}
+.collage figure{position:relative;overflow:hidden;border-radius:14px;background:#1d2350}
+.collage figure:first-child{grid-row:span 2;border-radius:180px 180px 14px 14px}
+.collage img{width:100%;height:100%;object-fit:cover}
+.collage figure.is-off ~ figure{grid-column:auto}
+.panel h3{font-family:var(--display);font-size:28px;font-weight:600;letter-spacing:.03em;margin-bottom:10px}
+.panel p{color:#c9c6d6;margin-bottom:12px}
+.panel ul{list-style:none;margin:16px 0 22px;border-top:1px solid rgba(243,239,230,.14)}
+.panel li{padding:11px 0;border-bottom:1px solid rgba(243,239,230,.14);display:flex;gap:12px;font-size:15.5px}
+.panel li::before{content:"✦";color:#c9a24a;font-size:12px;padding-top:4px}
+@media (max-width:860px){
+  .panel{grid-template-columns:1fr}
+  .collage{grid-template-rows:170px 170px}
+  .collage figure:first-child{border-radius:120px 120px 12px 12px}
+}
+
+/* ===== COMPARATIVA ===== */
+.compara-cab{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:30px 0 0}
+.compara-cab figure{position:relative;height:240px;border-radius:16px;overflow:hidden;background:linear-gradient(160deg,#262d63,#121633)}
+.compara-cab img{width:100%;height:100%;object-fit:cover}
+.compara-cab figcaption{position:absolute;left:0;right:0;bottom:0;padding:14px 18px;background:linear-gradient(transparent,rgba(18,22,51,.92));font-family:var(--display);font-size:26px;font-weight:700;letter-spacing:.08em}
+.ficha{width:100%;border-collapse:collapse;margin-top:8px;table-layout:fixed}
+.ficha caption{text-align:left;font-size:13.5px;color:#c9c6d6;padding:12px 0;caption-side:bottom}
+.ficha th,.ficha td{padding:15px 14px;border-bottom:1px solid rgba(243,239,230,.14);vertical-align:top;text-align:left;font-size:15.5px}
+.ficha thead th{font-family:var(--display);font-size:20px;letter-spacing:.1em;color:#c9a24a;border-bottom:1px solid #c9a24a}
+.ficha tbody th{font-family:var(--mono);font-weight:500;font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;color:#d9b98a;width:24%}
+.ficha td .num{font-size:19px;font-weight:600;color:#f3efe6}
+.ficha .vacio{color:rgba(243,239,230,.45)}
+.ficha col.rec{background:rgba(201,162,74,.08)}
+.ficha .tag-rec{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;background:#c9a24a;color:#121633;border-radius:99px;padding:2px 8px;vertical-align:middle;margin-left:8px}
+.comunes{display:grid;grid-template-columns:1fr 1.2fr;gap:36px;margin-top:56px;align-items:center}
+.platos{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.platos figure{aspect-ratio:3/4;border-radius:12px;overflow:hidden;background:#1d2350}
+.platos figure:nth-child(2){transform:translateY(28px)}
+.platos img{width:100%;height:100%;object-fit:cover}
+.comunes ol{list-style:none;counter-reset:s}
+.comunes li{counter-increment:s;padding:14px 0 14px 48px;position:relative;border-bottom:1px solid rgba(243,239,230,.14)}
+.comunes li::before{content:"0" counter(s);position:absolute;left:0;top:15px;font-family:var(--mono);color:#c9a24a;font-size:14px}
+.comunes li b{display:block;font-weight:600}
+.comunes li span{color:#c9c6d6;font-size:15px}
+@media (max-width:760px){
+  .compara-cab figure{height:150px}
+  .compara-cab figcaption{font-size:18px;padding:10px 12px}
+  .ficha th,.ficha td{padding:12px 6px;font-size:13.5px}
+  .ficha thead th{font-size:15px;letter-spacing:.06em}
+  .ficha tbody th{font-size:10.5px;letter-spacing:.06em;width:28%}
+  .ficha td .num{font-size:16px}
+  .ficha .tag-rec{display:block;width:max-content;margin:4px 0 0}
+  .comunes{grid-template-columns:1fr}
+}
+
+/* ===== COTIZADOR ===== */
+.cotizador{background:linear-gradient(180deg,#121633,#1d2350)}
+.coti-grid{display:grid;grid-template-columns:1fr 440px;gap:40px;margin-top:30px;align-items:start}
+.form{display:grid;gap:20px}
+.campo{display:grid;gap:7px}
+.campo > label,.campo legend{font-size:14px;font-weight:600;color:#d9b98a;letter-spacing:.02em}
+.campo select,.campo input[type=number]{height:50px;border-radius:12px;border:1px solid rgba(243,239,230,.22);background:#121633;padding:0 14px;font-size:16px;width:100%}
+.campo input[type=number]{font-family:var(--mono);font-size:18px}
+.campo select:focus,.campo input:focus{border-color:#c9a24a}
+.fila2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+fieldset{border:0}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:7px}
+.seg label{position:relative;display:block;cursor:pointer}
+.seg input{position:absolute;opacity:0;inset:0}
+.seg span{display:block;border:1px solid rgba(243,239,230,.22);border-radius:12px;padding:12px 14px;font-family:var(--display);font-weight:700;letter-spacing:.08em;font-size:18px}
+.seg small{display:block;font-family:var(--mono);font-weight:400;font-size:11.5px;letter-spacing:.04em;color:#c9c6d6;margin-top:2px}
+.seg input:checked + span{border-color:#c9a24a;background:rgba(201,162,74,.14);color:#e2c47a}
+.seg input:focus-visible + span{outline:2px solid #e2c47a;outline-offset:2px}
+.auto-linea{font-size:13.5px;color:#c9c6d6;margin-top:6px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.auto-linea button{background:none;border:0;color:#e2c47a;text-decoration:underline;cursor:pointer;font-size:13.5px;padding:4px 0}
+.checks{display:grid;gap:8px;margin-top:7px}
+.check{display:flex;gap:12px;align-items:center;border:1px solid rgba(243,239,230,.22);border-radius:12px;padding:12px 14px;cursor:pointer}
+.check input{width:20px;height:20px;accent-color:#c9a24a}
+.check .pr{margin-left:auto;font-family:var(--mono);font-size:13.5px;color:#d9b98a;white-space:nowrap}
+.aviso-cap{font-size:14.5px;color:#e07d6a;font-weight:600}
+.nota-precios{font-size:13.5px;color:#c9c6d6;border-left:2px solid #c9a24a;padding-left:12px}
+
+/* la entrada */
+.entrada{position:sticky;top:84px;color:#121633;filter:drop-shadow(0 30px 50px rgba(0,0,0,.4))}
+.ticket{background:#f3efe6;border-radius:18px;position:relative;overflow:hidden}
+.ticket::before,.ticket::after{content:"";position:absolute;top:calc(58% - 14px);width:28px;height:28px;border-radius:50%;background:#1a1f48}
+.ticket::before{left:-14px}.ticket::after{right:-14px}
+.t-top{padding:22px 24px 18px;background:#121633;color:#f3efe6;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.t-top .t-marca{font-family:var(--display);font-weight:700;letter-spacing:.24em;color:#c9a24a;font-size:18px}
+.t-top .t-tipo{font-family:var(--mono);font-size:11.5px;letter-spacing:.18em;border:1px solid #c9a24a;color:#e2c47a;padding:4px 10px;border-radius:99px}
+.t-cuerpo{padding:20px 24px 4px;display:grid;grid-template-columns:1fr 1fr;gap:14px 16px}
+.t-cuerpo div{min-width:0}
+.t-cuerpo dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#6a6580}
+.t-cuerpo dd{font-weight:700;font-size:16px;line-height:1.3;overflow-wrap:anywhere}
+.t-cuerpo .salon dd{font-family:var(--display);font-size:24px;letter-spacing:.08em;color:#121633}
+.t-cuerpo .ancho{grid-column:1/-1}
+.t-corte{margin:16px 20px 0;border-top:2px dashed rgba(18,22,51,.25)}
+.t-pie{padding:20px 24px 24px;display:grid;grid-template-columns:1fr 112px;gap:16px;align-items:center}
+.t-total dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#6a6580}
+.t-total .rango{font-family:var(--mono);font-weight:600;font-size:21px;line-height:1.25;color:#121633}
+.t-total .pp{font-family:var(--mono);font-size:13.5px;color:#3c3a55;margin-top:8px}
+.qr{position:relative}
+.qr svg{width:112px;height:112px;display:block}
+.qr .estampa{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-12deg);font-family:var(--mono);font-weight:600;font-size:11px;letter-spacing:.14em;color:#e07d6a;border:2px solid #e07d6a;background:rgba(243,239,230,.92);padding:2px 6px;border-radius:4px;white-space:nowrap}
+.desglose{margin-top:14px;font-size:13.5px;color:#c9c6d6;font-family:var(--mono)}
+.desglose div{display:flex;justify-content:space-between;gap:12px;padding:5px 0;border-bottom:1px dotted rgba(243,239,230,.18)}
+.desglose div{flex-wrap:wrap}
+.desglose span:first-child{white-space:nowrap}
+.desglose span:last-child{text-align:right;white-space:nowrap;margin-left:auto}
+.wa-caja{margin-top:16px;background:#121633;border:1px solid rgba(243,239,230,.14);border-radius:14px;padding:14px 16px;color:#f3efe6}
+.wa-caja p{font-size:14.5px;color:#c9c6d6;margin:6px 0 12px}
+.wa-caja .btn{width:100%}
+@media (max-width:980px){.coti-grid{grid-template-columns:1fr}.entrada{position:relative;top:0}}
+@media (max-width:420px){
+  .fila2{grid-template-columns:1fr 1fr;gap:10px}
+  .t-pie{grid-template-columns:1fr 92px;padding:18px 18px 20px}
+  .qr svg{width:92px;height:92px}
+  .t-cuerpo{padding:18px 18px 4px}
+  .t-top{padding:18px}
+  .t-total .rango{font-size:17px}
+}
+
+/* ===== CALENDARIO ===== */
+.meses{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:30px}
+.mes{border:1px solid rgba(243,239,230,.14);border-radius:16px;padding:18px;background:rgba(29,35,80,.5)}
+.mes h3{font-family:var(--display);font-size:19px;letter-spacing:.08em;font-weight:600;display:flex;justify-content:space-between;align-items:baseline}
+.mes h3 small{font-family:var(--mono);font-size:11.5px;color:#d9b98a;letter-spacing:.08em}
+.sabados{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.sab{width:56px;height:62px;border-radius:12px;border:1px solid rgba(201,162,74,.5);background:transparent;cursor:pointer;display:grid;place-items:center;align-content:center;line-height:1.1}
+.sab b{font-family:var(--mono);font-size:21px;font-weight:600}
+.sab small{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:#d9b98a}
+.sab:hover{background:rgba(201,162,74,.14)}
+.sab[aria-pressed=true]{background:#c9a24a;color:#121633;border-color:#c9a24a}
+.sab[aria-pressed=true] small{color:#121633}
+.sab:disabled{cursor:not-allowed;border-color:rgba(243,239,230,.1);color:rgba(243,239,230,.35);background:repeating-linear-gradient(135deg,transparent 0 6px,rgba(243,239,230,.05) 6px 7px)}
+.sab:disabled small{color:rgba(243,239,230,.35)}
+.cal-ley{display:flex;gap:18px;margin-top:18px;font-size:13.5px;color:#c9c6d6;flex-wrap:wrap}
+@media (max-width:980px){.meses{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:600px){.meses{grid-template-columns:1fr}.sab{width:52px;height:58px}}
+
+/* ===== HISTORIA ===== */
+.historia{overflow:hidden}
+.hist-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.hist-foto{position:relative;aspect-ratio:4/5;border-radius:240px 240px 18px 18px;overflow:hidden;background:linear-gradient(160deg,#262d63,#121633);border:1px solid rgba(201,162,74,.45)}
+.hist-grid:has(.hist-foto.is-off){grid-template-columns:1fr;max-width:760px}
+.hist-foto img{width:100%;height:100%;object-fit:cover}
+.linea-t{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;margin:28px 0}
+.linea-t span{font-family:var(--display);font-size:20px;letter-spacing:.1em}
+.linea-t span:last-child{color:#c9a24a}
+.linea-t i{height:1px;background:linear-gradient(90deg,#d9b98a,#c9a24a);position:relative}
+.linea-t i::after{content:"";position:absolute;right:-2px;top:-4px;border:4px solid transparent;border-left:7px solid #c9a24a}
+blockquote{font-family:var(--display);font-size:clamp(22px,2.8vw,30px);line-height:1.3;letter-spacing:.01em;color:#f3efe6;border-left:2px solid #c9a24a;padding-left:20px;margin:22px 0}
+.hist-grid p{color:#c9c6d6}
+@media (max-width:860px){.hist-grid{grid-template-columns:1fr;gap:34px}.hist-foto{max-width:420px;aspect-ratio:1/1;border-radius:200px 200px 16px 16px}}
+
+/* ===== APP DE 15 ===== */
+.app{background:#1d2350}
+.app-grid{display:grid;grid-template-columns:1fr 330px;gap:56px;align-items:center;margin-top:20px}
+.pasos{list-style:none;display:grid;gap:0}
+.pasos li{display:grid;grid-template-columns:64px 1fr;gap:18px;padding:22px 0;border-bottom:1px solid rgba(243,239,230,.14)}
+.pasos li:first-child{border-top:1px solid rgba(243,239,230,.14)}
+.pasos .n{font-family:var(--display);font-size:46px;line-height:1;color:#c9a24a}
+.pasos h3{font-size:19px;font-weight:600;margin-bottom:4px}
+.pasos p{color:#c9c6d6;font-size:15.5px}
+.tiendas{margin-top:22px;font-size:14.5px;color:#d9b98a;font-family:var(--mono);letter-spacing:.04em}
+.celu{width:270px;margin:0 auto;border-radius:38px;border:8px solid #0b0e24;background:#121633;padding:26px 20px 30px;box-shadow:0 0 0 1px rgba(201,162,74,.45),0 40px 80px rgba(0,0,0,.45);text-align:center}
+.celu .k{font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:#d9b98a}
+.celu .cara{width:64px;height:64px;border-radius:50%;margin:16px auto 10px;background:radial-gradient(circle at 50% 38%,#d9b98a 0 13px,transparent 14px),radial-gradient(ellipse at 50% 100%,#d9b98a 0 24px,transparent 25px),#262d63;border:2px solid #c9a24a}
+.celu .qrbox{background:#f3efe6;border-radius:16px;padding:14px;margin:12px auto 0;width:170px}
+.celu .qrbox svg{width:142px;height:142px;display:block}
+.celu .ok{display:inline-block;margin-top:14px;background:#c9a24a;color:#121633;font-family:var(--mono);font-weight:600;letter-spacing:.2em;padding:8px 16px;border-radius:99px;font-size:14px}
+.celu .off{margin-top:10px;font-size:12.5px;color:#c9c6d6}
+@media (max-width:860px){.app-grid{grid-template-columns:1fr}}
+
+/* ===== CONTACTO ===== */
+.contacto-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:48px;align-items:start;margin-top:26px}
+.datos{list-style:none}
+.datos li{padding:16px 0;border-bottom:1px solid rgba(243,239,230,.14);display:grid;grid-template-columns:110px 1fr;gap:12px;align-items:baseline}
+.datos li:first-child{border-top:1px solid rgba(243,239,230,.14)}
+.datos .et{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#d9b98a}
+.datos a{color:#f3efe6;text-decoration:none;border-bottom:1px solid rgba(201,162,74,.5);overflow-wrap:anywhere}
+.datos a:hover{color:#e2c47a}
+.croquis{border:1px solid rgba(201,162,74,.45);border-radius:18px;overflow:hidden;background:#1d2350}
+.croquis svg{display:block;width:100%;height:auto}
+.croquis p{font-size:13px;color:#c9c6d6;padding:10px 16px;border-top:1px solid rgba(243,239,230,.14)}
+@media (max-width:860px){.contacto-grid{grid-template-columns:1fr}.datos li{grid-template-columns:96px 1fr}}
+
+/* sierra */
+.andes{display:block;width:100%;height:70px;margin-top:-1px}
+
+footer{padding:40px 0 60px;border-top:1px solid rgba(201,162,74,.25);font-size:14px;color:#c9c6d6}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.flota{position:fixed;right:16px;bottom:16px;z-index:40;width:56px;height:56px;border-radius:50%;background:#c9a24a;display:grid;place-items:center;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+.flota svg{width:28px;height:28px}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
+<body>
+
+<div class="aviso" role="note">Prototipo de demostración preparado para Desert Eventos. Precios y fechas de ejemplo.</div>
+
+<header class="cab">
+  <div class="wrap">
+    <a class="marca" href="#top" aria-label="Desert Eventos, inicio">
+      <img src="https://deserteventos.com.ar/wp-content/uploads/2025/12/desertLOGOdorado.png" alt="Desert Eventos" width="120" height="40" onerror="this.hidden=true;this.nextElementSibling.hidden=false">
+      <span hidden><span class="marca-txt">DESERT</span> <span class="marca-sub">Eventos</span></span>
+    </a>
+    <nav class="nav" aria-label="Secciones">
+      <a href="#medidor">Medidor</a>
+      <a href="#noches">Para qué noche</a>
+      <a href="#ficha">Ficha a ficha</a>
+      <a href="#cotizador">Cotizador</a>
+      <a href="#sabados">Sábados</a>
+      <a href="#llegar">Cómo llegar</a>
+    </nav>
+    <a class="btn chico" id="wa-cab" href="https://wa.me/5492617083142" target="_blank" rel="noopener">WhatsApp</a>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ===== PORTADA: duelo ===== -->
+<section class="portada estrellas" aria-labelledby="h1">
+  <div class="intro wrap">
+    <p class="kicker">Desert Eventos · Vistalba, Luján de Cuyo</p>
+    <h1 id="h1">Cena para <b class="num">100</b> o para <b class="num">500</b>. Baile hasta <b class="num">1.000</b>. Dos salones, uno es el tuyo.</h1>
+    <p>Gala y Classic, en Panamericana 4011, cerca del Corredor del Oeste. Decinos cuántos vienen y la página te dice cuál.</p>
+  </div>
+
+  <div class="duelo" id="duelo" style="--gw:.5">
+    <div class="mitad gala" id="m-gala">
+      <div class="foto"><img src="https://deserteventos.com.ar/wp-content/uploads/2026/02/IMG_8311-scaled.jpg" alt="Salón Gala de Desert Eventos preparado para una fiesta" width="1600" height="1067" fetchpriority="high" onerror="this.remove()"></div>
+      <div class="rotulo">
+        <span class="sello" id="sello-gala">Te corresponde</span>
+        <div class="nombre" aria-hidden="true">GALA</div>
+        <p class="sr">Salón Gala: cena de 150 a 500 invitados, baile hasta 1.000.</p>
+        <div class="specs" aria-hidden="true"><span>Cena <b class="num">150–500</b></span><span>Baile <b class="num">1.000</b></span></div>
+      </div>
+      <div class="divisor" aria-hidden="true"></div>
+      <div class="medalla" aria-hidden="true">o</div>
+    </div>
+    <div class="mitad classic" id="m-classic">
+      <div class="foto"><img src="https://deserteventos.com.ar/wp-content/uploads/2026/02/2b6cfb2c-56e2-49e7-ad39-d06676acbe7d.jpg" alt="Salón Classic de Desert Eventos con la pista lista" width="1600" height="1067" onerror="this.remove()"></div>
+      <div class="rotulo">
+        <span class="sello" id="sello-classic">Te corresponde</span>
+        <div class="nombre" aria-hidden="true">CLASSIC</div>
+        <p class="sr">Salón Classic: cena de 100 a 180 invitados, baile hasta 500.</p>
+        <div class="specs" aria-hidden="true"><span>Cena <b class="num">100–180</b></span><span>Baile <b class="num">500</b></span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="control">
+    <div class="control-in">
+      <div>
+        <label for="r-cena">Invitados a la cena <span class="num" id="r-cena-v">160</span></label>
+        <input type="range" id="r-cena" min="20" max="560" step="10" value="160">
+      </div>
+      <div class="veredicto-mini" aria-live="polite"><span id="mini-txt">Les corresponde</span> <b id="mini-salon">CLASSIC</b></div>
+    </div>
+  </div>
+</section>
+
+<svg class="andes" viewBox="0 0 1440 70" preserveAspectRatio="none" aria-hidden="true"><path d="M0 70 L0 52 L90 30 L160 44 L250 12 L330 38 L420 22 L520 46 L610 8 L700 34 L790 24 L880 48 L980 16 L1060 36 L1150 20 L1240 42 L1330 26 L1440 40 L1440 70Z" fill="#1d2350"/><path d="M250 12 L272 22 L262 22Z M610 8 L636 20 L622 19Z M980 16 L1002 26 L990 26Z" fill="#d9b98a" opacity=".55"/></svg>
+
+<!-- ===== MEDIDOR ===== -->
+<section class="medidor sec" id="medidor" aria-labelledby="t-medidor">
+  <div class="wrap">
+    <p class="kicker">El medidor de invitados</p>
+    <h2 class="titulo" id="t-medidor">Dos números deciden el salón: <em>los de la cena</em> y <em>los que llegan después</em>.</h2>
+    <p class="lead">En egresados y en los 15, la noche crece después del postre. Cargá los dos números y vas a ver en vivo cuál de los salones te recibe con lo que dice la ficha de cada uno.</p>
+
+    <div class="med-grid">
+      <div>
+        <div class="contador">
+          <div class="contador-top">
+            <div>
+              <h3 id="lb-cena">Invitados a la cena</h3>
+              <p class="ayuda">Classic recibe 100 a 180 · Gala recibe 150 a 500</p>
+            </div>
+            <div class="stepper">
+              <button type="button" data-paso="cena" data-d="-10" aria-label="Diez invitados menos a la cena">−</button>
+              <input type="number" id="n-cena" inputmode="numeric" min="0" max="2000" value="160" aria-labelledby="lb-cena">
+              <button type="button" data-paso="cena" data-d="10" aria-label="Diez invitados más a la cena">+</button>
+            </div>
+          </div>
+          <div class="escala" id="esc-cena" aria-hidden="true">
+            <div class="riel"></div>
+            <div class="zona c" style="left:calc(100/550*100%);width:calc(80/550*100%)"></div>
+            <div class="zona g alta" style="left:calc(150/550*100%);width:calc(350/550*100%)"></div>
+            <div class="marca-pos" id="mp-cena"></div>
+            <div class="tics"><span style="left:0%;transform:none">0</span><span style="left:calc(100/550*100%)">100</span><span style="left:calc(180/550*100%)">180</span><span style="left:calc(500/550*100%)">500</span></div>
+          </div>
+        </div>
+        <div class="contador">
+          <div class="contador-top">
+            <div>
+              <h3 id="lb-desp">Llegan después de la cena</h3>
+              <p class="ayuda">Se suman al baile. Classic: hasta 500 en total · Gala: hasta 1.000</p>
+            </div>
+            <div class="stepper">
+              <button type="button" data-paso="desp" data-d="-10" aria-label="Diez invitados menos después de la cena">−</button>
+              <input type="number" id="n-desp" inputmode="numeric" min="0" max="3000" value="140" aria-labelledby="lb-desp">
+              <button type="button" data-paso="desp" data-d="10" aria-label="Diez invitados más después de la cena">+</button>
+            </div>
+          </div>
+          <div class="escala" aria-hidden="true">
+            <div class="riel"></div>
+            <div class="zona c" style="left:0;width:calc(500/1100*100%)"></div>
+            <div class="zona g alta" style="left:0;width:calc(1000/1100*100%)"></div>
+            <div class="marca-pos" id="mp-baile"></div>
+            <div class="tics"><span style="left:0%;transform:none">0</span><span style="left:calc(500/1100*100%)">500</span><span style="left:calc(1000/1100*100%)">1.000</span></div>
+          </div>
+          <p class="ayuda" style="margin-top:6px">La línea blanca marca el total en la pista: cena + después.</p>
+        </div>
+        <div class="leyenda" aria-hidden="true"><span><i style="background:#d9b98a"></i>Classic</span><span><i style="background:#c9a24a"></i>Gala</span><span><i style="background:#e07d6a"></i>Te pasaste</span></div>
+      </div>
+
+      <aside class="fallo" id="fallo" aria-live="polite" aria-labelledby="fallo-salon">
+        <p class="kicker">Según tus números</p>
+        <div class="gran" id="fallo-salon">CLASSIC</div>
+        <p id="fallo-razon"></p>
+        <p class="nota" id="fallo-nota" hidden></p>
+        <p class="alerta-txt" id="fallo-alerta" hidden></p>
+        <div class="totales">
+          <div>A la cena<span class="num" id="tt-cena">160</span></div>
+          <div>En la pista<span class="num" id="tt-baile">300</span></div>
+        </div>
+        <div class="acciones">
+          <a class="btn" href="#cotizador">Cotizar en este salón</a>
+          <a class="btn ghost" href="#ficha">Ver la ficha</a>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PARA QUÉ NOCHE ===== -->
+<section class="sec" id="noches" aria-labelledby="t-noches">
+  <div class="wrap">
+    <p class="kicker">Para qué noche</p>
+    <h2 class="titulo" id="t-noches">Egresados, 15 y 18, bodas y empresas. <em>Cada noche pide otra cosa.</em></h2>
+    <div class="tabs" role="tablist" aria-label="Tipos de evento">
+      <button class="tab" role="tab" id="tab-egresados" aria-controls="p-egresados" aria-selected="true" data-tipo="egresados">Egresados</button>
+      <button class="tab" role="tab" id="tab-quince" aria-controls="p-quince" aria-selected="false" tabindex="-1" data-tipo="quince">15 y 18</button>
+      <button class="tab" role="tab" id="tab-bodas" aria-controls="p-bodas" aria-selected="false" tabindex="-1" data-tipo="boda">Bodas</button>
+      <button class="tab" role="tab" id="tab-corpo" aria-controls="p-corpo" aria-selected="false" tabindex="-1" data-tipo="corporativo">Corporativos</button>
+    </div>
+
+    <div class="panel" role="tabpanel" id="p-egresados" aria-labelledby="tab-egresados" tabindex="0">
+      <div class="collage">
+        <figure><img src="https://deserteventos.com.ar/wp-content/uploads/2025/12/0789-Fiesta.jpeg" alt="Fiesta de egresados en Desert Eventos" loading="lazy" width="800" height="1000" onerror="this.parentNode.classList.add('is-off')"></figure>
+        <figure><img src="https://deserteventos.com.ar/wp-content/uploads/2025/12/0642-Fiesta.jpeg" alt="Egresados bailando en la pista" loading="lazy" width="800" height="600" onerror="this.parentNode.classList.add('is-off')"></figure>
+        <figure><img src="https://deserteventos.com.ar/wp-content/uploads/2026/02/0636-Fiesta.jpeg" alt="Pista del salón Gala en plena fiesta" loading="lazy" width="800" height="600" onerror="this.parentNode.classList.add('is-off')"></figure>
+      </div>
+      <div>
+        <h3>Egresados</h3>
+        <p>La cena es con los egresados y sus familias; después llegan los demás y la pista se llena. Por eso acá el número que manda es el del baile.</p>
+        <ul>
+          <li>Gala: pista amplia, isla de barra central y escenario profesional, hasta 1.000 en el baile.</li>
+          <li>Classic: pista y barra integrada, hasta 500 en el baile.</li>
+          <li>Música, sonido e iluminación de la casa.</li>
+        </ul>
+        <button class="btn" type="button" data-cotizar="egresados">Cotizar egresados</button>
+      </div>
+    </div>
+
+    <div class="panel" role="tabpanel" id="p-quince" aria-labelledby="tab-quince" tabindex="0" hidden>
+      <div class="collage">
+        <figure><img src="https://deserteventos.com.ar/wp-content/uploads/2025/12/LAVIZZARI-1-scaled.jpg" alt="Fiesta de 15 en Desert Eventos" loading="lazy" width="800" height="1000" onerror="this.parentNode.classList.add('is-off')"></figure>
+        <figure><img src="https://deserteventos.com.ar/wp-content/uploads/2025/12/Copia-de-229-scaled.jpg" alt="Momento de una fiesta de 15" loading="lazy" width="800" height="600" onerror="this.parentNode.classList.add('is-off')"></figure>
+        <figure><img src="https://deserteventos.com.ar/wp-content/uploads/2026/02/XV-Ampi-19-scaled.jpeg" alt="Fiesta de 15 en el salón Classic" loading="lazy" width="800" height="600" onerror="this.parentNode.classList.add('is-off')"></figure>
+      </div>
+      <div>
+        <h3>15 y 18</h3>
+        <p>Cena con la familia y, después, los amigos. Para los 15, Desert tiene su propia app: cada invitado se registra con su foto desde el link que manda la quinceañera y entra con un QR.</p>
+        <ul>
+          <li>Ingreso con QR "APROBADO" que funciona sin internet.</li>
+          <li>Ambientación a medida de la fiesta.</li>
+          <li>Guardarropa y baños accesibles en los dos salones.</li>
+        </ul>
+        <button class="btn" type="button" data-cotizar="quince">Cotizar un 15 o un 18</button>
+      </div>
+    </div>
+
+    <div class="panel" role="tabpanel" id="p-bodas" aria-labelledby="tab-bodas" tabindex="0" hidden>
+      <div class="collage">
+        <figure><img src="https://deserteventos.com.ar/wp-content/uploads/2025/12/IMG_8855.jpg" alt="Boda en Desert Eventos" loading="lazy" width="800" height="1000" onerror="this.parentNode.classList.add('is-off')"></figure>
+        <figure><img src="https://deserteventos.com.ar/wp-content/uploads/2025/12/IMG_8860.jpg" alt="Detalle de una boda en Desert" loading="lazy" width="800" height="600" onerror="this.parentNode.classList.add('is-off')"></figure>
+        <figure><img src="https://deserteventos.com.ar/wp-content/uploads/2025/12/IMG_8866.jpg" alt="Celebración de casamiento en Desert" loading="lazy" width="800" height="600" onerror="this.parentNode.classList.add('is-off')"></figure>
+      </div>
+      <div>
+        <h3>Bodas</h3>
+        <p>Jardines naturales, terrazas y fuentes con diseño de iluminación para la recepción; adentro, la cena y la pista.</p>
+        <ul>
+          <li>Gala: jardines de más de 3.000 m², terrazas exteriores y fuentes iluminadas.</li>
+          <li>Classic: terrazas de ingreso, hall de recepción y jardines independientes.</li>
+          <li>Menús del equipo de chefs, con materia prima de primera.</li>
+        </ul>
+        <button class="btn" type="button" data-cotizar="boda">Cotizar una boda</button>
+      </div>
+    </div>
+
+    <div class="panel" role="tabpanel" id="p-corpo" aria-labelledby="tab-corpo" tabindex="0" hidden>
+      <div class="collage">
+        <figure><img src="https://deserteventos.com.ar/wp-content/uploads/2026/02/IMG_8321-scaled.jpg" alt="Salón Gala armado para un evento" loading="lazy" width="800" height="1000" onerror="this.parentNode.classList.add('is-off')"></figure>
+        <figure><img src="https://deserteventos.com.ar/wp-content/uploads/2026/02/0008062-scaled.jpeg" alt="Vista del salón Gala" loading="lazy" width="800" height="600" onerror="this.parentNode.classList.add('is-off')"></figure>
+        <figure><img src="https://deserteventos.com.ar/wp-content/uploads/2026/02/PHOTO-2025-05-10-19-42-48-scaled.jpg" alt="Salón Gala iluminado de noche" loading="lazy" width="800" height="600" onerror="this.parentNode.classList.add('is-off')"></figure>
+      </div>
+      <div>
+        <h3>Corporativos</h3>
+        <p>Capacitaciones, lanzamientos y celebraciones de empresa, con el escenario profesional de Gala o la escala justa de Classic.</p>
+        <ul>
+          <li>Escenario profesional, sonido e iluminación.</li>
+          <li>Estacionamiento privado, iluminado y monitoreado.</li>
+          <li>Atención personalizada de los dueños.</li>
+        </ul>
+        <button class="btn" type="button" data-cotizar="corporativo">Cotizar un corporativo</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FICHA A FICHA ===== -->
+<section class="sec" id="ficha" aria-labelledby="t-ficha" style="background:#1d2350">
+  <div class="wrap">
+    <p class="kicker">Ficha a ficha</p>
+    <h2 class="titulo" id="t-ficha">Gala y Classic, <em>renglón por renglón</em>.</h2>
+    <div class="compara-cab">
+      <figure><img src="https://deserteventos.com.ar/wp-content/uploads/2026/02/PHOTO-2025-08-23-19-57-36-scaled.jpg" alt="Salón Gala de noche" loading="lazy" width="800" height="500" onerror="this.remove()"><figcaption>GALA</figcaption></figure>
+      <figure><img src="https://deserteventos.com.ar/wp-content/uploads/2026/02/3bbd01bb-eaf3-4930-ae58-4cca6b3ce5a2.jpg" alt="Salón Classic" loading="lazy" width="800" height="500" onerror="this.remove()"><figcaption>CLASSIC</figcaption></figure>
+    </div>
+    <table class="ficha">
+      <caption>— : no figura en la ficha del salón. Capacidades según Desert Eventos.</caption>
+      <colgroup><col><col id="col-gala"><col id="col-classic"></colgroup>
+      <thead><tr><th scope="col"><span class="sr">Característica</span></th><th scope="col">Gala<span class="tag-rec" id="tag-gala" hidden>EL TUYO</span></th><th scope="col">Classic<span class="tag-rec" id="tag-classic" hidden>EL TUYO</span></th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Cena</th><td><span class="num">150–500</span></td><td><span class="num">100–180</span></td></tr>
+        <tr><th scope="row">Baile</th><td>hasta <span class="num">1.000</span></td><td>hasta <span class="num">500</span></td></tr>
+        <tr><th scope="row">Pista</th><td>Pista amplia</td><td>Pista</td></tr>
+        <tr><th scope="row">Barra</th><td>Isla de barra central</td><td>Barra integrada</td></tr>
+        <tr><th scope="row">Escenario</th><td>Escenario profesional</td><td class="vacio">—</td></tr>
+        <tr><th scope="row">Recepción</th><td>Terrazas exteriores</td><td>Terrazas de ingreso y hall de recepción</td></tr>
+        <tr><th scope="row">Jardines</th><td>Naturales, más de 3.000 m²</td><td>Naturales, independientes</td></tr>
+        <tr><th scope="row">Fuentes</th><td>Con diseño de iluminación</td><td class="vacio">—</td></tr>
+        <tr><th scope="row">Guardarropa</th><td>Sí</td><td>Sí</td></tr>
+        <tr><th scope="row">Baños</th><td>Accesibles</td><td>Accesibles</td></tr>
+        <tr><th scope="row">Estaciona&shy;miento</th><td>Privado, iluminado y monitoreado</td><td>Privado, iluminado y monitoreado</td></tr>
+      </tbody>
+    </table>
+
+    <div class="comunes">
+      <div class="platos">
+        <figure><img src="https://deserteventos.com.ar/wp-content/uploads/2026/02/IMG_8315-scaled.jpg" alt="Mesa servida en Desert Eventos" loading="lazy" width="600" height="800" onerror="this.parentNode.classList.add('is-off')"></figure>
+        <figure><img src="https://deserteventos.com.ar/wp-content/uploads/2026/02/Copia-de-Desert-98-scaled.jpg" alt="Plato del equipo de chefs de Desert" loading="lazy" width="600" height="800" onerror="this.parentNode.classList.add('is-off')"></figure>
+        <figure><img src="https://deserteventos.com.ar/wp-content/uploads/2026/02/Copia-de-Desert-81-scaled.jpg" alt="Gastronomía de Desert Eventos" loading="lazy" width="600" height="800" onerror="this.parentNode.classList.add('is-off')"></figure>
+      </div>
+      <div>
+        <p class="kicker">Igual en los dos</p>
+        <h3 style="font-family:var(--display);font-size:26px;font-weight:600;margin:8px 0 6px">Lo que pone Desert</h3>
+        <ol>
+          <li><b>Gastronomía</b><span>Menús del equipo de chefs, con materia prima de primera.</span></li>
+          <li><b>Ambientación</b><span>El salón vestido para tu noche.</span></li>
+          <li><b>Música, sonido e iluminación</b><span>Para la pista y para el escenario.</span></li>
+          <li><b>Los dueños, presentes</b><span>Atención personalizada de principio a fin.</span></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== COTIZADOR ===== -->
+<section class="cotizador sec" id="cotizador" aria-labelledby="t-coti">
+  <div class="wrap">
+    <p class="kicker">Cotizador</p>
+    <h2 class="titulo" id="t-coti">Tu entrada a <em>Desert</em>, con el número estimado.</h2>
+    <p class="lead">El salón viene sugerido por el medidor; lo podés cambiar. Los precios son de ejemplo y el dueño los ajusta.</p>
+    <div class="coti-grid">
+      <form class="form" id="form" onsubmit="return false">
+        <div class="fila2">
+          <div class="campo">
+            <label for="c-tipo">Tipo de evento</label>
+            <select id="c-tipo">
+              <option value="egresados">Egresados</option>
+              <option value="quince">Fiesta de 15</option>
+              <option value="dieciocho">Fiesta de 18</option>
+              <option value="boda">Boda</option>
+              <option value="corporativo">Corporativo</option>
+            </select>
+          </div>
+          <div class="campo">
+            <label for="c-fecha">Sábado</label>
+            <select id="c-fecha"></select>
+          </div>
+        </div>
+        <fieldset class="campo">
+          <legend>Salón</legend>
+          <div class="seg">
+            <label><input type="radio" name="salon" value="gala" id="s-gala"><span>GALA<small>cena 150–500 · baile 1.000</small></span></label>
+            <label><input type="radio" name="salon" value="classic" id="s-classic" checked><span>CLASSIC<small>cena 100–180 · baile 500</small></span></label>
+          </div>
+          <div class="auto-linea" id="auto-linea"><span id="auto-txt">Sugerido por el medidor.</span><button type="button" id="volver-auto" hidden>Volver al sugerido</button></div>
+        </fieldset>
+        <div class="fila2">
+          <div class="campo">
+            <label for="c-cena">Invitados a la cena</label>
+            <input type="number" id="c-cena" inputmode="numeric" min="0" max="2000" value="160">
+          </div>
+          <div class="campo">
+            <label for="c-desp">Después de la cena</label>
+            <input type="number" id="c-desp" inputmode="numeric" min="0" max="3000" value="140">
+          </div>
+        </div>
+        <p class="aviso-cap" id="aviso-cap" role="alert" hidden></p>
+        <fieldset class="campo">
+          <legend>Extras</legend>
+          <div class="checks">
+            <label class="check"><input type="checkbox" id="x-ambientacion" value="ambientacion"><span>Ambientación</span><span class="pr num" id="pr-amb"></span></label>
+            <label class="check"><input type="checkbox" id="x-musica" value="musica"><span>Música, sonido e iluminación</span><span class="pr num" id="pr-mus"></span></label>
+          </div>
+        </fieldset>
+        <p class="nota-precios">Precios de ejemplo para esta demo. El dueño los ajusta en un solo lugar y la página recalcula sola.</p>
+      </form>
+
+      <div class="entrada" id="entrada">
+        <div class="ticket" aria-labelledby="t-entrada">
+          <div class="t-top"><span class="t-marca" id="t-entrada">DESERT</span><span class="t-tipo">ENTRADA · ESTIMADO</span></div>
+          <dl class="t-cuerpo">
+            <div class="ancho"><dt>Evento</dt><dd id="tk-tipo">Egresados</dd></div>
+            <div class="ancho"><dt>Sábado</dt><dd id="tk-fecha">—</dd></div>
+            <div class="salon"><dt>Salón</dt><dd id="tk-salon">CLASSIC</dd></div>
+            <div><dt>Invitados</dt><dd class="num" id="tk-inv">160 + 140</dd></div>
+          </dl>
+          <div class="t-corte" aria-hidden="true"></div>
+          <dl class="t-pie">
+            <div class="t-total">
+              <dt>Total estimado</dt>
+              <dd class="rango" id="tk-total">—</dd>
+              <dd class="pp" id="tk-pp">—</dd>
+            </div>
+            <div class="qr" aria-hidden="true"><svg id="qr" viewBox="0 0 29 29" shape-rendering="crispEdges"></svg><span class="estampa">ESTIMADO</span></div>
+          </dl>
+        </div>
+        <div class="desglose" id="desglose" aria-label="Desglose del estimado"></div>
+        <div class="wa-caja">
+          <span class="kicker">Mensaje listo</span>
+          <p id="wa-texto"></p>
+          <a class="btn" id="wa-btn" href="#" target="_blank" rel="noopener">Consultar por WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CALENDARIO ===== -->
+<section class="sec" id="sabados" aria-labelledby="t-sab">
+  <div class="wrap">
+    <p class="kicker">Calendario de sábados</p>
+    <h2 class="titulo" id="t-sab">Noviembre a abril, <em>sábado por sábado</em>.</h2>
+    <p class="lead">Ocupación de ejemplo para esta demo. Tocá un sábado libre y pasa directo al cotizador.</p>
+    <div class="meses" id="meses"></div>
+    <div class="cal-ley" aria-hidden="true">
+      <span><span style="display:inline-block;width:14px;height:14px;border:1px solid #c9a24a;border-radius:4px;vertical-align:-2px;margin-right:6px"></span>Libre</span>
+      <span><span style="display:inline-block;width:14px;height:14px;border:1px solid rgba(243,239,230,.2);border-radius:4px;vertical-align:-2px;margin-right:6px;background:repeating-linear-gradient(135deg,transparent 0 3px,rgba(243,239,230,.2) 3px 4px)"></span>Ocupado</span>
+      <span><span style="display:inline-block;width:14px;height:14px;background:#c9a24a;border-radius:4px;vertical-align:-2px;margin-right:6px"></span>Elegido</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== HISTORIA ===== -->
+<section class="historia sec estrellas" aria-labelledby="t-hist" style="background-color:#121633">
+  <div class="wrap hist-grid">
+    <div class="hist-foto"><img src="https://deserteventos.com.ar/wp-content/uploads/2026/02/0735-Fiesta.jpeg" alt="Noche de fiesta en Desert Eventos" loading="lazy" width="800" height="1000" onerror="this.parentNode.classList.add('is-off')"></div>
+    <div>
+      <p class="kicker">Del pub a la gala</p>
+      <h2 class="titulo" id="t-hist">Empezó como <em>Desert Pub</em>.</h2>
+      <div class="linea-t" aria-hidden="true"><span>PUB</span><i></i><span>EVENTOS</span></div>
+      <blockquote>“De un pub con esencia propia a un referente en grandes momentos.”</blockquote>
+      <p>Del pub les quedó el pulso de la noche: la barra en el centro, la pista llena, la música bien puesta. Hoy son dos salones en Vistalba con la misma idea:</p>
+      <blockquote>“No creemos en eventos convencionales. Creemos en experiencias que se viven, se sienten y se recuerdan.”</blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ===== APP DE 15 ===== -->
+<section class="app sec" id="app" aria-labelledby="t-app">
+  <div class="wrap">
+    <p class="kicker">La app de Desert para los 15</p>
+    <h2 class="titulo" id="t-app">En la puerta, un QR que dice <em>APROBADO</em>.</h2>
+    <div class="app-grid">
+      <div>
+        <ol class="pasos">
+          <li><span class="n" aria-hidden="true">1</span><div><h3>La quinceañera manda el link</h3><p>Lo comparte con sus invitados desde la app de Desert.</p></div></li>
+          <li><span class="n" aria-hidden="true">2</span><div><h3>Cada invitado se registra con su foto</h3><p>Entra al link y carga una foto de su rostro.</p></div></li>
+          <li><span class="n" aria-hidden="true">3</span><div><h3>Llega y muestra su QR</h3><p>El QR dice "APROBADO" y funciona sin internet: no depende de la señal en la puerta.</p></div></li>
+        </ol>
+        <p class="tiendas">Disponible en App Store y Google Play.</p>
+      </div>
+      <div class="celu" aria-hidden="true">
+        <div class="k">DESERT · INGRESO</div>
+        <div class="cara"></div>
+        <div class="qrbox"><svg id="qr-app" viewBox="0 0 29 29" shape-rendering="crispEdges"></svg></div>
+        <div class="ok">APROBADO</div>
+        <div class="off">Funciona sin internet</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACTO ===== -->
+<section class="sec" id="llegar" aria-labelledby="t-llegar">
+  <div class="wrap">
+    <p class="kicker">Contacto y cómo llegar</p>
+    <h2 class="titulo" id="t-llegar">Panamericana 4011, <em>Vistalba</em>.</h2>
+    <div class="contacto-grid">
+      <ul class="datos">
+        <li><span class="et">Dirección</span><span>Panamericana 4011, Vistalba, Luján de Cuyo, Mendoza · <a href="https://www.google.com/maps/search/?api=1&amp;query=Desert%20Eventos%2C%20Panamericana%204011%2C%20Vistalba%2C%20Mendoza" target="_blank" rel="noopener">Abrir en Google Maps</a></span></li>
+        <li><span class="et">WhatsApp</span><a href="https://wa.me/5492617083142" target="_blank" rel="noopener">261 708-3142</a></li>
+        <li><span class="et">Mail</span><a href="mailto:info@deserteventos.com">info@deserteventos.com</a></li>
+        <li><span class="et">Instagram</span><a href="https://www.instagram.com/deserteventos/" target="_blank" rel="noopener">@deserteventos</a></li>
+        <li><span class="et">TikTok</span><a href="https://www.tiktok.com/@deserteventos" target="_blank" rel="noopener">@deserteventos</a></li>
+      </ul>
+      <figure class="croquis">
+        <svg viewBox="0 0 560 360" role="img" aria-labelledby="croq-t">
+          <title id="croq-t">Croquis: Desert Eventos sobre Panamericana, en Vistalba, cerca del Corredor del Oeste</title>
+          <rect width="560" height="360" fill="#1d2350"/>
+          <path d="M0 300 L70 268 L130 282 L200 236 L260 262 L330 220 L400 250 L470 214 L560 240 L560 360 L0 360Z" fill="#121633" opacity=".7"/>
+          <g stroke="rgba(243,239,230,.07)" stroke-width="1">
+            <path d="M0 60H560M0 120H560M0 180H560M0 240H560M80 0V360M160 0V360M240 0V360M320 0V360M400 0V360M480 0V360"/>
+          </g>
+          <path d="M150 0 C 170 90, 175 180, 210 360" stroke="#d9b98a" stroke-width="7" fill="none" stroke-linecap="round" opacity=".85"/>
+          <path d="M150 0 C 170 90, 175 180, 210 360" stroke="#121633" stroke-width="1.5" fill="none" stroke-dasharray="8 8"/>
+          <path d="M0 190 C 160 178, 330 168, 560 140" stroke="#c9a24a" stroke-width="9" fill="none" stroke-linecap="round"/>
+          <text x="410" y="132" fill="#e2c47a" font-family="Reddit Mono, monospace" font-size="14" letter-spacing="2">PANAMERICANA</text>
+          <text x="212" y="30" fill="#d9b98a" font-family="Reddit Mono, monospace" font-size="13" letter-spacing="2" transform="rotate(82 212 30)">CORREDOR DEL OESTE</text>
+          <text x="420" y="300" fill="#c9c6d6" font-family="Cinzel, serif" font-size="22" letter-spacing="4">VISTALBA</text>
+          <g transform="translate(340 166)">
+            <circle r="26" fill="#c9a24a" opacity=".18"/>
+            <path d="M0 -38 C -16 -38 -22 -24 -22 -16 C -22 -2 0 14 0 14 C 0 14 22 -2 22 -16 C 22 -24 16 -38 0 -38Z" fill="#e07d6a" stroke="#121633" stroke-width="2"/>
+            <circle cy="-17" r="7" fill="#121633"/>
+          </g>
+          <rect x="268" y="196" width="156" height="44" rx="8" fill="#121633" stroke="#c9a24a"/>
+          <text x="346" y="215" text-anchor="middle" fill="#f3efe6" font-family="Cinzel, serif" font-size="14" font-weight="700" letter-spacing="2">DESERT</text>
+          <text x="346" y="232" text-anchor="middle" fill="#d9b98a" font-family="Reddit Mono, monospace" font-size="11">Panamericana 4011</text>
+          <g transform="translate(510 52)" fill="#c9c6d6" font-family="Reddit Mono, monospace" font-size="12"><path d="M0 -20 L8 4 L0 -2 L-8 4Z" fill="#f3efe6"/><text y="22" text-anchor="middle">N</text></g>
+        </svg>
+        <p>Croquis ilustrativo, sin escala. Para la ruta exacta, usá Google Maps.</p>
+      </figure>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Desert Eventos · Panamericana 4011, Vistalba, Mendoza · <a href="mailto:info@deserteventos.com">info@deserteventos.com</a></span>
+    <span>Prototipo de demostración preparado para Desert Eventos por Resolviendo Kos.</span>
+  </div>
+</footer>
+
+<a class="flota" id="wa-flota" href="https://wa.me/5492617083142" target="_blank" rel="noopener" aria-label="Escribir a Desert Eventos por WhatsApp">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#121633" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.1 5.1 0 0 0 1.1 2.7 11.6 11.6 0 0 0 4.4 3.9c1.6.7 2.3.8 3.1.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .2-1.2c-.1-.1-.3-.2-.5-.3Z"/></svg>
+</a>
+
+<script>
+/* =========================================================
+   PRECIOS — editá estos valores (pesos argentinos).
+   Son de ejemplo para la demo; el dueño los ajusta acá.
+   ========================================================= */
+const PRECIOS = {
+  cenaPorPersona:    { min: 70000, max: 90000 },   // por invitado a la cena
+  despuesPorPersona: { min: 18000, max: 25000 },   // por invitado que llega después de la cena
+  salon: {                                         // alquiler fijo del salón
+    classic: 2500000,
+    gala:    4500000
+  },
+  extras: {
+    ambientacion: 1200000,                         // Ambientación
+    musica:       1500000                          // Música, sonido e iluminación
+  }
+};
+
+/* Capacidades reales de la ficha de cada salón */
+const CAPACIDAD = {
+  gala:    { nombre: 'GALA',    cenaMin: 150, cenaMax: 500, baileMax: 1000 },
+  classic: { nombre: 'CLASSIC', cenaMin: 100, cenaMax: 180, baileMax: 500 }
+};
+const WA = '5492617083142';
+const TIPOS = {
+  egresados:   { label: 'Egresados',     msg: 'una fiesta de egresados' },
+  quince:      { label: 'Fiesta de 15',  msg: 'una fiesta de 15' },
+  dieciocho:   { label: 'Fiesta de 18',  msg: 'una fiesta de 18' },
+  boda:        { label: 'Boda',          msg: 'una boda' },
+  corporativo: { label: 'Corporativo',   msg: 'un evento corporativo' }
+};
+
+const $ = id => document.getElementById(id);
+const nf = new Intl.NumberFormat('es-AR', { maximumFractionDigits: 0 });
+const n0 = v => nf.format(v);
+const pesos = v => '$ ' + nf.format(Math.round(v));
+
+const st = { cena: 160, desp: 140, salon: 'classic', auto: true, tipo: 'egresados', fecha: null, amb: false, mus: false };
+
+/* ---------- decisión del medidor ---------- */
+function decidir(d, m) {
+  const t = d + m, C = CAPACIDAD.classic, G = CAPACIDAD.gala;
+  const cFits = d <= C.cenaMax && t <= C.baileMax;
+  const gFits = d <= G.cenaMax && t <= G.baileMax;
+  if (!gFits) {
+    const alerta = d > G.cenaMax
+      ? `Con ${n0(d)} a la cena se pasa de la capacidad de Gala (${n0(G.cenaMax)}).`
+      : `Con ${n0(t)} en la pista se pasa del máximo de Gala para baile (${n0(G.baileMax)}).`;
+    return { salon: 'gala', gw: .78, fuera: true, alerta,
+      razon: `Gala es el salón más grande de Desert, pero estos números lo superan.`,
+      nota: 'Escribiles y lo ven juntos.' };
+  }
+  if (cFits) {
+    let nota = '';
+    if (d < C.cenaMin) nota = `Classic recibe cenas desde ${C.cenaMin}; con ${n0(d)}, consultá el armado.`;
+    else if (d >= G.cenaMin) nota = `Gala también te entra: recibe cenas desde ${G.cenaMin}.`;
+    return { salon: 'classic', gw: d >= G.cenaMin ? .4 : .3, fuera: false,
+      razon: `<b>${n0(d)}</b> a la cena entran en Classic (${C.cenaMin} a ${C.cenaMax}) y <b>${n0(t)}</b> en la pista, con lugar hasta ${n0(C.baileMax)}.`, nota };
+  }
+  const motivo = d > C.cenaMax
+    ? `<b>${n0(d)}</b> a la cena superan las ${C.cenaMax} de Classic`
+    : `<b>${n0(t)}</b> en la pista superan los ${n0(C.baileMax)} de baile de Classic`;
+  let nota = '';
+  if (d < G.cenaMin) nota = `Gala recibe cenas desde ${G.cenaMin}; con ${n0(d)} a la cena, consultá el armado.`;
+  return { salon: 'gala', gw: .7, fuera: false,
+    razon: `${motivo}. Gala recibe ${G.cenaMin} a ${n0(G.cenaMax)} a la cena y hasta ${n0(G.baileMax)} en el baile.`, nota };
+}
+
+function encaja(salon, d, m) {
+  const c = CAPACIDAD[salon];
+  if (d > c.cenaMax) return `${c.nombre} recibe hasta ${n0(c.cenaMax)} a la cena.`;
+  if (d + m > c.baileMax) return `${c.nombre} recibe hasta ${n0(c.baileMax)} en el baile (cena + después).`;
+  return '';
+}
+
+/* ---------- fechas: sábados de ejemplo, deterministas ---------- */
+const MESES = [];
+/* Sábados ocupados DE EJEMPLO (posición del sábado en cada mes, desde noviembre 2026) */
+const OCUPADOS = [[1, 2], [0, 2, 3], [1, 4], [2], [0, 3], [1]];
+const SABADOS = [];
+(function () {
+  for (let k = 0; k < 6; k++) {
+    const y = 2026 + Math.floor((10 + k) / 12), mo = (10 + k) % 12;
+    const lista = [];
+    const dt = new Date(y, mo, 1);
+    while (dt.getDay() !== 6) dt.setDate(dt.getDate() + 1);
+    while (dt.getMonth() === mo) {
+      const dia = dt.getDate();
+      const ocupado = OCUPADOS[k].includes(lista.length); // índice del sábado en el mes
+      const s = { iso: `${y}-${String(mo + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')}`, dia, mo, y, ocupado };
+      lista.push(s); SABADOS.push(s);
+      dt.setDate(dia + 7);
+    }
+    MESES.push({ y, mo, lista });
+  }
+})();
+const nombreMes = (y, mo) => new Date(y, mo, 1).toLocaleDateString('es-AR', { month: 'long' });
+const fechaLarga = s => `${s.dia} de ${nombreMes(s.y, s.mo)} de ${s.y}`;
+
+function armarCalendario() {
+  const cont = $('meses');
+  MESES.forEach(M => {
+    const libres = M.lista.filter(s => !s.ocupado).length;
+    const div = document.createElement('div');
+    div.className = 'mes';
+    const nom = nombreMes(M.y, M.mo);
+    div.innerHTML = `<h3>${nom.charAt(0).toUpperCase() + nom.slice(1)} ${M.y}<small>${libres} libre${libres === 1 ? '' : 's'}</small></h3><div class="sabados"></div>`;
+    const box = div.querySelector('.sabados');
+    M.lista.forEach(s => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'sab'; b.id = 'sab-' + s.iso; b.dataset.iso = s.iso;
+      b.innerHTML = `<b>${s.dia}</b><small>${s.ocupado ? 'ocup.' : 'libre'}</small>`;
+      b.setAttribute('aria-label', `Sábado ${fechaLarga(s)}, ${s.ocupado ? 'ocupado' : 'libre'}`);
+      if (s.ocupado) b.disabled = true;
+      else {
+        b.setAttribute('aria-pressed', 'false');
+        b.addEventListener('click', () => { st.fecha = s.iso; render(); $('cotizador').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); });
+      }
+      box.appendChild(b);
+    });
+    cont.appendChild(div);
+  });
+  const sel = $('c-fecha');
+  SABADOS.filter(s => !s.ocupado).forEach(s => {
+    const o = document.createElement('option'); o.value = s.iso; o.textContent = `${s.dia} ${nombreMes(s.y, s.mo).slice(0, 3)}. ${s.y}`; sel.appendChild(o);
+  });
+  st.fecha = SABADOS.find(s => !s.ocupado).iso;
+}
+
+/* ---------- QR de fantasía, dibujado en SVG ---------- */
+function hash(str) { let h = 2166136261; for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+function qr(svg, semilla) {
+  const N = 29; let s = hash(semilla) || 1;
+  const rnd = () => { s ^= s << 13; s >>>= 0; s ^= s >> 17; s ^= s << 5; s >>>= 0; return s / 4294967296; };
+  const enFinder = (x, y) => (x < 8 && y < 8) || (x > N - 9 && y < 8) || (x < 8 && y > N - 9);
+  let d = '';
+  for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) {
+    if (enFinder(x, y)) continue;
+    if ((x === 6 || y === 6) ? (x + y) % 2 === 0 : rnd() < .5) d += `M${x} ${y}h1v1h-1z`;
+  }
+  const f = (x, y) => `M${x} ${y}h7v7h-7z M${x + 1} ${y + 1}v5h5v-5z M${x + 2} ${y + 2}h3v3h-3z`;
+  svg.innerHTML = `<rect width="29" height="29" fill="#f3efe6"/><path d="${d}" fill="#121633"/><path d="${f(0, 0)} ${f(N - 7, 0)} ${f(0, N - 7)}" fill="#121633" fill-rule="evenodd"/>`;
+}
+
+/* ---------- cálculo ---------- */
+function calcular() {
+  const d = st.cena, m = st.desp, P = PRECIOS;
+  const salon = P.salon[st.salon];
+  const ext = (st.amb ? P.extras.ambientacion : 0) + (st.mus ? P.extras.musica : 0);
+  const min = d * P.cenaPorPersona.min + m * P.despuesPorPersona.min + salon + ext;
+  const max = d * P.cenaPorPersona.max + m * P.despuesPorPersona.max + salon + ext;
+  return { min, max, salon, ext, inv: d + m };
+}
+
+/* ---------- render general ---------- */
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+function render() {
+  const d = st.cena, m = st.desp, t = d + m;
+  const v = decidir(d, m);
+  if (st.auto) st.salon = v.salon;
+
+  // portada
+  $('duelo').style.setProperty('--gw', v.gw);
+  ['gala', 'classic'].forEach(k => {
+    const el = $('m-' + k), es = v.salon === k;
+    el.classList.toggle('elegida', es); el.classList.toggle('atenuada', !es);
+    const se = $('sello-' + k); se.textContent = es ? (v.fuera ? 'Se pasa de capacidad' : 'Te corresponde') : ''; se.classList.toggle('alerta', es && v.fuera);
+    $('tag-' + k).hidden = !es;
+    $('col-' + k).className = es ? 'rec' : '';
+  });
+  const rc = $('r-cena'); if (+rc.value !== clamp(d, 20, 560)) rc.value = clamp(d, 20, 560);
+  rc.style.setProperty('--p', ((clamp(d, 20, 560) - 20) / 540 * 100) + '%');
+  $('r-cena-v').textContent = n0(d);
+  $('mini-txt').textContent = v.fuera ? 'Se pasa de' : 'Les corresponde';
+  $('mini-salon').textContent = CAPACIDAD[v.salon].nombre;
+
+  // medidor
+  syncInput('n-cena', d); syncInput('n-desp', m); syncInput('c-cena', d); syncInput('c-desp', m);
+  const mc = $('mp-cena'), mb = $('mp-baile');
+  mc.style.left = `calc(${clamp(d, 0, 550) / 550 * 100}% - 1px)`;
+  mb.style.left = `calc(${clamp(t, 0, 1100) / 1100 * 100}% - 1px)`;
+  mc.classList.toggle('fuera', d > 500); mb.classList.toggle('fuera', t > 1000);
+  $('fallo').classList.toggle('fuera', v.fuera);
+  $('fallo-salon').textContent = CAPACIDAD[v.salon].nombre;
+  $('fallo-razon').innerHTML = v.razon;
+  $('fallo-nota').hidden = !v.nota; $('fallo-nota').textContent = v.nota || '';
+  $('fallo-alerta').hidden = !v.fuera; $('fallo-alerta').textContent = v.alerta || '';
+  $('tt-cena').textContent = n0(d); $('tt-baile').textContent = n0(t);
+
+  // cotizador
+  $('c-tipo').value = st.tipo;
+  $('c-fecha').value = st.fecha;
+  $('s-' + st.salon).checked = true;
+  $('auto-txt').textContent = st.auto ? `Sugerido por el medidor: ${CAPACIDAD[v.salon].nombre}.` : `Elegido a mano. El medidor sugiere ${CAPACIDAD[v.salon].nombre}.`;
+  $('volver-auto').hidden = st.auto;
+  const prob = v.fuera ? v.alerta : encaja(st.salon, d, m);
+  $('aviso-cap').hidden = !prob; $('aviso-cap').textContent = prob ? '⚠ ' + prob : '';
+  $('x-ambientacion').checked = st.amb; $('x-musica').checked = st.mus;
+  $('pr-amb').textContent = '+ ' + pesos(PRECIOS.extras.ambientacion);
+  $('pr-mus').textContent = '+ ' + pesos(PRECIOS.extras.musica);
+
+  const r = calcular();
+  const s = SABADOS.find(x => x.iso === st.fecha);
+  const fecha = s ? fechaLarga(s) : 'a definir';
+  $('tk-tipo').textContent = TIPOS[st.tipo].label;
+  $('tk-fecha').textContent = s ? 'Sábado ' + fecha : '—';
+  $('tk-salon').textContent = CAPACIDAD[st.salon].nombre;
+  $('tk-inv').textContent = `${n0(d)} + ${n0(m)}`;
+  $('tk-total').innerHTML = `${pesos(r.min)}<br>a ${pesos(r.max)}`;
+  $('tk-pp').textContent = r.inv ? `≈ ${pesos(r.min / r.inv)} a ${pesos(r.max / r.inv)} por persona` : '';
+  $('desglose').innerHTML = [
+    [`Cena · ${n0(d)} pers.`, `${pesos(d * PRECIOS.cenaPorPersona.min)} – ${pesos(d * PRECIOS.cenaPorPersona.max)}`],
+    [`Después · ${n0(m)} pers.`, `${pesos(m * PRECIOS.despuesPorPersona.min)} – ${pesos(m * PRECIOS.despuesPorPersona.max)}`],
+    [`Salón ${CAPACIDAD[st.salon].nombre}`, pesos(r.salon)],
+    ...(st.amb ? [['Ambientación', pesos(PRECIOS.extras.ambientacion)]] : []),
+    ...(st.mus ? [['Música, sonido e iluminación', pesos(PRECIOS.extras.musica)]] : [])
+  ].map(([a, b]) => `<div><span>${a}</span><span>${b}</span></div>`).join('');
+
+  const ex = [st.amb && 'ambientación', st.mus && 'música, sonido e iluminación'].filter(Boolean);
+  const salonTxt = CAPACIDAD[st.salon].nombre.charAt(0) + CAPACIDAD[st.salon].nombre.slice(1).toLowerCase();
+  const msg = `Hola Desert, quiero consultar por ${TIPOS[st.tipo].msg} el sábado ${fecha} en el salón ${salonTxt}: ${n0(d)} a la cena y ${n0(m)} después${ex.length ? ', con ' + ex.join(' y ') : ''}. Vi un estimado de ${pesos(r.min)} a ${pesos(r.max)}. ¿Está libre la fecha?`;
+  $('wa-texto').textContent = msg;
+  $('wa-btn').href = `https://wa.me/${WA}?text=${encodeURIComponent(msg)}`;
+  qr($('qr'), msg);
+
+  document.querySelectorAll('.sab[aria-pressed]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.iso === st.fecha)));
+}
+function syncInput(id, val) { const el = $(id); if (document.activeElement !== el || +el.value !== val) { if (document.activeElement !== el) el.value = val; } }
+const leer = el => clamp(parseInt(el.value, 10) || 0, 0, +el.max || 3000);
+
+/* ---------- eventos ---------- */
+$('r-cena').addEventListener('input', e => { st.cena = +e.target.value; render(); });
+['n-cena', 'c-cena'].forEach(id => $(id).addEventListener('input', e => { st.cena = leer(e.target); render(); }));
+['n-desp', 'c-desp'].forEach(id => $(id).addEventListener('input', e => { st.desp = leer(e.target); render(); }));
+['n-cena', 'c-cena', 'n-desp', 'c-desp'].forEach(id => $(id).addEventListener('blur', render));
+document.querySelectorAll('[data-paso]').forEach(b => b.addEventListener('click', () => {
+  const k = b.dataset.paso; st[k] = clamp(st[k] + (+b.dataset.d), 0, 3000); render();
+}));
+document.querySelectorAll('input[name=salon]').forEach(r => r.addEventListener('change', e => { st.salon = e.target.value; st.auto = false; render(); }));
+$('volver-auto').addEventListener('click', () => { st.auto = true; render(); });
+$('c-tipo').addEventListener('change', e => { st.tipo = e.target.value; render(); });
+$('c-fecha').addEventListener('change', e => { st.fecha = e.target.value; render(); });
+$('x-ambientacion').addEventListener('change', e => { st.amb = e.target.checked; render(); });
+$('x-musica').addEventListener('change', e => { st.mus = e.target.checked; render(); });
+
+/* pestañas */
+const tabs = [...document.querySelectorAll('.tab')];
+function activar(tab, foco) {
+  tabs.forEach(t => { const on = t === tab; t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1; $(t.getAttribute('aria-controls')).hidden = !on; });
+  if (foco) tab.focus();
+}
+tabs.forEach((t, i) => {
+  t.addEventListener('click', () => activar(t));
+  t.addEventListener('keydown', e => {
+    const k = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+    if (k) { e.preventDefault(); activar(tabs[(i + k + tabs.length) % tabs.length], true); }
+    if (e.key === 'Home') { e.preventDefault(); activar(tabs[0], true); }
+    if (e.key === 'End') { e.preventDefault(); activar(tabs[tabs.length - 1], true); }
+  });
+});
+document.querySelectorAll('[data-cotizar]').forEach(b => b.addEventListener('click', () => {
+  st.tipo = b.dataset.cotizar; render(); $('cotizador').scrollIntoView({ behavior: 'smooth' });
+}));
+
+armarCalendario();
+qr($('qr-app'), 'desert-aprobado');
+render();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Desert Eventos"></script>
+</body>
+</html>
