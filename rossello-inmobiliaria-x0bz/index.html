@@ -1,0 +1,1126 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>El Clasificado Rossello · Rossello Inmobiliaria, Pergamino</title>
+<meta name="description" content="Prototipo de demostración para Rossello Inmobiliaria: casas, departamentos, locales, lotes y campos de Pergamino y la región, con simulador de crédito hipotecario.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@400;500&family=Chivo:ital,wght@0,300;0,400;0,600;0,800;1,300;1,400&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F3EFE4; --paper-2:#EAE4D3; --paper-3:#E2DAC5;
+  --ink:#151515; --gray:#6B675F; --red:#B3261E; --rule:#1515151f; --rule-2:#15151533;
+  --serif:"Old Standard TT", "Times New Roman", Georgia, serif;
+  --sans:"Chivo", "Helvetica Neue", Helvetica, sans-serif;
+  --mono:"Chivo Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --wrap:1240px; --gut:32px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:16px}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 16px/1.6 var(--sans);font-feature-settings:"kern","liga";overflow-x:hidden}
+body:has(dialog[open]){overflow:hidden}
+/* grano de papel muy sutil */
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.35;
+  background-image:radial-gradient(#15151509 1px,transparent 1px);background-size:3px 3px}
+main,header,footer,.proto{position:relative;z-index:1}
+img{max-width:100%;display:block}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 var(--gut)}
+.mono{font-family:var(--mono);font-feature-settings:"tnum"}
+.sc{font-variant:all-small-caps;letter-spacing:.08em}
+.sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- aviso prototipo ---------- */
+.proto{background:var(--ink);color:var(--paper);font-size:12.5px;line-height:1.45}
+.proto .wrap{display:flex;gap:10px 18px;align-items:center;justify-content:center;flex-wrap:wrap;padding-top:8px;padding-bottom:8px;text-align:center}
+.proto strong{font-weight:600}
+.proto .dot{width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 0 3px #b3261e44;flex:none}
+.proto span.muted{color:#d9d3c3}
+
+/* ---------- masthead ---------- */
+.mast{padding-top:18px}
+.ears{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:center;font-size:12px;color:var(--gray);border-bottom:1px solid var(--ink);padding-bottom:8px}
+.ears .r{text-align:right}
+.ear-box{border:1px solid var(--ink);padding:6px 10px;font-size:11.5px;line-height:1.35;color:var(--ink);max-width:250px}
+.ear-box b{font-family:var(--serif);font-size:15px;font-weight:700;display:block}
+.ears .r .ear-box{margin-left:auto;text-align:left}
+.ears .c{text-align:center;font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase;font-size:11px;color:var(--ink)}
+.title{font-family:var(--serif);font-weight:700;text-align:center;margin:14px 0 4px;line-height:.92;letter-spacing:-.015em;font-size:clamp(42px,9.4vw,124px)}
+.title em{font-style:italic;font-weight:400}
+.subtitle{text-align:center;font-size:12.5px;color:var(--gray);margin:8px 0 12px}
+.subtitle .sep{margin:0 .6em;color:var(--rule-2)}
+.dbl{border:0;border-top:3px solid var(--ink);border-bottom:1px solid var(--ink);height:6px;margin:0}
+.nav-ix{display:flex;justify-content:center;flex-wrap:wrap;gap:0;border-bottom:1px solid var(--ink);padding:0}
+.nav-ix a{display:flex;align-items:baseline;gap:8px;text-decoration:none;padding:10px 18px;font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;position:relative}
+.nav-ix a + a::before{content:"";position:absolute;left:0;top:12px;bottom:12px;border-left:1px solid var(--rule-2)}
+.nav-ix a span{font-family:var(--mono);font-weight:400;font-size:11px;color:var(--gray);letter-spacing:0}
+.nav-ix a:hover{color:var(--red)}
+
+/* ---------- portada ---------- */
+.front{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:0;margin-top:26px}
+.front-main{padding-right:var(--gut);border-right:1px solid var(--rule-2)}
+.kicker{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin:0 0 10px}
+.headline{font-family:var(--serif);font-weight:700;font-size:clamp(36px,5.6vw,72px);line-height:1;letter-spacing:-.02em;margin:0 0 16px;text-wrap:balance}
+.headline .it{font-style:italic;font-weight:400}
+.deck{font-family:var(--serif);font-style:italic;font-size:clamp(19px,2vw,23px);line-height:1.35;margin:0 0 20px;color:#2a2926;max-width:44ch}
+.byline{font-size:12px;color:var(--gray);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:7px 0;margin-bottom:18px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.cols2{columns:2;column-gap:28px;column-rule:1px solid var(--rule)}
+.cols2 p{margin:0 0 12px;hyphens:auto;text-wrap:pretty}
+.cols2 p:first-child::first-letter{font-family:var(--serif);font-weight:700;float:left;font-size:4.1em;line-height:.82;padding:6px 8px 0 0;color:var(--ink)}
+.front-side{padding-left:var(--gut)}
+.side-h{font-family:var(--serif);font-size:24px;font-weight:700;margin:0 0 4px}
+.side-sub{font-size:12.5px;color:var(--gray);margin:0 0 12px}
+.suc{border-top:1px solid var(--ink);padding:12px 0 14px}
+.suc:last-of-type{border-bottom:1px solid var(--ink)}
+.suc h3{font-family:var(--serif);font-size:19px;margin:0 0 2px;font-weight:700}
+.suc p{margin:0;font-size:13.5px;line-height:1.5}
+.suc a{text-decoration:none;border-bottom:1px solid var(--rule-2)}
+.suc a:hover{color:var(--red);border-color:var(--red)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:44px;padding:10px 18px;border:1.5px solid var(--ink);background:var(--ink);color:var(--paper);text-decoration:none;font-weight:600;font-size:14px;letter-spacing:.02em;cursor:pointer;transition:background .18s,color .18s,transform .18s}
+.btn:hover{background:var(--red);border-color:var(--red)}
+.btn:active{transform:translateY(1px)}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.ghost:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.btn.wide{width:100%}
+.btn svg{width:18px;height:18px;flex:none}
+.motto{margin:18px 0 0;font-family:var(--serif);font-style:italic;font-size:20px;line-height:1.3;text-align:center;padding:14px 8px;border-top:3px double var(--ink);border-bottom:3px double var(--ink)}
+.motto small{display:block;font-family:var(--sans);font-style:normal;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gray);margin-top:6px}
+
+/* cifras */
+.figures{display:grid;grid-template-columns:repeat(4,1fr);margin-top:30px;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+.fig{padding:16px 18px;border-left:1px solid var(--rule-2)}
+.fig:first-child{border-left:0;padding-left:0}
+.fig b{display:block;font-family:var(--serif);font-weight:700;font-size:clamp(28px,3.4vw,44px);line-height:1;letter-spacing:-.02em}
+.fig b small{font-size:.45em;font-weight:400;letter-spacing:0;margin-left:2px}
+.fig span{display:block;font-size:13px;color:var(--gray);margin-top:6px;line-height:1.4}
+
+/* ---------- índice / filtros ---------- */
+.index{margin-top:44px;border:1px solid var(--ink);background:var(--paper)}
+.index-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;padding:12px 18px;border-bottom:1px solid var(--ink);background:var(--ink);color:var(--paper)}
+.index-head h2{margin:0;font-family:var(--serif);font-size:24px;font-weight:700}
+.index-head h2 em{font-weight:400}
+.count{font-family:var(--mono);font-size:13px}
+.count b{color:#fff;font-weight:500}
+.filters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;align-items:stretch}
+.fgroup:nth-child(3){border-right:0}
+.fgroup:nth-child(-n+3){border-bottom:1px solid var(--rule-2)}
+.fgroup{border:0;margin:0;padding:12px 16px 14px;border-right:1px solid var(--rule-2);min-width:0}
+.fgroup:last-child{border-right:0}
+.fgroup legend,.fgroup .lg{float:left;width:100%;padding:0;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gray);margin-bottom:8px}
+.seg{display:flex;flex-wrap:wrap;gap:4px;clear:both}
+.seg button{min-height:36px;padding:6px 11px;border:1px solid var(--rule-2);background:transparent;cursor:pointer;font-size:13.5px;transition:background .15s,border-color .15s}
+.seg button:hover{border-color:var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.fgroup select{clear:both;display:block;width:100%;min-height:36px;padding:6px 30px 6px 10px;border:1px solid var(--rule-2);background:var(--paper) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23151515'/%3E%3C/svg%3E") no-repeat right 10px center;appearance:none;border-radius:0;font-size:13.5px;cursor:pointer}
+.check{clear:both;display:flex;gap:10px;align-items:center;min-height:36px;cursor:pointer;font-size:13.5px}
+.check input{appearance:none;width:20px;height:20px;border:1.5px solid var(--ink);margin:0;display:grid;place-items:center;cursor:pointer;background:var(--paper)}
+.check input:checked{background:var(--red);border-color:var(--red)}
+.check input:checked::after{content:"";width:9px;height:5px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg) translate(1px,-1px)}
+.index-foot{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center;padding:8px 18px;border-top:1px solid var(--rule-2);font-size:12.5px;color:var(--gray)}
+.linkbtn{background:none;border:0;padding:4px 0;cursor:pointer;text-decoration:underline;text-underline-offset:3px;font-size:12.5px;color:var(--ink)}
+.linkbtn:hover{color:var(--red)}
+
+/* ---------- secciones ---------- */
+.section{margin-top:56px}
+.sec-head{display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:end;border-bottom:3px solid var(--ink);padding-bottom:6px}
+.sec-head h2{margin:0;font-family:var(--serif);font-weight:700;font-size:clamp(40px,6vw,76px);line-height:.9;letter-spacing:-.01em;text-transform:uppercase}
+.sec-head .lede{font-size:13.5px;color:var(--gray);padding-bottom:6px;max-width:52ch}
+.sec-head .folio{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-align:right;padding-bottom:6px;color:var(--gray);white-space:nowrap}
+.sec-head .folio b{display:block;color:var(--ink);font-size:13px;font-weight:500}
+.empty{padding:28px 0;font-family:var(--serif);font-style:italic;font-size:20px;color:var(--gray);border-bottom:1px solid var(--rule-2)}
+
+/* fotos y fallbacks */
+.ph{position:relative;overflow:hidden;background:var(--paper-2);isolation:isolate}
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(.2) contrast(1.03) sepia(.06);transition:filter .4s,transform .6s;z-index:2}
+.card:hover .ph img{filter:none;transform:scale(1.015)}
+.art{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding:7% 7% 6%;overflow:hidden;
+  background:linear-gradient(160deg,var(--paper-2) 0%,var(--paper-3) 100%)}
+.art::before{content:"";position:absolute;inset:10px;border:1px solid var(--rule-2);pointer-events:none}
+.art::after{content:"";position:absolute;right:-8%;top:-18%;width:58%;aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle,#15151538 0 28%,transparent 31%) 0 0/2.2cqi 2.2cqi;
+  -webkit-mask:radial-gradient(circle closest-side,#000 15%,transparent 100%);mask:radial-gradient(circle closest-side,#000 15%,transparent 100%)}
+.art.alt{background:linear-gradient(160deg,var(--paper-3),var(--paper-2))}
+.art.alt::after{left:-10%;right:auto;top:auto;bottom:-25%}
+.art.alt .art-n{align-self:flex-end;text-align:right}
+.art.alt .art-line{align-self:flex-end}
+.art .art-line{position:relative;width:34%;border-top:2px solid var(--red);margin:0 0 3cqi}
+.art-k{position:relative;font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--red);margin-bottom:auto}
+.art-n{position:relative;font-family:var(--serif);font-weight:700;line-height:.82;letter-spacing:-.045em;font-size:clamp(14px,25cqi,200px)}
+.art-n.long{font-size:clamp(11px,14cqi,120px);letter-spacing:-.025em;line-height:.9}
+.art-s{position:relative;font-family:var(--serif);font-style:italic;font-size:clamp(12px,4.2cqi,30px);margin-top:1.6cqi}
+.art-r{position:absolute;right:7%;top:7%;font-family:var(--mono);font-size:11px;color:var(--gray)}
+.ph{container-type:inline-size}
+.art.field{padding:0;background:var(--paper-2)}
+.art.field::after{display:none}
+.art.field svg{position:absolute;inset:0;width:100%;height:100%}
+
+/* sellos */
+.stamps{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.stamp{display:inline-block;font-family:var(--mono);font-weight:500;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--red);border:1.5px solid var(--red);padding:3px 7px 2px;transform:rotate(-2.5deg);box-shadow:inset 0 0 0 2px var(--paper),inset 0 0 0 3px #b3261e88;background:#b3261e08;white-space:nowrap}
+.stamp.alt{transform:rotate(1.8deg)}
+.stamp.solid{background:var(--red);color:#fff;box-shadow:none}
+.ph .stamps{position:absolute;right:16px;bottom:16px;z-index:3}
+.ph .stamps .stamp:not(.solid){background:var(--paper)}
+
+/* cartas genéricas */
+.card{position:relative}
+.card .open{background:none;border:0;padding:0;text-align:left;cursor:pointer;font:inherit;color:inherit}
+.card .open::after{content:"";position:absolute;inset:0;z-index:4}
+.card .open:focus-visible{outline:none}
+.card:has(.open:focus-visible){outline:2px solid var(--red);outline-offset:4px}
+.card h3{transition:color .15s}
+.card:hover h3 .u{text-decoration:underline;text-decoration-color:var(--red);text-decoration-thickness:1.5px;text-underline-offset:4px}
+.card .act{position:relative;z-index:5}
+.meta{font-family:var(--mono);font-size:12.5px;color:var(--ink);display:flex;flex-wrap:wrap;gap:4px 0;margin:10px 0}
+.meta span{padding:0 10px;border-left:1px solid var(--rule-2)}
+.meta span:first-child{padding-left:0;border-left:0}
+.price{font-family:var(--mono);font-weight:500}
+.price.q{color:var(--gray);font-weight:400}
+.k{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gray)}
+
+/* ciudad: destacado + segundos + clasificados */
+.city-top{display:grid;grid-template-columns:minmax(0,1.62fr) minmax(0,1fr);gap:0;padding-top:24px}
+.lead{padding-right:var(--gut);border-right:1px solid var(--rule-2)}
+.lead .ph{aspect-ratio:16/10}
+.lead h3{font-family:var(--serif);font-weight:700;font-size:clamp(28px,3.5vw,46px);line-height:1.02;letter-spacing:-.015em;margin:14px 0 4px;text-wrap:balance}
+.lead .k{margin-top:16px;display:block}
+.lead p.ex{font-size:16px;margin:0 0 16px;max-width:62ch}
+.lead .price{font-size:22px}
+.lead .acts{display:flex;gap:10px;flex-wrap:wrap}
+.seconds{padding-left:var(--gut);display:flex;flex-direction:column}
+.second{padding-bottom:20px;margin-bottom:20px;border-bottom:1px solid var(--rule-2)}
+.second:last-child{border-bottom:0;margin-bottom:0}
+.second .ph{aspect-ratio:3/2}
+.second h3{font-family:var(--serif);font-weight:700;font-size:23px;line-height:1.1;margin:10px 0 0}
+.second p.ex{font-size:14px;margin:6px 0 0;color:#2a2926}
+.second .k{display:block;margin-top:12px}
+
+.clasif-h{display:flex;align-items:center;gap:14px;margin:34px 0 0;border-top:1px solid var(--ink);padding-top:8px}
+.clasif-h h3{margin:0;font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:.16em;text-transform:uppercase}
+.clasif-h::after{content:"";flex:1;border-top:1px solid var(--rule-2)}
+.clasifs{columns:3;column-gap:30px;column-rule:1px solid var(--rule-2);margin-top:12px}
+.clasif{break-inside:avoid;padding:12px 0 14px;border-bottom:1px solid var(--rule-2);display:grid;grid-template-columns:76px 1fr;gap:12px;align-items:start}
+.clasif .ph{aspect-ratio:1;width:76px}
+.clasif .ph .art{padding:7px}
+.clasif .ph .art::before{inset:4px}
+.clasif .ph .art-k,.clasif .ph .art-r,.clasif .ph .art-s,.clasif .art-line,.thumbs .art-line{display:none}
+.clasif h3{margin:0;font-family:var(--serif);font-size:17px;line-height:1.22;font-weight:400}
+.clasif h3 b{font-family:var(--sans);font-weight:800;font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin-right:4px}
+.clasif .meta{margin:6px 0 4px;font-size:12px}
+.clasif .stamps{margin-top:6px}
+.clasif .stamp{font-size:9.5px;padding:2px 5px 1px}
+
+/* campo */
+.scale-fig{padding:26px 0 8px;border-bottom:1px solid var(--rule-2)}
+.scale-fig .k{display:block;margin-bottom:12px}
+.squares{display:flex;flex-wrap:wrap;align-items:flex-end;gap:14px 16px;--S:170px}
+.sq{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:6px;background:none;border:0;padding:0;cursor:pointer;text-align:left}
+.sq i{display:block;width:calc(var(--k) * var(--S));aspect-ratio:1;min-width:12px;
+  background:repeating-linear-gradient(var(--a,90deg),#151515 0 1px,transparent 1px 5px),var(--paper-2);border:1px solid var(--ink);transition:background-color .2s}
+.sq.op i{border-color:var(--red);box-shadow:inset 0 0 0 2px var(--paper),inset 0 0 0 3px var(--red)}
+.sq span{font-family:var(--mono);font-size:11.5px;line-height:1.2;white-space:nowrap}
+.sq span small{display:block;color:var(--gray);font-size:10.5px}
+.sq:hover span{color:var(--red)}
+.field-lead{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:var(--gut);padding:28px 0;border-bottom:1px solid var(--ink)}
+.field-lead .ph{aspect-ratio:4/3}
+.big-ha{font-family:var(--serif);font-weight:700;line-height:.8;letter-spacing:-.05em;font-size:clamp(96px,14vw,190px);margin:8px 0 0}
+.big-ha small{font-size:.22em;letter-spacing:0;font-weight:400;font-style:italic;margin-left:6px}
+.field-lead h3{font-family:var(--serif);font-size:clamp(24px,2.6vw,32px);line-height:1.1;margin:16px 0 6px;font-weight:400;font-style:italic}
+.field-lead .loc{font-size:15px;margin:0 0 16px}
+.bar{margin:6px 0 4px}
+.bar .track{position:relative;height:10px;border:1px solid var(--ink);background:repeating-linear-gradient(90deg,transparent 0 calc(12.375% - 1px),var(--rule-2) calc(12.375% - 1px) 12.375%)}
+.bar .fill{position:absolute;left:0;top:0;bottom:0;background:var(--ink);width:0;transition:width .9s cubic-bezier(.2,.7,.2,1)}
+.bar .fill::after{content:"";position:absolute;right:-1px;top:-4px;bottom:-4px;width:3px;background:var(--red)}
+.bar .lbl{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10.5px;color:var(--gray);margin-top:4px}
+.bar.na .track{border-style:dashed;background:none}
+.ftable{margin:0}
+.frow{display:grid;grid-template-columns:150px minmax(0,1fr) minmax(0,.9fr) 120px;gap:20px;align-items:center;padding:16px 0;border-bottom:1px solid var(--rule-2)}
+.frow .ha{font-family:var(--serif);font-weight:700;font-size:46px;line-height:.9;letter-spacing:-.03em;white-space:nowrap}
+.frow .ha small{font-size:.36em;font-weight:400;font-style:italic;letter-spacing:0;margin-left:3px}
+.frow .ha.na{white-space:normal;line-height:1.1;font-size:20px;font-weight:400;font-style:italic;letter-spacing:0;color:var(--gray)}
+.frow h3{margin:0;font-family:var(--serif);font-size:20px;line-height:1.2;font-weight:700}
+.frow p{margin:3px 0 0;font-size:13.5px;color:#2a2926}
+.frow .stamps{margin-top:6px}
+.frow .go{font-family:var(--mono);font-size:12px;text-align:right;white-space:nowrap}
+.frow:hover .go{color:var(--red)}
+.frow .mini{width:120px;height:66px;position:relative}
+
+/* ---------- simulador ---------- */
+.supp{margin-top:64px;border-top:6px solid var(--ink);padding-top:4px}
+.supp-band{border-top:1px solid var(--ink);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:8px 0;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+.supp-band b{color:var(--red);font-weight:500}
+.supp h2{font-family:var(--serif);font-weight:700;font-size:clamp(34px,5vw,64px);line-height:.98;letter-spacing:-.02em;margin:10px 0 8px;text-wrap:balance}
+.supp h2 em{font-weight:400}
+.supp .deck{max-width:60ch}
+.sim{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);border:1px solid var(--ink);margin-top:10px}
+.sim-in{padding:22px 24px;border-right:1px solid var(--ink)}
+.sim-out{padding:22px 24px;background:var(--paper-2)}
+.field{margin-bottom:18px}
+.field label,.field .lab{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:13.5px;font-weight:600;margin-bottom:6px}
+.field label small,.field .lab small{font-weight:400;color:var(--gray);font-size:12px}
+.field output{font-family:var(--mono);font-weight:500;font-size:14px;color:var(--ink)}
+.inp{display:flex;align-items:stretch;border:1px solid var(--ink);background:var(--paper)}
+.inp span{display:flex;align-items:center;padding:0 10px;font-family:var(--mono);font-size:13px;border-right:1px solid var(--rule-2);color:var(--gray)}
+.inp span.after{border-right:0;border-left:1px solid var(--rule-2)}
+.inp input,.inp select{flex:1;min-width:0;border:0;background:transparent;padding:10px 12px;font-family:var(--mono);font-size:16px;min-height:44px}
+.inp select{width:100%;text-overflow:ellipsis;font-family:var(--sans);font-size:14.5px;appearance:none;border-radius:0;cursor:pointer;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23151515'/%3E%3C/svg%3E") no-repeat right 12px center;padding-right:32px}
+.inp:focus-within{outline:2px solid var(--red);outline-offset:2px}
+.inp input:focus-visible,.inp select:focus-visible{outline:none}
+.inp input[type=number]{-moz-appearance:textfield}
+.inp input::-webkit-outer-spin-button,.inp input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.help{font-size:12px;color:var(--gray);margin-top:5px;line-height:1.4}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:28px;background:transparent;cursor:pointer;margin:0}
+input[type=range]::-webkit-slider-runnable-track{height:2px;background:linear-gradient(90deg,var(--ink) var(--p,50%),var(--rule-2) var(--p,50%))}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;margin-top:-8px;background:var(--red);border:2px solid var(--paper);box-shadow:0 0 0 1px var(--red)}
+input[type=range]::-moz-range-track{height:2px;background:var(--rule-2)}
+input[type=range]::-moz-range-progress{height:2px;background:var(--ink)}
+input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:0;background:var(--red);border:2px solid var(--paper)}
+input[type=range]:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+.ticks{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10.5px;color:var(--gray)}
+.cuota-k{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gray)}
+.cuota{font-family:var(--serif);font-weight:700;font-size:clamp(44px,6vw,76px);line-height:1;letter-spacing:-.03em;margin:6px 0 2px;font-feature-settings:"lnum","tnum";word-break:break-word}
+.cuota-s{font-size:13px;color:var(--gray);margin:0 0 18px}
+.split{margin:0 0 18px}
+.split .sb{display:flex;height:26px;border:1px solid var(--ink)}
+.split .sb i{display:block;height:100%;transition:width .35s}
+.split .sb .a{background:repeating-linear-gradient(135deg,var(--red) 0 2px,transparent 2px 6px)}
+.split .sb .f{background:var(--ink)}
+.split .lg{display:flex;justify-content:space-between;gap:10px;margin-top:6px;font-family:var(--mono);font-size:11px;color:var(--gray)}
+.split .lg b{color:var(--ink);font-weight:500}
+table.res{width:100%;border-collapse:collapse;font-size:14px}
+table.res th{text-align:left;font-weight:400;padding:9px 0;border-top:1px solid var(--rule-2);vertical-align:top}
+table.res td{text-align:right;padding:9px 0;border-top:1px solid var(--rule-2);font-family:var(--mono);font-size:14px;line-height:1.35}
+table.res td small{display:block;color:var(--gray);font-size:11.5px}
+table.res tr.hl th,table.res tr.hl td{border-top:1px solid var(--ink);font-weight:600}
+.note{margin:16px 0;padding:10px 12px;border-left:3px solid var(--red);background:var(--paper);font-size:13px;line-height:1.45}
+.note b{font-weight:600}
+
+/* ---------- cupón ---------- */
+.coupon-wrap{margin-top:64px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:var(--gut);align-items:start}
+.coupon-intro h2{font-family:var(--serif);font-weight:700;font-size:clamp(34px,4.4vw,56px);line-height:1;margin:6px 0 12px;letter-spacing:-.02em}
+.coupon-intro p{margin:0 0 12px;color:#2a2926}
+.coupon{position:relative;border:2px dashed var(--ink);padding:26px 26px 22px;background:
+  linear-gradient(var(--paper),var(--paper)) padding-box;}
+.coupon::before{content:"";position:absolute;inset:6px;border:1px solid var(--rule-2);pointer-events:none}
+.scissors{position:absolute;top:-15px;left:26px;background:var(--paper);padding:0 8px;font-size:22px;line-height:1;color:var(--ink)}
+.coupon-h{display:flex;justify-content:space-between;align-items:baseline;gap:12px;border-bottom:3px double var(--ink);padding-bottom:10px;margin-bottom:16px;flex-wrap:wrap}
+.coupon-h h3{margin:0;font-family:var(--serif);font-size:28px;font-weight:700}
+.coupon-h h3 em{font-weight:400}
+.coupon-h span{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--red)}
+.cgrid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px 20px}
+.cf{display:flex;flex-direction:column;gap:2px;grid-column:span 2;position:relative}
+.cf.w3{grid-column:span 3}.cf.w4{grid-column:span 4}.cf.w6{grid-column:span 6}
+.cf label{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--gray)}
+.cf input,.cf select{width:100%;min-width:0;border:0;border-bottom:1.5px dotted var(--ink);background:transparent;padding:8px 2px 6px;font-size:17px;font-family:var(--serif);min-height:42px;border-radius:0;appearance:none}
+.cf select{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23151515'/%3E%3C/svg%3E") no-repeat right 4px center;padding-right:22px;cursor:pointer}
+.cf input:focus,.cf select:focus{outline:none;border-bottom:2px solid var(--red)}
+.cf input[aria-invalid="true"]{border-bottom-color:var(--red)}
+.cf .err{font-size:12px;color:var(--red);min-height:0}
+.coupon-foot{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-top:20px;padding-top:14px;border-top:1px solid var(--rule-2)}
+.coupon-foot p{margin:0;font-size:12.5px;color:var(--gray);max-width:46ch}
+
+/* ---------- pie ---------- */
+footer{margin-top:72px;border-top:6px solid var(--ink)}
+.foot-title{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--ink);padding:12px 0}
+.foot-title b{font-family:var(--serif);font-size:30px;font-weight:700}
+.foot-title b em{font-weight:400}
+.foot-title span{font-family:var(--serif);font-style:italic;font-size:18px}
+.foot-cols{display:grid;grid-template-columns:repeat(3,1fr) 1.1fr}
+.foot-cols > div{padding:18px 20px 18px 0;margin-right:20px;border-right:1px solid var(--rule-2)}
+.foot-cols > div:last-child{border-right:0;margin-right:0}
+.foot-cols h3{margin:0 0 6px;font-family:var(--serif);font-size:19px}
+.foot-cols p{margin:0;font-size:13.5px;line-height:1.6}
+.foot-cols a{text-decoration:none;border-bottom:1px solid var(--rule-2)}
+.foot-cols a:hover{color:var(--red);border-color:var(--red)}
+.colophon{border-top:1px solid var(--ink);padding:12px 0 26px;display:flex;justify-content:space-between;gap:10px 20px;flex-wrap:wrap;font-family:var(--mono);font-size:11px;color:var(--gray);letter-spacing:.04em}
+
+/* ---------- ficha (dialog) ---------- */
+dialog.ficha{border:0;padding:0;margin:auto;width:min(1080px,calc(100vw - 48px));max-height:calc(100dvh - 48px);background:var(--paper);color:var(--ink);box-shadow:0 30px 80px #0006;overflow:auto;overscroll-behavior:contain}
+dialog.ficha::backdrop{background:#151515b8;backdrop-filter:blur(2px)}
+dialog.ficha[open]{animation:pop .28s cubic-bezier(.2,.8,.2,1)}
+@keyframes pop{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.f-top{position:sticky;top:0;z-index:10;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 16px 10px 22px;background:var(--paper);border-bottom:1px solid var(--ink)}
+.f-top .k{color:var(--ink)}
+.f-top .x{width:44px;height:44px;border:1px solid var(--ink);background:var(--paper);cursor:pointer;display:grid;place-items:center;font-size:22px;line-height:1}
+.f-top .x:hover{background:var(--ink);color:var(--paper)}
+.f-body{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:0}
+.f-gal{padding:22px;border-right:1px solid var(--rule-2);position:sticky;top:65px;align-self:start}
+.f-gal .ph{aspect-ratio:4/3}
+.thumbs{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.thumbs button{width:72px;aspect-ratio:1;padding:0;border:1px solid var(--rule-2);cursor:pointer;background:var(--paper-2);position:relative;overflow:hidden}
+.thumbs button[aria-current="true"]{outline:2px solid var(--ink);outline-offset:2px}
+.thumbs .ph{aspect-ratio:auto;position:absolute;inset:0}
+.thumbs .art{padding:5px}.thumbs .art::before,.thumbs .art::after{display:none}
+.thumbs .art-k,.thumbs .art-s,.thumbs .art-r{display:none}
+.f-gal figcaption{font-size:12px;color:var(--gray);margin-top:8px;font-style:italic;font-family:var(--serif)}
+.f-info{padding:22px 24px}
+.f-info h2{font-family:var(--serif);font-weight:700;font-size:clamp(28px,3vw,38px);line-height:1.04;margin:10px 0 8px;letter-spacing:-.015em}
+.f-info .stamps{margin:4px 0 2px}
+.f-info .fprice{font-family:var(--mono);font-size:26px;font-weight:500;margin:6px 0 14px}
+.f-info .fprice.q{font-size:18px;color:var(--gray);font-weight:400}
+dl.dat{display:grid;grid-template-columns:auto 1fr;margin:0 0 16px;border-top:1px solid var(--ink)}
+dl.dat dt,dl.dat dd{padding:7px 0;border-bottom:1px solid var(--rule-2);margin:0;font-size:14px}
+dl.dat dt{color:var(--gray);padding-right:16px}
+dl.dat dd{font-family:var(--mono);font-size:13.5px;text-align:right}
+.f-desc{font-size:15.5px;line-height:1.62;margin:0 0 16px}
+.f-acts{display:grid;gap:8px}
+.f-acts .row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.wa{background:#1d5c3a;border-color:#1d5c3a}
+.wa:hover{background:#14462b;border-color:#14462b}
+.f-map{grid-column:1/-1;border-top:1px solid var(--ink);padding:18px 22px 24px;display:grid;grid-template-columns:240px 1fr;gap:22px}
+.f-map h3{font-family:var(--serif);margin:0 0 6px;font-size:22px}
+.f-map p{margin:0;font-size:13.5px;color:var(--gray)}
+.mapbox{position:relative;height:280px;border:1px solid var(--ink);background:
+  repeating-linear-gradient(0deg,transparent 0 39px,var(--rule) 39px 40px),
+  repeating-linear-gradient(90deg,transparent 0 39px,var(--rule) 39px 40px),var(--paper-2)}
+.mapbox .mp{position:absolute;inset:0;display:grid;place-items:center;text-align:center;font-family:var(--serif);font-style:italic;color:var(--gray);padding:20px}
+.mapbox iframe{position:absolute;inset:0;width:100%;height:100%;border:0;z-index:2}
+
+/* ---------- responsive ---------- */
+@media (max-width:1080px){
+  .clasifs{columns:2}
+  .frow{grid-template-columns:130px minmax(0,1fr) minmax(0,.8fr)}
+  .frow .mini{display:none}
+}
+@media (max-width:900px){
+  :root{--gut:22px}
+  .front{grid-template-columns:minmax(0,1fr)}
+  .front-main{padding-right:0;border-right:0}
+  .front-side{padding-left:0;margin-top:28px;display:grid;grid-template-columns:repeat(3,1fr);gap:0 18px}
+  .front-side .side-h,.front-side .side-sub,.front-side .motto,.front-side .btn{grid-column:1/-1}
+  .front-side .suc:last-of-type{border-bottom:0}
+  .front-side .suc{border-bottom:1px solid var(--ink)}
+  .city-top{grid-template-columns:minmax(0,1fr)}
+  .lead{padding-right:0;border-right:0;padding-bottom:24px;border-bottom:1px solid var(--rule-2)}
+  .seconds{padding-left:0;padding-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:0 22px}
+  .second{border-bottom:0;margin-bottom:0}
+  .field-lead{grid-template-columns:minmax(0,1fr)}
+  .sim{grid-template-columns:minmax(0,1fr)}
+  .sim-in{border-right:0;border-bottom:1px solid var(--ink)}
+  .coupon-wrap{grid-template-columns:minmax(0,1fr)}
+  .foot-cols{grid-template-columns:1fr 1fr}
+  .foot-cols > div:nth-child(2){border-right:0;margin-right:0}
+  .f-body{grid-template-columns:minmax(0,1fr)}
+  .f-gal{border-right:0;border-bottom:1px solid var(--rule-2);position:static}
+  .f-map{grid-template-columns:1fr}
+  .figures{grid-template-columns:1fr 1fr}
+  .fig:nth-child(3){border-left:0;padding-left:0}
+  .fig:nth-child(-n+2){border-bottom:1px solid var(--rule-2)}
+}
+@media (max-width:640px){
+  :root{--gut:16px}
+  body{font-size:15.5px}
+  .proto{font-size:11.5px}
+  .ears{grid-template-columns:1fr;text-align:center;gap:6px}
+  .ears .l,.ears .r{display:none}
+  .subtitle{font-size:11.5px;line-height:1.5}
+  .subtitle .sep{margin:0 .35em}
+  .nav-ix{justify-content:flex-start;overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none}
+  .nav-ix::-webkit-scrollbar{display:none}
+  .nav-ix a{padding:10px 12px;font-size:12px;white-space:nowrap}
+  .cols2{columns:1}
+  .front-side{grid-template-columns:1fr}
+  .front-side .suc:last-of-type{border-bottom:1px solid var(--ink)}
+  .figures{grid-template-columns:1fr 1fr}
+  .fig{padding:14px 12px}
+  .fig:nth-child(odd){padding-left:0}
+  .index-head{padding:12px 14px}
+  .filters{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .fgroup{padding:12px 14px;border-right:0!important;border-bottom:1px solid var(--rule-2)!important}
+  .fgroup:nth-child(1),.fgroup:nth-child(2){grid-column:1/-1}
+  .fgroup:nth-child(3),.fgroup:nth-child(5){border-right:1px solid var(--rule-2)!important}
+  .fgroup:nth-child(5),.fgroup:nth-child(6){border-bottom:0!important}
+  .seg button{padding:6px 10px}
+  .fgroup:nth-child(4) .seg{gap:3px}
+  .fgroup:nth-child(4) .seg button{padding:6px 8px}
+  .subtitle .mono{display:block;margin-top:2px}
+  .subtitle .sep:nth-of-type(4){display:none}
+  .index-foot{padding:8px 14px}
+  .sec-head{grid-template-columns:1fr auto}
+  .sec-head .lede{grid-column:1/-1;grid-row:2;padding-bottom:2px}
+  .seconds{grid-template-columns:1fr}
+  .second{border-bottom:1px solid var(--rule-2);margin-bottom:20px}
+  .clasifs{columns:1}
+  .squares{--S:100px;gap:12px}
+  .frow{grid-template-columns:96px minmax(0,1fr);gap:6px 14px;padding:14px 0}
+  .frow .ha{font-size:34px}
+  .frow .ha.na{font-size:16px}
+  .frow .barcell{grid-column:1/-1}
+  .frow .go{display:none}
+  .sim-in,.sim-out{padding:18px 16px}
+  .coupon{padding:24px 16px 18px}
+  .cgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 14px}
+  .cf,.cf.w3,.cf.w4,.cf.w6{grid-column:1/-1}
+  .cf.half{grid-column:span 1}
+  .foot-cols{grid-template-columns:1fr}
+  .foot-cols > div{border-right:0!important;margin-right:0!important;padding-right:0;border-bottom:1px solid var(--rule-2)}
+  dialog.ficha{width:100vw;max-width:100vw;height:100dvh;max-height:100dvh;margin:0}
+  .f-gal,.f-info{padding:16px}
+  .hide-m{display:none}
+  .f-map{padding:16px}
+  .f-acts .row{grid-template-columns:1fr}
+  .mapbox{height:220px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+
+/* ---------- impresión del aviso ---------- */
+@media print{
+  body::before{display:none}
+  html.print-aviso body > *:not(dialog){display:none!important}
+  html.print-aviso dialog.ficha{position:static;width:100%;max-height:none;box-shadow:none;overflow:visible}
+  html.print-aviso .f-top .x,html.print-aviso .f-acts,html.print-aviso .mapbox,html.print-aviso .thumbs{display:none!important}
+  html.print-aviso .f-body{grid-template-columns:1fr 1fr}
+  html.print-aviso .f-map{display:block}
+  html.print-aviso .print-foot{display:block!important}
+}
+.print-foot{display:none;grid-column:1/-1;border-top:1px solid #151515;padding:10px 22px;font-size:11px;font-family:var(--mono)}
+</style>
+</head>
+<body>
+
+<div class="proto" role="note">
+  <div class="wrap">
+    <span class="dot" aria-hidden="true"></span>
+    <strong>Prototipo de demostración preparado para Rossello Inmobiliaria</strong>
+    <span class="muted">Propiedades reales tomadas de su web, a modo de muestra · Hecho por Resolviendo Kos</span>
+  </div>
+</div>
+
+<header class="wrap mast">
+  <div class="ears">
+    <div class="l"><div class="ear-box"><b>WhatsApp de la oficina</b><a href="https://wa.me/5492477468085" style="text-decoration:none">+54 9 2477 468085</a> · de 9 a 15 hs</div></div>
+    <div class="c"><span id="ed-date">Edición del martes 20 de octubre de 2026</span></div>
+    <div class="r"><div class="ear-box"><b>Pergamino · 3 sucursales</b>Juan B. Justo 1619 · Dr. Alem 795 · Merced 801</div></div>
+  </div>
+  <h1 class="title">El Clasificado <em>Rossello</em></h1>
+  <p class="subtitle"><span>Grupo Rossello · Negocios inmobiliarios</span><span class="sep">|</span><span>Ciudad y campo</span><span class="sep">|</span><span class="mono">MAT. T I - F 36 - N 187 CMP</span></p>
+  <hr class="dbl">
+  <nav class="nav-ix" aria-label="Índice de secciones">
+    <a href="#ciudad">Ciudad <span>p. 2</span></a>
+    <a href="#campo">Campo <span>p. 3</span></a>
+    <a href="#credito">Crédito <span>p. 4</span></a>
+    <a href="#tasaciones">Tasaciones <span>p. 5</span></a>
+    <a href="#sucursales">Sucursales <span>p. 6</span></a>
+  </nav>
+</header>
+
+<main class="wrap">
+  <!-- PORTADA -->
+  <section class="front" aria-labelledby="portada-h">
+    <article class="front-main">
+      <p class="kicker">Portada · El catálogo de la semana</p>
+      <h2 class="headline" id="portada-h">De 53 m² en Mitre 948 <span class="it">a</span> 808 hectáreas en Rojas</h2>
+      <p class="deck">Casas, departamentos, locales, lotes, un galpón y campos de la región: el catálogo de Grupo Rossello, ordenado como se lee un diario.</p>
+      <div class="byline"><span>Por la redacción de avisos · Pergamino</span><span class="mono" id="byline-n"></span></div>
+      <div class="cols2">
+        <p>La edición de hoy reúne avisos publicados por Grupo Rossello en su web. En la ciudad, la pieza más chica es un departamento a estrenar de 53 m² en Mitre 948; la más grande, un galpón de 1.000 m² cubiertos en el Parque Industrial (PARCUM), sobre Ruta 8 km 229, que se ofrece en alquiler.</p>
+        <p>Entre uno y otro aparecen una casa apta crédito en Chile 1420 por USD 49.900, una casa a refaccionar sobre Av. de Mayo con local propuesto en planta baja, un departamento en Torre Carmela con balcones al terraplén y siete locales en Florencio Sánchez esquina Castelli.</p>
+        <p>En el campo la escala cambia de unidad: de 21 hectáreas en Pergamino a 808 en zona núcleo maicera, en Rojas, pasando por Chacabuco, Rancagua, Fontezuela, Hunter, Ayerza y Carmen de Areco.</p>
+        <p>Los precios que no figuran se informan en la oficina; en esta edición aparecen como «Consultar». Para las propiedades aptas crédito, el suplemento de la página 4 trae un simulador de cuota.</p>
+      </div>
+    </article>
+    <aside class="front-side" aria-labelledby="suc-h">
+      <h2 class="side-h" id="suc-h">Tres sucursales</h2>
+      <p class="side-sub">Atención en Pergamino. Oficina por WhatsApp de 9 a 15 hs.</p>
+      <div class="suc">
+        <h3>Av. Juan B. Justo 1619</h3>
+        <p><a href="tel:+542477415383">2477 415383</a> · <a href="tel:+542477417172">417172</a><br><a href="mailto:cristianrossello@live.com.ar">cristianrossello@live.com.ar</a></p>
+      </div>
+      <div class="suc">
+        <h3>Dr. Alem 795 <span style="font-weight:400;font-style:italic">esq. Dorrego</span></h3>
+        <p><a href="tel:+542477228470">2477 228470</a><br><a href="mailto:inmobiliaria.gr.vip@gmail.com">inmobiliaria.gr.vip@gmail.com</a></p>
+      </div>
+      <div class="suc">
+        <h3>Merced 801 <span style="font-weight:400;font-style:italic">esq. San Martín</span></h3>
+        <p><a href="tel:+542477616996">2477 616996</a><br><a href="mailto:inmobgrmerced@gmail.com">inmobgrmerced@gmail.com</a></p>
+      </div>
+      <a class="btn wa wide" style="margin-top:16px" href="https://wa.me/5492477468085?text=Hola%2C%20quer%C3%ADa%20hacer%20una%20consulta." target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.8-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 2s.8 2.3.9 2.5c.1.2 1.6 2.5 4 3.5 1.5.6 2 .7 2.8.6.4-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg>
+        Escribir a la oficina
+      </a>
+      <p class="motto">“Tu próximo lugar, lo encontramos juntos.”<small>El lema de la casa</small></p>
+    </aside>
+  </section>
+
+  <div class="figures" aria-label="La edición en cifras">
+    <div class="fig"><b id="fig-avisos">19</b><span>avisos en esta edición, entre ciudad y campo</span></div>
+    <div class="fig"><b><em id="fig-ha" style="font-style:normal">1.637,8</em><small>ha</small></b><span>de campo publicadas, con superficie informada</span></div>
+    <div class="fig"><b><small style="margin:0 4px 0 0">USD</small>49.900</b><span>la casa apta crédito de Chile 1420, con jardín y parrillero</span></div>
+    <div class="fig"><b>1.000<small>m²</small></b><span>cubiertos en el galpón del Parque Industrial, en alquiler</span></div>
+  </div>
+
+  <!-- ÍNDICE / FILTROS -->
+  <section class="index" id="indice" aria-labelledby="ix-h">
+    <div class="index-head">
+      <h2 id="ix-h">Índice de <em>avisos</em></h2>
+      <p class="count" aria-live="polite" id="count" style="margin:0"></p>
+    </div>
+    <div class="filters">
+      <fieldset class="fgroup"><legend>Operación</legend>
+        <div class="seg" data-f="op">
+          <button type="button" data-v="all" aria-pressed="true">Todas</button>
+          <button type="button" data-v="venta" aria-pressed="false">Venta</button>
+          <button type="button" data-v="alquiler" aria-pressed="false">Alquiler</button>
+        </div>
+      </fieldset>
+      <fieldset class="fgroup"><legend>Sección</legend>
+        <div class="seg" data-f="sec">
+          <button type="button" data-v="all" aria-pressed="true">Todas</button>
+          <button type="button" data-v="ciudad" aria-pressed="false">Ciudad</button>
+          <button type="button" data-v="campo" aria-pressed="false">Campo</button>
+        </div>
+      </fieldset>
+      <div class="fgroup"><label class="lg" for="f-tipo">Tipo</label>
+        <select id="f-tipo">
+          <option value="all">Todos los tipos</option>
+          <option>Casa</option><option>Departamento</option><option>Local</option><option>Lote</option><option>Galpón</option><option>Campo</option><option>Predio</option>
+        </select>
+      </div>
+      <fieldset class="fgroup"><legend>Dormitorios</legend>
+        <div class="seg" data-f="dorm">
+          <button type="button" data-v="all" aria-pressed="true">Todos</button>
+          <button type="button" data-v="1" aria-pressed="false">1</button>
+          <button type="button" data-v="2" aria-pressed="false">2</button>
+          <button type="button" data-v="3" aria-pressed="false">3+</button>
+        </div>
+      </fieldset>
+      <div class="fgroup"><span class="lg">Financiación</span>
+        <label class="check"><input type="checkbox" id="f-credito"> Solo apta crédito</label>
+      </div>
+      <div class="fgroup"><label class="lg" for="f-orden">Orden</label>
+        <select id="f-orden">
+          <option value="ed">Como en la edición</option>
+          <option value="asc">Precio: menor a mayor</option>
+          <option value="desc">Precio: mayor a menor</option>
+        </select>
+      </div>
+    </div>
+    <div class="index-foot">
+      <span>Los avisos sin precio publicado van al final del orden por precio.</span>
+      <button type="button" class="linkbtn" id="f-reset">Limpiar filtros</button>
+    </div>
+  </section>
+
+  <!-- CIUDAD -->
+  <section class="section" id="ciudad" aria-labelledby="ciudad-h">
+    <div class="sec-head">
+      <h2 id="ciudad-h">Ciudad</h2>
+      <p class="lede">Casas, departamentos, locales, lotes y galpón. Pergamino y una en la Costa.</p>
+      <p class="folio"><b>Pág. 2</b><span class="ed-short"></span></p>
+    </div>
+    <div id="city"></div>
+  </section>
+
+  <!-- CAMPO -->
+  <section class="section" id="campo" aria-labelledby="campo-h">
+    <div class="sec-head">
+      <h2 id="campo-h">Campo</h2>
+      <p class="lede">Superficies en hectáreas. Precios a consultar en la oficina.</p>
+      <p class="folio"><b>Pág. 3</b><span class="ed-short"></span></p>
+    </div>
+    <div id="field"></div>
+  </section>
+
+  <!-- SIMULADOR -->
+  <section class="supp" id="credito" aria-labelledby="sim-h">
+    <div class="supp-band"><span><b>Suplemento</b> · Economía doméstica</span><span>Pág. 4 · <span class="ed-short"></span></span></div>
+    <h2 id="sim-h">Simulador de crédito <em>hipotecario</em></h2>
+    <p class="deck">Elegí un aviso o cargá un precio, y mirá cuánto sería la primera cuota, el anticipo y el ingreso que suelen pedir los bancos.</p>
+
+    <div class="sim">
+      <form class="sim-in" id="sim" onsubmit="return false" aria-label="Datos del crédito">
+        <div class="field">
+          <label for="s-prop">Propiedad</label>
+          <div class="inp"><select id="s-prop"></select></div>
+        </div>
+        <div class="field">
+          <label for="s-price">Precio de la propiedad <small id="s-price-note">en dólares</small></label>
+          <div class="inp"><span>USD</span><input id="s-price" type="number" inputmode="numeric" min="0" step="100" value="49900"></div>
+        </div>
+        <div class="field">
+          <label for="s-usd">Cotización del dólar <small>referencia editable</small></label>
+          <div class="inp"><span>$</span><input id="s-usd" type="number" inputmode="numeric" min="1" step="5" value="1450"><span class="after">por USD</span></div>
+        </div>
+        <div class="field">
+          <label for="s-pct">Porcentaje financiado <output id="o-pct" for="s-pct">75 %</output></label>
+          <input id="s-pct" type="range" min="10" max="75" step="5" value="75">
+          <div class="ticks"><span>10 %</span><span>hasta 75 %</span></div>
+        </div>
+        <div class="field">
+          <label for="s-rate">Tasa anual <small>referencial + UVA, editable</small></label>
+          <div class="inp"><input id="s-rate" type="text" inputmode="decimal" value="4,5" autocomplete="off"><span class="after">% + UVA</span></div>
+        </div>
+        <div class="field" style="margin-bottom:0">
+          <label for="s-years">Plazo <output id="o-years" for="s-years">20 años</output></label>
+          <input id="s-years" type="range" min="10" max="30" step="1" value="20">
+          <div class="ticks"><span>10 años</span><span>30 años</span></div>
+        </div>
+      </form>
+
+      <div class="sim-out" aria-live="polite">
+        <p class="cuota-k">Cuota inicial aproximada · sistema francés</p>
+        <p class="cuota" id="r-cuota">—</p>
+        <p class="cuota-s" id="r-cuota-s">por mes, en pesos, al inicio del crédito (luego se ajusta por UVA)</p>
+        <div class="split" aria-hidden="true">
+          <div class="sb"><i class="a" id="b-a"></i><i class="f" id="b-f"></i></div>
+          <div class="lg"><span>Anticipo <b id="l-a">25 %</b></span><span>Financiado <b id="l-f">75 %</b></span></div>
+        </div>
+        <table class="res">
+          <tr><th>Anticipo</th><td id="r-ant">—</td></tr>
+          <tr><th>Monto del préstamo</th><td id="r-loan">—</td></tr>
+          <tr><th>Cantidad de cuotas</th><td id="r-n">—</td></tr>
+          <tr class="hl"><th>Ingreso familiar sugerido<br><small style="font-weight:400;color:var(--gray)">para que la cuota no supere el 25 %</small></th><td id="r-inc">—</td></tr>
+        </table>
+        <p class="note"><b>Cálculo orientativo. Las condiciones las define cada banco.</b> Cotización y tasa son valores de referencia que podés cambiar; no incluye gastos de escritura, seguros ni comisiones.</p>
+        <a class="btn wa wide" id="sim-wa" href="#" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2z"/></svg>
+          Consultar por WhatsApp con este cálculo
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CUPÓN -->
+  <section class="coupon-wrap" id="tasaciones" aria-labelledby="tas-h">
+    <div class="coupon-intro">
+      <p class="kicker">Pág. 5 · Tasaciones</p>
+      <h2 id="tas-h">Tasá tu propiedad</h2>
+      <p>Completá el cupón con lo básico de tu casa, departamento, local, lote o campo. Al enviarlo se arma un mensaje de WhatsApp para la oficina, listo para mandar.</p>
+      <p class="k">WhatsApp de la oficina: de 9 a 15 hs</p>
+    </div>
+    <form class="coupon" id="coupon" novalidate aria-labelledby="cup-h">
+      <span class="scissors" aria-hidden="true">✂</span>
+      <div class="coupon-h"><h3 id="cup-h">Cupón de <em>tasación</em></h3><span>Recortá y enviá</span></div>
+      <div class="cgrid">
+        <div class="cf"><label for="c-tipo">Tipo</label>
+          <select id="c-tipo" name="tipo"><option>Casa</option><option>Departamento</option><option>Local</option><option>Lote</option><option>Galpón</option><option>Campo</option><option>Otro</option></select></div>
+        <div class="cf w4"><label for="c-dir">Dirección o ubicación</label><input id="c-dir" name="dir" autocomplete="street-address" placeholder="Ej.: calle y número, Pergamino" required><span class="err" id="e-dir"></span></div>
+        <div class="cf w3 half"><label for="c-m2" id="c-m2-l">Superficie (m²)</label><input id="c-m2" name="m2" inputmode="decimal" placeholder="—"></div>
+        <div class="cf w3 half"><label for="c-dorm">Dormitorios</label><input id="c-dorm" name="dorm" inputmode="numeric" placeholder="—"></div>
+        <div class="cf w3"><label for="c-nom">Nombre</label><input id="c-nom" name="nombre" autocomplete="name" required><span class="err" id="e-nom"></span></div>
+        <div class="cf w3"><label for="c-tel">Teléfono</label><input id="c-tel" name="tel" type="tel" autocomplete="tel" inputmode="tel" required><span class="err" id="e-tel"></span></div>
+      </div>
+      <div class="coupon-foot">
+        <p>Se abre WhatsApp con tus datos para el +54 9 2477 468085. No se guarda nada en esta página.</p>
+        <button class="btn" type="submit">Enviar cupón por WhatsApp</button>
+      </div>
+    </form>
+  </section>
+</main>
+
+<footer id="sucursales">
+  <div class="wrap">
+    <div class="foot-title"><b>El Clasificado <em>Rossello</em></b><span>“Tu próximo lugar, lo encontramos juntos.”</span></div>
+    <div class="foot-cols">
+      <div><h3>Av. Juan B. Justo 1619</h3><p>Pergamino<br>Tel. <a href="tel:+542477415383">2477 415383</a> / <a href="tel:+542477417172">417172</a><br><a href="mailto:cristianrossello@live.com.ar">cristianrossello@live.com.ar</a></p></div>
+      <div><h3>Dr. Alem 795</h3><p>esq. Dorrego, Pergamino<br>Tel. <a href="tel:+542477228470">2477 228470</a><br><a href="mailto:inmobiliaria.gr.vip@gmail.com">inmobiliaria.gr.vip@gmail.com</a></p></div>
+      <div><h3>Merced 801</h3><p>esq. San Martín, Pergamino<br>Tel. <a href="tel:+542477616996">2477 616996</a><br><a href="mailto:inmobgrmerced@gmail.com">inmobgrmerced@gmail.com</a></p></div>
+      <div><h3>Oficina</h3><p>WhatsApp <a href="https://wa.me/5492477468085" target="_blank" rel="noopener">+54 9 2477 468085</a> (9 a 15 hs)<br>Instagram <a href="https://www.instagram.com/rosselloinmobiliaria/" target="_blank" rel="noopener">@rosselloinmobiliaria</a><br>Responsable: Cristian Alberto Rossello<br><span class="mono" style="font-size:12px">MAT. T I - F 36 - N 187 CMP</span></p></div>
+    </div>
+    <div class="colophon"><span>Prototipo de demostración preparado para Rossello Inmobiliaria · Hecho por Resolviendo Kos</span><span>Propiedades tomadas de rosselloinmobiliaria.com.ar a modo de muestra</span></div>
+  </div>
+</footer>
+
+<dialog class="ficha" id="ficha" aria-labelledby="f-title"></dialog>
+
+<script>
+(function(){
+"use strict";
+var BASE = "https://www.rosselloinmobiliaria.com.ar/";
+var WA = "5492477468085";
+var MAXHA = 808;
+
+var P = [
+ {id:494,sec:"ciudad",op:"venta",tipo:"Casa",title:"Casa con jardín y parrillero en Chile 1420",short:"Chile 1420",dir:"Chile 1420",map:"Chile 1420, Pergamino, Buenos Aires",price:49900,credito:true,
+  datos:[["Terreno","400 m²"],["Cubierto","100 m²"],["Descubierto","300 m²"],["Dormitorios","2"],["Baños","1"]],
+  meta:["400 m² terreno","100 m² cub.","2 dorm.","1 baño"],dorm:2,
+  ex:"Terreno de 400 m² con 100 m² cubiertos. Jardín con parrillero y portón corredizo.",
+  desc:"Casa en venta en Chile 1420, Pergamino. Terreno de 400 m², con 100 m² cubiertos y 300 m² descubiertos. Dos dormitorios y un baño. Jardín con parrillero y portón corredizo. Apta crédito.",
+  art:["1420","Chile"],fotos:["catalogo/494/WhatsApp%20Image%202026-09-10%20at%2009.08.21%201.jpeg","catalogo/494/WhatsApp%20Image%202026-09-10%20at%2009.08.22.jpeg","catalogo/494/WhatsApp%20Image%202026-09-10%20at%2009.08.23.jpeg","catalogo/494/WhatsApp%20Image%202026-09-10%20at%2009.08.24.jpeg"]},
+ {id:492,sec:"ciudad",op:"venta",tipo:"Casa",title:"Casa a refaccionar sobre Av. de Mayo, con local y planta alta",short:"Av. de Mayo 1450",dir:"Av. de Mayo 1450",map:"Av. de Mayo 1450, Pergamino, Buenos Aires",price:115000,op2:true,
+  datos:[["Lote","≈ 300 m²"],["Cubierto","≈ 200 m²"],["Planta baja","Local propuesto 100/120 m² con baño"],["Planta alta","3 dormitorios"],["Estado","A refaccionar · estructura en muy buen estado"]],
+  meta:["≈ 300 m² lote","≈ 200 m² cub.","3 dorm."],dorm:3,
+  ex:"Oportunidad de inversión: local propuesto sobre la avenida, patio y planta alta divisible.",
+  desc:"Casa a refaccionar, oportunidad de inversión sobre Av. de Mayo 1450. Lote de aproximadamente 300 m² y cerca de 200 m² cubiertos. En planta baja, local comercial propuesto de 100/120 m² con baño sobre Av. de Mayo y patio descubierto (posible pileta, quincho u otra unidad). En planta alta, 3 dormitorios, divisible hasta en 2 departamentos (sujeto a factibilidad). Estructura en muy buen estado. Precio total.",
+  art:["1450","Av. de Mayo"],fotos:["catalogo/492/1789044501490.jpg","catalogo/492/1789044501622.jpg","catalogo/492/1789044501405.jpg","catalogo/492/1789044501128.jpg"]},
+ {id:238,sec:"ciudad",op:"venta",tipo:"Departamento",title:"Torre Carmela: dos dormitorios con balcones al terraplén",short:"Torre Carmela",dir:"Torre Carmela",map:"Torre Carmela, Pergamino, Buenos Aires",price:null,
+  datos:[["Dormitorios","2"],["Baños","2 (uno en suite)"],["Cocina","Cocina-comedor integrada"],["Lavadero","Independiente"],["Balcones","2, con vista al terraplén"],["Cochera","Cubierta"],["Edificio","Con amenities"]],
+  meta:["2 dorm.","2 baños","cochera"],dorm:2,
+  ex:"Dos baños (uno en suite), cocina-comedor integrada, cochera cubierta y amenities.",
+  desc:"Departamento en Torre Carmela, de 2 dormitorios y 2 baños (uno en suite). Cocina-comedor integrada, lavadero independiente y 2 balcones con vista al terraplén. Cochera cubierta. El edificio cuenta con amenities.",
+  art:["Carmela","Torre"],fotos:["catalogo/238/4.jpg","catalogo/238/2.jpg","catalogo/238/1.jpg","catalogo/238/5.jpg"]},
+ {id:490,sec:"ciudad",op:"venta",tipo:"Departamento",title:"Departamento a estrenar en Mitre 948",short:"Mitre 948",dir:"Mitre 948",map:"Mitre 948, Pergamino, Buenos Aires",price:null,op2:true,
+  datos:[["Superficie","53 m²"],["Dormitorios","1"],["Baños","1"],["Estado","A estrenar"]],meta:["53 m²","1 dorm.","1 baño"],dorm:1,
+  desc:"Departamento a estrenar en Mitre 948, Pergamino. 53 m², 1 dormitorio y 1 baño. Oportunidad.",
+  art:["948","Mitre"],fotos:["catalogo/490/placa%20web.jpg"]},
+ {id:495,sec:"ciudad",op:"venta",tipo:"Departamento",title:"Departamento en Larrea 371",short:"Larrea 371",dir:"Larrea 371",map:"Larrea 371, Pergamino, Buenos Aires",price:null,
+  datos:[["Superficie","70 m²"],["Dormitorios","1"],["Baños","1"]],meta:["70 m²","1 dorm.","1 baño"],dorm:1,
+  desc:"Departamento en venta en Larrea 371, Pergamino. 70 m², 1 dormitorio y 1 baño.",
+  art:["371","Larrea"],fotos:["catalogo/495/larrea%20371%20-%20placa%20web.jpg"]},
+ {id:448,sec:"ciudad",op:"venta",tipo:"Casa",title:"Casa en Pinedo 2935",short:"Pinedo 2935",dir:"Pinedo 2935",map:"Pinedo 2935, Pergamino, Buenos Aires",price:null,
+  datos:[["Superficie","300 m²"]],meta:["300 m²"],
+  desc:"Casa en venta en Pinedo 2935, Pergamino. 300 m².",
+  art:["2935","Pinedo"],fotos:["catalogo/448/placa%20web.jpg"]},
+ {id:496,sec:"ciudad",op:"venta",tipo:"Local",title:"Siete locales en Florencio Sánchez esquina Castelli",short:"Florencio Sánchez 1202",dir:"Florencio Sánchez 1202 esq. Castelli",map:"Florencio Sánchez 1202, Pergamino, Buenos Aires",price:null,
+  datos:[["Unidades","7 locales"],["Superficie","295 m²"]],meta:["7 locales","295 m²"],
+  desc:"Siete locales a la venta en Florencio Sánchez 1202, esquina Castelli, Pergamino. 295 m².",
+  art:["1202","Florencio Sánchez esq. Castelli"],fotos:["catalogo/496/florencio%20sanchez%201202%20-%20placa%20web.jpg"]},
+ {id:498,sec:"ciudad",op:"venta",tipo:"Lote",title:"Lotes en Almafuerte 945",short:"Almafuerte 945",dir:"Almafuerte 945",map:"Almafuerte 945, Pergamino, Buenos Aires",price:null,
+  datos:[["Superficie","400 m²"]],meta:["400 m²"],
+  desc:"Lotes en venta en Almafuerte 945, Pergamino. 400 m².",
+  art:["945","Almafuerte"],fotos:["catalogo/498/almafuerte%20945%20-%20placa%20web.jpg"]},
+ {id:430,sec:"ciudad",op:"alquiler",tipo:"Galpón",title:"Galpón de 1.000 m² en el Parque Industrial",short:"PARCUM, Ruta 8 km 229",dir:"PARCUM · Ruta 8 km 229",map:"Parque Industrial Pergamino, Ruta 8 km 229, Pergamino",price:null,
+  datos:[["Cubierto","1.000 m²"],["Ubicación","PARCUM (Parque Industrial)"],["Acceso","Ruta 8 km 229"]],meta:["1.000 m² cub.","Ruta 8 km 229"],
+  desc:"Galpón en alquiler en PARCUM (Parque Industrial de Pergamino), Ruta 8 km 229. 1.000 m² cubiertos.",
+  art:["1.000 m²","PARCUM · Ruta 8 km 229"],fotos:["catalogo/430/14799fdf-6cf7-4e5a-8140-59c0145cec0b.jpg","catalogo/430/4b8eb08e-820d-48de-8648-47cf073af41c.jpg"]},
+ {id:444,sec:"ciudad",op:"venta",tipo:"Casa",title:"Casa en Mar Azul, en la Costa",short:"Mar Azul",dir:"Mar Azul, Costa Atlántica",map:"Mar Azul, Buenos Aires",price:null,
+  datos:[["Superficie","275 m²"],["Ubicación","Mar Azul (Costa Atlántica)"]],meta:["275 m²","Mar Azul"],
+  desc:"Casa en venta en la Costa, en Mar Azul. 275 m².",
+  art:["Mar Azul","La Costa"],fotos:["catalogo/444/a49ec2e8-0fce-4672-852c-99a9820491b0.jpg"]},
+
+ {id:368,sec:"campo",op:"venta",tipo:"Campo",ha:808,title:"808 hectáreas en zona núcleo maicera",zona:"Rojas",lugar:"Rojas, provincia de Buenos Aires",map:"Rojas, Buenos Aires",op2:true,
+  desc:"Campo de 808 hectáreas en zona núcleo maicera, en Rojas (provincia de Buenos Aires). Oportunidad.",fotos:["catalogo/368/213c4b30-a2d1-4de3-a660-de2976be3cdc.jpg"]},
+ {id:345,sec:"campo",op:"venta",tipo:"Campo",ha:545,title:"545 hectáreas en Chacabuco",zona:"Chacabuco",lugar:"Chacabuco, provincia de Buenos Aires",map:"Chacabuco, Buenos Aires",
+  desc:"Campo de 545 hectáreas en Chacabuco, provincia de Buenos Aires.",fotos:["catalogo/345/856381fc-e5af-467e-af46-c546147d2ff1.jpeg"]},
+ {id:393,sec:"campo",op:"venta",tipo:"Campo",ha:111,title:"111 hectáreas en Rancagua",zona:"Rancagua",lugar:"Rancagua, partido de Pergamino",map:"Rancagua, Pergamino, Buenos Aires",
+  desc:"Campo de 111 hectáreas en Rancagua, partido de Pergamino.",fotos:[]},
+ {id:327,sec:"campo",op:"venta",tipo:"Campo",ha:64,title:"64 hectáreas entre Fontezuela y Pergamino",zona:"Fontezuela",lugar:"Entre Fontezuela y Pergamino",map:"Fontezuela, Pergamino, Buenos Aires",op2:true,
+  desc:"Campo de 64 hectáreas entre Fontezuela y Pergamino. Oportunidad.",fotos:[]},
+ {id:346,sec:"campo",op:"venta",tipo:"Campo",ha:34,title:"34 hectáreas mixtas en Hunter",zona:"Hunter",lugar:"Hunter, provincia de Buenos Aires",map:"Hunter, Buenos Aires",mixto:true,
+  desc:"Campo de 34 hectáreas mixtas en Hunter.",fotos:[]},
+ {id:392,sec:"campo",op:"venta",tipo:"Campo",ha:27.8,title:"27,8 hectáreas en Ayerza",zona:"Ayerza",lugar:"Ayerza, partido de Pergamino",map:"Ayerza, Pergamino, Buenos Aires",
+  desc:"Campo de 27,8 hectáreas en Ayerza, partido de Pergamino.",fotos:[]},
+ {id:394,sec:"campo",op:"venta",tipo:"Campo",ha:27,title:"27 hectáreas mixtas en Carmen de Areco",zona:"C. de Areco",lugar:"Carmen de Areco, provincia de Buenos Aires",map:"Carmen de Areco, Buenos Aires",mixto:true,
+  desc:"Campo de 27 hectáreas mixtas en Carmen de Areco.",fotos:[]},
+ {id:395,sec:"campo",op:"venta",tipo:"Campo",ha:21,title:"21 hectáreas en Pergamino",zona:"Pergamino",lugar:"Partido de Pergamino",map:"Pergamino, Buenos Aires",
+  desc:"Campo de 21 hectáreas en Pergamino.",fotos:[]},
+ {id:485,sec:"campo",op:"venta",tipo:"Predio",ha:null,title:"Importante predio sobre Ruta 188",zona:"Ruta 188",lugar:"Ruta 188, Pergamino",map:"Ruta 188, Pergamino, Buenos Aires",
+  desc:"Importante predio sobre Ruta 188, Pergamino. Superficie a consultar.",fotos:[]}
+];
+P.forEach(function(p,i){p.ord=i;});
+
+/* ---------- utilidades ---------- */
+var nf = new Intl.NumberFormat("es-AR",{maximumFractionDigits:0});
+var nf1 = new Intl.NumberFormat("es-AR",{maximumFractionDigits:1});
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];});}
+function priceTxt(p){return p.price?"USD "+nf.format(p.price):(p.op==="alquiler"?"A consultar":"Consultar");}
+function priceHTML(p){return p.price?'<span class="price">USD '+nf.format(p.price)+'</span>':'<span class="price q">'+priceTxt(p)+'</span>';}
+function opTxt(p){return p.op==="alquiler"?"en alquiler":"en venta";}
+function stamps(p){var s="";if(p.credito)s+='<span class="stamp solid">Apta crédito</span>';if(p.op2)s+='<span class="stamp alt">Oportunidad</span>';return s?'<div class="stamps">'+s+'</div>':"";}
+function waLink(text){return "https://wa.me/"+WA+"?text="+encodeURIComponent(text);}
+function haTxt(h){return nf1.format(h);}
+
+var DIAS=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
+var MESES=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+var now=new Date();
+var edLong="Edición del "+DIAS[now.getDay()]+" "+now.getDate()+" de "+MESES[now.getMonth()]+" de "+now.getFullYear();
+var edShort=now.getDate()+" de "+MESES[now.getMonth()]+" de "+now.getFullYear();
+document.getElementById("ed-date").textContent=edLong;
+document.querySelectorAll(".ed-short").forEach(function(e){e.textContent=edShort;});
+
+/* cifras de portada */
+var nCity=P.filter(function(p){return p.sec==="ciudad";}).length, nField=P.length-nCity;
+var haSum=P.reduce(function(a,p){return a+(p.ha||0);},0);
+document.getElementById("fig-avisos").textContent=P.length;
+document.getElementById("fig-ha").textContent=haTxt(haSum);
+document.getElementById("byline-n").textContent=nCity+" avisos de ciudad · "+nField+" de campo";
+
+/* ---------- dirección de arte (fallbacks) ---------- */
+function cityArt(p,i,thumb){
+  i=i||0;
+  var big=thumb?("0"+(i+1)):p.art[0], long=big.length>5;
+  var kick=(i>0?"Foto "+(i+1)+" de "+p.fotos.length+" · ":"")+p.tipo+" "+opTxt(p);
+  return '<div class="art'+(i>0&&!thumb?' alt':'')+'" aria-hidden="true"><span class="art-k">'+esc(kick)+'</span><span class="art-r">Ref. '+p.id+'</span><span class="art-line"></span><span class="art-n'+(long?' long':'')+'">'+esc(big)+'</span><span class="art-s">'+esc(p.art[1])+'</span></div>';
+}
+var uidN=0;
+function fieldSVG(p,opts){
+  opts=opts||{};
+  var uid="fa"+(uidN++);
+  var s=p.id*7919%233280; function rnd(){s=(s*9301+49297)%233280;return s/233280;}
+  var W=400,H=300,g=5;
+  var x1=Math.round(W*(.34+rnd()*.3)), y1=Math.round(H*(.3+rnd()*.38)), y2=Math.round(H*(.28+rnd()*.42));
+  var parcels=[[0,0,x1,y1],[0,y1,x1,H-y1],[x1,0,W-x1,y2],[x1,y2,W-x1,H-y2]];
+  // subdividir uno más para campos grandes
+  if((p.ha||0)>300){var q=parcels[2];var xm=q[0]+Math.round(q[2]*(.4+rnd()*.2));parcels.splice(2,1,[q[0],q[1],xm-q[0],q[3]],[xm,q[1],q[0]+q[2]-xm,q[3]]);}
+  var angles=[0,90,32,-28,64,-60,12];
+  var defs="",body="";
+  parcels.forEach(function(r,i){
+    var ang=angles[Math.floor(rnd()*angles.length)], sp=4+Math.round(rnd()*4);
+    var pasture=(p.mixto&&i===1)||(!p.mixto&&i===parcels.length-1&&rnd()>.55);
+    if(pasture){
+      defs+='<pattern id="'+uid+'p'+i+'" width="7" height="7" patternUnits="userSpaceOnUse"><circle cx="3.5" cy="3.5" r="1" fill="#151515" fill-opacity=".5"/></pattern>';
+    }else{
+      defs+='<pattern id="'+uid+'p'+i+'" width="'+sp+'" height="'+sp+'" patternUnits="userSpaceOnUse" patternTransform="rotate('+ang+')"><line x1="0" y1="0" x2="0" y2="'+sp+'" stroke="#151515" stroke-opacity=".5" stroke-width="1"/></pattern>';
+    }
+    body+='<rect x="'+(r[0]+g)+'" y="'+(r[1]+g)+'" width="'+Math.max(0,r[2]-2*g)+'" height="'+Math.max(0,r[3]-2*g)+'" fill="url(#'+uid+'p'+i+')" stroke="#151515" stroke-opacity=".7" stroke-width="1"/>';
+  });
+  // casco / montecito
+  var tx=parcels[0][0]+18+rnd()*30, ty=parcels[0][1]+18+rnd()*30, trees="";
+  for(var t=0;t<7;t++){trees+='<circle cx="'+(tx+rnd()*26).toFixed(1)+'" cy="'+(ty+rnd()*22).toFixed(1)+'" r="'+(3+rnd()*3).toFixed(1)+'" fill="#151515" fill-opacity=".75"/>';}
+  var mark='<g transform="translate('+(W-44)+',30)"><circle r="15" fill="none" stroke="#151515" stroke-opacity=".6"/><path d="M0-11 L4 4 L0 1 L-4 4Z" fill="#151515"/><text y="-19" text-anchor="middle" font-family="Chivo Mono, monospace" font-size="10" fill="#151515">N</text></g>';
+  var label="";
+  if(!opts.noLabel){
+    var hl=p.ha?haTxt(p.ha)+" ha":"Predio";
+    label='<g><rect x="16" y="'+(H-50)+'" width="'+(hl.length*13+26)+'" height="34" fill="#F3EFE4" stroke="#151515"/><text x="29" y="'+(H-27)+'" font-family="Old Standard TT, serif" font-weight="700" font-size="20" fill="#151515">'+esc(hl)+'</text><circle cx="'+(hl.length*13+42)+'" cy="'+(H-33)+'" r="5" fill="#B3261E"/></g>';
+  }
+  return '<div class="art field" aria-hidden="true"><svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid slice" role="presentation"><defs>'+defs+'</defs><rect width="'+W+'" height="'+H+'" fill="#EAE4D3"/>'+body+trees+(opts.noMark?'':mark)+label+'</svg></div>';
+}
+function photo(p,i,opts){
+  opts=opts||{};
+  var f=p.fotos[i];
+  var fb=p.sec==="campo"?fieldSVG(p,opts):cityArt(p,i,opts.thumb);
+  var img=f?'<img src="'+BASE+f+'" alt="'+esc((opts.alt||p.title)+(i?" (foto "+(i+1)+")":""))+'" loading="'+(opts.eager?"eager":"lazy")+'" decoding="async" onerror="this.remove()">':"";
+  return '<div class="ph">'+fb+img+(opts.stamps?stamps(p):"")+'</div>';
+}
+
+/* ---------- filtros ---------- */
+var F={op:"all",sec:"all",tipo:"all",dorm:"all",credito:false,orden:"ed"};
+function pass(p){
+  if(F.op!=="all"&&p.op!==F.op)return false;
+  if(F.sec!=="all"&&p.sec!==F.sec)return false;
+  if(F.tipo!=="all"&&p.tipo!==F.tipo)return false;
+  if(F.dorm!=="all"){var d=+F.dorm;if(!p.dorm)return false;if(d===3?p.dorm<3:p.dorm!==d)return false;}
+  if(F.credito&&!p.credito)return false;
+  return true;
+}
+function sortList(list){
+  return list.slice().sort(function(a,b){
+    if(F.orden==="ed")return a.ord-b.ord;
+    if(a.price&&!b.price)return -1; if(!a.price&&b.price)return 1;
+    if(!a.price&&!b.price)return a.ord-b.ord;
+    return F.orden==="asc"?a.price-b.price:b.price-a.price;
+  });
+}
+
+/* ---------- render ciudad ---------- */
+function openBtn(p,inner){return '<button type="button" class="open" data-id="'+p.id+'" aria-label="Ver aviso: '+esc(p.title)+'">'+inner+'</button>';}
+function renderCity(list){
+  var el=document.getElementById("city");
+  if(!list.length){el.innerHTML='<p class="empty">No hay avisos de ciudad con estos filtros.</p>';return;}
+  var lead=list[0], seconds=list.slice(1,3), rest=list.slice(3);
+  var h='<div class="city-top"><article class="card lead">'+photo(lead,0,{stamps:true,eager:true})+
+    '<span class="k">'+esc(lead.tipo)+' '+opTxt(lead)+' · Ref. '+lead.id+'</span>'+
+    '<h3>'+openBtn(lead,'<span class="u">'+esc(lead.title)+'</span>')+'</h3>'+
+    '<div class="meta"><span>'+priceHTML(lead)+'</span>'+lead.meta.map(function(m){return '<span>'+esc(m)+'</span>';}).join("")+'</div>'+
+    '<p class="ex">'+esc(lead.ex||lead.desc)+'</p>'+
+    '<div class="acts act"><button type="button" class="btn" data-open="'+lead.id+'">Leer el aviso completo</button><button type="button" class="btn ghost" data-sim="'+lead.id+'">Simular crédito</button></div>'+
+    '</article>';
+  if(seconds.length){
+    h+='<div class="seconds">'+seconds.map(function(p){
+      return '<article class="card second">'+photo(p,0,{stamps:true})+'<span class="k">'+esc(p.tipo)+' '+opTxt(p)+' · Ref. '+p.id+'</span><h3>'+openBtn(p,'<span class="u">'+esc(p.title)+'</span>')+'</h3>'+
+      '<div class="meta"><span>'+priceHTML(p)+'</span>'+p.meta.slice(0,3).map(function(m){return '<span>'+esc(m)+'</span>';}).join("")+'</div>'+
+      (p.ex?'<p class="ex">'+esc(p.ex)+'</p>':'')+'</article>';
+    }).join("")+'</div>';
+  }
+  h+='</div>';
+  if(rest.length){
+    h+='<div class="clasif-h"><h3>Clasificados · Ciudad</h3></div><div class="clasifs">'+rest.map(function(p){
+      return '<article class="card clasif">'+photo(p,0)+'<div><h3>'+openBtn(p,'<b>'+esc(p.tipo)+'</b><span class="u">'+esc(p.short)+'.</span>')+'</h3>'+
+      '<div class="meta"><span>'+priceHTML(p)+'</span>'+p.meta.slice(0,2).map(function(m){return '<span>'+esc(m)+'</span>';}).join("")+'</div>'+
+      '<span class="k">'+(p.op==="alquiler"?"Alquiler":"Venta")+' · Ref. '+p.id+'</span>'+stamps(p)+'</div></article>';
+    }).join("")+'</div>';
+  }
+  el.innerHTML=h;
+}
+
+/* ---------- render campo ---------- */
+function bar(p){
+  if(!p.ha)return '<div class="bar na"><div class="track"></div><div class="lbl"><span>Superficie a consultar</span><span></span></div></div>';
+  var pct=Math.max(.6,p.ha/MAXHA*100);
+  return '<div class="bar" role="img" aria-label="'+haTxt(p.ha)+' hectáreas sobre una escala de 0 a '+MAXHA+'"><div class="track"><i class="fill" data-w="'+pct.toFixed(2)+'"></i></div><div class="lbl"><span>0</span><span>'+haTxt(p.ha)+' de '+MAXHA+' ha</span></div></div>';
+}
+function renderField(list){
+  var el=document.getElementById("field");
+  if(!list.length){el.innerHTML='<p class="empty">No hay avisos de campo con estos filtros.</p>';return;}
+  var sorted=list.slice().sort(function(a,b){
+    if(F.orden==="ed")return (b.ha||0)-(a.ha||0)||a.ord-b.ord; return a.ord-b.ord;});
+  var withHa=sorted.filter(function(p){return p.ha;});
+  var h="";
+  if(withHa.length>1){
+    h+='<figure class="scale-fig" style="margin:0"><figcaption class="k">Los campos de esta edición, a escala · cada cuadro, proporcional a su superficie</figcaption><div class="squares">'+
+    withHa.map(function(p,i){var k=Math.sqrt(p.ha/MAXHA);return '<button type="button" class="sq'+(p.op2?' op':'')+'" data-open="'+p.id+'" style="--k:'+k.toFixed(4)+';--a:'+[90,0,45,135,90,0,45,135][i%8]+'deg" aria-label="'+esc(p.title)+'"><i></i><span>'+haTxt(p.ha)+' ha<small>'+esc(p.zona)+'</small></span></button>';}).join("")+
+    '</div></figure>';
+  }
+  var lead=sorted[0], rest=sorted.slice(1);
+  h+='<article class="card field-lead">'+photo(lead,0,{stamps:true,noLabel:true})+'<div>'+
+     '<span class="k">'+esc(lead.tipo)+' · Ref. '+lead.id+'</span>'+
+     (lead.ha?'<p class="big-ha" aria-hidden="true">'+haTxt(lead.ha)+'<small>hectáreas</small></p>':'')+
+     '<h3>'+openBtn(lead,'<span class="u">'+esc(lead.title)+'</span>')+'</h3>'+
+     '<p class="loc">'+esc(lead.lugar)+' · <span class="price q">Precio: Consultar</span></p>'+bar(lead)+
+     '<div class="acts act" style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap"><button type="button" class="btn" data-open="'+lead.id+'">Ver el aviso</button><a class="btn ghost" target="_blank" rel="noopener" href="'+waLink("Hola, me interesa "+lead.title+" ("+lead.lugar+", Ref. #"+lead.id+")")+'">Consultar precio</a></div>'+
+     '</div></article>';
+  if(rest.length){
+    h+='<div class="ftable">'+rest.map(function(p){
+      return '<article class="card frow"><div class="ha'+(p.ha?'':' na')+'">'+(p.ha?haTxt(p.ha)+'<small>ha</small>':'Sup. a consultar')+'</div>'+
+      '<div><h3>'+openBtn(p,'<span class="u">'+esc(p.title)+'</span>')+'</h3><p>'+esc(p.lugar)+' · Ref. '+p.id+'</p>'+stamps(p)+'</div>'+
+      '<div class="barcell">'+bar(p)+'</div>'+
+      '<div class="go" aria-hidden="true">Ver aviso →</div></article>';
+    }).join("")+'</div>';
+  }
+  el.innerHTML=h;
+  requestAnimationFrame(function(){requestAnimationFrame(function(){
+    el.querySelectorAll(".fill").forEach(function(f){f.style.width=f.getAttribute("data-w")+"%";});
+  });});
+}
+
+function render(){
+  var list=sortList(P.filter(pass));
+  var c=list.filter(function(p){return p.sec==="ciudad";}), f=list.filter(function(p){return p.sec==="campo";});
+  renderCity(c); renderField(f);
+  document.getElementById("ciudad").hidden=(F.sec==="campo");
+  document.getElementById("campo").hidden=(F.sec==="ciudad");
+  document.getElementById("count").innerHTML='<b>'+list.length+'</b> '+(list.length===1?'aviso':'avisos')+' · '+c.length+' ciudad · '+f.length+' campo';
+}
+
+document.querySelectorAll(".seg").forEach(function(seg){
+  seg.addEventListener("click",function(e){
+    var b=e.target.closest("button");if(!b)return;
+    seg.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",x===b?"true":"false");});
+    F[seg.getAttribute("data-f")]=b.getAttribute("data-v");render();
+  });
+});
+document.getElementById("f-tipo").addEventListener("change",function(e){F.tipo=e.target.value;render();});
+document.getElementById("f-orden").addEventListener("change",function(e){F.orden=e.target.value;render();});
+document.getElementById("f-credito").addEventListener("change",function(e){F.credito=e.target.checked;render();});
+document.getElementById("f-reset").addEventListener("click",function(){
+  F={op:"all",sec:"all",tipo:"all",dorm:"all",credito:false,orden:"ed"};
+  document.querySelectorAll(".seg").forEach(function(seg){seg.querySelectorAll("button").forEach(function(x,i){x.setAttribute("aria-pressed",i===0?"true":"false");});});
+  document.getElementById("f-tipo").value="all";document.getElementById("f-orden").value="ed";document.getElementById("f-credito").checked=false;render();
+});
+
+/* ---------- ficha ---------- */
+var dlg=document.getElementById("ficha");
+var byId={};P.forEach(function(p){byId[p.id]=p;});
+function datosOf(p){
+  var d=[["Operación",p.op==="alquiler"?"Alquiler":"Venta"],["Tipo",p.tipo]];
+  if(p.sec==="ciudad"){d.push(["Ubicación",p.dir+(p.id===444?"":", Pergamino")]);d=d.concat(p.datos);}
+  else{d.push(["Ubicación",p.lugar]);d.push(["Superficie",p.ha?haTxt(p.ha)+" ha":"Consultar"]);}
+  d.push(["Precio",priceTxt(p)]);d.push(["Referencia","#"+p.id]);
+  return d;
+}
+function openFicha(id){
+  var p=byId[id];if(!p)return;
+  var n=Math.max(1,p.fotos.length);
+  var thumbs="";
+  if(p.fotos.length>1){thumbs='<div class="thumbs" role="group" aria-label="Fotos">'+p.fotos.map(function(f,i){return '<button type="button" data-i="'+i+'" aria-label="Foto '+(i+1)+' de '+p.fotos.length+'" aria-current="'+(i===0)+'">'+photo(p,i,{noLabel:true,noMark:true,alt:"",thumb:true})+'</button>';}).join("")+'</div>';}
+  var waTxt="Hola, me interesa "+p.title+" ("+(p.sec==="ciudad"?p.dir:p.lugar)+", Ref. #"+p.id+")";
+  var mapUrl="https://maps.google.com/maps?q="+encodeURIComponent(p.map)+"&z="+(p.sec==="campo"?11:15)+"&output=embed";
+  dlg.innerHTML=
+   '<div class="f-top"><span class="k"><span class="hide-m">El Clasificado Rossello · </span>Aviso Ref. '+p.id+' · '+(p.sec==="ciudad"?"Ciudad":"Campo")+'</span><button type="button" class="x" id="f-close" aria-label="Cerrar aviso">×</button></div>'+
+   '<div class="f-body">'+
+    '<figure class="f-gal" style="margin:0"><div id="f-main">'+photo(p,0,{stamps:true,eager:true})+'</div>'+thumbs+
+     '<figcaption>'+(p.fotos.length?(p.fotos.length+(p.fotos.length===1?" foto":" fotos")+" del aviso publicado en rosselloinmobiliaria.com.ar"):"Ilustración de la edición. Fotos del campo: consultar en la oficina.")+'</figcaption></figure>'+
+    '<div class="f-info"><span class="k">'+esc(p.tipo)+' '+opTxt(p)+'</span><h2 id="f-title">'+esc(p.title)+'</h2>'+stamps(p)+
+     '<p class="fprice'+(p.price?'':' q')+'">'+(p.price?'USD '+nf.format(p.price):(p.op==="alquiler"?'Precio a consultar':'Precio: Consultar'))+'</p>'+
+     '<dl class="dat">'+datosOf(p).map(function(r){return '<dt>'+esc(r[0])+'</dt><dd>'+esc(r[1])+'</dd>';}).join("")+'</dl>'+
+     '<p class="f-desc">'+esc(p.desc)+'</p>'+
+     '<div class="f-acts"><a class="btn wa" target="_blank" rel="noopener" href="'+waLink(waTxt)+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2z"/></svg>Consultar por WhatsApp</a>'+
+     '<div class="row">'+(p.op==="venta"&&p.sec==="ciudad"?'<button type="button" class="btn ghost" data-sim="'+p.id+'">Simular crédito</button>':'')+'<button type="button" class="btn ghost" id="f-print"'+(p.op==="venta"&&p.sec==="ciudad"?'':' style="grid-column:1/-1"')+'>Imprimir aviso</button></div></div>'+
+    '</div>'+
+    '<div class="f-map"><div><h3>Ubicación</h3><p>'+esc(p.sec==="ciudad"?p.dir:p.lugar)+'.<br>'+(p.sec==="campo"?'Mapa de la zona; la ubicación exacta se informa en la oficina.':'Ubicación aproximada según la dirección publicada.')+'</p></div>'+
+     '<div class="mapbox"><div class="mp">Mapa · '+esc(p.map)+'</div><iframe title="Mapa: '+esc(p.map)+'" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="'+mapUrl+'"></iframe></div></div>'+
+    '<div class="print-foot">Rossello Inmobiliaria · WhatsApp +54 9 2477 468085 · Juan B. Justo 1619 · Dr. Alem 795 · Merced 801 · Pergamino · MAT. T I - F 36 - N 187 CMP</div>'+
+   '</div>';
+  dlg.querySelector("#f-close").addEventListener("click",function(){dlg.close();});
+  dlg.querySelector("#f-print").addEventListener("click",function(){document.documentElement.classList.add("print-aviso");window.print();});
+  var th=dlg.querySelector(".thumbs");
+  if(th)th.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;var i=+b.getAttribute("data-i");
+    dlg.querySelector("#f-main").innerHTML=photo(p,i,{stamps:true,eager:true});
+    th.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-current",x===b?"true":"false");});});
+  if(!dlg.open)dlg.showModal();
+  dlg.scrollTop=0;
+  history.replaceState(null,"","#aviso-"+p.id);
+}
+window.addEventListener("afterprint",function(){document.documentElement.classList.remove("print-aviso");});
+dlg.addEventListener("close",function(){if(location.hash.indexOf("#aviso-")===0)history.replaceState(null,"",location.pathname+location.search);});
+dlg.addEventListener("click",function(e){if(e.target===dlg)dlg.close();});
+
+document.addEventListener("click",function(e){
+  var o=e.target.closest("[data-open],.open");
+  if(o){openFicha(+(o.getAttribute("data-open")||o.getAttribute("data-id")));return;}
+  var s=e.target.closest("[data-sim]");
+  if(s){var id=+s.getAttribute("data-sim");if(dlg.open)dlg.close();setSimProp(id);
+    var sec=document.getElementById("credito");sec.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
+    setTimeout(function(){document.getElementById("s-price").focus({preventScroll:true});},450);}
+});
+
+/* ---------- simulador ---------- */
+var $=function(id){return document.getElementById(id);};
+var sel=$("s-prop");
+var opts='<option value="">Otra propiedad · cargo el precio</option>';
+P.filter(function(p){return p.sec==="ciudad"&&p.op==="venta";}).forEach(function(p){
+  opts+='<option value="'+p.id+'">'+esc((p.credito?"★ ":"")+p.short+" · "+p.tipo+(p.price?" · USD "+nf.format(p.price):" · precio a consultar"))+'</option>';
+});
+sel.innerHTML=opts;sel.value="494";
+function setSimProp(id){
+  var p=byId[id];sel.value=p?String(id):"";
+  if(p&&p.price){$("s-price").value=p.price;$("s-price-note").textContent="precargado del aviso";}
+  else if(p){$("s-price").value="";$("s-price").placeholder="Consultá el precio y cargalo";$("s-price-note").textContent="este aviso no publica precio";}
+  calc();
+}
+sel.addEventListener("change",function(){if(sel.value)setSimProp(+sel.value);else{$("s-price-note").textContent="en dólares";calc();}});
+$("s-price").addEventListener("input",function(){$("s-price-note").textContent="en dólares";calc();});
+["s-usd","s-pct","s-rate","s-years"].forEach(function(id){$(id).addEventListener("input",calc);});
+function rangeFill(r){var p=(r.value-r.min)/(r.max-r.min)*100;r.style.setProperty("--p",p+"%");}
+var last=null;
+function calc(){
+  var price=parseFloat($("s-price").value), usd=parseFloat($("s-usd").value), pct=+$("s-pct").value, rate=parseFloat(String($("s-rate").value).replace(",",".")), yrs=+$("s-years").value;
+  rangeFill($("s-pct"));rangeFill($("s-years"));
+  $("o-pct").textContent=pct+" %";$("o-years").textContent=yrs+" años";
+  $("b-a").style.width=(100-pct)+"%";$("b-f").style.width=pct+"%";$("l-a").textContent=(100-pct)+" %";$("l-f").textContent=pct+" %";
+  var ok=price>0&&usd>0&&rate>=0&&isFinite(rate);
+  if(!ok){["r-cuota","r-ant","r-loan","r-inc"].forEach(function(i){$(i).textContent="—";});$("r-n").textContent=(yrs*12)+" cuotas";
+    $("r-cuota-s").textContent=price>0?"Revisá la cotización y la tasa.":"Cargá un precio en dólares para calcular.";last=null;updWa();return;}
+  var loanUsd=price*pct/100, antUsd=price-loanUsd, loanArs=loanUsd*usd, antArs=antUsd*usd;
+  var n=yrs*12, r=rate/100/12;
+  var cuota=r>0?loanArs*r/(1-Math.pow(1+r,-n)):loanArs/n;
+  var inc=cuota/0.25;
+  $("r-cuota").textContent="$ "+nf.format(Math.round(cuota));
+  $("r-cuota-s").textContent="por mes, en pesos, al inicio del crédito (después se ajusta por UVA)";
+  $("r-ant").innerHTML="USD "+nf.format(Math.round(antUsd))+"<small>$ "+nf.format(Math.round(antArs))+"</small>";
+  $("r-loan").innerHTML="USD "+nf.format(Math.round(loanUsd))+"<small>$ "+nf.format(Math.round(loanArs))+"</small>";
+  $("r-n").textContent=n+" cuotas";
+  $("r-inc").textContent="$ "+nf.format(Math.round(inc));
+  last={price:price,usd:usd,pct:pct,rate:rate,yrs:yrs,cuota:cuota,ant:antUsd,inc:inc};
+  updWa();
+}
+function updWa(){
+  var p=byId[sel.value];
+  var t;
+  if(last){
+    t="Hola, quiero consultar por un crédito hipotecario"+(p?" para "+p.title+" (Ref. #"+p.id+")":"")+". Mi cálculo orientativo: precio USD "+nf.format(last.price)+", financiando "+last.pct+"% a "+last.yrs+" años, tasa ref. "+String(last.rate).replace(".",",")+"% + UVA y dólar ref. $"+nf.format(last.usd)+": anticipo USD "+nf.format(Math.round(last.ant))+", cuota inicial aprox. $"+nf.format(Math.round(last.cuota))+", ingreso sugerido $"+nf.format(Math.round(last.inc))+". ¿Me pueden asesorar?";
+  }else{
+    t="Hola, quiero consultar por un crédito hipotecario"+(p?" para "+p.title+" (Ref. #"+p.id+")":"")+". ¿Me pasan el precio y las condiciones?";
+  }
+  $("sim-wa").href=waLink(t);
+}
+setSimProp(494);
+
+/* ---------- cupón ---------- */
+var tipoSel=$("c-tipo");
+tipoSel.addEventListener("change",function(){$("c-m2-l").textContent=tipoSel.value==="Campo"?"Superficie (ha)":"Superficie (m²)";});
+$("coupon").addEventListener("submit",function(e){
+  e.preventDefault();
+  var req=[["c-dir","e-dir","Falta la dirección o ubicación."],["c-nom","e-nom","Falta tu nombre."],["c-tel","e-tel","Falta un teléfono de contacto."]];
+  var first=null;
+  req.forEach(function(r){var i=$(r[0]),ok=i.value.trim().length>1;i.setAttribute("aria-invalid",ok?"false":"true");$(r[1]).textContent=ok?"":r[2];if(!ok){i.setAttribute("aria-describedby",r[1]);if(!first)first=i;}});
+  if(first){first.focus();return;}
+  var unit=tipoSel.value==="Campo"?" ha":" m²";
+  var m2=$("c-m2").value.trim(), dorm=$("c-dorm").value.trim();
+  var t="Hola, quiero tasar mi propiedad.\nTipo: "+tipoSel.value+"\nDirección: "+$("c-dir").value.trim()+(m2?"\nSuperficie: "+m2+unit:"")+(dorm?"\nDormitorios: "+dorm:"")+"\nNombre: "+$("c-nom").value.trim()+"\nTeléfono: "+$("c-tel").value.trim();
+  window.open(waLink(t),"_blank","noopener");
+});
+
+render();
+var m=location.hash.match(/^#aviso-(\d+)$/);if(m&&byId[m[1]])openFicha(+m[1]);
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Rossello Inmobiliaria"></script>
+</body>
+</html>
