@@ -1,0 +1,916 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Cabañas La Morera · Villa Ventana</title>
+<meta name="description" content="Prototipo de demostración: web de reservas directas para Cabañas La Morera, siete cabañas en un bosque de 6.000 m² en Villa Ventana, Sierra de la Ventana.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Petrona:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --mora:#4A1F3D;       /* mora madura */
+  --mora-2:#6B2F57;
+  --jugo:#A8335F;       /* jugo de mora */
+  --jugo-claro:#F3D6E1;
+  --hoja:#5E7A3A;       /* hoja de morera */
+  --hoja-2:#3F5627;
+  --brote:#C9D79A;
+  --corteza:#5A4636;
+  --papel:#EEF0E6;      /* papel verdoso */
+  --hoja-papel:#F8F9F3;
+  --linea:#D5D9C8;
+  --tinta:#231A21;
+  --tinta-2:#4D4349;
+  --serif:"Petrona",Georgia,"Times New Roman",serif;
+  --sans:"Hanken Grotesk","Helvetica Neue",Arial,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--papel);color:var(--tinta);font-family:var(--serif);font-size:18px;line-height:1.62;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:var(--jugo);text-underline-offset:3px}
+:focus-visible{outline:2px solid var(--jugo);outline-offset:3px}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:400;margin:0;line-height:1.1}
+p{margin:0 0 1em}
+button,input,select{font:inherit}
+.env{max-width:1200px;margin:0 auto;padding:0 28px}
+.sans{font-family:var(--sans)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* aviso */
+.aviso{background:var(--mora);color:#F4E9EF;font:500 14px/1.45 var(--sans);padding:9px 16px;text-align:center}
+.aviso strong{color:#fff}
+
+/* cabecera */
+.cab{position:sticky;top:0;z-index:40;background:rgba(238,240,230,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--linea)}
+.cab .env{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px}
+.marca{display:flex;align-items:center;gap:10px;color:var(--mora);text-decoration:none}
+.marca svg{width:30px;height:30px;flex:none}
+.marca b{font-family:var(--serif);font-weight:500;font-size:23px;letter-spacing:-.01em}
+.marca small{font:500 13px var(--sans);color:var(--tinta-2);display:block;margin-top:-3px}
+.nav{display:flex;gap:22px;align-items:center;font:500 15px var(--sans)}
+.nav a{color:var(--tinta-2);text-decoration:none}
+.nav a:hover{color:var(--jugo)}
+.nav a.btn{color:#fff}
+.nav a.btn:hover{color:#fff}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:6px;padding:12px 20px;font:600 15px var(--sans);cursor:pointer;text-decoration:none;transition:background .2s,color .2s}
+.btn-mora{background:var(--mora);color:#fff}
+.btn-mora:hover{background:var(--jugo)}
+.btn-hoja{background:var(--hoja);color:#fff}
+.btn-hoja:hover{background:var(--hoja-2)}
+.btn-linea{background:transparent;color:var(--mora);box-shadow:inset 0 0 0 1.5px var(--mora)}
+.btn-linea:hover{background:var(--mora);color:#fff}
+@media (max-width:900px){.nav a.n{display:none}}
+@media (max-width:860px){.nav a.btn{display:none}}
+section[id]{scroll-margin-top:72px}
+
+/* foto con respaldo */
+.foto{position:relative;overflow:hidden;background:var(--hoja-2)}
+.foto img{width:100%;height:100%;object-fit:cover;position:relative;z-index:1}
+.foto .resp{position:absolute;inset:0;display:flex;align-items:flex-end;padding:18px;color:#EEF3DF;font:italic 400 17px/1.3 var(--serif);
+  background:
+   radial-gradient(circle at 22% 30%,rgba(201,215,154,.22) 0 14%,transparent 15%),
+   radial-gradient(circle at 70% 62%,rgba(168,51,95,.35) 0 9%,transparent 10%),
+   radial-gradient(circle at 80% 22%,rgba(201,215,154,.16) 0 18%,transparent 19%),
+   linear-gradient(160deg,var(--hoja) 0%,var(--hoja-2) 55%,var(--mora) 100%)}
+.foto .resp svg{position:absolute;right:-30px;top:-20px;width:62%;opacity:.28}
+.foto.fallo img{display:none}
+
+/* PORTADA: tapa de libro */
+.portada{padding:42px 0 64px}
+.portada .env{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:0;align-items:stretch}
+.tapa{background:var(--mora);color:#F6ECF1;padding:46px 44px 40px;border-radius:4px 0 0 4px;position:relative;display:flex;flex-direction:column;justify-content:space-between;min-height:560px;box-shadow:inset -14px 0 0 -8px rgba(0,0,0,.25)}
+.tapa::before{content:"";position:absolute;left:18px;top:18px;right:18px;bottom:18px;border:1px solid rgba(243,214,225,.28);pointer-events:none}
+.tapa .ed{font:500 14px var(--sans);color:var(--jugo-claro);position:relative}
+.tapa h1{font-size:clamp(40px,4.6vw,64px);font-weight:300;letter-spacing:-.02em;line-height:1.02;margin:22px 0 18px;position:relative}
+.tapa h1 em{font-style:italic;font-weight:400;color:#fff}
+.tapa p{font-size:19px;color:#EAD9E1;max-width:30em;position:relative}
+.tapa .pie{display:flex;flex-wrap:wrap;gap:12px;align-items:center;position:relative}
+.tapa .btn-mora{background:#F6ECF1;color:var(--mora)}
+.tapa .btn-mora:hover{background:#fff}
+.tapa .btn-linea{color:#F6ECF1;box-shadow:inset 0 0 0 1.5px rgba(246,236,241,.6)}
+.tapa .btn-linea:hover{background:rgba(255,255,255,.1);color:#fff}
+.lomo{position:relative;border-radius:0 4px 4px 0;min-height:560px}
+.lomo .foto{position:absolute;inset:0;border-radius:0 4px 4px 0}
+.lomo .datos{position:absolute;z-index:3;left:22px;bottom:22px;right:22px;display:flex;flex-wrap:wrap;gap:8px}
+.lomo .datos span{background:rgba(248,249,243,.94);color:var(--tinta);font:600 14px var(--sans);padding:7px 12px;border-radius:4px}
+@media (max-width:860px){
+  .portada{padding:18px 0 40px}
+  .portada .env{grid-template-columns:1fr;padding:0 16px}
+  .tapa{min-height:0;border-radius:4px 4px 0 0;padding:34px 26px 30px}
+  .tapa .pie{margin-top:22px}
+  .lomo{min-height:300px;border-radius:0 0 4px 4px}
+  .lomo .foto{border-radius:0 0 4px 4px}
+}
+
+/* ÍNDICE */
+.indice{padding:10px 0 70px}
+.indice .env{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:56px}
+.indice h2{font-size:clamp(32px,3.4vw,46px);font-weight:300}
+.indice .intro p{color:var(--tinta-2);margin-top:16px}
+.toc{list-style:none;margin:0;padding:0;border-top:1px solid var(--tinta)}
+.toc li a{display:grid;grid-template-columns:58px 1fr auto;gap:12px;align-items:baseline;padding:16px 4px;border-bottom:1px solid var(--linea);text-decoration:none;color:var(--tinta)}
+.toc li a:hover{background:var(--hoja-papel)}
+.toc .num{font:italic 400 26px var(--serif);color:var(--jugo)}
+.toc .tit{font-size:22px}
+.toc .tit small{display:block;font:500 14px var(--sans);color:var(--tinta-2);margin-top:3px}
+.toc .pag{font:600 14px var(--sans);color:var(--hoja-2);white-space:nowrap}
+@media (max-width:860px){.indice .env{grid-template-columns:1fr;gap:26px;padding:0 16px}.toc li a{grid-template-columns:44px 1fr}.toc .pag{grid-column:2}}
+
+/* CAPÍTULOS: pliego de dos páginas */
+.capitulo{padding:0 0 64px}
+.pliego{display:grid;grid-template-columns:1fr 1fr;background:var(--hoja-papel);border:1px solid var(--linea);border-radius:4px;position:relative;box-shadow:0 1px 0 var(--linea),0 18px 40px -28px rgba(35,26,33,.45)}
+.pliego::after{content:"";position:absolute;top:0;bottom:0;left:50%;width:36px;margin-left:-18px;background:linear-gradient(90deg,transparent,rgba(35,26,33,.07) 45%,rgba(35,26,33,.12) 50%,rgba(35,26,33,.07) 55%,transparent);pointer-events:none}
+.pliego.inv .pag-foto{order:2}
+.pag-foto{padding:26px;display:flex;flex-direction:column;gap:10px}
+.pag-foto .foto{aspect-ratio:4/3.3;border-radius:2px}
+.pag-foto .mini{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pag-foto .mini .foto{aspect-ratio:4/3}
+.pag-texto{padding:40px 44px 30px;display:flex;flex-direction:column}
+.cabezal{display:flex;justify-content:space-between;font:500 13px var(--sans);color:var(--tinta-2);border-bottom:1px solid var(--linea);padding-bottom:10px;margin-bottom:26px}
+.pag-texto h3{font-size:clamp(34px,3.4vw,48px);font-weight:300;letter-spacing:-.015em}
+.pag-texto h3 .n{font-style:italic;color:var(--jugo);font-weight:400}
+.pag-texto .bajada{font-style:italic;color:var(--tinta-2);font-size:20px;margin:10px 0 22px}
+.ficha{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--tinta);border-bottom:1px solid var(--linea);margin-bottom:22px}
+.ficha div{padding:12px 6px 12px 0}
+.ficha div+div{padding-left:14px;border-left:1px solid var(--linea)}
+.ficha b{display:block;font:300 34px/1 var(--serif);color:var(--mora)}
+.ficha span{font:500 13px var(--sans);color:var(--tinta-2)}
+.pag-texto ul{margin:0 0 20px;padding:0;list-style:none;columns:2;column-gap:24px;font:400 15.5px/1.5 var(--sans);color:var(--tinta-2)}
+.pag-texto ul li{break-inside:avoid;padding:3px 0 3px 18px;position:relative}
+.pag-texto ul li::before{content:"";position:absolute;left:2px;top:.62em;width:7px;height:7px;border-radius:50%;background:var(--jugo)}
+.pag-texto .acc{margin-top:auto;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding-top:16px;border-top:1px solid var(--linea)}
+.pag-texto .folio{font:italic 400 15px var(--serif);color:var(--tinta-2)}
+@media (max-width:860px){
+  .capitulo .env{padding:0 16px}
+  .pliego{grid-template-columns:1fr}
+  .pliego::after{display:none}
+  .pliego.inv .pag-foto{order:0}
+  .pag-foto{padding:12px 12px 0}
+  .pag-texto{padding:24px 20px 20px}
+  .ficha b{font-size:28px}
+  .pag-texto ul{columns:1}
+}
+
+/* EL BOSQUE */
+.bosque{background:var(--hoja-2);color:#EEF3DF;padding:80px 0;position:relative;overflow:hidden}
+.bosque .env{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:56px;align-items:center;position:relative}
+.bosque h2{font-size:clamp(34px,3.8vw,54px);font-weight:300;letter-spacing:-.015em}
+.bosque p{color:#D7E2C0}
+.bosque .cifras{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(201,215,154,.25);margin-top:26px;border-radius:4px;overflow:hidden}
+.bosque .cifras div{background:var(--hoja-2);padding:16px 18px}
+.bosque .cifras b{display:block;font:300 36px/1.05 var(--serif);color:#fff}
+.bosque .cifras span{font:500 14px var(--sans);color:var(--brote)}
+.bosque .collage{display:grid;grid-template-columns:3fr 2fr;grid-template-rows:1fr 1fr;gap:12px;height:460px}
+.bosque .collage .foto:first-child{grid-row:span 2}
+.bosque .collage .foto{border-radius:3px;background:var(--hoja)}
+.hojas-fondo{position:absolute;right:-120px;top:-80px;width:520px;opacity:.07;pointer-events:none}
+@media (max-width:860px){.bosque{padding:56px 0}.bosque .env{grid-template-columns:1fr;gap:30px;padding:0 16px}.bosque .collage{height:340px}}
+
+/* RESERVA: calendario con mascota */
+.reserva{padding:84px 0 70px}
+.reserva .cabeza{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:48px;align-items:end;margin-bottom:34px}
+.reserva h2{font-size:clamp(34px,3.8vw,54px);font-weight:300;letter-spacing:-.015em}
+.reserva .cabeza p{color:var(--tinta-2);margin:0}
+.sync{display:inline-flex;align-items:center;gap:8px;font:600 14px var(--sans);color:var(--hoja-2);background:#E1E8CF;padding:7px 12px;border-radius:4px;margin-top:14px}
+.mesa{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,4fr);gap:24px;align-items:start}
+.cal-caja{background:var(--hoja-papel);border:1px solid var(--linea);border-radius:4px;padding:22px}
+.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.cal-nav button{background:none;border:1px solid var(--linea);border-radius:4px;width:40px;height:40px;cursor:pointer;color:var(--mora);font-size:18px}
+.cal-nav button:hover{border-color:var(--mora)}
+.cal-nav button:disabled{opacity:.35;cursor:default}
+.cal-nav .ayuda{font:500 14px var(--sans);color:var(--tinta-2);text-align:center}
+.meses{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.mes h4{font:400 22px var(--serif);margin-bottom:8px;text-transform:none}
+.dias{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.dias .sem{font:600 12px var(--sans);color:var(--tinta-2);text-align:center;padding:4px 0}
+.dia{position:relative;aspect-ratio:1/1;border:0;border-radius:3px;background:#fff;color:var(--tinta);font:500 14px var(--sans);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
+.dia.baja{background:#fff}
+.dia.media{background:#F1E6C9}
+.dia.alta{background:#EBD1DC}
+.dia .pata{position:absolute;right:2px;bottom:1px;width:11px;height:11px;color:var(--hoja)}
+.dia.lleno{background:repeating-linear-gradient(135deg,#ECEDE6 0 4px,#E0E2D8 4px 8px);color:#9A9790;cursor:not-allowed;text-decoration:line-through}
+.dia.lleno .pata{display:none}
+.dia.pasado{opacity:.3;cursor:not-allowed}
+.dia.vacio{background:transparent;cursor:default}
+.dia.sel{background:var(--mora)!important;color:#fff}
+.dia.sel .pata{color:var(--brote)}
+.dia.rango{background:var(--mora-2)!important;color:#fff}
+.dia.rango .pata{color:var(--brote)}
+.dia:not(.lleno):not(.pasado):not(.vacio):hover{box-shadow:inset 0 0 0 2px var(--mora)}
+.leyenda{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:16px;font:500 13.5px var(--sans);color:var(--tinta-2)}
+.leyenda i{display:inline-block;width:14px;height:14px;border-radius:3px;vertical-align:-2px;margin-right:6px;border:1px solid var(--linea)}
+.leyenda svg{width:13px;height:13px;color:var(--hoja);vertical-align:-1px;margin-right:5px}
+
+.sim{background:var(--mora);color:#F6ECF1;border-radius:4px;padding:26px 24px;position:sticky;top:84px}
+.sim h3{font-size:28px;font-weight:300;margin-bottom:4px}
+.sim .fechas{font:500 15px var(--sans);color:var(--jugo-claro);min-height:22px;margin-bottom:16px}
+.campo{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-top:1px solid rgba(243,214,225,.22);font:500 15px var(--sans)}
+.contador{display:flex;align-items:center;gap:10px}
+.contador button{width:32px;height:32px;border-radius:50%;border:1px solid rgba(243,214,225,.5);background:none;color:#fff;cursor:pointer;font-size:17px;line-height:1}
+.contador button:hover{background:rgba(255,255,255,.12)}
+.contador output{min-width:20px;text-align:center;font-weight:700}
+.interruptor{position:relative;width:46px;height:26px;border-radius:13px;background:rgba(255,255,255,.2);border:0;cursor:pointer}
+.interruptor::after{content:"";position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .2s}
+.interruptor[aria-checked="true"]{background:var(--hoja)}
+.interruptor[aria-checked="true"]::after{transform:translateX(20px)}
+.aviso-masc{margin:12px 0 0;padding:11px 13px;border-radius:4px;font:500 14px/1.45 var(--sans)}
+.aviso-masc.ok{background:rgba(94,122,58,.35);color:#E7F0D3}
+.aviso-masc.no{background:#F3D6E1;color:var(--mora)}
+.unidad-sug{margin-top:14px;padding:14px;border:1px solid rgba(243,214,225,.3);border-radius:4px}
+.unidad-sug .t{font:500 13px var(--sans);color:var(--jugo-claro)}
+.unidad-sug .u{font:400 23px/1.2 var(--serif);color:#fff;margin:4px 0}
+.unidad-sug .d{font:400 14px var(--sans);color:#EAD9E1}
+.cuenta{margin-top:14px;font:400 15px var(--sans)}
+.cuenta .r{display:flex;justify-content:space-between;padding:4px 0;color:#EAD9E1}
+.cuenta .tot{border-top:1px solid rgba(243,214,225,.3);margin-top:6px;padding-top:10px;color:#fff;font-weight:700;font-size:17px}
+.cuenta .sena{color:var(--brote);font-weight:600}
+.lena{margin:12px 0 16px;font:italic 400 15px var(--serif);color:var(--jugo-claro)}
+.sim .btn{width:100%}
+.sim .btn-pagar{background:#00A6E0;color:#fff;margin-bottom:8px}
+.sim .btn-pagar:hover{background:#008cc0}
+.sim .chica{font:400 12.5px/1.4 var(--sans);color:#D9C4CE;margin-top:10px}
+@media (max-width:980px){.mesa{grid-template-columns:1fr}.sim{position:static}}
+@media (max-width:860px){.reserva{padding:56px 0}.reserva .env{padding:0 16px}.reserva .cabeza{grid-template-columns:1fr;gap:14px}.meses{grid-template-columns:1fr}.mes+.mes{display:none}.cal-caja{padding:14px}}
+
+/* TEMPORADAS */
+.temporadas{padding:10px 0 80px}
+.temporadas h2{font-size:clamp(30px,3.2vw,44px);font-weight:300;margin-bottom:22px}
+.tabla{width:100%;border-collapse:collapse;font:400 16px var(--sans)}
+.tabla th{text-align:left;font:600 14px var(--sans);color:var(--tinta-2);padding:10px 12px;border-bottom:1px solid var(--tinta)}
+.tabla td{padding:14px 12px;border-bottom:1px solid var(--linea);vertical-align:top}
+.tabla td:first-child{font:400 19px var(--serif);color:var(--mora)}
+.chip{display:inline-block;font:600 12.5px var(--sans);padding:3px 9px;border-radius:3px}
+.chip.alta{background:#EBD1DC;color:var(--mora)}
+.chip.media{background:#F1E6C9;color:#6A4E14}
+.chip.baja{background:#E1E8CF;color:var(--hoja-2)}
+.tabla .p{white-space:nowrap}
+.nota{font:400 14px var(--sans);color:var(--tinta-2);margin-top:12px}
+@media (max-width:760px){.temporadas .env{padding:0 16px}.tabla thead{display:none}.tabla tr{display:block;border-bottom:1px solid var(--linea);padding:12px 0}.tabla td{display:block;border:0;padding:3px 0}}
+
+/* LA VILLA */
+.villa{background:var(--hoja-papel);border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);padding:80px 0}
+.villa .env{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:56px}
+.villa h2{font-size:clamp(32px,3.4vw,48px);font-weight:300}
+.villa .intro p{color:var(--tinta-2);margin-top:14px}
+.paseos{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--tinta)}
+.paseo{padding:18px 18px 18px 0;border-bottom:1px solid var(--linea)}
+.paseo:nth-child(odd){border-right:1px solid var(--linea)}
+.paseo:nth-child(even){padding-left:18px}
+.paseo b{display:block;font:400 21px/1.25 var(--serif);color:var(--mora)}
+.paseo span{font:400 15px/1.5 var(--sans);color:var(--tinta-2)}
+.paseo .km{font:600 13px var(--sans);color:var(--hoja-2);display:block;margin-top:4px}
+@media (max-width:860px){.villa{padding:56px 0}.villa .env{grid-template-columns:1fr;gap:26px;padding:0 16px}.paseos{grid-template-columns:1fr}.paseo:nth-child(odd){border-right:0}.paseo:nth-child(even){padding-left:0}}
+
+/* LLEGAR */
+.llegar{padding:80px 0}
+.llegar .env{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:48px;align-items:center}
+.llegar h2{font-size:clamp(32px,3.4vw,48px);font-weight:300;margin-bottom:14px}
+.llegar p{color:var(--tinta-2)}
+.ruta{background:var(--hoja-papel);border:1px solid var(--linea);border-radius:4px;padding:16px}
+.ruta svg{width:100%;height:auto}
+@media (max-width:860px){.llegar{padding:56px 0}.llegar .env{grid-template-columns:1fr;gap:26px;padding:0 16px}}
+
+/* PREGUNTAS */
+.faq{padding:0 0 80px}
+.faq .env{max-width:900px}
+.faq h2{font-size:clamp(30px,3.2vw,44px);font-weight:300;margin-bottom:18px}
+.faq details{border-bottom:1px solid var(--linea)}
+.faq details:first-of-type{border-top:1px solid var(--tinta)}
+.faq summary{cursor:pointer;list-style:none;padding:18px 36px 18px 0;font:400 21px/1.3 var(--serif);position:relative}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";position:absolute;right:6px;top:14px;font:300 28px var(--sans);color:var(--jugo)}
+.faq details[open] summary::after{content:"–"}
+.faq details p{font:400 16.5px/1.6 var(--sans);color:var(--tinta-2);margin:0 0 18px;max-width:62ch}
+@media (max-width:860px){.faq .env{padding:0 16px}}
+
+/* COLOFÓN */
+.colofon{background:var(--tinta);color:#E7DEE3;padding:64px 0 34px}
+.colofon .env{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,3fr) minmax(0,3fr);gap:40px}
+.colofon h2{font-size:clamp(30px,3vw,42px);font-weight:300;color:#fff;margin-bottom:14px}
+.colofon p{color:#BFB2B9;font-size:17px}
+.colofon h4{font:600 14px var(--sans);color:#fff;margin-bottom:10px}
+.colofon ul{list-style:none;margin:0;padding:0;font:400 15.5px/1.9 var(--sans)}
+.colofon a{color:#F3D6E1}
+.colofon .legal{grid-column:1/-1;border-top:1px solid rgba(255,255,255,.14);padding-top:20px;margin-top:8px;font:400 13px/1.5 var(--sans);color:#9C8F96}
+@media (max-width:860px){.colofon .env{grid-template-columns:1fr;gap:26px;padding:0 16px}}
+
+/* barra celular */
+.barra-cel{display:none}
+@media (max-width:860px){
+  .barra-cel{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:50;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:rgba(248,249,243,.97);border-top:1px solid var(--linea)}
+  .barra-cel .btn{flex:1;padding:12px 10px}
+  body{padding-bottom:70px}
+}
+
+/* modal */
+.modal{position:fixed;inset:0;z-index:80;background:rgba(35,26,33,.55);display:none;align-items:center;justify-content:center;padding:16px}
+.modal.abierto{display:flex}
+.modal .caja{background:var(--hoja-papel);border-radius:6px;max-width:440px;width:100%;padding:28px 26px}
+.modal h3{font-size:28px;font-weight:300;color:var(--mora);margin-bottom:10px}
+.modal p{font:400 16px/1.55 var(--sans);color:var(--tinta-2)}
+</style>
+</head>
+<body>
+
+<div class="aviso" role="note"><strong>Prototipo de demostración preparado para Cabañas La Morera.</strong> Precios ilustrativos y disponibilidad de ejemplo; no se toman reservas ni pagos reales.</div>
+
+<header class="cab">
+  <div class="env">
+    <a class="marca" href="#inicio" aria-label="Cabañas La Morera, inicio">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3c6 3 10 8 10 14 0 6-4.5 11-10 11S6 23 6 17C6 11 10 6 16 3z" fill="#5E7A3A"/><path d="M16 6v20M16 13l-5-3M16 18l6-4M16 22l-4-2" stroke="#EEF0E6" stroke-width="1.3" fill="none" stroke-linecap="round"/><circle cx="24.5" cy="25" r="4.2" fill="#4A1F3D"/><circle cx="23.3" cy="23.8" r="1" fill="#A8335F"/></svg>
+      <span><b>La Morera</b><small>Cabañas · Villa Ventana</small></span>
+    </a>
+    <nav class="nav" aria-label="Secciones">
+      <a class="n" href="#indice">Las cabañas</a>
+      <a class="n" href="#bosque">El bosque</a>
+      <a class="n" href="#villa">La villa</a>
+      <a class="n" href="#preguntas">Preguntas</a>
+      <a class="btn btn-mora" href="#reservar">Ver fechas libres</a>
+    </nav>
+  </div>
+</header>
+
+<main id="inicio">
+
+<!-- PORTADA -->
+<section class="portada" aria-label="Portada">
+  <div class="env">
+    <div class="tapa">
+      <div class="ed">Villa Ventana · Comarca de Sierra de la Ventana</div>
+      <div>
+        <h1>Siete cabañas en un bosque de <em>6.000 m²</em></h1>
+        <p>En la esquina de Churrinche y Curamalal, a 3 km de la entrada al Parque Tornquist. Atendidas por sus dueños.</p>
+      </div>
+      <div class="pie">
+        <a class="btn btn-mora" href="#reservar">Ver fechas libres</a>
+        <a class="btn btn-linea" href="#indice">Elegir cabaña</a>
+      </div>
+    </div>
+    <div class="lomo">
+      <div class="foto">
+        <img src="https://www.lamorera.com.ar/secciones/b-elcomplejo/img/tablet/ext_IMG_1507a_1024_sh.jpg" alt="Cabañas La Morera entre los árboles del predio" loading="eager">
+        <div class="resp" aria-hidden="true"><svg viewBox="0 0 100 100"><path d="M50 4c22 10 36 28 36 48 0 22-16 40-36 40S14 74 14 52C14 32 28 14 50 4z" fill="#C9D79A"/></svg>El bosque de La Morera</div>
+      </div>
+      <div class="datos sans">
+        <span>7 cabañas, de 3 a 7 personas</span>
+        <span>Pileta de 4,20 × 10 m</span>
+        <span>Limpieza diaria</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ÍNDICE -->
+<section class="indice" id="indice" aria-labelledby="t-indice">
+  <div class="env">
+    <div class="intro">
+      <h2 id="t-indice">Índice de cabañas</h2>
+      <p>Cuatro modelos, siete cabañas. Todas con cocina completa, hogar a leña, cochera semicubierta y parrilla propia al lado de la puerta.</p>
+      <a class="btn btn-linea" href="#reservar">¿Cuántos son? Te sugiero la cabaña</a>
+    </div>
+    <ol class="toc">
+      <li><a href="#cap-1"><span class="num">1</span><span class="tit">Cabaña 1<small>La grande · 2 dormitorios, baño y toilette</small></span><span class="pag">7 personas · 75 m²</span></a></li>
+      <li><a href="#cap-2"><span class="num">2 y 3</span><span class="tit">Cabañas 2 y 3<small>Un dormitorio, living amplio</small></span><span class="pag">5 personas · 55 m²</span></a></li>
+      <li><a href="#cap-6"><span class="num">6 y 7</span><span class="tit">Cabañas 6 y 7<small>Un dormitorio</small></span><span class="pag">4 personas · 48 m²</span></a></li>
+      <li><a href="#cap-4"><span class="num">4 y 5</span><span class="tit">Cabañas 4 y 5<small>Las más chicas, para pareja o pareja con un hijo</small></span><span class="pag">3 personas · 40 m²</span></a></li>
+    </ol>
+  </div>
+</section>
+
+<!-- CAPÍTULOS -->
+<section class="capitulo" id="cap-1" aria-label="Cabaña 1">
+  <div class="env">
+    <article class="pliego">
+      <div class="pag-foto">
+        <div class="foto"><img src="https://www.lamorera.com.ar/secciones/c-cabania1/img/tablet/43.jpg" alt="Cabaña 1 de La Morera" loading="lazy"><div class="resp" aria-hidden="true"><svg viewBox="0 0 100 100"><path d="M50 4c22 10 36 28 36 48 0 22-16 40-36 40S14 74 14 52C14 32 28 14 50 4z" fill="#C9D79A"/></svg>Cabaña 1</div></div>
+        <div class="mini">
+          <div class="foto"><img src="https://www.lamorera.com.ar/secciones/c-cabania1/img/tablet/45.jpg" alt="Interior de la Cabaña 1" loading="lazy"><div class="resp" aria-hidden="true">Living comedor</div></div>
+          <div class="foto"><img src="https://www.lamorera.com.ar/secciones/c-cabania1/img/tablet/51.jpg" alt="Dormitorio de la Cabaña 1" loading="lazy"><div class="resp" aria-hidden="true">Dormitorio</div></div>
+        </div>
+      </div>
+      <div class="pag-texto">
+        <div class="cabezal"><span>Capítulo 1</span><span>Para familias grandes o dos parejas</span></div>
+        <h3><span class="n">1.</span> Cabaña 1</h3>
+        <p class="bajada">La única con dos dormitorios, baño y toilette.</p>
+        <div class="ficha">
+          <div><b>7</b><span>personas</span></div>
+          <div><b>75</b><span>m² cubiertos</span></div>
+          <div><b>2</b><span>dormitorios</span></div>
+        </div>
+        <ul>
+          <li>Living comedor y cocina</li>
+          <li>Baño y toilette</li>
+          <li>Hogar a leña</li>
+          <li>Heladera con freezer, horno y microondas</li>
+          <li>TV LED 32" con cable en el dormitorio</li>
+          <li>Cochera semicubierta y parrilla propia</li>
+        </ul>
+        <div class="acc"><span class="folio">Una sola en el complejo</span><button class="btn btn-mora" data-elegir="1">Ver fechas de la Cabaña 1</button></div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="capitulo" id="cap-2" aria-label="Cabañas 2 y 3">
+  <div class="env">
+    <article class="pliego inv">
+      <div class="pag-foto">
+        <div class="foto"><img src="https://www.lamorera.com.ar/secciones/d-cabania2y3/img/tablet/10.jpg" alt="Cabañas 2 y 3 de La Morera" loading="lazy"><div class="resp" aria-hidden="true"><svg viewBox="0 0 100 100"><path d="M50 4c22 10 36 28 36 48 0 22-16 40-36 40S14 74 14 52C14 32 28 14 50 4z" fill="#C9D79A"/></svg>Cabañas 2 y 3</div></div>
+        <div class="mini">
+          <div class="foto"><img src="https://www.lamorera.com.ar/secciones/d-cabania2y3/img/tablet/17.jpg" alt="Interior de las cabañas 2 y 3" loading="lazy"><div class="resp" aria-hidden="true">Living con hogar</div></div>
+          <div class="foto"><img src="https://www.lamorera.com.ar/secciones/d-cabania2y3/img/tablet/23.jpg" alt="Cocina de las cabañas 2 y 3" loading="lazy"><div class="resp" aria-hidden="true">Cocina</div></div>
+        </div>
+      </div>
+      <div class="pag-texto">
+        <div class="cabezal"><span>Capítulo 2</span><span>Familia de cinco</span></div>
+        <h3><span class="n">2 y 3.</span> Cabañas gemelas</h3>
+        <p class="bajada">Un dormitorio y un living amplio que suma camas.</p>
+        <div class="ficha">
+          <div><b>5</b><span>personas</span></div>
+          <div><b>55</b><span>m² cubiertos</span></div>
+          <div><b>1</b><span>dormitorio</span></div>
+        </div>
+        <ul>
+          <li>Living comedor y cocina</li>
+          <li>Baño completo</li>
+          <li>Hogar a leña</li>
+          <li>Heladera con freezer, horno y microondas</li>
+          <li>Caja de seguridad</li>
+          <li>Cochera semicubierta y parrilla propia</li>
+        </ul>
+        <div class="acc"><span class="folio">Dos iguales: ideal para dos familias juntas</span><button class="btn btn-mora" data-elegir="2">Ver fechas de las 2 y 3</button></div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="capitulo" id="cap-6" aria-label="Cabañas 6 y 7">
+  <div class="env">
+    <article class="pliego">
+      <div class="pag-foto">
+        <div class="foto"><img src="https://www.lamorera.com.ar/secciones/f-cabania6y7/img/tablet/1.jpg" alt="Cabañas 6 y 7 de La Morera" loading="lazy"><div class="resp" aria-hidden="true"><svg viewBox="0 0 100 100"><path d="M50 4c22 10 36 28 36 48 0 22-16 40-36 40S14 74 14 52C14 32 28 14 50 4z" fill="#C9D79A"/></svg>Cabañas 6 y 7</div></div>
+        <div class="mini">
+          <div class="foto"><img src="https://www.lamorera.com.ar/secciones/f-cabania6y7/img/tablet/4.jpg" alt="Interior de las cabañas 6 y 7" loading="lazy"><div class="resp" aria-hidden="true">Living</div></div>
+          <div class="foto"><img src="https://www.lamorera.com.ar/secciones/f-cabania6y7/img/tablet/5.jpg" alt="Dormitorio de las cabañas 6 y 7" loading="lazy"><div class="resp" aria-hidden="true">Dormitorio</div></div>
+        </div>
+      </div>
+      <div class="pag-texto">
+        <div class="cabezal"><span>Capítulo 3</span><span>Pareja con dos chicos</span></div>
+        <h3><span class="n">6 y 7.</span> Para cuatro</h3>
+        <p class="bajada">El tamaño justo para la familia tipo.</p>
+        <div class="ficha">
+          <div><b>4</b><span>personas</span></div>
+          <div><b>48</b><span>m² cubiertos</span></div>
+          <div><b>1</b><span>dormitorio</span></div>
+        </div>
+        <ul>
+          <li>Living comedor y cocina</li>
+          <li>Baño completo</li>
+          <li>Hogar a leña</li>
+          <li>Heladera con freezer, horno y microondas</li>
+          <li>Ventiladores y calefactores de tiro balanceado</li>
+          <li>Cochera semicubierta y parrilla propia</li>
+        </ul>
+        <div class="acc"><span class="folio">Cuna y silla alta a pedido</span><button class="btn btn-mora" data-elegir="6">Ver fechas de las 6 y 7</button></div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="capitulo" id="cap-4" aria-label="Cabañas 4 y 5">
+  <div class="env">
+    <article class="pliego inv">
+      <div class="pag-foto">
+        <div class="foto"><img src="https://www.lamorera.com.ar/secciones/e-cabania4y5/img/tablet/1.jpg" alt="Cabañas 4 y 5 de La Morera" loading="lazy"><div class="resp" aria-hidden="true"><svg viewBox="0 0 100 100"><path d="M50 4c22 10 36 28 36 48 0 22-16 40-36 40S14 74 14 52C14 32 28 14 50 4z" fill="#C9D79A"/></svg>Cabañas 4 y 5</div></div>
+        <div class="mini">
+          <div class="foto"><img src="https://www.lamorera.com.ar/secciones/e-cabania4y5/img/tablet/3.jpg" alt="Interior de las cabañas 4 y 5" loading="lazy"><div class="resp" aria-hidden="true">Living</div></div>
+          <div class="foto"><img src="https://www.lamorera.com.ar/secciones/e-cabania4y5/img/tablet/4.jpg" alt="Dormitorio de las cabañas 4 y 5" loading="lazy"><div class="resp" aria-hidden="true">Dormitorio</div></div>
+        </div>
+      </div>
+      <div class="pag-texto">
+        <div class="cabezal"><span>Capítulo 4</span><span>Escapada en pareja</span></div>
+        <h3><span class="n">4 y 5.</span> Las más chicas</h3>
+        <p class="bajada">Para dos, o dos con un chico.</p>
+        <div class="ficha">
+          <div><b>3</b><span>personas</span></div>
+          <div><b>40</b><span>m² cubiertos</span></div>
+          <div><b>1</b><span>dormitorio</span></div>
+        </div>
+        <ul>
+          <li>Living comedor y cocina</li>
+          <li>Baño completo</li>
+          <li>Hogar a leña</li>
+          <li>Heladera con freezer, horno y microondas</li>
+          <li>Caja de seguridad</li>
+          <li>Cochera semicubierta y parrilla propia</li>
+        </ul>
+        <div class="acc"><span class="folio">En temporada baja, con tu perro</span><button class="btn btn-mora" data-elegir="4">Ver fechas de las 4 y 5</button></div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- EL BOSQUE -->
+<section class="bosque" id="bosque" aria-labelledby="t-bosque">
+  <svg class="hojas-fondo" viewBox="0 0 200 200" aria-hidden="true"><path d="M100 10c40 18 64 52 64 88 0 40-28 72-64 72S36 138 36 98C36 62 60 28 100 10z" fill="#C9D79A"/><path d="M100 18v150M100 60l-30-18M100 90l36-24M100 120l-26-14M100 145l22-12" stroke="#3F5627" stroke-width="4" fill="none"/></svg>
+  <div class="env">
+    <div>
+      <h2 id="t-bosque">El parque es un bosque, y es de todos</h2>
+      <p>Las siete cabañas están repartidas en un predio arbolado de 6.000 m². Hay pileta con solárium y cerco perimetral, juegos para los chicos con casita de madera, tobogán, puente, hamacas y sogas, y un sector de descanso con bancos a la sombra.</p>
+      <p>Los dueños atienden el complejo y te recomiendan excursiones según el día que haga.</p>
+      <div class="cifras">
+        <div><b>6.000 m²</b><span>de bosque</span></div>
+        <div><b>4,20 × 10 m</b><span>la pileta, con cerco</span></div>
+        <div><b>Todos los días</b><span>limpieza de la cabaña</span></div>
+        <div><b>Wi-Fi</b><span>en todo el predio</span></div>
+      </div>
+    </div>
+    <div class="collage">
+      <div class="foto"><img src="https://www.lamorera.com.ar/secciones/g-piscina/img/tablet/35.jpg" alt="Pileta de La Morera con solárium" loading="lazy"><div class="resp" aria-hidden="true"><svg viewBox="0 0 100 100"><path d="M50 4c22 10 36 28 36 48 0 22-16 40-36 40S14 74 14 52C14 32 28 14 50 4z" fill="#C9D79A"/></svg>La pileta</div></div>
+      <div class="foto"><img src="https://www.lamorera.com.ar/secciones/b-elcomplejo/img/tablet/02.jpg" alt="Parque arbolado del complejo" loading="lazy"><div class="resp" aria-hidden="true">El parque</div></div>
+      <div class="foto"><img src="https://www.lamorera.com.ar/secciones/b-elcomplejo/img/tablet/14.jpg" alt="Juegos para chicos en La Morera" loading="lazy"><div class="resp" aria-hidden="true">Los juegos</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- RESERVA -->
+<section class="reserva" id="reservar" aria-labelledby="t-reserva">
+  <div class="env">
+    <div class="cabeza">
+      <div>
+        <h2 id="t-reserva">Elegí las fechas. Si viene el perro, te avisamos cuándo sí.</h2>
+      </div>
+      <div>
+        <p class="sans">Las mascotas son bienvenidas en temporada baja. El calendario marca con una huellita los días en que pueden venir y te sugiere la cabaña justa para tu grupo.</p>
+        <span class="sync"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12a9 9 0 0 1-15.5 6.2M3 12A9 9 0 0 1 18.5 5.8M18 2v4h-4M6 22v-4h4"/></svg>Se sincroniza con Booking y Airbnb</span>
+      </div>
+    </div>
+
+    <div class="mesa">
+      <div class="cal-caja">
+        <div class="cal-nav">
+          <button type="button" id="prev" aria-label="Meses anteriores">‹</button>
+          <div class="ayuda" id="ayuda">Tocá el día de llegada</div>
+          <button type="button" id="next" aria-label="Meses siguientes">›</button>
+        </div>
+        <div class="meses" id="meses"></div>
+        <div class="leyenda">
+          <span><i style="background:#fff"></i>Temporada baja</span>
+          <span><i style="background:#F1E6C9"></i>Fin de semana largo</span>
+          <span><i style="background:#EBD1DC"></i>Temporada alta</span>
+          <span><svg viewBox="0 0 24 24" fill="currentColor"><use href="#pata"/></svg>Acepta mascota</span>
+          <span><i style="background:repeating-linear-gradient(135deg,#ECEDE6 0 3px,#E0E2D8 3px 6px)"></i>Sin cabañas para tu grupo</span>
+        </div>
+      </div>
+
+      <aside class="sim" aria-live="polite">
+        <h3>Tu estadía</h3>
+        <div class="fechas" id="sim-fechas">Elegí llegada y salida en el calendario</div>
+        <div class="campo"><span>Adultos</span><span class="contador"><button type="button" data-c="ad" data-d="-1" aria-label="Menos adultos">−</button><output id="o-ad">2</output><button type="button" data-c="ad" data-d="1" aria-label="Más adultos">+</button></span></div>
+        <div class="campo"><span>Chicos</span><span class="contador"><button type="button" data-c="ch" data-d="-1" aria-label="Menos chicos">−</button><output id="o-ch">0</output><button type="button" data-c="ch" data-d="1" aria-label="Más chicos">+</button></span></div>
+        <div class="campo"><span id="l-masc">Viene con mascota</span><button type="button" class="interruptor" id="masc" role="switch" aria-checked="false" aria-labelledby="l-masc"></button></div>
+        <div id="aviso-masc"></div>
+        <div class="unidad-sug" id="sug"></div>
+        <div class="cuenta" id="cuenta"></div>
+        <p class="lena">La leña no está incluida: se compra en los comercios de la villa.</p>
+        <button type="button" class="btn btn-pagar" id="pagar" disabled>Pedir reserva con seña por Mercado Pago</button>
+        <a class="btn btn-linea" style="color:#F6ECF1;box-shadow:inset 0 0 0 1.5px rgba(246,236,241,.55)" href="mailto:info@lamorera.com.ar?subject=Consulta%20de%20disponibilidad">Prefiero consultar por mail</a>
+        <p class="chica">Tarifas ilustrativas por noche y por cabaña, para mostrar cómo funciona. La seña del 30% se cobra con Mercado Pago y el saldo se paga al llegar.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- TEMPORADAS -->
+<section class="temporadas" aria-labelledby="t-temp">
+  <div class="env">
+    <h2 id="t-temp">Temporadas 2026–2027</h2>
+    <table class="tabla">
+      <thead><tr><th>Período</th><th>Fechas</th><th>Temporada</th><th>Mascotas</th><th>Cabaña 4 y 5, por noche</th></tr></thead>
+      <tbody id="tbody-temp"></tbody>
+    </table>
+    <p class="nota">Tarifas de ejemplo para el prototipo. Las vacaciones de invierno 2027 se confirman cuando la Provincia publique el calendario escolar.</p>
+  </div>
+</section>
+
+<!-- LA VILLA -->
+<section class="villa" id="villa" aria-labelledby="t-villa">
+  <div class="env">
+    <div class="intro">
+      <h2 id="t-villa">Villa Ventana, calles de tierra y mil vecinos</h2>
+      <p>Un pueblo arbolado rodeado por las sierras de Ventania, sobre la Ruta 76, entre Tornquist y Sierra de la Ventana. Se puede hacer trekking, cabalgatas, bici de montaña, 4x4, cuatriciclos y avistaje de aves.</p>
+    </div>
+    <div class="paseos">
+      <div class="paseo"><b>Parque Provincial Ernesto Tornquist</b><span>Senderos al Cerro Ventana y a la Garganta Olvidada. Tiene dos accesos.</span><span class="km">a 3 y a 8 km</span></div>
+      <div class="paseo"><b>Ruinas del Club Hotel</b><span>Inaugurado en 1911 como el primer hotel casino de Sudamérica; se incendió en 1983 y hoy se recorren sus ruinas.</span><span class="km">en la villa</span></div>
+      <div class="paseo"><b>Cerro Tres Picos</b><span>El punto más alto de la provincia de Buenos Aires, con 1.239 m.</span><span class="km">en la comarca</span></div>
+      <div class="paseo"><b>Recreo El Dique</b><span>Sobre el arroyo Belisario, para pasar la tarde al agua.</span><span class="km">en la villa</span></div>
+      <div class="paseo"><b>Paseo de los Artesanos</b><span>Talleres abiertos, más el museo Sendero de los Recuerdos y la visita guiada a la Fuente del Bautismo.</span><span class="km">en la villa</span></div>
+      <div class="paseo"><b>Estancia Las Vertientes</b><span>Campo y actividades al aire libre.</span><span class="km">a 2 km</span></div>
+      <div class="paseo"><b>Saldungaray</b><span>Bodega, tambo y el Fortín Pavón.</span><span class="km">a 25 km</span></div>
+      <div class="paseo"><b>Sierra de la Ventana</b><span>El pueblo cabecera de la comarca.</span><span class="km">a 17 km</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CÓMO LLEGAR -->
+<section class="llegar" aria-labelledby="t-llegar">
+  <div class="env">
+    <div>
+      <h2 id="t-llegar">Ruta 76, kilómetro 219</h2>
+      <p class="sans">Villa Ventana está sobre la Ruta Provincial 76, entre Tornquist (30 km) y Sierra de la Ventana (17 km). Desde Bahía Blanca se llega por la Ruta 33 hasta Tornquist y ahí se toma la 76.</p>
+      <p class="sans">La Morera está en la esquina de Churrinche y Curamalal. Al confirmar la reserva te mandamos el plano de la villa y del complejo.</p>
+      <a class="btn btn-hoja" href="https://www.google.com/maps/search/?api=1&query=Caba%C3%B1as+La+Morera+Villa+Ventana" target="_blank" rel="noopener">Abrir en Google Maps</a>
+    </div>
+    <div class="ruta">
+      <svg viewBox="0 0 520 300" role="img" aria-label="Esquema de la Ruta 76 entre Tornquist, Villa Ventana y Sierra de la Ventana">
+        <path d="M0 250 C60 210 90 190 130 205 C170 220 200 150 250 140 C300 130 320 90 360 95 C400 100 430 60 520 40 L520 300 L0 300Z" fill="#E1E8CF"/>
+        <path d="M30 230 C100 210 170 190 250 170 C330 150 400 130 490 90" stroke="#4A1F3D" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M30 230 C100 210 170 190 250 170 C330 150 400 130 490 90" stroke="#F8F9F3" stroke-width="1.5" stroke-dasharray="7 7" fill="none"/>
+        <path d="M150 70 l18 -34 l18 34z M175 72 l22 -44 l22 44z M330 52 l14 -26 l14 26z" fill="#5E7A3A" opacity=".7"/>
+        <circle cx="30" cy="230" r="8" fill="#F8F9F3" stroke="#4A1F3D" stroke-width="3"/>
+        <circle cx="250" cy="170" r="13" fill="#A8335F"/>
+        <circle cx="250" cy="170" r="5" fill="#F8F9F3"/>
+        <circle cx="490" cy="90" r="8" fill="#F8F9F3" stroke="#4A1F3D" stroke-width="3"/>
+        <g font-family="Hanken Grotesk, Arial, sans-serif" font-size="14" fill="#231A21">
+          <text x="22" y="262">Tornquist</text>
+          <text x="210" y="205" font-weight="700" fill="#4A1F3D">Villa Ventana</text>
+          <text x="210" y="222" font-size="12.5">La Morera</text>
+          <text x="400" y="122">Sierra de la Ventana</text>
+          <text x="118" y="182" font-size="12" fill="#5A4636">30 km</text>
+          <text x="370" y="148" font-size="12" fill="#5A4636">17 km</text>
+          <text x="164" y="92" font-size="12" fill="#3F5627">Cordón Ventana</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- PREGUNTAS -->
+<section class="faq" id="preguntas" aria-labelledby="t-faq">
+  <div class="env">
+    <h2 id="t-faq">Preguntas que nos hacen siempre</h2>
+    <details><summary>¿Puedo ir con mi perro?</summary><p>Sí, en temporada baja. En verano, Semana Santa, vacaciones de invierno y fines de semana largos no se aceptan mascotas. El calendario de reservas marca con una huellita los días en que pueden venir.</p></details>
+    <details><summary>¿Hay leña para el hogar?</summary><p>Cada cabaña tiene hogar a leña, pero la leña no está incluida. Se compra en los comercios de la villa, a pocas cuadras.</p></details>
+    <details><summary>¿Incluye ropa blanca y limpieza?</summary><p>Sí. La limpieza es diaria, con servicio de mucama y cambio de ropa de cama.</p></details>
+    <details><summary>¿Tienen cuna para bebés?</summary><p>Hay cuna y silla alta. Pedilas al reservar.</p></details>
+    <details><summary>¿Cómo se paga?</summary><p>Hoy por depósito, transferencia o en efectivo. Con esta web, la seña se paga con Mercado Pago al pedir la reserva y el saldo al llegar.</p></details>
+    <details><summary>¿La pileta es segura para los chicos?</summary><p>Tiene cerco perimetral y solárium, y mide 4,20 × 10 m. Al lado están los juegos con casita de madera.</p></details>
+  </div>
+</section>
+
+</main>
+
+<!-- COLOFÓN -->
+<footer class="colofon" aria-label="Contacto">
+  <div class="env">
+    <div>
+      <h2>Cabañas La Morera</h2>
+      <p>Churrinche y Curamalal, Villa Ventana, Buenos Aires. Atendidas por sus dueños.</p>
+      <a class="btn btn-mora" style="background:#F3D6E1;color:#4A1F3D" href="#reservar">Ver fechas libres</a>
+    </div>
+    <div>
+      <h4>Contacto</h4>
+      <ul>
+        <li><a href="mailto:info@lamorera.com.ar">info@lamorera.com.ar</a></li>
+        <li><a href="tel:+542914910284">0291 491-0284</a></li>
+        <li><a href="tel:+5492914689317">0291 15 468-9317</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Redes</h4>
+      <ul>
+        <li><a href="https://www.instagram.com/cabanaslamorera/" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href="https://www.facebook.com/LaMoreraVillaVentana/" target="_blank" rel="noopener">Facebook</a></li>
+      </ul>
+    </div>
+    <p class="legal">Prototipo de demostración preparado para Cabañas La Morera por Resolviendo Kos (resolviendokos.com). Fotos de Cabañas La Morera. Precios, ocupación y pago son de ejemplo.</p>
+  </div>
+</footer>
+
+<div class="barra-cel">
+  <a class="btn btn-mora" href="#reservar">Ver fechas libres</a>
+  <a class="btn btn-linea" href="mailto:info@lamorera.com.ar">Escribir</a>
+</div>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="m-t">
+  <div class="caja">
+    <h3 id="m-t">Así sigue la reserva</h3>
+    <p id="m-p"></p>
+    <button type="button" class="btn btn-mora" id="m-cerrar">Entendido</button>
+  </div>
+</div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="pata" viewBox="0 0 24 24"><ellipse cx="12" cy="16" rx="5" ry="4.2"/><circle cx="5.5" cy="10" r="2.2"/><circle cx="9.5" cy="6" r="2.2"/><circle cx="14.5" cy="6" r="2.2"/><circle cx="18.5" cy="10" r="2.2"/></symbol></svg>
+
+<script>
+(function(){
+  // respaldo de fotos
+  document.querySelectorAll('.foto img').forEach(function(img){
+    function f(){img.closest('.foto').classList.add('fallo');}
+    if(img.complete && img.naturalWidth===0 && img.getAttribute('src')) f();
+    img.addEventListener('error',f);
+  });
+
+  var CABS=[
+    {id:'1',nombre:'Cabaña 1',cap:7,m2:75,tipo:'1'},
+    {id:'2',nombre:'Cabaña 2',cap:5,m2:55,tipo:'2'},
+    {id:'3',nombre:'Cabaña 3',cap:5,m2:55,tipo:'2'},
+    {id:'6',nombre:'Cabaña 6',cap:4,m2:48,tipo:'6'},
+    {id:'7',nombre:'Cabaña 7',cap:4,m2:48,tipo:'6'},
+    {id:'4',nombre:'Cabaña 4',cap:3,m2:40,tipo:'4'},
+    {id:'5',nombre:'Cabaña 5',cap:3,m2:40,tipo:'4'}
+  ];
+  // tarifas ilustrativas por noche (temporada baja)
+  var BASE={'4':72000,'6':84000,'2':98000,'1':135000};
+  var MULT={baja:1,media:1.2,alta:1.45};
+
+  function d(y,m,dd){return new Date(y,m-1,dd);}
+  var PERIODOS=[
+    {n:'Fin de semana largo de la Soberanía',a:d(2026,11,21),b:d(2026,11,23),t:'media'},
+    {n:'Fin de semana extralargo de diciembre',a:d(2026,12,5),b:d(2026,12,8),t:'media'},
+    {n:'Fiestas',a:d(2026,12,24),b:d(2026,12,25),t:'media'},
+    {n:'Verano',a:d(2026,12,26),b:d(2027,2,28),t:'alta'},
+    {n:'Semana Santa',a:d(2027,3,25),b:d(2027,3,28),t:'alta'},
+    {n:'Vacaciones de invierno (a confirmar)',a:d(2027,7,19),b:d(2027,7,30),t:'alta'}
+  ];
+  function key(dt){return dt.getFullYear()*10000+(dt.getMonth()+1)*100+dt.getDate();}
+  function temporada(dt){
+    var k=key(dt);
+    for(var i=0;i<PERIODOS.length;i++){var p=PERIODOS[i];if(k>=key(p.a)&&k<=key(p.b))return p.t;}
+    return 'baja';
+  }
+  // ocupación de ejemplo, determinística
+  function ocupada(cab,dt){
+    var k=key(dt), s=(k*31+parseInt(cab.id,10)*977)%101;
+    var t=temporada(dt), dow=dt.getDay();
+    var lim=t==='alta'?52:(t==='media'?44:((dow===5||dow===6)?30:12));
+    return s<lim;
+  }
+  var HOY=new Date(); HOY.setHours(0,0,0,0);
+  var MIN=new Date(HOY.getFullYear(),HOY.getMonth(),1);
+  var MAX=new Date(2027,7,1);
+
+  var st={mes:new Date(MIN),ini:null,fin:null,ad:2,ch:0,masc:false,elegida:null};
+  var NOM=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  var fmt=function(n){return '$ '+Math.round(n).toLocaleString('es-AR');};
+  var fFecha=function(dt){return dt.getDate()+' de '+NOM[dt.getMonth()];};
+
+  function grupo(){return st.ad+st.ch;}
+  function noches(){var r=[];if(!st.ini||!st.fin)return r;var x=new Date(st.ini);while(x<st.fin){r.push(new Date(x));x.setDate(x.getDate()+1);}return r;}
+  function libresEn(dt){return CABS.filter(function(c){return !ocupada(c,dt);});}
+  function hayLugar(dt){var g=grupo();var l=libresEn(dt);if(l.some(function(c){return c.cap>=g;}))return true;var s=l.reduce(function(a,c){return a+c.cap;},0);return g>7&&s>=g;}
+
+  function sugerir(){
+    var ns=noches(), g=grupo();
+    if(!ns.length) return null;
+    var libres=CABS.filter(function(c){return ns.every(function(n){return !ocupada(c,n);});});
+    if(st.elegida){var e=libres.filter(function(c){return c.tipo===st.elegida&&c.cap>=g;});if(e.length)return [e[0]];}
+    var una=libres.filter(function(c){return c.cap>=g;}).sort(function(a,b){return a.cap-b.cap;});
+    if(una.length) return [una[0]];
+    // combinar para grupos grandes
+    var orden=libres.slice().sort(function(a,b){return b.cap-a.cap;}), sel=[], s=0;
+    for(var i=0;i<orden.length&&s<g;i++){sel.push(orden[i]);s+=orden[i].cap;}
+    return s>=g?sel:[];
+  }
+
+  function render(){
+    var cont=document.getElementById('meses'); cont.innerHTML='';
+    for(var k=0;k<2;k++){
+      var m=new Date(st.mes.getFullYear(),st.mes.getMonth()+k,1);
+      var box=document.createElement('div'); box.className='mes';
+      box.innerHTML='<h4>'+NOM[m.getMonth()].charAt(0).toUpperCase()+NOM[m.getMonth()].slice(1)+' '+m.getFullYear()+'</h4>';
+      var g=document.createElement('div'); g.className='dias';
+      ['L','M','M','J','V','S','D'].forEach(function(s){var e=document.createElement('div');e.className='sem';e.textContent=s;g.appendChild(e);});
+      var off=(m.getDay()+6)%7;
+      for(var i=0;i<off;i++){var v=document.createElement('span');v.className='dia vacio';g.appendChild(v);}
+      var dim=new Date(m.getFullYear(),m.getMonth()+1,0).getDate();
+      for(var dd=1;dd<=dim;dd++){
+        var dt=new Date(m.getFullYear(),m.getMonth(),dd);
+        var b=document.createElement('button'); b.type='button';
+        var t=temporada(dt); var cls='dia '+t;
+        var pas=dt<HOY, lleno=!pas&&!hayLugar(dt);
+        if(pas)cls+=' pasado'; else if(lleno)cls+=' lleno';
+        if(st.ini&&key(dt)===key(st.ini))cls+=' sel';
+        if(st.fin&&key(dt)===key(st.fin))cls+=' sel';
+        if(st.ini&&st.fin&&dt>st.ini&&dt<st.fin)cls+=' rango';
+        b.className=cls; b.textContent=dd;
+        var lab=fFecha(dt)+', temporada '+t+(t==='baja'?', acepta mascota':'')+(lleno?', sin lugar para tu grupo':'');
+        b.setAttribute('aria-label',lab);
+        if(t==='baja'&&!pas){b.insertAdjacentHTML('beforeend','<svg class="pata" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#pata"/></svg>');}
+        if(pas){b.disabled=true;} else {b.dataset.k=dt.getTime(); b.dataset.lleno=lleno?'1':'';}
+        g.appendChild(b);
+      }
+      box.appendChild(g); cont.appendChild(box);
+    }
+    document.getElementById('prev').disabled=st.mes<=MIN;
+    document.getElementById('next').disabled=new Date(st.mes.getFullYear(),st.mes.getMonth()+2,1)>=MAX;
+    renderSim();
+  }
+
+  function renderSim(){
+    var ff=document.getElementById('sim-fechas'), ay=document.getElementById('ayuda');
+    var ns=noches();
+    if(!st.ini){ff.textContent='Elegí llegada y salida en el calendario';ay.textContent='Tocá el día de llegada';}
+    else if(!st.fin){ff.textContent='Llegada '+fFecha(st.ini)+' · elegí la salida';ay.textContent='Ahora tocá el día de salida';}
+    else {ff.textContent=fFecha(st.ini)+' al '+fFecha(st.fin)+' · '+ns.length+(ns.length===1?' noche':' noches');ay.textContent='Tocá otro día para empezar de nuevo';}
+    document.getElementById('o-ad').textContent=st.ad;
+    document.getElementById('o-ch').textContent=st.ch;
+    var mb=document.getElementById('masc'); mb.setAttribute('aria-checked',st.masc?'true':'false');
+
+    var am=document.getElementById('aviso-masc'); am.innerHTML='';
+    if(st.masc){
+      if(!ns.length){am.innerHTML='<p class="aviso-masc ok">Elegí días con huellita: son los de temporada baja, cuando se aceptan mascotas.</p>';}
+      else{
+        var malas=ns.filter(function(n){return temporada(n)!=='baja';});
+        if(malas.length){am.innerHTML='<p class="aviso-masc no">'+malas.length+(malas.length===1?' noche cae':' noches caen')+' en temporada alta o fin de semana largo, y ahí no se aceptan mascotas. Probá con días que tengan huellita.</p>';}
+        else am.innerHTML='<p class="aviso-masc ok">Todas tus noches son de temporada baja: tu mascota puede venir.</p>';
+      }
+    }
+
+    var sug=document.getElementById('sug'), cu=document.getElementById('cuenta'), pg=document.getElementById('pagar');
+    var s=sugerir();
+    pg.disabled=true; cu.innerHTML='';
+    if(!ns.length){sug.innerHTML='<div class="t">Cabaña sugerida</div><div class="u">'+textoGrupo()+'</div><div class="d">Elegí las fechas y te digo cuál está libre.</div>';return;}
+    if(!s||!s.length){sug.innerHTML='<div class="t">Sin lugar</div><div class="u">No queda cabaña para '+grupo()+' en esas fechas</div><div class="d">Probá correr un día o mirá los días sin rayas.</div>';return;}
+    var nombres=s.map(function(c){return c.nombre;}).join(' + ');
+    var capT=s.reduce(function(a,c){return a+c.cap;},0);
+    var menor=CABS.filter(function(c){return c.cap>=grupo();}).reduce(function(a,c){return Math.min(a,c.cap);},99);
+    var nota=(s.length===1&&s[0].cap>menor)?'<div class="d" style="margin-top:6px;color:#F3D6E1">Las más chicas para tu grupo están ocupadas esas noches.</div>':'';
+    sug.innerHTML='<div class="t">'+(s.length>1?'Para tu grupo, combinadas':'La justa para '+grupo()+(grupo()===1?' persona':' personas'))+'</div><div class="u">'+nombres+'</div><div class="d">'+s.map(function(c){return c.m2+' m², hasta '+c.cap;}).join(' · ')+'</div>'+nota;
+    var tot=0, porT={baja:0,media:0,alta:0};
+    ns.forEach(function(n){var t=temporada(n);s.forEach(function(c){var v=BASE[c.tipo]*MULT[t];tot+=v;porT[t]+=v;});});
+    var html='';
+    ['baja','media','alta'].forEach(function(t){
+      var c=ns.filter(function(n){return temporada(n)===t;}).length;
+      if(c)html+='<div class="r"><span>'+c+(c===1?' noche':' noches')+' temporada '+(t==='media'?'finde largo':t)+'</span><span>'+fmt(porT[t])+'</span></div>';
+    });
+    html+='<div class="r tot"><span>Total</span><span>'+fmt(tot)+'</span></div>';
+    html+='<div class="r sena"><span>Seña 30% por Mercado Pago</span><span>'+fmt(tot*.3)+'</span></div>';
+    cu.innerHTML=html;
+    var bloq=st.masc&&ns.some(function(n){return temporada(n)!=='baja';});
+    pg.disabled=bloq;
+    pg.dataset.total=tot; pg.dataset.cab=nombres;
+  }
+  function textoGrupo(){var g=grupo();return g+(g===1?' persona':' personas')+(st.masc?' y una mascota':'');}
+
+  document.getElementById('meses').addEventListener('click',function(e){
+    var b=e.target.closest('button.dia'); if(!b||!b.dataset.k)return;
+    var dt=new Date(parseInt(b.dataset.k,10));
+    if(!st.ini||st.fin||dt<=st.ini){
+      if(b.dataset.lleno)return;
+      st.ini=dt;st.fin=null;
+    } else {
+      st.fin=dt;
+    }
+    render();
+  });
+  document.getElementById('prev').addEventListener('click',function(){st.mes=new Date(st.mes.getFullYear(),st.mes.getMonth()-1,1);render();});
+  document.getElementById('next').addEventListener('click',function(){st.mes=new Date(st.mes.getFullYear(),st.mes.getMonth()+1,1);render();});
+  document.querySelectorAll('[data-c]').forEach(function(b){b.addEventListener('click',function(){
+    var c=b.dataset.c, dl=parseInt(b.dataset.d,10);
+    if(c==='ad')st.ad=Math.max(1,Math.min(14,st.ad+dl)); else st.ch=Math.max(0,Math.min(10,st.ch+dl));
+    render();
+  });});
+  document.getElementById('masc').addEventListener('click',function(){st.masc=!st.masc;render();});
+  document.querySelectorAll('[data-elegir]').forEach(function(b){b.addEventListener('click',function(){
+    st.elegida=b.dataset.elegir;
+    var cap={'1':7,'2':5,'6':4,'4':3}[st.elegida];
+    if(grupo()>cap){st.ad=Math.min(st.ad,cap);st.ch=Math.max(0,cap-st.ad);}
+    render(); document.getElementById('reservar').scrollIntoView({behavior:'smooth'});
+  });});
+  var modal=document.getElementById('modal');
+  document.getElementById('pagar').addEventListener('click',function(){
+    var t=parseFloat(this.dataset.total||0);
+    document.getElementById('m-p').textContent='En la web real, acá se abre Mercado Pago para pagar la seña de '+fmt(t*.3)+' por '+this.dataset.cab+'. La reserva queda tomada al instante, se bloquea en Booking y Airbnb, y a La Morera le llega el aviso por mail y WhatsApp. En este prototipo no se cobra nada.';
+    modal.classList.add('abierto'); document.getElementById('m-cerrar').focus();
+  });
+  document.getElementById('m-cerrar').addEventListener('click',function(){modal.classList.remove('abierto');});
+  modal.addEventListener('click',function(e){if(e.target===modal)modal.classList.remove('abierto');});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')modal.classList.remove('abierto');});
+
+  // tabla de temporadas
+  var tb=document.getElementById('tbody-temp');
+  var filas=[
+    {n:'Primavera',f:'Hasta el 20 de noviembre y entre findes largos',t:'baja'},
+    {n:'Soberanía',f:'21 al 23 de noviembre de 2026',t:'media'},
+    {n:'Finde extralargo',f:'5 al 8 de diciembre de 2026',t:'media'},
+    {n:'Verano',f:'26 de diciembre de 2026 al 28 de febrero de 2027 (incluye Carnaval, 6 al 9 de febrero)',t:'alta'},
+    {n:'Otoño',f:'1 de marzo al 24 de marzo y desde el 29 de marzo de 2027',t:'baja'},
+    {n:'Semana Santa',f:'25 al 28 de marzo de 2027',t:'alta'},
+    {n:'Invierno',f:'Vacaciones de invierno, julio de 2027 (a confirmar)',t:'alta'}
+  ];
+  tb.innerHTML=filas.map(function(r){
+    return '<tr><td>'+r.n+'</td><td>'+r.f+'</td><td><span class="chip '+r.t+'">'+(r.t==='media'?'Finde largo':(r.t==='alta'?'Alta':'Baja'))+'</span></td><td>'+(r.t==='baja'?'Sí':'No')+'</td><td class="p">'+fmt(BASE['4']*MULT[r.t])+'</td></tr>';
+  }).join('');
+
+  render();
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Cabañas La Morera"></script>
+</body>
+</html>
