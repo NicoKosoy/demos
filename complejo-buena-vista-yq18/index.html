@@ -1,0 +1,667 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Complejo Buena Vista · Sierra de la Ventana</title>
+<meta name="description" content="Prototipo de demostración: web de reservas directas para Complejo Buena Vista, siete cabañas con pileta cubierta y climatizada todo el año en Sierra de la Ventana.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral+SC:wght@400;500;600&family=Spectral:ital,wght@0,400;1,400&family=Red+Hat+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --yeso:#E8E4DA;        /* pared de la cabaña */
+  --yeso-2:#F4F2EC;
+  --marco:#FBFAF6;       /* marco de la ventana */
+  --lejania:#2C4560;     /* azul del cordón a la distancia */
+  --lejania-2:#3E5C7C;
+  --cielo:#B9CCD8;
+  --cuarcita:#C48A78;    /* piedra rosada de la sierra */
+  --pasto:#C2A85C;       /* pasto serrano seco */
+  --pino:#3D5446;
+  --tinta:#1D2733;
+  --tinta-2:#4A5562;
+  --linea:#CFCAbd;
+  --sc:"Spectral SC",Georgia,serif;
+  --serif:"Spectral",Georgia,serif;
+  --sans:"Red Hat Text","Helvetica Neue",Arial,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--yeso);color:var(--tinta);font:400 17px/1.6 var(--sans);overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:var(--lejania)}
+:focus-visible{outline:2px solid var(--cuarcita);outline-offset:3px}
+h1,h2,h3{font-family:var(--sc);font-weight:500;margin:0;line-height:1.08;letter-spacing:.005em}
+p{margin:0 0 1em}
+button,input,select{font:inherit;color:inherit}
+.env{max-width:1180px;margin:0 auto;padding:0 28px}
+@media (max-width:640px){.env{padding:0 16px}}
+
+/* aviso */
+.aviso{background:var(--tinta);color:#E9EDF1;font:500 14px/1.45 var(--sans);padding:9px 16px;text-align:center}
+.aviso strong{color:#fff}
+
+/* cabecera */
+.cab{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0}
+.marca{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:var(--tinta)}
+.marca b{font:600 24px/1 var(--sc)}
+.marca span{font-size:14px;color:var(--tinta-2)}
+.cab nav{display:flex;gap:22px;font-size:15px}
+.cab nav a{text-decoration:none;color:var(--tinta)}
+.cab nav a:hover{color:var(--lejania-2);text-decoration:underline}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:3px;padding:12px 20px;font:600 15px/1 var(--sans);cursor:pointer;text-decoration:none}
+.btn-azul{background:var(--lejania);color:#fff}
+.btn-azul:hover{background:var(--lejania-2)}
+.btn-linea{background:transparent;border:1.5px solid var(--tinta);color:var(--tinta)}
+@media (max-width:860px){.cab nav{display:none}}
+@media (max-width:760px){.cab>.btn{display:none}}
+
+/* LA VENTANA: marco con travesaños */
+.ventana{position:relative;background:var(--marco);padding:14px;box-shadow:inset 0 0 0 1px #D9D3C4,0 1px 0 #fff,0 18px 30px -22px rgba(29,39,51,.55)}
+.ventana .vidrio{position:relative;overflow:hidden;background:linear-gradient(180deg,#9FB8C9 0%,#C9D6DE 46%,#6E7F8F 47%,#4B5C6C 62%,#7E8A64 63%,#9A9763 100%)}
+.ventana .vidrio::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(var(--marco),var(--marco)) center/12px 100% no-repeat,linear-gradient(var(--marco),var(--marco)) center/100% 12px no-repeat;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.ventana.sin-cruz .vidrio::after{background:none}
+.ventana img{width:100%;height:100%;object-fit:cover}
+.ventana .vidrio .rot{position:absolute;left:12px;bottom:10px;font:500 13px/1.3 var(--sans);color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.6);z-index:1}
+.alfeizar{height:16px;margin:0 -22px;max-width:calc(100% + 44px);background:linear-gradient(#F3F0E8,#D9D3C4);box-shadow:0 8px 14px -10px rgba(29,39,51,.5);border-radius:2px}
+
+/* portada */
+.portada{display:grid;grid-template-columns:1.25fr 1fr;gap:56px;align-items:center;padding:24px 0 72px}
+.portada .vidrio{aspect-ratio:5/4}
+.portada h1{font-size:clamp(38px,5.4vw,66px);color:var(--tinta)}
+.portada .bajada{font:400 20px/1.5 var(--serif);color:var(--tinta-2);margin:22px 0 28px;max-width:34ch}
+.portada .acc{display:flex;gap:12px;flex-wrap:wrap}
+.datos-rapidos{display:flex;gap:28px;flex-wrap:wrap;margin-top:34px;padding-top:20px;border-top:1px solid #CFC9BA;font-size:15px;color:var(--tinta-2)}
+.datos-rapidos b{display:block;font:500 26px/1.1 var(--sc);color:var(--tinta)}
+@media (max-width:860px){.portada{grid-template-columns:1fr;gap:34px;padding-top:8px}.alfeizar{margin:0;max-width:100%}}
+
+/* tira de la pileta */
+.pileta{background:var(--lejania);color:#EAF0F5;padding:46px 0}
+.pileta .env{display:grid;grid-template-columns:1fr 1.5fr;gap:40px;align-items:center}
+.pileta h2{font-size:clamp(28px,3.4vw,40px);color:#fff}
+.pileta p{color:#C9D6E2;margin:12px 0 0;max-width:42ch}
+.meses{display:grid;grid-template-columns:repeat(12,1fr);gap:6px}
+.mes{text-align:center;font:600 13px/1 var(--sans)}
+.mes i{display:block;height:58px;border-radius:2px;margin-bottom:8px;background:linear-gradient(180deg,#7FB4C9,#4E8FAA);position:relative}
+.mes i::after{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:#fff;opacity:.5}
+.meses-nota{grid-column:1/-1;font-size:14px;color:#C9D6E2;margin-top:10px}
+@media (max-width:860px){.pileta .env{grid-template-columns:1fr}.mes i{height:40px}.mes{font-size:11px}}
+
+/* secciones */
+.sec{padding-top:84px;padding-bottom:84px}
+.sec-t{display:grid;grid-template-columns:1fr 1.2fr;gap:40px;align-items:end;margin-bottom:40px}
+.sec-t h2{font-size:clamp(30px,3.8vw,46px)}
+.sec-t p{font:400 19px/1.55 var(--serif);color:var(--tinta-2);margin:0;max-width:52ch}
+@media (max-width:860px){.sec-t{grid-template-columns:1fr;gap:14px}}
+
+/* placas de unidades */
+.unidades{display:grid;grid-template-columns:330px 1fr;gap:48px;align-items:start}
+.placas{display:flex;flex-direction:column;gap:22px}
+.grupo-t{font:600 14px/1.3 var(--sans);color:var(--tinta-2);margin-bottom:10px}
+.fila-placas{display:flex;flex-wrap:wrap;gap:10px}
+.placa{min-width:62px;height:62px;padding:0 14px;display:flex;align-items:center;justify-content:center;background:#F7F5EF;border:2px solid var(--tinta);border-radius:6px;font:500 30px/1 var(--sc);color:var(--tinta);cursor:pointer;box-shadow:inset 0 0 0 3px #F7F5EF,inset 0 0 0 4px rgba(29,39,51,.35);transition:background .15s,color .15s}
+.placa.loft{font-size:22px}
+.placa:hover{background:#fff}
+.placa[aria-pressed="true"]{background:var(--lejania);color:#fff;border-color:var(--lejania);box-shadow:inset 0 0 0 3px var(--lejania),inset 0 0 0 4px rgba(255,255,255,.45)}
+.placa.encaja{border-color:var(--pino);background:#E3EBDF}
+.placa.encaja[aria-pressed="true"]{background:var(--pino);color:#fff}
+.nota-placas{font-size:14px;color:var(--tinta-2)}
+.ficha .vidrio{aspect-ratio:16/10}
+.ficha-cuerpo{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:30px}
+.ficha h3{font-size:36px}
+.ficha .cap{font:400 18px/1.4 var(--serif);color:var(--tinta-2);margin:6px 0 16px}
+.ficha ul{margin:0;padding:0;list-style:none;font-size:15.5px}
+.ficha li{padding:7px 0;border-bottom:1px solid #D6D0C2}
+.ficha li:last-child{border-bottom:0}
+.miniaturas{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.miniaturas button{width:64px;height:46px;padding:0;border:2px solid transparent;background:linear-gradient(135deg,#B9CCD8,#7E8A64);cursor:pointer;overflow:hidden}
+.miniaturas button[aria-current="true"]{border-color:var(--lejania)}
+.miniaturas img{width:100%;height:100%;object-fit:cover}
+@media (max-width:900px){.unidades{grid-template-columns:1fr;gap:30px}.ficha-cuerpo{grid-template-columns:1fr;gap:16px}}
+
+/* atendido por sus dueños */
+.duenos{background:var(--yeso-2);border-top:1px solid #D6D0C2;border-bottom:1px solid #D6D0C2}
+.charla{display:grid;grid-template-columns:1fr 1.15fr;gap:40px;align-items:start}
+.preg{background:#fff;border:1px solid #D6D0C2;border-radius:4px;padding:26px}
+.preg h3{font-size:26px;margin-bottom:6px}
+.preg .sub{font-size:15px;color:var(--tinta-2);margin-bottom:18px}
+.campos{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.campo label{display:block;font:600 13.5px/1.3 var(--sans);color:var(--tinta-2);margin-bottom:6px}
+.campo input,.campo select{width:100%;min-width:0;padding:11px 12px;border:1.5px solid #BDB6A6;border-radius:3px;background:#fff;font-size:16px}
+.campo.ancho{grid-column:1/-1}
+.paso{display:flex;align-items:center;border:1.5px solid #BDB6A6;border-radius:3px;overflow:hidden;width:max-content}
+.paso button{width:44px;height:44px;border:0;background:#F1EEE6;font-size:20px;cursor:pointer}
+.paso output{min-width:56px;text-align:center;font:600 18px/1 var(--sans)}
+.preg .btn{width:100%;margin-top:18px}
+.hilo{display:flex;flex-direction:column;gap:14px}
+.msj{max-width:92%;padding:16px 18px;border-radius:14px;font-size:15.5px;line-height:1.5}
+.msj.huesped{align-self:flex-end;background:var(--lejania);color:#fff;border-bottom-right-radius:3px}
+.msj.casa{align-self:flex-start;background:#fff;border:1px solid #D6D0C2;border-bottom-left-radius:3px}
+.msj .de{display:block;font:600 12.5px/1 var(--sans);opacity:.75;margin-bottom:8px}
+.opciones{display:flex;flex-direction:column;gap:8px;margin:12px 0 4px}
+.opc{display:flex;justify-content:space-between;gap:12px;align-items:center;width:100%;text-align:left;padding:11px 13px;border:1.5px solid #D0CABB;border-radius:6px;background:#FAF9F5;cursor:pointer}
+.opc:hover{border-color:var(--lejania)}
+.opc[aria-pressed="true"]{border-color:var(--pino);background:#E3EBDF}
+.opc b{font:500 19px/1.1 var(--sc)}
+.opc small{display:block;color:var(--tinta-2);font-size:13px}
+.opc .precio{font-weight:700;white-space:nowrap}
+.cuenta{margin-top:12px;border-top:1px dashed #C9C2B2;padding-top:12px;font-size:15px}
+.cuenta div{display:flex;justify-content:space-between;gap:10px;padding:3px 0}
+.cuenta .tot{font-weight:700;font-size:17px}
+.cuenta .sena{color:var(--pino);font-weight:700}
+.mp{margin-top:14px;width:100%;background:#009EE3;color:#fff}
+.mp:hover{background:#0089C6}
+.letra{font-size:13px;color:var(--tinta-2);margin:10px 0 0}
+@media (max-width:900px){.charla{grid-template-columns:1fr}}
+@media (max-width:420px){.campos{grid-template-columns:1fr}}
+
+/* calendario */
+.cal-cab{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center;margin-bottom:18px}
+.cal-cab select{padding:10px 12px;border:1.5px solid #BDB6A6;border-radius:3px;background:#fff}
+.cal-nav{display:flex;gap:8px}
+.cal-nav button{width:42px;height:42px;border:1.5px solid var(--tinta);background:transparent;border-radius:3px;cursor:pointer;font-size:18px}
+.meses-cal{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.mcal h4{font:500 22px/1 var(--sc);margin:0 0 12px}
+.grilla{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.grilla .ds{font:600 12px/1 var(--sans);color:var(--tinta-2);text-align:center;padding:6px 0}
+.dia{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font:500 14px/1 var(--sans);border-radius:2px;background:#F7F5EF;border:1px solid #DDD7C9}
+.dia.ocu{background:repeating-linear-gradient(135deg,#D9D3C5 0 4px,#E6E1D5 4px 8px);color:#8A8577;text-decoration:line-through}
+.dia.alta{box-shadow:inset 0 -3px 0 var(--cuarcita)}
+.dia.vacio{background:transparent;border:0}
+.dia.pasado{opacity:.35}
+.leyenda{display:flex;flex-wrap:wrap;gap:18px;margin-top:16px;font-size:14px;color:var(--tinta-2)}
+.leyenda span{display:inline-flex;align-items:center;gap:7px}
+.leyenda i{width:16px;height:16px;display:inline-block;border:1px solid #DDD7C9;background:#F7F5EF}
+.leyenda i.o{background:repeating-linear-gradient(135deg,#D9D3C5 0 4px,#E6E1D5 4px 8px)}
+.leyenda i.a{box-shadow:inset 0 -3px 0 var(--cuarcita)}
+.sync{display:flex;gap:10px;align-items:center;margin-top:20px;padding:12px 14px;background:#fff;border:1px solid #D6D0C2;border-radius:4px;font-size:14.5px}
+.sync b{color:var(--pino)}
+@media (max-width:760px){.meses-cal{grid-template-columns:1fr}}
+
+/* temporadas */
+.temporadas{width:100%;border-collapse:collapse;font-size:15.5px}
+.temporadas th,.temporadas td{text-align:left;padding:13px 12px;border-bottom:1px solid #D0CABB;vertical-align:top}
+.temporadas th{font:600 13.5px/1.3 var(--sans);color:var(--tinta-2);border-bottom:2px solid var(--tinta)}
+.temporadas td:first-child{font:500 19px/1.2 var(--sc)}
+.temporadas .num{text-align:right;white-space:nowrap}
+.tag{display:inline-block;font:600 12px/1 var(--sans);padding:5px 8px;border-radius:2px}
+.tag.alta{background:#F1DCD5;color:#8A4636}
+.tag.media{background:#EFE6C8;color:#6F5C1F}
+.tag.baja{background:#DCE7DA;color:#35513A}
+.tabla-scroll{overflow-x:auto}
+.tabla-scroll table{min-width:640px}
+
+/* postales del pueblo */
+.postales{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+.postal{background:var(--marco);padding:12px 12px 18px;box-shadow:0 14px 26px -22px rgba(29,39,51,.6);border:1px solid #DDD7C9}
+.postal .dib{aspect-ratio:4/3;margin-bottom:14px}
+.postal h3{font-size:22px;margin-bottom:6px}
+.postal p{font-size:15px;color:var(--tinta-2);margin:0}
+@media (max-width:900px){.postales{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.postales{grid-template-columns:1fr}}
+
+/* llegar */
+.llegar{display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:center}
+.llegar .vidrio{aspect-ratio:4/3;background:#DCE3E6}
+.llegar svg{width:100%;height:100%}
+.llegar dl{margin:0}
+.llegar dt{font:500 20px/1.2 var(--sc);margin-top:18px}
+.llegar dd{margin:6px 0 0;color:var(--tinta-2)}
+@media (max-width:860px){.llegar{grid-template-columns:1fr}}
+
+/* faq */
+.faq{max-width:820px}
+.faq details{border-bottom:1px solid #D0CABB;padding:4px 0}
+.faq summary{cursor:pointer;list-style:none;padding:16px 36px 16px 0;position:relative;font:500 21px/1.3 var(--sc)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";position:absolute;right:4px;top:12px;font:400 26px/1 var(--sans)}
+.faq details[open] summary::after{content:"–"}
+.faq details p{color:var(--tinta-2);max-width:62ch}
+
+/* pie */
+.pie{background:var(--tinta);color:#D7DEE5;padding:64px 0 110px}
+.pie .env{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:40px}
+.pie h2{color:#fff;font-size:34px;margin-bottom:12px}
+.pie a{color:#fff}
+.pie p{font-size:15.5px}
+.pie .legal{grid-column:1/-1;border-top:1px solid #3A4553;padding-top:20px;font-size:13px;color:#9AA6B3}
+@media (max-width:860px){.pie .env{grid-template-columns:1fr;gap:24px}}
+
+/* barra fija celular */
+.barra{position:fixed;left:0;right:0;bottom:0;display:none;gap:8px;padding:10px 12px;background:rgba(232,228,218,.97);border-top:1px solid #CFC9BA;z-index:20}
+.barra .btn{flex:1;padding:14px 10px}
+.btn-wa{background:#1F7A4D;color:#fff}
+@media (max-width:760px){.barra{display:flex}}
+
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(29,39,51,.55);display:none;align-items:center;justify-content:center;padding:16px;z-index:40}
+.modal.abierto{display:flex}
+.modal .caja{background:#fff;max-width:440px;width:100%;border-radius:6px;padding:26px}
+.modal h3{font-size:26px;margin-bottom:10px}
+.modal .mp-logo{display:inline-block;background:#009EE3;color:#fff;font:700 13px/1 var(--sans);padding:6px 9px;border-radius:3px;margin-bottom:14px}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="aviso" role="note"><strong>Prototipo de demostración preparado para Complejo Buena Vista.</strong> Precios ilustrativos y disponibilidad de ejemplo; no se toman reservas ni pagos reales.</div>
+
+<header class="env cab">
+  <a class="marca" href="#"><b>Buena Vista</b><span>Cabañas · Sierra de la Ventana</span></a>
+  <nav aria-label="Secciones">
+    <a href="#cabanas">Cabañas</a><a href="#consulta">Consultar</a><a href="#disponibilidad">Disponibilidad</a><a href="#temporadas">Temporadas</a><a href="#llegar">Cómo llegar</a>
+  </nav>
+  <a class="btn btn-azul" href="#consulta">Ver si hay lugar</a>
+</header>
+
+<main>
+<section class="env portada">
+  <div>
+    <div class="ventana"><div class="vidrio">
+      <img src="https://www.guiastodo.com.ar/minisitios/001473/25985.jpg" alt="Complejo Buena Vista, Sierra de la Ventana" onerror="this.remove()">
+      <span class="rot">Naposta casi Av. Tres Picos</span>
+    </div></div>
+    <div class="alfeizar" aria-hidden="true"></div>
+  </div>
+  <div>
+    <h1>Siete cabañas y una pileta cubierta que no cierra en invierno.</h1>
+    <p class="bajada">En Sierra de la Ventana, abierto todo el año y siempre atendido por sus dueños. Elegí fechas y te decimos al instante qué cabaña te queda.</p>
+    <div class="acc">
+      <a class="btn btn-azul" href="#consulta">Consultar fechas</a>
+      <a class="btn btn-linea" href="#cabanas">Ver las cabañas</a>
+    </div>
+    <div class="datos-rapidos">
+      <div><b>7</b>cabañas, de 2 a 4 personas</div>
+      <div><b>12</b>meses con pileta climatizada</div>
+      <div><b>3</b>tarjetas: Visa, Mastercard y Cabal</div>
+    </div>
+  </div>
+</section>
+
+<section class="pileta" aria-labelledby="t-pileta">
+  <div class="env">
+    <div>
+      <h2 id="t-pileta">La pileta es cubierta y climatizada.</h2>
+      <p>Está habilitada todo el año, así que en julio también se usa. Es el dato que más preguntan los que vienen fuera del verano.</p>
+    </div>
+    <div class="meses" aria-label="Meses con pileta habilitada: los doce">
+      <div class="mes"><i></i>ene</div><div class="mes"><i></i>feb</div><div class="mes"><i></i>mar</div><div class="mes"><i></i>abr</div><div class="mes"><i></i>may</div><div class="mes"><i></i>jun</div><div class="mes"><i></i>jul</div><div class="mes"><i></i>ago</div><div class="mes"><i></i>sep</div><div class="mes"><i></i>oct</div><div class="mes"><i></i>nov</div><div class="mes"><i></i>dic</div>
+      <p class="meses-nota">Pileta climatizada y cubierta, habilitada los doce meses.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec env" id="cabanas" aria-labelledby="t-cab">
+  <div class="sec-t">
+    <h2 id="t-cab">Cada cabaña tiene su número.</h2>
+    <p>Las 1, 2 y el Loft son para parejas o tres personas. Las 5, 6, 7 y 8 son para familias de hasta cuatro. Tocá un número para ver la cabaña.</p>
+  </div>
+  <div class="unidades">
+    <div class="placas">
+      <div>
+        <div class="grupo-t">Para 2 o 3 personas</div>
+        <div class="fila-placas" id="placas-a"></div>
+      </div>
+      <div>
+        <div class="grupo-t">Para 4 personas</div>
+        <div class="fila-placas" id="placas-b"></div>
+      </div>
+      <p class="nota-placas" id="nota-placas">Todas tienen ropa blanca, aire acondicionado, calefacción a gas, parrilla individual, cocina con horno, TV por cable y wifi.</p>
+    </div>
+    <article class="ficha" id="ficha" aria-live="polite">
+      <div class="ventana sin-cruz"><div class="vidrio" id="ficha-vidrio"></div></div>
+      <div class="miniaturas" id="miniaturas"></div>
+      <div class="ficha-cuerpo">
+        <div>
+          <h3 id="ficha-nombre"></h3>
+          <p class="cap" id="ficha-cap"></p>
+          <button class="btn btn-azul" id="ficha-consultar" type="button">Consultar esta cabaña</button>
+        </div>
+        <ul id="ficha-lista"></ul>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="sec duenos" id="consulta" aria-labelledby="t-cons">
+  <div class="env">
+    <div class="sec-t">
+      <h2 id="t-cons">Atendido por sus dueños, también a las once de la noche.</h2>
+      <p>Hoy esta pregunta llega por WhatsApp y alguien tiene que mirar la planilla. Acá el huésped la hace y la respuesta sale sola, con las cabañas libres y el total.</p>
+    </div>
+    <div class="charla">
+      <form class="preg" id="form" novalidate>
+        <h3>¿Tienen lugar?</h3>
+        <p class="sub">Elegí fechas y cuántos son.</p>
+        <div class="campos">
+          <div class="campo"><label for="in">Llegada</label><input type="date" id="in" required></div>
+          <div class="campo"><label for="out">Salida</label><input type="date" id="out" required></div>
+          <div class="campo ancho"><label id="l-pers">Personas</label>
+            <div class="paso" role="group" aria-labelledby="l-pers">
+              <button type="button" id="menos" aria-label="Una persona menos">−</button>
+              <output id="pers">2</output>
+              <button type="button" id="mas" aria-label="Una persona más">+</button>
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-azul" type="submit">Preguntar</button>
+        <p class="letra">Respuesta automática con la disponibilidad del calendario. Después escribe el dueño para cerrar los detalles.</p>
+      </form>
+      <div class="hilo" id="hilo">
+        <div class="msj casa"><span class="de">Buena Vista</span>Hola, ¿para qué fechas y cuántas personas? Te digo enseguida qué cabañas están libres.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec env" id="disponibilidad" aria-labelledby="t-disp">
+  <div class="sec-t">
+    <h2 id="t-disp">Disponibilidad por cabaña</h2>
+    <p>El calendario muestra noche por noche qué está ocupado. Los días con borde rosado son temporada alta.</p>
+  </div>
+  <div class="cal-cab">
+    <label>Cabaña &nbsp;<select id="cal-unidad" aria-label="Cabaña del calendario"></select></label>
+    <div class="cal-nav"><button type="button" id="prev" aria-label="Meses anteriores">‹</button><button type="button" id="next" aria-label="Meses siguientes">›</button></div>
+  </div>
+  <div class="meses-cal" id="meses-cal"></div>
+  <div class="leyenda"><span><i></i>Libre</span><span><i class="o"></i>Ocupado</span><span><i class="a"></i>Temporada alta</span></div>
+  <div class="sync"><b>●</b> Se sincroniza con Booking y Airbnb: lo que se reserva allá se bloquea acá, y al revés. Ocupación de ejemplo.</div>
+</section>
+
+<section class="sec env" id="temporadas" aria-labelledby="t-temp" style="padding-top:20px">
+  <div class="sec-t">
+    <h2 id="t-temp">Temporadas 2026-27</h2>
+    <p>Precio por noche y por cabaña. Los valores son ilustrativos para el prototipo; el complejo carga los suyos.</p>
+  </div>
+  <div class="tabla-scroll">
+  <table class="temporadas">
+    <thead><tr><th>Temporada</th><th>Fechas</th><th>Tipo</th><th class="num">Loft</th><th class="num">1 y 2</th><th class="num">5 a 8</th></tr></thead>
+    <tbody id="tbody-temp"></tbody>
+  </table>
+  </div>
+</section>
+
+<section class="sec env" aria-labelledby="t-pueblo">
+  <div class="sec-t">
+    <h2 id="t-pueblo">Lo que se ve desde acá</h2>
+    <p>Sierra de la Ventana se visita todo el año: cerros para subir, arroyos, cascadas y pueblos chicos alrededor.</p>
+  </div>
+  <div class="postales">
+    <article class="postal"><div class="ventana sin-cruz dib"><div class="vidrio" style="height:100%">
+      <svg viewBox="0 0 400 300" role="img" aria-label="Dibujo del Cerro Ventana con su abertura" preserveAspectRatio="xMidYMid slice"><rect width="400" height="300" fill="#B9CCD8"/><path d="M0 230 L80 150 L150 190 L210 90 L270 160 L330 120 L400 200 L400 300 L0 300Z" fill="#3E5C7C"/><ellipse cx="214" cy="128" rx="11" ry="8" fill="#B9CCD8"/><path d="M0 260 Q200 220 400 250 L400 300 L0 300Z" fill="#9A9763"/></svg>
+    </div></div><h3>Cerro Ventana</h3><p>El trekking más buscado de la zona, por la abertura natural en la roca que le da nombre.</p></article>
+    <article class="postal"><div class="ventana sin-cruz dib"><div class="vidrio" style="height:100%">
+      <svg viewBox="0 0 400 300" role="img" aria-label="Dibujo de sierras y pastizal" preserveAspectRatio="xMidYMid slice"><rect width="400" height="300" fill="#CFDCE3"/><path d="M0 200 L120 120 L200 170 L300 100 L400 170 L400 300 L0 300Z" fill="#5B7590"/><path d="M0 240 Q120 210 240 235 T400 225 L400 300 L0 300Z" fill="#C2A85C"/><g stroke="#7E6B33" stroke-width="2"><path d="M40 270 l6 -22M70 280 l-4 -20M300 275 l5 -24M330 268 l-3 -18"/></g></svg>
+    </div></div><h3>Parque Provincial Ernesto Tornquist</h3><p>Reserva con senderos, flora y fauna autóctona y vistas panorámicas de la sierra.</p></article>
+    <article class="postal"><div class="ventana sin-cruz dib"><div class="vidrio" style="height:100%">
+      <svg viewBox="0 0 400 300" role="img" aria-label="Dibujo de las ruinas del Club Hotel" preserveAspectRatio="xMidYMid slice"><rect width="400" height="300" fill="#D8E0E4"/><path d="M0 230 L400 210 L400 300 L0 300Z" fill="#7E8A64"/><g fill="#C48A78"><rect x="110" y="120" width="180" height="100"/><rect x="180" y="90" width="40" height="30"/></g><g fill="#D8E0E4"><rect x="130" y="140" width="20" height="30"/><rect x="170" y="140" width="20" height="30"/><rect x="210" y="140" width="20" height="30"/><rect x="250" y="140" width="20" height="30"/><path d="M290 120 L260 220 L290 220Z"/></g></svg>
+    </div></div><h3>Ruinas del Club Hotel</h3><p>Lo que quedó de un proyecto de lujo de principios del siglo XX, en Villa Ventana.</p></article>
+    <article class="postal"><div class="ventana sin-cruz dib"><div class="vidrio" style="height:100%">
+      <svg viewBox="0 0 400 300" role="img" aria-label="Dibujo del portal art decó" preserveAspectRatio="xMidYMid slice"><rect width="400" height="300" fill="#E6E2D6"/><path d="M0 250 L400 250 L400 300 L0 300Z" fill="#9A9763"/><g fill="#F7F5EF" stroke="#2C4560" stroke-width="4"><path d="M150 250 L150 110 L200 60 L250 110 L250 250 Z"/></g><path d="M175 250 L175 140 L225 140 L225 250" fill="none" stroke="#2C4560" stroke-width="4"/><circle cx="200" cy="105" r="14" fill="none" stroke="#2C4560" stroke-width="4"/></svg>
+    </div></div><h3>Saldungaray</h3><p>El portal del cementerio, obra de Francisco Salamone, ícono del art decó argentino.</p></article>
+    <article class="postal"><div class="ventana sin-cruz dib"><div class="vidrio" style="height:100%">
+      <svg viewBox="0 0 400 300" role="img" aria-label="Dibujo de una cascada entre rocas" preserveAspectRatio="xMidYMid slice"><rect width="400" height="300" fill="#BFD0DA"/><path d="M0 300 L0 80 L150 60 L170 300Z M400 300 L400 70 L240 60 L230 300Z" fill="#4B5C6C"/><path d="M168 60 L240 60 L232 300 L172 300Z" fill="#EAF2F6"/><g stroke="#9FC3D6" stroke-width="3"><path d="M185 70 V290M205 70 V290M222 70 V290"/></g></svg>
+    </div></div><h3>Cascadas, cuevas y pinturas rupestres</h3><p>Senderismo, rappel, cabalgatas y bici de montaña por toda la comarca.</p></article>
+    <article class="postal"><div class="ventana sin-cruz dib"><div class="vidrio" style="height:100%">
+      <svg viewBox="0 0 400 300" role="img" aria-label="Dibujo de un green de golf" preserveAspectRatio="xMidYMid slice"><rect width="400" height="300" fill="#C9D9E2"/><path d="M0 190 L140 130 L260 170 L400 120 L400 300 L0 300Z" fill="#6E8597"/><path d="M0 230 Q200 200 400 230 L400 300 L0 300Z" fill="#7F9A5A"/><line x1="250" y1="150" x2="250" y2="225" stroke="#1D2733" stroke-width="3"/><path d="M250 150 L285 160 L250 170Z" fill="#C48A78"/></svg>
+    </div></div><h3>Golf y Fiesta de Reyes</h3><p>Cancha de golf en el pueblo y, en enero, la Fiesta Provincial de los Reyes Magos.</p></article>
+  </div>
+</section>
+
+<section class="sec env" id="llegar" aria-labelledby="t-llegar" style="padding-top:20px">
+  <div class="sec-t">
+    <h2 id="t-llegar">Cómo llegar</h2>
+    <p>Naposta casi Av. Tres Picos, Sierra de la Ventana, partido de Tornquist, provincia de Buenos Aires.</p>
+  </div>
+  <div class="llegar">
+    <div class="ventana sin-cruz"><div class="vidrio">
+      <svg viewBox="0 0 480 360" role="img" aria-label="Esquema de rutas desde Buenos Aires y Bahía Blanca hasta Sierra de la Ventana">
+        <rect width="480" height="360" fill="#DCE3E6"/>
+        <path d="M60 300 L180 250 L300 190 L420 70" fill="none" stroke="#9AA6B3" stroke-width="10" stroke-linecap="round"/>
+        <path d="M60 300 L180 250 L300 190 L420 70" fill="none" stroke="#fff" stroke-width="3" stroke-dasharray="10 8"/>
+        <path d="M70 200 L180 250" fill="none" stroke="#9AA6B3" stroke-width="8" stroke-linecap="round"/>
+        <path d="M110 250 L150 225 L190 238 L230 222 L250 245 L200 262 L140 266Z" fill="#3E5C7C" opacity=".3"/>
+        <circle cx="180" cy="250" r="11" fill="#C48A78" stroke="#fff" stroke-width="3"/>
+        <text x="196" y="276" font-family="Red Hat Text, sans-serif" font-size="16" font-weight="700" fill="#1D2733">Sierra de la Ventana</text>
+        <circle cx="420" cy="70" r="6" fill="#1D2733"/><text x="300" y="58" font-family="Red Hat Text, sans-serif" font-size="14" fill="#1D2733">Buenos Aires</text>
+        <circle cx="300" cy="190" r="6" fill="#1D2733"/><text x="312" y="205" font-family="Red Hat Text, sans-serif" font-size="14" fill="#1D2733">Azul</text>
+        <circle cx="60" cy="300" r="6" fill="#1D2733"/><text x="20" y="328" font-family="Red Hat Text, sans-serif" font-size="14" fill="#1D2733">Bahía Blanca</text>
+        <text x="330" y="140" font-family="Red Hat Text, sans-serif" font-size="12" fill="#4A5562">RN 3</text>
+        <text x="200" y="232" font-family="Red Hat Text, sans-serif" font-size="12" fill="#4A5562">RN 226 / RP 76</text>
+      </svg>
+    </div></div>
+    <dl>
+      <dt>En auto desde Buenos Aires</dt><dd>Unos 550 km, de 6 a 7 horas: Ruta Nacional 3 hasta Azul, Ruta Nacional 226 y Ruta Provincial 76.</dd>
+      <dt>En micro</dt><dd>Desde Retiro, de 8 a 10 horas. Algunos llegan directo y otros a Bahía Blanca, desde donde sigue un micro o una combi.</dd>
+      <dt>Ya en el pueblo</dt><dd><a href="https://www.google.com/maps?q=-38.1319687,-61.8109841" target="_blank" rel="noopener">Abrir la ubicación en Google Maps</a>. Cada cabaña tiene su lugar para el auto.</dd>
+    </dl>
+  </div>
+</section>
+
+<section class="sec env" aria-labelledby="t-faq" style="padding-top:20px">
+  <div class="sec-t"><h2 id="t-faq">Preguntas que siempre llegan</h2><p>Las respuestas que hoy se escriben a mano, una vez y para todos.</p></div>
+  <div class="faq">
+    <details><summary>¿La pileta se puede usar en invierno?</summary><p>Sí. Es cubierta y climatizada, y está habilitada todo el año.</p></details>
+    <details><summary>¿Incluye ropa blanca?</summary><p>Sí, la ropa blanca está incluida y es para uso exclusivo en la cabaña.</p></details>
+    <details><summary>¿Tienen desayuno?</summary><p>Por el momento no ofrecen servicio de desayuno. Todas las cabañas tienen cocina con horno, microondas y heladera.</p></details>
+    <details><summary>¿Cómo se paga?</summary><p>Aceptan Visa, Mastercard y Cabal. En esta web la seña se paga con Mercado Pago y el resto al llegar.</p></details>
+    <details><summary>¿Se puede ir con mascota?</summary><p>Consultalo antes de reservar: el complejo lo confirma según la cabaña y la fecha.</p></details>
+    <details><summary>¿A qué hora es el ingreso y la salida?</summary><p>El horario lo confirma el dueño con la reserva.</p></details>
+  </div>
+</section>
+</main>
+
+<footer class="pie" id="contacto">
+  <div class="env">
+    <div>
+      <h2>Complejo Buena Vista</h2>
+      <p>Cabañas confortables, hospitalidad y excelente servicio. Abierto todo el año, siempre atendido por sus dueños.</p>
+    </div>
+    <div>
+      <p><b>WhatsApp y teléfono</b><br><a href="https://wa.me/5492914429352">(0291) 15-442-9352</a></p>
+      <p><b>Mail</b><br><a href="mailto:info@complejobuenavista.com.ar">info@complejobuenavista.com.ar</a></p>
+    </div>
+    <div>
+      <p><b>Redes</b><br><a href="https://www.instagram.com/complejobv" target="_blank" rel="noopener">Instagram @complejobv</a><br><a href="https://www.facebook.com/complejoBV" target="_blank" rel="noopener">Facebook</a></p>
+      <p><b>Dirección</b><br>Naposta casi Av. Tres Picos, Sierra de la Ventana</p>
+    </div>
+    <p class="legal">Prototipo de demostración preparado para Complejo Buena Vista por Resolviendo Kos (resolviendokos.com). Fotos y datos de las cabañas tomados de la web del complejo. Precios, ocupación y pago son de ejemplo.</p>
+  </div>
+</footer>
+
+<div class="barra"><a class="btn btn-azul" href="#consulta">Ver si hay lugar</a><a class="btn btn-wa" href="https://wa.me/5492914429352">WhatsApp</a></div>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="m-t">
+  <div class="caja">
+    <span class="mp-logo">Mercado Pago · demo</span>
+    <h3 id="m-t">Seña lista para pagar</h3>
+    <p id="m-txt"></p>
+    <p class="letra">En la versión real este botón abre el pago de Mercado Pago y la cabaña queda bloqueada en el calendario, en Booking y en Airbnb.</p>
+    <button class="btn btn-azul" type="button" id="m-cerrar" style="width:100%;margin-top:12px">Cerrar</button>
+  </div>
+</div>
+
+<script>
+(function(){
+var IMG='https://www.complejobuenavista.com.ar/images/001473/bloques/';
+var U=[
+ {id:'loft',n:'Loft',titulo:'Monoambiente (Loft)',cap:2,grupo:'a',tipo:'loft',
+  txt:'Hasta 2 personas. Cocina comedor con cama matrimonial y baño.',
+  items:['Cama matrimonial en el ambiente','Estufa ecológica y calefacción a gas','Aire acondicionado','Amplia galería','Parrilla individual techada','Baño con ducha y vanitory','Espacio para el auto'],
+  fotos:['315/img-20250212-wa0015-1jpg.webp','315/img-20250212-wa0014jpg.webp','315/img-20250212-wa0016jpg.webp','315/img-20250212-wa0009jpg.webp']},
+ {id:'1',n:'1',titulo:'Cabaña 1',cap:3,grupo:'a',tipo:'chica',
+  txt:'Hasta 3 personas. Dormitorio con cama matrimonial y cama de una plaza en la cocina comedor.',
+  items:['Dormitorio con cama matrimonial','Cama de una plaza en la cocina comedor','TV en la cocina comedor y en el dormitorio','Aire acondicionado en el dormitorio','Parrilla individual techada','Horno, microondas y heladera con freezer'],
+  fotos:['317/img-20240712-wa0008-1jpg.webp','317/img-20240712-wa0004jpg.webp','317/img-20240805-wa0034-1jpg.webp','317/img-20240805-wa0033-1jpg.webp']},
+ {id:'2',n:'2',titulo:'Cabaña 2',cap:3,grupo:'a',tipo:'chica',
+  txt:'Hasta 3 personas. Dormitorio con cama matrimonial y cama de una plaza en la cocina comedor.',
+  items:['Dormitorio con cama matrimonial','Cama de una plaza en la cocina comedor','Aire acondicionado en el dormitorio','Parrilla individual techada','Horno, microondas y heladera con freezer','Ventiladores'],
+  fotos:['318/img-20240805-wa0039jpg.webp','318/img-20250212-wa0000jpg.webp','318/img-20241215-wa0003jpg.webp','318/img-20240805-wa0038jpg.webp']},
+ {id:'5',n:'5',titulo:'Cabaña 5',cap:4,grupo:'b',tipo:'grande',
+  txt:'Hasta 4 personas. Dormitorio con cama matrimonial y cama marinera en la cocina comedor.',
+  items:['Dormitorio con cama matrimonial','Cama marinera en la cocina comedor','Baño con antebaño','Fogón con parrilla individual','Aire acondicionado en el dormitorio','Espacio para el auto'],
+  fotos:['321/img-20240805-wa0022-1jpg.webp','321/img-20240805-wa0024-1jpg.webp','321/img-20240805-wa0021jpg.webp','321/img-20240805-wa0023-1jpg.webp']},
+ {id:'6',n:'6',titulo:'Cabaña 6',cap:4,grupo:'b',tipo:'grande',
+  txt:'Hasta 4 personas. Dormitorio con cama matrimonial y cama marinera en la cocina comedor.',
+  items:['Dormitorio con cama matrimonial','Cama marinera en la cocina comedor','Fogón con parrilla individual','Aire acondicionado en el dormitorio','Horno, microondas y heladera con freezer','Espacio para el auto'],
+  fotos:['322/img-20240712-wa0008jpg.webp','322/img-20240805-wa0026-1jpg.webp','322/img-20250212-wa0001-1jpg.webp','322/img-20240805-wa0025-1jpg.webp']},
+ {id:'7',n:'7',titulo:'Cabaña 7',cap:4,grupo:'b',tipo:'grande',
+  txt:'Hasta 4 personas. Dormitorio con cama matrimonial y cama marinera en la cocina comedor.',
+  items:['Dormitorio con cama matrimonial','Cama marinera en la cocina comedor','Fogón con parrilla individual','Aire acondicionado en el dormitorio','Horno, microondas y heladera con freezer','Espacio para el auto'],
+  fotos:['323/img-20250212-wa0042jpg.webp','323/img-20231023-wa0068jpg.webp','323/img-20231023-wa0099jpg.webp','323/img-20250212-wa0028jpg.webp']},
+ {id:'8',n:'8',titulo:'Cabaña 8',cap:4,grupo:'b',tipo:'grande',
+  txt:'Hasta 4 personas. Dormitorio con cama matrimonial y cama cucheta en la cocina comedor.',
+  items:['Dormitorio con cama matrimonial','Cama cucheta en la cocina comedor','Baño con antebaño','Fogón con parrilla individual','Aire acondicionado en el dormitorio','Espacio para el auto'],
+  fotos:['324/img-20240805-wa0019jpg.webp','324/img-20240805-wa0020jpg.webp','324/img-20240712-wa0022jpg.webp','324/img-20240712-wa0024jpg.webp']}
+];
+/* precios ilustrativos por noche */
+var P={loft:{baja:52000,media:62000,alta:76000},chica:{baja:60000,media:72000,alta:88000},grande:{baja:74000,media:88000,alta:108000}};
+var T=[
+ {nom:'Fin de semana largo de noviembre',d:'2026-11-21',h:'2026-11-23',t:'alta',txt:'21 al 23 de noviembre de 2026'},
+ {nom:'Fin de semana largo de diciembre',d:'2026-12-05',h:'2026-12-08',t:'alta',txt:'5 al 8 de diciembre de 2026'},
+ {nom:'Fiestas',d:'2026-12-24',h:'2027-01-01',t:'media',txt:'24 de diciembre al 1 de enero'},
+ {nom:'Verano',d:'2027-01-02',h:'2027-02-28',t:'alta',txt:'2 de enero al 28 de febrero de 2027 (incluye Carnaval, 6 al 9 de febrero)'},
+ {nom:'Semana Santa',d:'2027-03-25',h:'2027-03-28',t:'alta',txt:'25 al 28 de marzo de 2027'},
+ {nom:'Vacaciones de invierno',d:'2027-07-12',h:'2027-07-31',t:'media',txt:'Julio de 2027 (fechas a confirmar por el calendario escolar)'},
+ {nom:'Resto del año',d:null,h:null,t:'baja',txt:'Días de semana y fines de semana comunes'}
+];
+function iso(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function parse(s){var p=s.split('-');return new Date(+p[0],+p[1]-1,+p[2])}
+function temp(s){for(var i=0;i<T.length;i++){if(T[i].d&&s>=T[i].d&&s<=T[i].h)return T[i].t}var d=parse(s).getDay();return (d===5||d===6)?'media':'baja'}
+function plata(n){return '$ '+Math.round(n).toLocaleString('es-AR')}
+/* ocupación de ejemplo determinística */
+function ocupado(uid,s){var h=0,k=uid+s;for(var i=0;i<k.length;i++){h=(h*31+k.charCodeAt(i))>>>0}var t=temp(s);var umbral=t==='alta'?55:t==='media'?32:16;return (h%100)<umbral}
+var hoy=new Date();hoy.setHours(0,0,0,0);
+
+/* placas y ficha */
+var sel=U[0],fotoIdx=0;
+function pintarPlacas(encajan){
+  ['a','b'].forEach(function(g){
+    var c=document.getElementById('placas-'+g);c.innerHTML='';
+    U.filter(function(u){return u.grupo===g}).forEach(function(u){
+      var b=document.createElement('button');b.type='button';b.className='placa'+(u.id==='loft'?' loft':'')+(encajan&&encajan.indexOf(u.id)>-1?' encaja':'');
+      b.textContent=u.n;b.setAttribute('aria-pressed',u===sel?'true':'false');b.setAttribute('aria-label',u.titulo+', hasta '+u.cap+' personas');
+      b.onclick=function(){sel=u;fotoIdx=0;pintarPlacas(encajan);pintarFicha()};c.appendChild(b);
+    });
+  });
+}
+function pintarFicha(){
+  var v=document.getElementById('ficha-vidrio');v.innerHTML='';
+  var im=document.createElement('img');im.src=IMG+sel.fotos[fotoIdx];im.alt=sel.titulo+', foto '+(fotoIdx+1);im.onerror=function(){this.remove()};v.appendChild(im);
+  var r=document.createElement('span');r.className='rot';r.textContent=sel.titulo;v.appendChild(r);
+  var m=document.getElementById('miniaturas');m.innerHTML='';
+  sel.fotos.forEach(function(f,i){var b=document.createElement('button');b.type='button';b.setAttribute('aria-label','Ver foto '+(i+1));b.setAttribute('aria-current',i===fotoIdx?'true':'false');
+    var x=document.createElement('img');x.src=IMG+f;x.alt='';x.loading='lazy';x.onerror=function(){this.remove()};b.appendChild(x);
+    b.onclick=function(){fotoIdx=i;pintarFicha()};m.appendChild(b)});
+  document.getElementById('ficha-nombre').textContent=sel.titulo;
+  document.getElementById('ficha-cap').textContent=sel.txt;
+  var l=document.getElementById('ficha-lista');l.innerHTML='';
+  sel.items.concat(['Pileta cubierta y climatizada, todo el año']).forEach(function(t){var li=document.createElement('li');li.textContent=t;l.appendChild(li)});
+}
+document.getElementById('ficha-consultar').onclick=function(){
+  var p=document.getElementById('pers');pers=Math.min(pers,sel.cap);p.textContent=pers;preferida=sel.id;
+  document.getElementById('consulta').scrollIntoView({behavior:'smooth'});
+};
+
+/* consulta */
+var pers=2,preferida=null,elegida=null,ult=null;
+var fin=document.getElementById('in'),fout=document.getElementById('out');
+var a=new Date(hoy);a.setDate(a.getDate()+14);while(a.getDay()!==5)a.setDate(a.getDate()+1);
+var b=new Date(a);b.setDate(b.getDate()+2);
+fin.value=iso(a);fout.value=iso(b);fin.min=iso(hoy);fout.min=iso(hoy);
+document.getElementById('menos').onclick=function(){if(pers>1){pers--;document.getElementById('pers').textContent=pers}};
+document.getElementById('mas').onclick=function(){if(pers<8){pers++;document.getElementById('pers').textContent=pers}};
+function noches(i,o){var r=[],d=parse(i),e=parse(o);while(d<e){r.push(iso(d));d.setDate(d.getDate()+1)}return r}
+function libre(u,ns){return ns.every(function(s){return !ocupado(u.id,s)})}
+function costo(ids,ns){var tot=0,det={};ids.forEach(function(id){var u=U.filter(function(x){return x.id===id})[0];ns.forEach(function(s){var t=temp(s);tot+=P[u.tipo][t];det[t]=(det[t]||0)+1})});return {tot:tot,det:det}}
+function msj(cls,de,html){var d=document.createElement('div');d.className='msj '+cls;d.innerHTML='<span class="de">'+de+'</span>'+html;return d}
+document.getElementById('form').onsubmit=function(e){
+  e.preventDefault();
+  var hilo=document.getElementById('hilo');hilo.innerHTML='';
+  var i=fin.value,o=fout.value;
+  if(!i||!o||o<=i){hilo.appendChild(msj('casa','Buena Vista','La fecha de salida tiene que ser posterior a la de llegada. Corregila y volvé a preguntar.'));return}
+  if(i<iso(hoy)){hilo.appendChild(msj('casa','Buena Vista','La llegada no puede ser en una fecha que ya pasó.'));return}
+  var ns=noches(i,o);
+  var fi=parse(i).toLocaleDateString('es-AR',{day:'numeric',month:'long'}),fo=parse(o).toLocaleDateString('es-AR',{day:'numeric',month:'long'});
+  hilo.appendChild(msj('huesped','Vos','Hola, ¿tienen lugar del '+fi+' al '+fo+' para '+pers+(pers===1?' persona':' personas')+'?'));
+  var ops=[];
+  if(pers<=4){U.forEach(function(u){if(u.cap>=pers&&libre(u,ns))ops.push([u.id])})}
+  else{var L=U.filter(function(u){return libre(u,ns)});
+    for(var x=0;x<L.length;x++)for(var y=x+1;y<L.length;y++){if(L[x].cap+L[y].cap>=pers)ops.push([L[x].id,L[y].id])}
+    ops.sort(function(p,q){return costo(p,ns).tot-costo(q,ns).tot});ops=ops.slice(0,4);}
+  if(preferida){ops.sort(function(p,q){return (q.indexOf(preferida)>-1)-(p.indexOf(preferida)>-1)})}
+  var encajan=[];ops.forEach(function(p){p.forEach(function(id){if(encajan.indexOf(id)<0)encajan.push(id)})});
+  pintarPlacas(encajan);
+  if(!ops.length){hilo.appendChild(msj('casa','Buena Vista','Para esas noches no nos queda una cabaña libre para '+pers+'. Probá correr un día la llegada o escribinos por WhatsApp y vemos qué se puede hacer.'));return}
+  var html='Sí, para '+ns.length+(ns.length===1?' noche':' noches')+' tenemos libre:<div class="opciones" id="opciones"></div><div id="cuenta"></div>';
+  var m=msj('casa','Buena Vista',html);hilo.appendChild(m);
+  var cont=m.querySelector('#opciones');elegida=null;ult={ns:ns,i:fi,o:fo};
+  ops.forEach(function(p,k){
+    var nom=p.map(function(id){return id==='loft'?'Loft':'Cabaña '+id}).join(' + ');
+    var capt=p.map(function(id){return U.filter(function(u){return u.id===id})[0].cap}).reduce(function(s,c){return s+c},0);
+    var c=costo(p,ns);
+    var bt=document.createElement('button');bt.type='button';bt.className='opc';bt.setAttribute('aria-pressed','false');
+    bt.innerHTML='<span><b>'+nom+'</b><small>hasta '+capt+' personas</small></span><span class="precio">'+plata(c.tot)+'</span>';
+    bt.onclick=function(){cont.querySelectorAll('.opc').forEach(function(z){z.setAttribute('aria-pressed','false')});bt.setAttribute('aria-pressed','true');elegida={p:p,nom:nom,c:c};cuenta(m)};
+    cont.appendChild(bt);if(k===0)bt.click();
+  });
+};
+function cuenta(m){
+  var c=elegida.c,el=m.querySelector('#cuenta'),nombres={alta:'temporada alta',media:'temporada media',baja:'temporada baja'};
+  var h='<div class="cuenta">';
+  Object.keys(c.det).forEach(function(t){h+='<div><span>'+c.det[t]+(c.det[t]===1?' noche':' noches')+' de '+nombres[t]+(elegida.p.length>1?' (sumando cabañas)':'')+'</span></div>'});
+  h+='<div class="tot"><span>Total</span><span>'+plata(c.tot)+'</span></div>';
+  h+='<div class="sena"><span>Seña del 30% para reservar</span><span>'+plata(c.tot*.3)+'</span></div>';
+  h+='<div><span>El resto, al llegar (Visa, Mastercard o Cabal)</span><span>'+plata(c.tot*.7)+'</span></div></div>';
+  h+='<button class="btn mp" type="button" id="pagar">Pagar la seña con Mercado Pago</button><p class="letra">Precios ilustrativos.</p>';
+  el.innerHTML=h;
+  el.querySelector('#pagar').onclick=function(){
+    document.getElementById('m-txt').textContent=elegida.nom+', del '+ult.i+' al '+ult.o+', '+pers+(pers===1?' persona':' personas')+'. Seña: '+plata(c.tot*.3)+' de un total de '+plata(c.tot)+'.';
+    abrir();
+  };
+}
+var modal=document.getElementById('modal'),ultimoFoco=null;
+function abrir(){ultimoFoco=document.activeElement;modal.classList.add('abierto');document.getElementById('m-cerrar').focus()}
+function cerrar(){modal.classList.remove('abierto');if(ultimoFoco)ultimoFoco.focus()}
+document.getElementById('m-cerrar').onclick=cerrar;
+modal.onclick=function(e){if(e.target===modal)cerrar()};
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&modal.classList.contains('abierto'))cerrar()});
+
+/* calendario */
+var cs=document.getElementById('cal-unidad');
+U.forEach(function(u){var o=document.createElement('option');o.value=u.id;o.textContent=u.titulo;cs.appendChild(o)});
+var base=new Date(hoy.getFullYear(),hoy.getMonth(),1);
+function pintarCal(){
+  var u=U.filter(function(x){return x.id===cs.value})[0],c=document.getElementById('meses-cal');c.innerHTML='';
+  for(var k=0;k<2;k++){
+    var m=new Date(base.getFullYear(),base.getMonth()+k,1),div=document.createElement('div');div.className='mcal';
+    var nombre=m.toLocaleDateString('es-AR',{month:'long',year:'numeric'});
+    div.innerHTML='<h4>'+nombre.charAt(0).toUpperCase()+nombre.slice(1)+'</h4>';
+    var g=document.createElement('div');g.className='grilla';
+    ['lu','ma','mi','ju','vi','sá','do'].forEach(function(d){var e=document.createElement('div');e.className='ds';e.textContent=d;g.appendChild(e)});
+    var off=(m.getDay()+6)%7;for(var z=0;z<off;z++){var v=document.createElement('div');v.className='dia vacio';g.appendChild(v)}
+    var dias=new Date(m.getFullYear(),m.getMonth()+1,0).getDate();
+    for(var d=1;d<=dias;d++){var f=new Date(m.getFullYear(),m.getMonth(),d),s=iso(f),e2=document.createElement('div'),oc=ocupado(u.id,s);
+      e2.className='dia'+(f<hoy?' pasado':(oc?' ocu':''))+(temp(s)==='alta'?' alta':'');e2.textContent=d;
+      e2.setAttribute('aria-label',d+' '+(f<hoy?'pasado':(oc?'ocupado':'libre')));g.appendChild(e2)}
+    div.appendChild(g);c.appendChild(div);
+  }
+}
+cs.onchange=pintarCal;
+document.getElementById('prev').onclick=function(){var p=new Date(base.getFullYear(),base.getMonth()-1,1);if(p>=new Date(hoy.getFullYear(),hoy.getMonth(),1)){base=p;pintarCal()}};
+document.getElementById('next').onclick=function(){base=new Date(base.getFullYear(),base.getMonth()+1,1);pintarCal()};
+
+/* tabla de temporadas */
+var tb=document.getElementById('tbody-temp');
+T.forEach(function(t){var tr=document.createElement('tr');
+  tr.innerHTML='<td>'+t.nom+'</td><td>'+t.txt+'</td><td><span class="tag '+t.t+'">'+t.t+'</span></td><td class="num">'+plata(P.loft[t.t])+'</td><td class="num">'+plata(P.chica[t.t])+'</td><td class="num">'+plata(P.grande[t.t])+'</td>';tb.appendChild(tr)});
+
+pintarPlacas();pintarFicha();pintarCal();
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Complejo Buena Vista"></script>
+</body>
+</html>
