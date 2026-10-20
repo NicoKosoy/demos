@@ -1,0 +1,637 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Cabañas La Segoviana · Villa Ventana</title>
+<meta name="description" content="Prototipo de demostración: web de reservas directas para Cabañas La Segoviana, tres cabañas de tronco y piedra en Villa Ventana, Sierra de la Ventana.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@500;600;800&family=Sofia+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --mortero:#CFC9BD;   /* junta de la pirca */
+  --ceniza:#ECEAE4;    /* ceniza clara */
+  --piedra:#B5AD9F;    /* piedra de arroyo */
+  --piedra2:#9C9384;
+  --laja:#DCD6CA;
+  --tronco:#5E4129;    /* tronco */
+  --hollin:#2A231E;    /* hollín del hogar */
+  --brasa:#E28A2E;     /* brasa */
+  --brasa2:#F4B45E;
+  --liquen:#6F7D4A;    /* liquen sobre la piedra */
+  --tinta:#2A231E;
+  --serif:'Abhaya Libre', Georgia, serif;
+  --sans:'Sofia Sans', system-ui, sans-serif;
+  --gap:10px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--mortero);color:var(--tinta);font:400 17px/1.6 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--brasa);outline-offset:3px}
+h1,h2,h3{font-family:var(--serif);font-weight:800;line-height:1.02;margin:0;letter-spacing:-.005em}
+p{margin:0 0 .9em}
+.wrap{max-width:1200px;margin:0 auto;padding:0 20px}
+
+.aviso{background:var(--hollin);color:var(--ceniza);font-size:14px;line-height:1.45;padding:9px 16px;text-align:center}
+.aviso strong{color:var(--brasa2);font-weight:600}
+
+/* cabecera */
+header.top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 20px;max-width:1200px;margin:0 auto}
+.marca{font-family:var(--serif);font-weight:800;font-size:26px;line-height:1;text-decoration:none}
+.marca small{display:block;font-family:var(--sans);font-weight:500;font-size:13px;color:var(--tronco);margin-top:3px}
+nav.menu{display:flex;gap:22px;font-size:15px;font-weight:500}
+nav.menu a{text-decoration:none;border-bottom:1px solid transparent}
+nav.menu a:hover{border-color:var(--tinta)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;cursor:pointer;font:600 16px/1 var(--sans);padding:14px 20px;border-radius:3px;text-decoration:none;transition:background .15s}
+.btn-brasa{background:var(--brasa);color:var(--hollin)}
+.btn-brasa:hover{background:var(--brasa2)}
+.btn-hollin{background:var(--hollin);color:var(--ceniza)}
+.btn-hollin:hover{background:var(--tronco)}
+
+/* ===== la pirca: piedras irregulares ===== */
+.pirca{display:grid;grid-template-columns:repeat(12,1fr);gap:var(--gap);grid-auto-flow:dense}
+.st{position:relative;background:var(--laja);padding:26px 28px;min-width:0}
+.st.k1{clip-path:polygon(1.5% 3%,98% 0,100% 94%,96% 100%,0 98%)}
+.st.k2{clip-path:polygon(0 0,95% 4%,100% 100%,3% 96%)}
+.st.k3{clip-path:polygon(3% 0,100% 2%,97% 97%,0 100%)}
+.st.k4{clip-path:polygon(0 5%,97% 0,100% 90%,94% 100%,2% 97%)}
+.st.k5{clip-path:polygon(4% 2%,100% 0,98% 100%,0 95%)}
+.st.k6{clip-path:polygon(0 1%,100% 6%,97% 100%,5% 98%)}
+.t-piedra{background:var(--piedra)}
+.t-piedra2{background:var(--piedra2);color:#1f1a16}
+.t-tronco{background:var(--tronco);color:var(--ceniza)}
+.t-liquen{background:var(--liquen);color:#F1F0E6}
+.t-hollin{background:var(--hollin);color:var(--ceniza)}
+.t-ceniza{background:var(--ceniza)}
+.st.foto{padding:0;overflow:hidden;background:linear-gradient(160deg,#8f8676,#5d5244 60%,#3b322a)}
+.st.foto img{width:100%;height:100%;object-fit:cover;min-height:180px}
+.st.foto img.err{opacity:0}
+.st.foto figcaption{position:absolute;left:18px;bottom:14px;right:18px;font-size:13px;color:#f3efe7;text-shadow:0 1px 6px rgba(0,0,0,.6)}
+
+/* hero */
+.hero{padding-top:6px;padding-bottom:10px}
+.hero h1{font-size:clamp(40px,6.4vw,84px);color:var(--hollin)}
+.hero .lead{font-size:19px;max-width:34ch;margin-top:18px}
+.hero .acciones{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.h-titulo{grid-column:1/8;grid-row:span 2;padding:42px 40px 36px}
+.h-foto1{grid-column:8/13;grid-row:span 2;min-height:420px}
+.h-dato{font-size:16px;line-height:1.4}
+.h-dato b{display:block;font-family:var(--serif);font-weight:800;font-size:26px;line-height:1.05;margin-bottom:4px}
+.h-a{grid-column:1/4}.h-b{grid-column:4/8}.h-c{grid-column:8/13}
+.settle .st{animation:asentar .7s cubic-bezier(.2,.8,.25,1) both}
+.settle .st:nth-child(2){animation-delay:.08s}.settle .st:nth-child(3){animation-delay:.16s}
+.settle .st:nth-child(4){animation-delay:.24s}.settle .st:nth-child(5){animation-delay:.32s}
+@keyframes asentar{from{transform:translateY(-14px);opacity:0}to{transform:none;opacity:1}}
+
+section{padding:56px 0}
+.sec-tit{grid-column:1/-1;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin:0 0 6px}
+.sec-tit h2{font-size:clamp(32px,4.4vw,54px)}
+.sec-tit p{max-width:46ch;margin:0;font-size:16px}
+
+/* cabañas */
+.cab h3{font-size:34px}
+.cab .cap{font-weight:600;margin:6px 0 12px;color:var(--brasa2)}
+.cab.t-ceniza .cap,.cab.t-piedra .cap{color:var(--tronco)}
+.cab ul{margin:0;padding:0;list-style:none;font-size:15.5px}
+.cab li{padding:5px 0;border-top:1px solid rgba(0,0,0,.12)}
+.cab.t-tronco li{border-color:rgba(255,255,255,.16)}
+.cab .elegir{margin-top:16px}
+.c1{grid-column:1/5}.c2{grid-column:5/9}.c3{grid-column:9/13}
+.cf1{grid-column:1/6;min-height:300px}.cf2{grid-column:6/9;min-height:300px}.cf3{grid-column:9/13;min-height:300px}
+.equipo{grid-column:1/-1;padding-left:48px;padding-right:48px}
+.equipo .cols{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;font-size:15.5px}
+.equipo h4{font-family:var(--serif);font-weight:800;font-size:22px;margin:0 0 6px}
+
+/* hogar: planificador */
+.hogar{background:var(--hollin);color:var(--ceniza);padding:64px 0 70px;position:relative}
+.hogar::before{content:"";position:absolute;inset:0 0 auto 0;height:26px;background:var(--mortero);clip-path:polygon(0 0,100% 0,100% 30%,88% 100%,74% 40%,60% 90%,43% 35%,28% 100%,14% 45%,0 85%)}
+.hogar h2{font-size:clamp(34px,4.6vw,58px);color:var(--ceniza)}
+.hogar .intro{max-width:58ch;color:#cfc8bc;margin-top:12px}
+.boca{margin-top:30px;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:28px;align-items:start}
+.panel{background:#352c25;border-radius:4px;padding:22px}
+.campos{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.campos label{display:flex;flex-direction:column;gap:5px;font-size:14px;color:#d8d1c5}
+.campos .full{grid-column:1/-1}
+input,select{font:500 16px var(--sans);padding:11px 12px;border-radius:3px;border:1px solid #5d5146;background:#2A231E;color:var(--ceniza);width:100%;min-width:0}
+input[type=date]{color-scheme:dark}
+.chk{display:flex;align-items:center;gap:10px;font-size:15px;margin-top:12px;color:#d8d1c5}
+.chk input{width:18px;height:18px;accent-color:var(--brasa)}
+
+/* calendario */
+.cal-cab{display:flex;justify-content:space-between;align-items:center;margin:18px 0 8px}
+.cal-cab b{font-family:var(--serif);font-size:24px;font-weight:800;text-transform:capitalize}
+.cal-cab button{background:#2A231E;border:1px solid #5d5146;color:var(--ceniza);width:40px;height:40px;border-radius:3px;cursor:pointer;font-size:18px}
+.grid-cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.grid-cal .dn{font-size:12px;text-align:center;color:#a99f91;padding-bottom:4px}
+.dia{aspect-ratio:1/1;border:0;border-radius:3px;background:#40362e;color:var(--ceniza);font:600 15px var(--sans);cursor:pointer;position:relative;padding:0}
+.dia:hover{background:#56493e}
+.dia.vacio{background:transparent;cursor:default}
+.dia.pasado{opacity:.28;cursor:not-allowed}
+.dia.ocup{background:repeating-linear-gradient(135deg,#40362e 0 5px,#2f2721 5px 10px);color:#8d8376;text-decoration:line-through;cursor:not-allowed}
+.dia.alta::after{content:"";position:absolute;left:30%;right:30%;bottom:5px;height:2px;background:var(--brasa)}
+.dia.sel{background:var(--brasa);color:var(--hollin)}
+.dia.rango{background:#7a4e22;color:#fff}
+.ley{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:#b9b0a3;margin-top:12px}
+.ley i{display:inline-block;width:14px;height:14px;border-radius:2px;vertical-align:-2px;margin-right:5px}
+.sync{font-size:13.5px;color:#cfc8bc;margin-top:10px;border-left:3px solid var(--brasa);padding-left:10px}
+
+/* noches */
+.noches{list-style:none;margin:0;padding:0}
+.noche{display:grid;grid-template-columns:auto 1fr auto;gap:4px 14px;align-items:center;padding:12px 0;border-bottom:1px solid #4a3f36}
+.llama{width:34px;height:40px}
+.noche .fecha{font-weight:600}
+.noche .det{grid-column:2/3;font-size:14px;color:#c2b9ab}
+.noche .precio{grid-row:1/3;grid-column:3;font-weight:600;text-align:right}
+.veredicto{font-size:13px;font-weight:600;padding:2px 8px;border-radius:20px;margin-left:6px;white-space:nowrap}
+.v-hogar{background:var(--brasa);color:var(--hollin)}
+.v-fresca{background:#6b5a3d;color:#f3e3c5}
+.v-galeria{background:#4c5a34;color:#e6ecd5}
+.vacia{color:#b9b0a3;font-size:15px;padding:14px 0}
+.totales{margin-top:14px;font-size:15.5px}
+.totales div{display:flex;justify-content:space-between;padding:4px 0}
+.totales .tot{font-family:var(--serif);font-weight:800;font-size:28px;border-top:1px solid #5d5146;margin-top:6px;padding-top:10px}
+.totales .sena{color:var(--brasa2)}
+.aviso-sim{font-size:13.5px;color:#d9b98e;margin-top:8px;min-height:1em}
+.fuente{font-size:12.5px;color:#9d9487;margin-top:12px}
+.pagar{width:100%;margin-top:14px}
+.pagar[disabled]{opacity:.45;cursor:not-allowed}
+.llama-anim .fl{transform-origin:50% 100%;animation:titila 1.6s ease-in-out infinite alternate}
+@keyframes titila{from{transform:scaleY(1)}to{transform:scaleY(.9) skewX(2deg)}}
+
+/* temporadas */
+.temp table{width:100%;border-collapse:collapse;font-size:15.5px}
+.temp th{white-space:nowrap;font-family:var(--serif);font-weight:800;font-size:20px;text-align:left;padding:0 0 8px}
+.temp td{padding:9px 10px 9px 0;border-top:1px solid rgba(0,0,0,.14);vertical-align:top}
+.temp td:last-child{text-align:right;white-space:nowrap;font-weight:600}
+.temp .nota{font-size:13.5px;margin-top:12px}
+.tp{grid-column:1/8}.tp2{grid-column:8/13}
+.ilustra{font-size:14px}
+
+/* entorno */
+.e1{grid-column:1/6}.e2{grid-column:6/13;min-height:300px}.e3{grid-column:1/4;min-height:240px}.e4{grid-column:4/8}.e5{grid-column:8/13;min-height:240px}.e6{grid-column:1/7}.e7{grid-column:7/13}
+.entorno h3{font-size:28px;margin-bottom:8px}
+.entorno .st p:last-child{margin-bottom:0}
+
+/* llegar */
+.ll1{grid-column:1/8}.ll2{grid-column:8/13}
+.mapa svg{width:100%;height:auto}
+
+/* faq */
+.faq details{border-top:1px solid rgba(0,0,0,.16);padding:12px 0}
+.faq details:last-child{border-bottom:1px solid rgba(0,0,0,.16)}
+.faq summary{cursor:pointer;font-weight:600;font-size:17px;list-style:none;display:flex;justify-content:space-between;gap:12px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-family:var(--serif);font-size:24px;line-height:1}
+.faq details[open] summary::after{content:"–"}
+.faq details p{margin:8px 0 0;font-size:15.5px;max-width:66ch}
+.f1{grid-column:1/9}.f2{grid-column:9/13}
+
+/* contacto */
+.k-a{grid-column:1/7}.k-b{grid-column:7/13}
+.contacto h2{font-size:clamp(32px,4vw,50px)}
+.contacto dl{margin:16px 0 0;display:grid;grid-template-columns:auto 1fr;gap:6px 18px;font-size:16px}
+.contacto dt{font-weight:600}
+.contacto dd{margin:0}
+footer{padding:28px 0 90px;font-size:13.5px;color:#4b4238}
+footer p{max-width:80ch}
+
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(20,16,13,.72);display:none;align-items:center;justify-content:center;padding:16px;z-index:50}
+.modal.abierto{display:flex}
+.modal .caja{background:var(--ceniza);color:var(--tinta);max-width:440px;width:100%;padding:28px;clip-path:polygon(1% 2%,99% 0,100% 97%,0 100%)}
+.modal h3{font-size:30px;margin-bottom:10px}
+.mp{display:flex;align-items:center;gap:10px;background:#E9F3FB;border-radius:4px;padding:12px;margin:14px 0;font-size:15px}
+.mp span{background:#00A1E4;color:#fff;font-weight:700;border-radius:3px;padding:4px 8px;font-size:13px}
+
+/* barra celular */
+.barra{display:none}
+
+@media (max-width:900px){
+  nav.menu{display:none}
+  .pirca>*{grid-column:1/-1!important}
+  .h-titulo{padding:30px 24px}
+  .equipo{padding-left:24px;padding-right:24px}
+  .h-foto1{min-height:300px}
+  .h-a,.h-b{grid-column:span 6!important}
+  .equipo .cols{grid-template-columns:1fr}
+  .boca{grid-template-columns:1fr}
+  .barra{display:flex;position:fixed;left:0;right:0;bottom:0;gap:8px;padding:10px 12px;background:var(--hollin);z-index:40}
+  .barra .btn{flex:1;padding:13px 10px}
+  header.top .btn{display:none}
+}
+@media (max-width:520px){
+  body{font-size:16px}
+  .st{padding:22px 20px}
+  .h-a,.h-b{grid-column:1/-1!important}
+  .campos{grid-template-columns:1fr}
+  .panel{padding:16px}
+  .noche{grid-template-columns:auto 1fr;}
+  .noche .precio{grid-row:auto;grid-column:2;text-align:left}
+  .contacto dl{grid-template-columns:1fr}
+  .contacto dd{margin-bottom:8px}
+}
+</style>
+</head>
+<body>
+<div class="aviso" role="note"><strong>Prototipo de demostración preparado para Cabañas La Segoviana.</strong> Precios ilustrativos y disponibilidad de ejemplo; no se toman reservas ni pagos reales.</div>
+
+<header class="top">
+  <a class="marca" href="#">La Segoviana<small>Cabañas en Villa Ventana</small></a>
+  <nav class="menu" aria-label="Secciones">
+    <a href="#cabanas">Cabañas</a><a href="#hogar">Noche de fuego</a><a href="#temporadas">Temporadas</a><a href="#entorno">Villa Ventana</a><a href="#preguntas">Preguntas</a><a href="#contacto">Contacto</a>
+  </nav>
+  <a class="btn btn-brasa" href="#hogar">Ver fechas libres</a>
+</header>
+
+<main>
+<div class="wrap hero">
+  <div class="pirca settle">
+    <div class="st k1 t-ceniza h-titulo">
+      <h1>Tronco, piedra y hogar a leña en Villa Ventana.</h1>
+      <p class="lead">Tres cabañas apartadas entre sí en un parque de 3.000 m², cada una con su parrilla. Un proyecto de Liliana y Miguel Segovia.</p>
+      <div class="acciones">
+        <a class="btn btn-hollin" href="#hogar">Elegir fechas</a>
+        <a class="btn btn-brasa" href="https://wa.me/5491160353505?text=Hola%2C%20quer%C3%ADa%20consultar%20por%20una%20caba%C3%B1a" target="_blank" rel="noopener">Escribir por WhatsApp</a>
+      </div>
+    </div>
+    <figure class="st k2 foto h-foto1" style="margin:0">
+      <img src="https://static.wixstatic.com/media/978a4f_666d7b000a8947c0b0d2b8853ed928ee~mv2_d_2560_1440_s_2.jpg/v1/fill/w_1200,h_900,al_c,q_82/segoviana-1.jpg" alt="Cabaña de La Segoviana entre los árboles del parque" loading="eager">
+      <figcaption>El parque de La Segoviana</figcaption>
+    </figure>
+    <div class="st k3 t-tronco h-dato h-a"><b>Hogar a leña</b>en el living de cada cabaña, además de calefacción por tiro balanceado y aire frío-calor.</div>
+    <div class="st k4 t-piedra h-dato h-b"><b>Pileta en verano</b>con deck de madera para solárium, juegos para chicos y cochera cubierta.</div>
+    <div class="st k5 t-liquen h-dato h-c"><b>Mascotas, con aviso</b>Son bienvenidas si se arregla antes, y el parque les da lugar para andar.</div>
+  </div>
+</div>
+
+<section id="cabanas">
+  <div class="wrap">
+    <div class="pirca">
+      <div class="sec-tit"><h2>Las tres cabañas</h2><p>Las tres son de tronco y piedra, con cocina completa, wifi, TV por cable y su propia parrilla. Cambia cuánta gente entra.</p></div>
+      <div class="st k2 t-ceniza cab c1">
+        <h3>Cabaña 1</h3>
+        <p class="cap">Hasta 4 personas</p>
+        <ul><li>Dormitorio con cama matrimonial o dos camas</li><li>Diván en el living que suma 2 camas individuales</li><li>Hogar a leña en el living</li><li>Parrilla individual y cochera cubierta</li></ul>
+        <button class="btn btn-hollin elegir" data-unidad="c1">Ver fechas de la Cabaña 1</button>
+      </div>
+      <div class="st k5 t-piedra cab c2">
+        <h3>Cabaña 2</h3>
+        <p class="cap">Hasta 4 personas</p>
+        <ul><li>Dormitorio con cama matrimonial o dos camas</li><li>Diván en el living que suma 2 camas individuales</li><li>Hogar a leña en el living</li><li>Parrilla individual y cochera cubierta</li></ul>
+        <button class="btn btn-hollin elegir" data-unidad="c2">Ver fechas de la Cabaña 2</button>
+      </div>
+      <div class="st k3 t-tronco cab c3">
+        <h3>Cabaña 3</h3>
+        <p class="cap">4 adultos y 2 chicos</p>
+        <ul><li>Dos dormitorios</li><li>La más grande, pensada para familias</li><li>Hogar a leña en el living</li><li>Parrilla individual y cochera cubierta</li></ul>
+        <button class="btn btn-brasa elegir" data-unidad="c3">Ver fechas de la Cabaña 3</button>
+      </div>
+      <figure class="st k4 foto cf1" style="margin:0"><img src="https://static.wixstatic.com/media/978a4f_bd31218cbbb2411692f45b24e97f4767~mv2.jpg/v1/fill/w_900,h_600,al_c,q_80/living2.jpg" alt="Living de una cabaña con hogar" loading="lazy"><figcaption>El living, con su hogar</figcaption></figure>
+      <figure class="st k1 foto cf2" style="margin:0"><img src="https://static.wixstatic.com/media/978a4f_fa722411ab4a42428b91b1f80301a908.jpg/v1/fill/w_600,h_800,al_c,q_80/segoviana-2.jpg" alt="Cabaña de tronco y piedra" loading="lazy"><figcaption>Tronco y piedra</figcaption></figure>
+      <figure class="st k6 foto cf3" style="margin:0"><img src="https://static.wixstatic.com/media/978a4f_38029e4b15e049abb4cec5d932d5f3b9~mv2_d_2560_1440_s_2.jpg/v1/fill/w_900,h_600,al_c,q_80/segoviana-3.jpg" alt="Exterior de las cabañas" loading="lazy"><figcaption>Cada cabaña, apartada</figcaption></figure>
+      <div class="st k5 t-ceniza equipo">
+        <div class="cols">
+          <div><h4>Para dormir</h4><p>Colchones de resortes, frazadas y almohadas. Sábanas limpias y toallas para cada huésped. Calefacción a gas por tiro balanceado, ventilador de techo y placard en los dormitorios.</p></div>
+          <div><h4>Para cocinar</h4><p>Agua fría y caliente, cocina a gas de 4 hornallas con horno, heladera, microondas, tostadora y cafetera eléctrica. Vajilla completa.</p></div>
+          <div><h4>Para quedarse adentro</h4><p>Hogar a leña, calefacción por tiro balanceado y aire frío-calor en el living. TV por cable y wifi. Servicio de mucama opcional.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hogar" id="hogar" aria-labelledby="hogar-t">
+  <div class="wrap">
+    <h2 id="hogar-t">Noche de fuego</h2>
+    <p class="intro">Elegí la llegada y la salida en el calendario. Para cada noche te mostramos a qué hora se pone el sol en Villa Ventana, cuánto refresca en promedio ese mes y si da para prender el hogar. Abajo sale el total con la seña.</p>
+    <div class="boca">
+      <div class="panel">
+        <div class="campos">
+          <label class="full">Cabaña
+            <select id="unidad">
+              <option value="c1">Cabaña 1 · hasta 4 personas</option>
+              <option value="c2">Cabaña 2 · hasta 4 personas</option>
+              <option value="c3">Cabaña 3 · 4 adultos y 2 chicos</option>
+            </select>
+          </label>
+          <label>Adultos<select id="adultos"></select></label>
+          <label>Chicos<select id="chicos"></select></label>
+        </div>
+        <label class="chk"><input type="checkbox" id="mascota"> Viajo con mascota (se arregla antes con los dueños)</label>
+        <label class="chk"><input type="checkbox" id="mucama"> Sumar servicio de mucama</label>
+        <div class="cal-cab">
+          <button type="button" id="prev" aria-label="Mes anterior">‹</button>
+          <b id="mes"></b>
+          <button type="button" id="next" aria-label="Mes siguiente">›</button>
+        </div>
+        <div class="grid-cal" id="cal" role="grid" aria-label="Disponibilidad"></div>
+        <div class="ley"><span><i style="background:#40362e"></i>Libre</span><span><i style="background:repeating-linear-gradient(135deg,#40362e 0 3px,#2f2721 3px 6px)"></i>Ocupado</span><span><i style="background:#40362e;box-shadow:inset 0 -3px 0 var(--brasa)"></i>Temporada alta o finde largo</span></div>
+        <p class="sync">Ocupación de ejemplo. En la web real este calendario se sincroniza con Booking y Airbnb, así no hay dobles reservas.</p>
+      </div>
+      <div class="panel" aria-live="polite">
+        <ul class="noches" id="noches"><li class="vacia">Tocá el día de llegada y después el de salida.</li></ul>
+        <div class="totales" id="totales" hidden></div>
+        <p class="aviso-sim" id="avisoSim"></p>
+        <button class="btn btn-brasa pagar" id="pagar" disabled>Pedir la reserva y pagar la seña</button>
+        <p class="fuente">Hora de puesta del sol calculada para Villa Ventana (38,08° S, 61,93° O, hora argentina). Temperaturas: mínima media de cada mes en Sierra de la Ventana, Climate-Data.org, datos 1991–2021. Es un promedio, no un pronóstico.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="temporadas" class="temp">
+  <div class="wrap">
+    <div class="pirca">
+      <div class="sec-tit"><h2>Temporadas 2026–2027</h2><p>La tarifa cambia según la temporada. Los valores son ilustrativos: en la web real los cargan ustedes.</p></div>
+      <div class="st k3 t-ceniza tp">
+        <table>
+          <thead><tr><th>Temporada</th><th>Fechas</th><th>Por noche*</th></tr></thead>
+          <tbody>
+            <tr><td>Fines de semana largos</td><td>21 al 23 de noviembre y 5 al 8 de diciembre de 2026</td><td>$110.000</td></tr>
+            <tr><td>Verano</td><td>Enero y febrero de 2027 (incluye Carnaval, 6 al 9 de febrero)</td><td>$120.000</td></tr>
+            <tr><td>Semana Santa</td><td>25 al 28 de marzo de 2027</td><td>$120.000</td></tr>
+            <tr><td>Vacaciones de invierno</td><td>Julio de 2027, fechas a confirmar</td><td>$115.000</td></tr>
+            <tr><td>Resto del año</td><td>Días de semana y fines de semana comunes</td><td>$85.000</td></tr>
+          </tbody>
+        </table>
+        <p class="nota">*Cabaña 1 o 2. La Cabaña 3 suma 25 %. Precios de ejemplo, en pesos.</p>
+      </div>
+      <div class="st k6 t-tronco tp2">
+        <h3 style="font-size:30px;margin-bottom:10px">Cómo se reserva</h3>
+        <p>El huésped elige cabaña y fechas, ve el total al instante y deja la seña del 30 % por Mercado Pago. Ustedes reciben el aviso y el calendario se bloquea solo, también en Booking y Airbnb.</p>
+        <p class="ilustra">El saldo se paga al llegar.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="entorno" class="entorno">
+  <div class="wrap">
+    <div class="pirca">
+      <div class="sec-tit"><h2>Villa Ventana</h2><p>A 12 km del pueblo de Sierra de la Ventana, entre los arroyos Belisario y De las Piedras, en medio de un bosque viejo.</p></div>
+      <div class="st k1 t-liquen e1"><h3>Los dos arroyos</h3><p>La villa está rodeada por el arroyo Belisario al sur y el De las Piedras al norte. Hay excursiones y cabalgatas, con guía o por cuenta propia.</p></div>
+      <figure class="st k4 foto e2" style="margin:0"><img src="https://static.wixstatic.com/media/978a4f_a4e05c5bb1ce42e090a49351aefb7de7.jpg/v1/fill/w_1100,h_730,al_c,q_80/arroyo-belisario.jpg" alt="Arroyo Belisario" loading="lazy"><figcaption>Arroyo Belisario</figcaption></figure>
+      <figure class="st k2 foto e3" style="margin:0"><img src="https://static.wixstatic.com/media/978a4f_851e1046ca0c4cedab370291f5385844.jpg/v1/fill/w_700,h_500,al_c,q_80/cabalgata.jpg" alt="Cabalgata en las sierras" loading="lazy"><figcaption>Cabalgata</figcaption></figure>
+      <div class="st k6 t-ceniza e4"><h3>Cerro Tres Picos</h3><p>Con 1.239 m es el punto más alto de la provincia de Buenos Aires, y se ve desde la zona.</p></div>
+      <figure class="st k5 foto e5" style="margin:0"><img src="https://static.wixstatic.com/media/978a4f_bcc9d2740ea349e2b0d4c64f1026640d.jpg/v1/fill/w_800,h_600,al_c,q_80/cerro-ventana.jpg" alt="Cerro Ventana" loading="lazy"><figcaption>Cerro Ventana</figcaption></figure>
+      <div class="st k3 t-piedra e6"><h3>Parque Provincial Ernesto Tornquist</h3><p>El parque del Cerro Ventana, con sus senderos señalizados, queda muy cerca de la villa.</p></div>
+      <div class="st k2 t-tronco e7"><h3>Las ruinas del Club Hotel</h3><p>Una caminata de alrededor de una hora desde la villa lleva a las ruinas del viejo Club Hotel, con visitas guiadas los fines de semana.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="llegar">
+  <div class="wrap">
+    <div class="pirca">
+      <div class="sec-tit"><h2>Cómo llegar</h2><p>Esquina de Piquito de Oro y Napostá, Villa Ventana.</p></div>
+      <div class="st k5 t-ceniza mapa ll1">
+        <svg viewBox="0 0 640 300" role="img" aria-label="Esquema de acceso: Bahía Blanca, Tornquist, Villa Ventana y Sierra de la Ventana">
+          <path d="M20 250 C140 240 190 190 250 170" fill="none" stroke="#5E4129" stroke-width="4"/>
+          <path d="M250 170 C330 140 380 120 430 115" fill="none" stroke="#E28A2E" stroke-width="5"/>
+          <path d="M430 115 C500 110 560 90 615 70" fill="none" stroke="#5E4129" stroke-width="4" stroke-dasharray="2 8" stroke-linecap="round"/>
+          <path d="M300 95 l30 -45 l18 25 l22 -40 l30 55 l20 -18 l26 40" fill="none" stroke="#9C9384" stroke-width="3"/>
+          <circle cx="20" cy="250" r="7" fill="#2A231E"/><text x="34" y="275" font-family="Sofia Sans,sans-serif" font-size="17" fill="#2A231E">Bahía Blanca</text>
+          <circle cx="250" cy="170" r="7" fill="#2A231E"/><text x="190" y="205" font-family="Sofia Sans,sans-serif" font-size="17" fill="#2A231E">Tornquist</text>
+          <circle cx="430" cy="115" r="10" fill="#E28A2E" stroke="#2A231E" stroke-width="3"/><text x="380" y="155" font-family="Abhaya Libre,serif" font-weight="800" font-size="22" fill="#2A231E">La Segoviana</text><text x="392" y="174" font-family="Sofia Sans,sans-serif" font-size="14" fill="#5E4129">Villa Ventana</text>
+          <circle cx="615" cy="70" r="7" fill="#2A231E"/><text x="440" y="50" font-family="Sofia Sans,sans-serif" font-size="15" fill="#2A231E">Sierra de la Ventana, a 12 km</text>
+          <text x="315" y="40" font-family="Sofia Sans,sans-serif" font-size="13" fill="#5E4129">sistema de Ventania</text>
+        </svg>
+        <p style="font-size:13.5px;margin:6px 0 0">Esquema sin escala.</p>
+      </div>
+      <div class="st k2 t-tronco ll2">
+        <h3 style="font-size:28px;margin-bottom:10px">En auto</h3>
+        <p>Desde Bahía Blanca, por Tornquist y la Ruta Provincial 76 hasta el acceso a Villa Ventana. Dentro de la villa, las calles llevan nombres de pájaros: la cabaña está en Piquito de Oro y Napostá.</p>
+        <a class="btn btn-brasa" href="https://www.google.com/maps/search/?api=1&query=Piquito+de+Oro+y+Napost%C3%A1%2C+Villa+Ventana" target="_blank" rel="noopener">Abrir en Google Maps</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="preguntas" class="faq">
+  <div class="wrap">
+    <div class="pirca">
+      <div class="sec-tit"><h2>Preguntas</h2></div>
+      <div class="st k3 t-ceniza f1">
+        <details open><summary>¿Puedo ir con mi perro?</summary><p>Sí, las mascotas son bienvenidas si se arregla antes con Liliana y Miguel. El parque tiene lugar para que anden.</p></details>
+        <details><summary>¿Hay que llevar ropa blanca?</summary><p>No. Hay sábanas limpias, frazadas y toallas para cada huésped.</p></details>
+        <details><summary>¿La pileta está abierta todo el año?</summary><p>No, la pileta funciona en verano. El deck de madera con solárium queda a disposición todo el año.</p></details>
+        <details><summary>¿Cuánta gente entra en cada cabaña?</summary><p>Las cabañas 1 y 2, hasta 4 personas: dormitorio matrimonial o doble y un diván en el living que suma 2 camas. La Cabaña 3 tiene dos dormitorios, para 4 adultos y 2 chicos.</p></details>
+        <details><summary>¿Hay limpieza durante la estadía?</summary><p>El servicio de mucama es opcional y se suma a pedido.</p></details>
+        <details><summary>¿A qué hora se entra y se sale?</summary><p>Los horarios se coordinan con los dueños al reservar. En la web real figuran acá.</p></details>
+      </div>
+      <div class="st k6 t-liquen f2">
+        <h3 style="font-size:28px;margin-bottom:10px">¿Otra duda?</h3>
+        <p>Escribinos y te responde la familia Segovia.</p>
+        <a class="btn btn-hollin" href="https://wa.me/5491160353505" target="_blank" rel="noopener">WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contacto" class="contacto">
+  <div class="wrap">
+    <div class="pirca">
+      <div class="st k1 t-hollin k-a">
+        <h2>Reservas</h2>
+        <dl>
+          <dt>Teléfono y WhatsApp</dt><dd><a href="tel:+5491160353505">+54 9 11 6035-3505</a></dd>
+          <dt>Mail</dt><dd><a href="mailto:lasegoviana1@gmail.com">lasegoviana1@gmail.com</a></dd>
+          <dt>Dirección</dt><dd>Piquito de Oro y Napostá, Villa Ventana</dd>
+          <dt>Facebook</dt><dd><a href="https://www.facebook.com/Segoviana1/" target="_blank" rel="noopener">Segoviana1</a></dd>
+        </dl>
+      </div>
+      <figure class="st k4 foto k-b" style="margin:0;min-height:280px"><img src="https://static.wixstatic.com/media/978a4f_a1981de203094a298529e88ba0c3e0cf.jpg/v1/fill/w_900,h_675,al_c,q_80/arroyo-las-piedras.jpg" alt="Arroyo De las Piedras" loading="lazy"><figcaption>Arroyo De las Piedras</figcaption></figure>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Prototipo de demostración preparado para Cabañas La Segoviana por Resolviendo Kos (resolviendokos.com). Fotos y textos de La Segoviana tomados de su web. Precios, ocupación y pago son de ejemplo; no se toman reservas reales.</p>
+  </div>
+</footer>
+
+<div class="barra">
+  <a class="btn btn-brasa" href="#hogar">Ver fechas</a>
+  <a class="btn btn-hollin" style="border:1px solid #5d5146" href="https://wa.me/5491160353505" target="_blank" rel="noopener">WhatsApp</a>
+</div>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-t">
+  <div class="caja">
+    <h3 id="modal-t">Seña de la reserva</h3>
+    <p id="modal-txt"></p>
+    <div class="mp"><span>Mercado Pago</span> Pago de demostración, no se cobra nada.</div>
+    <button class="btn btn-hollin" id="cerrar" style="width:100%">Cerrar</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  // imágenes: si no cargan, queda el fondo de piedra
+  document.querySelectorAll('.foto img').forEach(function(im){
+    im.addEventListener('error',function(){im.classList.add('err')});
+    if(im.complete && im.naturalWidth===0 && im.src) im.classList.add('err');
+  });
+
+  var LAT=-38.0823, LON=-61.9371, TZ=-3;
+  var MINT=[16.2,15.3,13.1,9.6,6.7,3.7,2.7,4.0,5.6,8.5,11.4,14.3]; // Climate-Data.org 1991-2021
+  var BASE=85000;
+  var UNI={c1:{n:'Cabaña 1',f:1,ad:4,ch:3,tot:4},c2:{n:'Cabaña 2',f:1,ad:4,ch:3,tot:4},c3:{n:'Cabaña 3',f:1.25,ad:4,ch:2,tot:6}};
+  var MESES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  var DIAS=['dom','lun','mar','mié','jue','vie','sáb'];
+
+  function ymd(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+  function enRango(s,a,b){return s>=a&&s<=b}
+  // temporada de la NOCHE que empieza en la fecha s
+  function temporada(s){
+    if(enRango(s,'2026-11-21','2026-11-22')||enRango(s,'2026-12-05','2026-12-07')) return {n:'Finde largo',p:110000,alta:true};
+    if(enRango(s,'2027-01-01','2027-02-28')) return {n:'Verano',p:120000,alta:true};
+    if(enRango(s,'2027-03-25','2027-03-27')) return {n:'Semana Santa',p:120000,alta:true};
+    if(enRango(s,'2027-07-01','2027-07-31')) return {n:'Invierno (a confirmar)',p:115000,alta:true};
+    return {n:'Temporada general',p:BASE,alta:false};
+  }
+
+  // Puesta del sol (algoritmo NOAA)
+  function puesta(date){
+    var rad=Math.PI/180;
+    var y=date.getFullYear(),m=date.getMonth(),d=date.getDate();
+    var N=Math.round((Date.UTC(y,m,d)-Date.UTC(y,0,0))/864e5);
+    var g=2*Math.PI/365*(N-1+(18-12)/24);
+    var eq=229.18*(0.000075+0.001868*Math.cos(g)-0.032077*Math.sin(g)-0.014615*Math.cos(2*g)-0.040849*Math.sin(2*g));
+    var dec=0.006918-0.399912*Math.cos(g)+0.070257*Math.sin(g)-0.006758*Math.cos(2*g)+0.000907*Math.sin(2*g)-0.002697*Math.cos(3*g)+0.00148*Math.sin(3*g);
+    var cosH=(Math.cos(90.833*rad)/(Math.cos(LAT*rad)*Math.cos(dec)))-Math.tan(LAT*rad)*Math.tan(dec);
+    var H=Math.acos(Math.max(-1,Math.min(1,cosH)))/rad;
+    var utcMin=720-4*(LON-H)-eq; // sunset: 720 - 4*(lon - ha) - eqtime ... with ha positive for sunset sign handled below
+    var local=utcMin+TZ*60;
+    local=((local%1440)+1440)%1440;
+    var h=Math.floor(local/60),mi=Math.round(local%60); if(mi===60){h++;mi=0}
+    return String(h).padStart(2,'0')+':'+String(mi).padStart(2,'0');
+  }
+
+  function veredicto(t){
+    if(t<=10) return {c:'v-hogar',t:'noche de hogar'};
+    if(t<=14) return {c:'v-fresca',t:'fresca: hogar a la noche'};
+    return {c:'v-galeria',t:'noche de deck y parrilla'};
+  }
+
+  // ocupación de ejemplo, fija por cabaña
+  function ocupado(u,s){
+    var h=0,k=u+s;for(var i=0;i<k.length;i++){h=(h*31+k.charCodeAt(i))>>>0}
+    var dt=new Date(s+'T12:00:00'),wd=dt.getDay(),alta=temporada(s).alta;
+    var p=alta?0.42:(wd===5||wd===6?0.3:0.1);
+    return (h%1000)/1000<p;
+  }
+
+  var hoy=new Date();hoy.setHours(12,0,0,0);
+  var vista=new Date(hoy.getFullYear(),hoy.getMonth(),1,12);
+  var ini=null,fin=null;
+  var $=function(id){return document.getElementById(id)};
+  var selU=$('unidad'),selA=$('adultos'),selC=$('chicos');
+
+  function llenarPersonas(){
+    var u=UNI[selU.value],a=+selA.value||2,c=+selC.value||0;
+    selA.innerHTML='';selC.innerHTML='';
+    for(var i=1;i<=u.ad;i++){selA.add(new Option(i,i))}
+    for(var j=0;j<=u.ch;j++){selC.add(new Option(j,j))}
+    selA.value=Math.min(a,u.ad);selC.value=Math.min(c,u.ch);
+  }
+
+  function pintar(){
+    var cal=$('cal');cal.innerHTML='';
+    $('mes').textContent=MESES[vista.getMonth()]+' '+vista.getFullYear();
+    DIAS.forEach(function(d){var e=document.createElement('div');e.className='dn';e.textContent=d;cal.appendChild(e)});
+    var primero=vista.getDay(),dias=new Date(vista.getFullYear(),vista.getMonth()+1,0).getDate();
+    for(var i=0;i<primero;i++){var v=document.createElement('div');v.className='dia vacio';cal.appendChild(v)}
+    for(var d=1;d<=dias;d++){
+      var dt=new Date(vista.getFullYear(),vista.getMonth(),d,12),s=ymd(dt);
+      var b=document.createElement('button');b.type='button';b.className='dia';b.textContent=d;b.dataset.s=s;
+      var lab=d+' de '+MESES[dt.getMonth()];
+      if(dt<hoy){b.classList.add('pasado');b.disabled=true}
+      else if(ocupado(selU.value,s)){b.classList.add('ocup');b.disabled=true;lab+=', ocupado'}
+      if(temporada(s).alta) b.classList.add('alta');
+      if(ini&&s===ini||fin&&s===fin) b.classList.add('sel');
+      else if(ini&&fin&&s>ini&&s<fin) b.classList.add('rango');
+      b.setAttribute('aria-label',lab);
+      b.addEventListener('click',elegir);
+      cal.appendChild(b);
+    }
+    $('prev').disabled=vista<=new Date(hoy.getFullYear(),hoy.getMonth(),1,12);
+  }
+
+  function libreEntre(a,b){
+    var d=new Date(a+'T12:00:00');var e=new Date(b+'T12:00:00');
+    while(d<e){if(ocupado(selU.value,ymd(d)))return false;d.setDate(d.getDate()+1)}
+    return true;
+  }
+
+  function elegir(ev){
+    var s=ev.currentTarget.dataset.s;
+    if(!ini||fin||s<=ini){ini=s;fin=null}
+    else{ if(libreEntre(ini,s)) fin=s; else {ini=s;fin=null;$('avisoSim').textContent='Hay noches ocupadas en el medio: empezá de nuevo desde este día.'} }
+    pintar();calcular();
+  }
+
+  function llama(on){
+    return '<svg class="llama'+(on?' llama-anim':'')+'" viewBox="0 0 34 40" aria-hidden="true"><rect x="3" y="33" width="28" height="5" rx="1" fill="#5E4129"/>'+
+      (on?'<path class="fl" d="M17 4c4 7 9 10 9 18a9 9 0 0 1-18 0c0-5 3-7 4-11 1 3 2 4 3 5 1-4 1-8 2-12z" fill="#E28A2E"/><path class="fl" d="M17 16c2 3 4 5 4 9a4 4 0 0 1-8 0c0-3 2-5 4-9z" fill="#F4D58A"/>'
+         :'<path d="M10 32c2-3 5-2 7-5 2 3 5 2 7 5z" fill="#6f6255"/>')+'</svg>';
+  }
+  function plata(n){return '$'+Math.round(n).toLocaleString('es-AR')}
+
+  function calcular(){
+    var ul=$('noches'),tot=$('totales'),pag=$('pagar'),av=$('avisoSim');
+    if(!ini){ul.innerHTML='<li class="vacia">Tocá el día de llegada y después el de salida.</li>';tot.hidden=true;pag.disabled=true;return}
+    if(!fin){ul.innerHTML='<li class="vacia">Llegada: '+fechaLarga(ini)+'. Ahora tocá el día de salida.</li>';tot.hidden=true;pag.disabled=true;return}
+    av.textContent='';
+    var u=UNI[selU.value],d=new Date(ini+'T12:00:00'),e=new Date(fin+'T12:00:00'),html='',suma=0,n=0;
+    while(d<e){
+      var s=ymd(d),t=temporada(s),p=t.p*u.f,m=MINT[d.getMonth()],v=veredicto(m);
+      suma+=p;n++;
+      html+='<li class="noche">'+llama(v.c==='v-hogar')+'<div><span class="fecha">'+DIAS[d.getDay()]+' '+d.getDate()+' de '+MESES[d.getMonth()]+'</span><span class="veredicto '+v.c+'">'+v.t+'</span></div>'+
+        '<div class="precio">'+plata(p)+'</div><div class="det">Sol se pone '+puesta(d)+' · mínima media '+String(m).replace('.',',')+' °C · '+t.n+'</div></li>';
+      d.setDate(d.getDate()+1);
+    }
+    ul.innerHTML=html;
+    var personas=(+selA.value)+(+selC.value);
+    var muc=$('mucama').checked?n*12000:0;
+    var total=suma+muc,sena=total*0.3;
+    tot.hidden=false;
+    tot.innerHTML='<div><span>'+n+(n===1?' noche':' noches')+' en la '+u.n+'</span><span>'+plata(suma)+'</span></div>'+
+      (muc?'<div><span>Mucama ('+n+' días, ejemplo)</span><span>'+plata(muc)+'</span></div>':'')+
+      '<div class="tot"><span>Total</span><span>'+plata(total)+'</span></div>'+
+      '<div class="sena"><span>Seña del 30 % por Mercado Pago</span><span>'+plata(sena)+'</span></div>';
+    var msgs=[];
+    if($('mascota').checked) msgs.push('La mascota queda sujeta a la confirmación de los dueños.');
+    if(personas>u.tot) msgs.push('Son más personas de las que entran en esta cabaña.');
+    av.textContent=msgs.join(' ');
+    pag.disabled=personas>u.tot;
+    pag.dataset.txt='Pedido para la '+u.n+', del '+fechaLarga(ini)+' al '+fechaLarga(fin)+', '+personas+(personas===1?' persona':' personas')+'. Total '+plata(total)+'. Seña a pagar: '+plata(sena)+'.';
+  }
+  function fechaLarga(s){var d=new Date(s+'T12:00:00');return d.getDate()+' de '+MESES[d.getMonth()]}
+
+  selU.addEventListener('change',function(){llenarPersonas();ini=null;fin=null;$('avisoSim').textContent='';pintar();calcular()});
+  [selA,selC,$('mascota'),$('mucama')].forEach(function(el){el.addEventListener('change',calcular)});
+  $('prev').addEventListener('click',function(){vista.setMonth(vista.getMonth()-1);pintar()});
+  $('next').addEventListener('click',function(){vista.setMonth(vista.getMonth()+1);pintar()});
+  document.querySelectorAll('.elegir').forEach(function(b){b.addEventListener('click',function(){
+    selU.value=b.dataset.unidad;selU.dispatchEvent(new Event('change'));
+    document.getElementById('hogar').scrollIntoView({behavior:'smooth'});
+  })});
+  $('pagar').addEventListener('click',function(){$('modal-txt').textContent=$('pagar').dataset.txt;$('modal').classList.add('abierto');$('cerrar').focus()});
+  $('cerrar').addEventListener('click',function(){$('modal').classList.remove('abierto')});
+  $('modal').addEventListener('click',function(e){if(e.target.id==='modal')$('modal').classList.remove('abierto')});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')$('modal').classList.remove('abierto')});
+
+  llenarPersonas();pintar();calcular();
+  window.__puesta=puesta;
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Cabañas La Segoviana"></script>
+</body>
+</html>
