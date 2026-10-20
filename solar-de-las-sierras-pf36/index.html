@@ -1,0 +1,807 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Solar de las Sierras · Cabañas en Sierra de la Ventana</title>
+<meta name="description" content="Prototipo de demostración: web de reservas directas para Cabañas Solar de las Sierras, Barrio Parque Golf, Sierra de la Ventana.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --piedra:#E6E9E2;
+  --piedra-2:#D5DBD1;
+  --papel:#F7F8F4;
+  --pino:#1E3A31;
+  --pino-2:#2B4F43;
+  --fairway:#7A9A55;
+  --fairway-claro:#C9D8B0;
+  --sol:#F1B947;
+  --sol-claro:#FBE7B5;
+  --rio:#4F8093;
+  --pizarra:#24302B;
+  --gris:#5E6A64;
+  --linea:#C3CBC0;
+  --alta:#E9A13B;
+  --media:#9CB97A;
+  --invierno:#6E9BB0;
+  --baja:#C9D2C4;
+  --radio-s:6px;
+  --radio-l:22px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--piedra);color:var(--pizarra);font:400 16px/1.6 "Manrope",system-ui,sans-serif;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--sol);outline-offset:2px;border-radius:4px}
+.serif{font-family:"Instrument Serif",Georgia,serif;font-weight:400}
+.wrap{max-width:1240px;margin:0 auto;padding:0 28px}
+
+/* aviso */
+.aviso{background:var(--pino);color:#E9F0E6;font-size:13.5px;line-height:1.45;padding:9px 28px;text-align:center}
+.aviso strong{color:var(--sol);font-weight:600}
+
+/* header */
+header.top{position:sticky;top:0;z-index:30;background:rgba(230,233,226,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--linea)}
+.top .wrap{display:flex;align-items:center;gap:28px;height:66px}
+.marca{display:flex;align-items:baseline;gap:10px;text-decoration:none}
+.marca .serif{font-size:27px;line-height:1;color:var(--pino)}
+.marca small{font-size:12.5px;color:var(--gris)}
+nav.menu{display:flex;gap:22px;margin-left:auto;font-size:14.5px;font-weight:500}
+nav.menu a{text-decoration:none;color:var(--pino-2)}
+nav.menu a:hover{color:var(--pizarra);text-decoration:underline;text-underline-offset:4px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:999px;padding:11px 20px;font-weight:600;font-size:15px;cursor:pointer;text-decoration:none}
+.btn-sol{background:var(--sol);color:var(--pizarra)}
+.btn-sol:hover{background:#E5A92F}
+.btn-pino{background:var(--pino);color:#F2F5EE}
+.btn-pino:hover{background:var(--pino-2)}
+.btn-linea{background:transparent;border:1.5px solid var(--pino);color:var(--pino)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+
+/* hero calendario */
+.hero{padding:44px 0 56px}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:48px;align-items:start}
+.lugar{font-size:14px;color:var(--gris);margin:0 0 14px}
+h1.serif{font-size:clamp(42px,5.4vw,72px);line-height:.98;letter-spacing:-.01em;margin:0 0 20px;color:var(--pino)}
+h1 em{font-style:italic;color:var(--pino-2)}
+.bajada{font-size:17.5px;max-width:30em;margin:0 0 26px;color:#33413A}
+
+.estadia{background:var(--papel);border-radius:var(--radio-l);padding:22px 22px 20px;border:1px solid var(--linea)}
+.estadia h2{font-size:15px;font-weight:700;margin:0 0 12px;color:var(--pino)}
+.fechas{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.fecha{background:var(--piedra);border-radius:12px;padding:10px 12px}
+.fecha span{display:block;font-size:12px;color:var(--gris)}
+.fecha b{font-weight:600;font-size:15.5px}
+.fila{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 0;border-top:1px solid #E1E5DE;font-size:15px}
+.contador{display:flex;align-items:center;gap:6px}
+.contador button{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--pino);background:transparent;cursor:pointer;font-size:18px;line-height:1;color:var(--pino)}
+.contador button[disabled]{opacity:.3;cursor:not-allowed}
+.contador output{min-width:22px;text-align:center;font-weight:700}
+.check{display:flex;align-items:center;gap:9px;cursor:pointer}
+.check input{width:18px;height:18px;accent-color:var(--pino)}
+.desglose{margin:10px 0 0;padding:12px 0 0;border-top:1px dashed var(--linea);font-size:14.5px}
+.desglose div{display:flex;justify-content:space-between;gap:12px;padding:2px 0}
+.desglose .nota{display:block;color:var(--gris);font-size:13px;padding-top:4px}
+.total{display:flex;justify-content:space-between;align-items:baseline;margin-top:8px;padding-top:10px;border-top:1px solid var(--linea)}
+.total b{font-family:"Instrument Serif",Georgia,serif;font-weight:400;font-size:34px;color:var(--pino);line-height:1}
+.sena{font-size:14px;color:#3A4741;margin:6px 0 14px}
+.vacio{color:var(--gris);font-size:14.5px;margin:4px 0 14px}
+.estadia .btn{width:100%}
+.ilus{font-size:12.5px;color:var(--gris);margin:10px 0 0}
+
+/* calendario */
+.cal{background:var(--papel);border-radius:var(--radio-l);border:1px solid var(--linea);padding:22px 22px 18px;box-shadow:0 18px 40px -28px rgba(30,58,49,.45)}
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.cal-head h2{margin:0;font-size:38px;line-height:1;color:var(--pino);text-transform:none}
+.cal-head h2 span{color:var(--gris);font-size:24px}
+.cal-nav{display:flex;gap:8px}
+.cal-nav button{width:42px;height:42px;border-radius:50%;border:1.5px solid var(--linea);background:var(--papel);cursor:pointer;font-size:18px;color:var(--pino)}
+.cal-nav button:hover:not([disabled]){border-color:var(--pino)}
+.cal-nav button[disabled]{opacity:.35;cursor:not-allowed}
+.dias,.grilla{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.dias div{font-size:12.5px;color:var(--gris);padding:0 4px 6px;font-weight:600}
+.dia{position:relative;aspect-ratio:1/0.86;border-radius:12px;border:1px solid transparent;background:var(--piedra);padding:7px 8px;text-align:left;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;min-width:0;transition:background .15s,border-color .15s}
+.dia::before{content:"";position:absolute;left:8px;right:8px;top:0;height:3px;border-radius:0 0 3px 3px;background:var(--temp,transparent)}
+.dia .n{font-weight:600;font-size:15px;line-height:1}
+.dia .q{font-size:11.5px;color:var(--gris);line-height:1.1}
+.pips{display:flex;gap:3px}
+.pip{width:9px;height:9px;background:var(--pino);clip-path:polygon(50% 0,100% 42%,100% 100%,0 100%,0 42%)}
+.pip.ocu{background:var(--linea)}
+.dia:hover:not([disabled]){border-color:var(--pino-2)}
+.dia[disabled]{cursor:not-allowed;background:transparent;color:#A3ACA6}
+.dia[disabled] .pips{opacity:.35}
+.dia.lleno{background:repeating-linear-gradient(135deg,var(--piedra) 0 6px,#DCE1D8 6px 12px);color:#8C968F;cursor:not-allowed}
+.dia.lleno .q{color:#8C968F}
+.dia.en-rango{background:var(--sol-claro)}
+.dia.ini,.dia.fin{background:var(--pino);color:#F2F5EE}
+.dia.ini .q,.dia.fin .q{color:#CFE0C9}
+.dia.ini .pip,.dia.fin .pip{background:var(--sol)}
+.dia.ini .pip.ocu,.dia.fin .pip.ocu{background:#4E6B60}
+.dia.hoy .n{text-decoration:underline;text-decoration-color:var(--sol);text-decoration-thickness:3px;text-underline-offset:3px}
+.vacia{aspect-ratio:1/0.86}
+.cal-pie{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;margin-top:14px;font-size:13px;color:var(--gris)}
+.ley{display:inline-flex;align-items:center;gap:6px}
+.ley i{display:inline-block;width:16px;height:4px;border-radius:2px}
+.cal-msg{margin-top:12px;font-size:14px;min-height:1.4em;color:var(--pino-2);font-weight:500}
+.sync{display:flex;gap:10px;align-items:center;margin-top:12px;padding:10px 12px;background:var(--piedra);border-radius:12px;font-size:13.5px;color:#3A4741}
+.sync svg{flex:none}
+
+/* foto ancha */
+.franja{position:relative;height:min(62vh,560px);background:linear-gradient(160deg,var(--pino-2),var(--fairway) 70%,var(--sol-claro));overflow:hidden}
+.franja img{width:100%;height:100%;object-fit:cover}
+.franja figcaption{position:absolute;left:28px;bottom:22px;background:var(--papel);color:var(--pino);padding:8px 14px;border-radius:999px;font-size:14px;font-weight:600}
+.foto{background:linear-gradient(150deg,var(--pino-2),var(--fairway));position:relative;overflow:hidden}
+.foto img{width:100%;height:100%;object-fit:cover}
+.foto.rota img,.franja.rota img,.franja.rota figcaption{display:none}
+.foto.rota::after,.franja.rota::after{content:attr(data-fallback);position:absolute;inset:auto 16px 14px 16px;color:#EEF3EA;font-family:"Instrument Serif",Georgia,serif;font-size:22px;line-height:1.15}
+
+/* secciones */
+section.bloque{padding:88px 0}
+.titulo{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:48px;margin-bottom:40px;align-items:end}
+.titulo h2{font-size:clamp(36px,4.2vw,56px);line-height:1;margin:0;color:var(--pino)}
+.titulo p{margin:0;max-width:36em;color:#33413A;font-size:17px}
+
+/* la cabaña */
+.cabana{background:var(--papel)}
+.mosaico{display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:230px 230px;gap:10px;margin-bottom:44px}
+.mosaico .foto{border-radius:14px}
+.mosaico .foto:first-child{grid-row:span 2;border-radius:var(--radio-l) 14px 14px var(--radio-l)}
+.mosaico .foto:nth-child(3){border-top-right-radius:var(--radio-l)}
+.mosaico .foto:nth-child(5){border-bottom-right-radius:var(--radio-l)}
+.ficha{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border-top:2px solid var(--pino)}
+.ficha > div{padding:20px 22px 6px 0;border-right:1px solid var(--linea);margin-right:22px}
+.ficha > div:last-child{border-right:0;margin-right:0}
+.ficha h3{margin:0 0 10px;font-size:22px;color:var(--pino)}
+.ficha ul{list-style:none;margin:0;padding:0;font-size:15px}
+.ficha li{padding:5px 0;border-bottom:1px solid #E5E9E2}
+.ficha li:last-child{border-bottom:0}
+
+/* mañana */
+.manana{background:var(--pino);color:#E9EFE6}
+.manana .wrap{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:56px;align-items:center}
+.manana h2{font-size:clamp(36px,4.2vw,58px);line-height:1;margin:0 0 20px;color:#F5F2E6}
+.manana p{font-size:17px;max-width:32em;color:#D3DECF}
+.manana .foto{aspect-ratio:4/5;border-radius:200px 200px var(--radio-l) var(--radio-l)}
+.horario{display:flex;gap:28px;margin-top:28px;flex-wrap:wrap}
+.horario div{border-left:3px solid var(--sol);padding-left:12px}
+.horario b{display:block;font-family:"Instrument Serif",Georgia,serif;font-weight:400;font-size:34px;line-height:1;color:var(--sol)}
+.horario span{font-size:14px;color:#C2D0BE}
+
+/* temporadas */
+.cinta{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));border-radius:14px;overflow:hidden;border:1px solid var(--linea);margin-bottom:30px}
+.mes{min-height:96px;padding:10px 10px 8px;background:var(--papel);border-right:1px solid var(--linea);display:flex;flex-direction:column;justify-content:space-between}
+.mes:last-child{border-right:0}
+.mes b{font-weight:600;font-size:14px}
+.mes .barra{display:flex;height:22px;border-radius:5px;overflow:hidden}
+.mes .barra i{display:block;height:100%}
+.temps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.temp{background:var(--papel);border-radius:16px;padding:20px;border-top:6px solid var(--c)}
+.temp h3{margin:0 0 4px;font-size:26px;color:var(--pino)}
+.temp .precio{font-weight:700;font-size:15px;margin:0 0 10px}
+.temp ul{margin:0;padding:0 0 0 18px;font-size:14.5px;color:#3A4741}
+.temp li{padding:2px 0}
+.temp .extra{font-size:13.5px;color:var(--gris);margin:10px 0 0}
+
+/* opiniones */
+.opiniones{background:var(--sol-claro)}
+.opiniones .wrap{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:48px;align-items:start}
+.nota-grande{font-family:"Instrument Serif",Georgia,serif;font-size:120px;line-height:.85;color:var(--pino)}
+.nota-grande small{font-size:38px;color:var(--gris)}
+.subnotas{display:grid;grid-template-columns:1fr 1fr;gap:4px 18px;font-size:14.5px;margin-top:16px;max-width:300px}
+.subnotas span{display:flex;justify-content:space-between;border-bottom:1px solid rgba(30,58,49,.18);padding:3px 0}
+.citas{display:grid;gap:22px}
+blockquote{margin:0;font-family:"Instrument Serif",Georgia,serif;font-size:clamp(30px,3.4vw,46px);line-height:1.05;color:var(--pino)}
+blockquote cite{display:block;font-family:"Manrope",sans-serif;font-style:normal;font-size:14px;color:#55615A;margin-top:8px}
+.fuente{font-size:13px;color:#55615A;margin-top:18px}
+
+/* alrededor */
+.escala{position:relative;margin:10px 0 40px;padding-top:6px}
+.escala ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));position:relative}
+.escala ol::before{content:"";position:absolute;left:0;right:0;top:15px;height:2px;background:var(--pino)}
+.escala li{position:relative;padding:34px 18px 0 0}
+.escala li::before{content:"";position:absolute;left:0;top:8px;width:16px;height:16px;border-radius:50%;background:var(--papel);border:3px solid var(--pino)}
+.escala li:first-child::before{background:var(--sol);border-color:var(--sol)}
+.escala b{display:block;font-family:"Instrument Serif",Georgia,serif;font-weight:400;font-size:34px;line-height:1;color:var(--pino)}
+.escala span{display:block;font-size:14.5px;color:#3A4741;margin-top:6px}
+.cerros{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.cerro{background:var(--papel);border-radius:16px;padding:20px 20px 18px;position:relative;overflow:hidden}
+.cerro svg{display:block;width:100%;height:70px;margin-bottom:12px}
+.cerro h3{margin:0 0 6px;font-size:24px;color:var(--pino)}
+.cerro p{margin:0;font-size:15px;color:#3A4741}
+
+/* reglas */
+.reglas{background:var(--papel)}
+.reglas .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:48px}
+.no-lista{list-style:none;padding:0;margin:24px 0 0;display:grid;gap:10px}
+.no-lista li{display:flex;gap:12px;align-items:center;background:var(--piedra);border-radius:12px;padding:12px 14px;font-size:15.5px}
+.no-lista svg{flex:none}
+details{border-bottom:1px solid var(--linea)}
+details:first-of-type{border-top:1px solid var(--linea)}
+summary{cursor:pointer;list-style:none;padding:17px 34px 17px 0;font-weight:600;font-size:16.5px;position:relative}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";position:absolute;right:4px;top:12px;font-size:24px;font-weight:400;color:var(--pino)}
+details[open] summary::after{content:"–"}
+details p{margin:0 0 18px;color:#3A4741;max-width:40em}
+
+/* contacto */
+.contacto .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:48px;align-items:start}
+.santiago{display:flex;gap:18px;align-items:center;margin:26px 0}
+.santiago .foto{width:92px;height:92px;border-radius:50%;flex:none}
+.santiago .foto.rota::after{content:"S";inset:0;display:flex;align-items:center;justify-content:center;font-size:44px}
+.santiago p{margin:0;font-size:15px}
+.santiago q{display:block;font-family:"Instrument Serif",Georgia,serif;font-size:24px;line-height:1.15;color:var(--pino);quotes:"“" "”"}
+.datos{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.dato{background:var(--papel);border-radius:16px;padding:18px 18px 16px;text-decoration:none;border:1px solid var(--linea);display:block}
+a.dato:hover{border-color:var(--pino)}
+.dato span{display:block;font-size:13px;color:var(--gris)}
+.dato b{font-weight:600;font-size:16px;word-break:break-word}
+.llegar{margin-top:14px;background:var(--papel);border-radius:16px;padding:20px;border:1px solid var(--linea)}
+.llegar h3{margin:0 0 8px;font-size:24px;color:var(--pino)}
+.llegar p{margin:0 0 12px;font-size:15px}
+
+footer{background:var(--pizarra);color:#BFC9C2;padding:40px 0 110px;font-size:13.5px}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px}
+footer .serif{font-size:26px;color:#EEF2EC}
+
+/* barra móvil */
+.barra-movil{display:none}
+
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(20,32,27,.6);display:none;align-items:center;justify-content:center;z-index:60;padding:16px}
+.modal.abierto{display:flex}
+.modal-caja{background:var(--papel);border-radius:var(--radio-l);max-width:460px;width:100%;padding:28px;position:relative}
+.modal-caja h3{margin:0 0 10px;font-size:34px;line-height:1;color:var(--pino)}
+.modal-caja p{margin:0 0 12px;font-size:15.5px}
+.modal-caja .mp{display:flex;align-items:center;gap:10px;background:#E9F3FB;border-radius:12px;padding:12px 14px;font-size:14.5px;margin:14px 0}
+.cerrar{position:absolute;top:12px;right:12px;width:38px;height:38px;border-radius:50%;border:0;background:var(--piedra);cursor:pointer;font-size:20px}
+
+@media (max-width:1020px){
+  .hero .wrap,.titulo,.manana .wrap,.opiniones .wrap,.reglas .wrap,.contacto .wrap{grid-template-columns:1fr;gap:28px}
+  .ficha{grid-template-columns:1fr 1fr}
+  .ficha > div:nth-child(2){border-right:0;margin-right:0}
+  .temps{grid-template-columns:1fr 1fr}
+  nav.menu{display:none}
+  .top .wrap .btn{margin-left:auto}
+  .hero .cal{order:-1}
+  .hero-texto{display:contents}
+  .hero-texto .intro{order:-2}
+  .estadia{order:0}
+}
+@media (max-width:640px){
+  .wrap{padding:0 16px}
+  .aviso{padding:8px 16px;font-size:12.5px}
+  .top .wrap{height:58px;gap:12px}
+  .marca small{display:none}
+  .marca .serif{font-size:23px}
+  .top .btn{padding:9px 14px;font-size:14px}
+  .hero{padding:26px 0 40px}
+  .bajada{font-size:16px}
+  .cal{padding:14px 10px 12px;border-radius:18px}
+  .cal-head{padding:0 4px}
+  .cal-head h2{font-size:30px}
+  .cal-head h2 span{font-size:19px}
+  .dias,.grilla{gap:4px}
+  .dias div{font-size:11px;padding:0 2px 4px;text-align:center}
+  .dia{padding:5px 4px 5px;border-radius:9px;aspect-ratio:1/1.08;align-items:center}
+  .dia::before{left:5px;right:5px}
+  .dia .n{font-size:14px}
+  .dia .q{display:none}
+  .pips{gap:1.5px}
+  .pip{width:5px;height:6px}
+  .vacia{aspect-ratio:1/1.08}
+  .cal-pie{font-size:12px;gap:6px 12px;padding:0 4px}
+  section.bloque{padding:60px 0}
+  .mosaico{grid-template-columns:1fr 1fr;grid-template-rows:220px 140px 140px}
+  .mosaico .foto:first-child{grid-column:span 2;grid-row:auto;border-radius:var(--radio-l) var(--radio-l) 14px 14px}
+  .mosaico .foto:nth-child(3),.mosaico .foto:nth-child(5){border-radius:14px}
+  .ficha{grid-template-columns:1fr}
+  .ficha > div{border-right:0;margin-right:0;padding-right:0}
+  .cinta{grid-template-columns:repeat(5,minmax(0,1fr))}
+  .mes:nth-child(5){border-right:0}
+  .mes:nth-child(-n+5){border-bottom:1px solid var(--linea)}
+  .mes{min-height:78px}
+  .temps{grid-template-columns:1fr}
+  .nota-grande{font-size:92px}
+  .escala ol{grid-template-columns:1fr;padding-left:6px}
+  .escala ol::before{left:13px;right:auto;top:0;bottom:0;width:2px;height:auto}
+  .escala li{padding:0 0 22px 40px}
+  .escala li::before{left:0;top:6px}
+  .cerros{grid-template-columns:1fr}
+  .datos{grid-template-columns:1fr}
+  .franja figcaption{left:16px;bottom:14px}
+  .barra-movil{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--papel);border-top:1px solid var(--linea);padding:10px 16px calc(10px + env(safe-area-inset-bottom));gap:12px;align-items:center;justify-content:space-between;box-shadow:0 -10px 30px -20px rgba(0,0,0,.4)}
+  .barra-movil div{font-size:13.5px;line-height:1.3;min-width:0}
+  .barra-movil b{display:block;font-size:15px}
+  .barra-movil .btn{flex:none;padding:11px 16px}
+}
+</style>
+</head>
+<body>
+
+<div class="aviso" role="note"><strong>Prototipo de demostración preparado para Cabañas Solar de las Sierras.</strong> Precios ilustrativos y disponibilidad de ejemplo; no se toman reservas ni pagos reales.</div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="marca" href="#calendario"><span class="serif">Solar de las Sierras</span><small>Cabañas en Sierra de la Ventana</small></a>
+    <nav class="menu" aria-label="Secciones">
+      <a href="#calendario">Disponibilidad</a>
+      <a href="#cabana">La cabaña</a>
+      <a href="#temporadas">Temporadas</a>
+      <a href="#alrededor">Alrededor</a>
+      <a href="#reglas">Antes de venir</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <a class="btn btn-pino" href="https://wa.me/5492915094112" target="_blank" rel="noopener">WhatsApp</a>
+  </div>
+</header>
+
+<main>
+<section class="hero" id="calendario" aria-labelledby="h1">
+  <div class="wrap">
+    <div class="hero-texto">
+      <div class="intro">
+        <p class="lugar">Barrio Parque Golf, Sierra de la Ventana</p>
+        <h1 class="serif" id="h1">Cinco cabañas iguales. <em>Solo elegís la noche.</em></h1>
+        <p class="bajada">Las cinco son idénticas, luminosas y bien separadas entre sí: para dos personas, hasta cuatro. Están a 40 metros del golf y a 200 del río Sauce Grande. Marcá en el calendario cuándo venís y cada noche te dice cuántas quedan.</p>
+      </div>
+      <aside class="estadia" aria-live="polite" id="estadia">
+        <h2>Tu estadía</h2>
+        <div class="fechas">
+          <div class="fecha"><span>Llegada, desde las 14</span><b id="f-in">Elegí en el calendario</b></div>
+          <div class="fecha"><span>Salida, hasta las 10</span><b id="f-out">—</b></div>
+        </div>
+        <div class="fila">
+          <span>Personas</span>
+          <div class="contador">
+            <button type="button" id="menos" aria-label="Una persona menos">−</button>
+            <output id="pax" aria-live="polite">2</output>
+            <button type="button" id="mas" aria-label="Una persona más">+</button>
+          </div>
+        </div>
+        <div class="fila">
+          <label class="check"><input type="checkbox" id="cuna"> Cuna para bebé (hasta 18 meses)</label>
+        </div>
+        <div id="resultado"><p class="vacio">Tocá la noche de llegada y después la de salida.</p></div>
+        <button class="btn btn-sol" id="pedir" type="button" disabled>Pedir reserva con seña</button>
+        <p class="ilus">Precios ilustrativos para esta demo. Las tarifas reales las carga el complejo.</p>
+      </aside>
+    </div>
+
+    <div class="cal" role="region" aria-label="Calendario de disponibilidad">
+      <div class="cal-head">
+        <h2 class="serif" id="cal-mes">Octubre <span>2026</span></h2>
+        <div class="cal-nav">
+          <button type="button" id="prev" aria-label="Mes anterior">‹</button>
+          <button type="button" id="next" aria-label="Mes siguiente">›</button>
+        </div>
+      </div>
+      <div class="dias" aria-hidden="true"><div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div><div>Dom</div></div>
+      <div class="grilla" id="grilla"></div>
+      <div class="cal-pie">
+        <span class="ley"><span class="pips" aria-hidden="true"><i class="pip"></i><i class="pip"></i><i class="pip ocu"></i></span> cabañas libres esa noche</span>
+        <span class="ley"><i style="background:var(--alta)"></i>Alta</span>
+        <span class="ley"><i style="background:var(--media)"></i>Media</span>
+        <span class="ley"><i style="background:var(--invierno)"></i>Invierno</span>
+        <span class="ley"><i style="background:var(--baja)"></i>Baja</span>
+      </div>
+      <div class="cal-msg" id="cal-msg" aria-live="polite"></div>
+      <div class="sync">
+        <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 13.7-5.6M20 12a8 8 0 0 1-13.7 5.6M17 3v4h-4M7 21v-4h4" fill="none" stroke="#1E3A31" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>La ocupación se sincroniza con Booking y Airbnb: si una cabaña se reserva allá, acá desaparece sola. Sin dobles reservas.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<figure class="franja" data-fallback="Las cinco cabañas, vistas desde el dron" style="margin:0">
+  <img src="https://solardelassierras.com.ar/wp-content/uploads/2025/04/cabanas-solar-de-las-sierras-2023-4.jpg" alt="Vista aérea de las cinco cabañas de Solar de las Sierras en Barrio Parque Golf" loading="lazy">
+  <figcaption>Las cinco, desde arriba</figcaption>
+</figure>
+
+<section class="bloque cabana" id="cabana" aria-labelledby="h-cabana">
+  <div class="wrap">
+    <div class="titulo">
+      <h2 class="serif" id="h-cabana">Si conocés una, conocés las cinco.</h2>
+      <p>No hay cabaña mejor ni peor: las cinco tienen el mismo equipamiento, la misma luz y su propio deck. Lo único que cambia es cuál te toca.</p>
+    </div>
+    <div class="mosaico">
+      <div class="foto" data-fallback="Living con hogar a leña"><img src="https://solardelassierras.com.ar/wp-content/uploads/2025/04/cabanias-solar-de-las-sierras-14.jpg" alt="Interior de una cabaña de Solar de las Sierras" loading="lazy"></div>
+      <div class="foto" data-fallback="Dormitorio"><img src="https://solardelassierras.com.ar/wp-content/uploads/2025/04/DSCF1347.jpg" alt="Dormitorio de una cabaña" loading="lazy"></div>
+      <div class="foto" data-fallback="Cocina"><img src="https://solardelassierras.com.ar/wp-content/uploads/2025/04/DSCF1333.jpg" alt="Ambiente de una cabaña" loading="lazy"></div>
+      <div class="foto" data-fallback="El parque"><img src="https://solardelassierras.com.ar/wp-content/uploads/2025/04/cabanias-solar-de-las-sierras-11.jpg" alt="Exterior del complejo" loading="lazy"></div>
+      <div class="foto" data-fallback="La parrilla"><img src="https://solardelassierras.com.ar/wp-content/uploads/2026/04/parilla-solar.jpeg" alt="Parrilla de una cabaña" loading="lazy"></div>
+    </div>
+    <div class="ficha">
+      <div>
+        <h3 class="serif">Para estar</h3>
+        <ul><li>Hogar a leña</li><li>Aire acondicionado en los dos ambientes</li><li>Calefacción por tiro balanceado</li><li>Ventiladores de techo</li><li>TV LED de 32" en living y dormitorio</li></ul>
+      </div>
+      <div>
+        <h3 class="serif">Cocina</h3>
+        <ul><li>Horno y microondas</li><li>Heladera bajo mesada</li><li>Vajilla completa</li><li>Wi-Fi en todo el complejo</li></ul>
+      </div>
+      <div>
+        <h3 class="serif">Afuera</h3>
+        <ul><li>Deck de madera propio</li><li>Parrilla</li><li>Cochera cubierta individual</li><li>Pileta de 10 × 4 m con sector playo (en verano)</li></ul>
+      </div>
+      <div>
+        <h3 class="serif">Incluido</h3>
+        <ul><li>Desayuno en la cabaña</li><li>Ropa de cama y toallas</li><li>Caja de seguridad y secador de pelo</li><li>Mucama cada dos noches en estadías de cuatro o más</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="bloque manana" id="desayuno" aria-labelledby="h-manana">
+  <div class="wrap">
+    <div>
+      <h2 class="serif" id="h-manana">El desayuno viene a la cabaña.</h2>
+      <p>Pan artesanal, servido en tu cabaña. El amanecer en la sierra se mira desde la mesa, sin cambiarse ni cruzar a un comedor. Después, el golf queda a 40 metros y el río a dos cuadras.</p>
+      <div class="horario">
+        <div><b>14 h</b><span>Llegada</span></div>
+        <div><b>10 h</b><span>Salida</span></div>
+        <div><b>40 m</b><span>Al campo de golf</span></div>
+      </div>
+    </div>
+    <div class="foto" data-fallback="Mañana en el Solar"><img src="https://solardelassierras.com.ar/wp-content/uploads/2025/04/cabanias-solar-de-las-sierras-15.jpg" alt="Cabaña de Solar de las Sierras por la mañana" loading="lazy"></div>
+  </div>
+</section>
+
+<section class="bloque" id="temporadas" aria-labelledby="h-temp">
+  <div class="wrap">
+    <div class="titulo">
+      <h2 class="serif" id="h-temp">Temporadas 2026–2027</h2>
+      <p>El precio de cada noche depende de su temporada. El simulador las mezcla solo: si llegás un domingo de temporada baja y te quedás hasta un fin de semana largo, cobra cada noche por lo que es.</p>
+    </div>
+    <div class="cinta" id="cinta" aria-label="Temporadas por mes, de octubre de 2026 a julio de 2027"></div>
+    <div class="temps">
+      <article class="temp" style="--c:var(--alta)">
+        <h3 class="serif">Alta</h3>
+        <p class="precio">Desde $115.000 la noche*</p>
+        <ul>
+          <li>Fin de semana largo: 21 al 23 de noviembre</li>
+          <li>Fin de semana extralargo: 5 al 8 de diciembre</li>
+          <li>Navidad: 25 al 27 de diciembre</li>
+          <li>Verano: 28 de diciembre al 28 de febrero</li>
+          <li>Semana Santa: 25 al 28 de marzo</li>
+        </ul>
+      </article>
+      <article class="temp" style="--c:var(--media)">
+        <h3 class="serif">Media</h3>
+        <p class="precio">Desde $95.000 la noche*</p>
+        <ul>
+          <li>Diciembre, antes de las fiestas</li>
+          <li>Marzo, fuera de Semana Santa</li>
+          <li>Malvinas: 2 al 4 de abril</li>
+        </ul>
+      </article>
+      <article class="temp" style="--c:var(--invierno)">
+        <h3 class="serif">Invierno</h3>
+        <p class="precio">Desde $100.000 la noche*</p>
+        <ul>
+          <li>Vacaciones de invierno de julio (fechas según el calendario escolar 2027)</li>
+          <li>El hogar a leña hace el resto</li>
+        </ul>
+      </article>
+      <article class="temp" style="--c:var(--baja)">
+        <h3 class="serif">Baja</h3>
+        <p class="precio">Desde $80.000 la noche*</p>
+        <ul>
+          <li>Octubre, noviembre y de abril a junio, fuera de los fines de semana largos</li>
+          <li>Descuentos especiales: consultá</li>
+        </ul>
+      </article>
+    </div>
+    <p class="ilus">* Precios ilustrativos para dos personas, con desayuno. Tercera y cuarta persona: $18.000 por noche cada una. Las tarifas reales las define el complejo.</p>
+  </div>
+</section>
+
+<section class="bloque opiniones" aria-labelledby="h-op">
+  <div class="wrap">
+    <div>
+      <h2 class="serif" id="h-op" style="font-size:22px;margin:0 0 10px;color:var(--pino)">Lo que dicen los huéspedes</h2>
+      <div class="nota-grande">4,5<small>/5</small></div>
+      <div class="subnotas">
+        <span>Sueño <b>4,8</b></span><span>Limpieza <b>4,7</b></span>
+        <span>Ubicación <b>4,5</b></span><span>Servicio <b>4,5</b></span>
+        <span>Habitaciones <b>4,4</b></span><span>Calidad/precio <b>4,2</b></span>
+      </div>
+    </div>
+    <div>
+      <div class="citas">
+        <blockquote>“Tan hermosas como se las ve en las fotos”<cite>Huésped, julio de 2023</cite></blockquote>
+        <blockquote>“Muy buena la atención de sus dueños.”<cite>Huésped, abril de 2023</cite></blockquote>
+        <blockquote>“Super recomendable”<cite>Huésped, enero de 2025</cite></blockquote>
+      </div>
+      <p class="fuente">Calificaciones y reseñas publicadas en Welcome Argentina.</p>
+    </div>
+  </div>
+</section>
+
+<section class="bloque" id="alrededor" aria-labelledby="h-alr">
+  <div class="wrap">
+    <div class="titulo">
+      <h2 class="serif" id="h-alr">Todo cerca, caminando.</h2>
+      <p>El Barrio Parque Golf es la parte tranquila de Sierra de la Ventana, pero el centro está a ocho cuadras. Desde la puerta de la cabaña:</p>
+    </div>
+    <div class="escala">
+      <ol>
+        <li><b>0 m</b><span>Tu cabaña, en Manzana Los Pinos 12</span></li>
+        <li><b>40 m</b><span>El campo de golf</span></li>
+        <li><b>200 m</b><span>El río Sauce Grande</span></li>
+        <li><b>8 cuadras</b><span>El centro comercial</span></li>
+        <li><b>12 cuadras</b><span>La terminal de ómnibus</span></li>
+      </ol>
+    </div>
+    <div class="cerros">
+      <article class="cerro">
+        <svg viewBox="0 0 300 70" preserveAspectRatio="none" aria-hidden="true"><path d="M0 70 L60 48 L105 30 L130 12 L148 26 L168 6 L188 24 L208 14 L240 40 L300 56 L300 70Z" fill="#2B4F43"/></svg>
+        <h3 class="serif">Cerro Tres Picos</h3>
+        <p>1.239 metros, el punto más alto de la provincia de Buenos Aires.</p>
+      </article>
+      <article class="cerro">
+        <svg viewBox="0 0 300 70" preserveAspectRatio="none" aria-hidden="true"><path d="M0 70 L70 44 L120 18 L150 8 L182 20 L230 46 L300 60 L300 70Z" fill="#2B4F43"/><ellipse cx="150" cy="22" rx="7" ry="5" fill="#F7F8F4"/></svg>
+        <h3 class="serif">Cerro Ventana</h3>
+        <p>1.136 metros, con el hueco en la roca que le da nombre a la sierra. Se sube desde el Parque Provincial Ernesto Tornquist, sobre la Ruta 76.</p>
+      </article>
+      <article class="cerro">
+        <svg viewBox="0 0 300 70" preserveAspectRatio="none" aria-hidden="true"><path d="M0 52 C40 40 70 58 110 48 S180 30 220 44 S280 56 300 46 L300 70 L0 70Z" fill="#4F8093"/><path d="M0 60 C50 52 90 66 140 58 S230 50 300 58" fill="none" stroke="#F7F8F4" stroke-width="2"/></svg>
+        <h3 class="serif">Río Sauce Grande</h3>
+        <p>Sierra de la Ventana está a orillas del Sauce Grande y del arroyo San Bernardo. Desde la cabaña son 200 metros.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="bloque reglas" id="reglas" aria-labelledby="h-reg">
+  <div class="wrap">
+    <div>
+      <h2 class="serif" id="h-reg" style="font-size:clamp(36px,4.2vw,56px);line-height:1;margin:0;color:var(--pino)">Un lugar tranquilo, a propósito.</h2>
+      <ul class="no-lista">
+        <li><svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="#1E3A31" stroke-width="2"/><path d="M5 19L19 5" stroke="#1E3A31" stroke-width="2"/></svg>Sin mascotas</li>
+        <li><svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="#1E3A31" stroke-width="2"/><path d="M5 19L19 5" stroke="#1E3A31" stroke-width="2"/></svg>Sin visitas</li>
+        <li><svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="#1E3A31" stroke-width="2"/><path d="M5 19L19 5" stroke="#1E3A31" stroke-width="2"/></svg>No se fuma dentro de las cabañas</li>
+      </ul>
+    </div>
+    <div>
+      <details open><summary>¿A qué hora es la llegada y la salida?</summary><p>La llegada es desde las 14 y la salida hasta las 10.</p></details>
+      <details><summary>¿Cuántas personas entran en una cabaña?</summary><p>Están pensadas para dos personas y entran hasta cuatro. Las cinco son iguales, así que la capacidad es la misma en todas.</p></details>
+      <details><summary>¿Viajamos con un bebé, hay cuna?</summary><p>Sí, para chicos de hasta 18 meses. Pedila al reservar: en el simulador está la opción.</p></details>
+      <details><summary>¿Cada cuánto pasa la mucama?</summary><p>Cada dos noches, en estadías de cuatro noches o más.</p></details>
+      <details><summary>¿La pileta funciona todo el año?</summary><p>No, solo en verano. Tiene 10 × 4 metros y un sector playo de 4 × 4.</p></details>
+      <details><summary>¿Cómo se paga?</summary><p>Efectivo, transferencia, Visa, Mastercard o Mercado Pago. Con la reserva web, la seña del 30% se paga por Mercado Pago y el resto al llegar.</p></details>
+      <details><summary>¿Hay descuentos?</summary><p>En temporada baja hay descuentos especiales. Escribinos con tus fechas y te pasamos el precio.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="bloque contacto" id="contacto" aria-labelledby="h-con">
+  <div class="wrap">
+    <div>
+      <h2 class="serif" id="h-con" style="font-size:clamp(36px,4.2vw,56px);line-height:1;margin:0;color:var(--pino)">Te atiende Santiago.</h2>
+      <div class="santiago">
+        <div class="foto" data-fallback="S"><img src="https://solardelassierras.com.ar/wp-content/uploads/2025/04/santiago.png" alt="Santiago, administrador de Solar de las Sierras" loading="lazy"></div>
+        <p><q>Nos esforzamos por ser únicos y el lugar al que desearían regresar.</q>Santiago, administrador</p>
+      </div>
+    </div>
+    <div>
+      <div class="datos">
+        <a class="dato" href="https://wa.me/5492915094112" target="_blank" rel="noopener"><span>WhatsApp</span><b>+54 9 291 509-4112</b></a>
+        <a class="dato" href="mailto:solardelassierras@yahoo.com.ar"><span>Correo</span><b>solardelassierras@yahoo.com.ar</b></a>
+        <a class="dato" href="tel:+542914915558"><span>Reservas</span><b>0291 491-5558</b></a>
+        <a class="dato" href="https://www.instagram.com/solardelasierras" target="_blank" rel="noopener"><span>Instagram</span><b>@solardelasierras</b></a>
+      </div>
+      <div class="llegar">
+        <h3 class="serif">Cómo llegar</h3>
+        <p>Manzana Los Pinos Nº 12, Barrio Parque Golf, Sierra de la Ventana (CP 8168), provincia de Buenos Aires. El aeropuerto más cercano es el de Bahía Blanca, a unos 100 km. Desde la Ciudad de Buenos Aires son unos 600 km.</p>
+        <a class="btn btn-linea" href="https://www.google.com/maps/search/?api=1&query=Caba%C3%B1as+Solar+de+las+Sierras+Sierra+de+la+Ventana" target="_blank" rel="noopener">Abrir en Google Maps</a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div><span class="serif">Solar de las Sierras</span><br>Cabañas en Barrio Parque Golf, Sierra de la Ventana.</div>
+    <p style="max-width:44em;margin:0">Prototipo de demostración preparado para Cabañas Solar de las Sierras por Resolviendo Kos (resolviendokos.com). Fotos de Solar de las Sierras. Precios, ocupación y pago son de ejemplo.</p>
+  </div>
+</footer>
+
+<div class="barra-movil" id="barra-movil">
+  <div><b id="bm-total">Elegí tus noches</b><span id="bm-det">Disponibilidad arriba</span></div>
+  <a class="btn btn-sol" href="#estadia" id="bm-btn">Ver estadía</a>
+</div>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="m-tit">
+  <div class="modal-caja">
+    <button class="cerrar" type="button" id="m-cerrar" aria-label="Cerrar">×</button>
+    <h3 class="serif" id="m-tit">Pedido de reserva</h3>
+    <p id="m-det"></p>
+    <div class="mp"><svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#009EE3"/><path d="M6 13c2-3 4-3 6 0s4 3 6 0" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg><span id="m-sena"></span></div>
+    <p style="font-size:14px;color:var(--gris)">En la versión real, al pagar la seña la noche se bloquea en Booking y Airbnb y a Santiago le llega el aviso. En esta demo no se cobra nada.</p>
+    <button class="btn btn-pino" type="button" id="m-ok" style="width:100%">Entendido</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  var MESES=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+  var MES_CORTO=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+  var DIAS=["dom","lun","mar","mié","jue","vie","sáb"];
+  var TARIFA={alta:115000,media:95000,invierno:100000,baja:80000};
+  var EXTRA=18000, TOTAL_CAB=5;
+  var NOMBRE={alta:"alta",media:"media",invierno:"invierno",baja:"baja"};
+
+  function d(y,m,day){return new Date(Date.UTC(y,m,day));}
+  function key(t){return t.toISOString().slice(0,10);}
+  function add(t,n){return new Date(t.getTime()+n*864e5);}
+  function between(t,a,b){return t>=a&&t<=b;}
+
+  // hoy en Buenos Aires
+  var ahora=new Date(Date.now()-3*36e5);
+  var HOY=d(ahora.getUTCFullYear(),ahora.getUTCMonth(),ahora.getUTCDate());
+  var INICIO=d(2026,9,1), FIN=d(2027,6,31);
+  if(HOY>INICIO){INICIO=d(HOY.getUTCFullYear(),HOY.getUTCMonth(),1);}
+
+  var ALTAS=[[d(2026,10,21),d(2026,10,23)],[d(2026,11,5),d(2026,11,8)],[d(2026,11,25),d(2027,1,28)],[d(2027,2,25),d(2027,2,28)]];
+  var MEDIAS=[[d(2026,11,1),d(2026,11,24)],[d(2027,2,1),d(2027,2,31)],[d(2027,3,2),d(2027,3,4)]];
+  var INVIERNO=[[d(2027,6,1),d(2027,6,31)]];
+  function temporada(t){
+    var i;
+    for(i=0;i<ALTAS.length;i++) if(between(t,ALTAS[i][0],ALTAS[i][1])) return "alta";
+    for(i=0;i<INVIERNO.length;i++) if(between(t,INVIERNO[i][0],INVIERNO[i][1])) return "invierno";
+    for(i=0;i<MEDIAS.length;i++) if(between(t,MEDIAS[i][0],MEDIAS[i][1])) return "media";
+    return "baja";
+  }
+  // ocupación de ejemplo, determinística por fecha
+  function libres(t){
+    var s=t.getUTCFullYear()*372+t.getUTCMonth()*31+t.getUTCDate();
+    var r=Math.abs(Math.sin(s*12.9898)*43758.5453)%1;
+    var dow=t.getUTCDay(), tp=temporada(t), occ;
+    if(tp==="alta") occ=3+Math.floor(r*3);
+    else if(tp==="media"||tp==="invierno") occ=1+Math.floor(r*3);
+    else occ=Math.floor(r*2.4);
+    if(dow===5||dow===6) occ+=tp==="baja"?2:1;
+    return Math.max(0,TOTAL_CAB-Math.min(TOTAL_CAB,occ));
+  }
+
+  var vista=d(INICIO.getUTCFullYear(),INICIO.getUTCMonth(),1);
+  var entrada=null, salida=null, pax=2;
+  var grilla=document.getElementById("grilla"), msg=document.getElementById("cal-msg");
+
+  function fmt(n){return "$"+Math.round(n).toLocaleString("es-AR");}
+  function fLarga(t){return DIAS[t.getUTCDay()]+" "+t.getUTCDate()+" "+MES_CORTO[t.getUTCMonth()];}
+
+  function pintar(){
+    var y=vista.getUTCFullYear(), m=vista.getUTCMonth();
+    document.getElementById("cal-mes").innerHTML=MESES[m]+" <span>"+y+"</span>";
+    document.getElementById("prev").disabled=(vista<=d(INICIO.getUTCFullYear(),INICIO.getUTCMonth(),1));
+    document.getElementById("next").disabled=(vista>=d(FIN.getUTCFullYear(),FIN.getUTCMonth(),1));
+    grilla.innerHTML="";
+    var primero=d(y,m,1), off=(primero.getUTCDay()+6)%7, ult=new Date(Date.UTC(y,m+1,0)).getUTCDate();
+    for(var i=0;i<off;i++){var v=document.createElement("div");v.className="vacia";grilla.appendChild(v);}
+    for(var dd=1;dd<=ult;dd++){
+      var t=d(y,m,dd), b=document.createElement("button");
+      b.type="button"; b.className="dia"; b.dataset.k=key(t);
+      var tp=temporada(t), lib=libres(t), pasado=t<HOY;
+      b.style.setProperty("--temp","var(--"+tp+")");
+      var pips="";
+      for(var p=0;p<TOTAL_CAB;p++) pips+='<i class="pip'+(p<lib?"":" ocu")+'"></i>';
+      var q=pasado?"":(lib===0?"completo":(lib===1?"queda 1":"quedan "+lib));
+      b.innerHTML='<span class="n">'+dd+'</span><span class="q">'+q+'</span><span class="pips" aria-hidden="true">'+pips+'</span>';
+      var etiqueta=dd+" de "+MESES[m].toLowerCase()+", temporada "+NOMBRE[tp]+", ";
+      if(pasado){b.disabled=true;etiqueta+="fecha pasada";}
+      else if(lib===0){b.classList.add("lleno");etiqueta+="sin cabañas libres";}
+      else etiqueta+=(lib===1?"queda 1 cabaña":"quedan "+lib+" cabañas");
+      // la noche completa no puede iniciar estadía, pero sí ser día de salida
+      if(lib===0&&!pasado&&!(entrada&&!salida&&t>entrada)) b.setAttribute("aria-disabled","true");
+      if(+t===+HOY) b.classList.add("hoy");
+      b.setAttribute("aria-label",etiqueta);
+      if(entrada&&+t===+entrada) b.classList.add("ini");
+      if(salida&&+t===+salida) b.classList.add("fin");
+      if(entrada&&salida&&t>entrada&&t<salida) b.classList.add("en-rango");
+      grilla.appendChild(b);
+    }
+  }
+
+  function minLibres(a,b){var m=TOTAL_CAB;for(var t=a;t<b;t=add(t,1)){m=Math.min(m,libres(t));}return m;}
+
+  grilla.addEventListener("click",function(e){
+    var b=e.target.closest(".dia"); if(!b||b.disabled) return;
+    var p=b.dataset.k.split("-"), t=d(+p[0],+p[1]-1,+p[2]);
+    if(!entrada||salida||t<=entrada){
+      if(libres(t)===0){msg.textContent="Esa noche ya no quedan cabañas. Probá con otra llegada.";return;}
+      entrada=t;salida=null;msg.textContent="Llegada el "+fLarga(t)+". Ahora tocá el día de salida.";
+    } else {
+      var n=Math.round((t-entrada)/864e5);
+      if(n>21){msg.textContent="Para más de 21 noches escribinos y lo armamos a medida.";return;}
+      if(minLibres(entrada,t)===0){msg.textContent="Alguna noche de ese rango está completa. Elegí una salida anterior o cambiá la llegada.";return;}
+      salida=t;
+      var ml=minLibres(entrada,salida);
+      msg.textContent=(ml===1?"Queda 1 cabaña libre":"Quedan "+ml+" cabañas libres")+" para todas tus noches.";
+    }
+    pintar();calcular();
+  });
+  document.getElementById("prev").onclick=function(){vista=d(vista.getUTCFullYear(),vista.getUTCMonth()-1,1);pintar();};
+  document.getElementById("next").onclick=function(){vista=d(vista.getUTCFullYear(),vista.getUTCMonth()+1,1);pintar();};
+
+  var menos=document.getElementById("menos"), mas=document.getElementById("mas");
+  function pxs(){document.getElementById("pax").textContent=pax;menos.disabled=pax<=1;mas.disabled=pax>=4;calcular();}
+  menos.onclick=function(){if(pax>1){pax--;pxs();}};
+  mas.onclick=function(){if(pax<4){pax++;pxs();}};
+  document.getElementById("cuna").onchange=calcular;
+
+  var ultimo=null;
+  function calcular(){
+    var res=document.getElementById("resultado"), btn=document.getElementById("pedir");
+    document.getElementById("f-in").textContent=entrada?fLarga(entrada):"Elegí en el calendario";
+    document.getElementById("f-out").textContent=salida?fLarga(salida):"—";
+    var bmT=document.getElementById("bm-total"), bmD=document.getElementById("bm-det");
+    if(!entrada||!salida){
+      res.innerHTML='<p class="vacio">'+(entrada?"Falta el día de salida.":"Tocá la noche de llegada y después la de salida.")+'</p>';
+      btn.disabled=true; ultimo=null;
+      bmT.textContent=entrada?"Llegada "+fLarga(entrada):"Elegí tus noches";
+      bmD.textContent=entrada?"Falta la salida":"Disponibilidad arriba";
+      return;
+    }
+    var noches=0,cuenta={},sub=0;
+    for(var t=entrada;t<salida;t=add(t,1)){var tp=temporada(t);cuenta[tp]=(cuenta[tp]||0)+1;sub+=TARIFA[tp];noches++;}
+    var extras=Math.max(0,pax-2)*EXTRA*noches, total=sub+extras, sena=total*0.3;
+    var h='<div class="desglose">';
+    ["alta","media","invierno","baja"].forEach(function(k){if(cuenta[k]) h+='<div><span>'+cuenta[k]+(cuenta[k]>1?" noches":" noche")+' en temporada '+NOMBRE[k]+'</span><span>'+fmt(cuenta[k]*TARIFA[k])+'</span></div>';});
+    if(extras) h+='<div><span>'+(pax-2)+(pax-2>1?" personas extra":" persona extra")+'</span><span>'+fmt(extras)+'</span></div>';
+    h+='<div><span>Desayuno en la cabaña</span><span>incluido</span></div>';
+    if(noches>=4){var serv=Math.floor((noches-1)/2);h+='<div><span>Mucama cada dos noches'+(serv?" ("+serv+(serv>1?" pasadas":" pasada")+")":"")+'</span><span>incluida</span></div>';}
+    if(document.getElementById("cuna").checked) h+='<div><span>Cuna</span><span>a pedido</span></div>';
+    if(cuenta.baja) h+='<span class="nota">Hay noches en temporada baja: preguntá por los descuentos especiales.</span>';
+    h+='<div class="total"><span>'+noches+(noches>1?" noches":" noche")+', '+pax+(pax>1?" personas":" persona")+'</span><b>'+fmt(total)+'</b></div></div>';
+    h+='<p class="sena">Seña del 30% por Mercado Pago: <b>'+fmt(sena)+'</b>. El resto, al llegar.</p>';
+    res.innerHTML=h; btn.disabled=false;
+    ultimo={noches:noches,total:total,sena:sena};
+    bmT.textContent=fmt(total)+" · "+noches+(noches>1?" noches":" noche");
+    bmD.textContent=fLarga(entrada)+" al "+fLarga(salida);
+  }
+  document.getElementById("pedir").onclick=function(){
+    if(!ultimo) return;
+    document.getElementById("m-det").textContent="Del "+fLarga(entrada)+" al "+fLarga(salida)+", "+pax+(pax>1?" personas":" persona")+(document.getElementById("cuna").checked?", con cuna":"")+". Total "+fmt(ultimo.total)+".";
+    document.getElementById("m-sena").textContent="Seña de "+fmt(ultimo.sena)+" con Mercado Pago (demo)";
+    var m=document.getElementById("modal"); m.classList.add("abierto"); document.getElementById("m-ok").focus();
+  };
+  function cerrar(){document.getElementById("modal").classList.remove("abierto");document.getElementById("pedir").focus();}
+  document.getElementById("m-cerrar").onclick=cerrar;
+  document.getElementById("m-ok").onclick=cerrar;
+  document.getElementById("modal").addEventListener("click",function(e){if(e.target.id==="modal") cerrar();});
+  document.addEventListener("keydown",function(e){if(e.key==="Escape"&&document.getElementById("modal").classList.contains("abierto")) cerrar();});
+
+  // cinta de temporadas por mes
+  var cinta=document.getElementById("cinta");
+  for(var mi=0;mi<10;mi++){
+    var y=2026+Math.floor((9+mi)/12), m=(9+mi)%12, ult=new Date(Date.UTC(y,m+1,0)).getUTCDate();
+    var segs=[],prev=null,len=0;
+    for(var dd=1;dd<=ult;dd++){var tp=temporada(d(y,m,dd));if(tp!==prev&&prev){segs.push([prev,len]);len=0;}prev=tp;len++;}
+    segs.push([prev,len]);
+    var bar=segs.map(function(s){return '<i style="width:'+(s[1]/ult*100)+'%;background:var(--'+s[0]+')" title="'+s[0]+'"></i>';}).join("");
+    var el=document.createElement("div"); el.className="mes";
+    el.innerHTML='<b>'+MES_CORTO[m]+(m===0||mi===0?" "+y:"")+'</b><span class="barra">'+bar+'</span>';
+    cinta.appendChild(el);
+  }
+
+  // fotos: si no cargan, queda un fondo con texto
+  document.querySelectorAll(".foto img,.franja img").forEach(function(img){
+    function rota(){img.parentNode.classList.add("rota");}
+    if(img.complete&&img.naturalWidth===0&&img.src) rota();
+    img.addEventListener("error",rota);
+  });
+
+  pintar(); pxs();
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Cabañas Solar de las Sierras"></script>
+</body>
+</html>
