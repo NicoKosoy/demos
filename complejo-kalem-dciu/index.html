@@ -1,0 +1,713 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Complejo Kalem · Villa Ventana</title>
+<meta name="description" content="Prototipo de demostración: web de reservas directas para Complejo Kalem, cabañas y suites con pileta climatizada en Villa Ventana, Sierra de la Ventana.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gloock&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pozo:#1B282E;      /* agua profunda de noche */
+  --piedra:#28383F;    /* piedra mojada */
+  --piedra2:#33464E;
+  --vapor:#E4E9E6;     /* vapor */
+  --niebla:#AEBBB8;
+  --cobre:#C27E4A;     /* cobre de sauna */
+  --cobre2:#E0A774;
+  --agua:#7FB3AC;      /* agua climatizada */
+  --liquen:#9AA675;
+  --linea:rgba(228,233,230,.14);
+  --serif:'Gloock', Georgia, serif;
+  --sans:'Instrument Sans', system-ui, sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--pozo);color:var(--vapor);font:400 17px/1.6 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:var(--cobre2)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,label:focus-within{outline:2px solid var(--cobre2);outline-offset:3px}
+h1,h2,h3{font-family:var(--serif);font-weight:400;line-height:1.08;margin:0;letter-spacing:-.01em}
+p{margin:0 0 1em}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+
+/* aviso */
+.aviso{background:var(--cobre);color:#1d1510;font-size:14px;padding:9px 16px;text-align:center}
+.aviso strong{font-weight:600}
+
+/* nav */
+.top{position:relative}
+.nav{position:absolute;top:22px;left:0;right:0;z-index:5}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px}
+.marca{font-family:var(--serif);font-size:28px;color:var(--vapor);text-decoration:none;letter-spacing:.01em}
+.nav ul{display:flex;gap:26px;list-style:none;margin:0;padding:0;font-size:15px}
+.nav ul a{color:var(--vapor);text-decoration:none;opacity:.85}
+.nav ul a:hover{opacity:1;text-decoration:underline;text-underline-offset:4px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:999px;padding:13px 22px;font:600 15px var(--sans);cursor:pointer;text-decoration:none;transition:background .2s,color .2s}
+.btn-cobre{background:var(--cobre);color:#1d1510}
+.btn-cobre:hover{background:var(--cobre2)}
+.btn-linea{background:transparent;color:var(--vapor);box-shadow:inset 0 0 0 1.5px var(--linea)}
+.btn-linea:hover{box-shadow:inset 0 0 0 1.5px var(--vapor)}
+
+/* foto con respaldo */
+.foto{position:relative;overflow:hidden;background:
+  radial-gradient(120% 80% at 30% 110%, rgba(127,179,172,.55), transparent 60%),
+  radial-gradient(90% 70% at 80% 0%, rgba(194,126,74,.35), transparent 60%),
+  linear-gradient(160deg,var(--piedra2),var(--pozo))}
+.foto img{width:100%;height:100%;object-fit:cover;transition:opacity .4s}
+.foto img.roto{opacity:0}
+.foto .rotulo{position:absolute;left:14px;bottom:12px;font-size:13px;color:var(--vapor);opacity:.8;text-shadow:0 1px 6px rgba(0,0,0,.5)}
+
+/* hero */
+.hero{position:relative;min-height:min(92vh,860px);display:grid;align-items:end;isolation:isolate}
+.hero .foto{position:absolute;inset:0;z-index:-2}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(27,40,46,.55) 0%,rgba(27,40,46,.15) 35%,rgba(27,40,46,.92) 88%,var(--pozo) 100%)}
+.vapor{position:absolute;inset:auto 0 0 0;height:60%;z-index:-1;pointer-events:none;overflow:hidden}
+.vapor span{position:absolute;bottom:-20%;width:46vw;height:46vw;max-width:620px;max-height:620px;border-radius:50%;background:radial-gradient(circle,rgba(228,233,230,.20),transparent 65%);filter:blur(18px);animation:sube 14s ease-in-out infinite}
+.vapor span:nth-child(1){left:-6%}
+.vapor span:nth-child(2){left:30%;animation-delay:-5s}
+.vapor span:nth-child(3){left:62%;animation-delay:-9s}
+@keyframes sube{0%{transform:translateY(20%) scale(.9);opacity:0}40%{opacity:1}100%{transform:translateY(-55%) scale(1.15);opacity:0}}
+.hero-txt{padding:150px 28px 64px;width:100%}
+.hero h1{font-size:clamp(42px,7vw,100px);max-width:14ch}
+.hero .bajada{font-size:clamp(18px,1.6vw,21px);max-width:46ch;color:var(--vapor);opacity:.9;margin:26px 0 30px}
+.hero .acciones{display:flex;gap:12px;flex-wrap:wrap}
+.datos-hero{display:flex;gap:36px;flex-wrap:wrap;margin-top:54px;padding-top:22px;border-top:1px solid var(--linea);font-size:15px;color:var(--niebla)}
+.datos-hero b{display:block;font-family:var(--serif);font-weight:400;font-size:30px;color:var(--vapor);line-height:1.1}
+
+/* agua: el spa */
+.agua{padding:110px 0 90px}
+.agua-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:64px;align-items:center}
+.agua h2{font-size:clamp(34px,4.2vw,56px);max-width:15ch;margin-bottom:22px}
+.agua p{color:var(--niebla);max-width:52ch}
+.temps{list-style:none;padding:0;margin:30px 0 0;display:grid;gap:0}
+.temps li{display:grid;grid-template-columns:150px 1fr;gap:18px;padding:16px 0;border-top:1px solid var(--linea)}
+.temps li:last-child{border-bottom:1px solid var(--linea)}
+.temps span{font-family:var(--serif);font-size:21px;color:var(--vapor)}
+.temps em{font-style:normal;color:var(--niebla)}
+.agua-fotos{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:260px 200px;gap:12px}
+.agua-fotos .foto:first-child{grid-column:1/3;border-radius:200px 200px 6px 6px}
+.agua-fotos .foto{border-radius:6px}
+
+/* carta de unidades */
+.carta{padding:100px 0;background:var(--piedra);position:relative}
+.carta-cab{display:flex;justify-content:space-between;align-items:end;gap:30px;flex-wrap:wrap;margin-bottom:34px}
+.carta h2{font-size:clamp(34px,4.2vw,56px);max-width:16ch}
+.carta-cab p{max-width:40ch;color:var(--niebla);margin:0}
+.resignar{border:1px solid var(--linea);border-radius:18px;padding:22px 24px;margin-bottom:40px;background:rgba(27,40,46,.35)}
+.resignar h3{font-size:24px;margin-bottom:6px}
+.resignar .ayuda{color:var(--niebla);font-size:15px;margin-bottom:16px}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{position:relative}
+.chip input{position:absolute;opacity:0;inset:0;cursor:pointer}
+.chip span{display:inline-block;padding:9px 16px;border-radius:999px;box-shadow:inset 0 0 0 1.5px var(--linea);font-size:15px;color:var(--vapor);transition:background .2s,box-shadow .2s,color .2s}
+.chip input:checked+span{background:var(--cobre);color:#1d1510;box-shadow:none}
+.chip input:focus-visible+span{outline:2px solid var(--cobre2);outline-offset:3px}
+.personas{display:flex;align-items:center;gap:12px;margin-top:16px;font-size:15px;color:var(--niebla);flex-wrap:wrap}
+.paso{display:inline-flex;align-items:center;border-radius:999px;box-shadow:inset 0 0 0 1.5px var(--linea)}
+.paso button{background:none;border:0;color:var(--vapor);font:500 20px var(--sans);width:40px;height:38px;cursor:pointer}
+.paso output{min-width:26px;text-align:center;font-weight:600;color:var(--vapor)}
+.res-resultado{margin-top:14px;font-size:15px;color:var(--agua);min-height:1.5em}
+
+.carta-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.menu{list-style:none;margin:0;padding:0}
+.item{border-top:1px solid var(--linea)}
+.item:last-child{border-bottom:1px solid var(--linea)}
+.item button{all:unset;box-sizing:border-box;display:block;width:100%;padding:20px 4px;cursor:pointer;transition:opacity .25s}
+.item button:focus-visible{outline:2px solid var(--cobre2);outline-offset:2px}
+.linea-menu{display:flex;align-items:baseline;gap:10px}
+.linea-menu h3{font-size:clamp(26px,2.6vw,34px)}
+.puntos{flex:1;border-bottom:2px dotted rgba(228,233,230,.25);transform:translateY(-6px);min-width:20px}
+.linea-menu .cap{font-size:15px;color:var(--niebla);white-space:nowrap}
+.item .desc{font-size:15px;color:var(--niebla);margin-top:6px;max-width:48ch}
+.item .rasgos{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.item .rasgos i{font-style:normal;font-size:13px;padding:3px 10px;border-radius:999px;background:rgba(228,233,230,.07);color:var(--niebla)}
+.item .rasgos i.si{background:rgba(194,126,74,.22);color:var(--cobre2)}
+.item.activo button{padding-left:16px;box-shadow:inset 3px 0 0 var(--cobre)}
+.item.apagado button{opacity:.32}
+.item.encendido .linea-menu h3{color:var(--cobre2)}
+
+.ficha{position:sticky;top:24px}
+.ficha .foto{aspect-ratio:4/3;border-radius:10px}
+.miniaturas{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}
+.miniaturas button{all:unset;cursor:pointer;aspect-ratio:1/1;border-radius:6px;overflow:hidden;opacity:.6}
+.miniaturas button[aria-pressed="true"]{opacity:1;box-shadow:0 0 0 2px var(--cobre)}
+.miniaturas button:focus-visible{outline:2px solid var(--cobre2)}
+.miniaturas .foto{width:100%;height:100%}
+.ficha-txt{margin-top:18px;display:flex;justify-content:space-between;gap:16px;align-items:start;flex-wrap:wrap}
+.ficha-txt h3{font-size:32px}
+.ficha-txt p{color:var(--niebla);font-size:15px;margin:4px 0 0}
+.ficha dl{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;margin:18px 0 0;font-size:15px}
+.ficha dt{color:var(--niebla)}
+.ficha dd{margin:0}
+
+/* reservar */
+.reserva{padding:110px 0}
+.reserva h2{font-size:clamp(34px,4.2vw,56px);max-width:18ch;margin-bottom:12px}
+.reserva .sub{color:var(--niebla);max-width:60ch;margin-bottom:40px}
+.res-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:start}
+.panel{background:var(--piedra);border-radius:20px;padding:28px}
+.cal-cab{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.cal-cab h3{font-size:26px}
+.cal-nav{display:flex;gap:8px}
+.cal-nav button{background:none;border:0;box-shadow:inset 0 0 0 1.5px var(--linea);color:var(--vapor);width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:18px}
+.cal-nav button:disabled{opacity:.3;cursor:default}
+.meses{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.mes h4{font:600 15px var(--sans);margin:0 0 10px;color:var(--vapor)}
+.dias{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;text-align:center;font-size:14px}
+.dias .dsem{color:var(--niebla);font-size:12px;padding-bottom:4px}
+.dia{all:unset;box-sizing:border-box;height:36px;display:flex;align-items:center;justify-content:center;border-radius:8px;cursor:pointer;color:var(--vapor);position:relative}
+.dia:hover{background:rgba(228,233,230,.08)}
+.dia:focus-visible{outline:2px solid var(--cobre2)}
+.dia.ocupado{color:rgba(228,233,230,.28);text-decoration:line-through;cursor:not-allowed;background:none}
+.dia.pasado{color:rgba(228,233,230,.2);cursor:default}
+.dia.alta::after{content:"";position:absolute;bottom:4px;width:4px;height:4px;border-radius:50%;background:var(--cobre)}
+.dia.en-rango{background:rgba(127,179,172,.22);border-radius:0}
+.dia.inicio,.dia.fin{background:var(--agua);color:var(--pozo);font-weight:600}
+.dia.inicio{border-radius:8px 0 0 8px}.dia.fin{border-radius:0 8px 8px 0}
+.dia.inicio.fin{border-radius:8px}
+.leyenda{display:flex;flex-wrap:wrap;gap:16px;margin-top:16px;font-size:13px;color:var(--niebla)}
+.leyenda span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px;background:var(--agua)}
+.leyenda .l-ocup::before{background:rgba(228,233,230,.2)}
+.leyenda .l-alta::before{background:var(--cobre);border-radius:50%;width:6px;height:6px;vertical-align:1px}
+.sync{margin-top:16px;padding:12px 14px;border-radius:10px;background:rgba(127,179,172,.12);color:var(--agua);font-size:14px}
+
+.form{display:grid;gap:14px}
+.campo label,.campo .lbl{display:block;font-size:14px;color:var(--niebla);margin-bottom:6px}
+.campo select{width:100%;background:var(--pozo);color:var(--vapor);border:0;box-shadow:inset 0 0 0 1.5px var(--linea);border-radius:10px;padding:12px;font:500 16px var(--sans)}
+.fechas-elegidas{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fechas-elegidas div{background:var(--pozo);border-radius:10px;padding:10px 12px;font-size:15px}
+.fechas-elegidas small{display:block;color:var(--niebla);font-size:12px}
+.extra{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border-radius:10px;background:var(--pozo);cursor:pointer;font-size:15px}
+.extra input{accent-color:var(--cobre);width:18px;height:18px;margin-top:3px;flex:none}
+.extra small{display:block;color:var(--niebla);font-size:13px}
+.cuenta{border-top:1px solid var(--linea);padding-top:14px;font-size:15px}
+.cuenta .fila{display:flex;justify-content:space-between;gap:12px;padding:3px 0;color:var(--niebla)}
+.cuenta .fila b{color:var(--vapor);font-weight:500}
+.cuenta .total{font-size:18px;color:var(--vapor);padding-top:8px}
+.cuenta .total b{font-family:var(--serif);font-size:30px;font-weight:400}
+.cuenta .sena b{color:var(--cobre2);font-weight:600}
+.alerta{font-size:14px;color:var(--cobre2);min-height:1.4em}
+.mp{width:100%;background:#009EE3;color:#fff}
+.mp:hover{background:#0b8ac4}
+.mp:disabled{background:var(--piedra2);color:var(--niebla);cursor:not-allowed}
+.nota{font-size:13px;color:var(--niebla)}
+
+/* temporadas */
+.temporadas{padding:100px 0;background:var(--vapor);color:var(--pozo)}
+.temporadas h2{font-size:clamp(34px,4.2vw,56px);margin-bottom:12px}
+.temporadas .sub{max-width:60ch;color:#4b5a5e;margin-bottom:36px}
+.tabla{width:100%;border-collapse:collapse;font-size:15px}
+.tabla th,.tabla td{text-align:left;padding:14px 12px;border-bottom:1px solid rgba(27,40,46,.14);vertical-align:top}
+.tabla th{font-weight:600;color:#4b5a5e;font-size:14px}
+.tabla td:first-child{font-family:var(--serif);font-size:20px}
+.tabla .num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.tabla tr.marcada td{background:rgba(194,126,74,.10)}
+.tabla-scroll{overflow-x:auto}
+.pie-tabla{font-size:13px;color:#5d6b6e;margin-top:14px}
+
+/* alrededores */
+.alrededor{padding:110px 0}
+.alr-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:64px}
+.alrededor h2{font-size:clamp(34px,4.2vw,56px);margin-bottom:18px}
+.alrededor .sub{color:var(--niebla)}
+.lugares{list-style:none;margin:0;padding:0}
+.lugares li{display:grid;grid-template-columns:1fr auto;gap:6px 20px;padding:20px 0;border-top:1px solid var(--linea)}
+.lugares li:last-child{border-bottom:1px solid var(--linea)}
+.lugares h3{font-size:24px}
+.lugares .dato{font-family:var(--serif);font-size:24px;color:var(--cobre2);text-align:right}
+.lugares p{grid-column:1/-1;color:var(--niebla);font-size:15px;margin:0;max-width:62ch}
+.mapa{margin-top:30px;border-radius:14px;background:var(--piedra);padding:16px}
+.mapa svg{width:100%;height:auto;display:block}
+
+/* faq */
+.faq{padding:90px 0;background:var(--piedra)}
+.faq-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:64px}
+.faq h2{font-size:clamp(34px,4.2vw,56px)}
+details{border-top:1px solid var(--linea);padding:4px 0}
+details:last-child{border-bottom:1px solid var(--linea)}
+summary{cursor:pointer;list-style:none;padding:16px 36px 16px 0;font-size:18px;position:relative}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";position:absolute;right:6px;top:12px;font-size:24px;color:var(--cobre2);transition:transform .2s}
+details[open] summary::after{transform:rotate(45deg)}
+details p{color:var(--niebla);margin:0 0 18px;max-width:62ch}
+
+/* contacto */
+.contacto{padding:100px 0 60px}
+.cont-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:56px;align-items:end}
+.contacto h2{font-size:clamp(38px,5vw,72px);max-width:14ch}
+.cont-datos{display:grid;gap:14px;font-size:16px}
+.cont-datos a{color:var(--vapor);text-decoration:none;display:block;padding:14px 0;border-bottom:1px solid var(--linea)}
+.cont-datos a:hover{color:var(--cobre2)}
+.cont-datos small{display:block;color:var(--niebla);font-size:13px}
+footer{padding:40px 0 110px;color:var(--niebla);font-size:13px;border-top:1px solid var(--linea)}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+
+/* barra móvil */
+.barra{display:none}
+
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(10,16,19,.7);display:none;align-items:center;justify-content:center;padding:20px;z-index:50}
+.modal.abierto{display:flex}
+.modal-caja{background:var(--vapor);color:var(--pozo);border-radius:18px;max-width:440px;width:100%;padding:28px}
+.modal-caja h3{font-size:28px;margin-bottom:10px}
+.modal-caja p{color:#3e4c50;font-size:15px}
+.modal-caja .btn{margin-top:8px}
+
+@media (max-width:960px){
+  .nav ul{display:none}
+  .agua-grid,.carta-grid,.res-grid,.alr-grid,.faq-grid,.cont-grid{grid-template-columns:1fr;gap:40px}
+  .ficha{position:static;order:-1}
+  .carta-grid{display:flex;flex-direction:column}
+}
+@media (max-width:640px){
+  body{font-size:16px}
+  .wrap{padding:0 16px}
+  .nav{top:16px}
+  .marca{font-size:24px}
+  .nav .btn{padding:10px 16px;font-size:14px}
+  .hero-txt{padding:110px 16px 40px}
+  .datos-hero{gap:22px}
+  .datos-hero b{font-size:24px}
+  .agua,.carta,.reserva,.temporadas,.alrededor,.faq,.contacto{padding:72px 0}
+  .temps li{grid-template-columns:1fr;gap:2px}
+  .agua-fotos{grid-template-rows:200px 150px}
+  .meses{grid-template-columns:1fr}
+  .mes+.mes{display:none}
+  .panel{padding:20px 16px}
+  .dia{height:40px}
+  .linea-menu .cap{font-size:13px}
+  .lugares li{grid-template-columns:1fr}
+  .lugares .dato{text-align:left}
+  .barra{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:20;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:rgba(27,40,46,.96);backdrop-filter:blur(6px);border-top:1px solid var(--linea)}
+  .barra .btn{flex:1;padding:12px 10px}
+  footer{padding-bottom:120px}
+  .tabla td:first-child{font-size:17px}
+}
+</style>
+</head>
+<body>
+<div class="aviso" role="note"><strong>Prototipo de demostración preparado para Complejo Kalem.</strong> Precios ilustrativos y disponibilidad de ejemplo; no se toman reservas ni pagos reales.</div>
+
+
+
+<main id="inicio">
+<div class="top">
+<header class="nav">
+  <div class="wrap">
+    <a class="marca" href="#inicio">Kalem</a>
+    <ul>
+      <li><a href="#agua">Pileta y spa</a></li>
+      <li><a href="#unidades">Cabañas y suites</a></li>
+      <li><a href="#temporadas">Temporadas</a></li>
+      <li><a href="#alrededor">Villa Ventana</a></li>
+      <li><a href="#preguntas">Preguntas</a></li>
+    </ul>
+    <a class="btn btn-cobre" href="#reservar">Ver fechas libres</a>
+  </div>
+</header>
+<section class="hero">
+  <div class="foto"><img src="https://complejokalem.com.ar/wp-content/uploads/2014/07/MG_8198-copy-1-1030x613.jpg" alt="Complejo Kalem en Villa Ventana" fetchpriority="high"></div>
+  <div class="vapor" aria-hidden="true"><span></span><span></span><span></span></div>
+  <div class="wrap hero-txt">
+    <h1>Dos piletas conectadas, climatizadas las cuatro estaciones.</h1>
+    <p class="bajada">Una adentro y otra afuera, con sauna seco y sala de masajes al lado. Cinco cabañas y cuatro suites entre los árboles de Villa Ventana, al pie de las sierras.</p>
+    <div class="acciones">
+      <a class="btn btn-cobre" href="#reservar">Elegir fechas y cotizar</a>
+      <a class="btn btn-linea" href="#unidades">Ver las unidades</a>
+    </div>
+    <div class="datos-hero">
+      <div><b>5 + 4</b>cabañas y suites</div>
+      <div><b>2 a 5</b>personas por unidad</div>
+      <div><b>18 h</b>late check-out a pedido</div>
+    </div>
+  </div>
+</section>
+</div>
+
+<section class="agua" id="agua">
+  <div class="wrap agua-grid">
+    <div>
+      <h2>Si llueve en las sierras, en Kalem el día sigue.</h2>
+      <p>La pileta interior y la exterior están unidas y se mantienen climatizadas todo el año. El spa tiene vestuario, sala de masajes y sauna seco; el SUM queda para el ping-pong, los juegos de mesa y los asados en grupo.</p>
+      <ul class="temps">
+        <li><span>Pileta interior</span><em>Cubierta y climatizada, conectada con la exterior.</em></li>
+        <li><span>Sauna seco</span><em>En el spa, junto al vestuario.</em></li>
+        <li><span>Sala de masajes</span><em>Para sumar a la estadía; se coordina al reservar.</em></li>
+        <li><span>SUM</span><em>Ping-pong, juegos de mesa y parrilla. También para cumpleaños y eventos.</em></li>
+      </ul>
+    </div>
+    <div class="agua-fotos">
+      <div class="foto"><img src="https://complejokalem.com.ar/wp-content/uploads/2014/07/IMG_9335-1030x687.jpg" alt="Pileta de Complejo Kalem" loading="lazy"></div>
+      <div class="foto"><img src="https://complejokalem.com.ar/wp-content/uploads/2014/07/MG_8203-1-1030x687.jpg" alt="Complejo Kalem" loading="lazy"></div>
+      <div class="foto"><img src="https://complejokalem.com.ar/wp-content/uploads/2014/07/IMG_4494-1030x687.jpg" alt="Jacuzzi doble en Ikoon" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<section class="carta" id="unidades">
+  <div class="wrap">
+    <div class="carta-cab">
+      <h2>Cinco cabañas y cuatro suites, cada una con su parrilla.</h2>
+      <p>Tocá una unidad para ver sus fotos y su ficha. Abajo podés marcar lo que necesitás y se encienden las que lo tienen.</p>
+    </div>
+
+    <div class="resignar" id="resignar">
+      <h3>Lo que no querés resignar</h3>
+      <p class="ayuda">Marcá una o varias cosas y cuántos son. Las unidades que cumplen todo quedan encendidas.</p>
+      <div class="chips" role="group" aria-label="Características">
+        <label class="chip"><input type="checkbox" value="jacuzzi2"><span>Jacuzzi para dos</span></label>
+        <label class="chip"><input type="checkbox" value="hidro"><span>Hidromasaje en el baño</span></label>
+        <label class="chip"><input type="checkbox" value="unaPlanta"><span>Todo en una planta</span></label>
+        <label class="chip"><input type="checkbox" value="dosPlantas"><span>Dos plantas</span></label>
+        <label class="chip"><input type="checkbox" value="salamandra"><span>Salamandra</span></label>
+        <label class="chip"><input type="checkbox" value="losa"><span>Losa radiante</span></label>
+        <label class="chip"><input type="checkbox" value="cochera"><span>Cochera</span></label>
+        <label class="chip"><input type="checkbox" value="balcon"><span>Balcón</span></label>
+        <label class="chip"><input type="checkbox" value="entrada"><span>Entrada independiente</span></label>
+      </div>
+      <div class="personas">
+        <span id="lbl-pers">Somos</span>
+        <span class="paso" role="group" aria-labelledby="lbl-pers">
+          <button type="button" data-p="-1" aria-label="Una persona menos">−</button>
+          <output id="pers">2</output>
+          <button type="button" data-p="1" aria-label="Una persona más">+</button>
+        </span>
+        <span>personas</span>
+      </div>
+      <p class="res-resultado" id="res-resultado" aria-live="polite"></p>
+    </div>
+
+    <div class="carta-grid">
+      <ul class="menu" id="menu"></ul>
+      <aside class="ficha" id="ficha" aria-live="polite"></aside>
+    </div>
+  </div>
+</section>
+
+<section class="reserva" id="reservar">
+  <div class="wrap">
+    <h2>Fechas libres y precio, sin esperar respuesta por mail.</h2>
+    <p class="sub">Elegí la unidad, tocá el día de llegada y el de salida. El total se arma con la tarifa de cada noche según la temporada.</p>
+    <div class="res-grid">
+      <div class="panel">
+        <div class="cal-cab">
+          <h3 id="cal-titulo">Disponibilidad</h3>
+          <div class="cal-nav">
+            <button type="button" id="prev" aria-label="Meses anteriores">‹</button>
+            <button type="button" id="next" aria-label="Meses siguientes">›</button>
+          </div>
+        </div>
+        <div class="meses" id="meses"></div>
+        <div class="leyenda"><span>Tu estadía</span><span class="l-ocup">Ocupado</span><span class="l-alta">Temporada alta o finde largo</span></div>
+        <p class="sync">El calendario se sincroniza con Booking y Airbnb: una noche reservada en cualquier lado se bloquea en todos.</p>
+      </div>
+
+      <div class="panel">
+        <form class="form" id="form" onsubmit="return false">
+          <div class="campo">
+            <label for="unidad">Unidad</label>
+            <select id="unidad"></select>
+          </div>
+          <div class="campo">
+            <label for="huespedes">Personas</label>
+            <select id="huespedes"></select>
+          </div>
+          <div class="fechas-elegidas">
+            <div><small>Llegada desde las 14 h</small><span id="f-in">Elegí en el calendario</span></div>
+            <div><small>Salida hasta las 10 h</small><span id="f-out">—</span></div>
+          </div>
+          <label class="extra"><input type="checkbox" id="late"><span>Late check-out hasta las 18 h<small>Se cobra el 50% de una noche, como en sus políticas.</small></span></label>
+          <label class="extra"><input type="checkbox" id="desayuno"><span>Desayuno en la unidad<small>A pedido, con opción apta celíacos. Por persona y por día.</small></span></label>
+          <label class="extra"><input type="checkbox" id="masaje"><span>Masaje en el spa<small>Uno por persona, para coordinar en el complejo.</small></span></label>
+          <label class="extra"><input type="checkbox" id="mascota"><span>Viajo con mascota<small>Se acepta consultando antes. La reserva queda pendiente de confirmación.</small></span></label>
+          <div class="cuenta" id="cuenta"></div>
+          <p class="alerta" id="alerta" aria-live="polite"></p>
+          <button type="button" class="btn mp" id="pagar" disabled>Pagar seña del 30% con Mercado Pago</button>
+          <p class="nota">Simulación: los precios son ilustrativos y el pago no se procesa. En la versión real, la seña confirma la reserva y bloquea las fechas en Booking y Airbnb.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="temporadas" id="temporadas">
+  <div class="wrap">
+    <h2>Temporadas 2026-2027</h2>
+    <p class="sub">Tarifa por noche y por unidad, con IVA incluido. Valores de ejemplo para el prototipo; las fechas son las reales del calendario.</p>
+    <div class="tabla-scroll">
+      <table class="tabla" id="tabla"></table>
+    </div>
+    <p class="pie-tabla">En enero, Villa Ventana hace la Fiesta Provincial de la Golondrina. Los fines de semana largos que quedan: 21 al 23 de noviembre y 5 al 8 de diciembre de 2026; en 2027 Carnaval del 6 al 9 de febrero y Semana Santa del 25 al 28 de marzo.</p>
+  </div>
+</section>
+
+<section class="alrededor" id="alrededor">
+  <div class="wrap alr-grid">
+    <div>
+      <h2>Villa Ventana, entre dos arroyos.</h2>
+      <p class="sub">Un pueblo chico de calles de tierra, rodeado por los arroyos Las Piedras y Belisario, en el partido de Tornquist.</p>
+      <div class="mapa">
+        <svg viewBox="0 0 420 300" role="img" aria-label="Esquema de ubicación: Villa Ventana sobre la Ruta Provincial 76, entre Tornquist y Sierra de la Ventana, junto al Parque Provincial Ernesto Tornquist">
+          <rect width="420" height="300" fill="#28383F"/>
+          <path d="M20 250 L95 170 L130 200 L175 120 L210 160 L250 95 L290 150 L330 110 L400 210 L400 300 L20 300Z" fill="#33464E"/>
+          <path d="M10 60 C120 90 200 140 260 170 S380 220 410 250" fill="none" stroke="#C27E4A" stroke-width="3"/>
+          <text x="20" y="48" fill="#AEBBB8" font-family="Instrument Sans" font-size="13">Tornquist</text>
+          <text x="318" y="272" fill="#AEBBB8" font-family="Instrument Sans" font-size="13">Sierra de la Ventana</text>
+          <text x="96" y="88" fill="#E0A774" font-family="Instrument Sans" font-size="12">Ruta Provincial 76</text>
+          <circle cx="215" cy="152" r="9" fill="#7FB3AC"/>
+          <circle cx="215" cy="152" r="17" fill="none" stroke="#7FB3AC" stroke-opacity=".5"/>
+          <text x="236" y="146" fill="#E4E9E6" font-family="Gloock" font-size="18">Villa Ventana</text>
+          <text x="236" y="164" fill="#AEBBB8" font-family="Instrument Sans" font-size="12">Complejo Kalem</text>
+          <text x="58" y="210" fill="#9AA675" font-family="Instrument Sans" font-size="12">Parque Provincial</text>
+          <text x="58" y="225" fill="#9AA675" font-family="Instrument Sans" font-size="12">Ernesto Tornquist</text>
+          <path d="M250 95 l-8 14 h16z" fill="#E4E9E6"/>
+          <text x="262" y="92" fill="#E4E9E6" font-family="Instrument Sans" font-size="12">Cerro Tres Picos</text>
+        </svg>
+      </div>
+      <p class="nota" style="margin-top:12px">Esquema orientativo. <a href="https://www.google.com/maps/search/?api=1&query=-38.0856132,-61.9322280" target="_blank" rel="noopener">Abrir la ubicación en Google Maps</a>. Cabecita Negra entre Cruz del Sur y Pillahuinco.</p>
+    </div>
+    <ul class="lugares">
+      <li><h3>Cerro Tres Picos</h3><span class="dato">1239 m</span><p>El punto más alto de la provincia de Buenos Aires. Villa Ventana es la localidad más cercana para salir a subirlo.</p></li>
+      <li><h3>Ruinas del Club Hotel de la Ventana</h3><span class="dato">1 h a pie</span><p>Lo que queda de uno de los hoteles más lujosos de su época. Se recorren caminando en una hora o en auto, con visitas guiadas los fines de semana.</p></li>
+      <li><h3>Parque Provincial Ernesto Tornquist</h3><span class="dato">Ruta 76</span><p>Senderos al Cerro Ventana con guías habilitados, sobre la misma ruta que lleva a Villa Ventana.</p></li>
+      <li><h3>Fiesta Provincial de la Golondrina</h3><span class="dato">Enero</span><p>La fiesta del pueblo, cada verano en Villa Ventana. Son fechas de alta demanda: conviene reservar con tiempo.</p></li>
+      <li><h3>Arroyos Las Piedras y Belisario</h3><span class="dato">A pie</span><p>Rodean el pueblo. Caminatas, bici de montaña y cabalgatas sin sacar el auto.</p></li>
+    </ul>
+  </div>
+</section>
+
+<section class="faq" id="preguntas">
+  <div class="wrap faq-grid">
+    <h2>Antes de reservar</h2>
+    <div>
+      <details><summary>¿A qué hora es el check-in y el check-out?</summary><p>El ingreso es desde las 14 h y la salida hasta las 10 h. Si querés quedarte más, el late check-out es hasta las 18 h y se cobra el 50% de una noche.</p></details>
+      <details><summary>¿Puedo ir con mi mascota?</summary><p>Sí, consultando antes. Al marcarlo en el simulador, la reserva queda pendiente hasta que el complejo la confirme.</p></details>
+      <details><summary>¿Incluye ropa blanca y limpieza?</summary><p>Sí: ropa de cama y toallas, y servicio de mucama. Todas las unidades tienen vajilla completa, microondas, aire acondicionado y caja de seguridad.</p></details>
+      <details><summary>¿Hay desayuno?</summary><p>A pedido, con opción apta para celíacos. Se puede sumar al reservar.</p></details>
+      <details><summary>¿La pileta funciona en invierno?</summary><p>Sí. La interior y la exterior están conectadas y climatizadas todas las estaciones.</p></details>
+      <details><summary>¿Cómo se paga?</summary><p>Con una seña del 30% por Mercado Pago al reservar y el saldo al llegar. Las tarifas son por noche, en pesos y con IVA incluido.</p></details>
+      <details><summary>¿Hacen eventos?</summary><p>Sí: cumpleaños, casamientos y eventos privados o de empresa, usando el SUM. Escribinos con la fecha y la cantidad de invitados.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="contacto" id="contacto">
+  <div class="wrap cont-grid">
+    <h2>¿Preferís hablar con nosotros?</h2>
+    <div class="cont-datos">
+      <a href="https://wa.me/5492914684006" target="_blank" rel="noopener"><small>WhatsApp</small>291 468-4006</a>
+      <a href="tel:+542914910220"><small>Teléfono, de 10 a 18 h</small>(0291) 491-0220</a>
+      <a href="mailto:consultas@complejokalem.com.ar"><small>Mail</small>consultas@complejokalem.com.ar</a>
+      <a href="https://www.instagram.com/complejokalem/" target="_blank" rel="noopener"><small>Instagram</small>@complejokalem</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Complejo Kalem, Cabecita Negra entre Cruz del Sur y Pillahuinco, Villa Ventana, Buenos Aires</span>
+    <span>Prototipo de demostración preparado para Complejo Kalem por Resolviendo Kos (resolviendokos.com). Fotos de Complejo Kalem. Precios, ocupación y pago son de ejemplo.</span>
+  </div>
+</footer>
+
+<div class="barra"><a class="btn btn-cobre" href="#reservar">Ver fechas libres</a><a class="btn btn-linea" href="https://wa.me/5492914684006" target="_blank" rel="noopener">WhatsApp</a></div>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-t">
+  <div class="modal-caja">
+    <h3 id="modal-t">Así sigue la reserva</h3>
+    <p id="modal-txt"></p>
+    <p>En la versión real, acá se abre Mercado Pago, la seña se acredita al complejo y las fechas se bloquean en Booking y Airbnb. En este prototipo no se cobra nada.</p>
+    <button class="btn btn-cobre" id="cerrar" type="button">Entendido</button>
+  </div>
+</div>
+
+<script>
+(function(){
+const IMG='https://complejokalem.com.ar/wp-content/uploads/';
+const U=[
+ {id:'kaassh',n:'Kaassh',tipo:'Cabaña superior',cap:3,m2:80,base:118000,
+  d:'Entrada independiente y jacuzzi para dos. Ideal para una pareja o una familia con chicos pequeños.',
+  camas:'Un dormitorio doble',calor:'Radiadores en todos los ambientes',
+  r:{jacuzzi2:1,hidro:1,entrada:1},
+  f:[['2014/07/IMG_4558-1030x687.jpg','Vista exterior'],['2014/07/IMG_4546-1030x687.jpg','Sector jacuzzi'],['2014/07/IMG_4537-1030x687.jpg','Dormitorio doble'],['2014/07/IMG_4525-1030x687.jpg','Estar, comedor y cocina']]},
+ {id:'elal',n:'Elal',tipo:'Cabaña estándar',cap:4,m2:88,base:124000,
+  d:'Dos plantas en estilo alpino, con deck trasero y parrilla. Ideal para una familia joven o un viaje con amigos.',
+  camas:'Un dormitorio principal doble y otro con camas individuales',calor:'Ducha escocesa en el baño',
+  r:{dosPlantas:1},
+  f:[['2014/07/IMG_9808-1030x687.jpg','Exterior'],['2014/07/IMG_9803-1030x687.jpg','Deck trasero con parrilla'],['2014/07/IMG_9780-1030x687.jpg','Sala de estar'],['2014/07/IMG_9718-1030x687.jpg','Dormitorio principal']]},
+ {id:'choique',n:'Choique y Kauken',tipo:'Cabañas superiores',cap:5,m2:75,base:132000,
+  d:'Una sola planta con living, comedor y cocina integrados, salamandra y losa radiante. Ideal para una familia o dos parejas.',
+  camas:'Dos dormitorios para dos (matrimonial o dos camas)',calor:'Losa radiante en todos los ambientes y salamandra',
+  r:{unaPlanta:1,salamandra:1,losa:1,hidro:1},
+  f:[['2014/07/MG_8247-1030x687.jpg','Choique y Kauken'],['2014/07/Hogar-1030x687.jpg','Salamandra'],['2014/07/Living-1030x687.jpg','Living comedor'],['2014/07/Detalle-Baño-1030x687.jpg','Hidromasaje']]},
+ {id:'ikoon',n:'Ikoon',tipo:'Cabaña superior',cap:5,m2:100,base:152000,
+  d:'La más grande: 100 m² en una planta, jacuzzi para dos y cochera cubierta. Ideal para una familia o un grupo de amigos.',
+  camas:'Un dormitorio doble y uno triple',calor:'Radiadores',
+  r:{unaPlanta:1,jacuzzi2:1,hidro:1,cochera:1},
+  f:[['2014/07/IMG_4524-1030x687.jpg','Exterior'],['2014/07/IMG_4465-1030x687.jpg','Living comedor'],['2014/07/IMG_4489-1030x687.jpg','Habitación triple'],['2014/07/IMG_4494-1030x687.jpg','Jacuzzi doble']]},
+ {id:'suites',n:'Suites',tipo:'Cuatro suites superiores',cap:2,m2:40,base:86000,
+  d:'Para una pareja: balcón con vista al parque, kitchenette, minibar, parrilla privada y cochera semicubierta.',
+  camas:'Cama matrimonial o dos individuales',calor:'Losa radiante',
+  r:{balcon:1,cochera:1,losa:1},
+  f:[['2014/07/MG_8333-1030x687.jpg','Interior'],['2014/07/MG_8258-1030x687.jpg','Exterior'],['2014/07/MG_8270-1030x687.jpg','Vista al parque'],['2021/05/Screen-Shot-2021-05-22-at-13.38.27-1030x671.png','Cocina']]}
+];
+const RASGOS={jacuzzi2:'Jacuzzi para dos',hidro:'Hidromasaje',unaPlanta:'Una planta',dosPlantas:'Dos plantas',salamandra:'Salamandra',losa:'Losa radiante',cochera:'Cochera',balcon:'Balcón',entrada:'Entrada independiente'};
+const fmt=n=>'$ '+Math.round(n).toLocaleString('es-AR');
+function foto(src,alt,eager){return '<div class="foto"><img src="'+IMG+src+'" alt="'+alt+'" '+(eager?'':'loading="lazy"')+' onerror="this.classList.add(\'roto\')"></div>';}
+document.querySelectorAll('.foto img').forEach(i=>{i.addEventListener('error',()=>i.classList.add('roto'));if(i.complete&&i.naturalWidth===0&&i.src)i.classList.add('roto');});
+
+/* ---------- carta ---------- */
+const menu=document.getElementById('menu'),ficha=document.getElementById('ficha');
+let sel='kaassh',fotoIdx=0,pers=2;
+menu.innerHTML=U.map(u=>'<li class="item" data-id="'+u.id+'"><button type="button" aria-controls="ficha"><div class="linea-menu"><h3>'+u.n+'</h3><span class="puntos"></span><span class="cap">'+u.m2+' m², hasta '+u.cap+'</span></div><p class="desc">'+u.d+'</p><div class="rasgos">'+Object.keys(u.r).map(k=>'<i data-r="'+k+'">'+RASGOS[k]+'</i>').join('')+'</div></button></li>').join('');
+menu.querySelectorAll('.item button').forEach(b=>b.addEventListener('click',()=>{sel=b.parentNode.dataset.id;fotoIdx=0;pintarFicha();document.getElementById('unidad').value=sel;cambiarUnidad();}));
+function pintarFicha(){
+  const u=U.find(x=>x.id===sel);
+  menu.querySelectorAll('.item').forEach(li=>li.classList.toggle('activo',li.dataset.id===sel));
+  ficha.innerHTML=foto(u.f[fotoIdx][0],u.n+': '+u.f[fotoIdx][1],true).replace('</div>','<span class="rotulo">'+u.n+', '+u.f[fotoIdx][1].toLowerCase()+'</span></div>')+
+   '<div class="miniaturas">'+u.f.map((f,i)=>'<button type="button" aria-label="Ver foto: '+f[1]+'" aria-pressed="'+(i===fotoIdx)+'" data-i="'+i+'">'+foto(f[0],'',false)+'</button>').join('')+'</div>'+
+   '<div class="ficha-txt"><div><h3>'+u.n+'</h3><p>'+u.tipo+'</p></div><a class="btn btn-cobre" href="#reservar" data-reservar="'+u.id+'">Ver fechas de '+u.n+'</a></div>'+
+   '<dl><dt>Superficie</dt><dd>'+u.m2+' m²</dd><dt>Capacidad</dt><dd>De 2 a '+u.cap+' personas</dd><dt>Camas</dt><dd>'+u.camas+'</dd><dt>Confort</dt><dd>'+u.calor+'</dd><dt>Afuera</dt><dd>Parrilla privada y muebles de exterior</dd></dl>';
+  ficha.querySelectorAll('.miniaturas button').forEach(b=>b.addEventListener('click',()=>{fotoIdx=+b.dataset.i;pintarFicha();}));
+  ficha.querySelector('[data-reservar]').addEventListener('click',()=>{document.getElementById('unidad').value=u.id;cambiarUnidad();});
+}
+/* ---------- lo que no querés resignar ---------- */
+const chips=[...document.querySelectorAll('.chip input')];
+function filtrar(){
+  const req=chips.filter(c=>c.checked).map(c=>c.value);
+  const activos=req.length>0||pers!==2;
+  const ok=U.filter(u=>req.every(k=>u.r[k])&&u.cap>=pers);
+  menu.querySelectorAll('.item').forEach(li=>{
+    const u=U.find(x=>x.id===li.dataset.id),cumple=ok.includes(u);
+    li.classList.toggle('apagado',activos&&!cumple);li.classList.toggle('encendido',activos&&cumple);
+    li.querySelectorAll('.rasgos i').forEach(i=>i.classList.toggle('si',req.includes(i.dataset.r)));
+  });
+  const out=document.getElementById('res-resultado');
+  if(!activos){out.textContent='';return;}
+  if(!ok.length){out.textContent='Ninguna unidad junta todo eso para '+pers+' personas. Probá sacar una de las opciones.';return;}
+  out.textContent=(ok.length===1?'Te sirve ':'Te sirven ')+ok.map(u=>u.n).join(', ')+'.';
+  if(!ok.find(u=>u.id===sel)){sel=ok[0].id;fotoIdx=0;pintarFicha();document.getElementById('unidad').value=sel;cambiarUnidad();}
+}
+chips.forEach(c=>c.addEventListener('change',filtrar));
+document.querySelectorAll('[data-p]').forEach(b=>b.addEventListener('click',()=>{pers=Math.min(5,Math.max(1,pers+ +b.dataset.p));document.getElementById('pers').textContent=pers;filtrar();
+  const h=document.getElementById('huespedes');if([...h.options].some(o=>+o.value===pers)){h.value=pers;calcular();}}));
+
+/* ---------- temporadas ---------- */
+const d=(y,m,dd)=>new Date(y,m-1,dd);
+const TEMP=[
+ {n:'Fin de semana largo de noviembre',a:d(2026,11,21),b:d(2026,11,23),k:1.2,alta:1,lbl:'21 al 23 de noviembre de 2026'},
+ {n:'Fin de semana largo de diciembre',a:d(2026,12,5),b:d(2026,12,8),k:1.2,alta:1,lbl:'5 al 8 de diciembre de 2026'},
+ {n:'Fiestas',a:d(2026,12,24),b:d(2027,1,3),k:1.3,alta:1,lbl:'24 de diciembre al 3 de enero'},
+ {n:'Verano',a:d(2027,1,4),b:d(2027,2,28),k:1.35,alta:1,lbl:'4 de enero al 28 de febrero (incluye la Fiesta de la Golondrina y Carnaval, 6 al 9 de febrero)'},
+ {n:'Semana Santa',a:d(2027,3,25),b:d(2027,3,28),k:1.3,alta:1,lbl:'25 al 28 de marzo de 2027'},
+ {n:'Fin de semana largo de Malvinas',a:d(2027,4,2),b:d(2027,4,4),k:1.2,alta:1,lbl:'2 al 4 de abril de 2027'},
+ {n:'Vacaciones de invierno',a:d(2027,7,1),b:d(2027,7,31),k:1.25,alta:1,lbl:'Julio de 2027 (fechas de la provincia a confirmar)'}
+];
+function temporada(f){
+  for(const t of TEMP){if(f>=t.a&&f<=t.b)return t;}
+  const dow=f.getDay();
+  if(dow===5||dow===6)return {n:'Fin de semana',k:1.1,alta:0};
+  return {n:'Temporada baja',k:1,alta:0};
+}
+const tabla=document.getElementById('tabla');
+const filas=[{n:'Temporada baja',lbl:'Domingo a jueves fuera de las fechas de abajo',k:1},{n:'Fines de semana',lbl:'Viernes y sábado en temporada baja',k:1.1}].concat(TEMP);
+tabla.innerHTML='<thead><tr><th>Temporada</th><th>Fechas</th>'+U.map(u=>'<th class="num">'+u.n+'</th>').join('')+'</tr></thead><tbody>'+
+ filas.map(t=>'<tr'+(t.alta?' class="marcada"':'')+'><td>'+t.n+'</td><td>'+t.lbl+'</td>'+U.map(u=>'<td class="num">'+fmt(u.base*t.k/1000)+' mil</td>').join('')+'</tr>').join('')+'</tbody>';
+
+/* ---------- calendario y simulador ---------- */
+const hoy=new Date();hoy.setHours(0,0,0,0);
+const selU=document.getElementById('unidad'),selH=document.getElementById('huespedes');
+selU.innerHTML=U.map(u=>'<option value="'+u.id+'">'+u.n+' (hasta '+u.cap+')</option>').join('');
+function seed(s){let h=2166136261;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,16777619);}return ()=>{h^=h<<13;h^=h>>>17;h^=h<<5;return ((h>>>0)%1000)/1000;};}
+const ocup={};
+U.forEach(u=>{const r=seed(u.id),set=new Set();let f=new Date(hoy);
+  for(let i=0;i<330;i++){const t=temporada(f),p=t.alta?0.55:(f.getDay()===5||f.getDay()===6?0.4:0.12);
+    if(r()<p){const len=1+Math.floor(r()*3);for(let j=0;j<len;j++){const g=new Date(f);g.setDate(f.getDate()+j);set.add(+g);}f.setDate(f.getDate()+len);}else f.setDate(f.getDate()+1);}
+  ocup[u.id]=set;});
+let offset=0,ini=null,fin=null;
+const MES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+function libre(f){return !ocup[selU.value].has(+f);}
+function pintarCal(){
+  const cont=document.getElementById('meses');cont.innerHTML='';
+  document.getElementById('cal-titulo').textContent='Disponibilidad de '+U.find(u=>u.id===selU.value).n;
+  for(let k=0;k<2;k++){
+    const base=new Date(hoy.getFullYear(),hoy.getMonth()+offset+k,1);
+    let h='<div class="mes"><h4>'+MES[base.getMonth()][0].toUpperCase()+MES[base.getMonth()].slice(1)+' '+base.getFullYear()+'</h4><div class="dias">'+['L','M','M','J','V','S','D'].map(x=>'<span class="dsem" aria-hidden="true">'+x+'</span>').join('');
+    const pad=(base.getDay()+6)%7;for(let i=0;i<pad;i++)h+='<span></span>';
+    const nd=new Date(base.getFullYear(),base.getMonth()+1,0).getDate();
+    for(let dd=1;dd<=nd;dd++){const f=new Date(base.getFullYear(),base.getMonth(),dd),t=temporada(f);
+      let c='dia',dis='';
+      if(f<hoy){c+=' pasado';dis=' disabled';}
+      else if(!libre(f)){c+=' ocupado';dis=' aria-disabled="true"';}
+      if(t.alta&&f>=hoy)c+=' alta';
+      if(ini&&+f===+ini)c+=' inicio';
+      if(fin&&+f===+fin)c+=' fin';
+      if(ini&&fin&&f>ini&&f<fin)c+=' en-rango';
+      h+='<button type="button" class="'+c+'" data-t="'+(+f)+'"'+dis+' aria-label="'+dd+' de '+MES[f.getMonth()]+(c.includes('ocupado')?', ocupado':'')+'">'+dd+'</button>';}
+    cont.insertAdjacentHTML('beforeend',h+'</div></div>');
+  }
+  document.getElementById('prev').disabled=offset<=0;
+  document.getElementById('next').disabled=offset>=9;
+  cont.querySelectorAll('.dia:not(.pasado)').forEach(b=>b.addEventListener('click',()=>elegir(new Date(+b.dataset.t),b.classList.contains('ocupado'))));
+}
+function elegir(f,ocupado){
+  const al=document.getElementById('alerta');al.textContent='';
+  if(!ini||fin||f<=ini){
+    if(ocupado){al.textContent='Esa noche ya está reservada en '+U.find(u=>u.id===selU.value).n+'. Elegí otro día o probá otra unidad.';return;}
+    ini=f;fin=null;
+  }else{
+    let g=new Date(ini);while(g<f){if(!libre(g)){al.textContent='Hay noches ocupadas en el medio. Elegí una salida anterior o cambiá de unidad.';return;}g.setDate(g.getDate()+1);}
+    fin=f;
+  }
+  pintarCal();calcular();
+}
+document.getElementById('prev').addEventListener('click',()=>{offset=Math.max(0,offset-(innerWidth<=640?1:2));pintarCal();});
+document.getElementById('next').addEventListener('click',()=>{offset=Math.min(9,offset+(innerWidth<=640?1:2));pintarCal();});
+function cambiarUnidad(){
+  const u=U.find(x=>x.id===selU.value);
+  selH.innerHTML='';for(let i=1;i<=u.cap;i++)selH.insertAdjacentHTML('beforeend','<option value="'+i+'">'+i+(i===1?' persona':' personas')+'</option>');
+  selH.value=Math.min(pers,u.cap);
+  if(ini&&fin){let g=new Date(ini);while(g<fin){if(!libre(g)){ini=fin=null;document.getElementById('alerta').textContent='Esas fechas no están libres en '+u.n+'. Elegí otras en el calendario.';break;}g.setDate(g.getDate()+1);}}
+  else if(ini&&!libre(ini)){ini=null;}
+  pintarCal();calcular();
+}
+selU.addEventListener('change',()=>{sel=selU.value;fotoIdx=0;pintarFicha();cambiarUnidad();});
+selH.addEventListener('change',calcular);
+['late','desayuno','masaje','mascota'].forEach(id=>document.getElementById(id).addEventListener('change',calcular));
+const fFecha=f=>f.getDate()+' de '+MES[f.getMonth()];
+function calcular(){
+  const u=U.find(x=>x.id===selU.value),cuenta=document.getElementById('cuenta'),pagar=document.getElementById('pagar');
+  document.getElementById('f-in').textContent=ini?fFecha(ini):'Elegí en el calendario';
+  document.getElementById('f-out').textContent=fin?fFecha(fin):(ini?'Tocá el día de salida':'—');
+  if(!ini||!fin){cuenta.innerHTML='<div class="fila"><span>Elegí llegada y salida para ver el total.</span></div>';pagar.disabled=true;return;}
+  const noches=[];let g=new Date(ini);while(g<fin){noches.push({f:new Date(g),t:temporada(g)});g.setDate(g.getDate()+1);}
+  const grupos={};noches.forEach(n=>{const k=n.t.n;grupos[k]=grupos[k]||{c:0,s:0};grupos[k].c++;grupos[k].s+=u.base*n.t.k;});
+  let total=0,h='';
+  Object.entries(grupos).forEach(([k,v])=>{total+=v.s;h+='<div class="fila"><span>'+v.c+(v.c>1?' noches':' noche')+', '+k+'</span><b>'+fmt(v.s)+'</b></div>';});
+  const p=+selH.value;
+  if(document.getElementById('late').checked){const ult=u.base*noches[noches.length-1].t.k*0.5;total+=ult;h+='<div class="fila"><span>Late check-out hasta las 18 h</span><b>'+fmt(ult)+'</b></div>';}
+  if(document.getElementById('desayuno').checked){const v=9500*p*noches.length;total+=v;h+='<div class="fila"><span>Desayuno, '+p+' × '+noches.length+' días</span><b>'+fmt(v)+'</b></div>';}
+  if(document.getElementById('masaje').checked){const v=38000*p;total+=v;h+='<div class="fila"><span>Masaje, '+p+(p>1?' personas':' persona')+'</span><b>'+fmt(v)+'</b></div>';}
+  const sena=total*0.3;
+  h+='<div class="fila total"><span>Total</span><b>'+fmt(total)+'</b></div><div class="fila sena"><span>Seña para reservar (30%)</span><b>'+fmt(sena)+'</b></div><div class="fila"><span>Saldo al llegar</span><b>'+fmt(total-sena)+'</b></div>';
+  cuenta.innerHTML=h;pagar.disabled=false;
+  pagar.dataset.txt=u.n+', '+p+(p>1?' personas':' persona')+', del '+fFecha(ini)+' al '+fFecha(fin)+' ('+noches.length+(noches.length>1?' noches':' noche')+'). Total '+fmt(total)+'; seña '+fmt(sena)+'.'+(document.getElementById('mascota').checked?' Con mascota: queda pendiente de confirmación del complejo.':'');
+}
+const modal=document.getElementById('modal');
+document.getElementById('pagar').addEventListener('click',e=>{document.getElementById('modal-txt').textContent=e.currentTarget.dataset.txt;modal.classList.add('abierto');document.getElementById('cerrar').focus();});
+document.getElementById('cerrar').addEventListener('click',()=>{modal.classList.remove('abierto');document.getElementById('pagar').focus();});
+modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('abierto');});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')modal.classList.remove('abierto');});
+
+pintarFicha();cambiarUnidad();
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Complejo Kalem"></script>
+</body>
+</html>
