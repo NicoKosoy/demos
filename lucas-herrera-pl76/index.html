@@ -1,0 +1,911 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Lucas Herrera Negocios Inmobiliarios · Olavarría</title>
+<meta name="description" content="Prototipo de catálogo para Lucas Herrera Negocios Inmobiliarios, Lamadrid 2620, Olavarría.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400&family=Epilogue:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cielo:#CFE0EA;
+  --cipres:#2E5E4E;
+  --hormigon:#BDB8AE;
+  --ventana:#F2C94C;
+  --tinta:#1E2A30;
+  --blanco:#FBFCFC;
+  --hormigon-claro:#E4E1DB;
+  --cielo-hondo:#A9C5D5;
+  --vidrio:#7D93A0;
+  --tinta-suave:#4A5860;
+  --sans:"Epilogue", "Helvetica Neue", Helvetica, sans-serif;
+  --serif:"Crimson Pro", Georgia, "Times New Roman", serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--blanco);color:var(--tinta);font-family:var(--serif);font-size:19px;line-height:1.5}
+img{max-width:100%;display:block}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:var(--cipres)}
+:focus-visible{outline:3px solid var(--cipres);outline-offset:3px}
+.wrap{max-width:1240px;margin:0 auto;padding:0 24px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* aviso */
+.aviso{background:var(--tinta);color:var(--blanco);font-family:var(--sans);font-size:13px;line-height:1.4;padding:8px 0}
+.aviso .wrap{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline}
+.aviso strong{font-weight:700}
+.aviso span{opacity:.8}
+
+/* cabecera */
+header.top{background:var(--cielo)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:18px;padding-bottom:8px}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--tinta)}
+.logo-mark{width:42px;height:42px;flex:none}
+.logo-txt{display:flex;flex-direction:column;line-height:1}
+.logo-txt b{font-family:var(--sans);font-weight:900;font-size:22px;letter-spacing:-.02em}
+.logo-txt small{font-family:var(--sans);font-weight:500;font-size:12.5px;margin-top:4px;color:var(--tinta-suave)}
+.top nav{display:flex;gap:6px;font-family:var(--sans);font-size:14px;font-weight:600}
+.top nav a{color:var(--tinta);text-decoration:none;padding:8px 10px;border-radius:6px}
+.top nav a:hover{background:rgba(255,255,255,.5)}
+.top nav a.wa{background:var(--cipres);color:var(--blanco)}
+
+/* portada: la cuadra */
+.cuadra{background:linear-gradient(var(--cielo) 0 78%, var(--cielo-hondo) 100%);position:relative}
+.cuadra-head{padding-top:28px;padding-bottom:10px;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:32px;align-items:end}
+.cuadra h1{font-family:var(--sans);font-weight:800;font-size:clamp(34px,4.6vw,60px);line-height:1.02;letter-spacing:-.035em;margin:0;max-width:16ch}
+.cuadra-head p{margin:0 0 6px;font-size:20px;max-width:38ch;color:var(--tinta)}
+.street-scroll{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:var(--tinta-suave) transparent}
+.street-scroll::-webkit-scrollbar{height:8px}
+.street-scroll::-webkit-scrollbar-thumb{background:rgba(30,42,48,.35);border-radius:4px}
+#street{display:block;width:100%;min-width:1180px;height:auto}
+.street-hint{display:none;font-family:var(--sans);font-size:13px;font-weight:600;padding:8px 0 0;color:var(--tinta)}
+.street-hint svg{vertical-align:-2px}
+.leyenda{background:var(--tinta);color:var(--blanco);font-family:var(--sans);font-size:14px}
+.leyenda .wrap{display:flex;flex-wrap:wrap;gap:6px 28px;padding-top:12px;padding-bottom:14px;align-items:center}
+.leyenda b{font-weight:700;color:var(--ventana)}
+
+/* fachadas */
+.fac{cursor:pointer;outline:none}
+.fac .win{fill:var(--vidrio);transition:fill .25s ease}
+.fac.lit .win{fill:var(--ventana)}
+.fac .ring{fill:none;stroke:none}
+.fac:focus-visible .ring{stroke:var(--tinta);stroke-width:4;stroke-dasharray:10 6}
+.fac.dim{opacity:.28}
+.fac .chapa-bg{fill:var(--tinta)}
+.fac.lit .chapa-bg{fill:var(--cipres)}
+.fac .chapa{font-family:var(--sans);font-weight:700;font-size:15px;fill:var(--blanco)}
+.fac .chapa2{font-family:var(--sans);font-weight:500;font-size:12px;fill:var(--tinta)}
+.fac .rotulo{font-family:var(--sans);font-weight:800;font-size:10.5px;letter-spacing:.04em;fill:var(--tinta)}
+@media (prefers-reduced-motion:reduce){.fac .win{transition:none}}
+
+/* catálogo */
+.catalogo{padding:56px 0 24px}
+.cat-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:12px 24px;margin-bottom:18px}
+h2{font-family:var(--sans);font-weight:800;font-size:clamp(28px,3.2vw,40px);letter-spacing:-.03em;line-height:1.05;margin:0}
+.cat-head p{margin:0;max-width:52ch;color:var(--tinta-suave)}
+.filtros{display:grid;grid-template-columns:repeat(5,minmax(0,1fr)) auto;gap:10px;align-items:end;background:var(--hormigon-claro);border:2px solid var(--tinta);padding:14px;border-radius:4px}
+.filtros label{display:flex;flex-direction:column;gap:4px;font-family:var(--sans);font-size:13px;font-weight:700}
+.filtros select{appearance:none;-webkit-appearance:none;background:var(--blanco) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%231E2A30' stroke-width='2'/%3E%3C/svg%3E") no-repeat right 10px center;border:1.5px solid var(--tinta);border-radius:3px;padding:9px 30px 9px 10px;font-family:var(--sans);font-size:15px;font-weight:500;min-width:0;width:100%}
+.btn-limpiar{font-family:var(--sans);font-weight:700;font-size:14px;background:none;border:1.5px solid var(--tinta);border-radius:3px;padding:9px 12px;cursor:pointer;white-space:nowrap}
+.btn-limpiar:hover{background:var(--blanco)}
+.cuenta{font-family:var(--sans);font-size:14px;font-weight:600;margin:14px 0 4px;color:var(--tinta-suave)}
+
+.grupo{margin-top:30px}
+.grupo-h{display:flex;align-items:baseline;gap:12px;border-bottom:3px solid var(--tinta);padding-bottom:6px}
+.grupo-h h3{font-family:var(--sans);font-weight:800;font-size:22px;margin:0;letter-spacing:-.02em}
+.grupo-h span{font-family:var(--sans);font-size:14px;color:var(--tinta-suave)}
+.cols{display:grid;grid-template-columns:200px minmax(0,1fr) 170px 150px 140px 130px;gap:18px;font-family:var(--sans);font-size:12.5px;font-weight:600;color:var(--tinta-suave);padding:8px 0;border-bottom:1px solid var(--hormigon)}
+.fila{display:grid;grid-template-columns:200px minmax(0,1fr) 170px 150px 140px 130px;gap:18px;align-items:center;padding:14px 0;border-bottom:1px solid var(--hormigon);position:relative}
+.fila:hover{background:linear-gradient(90deg,transparent,rgba(207,224,234,.55) 20%,rgba(207,224,234,.55) 80%,transparent)}
+.ph{position:relative;aspect-ratio:3/2;overflow:hidden;background:var(--cielo);border-radius:2px}
+.ph svg.fb{position:absolute;inset:0;width:100%;height:100%}
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .3s}
+.ph img.ok{opacity:1}
+.fila-tit{min-width:0}
+.fila-tit .dir{display:inline-block;font-family:var(--sans);font-weight:700;font-size:13px;background:var(--tinta);color:var(--blanco);padding:3px 8px;border-radius:2px;margin-bottom:6px}
+.fila-tit h4{font-family:var(--sans);font-weight:700;font-size:19px;line-height:1.2;margin:0 0 4px;letter-spacing:-.01em}
+.fila-tit p{margin:0;font-size:17px;line-height:1.35;color:var(--tinta-suave);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.fila .dato{font-family:var(--sans);font-size:15px}
+.fila .dato small{display:none}
+.precio{font-family:var(--sans);font-weight:800;font-size:18px}
+.precio.consultar{font-weight:600;font-size:15px;color:var(--tinta-suave)}
+.notas-badge{display:inline-block;margin-top:6px;font-family:var(--sans);font-size:12px;font-weight:700;background:var(--ventana);color:var(--tinta);padding:2px 7px;border-radius:10px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--sans);font-weight:700;font-size:15px;border-radius:3px;padding:11px 16px;border:2px solid var(--tinta);background:var(--blanco);color:var(--tinta);cursor:pointer;text-decoration:none;line-height:1.1}
+.btn:hover{background:var(--cielo)}
+.btn.verde{background:var(--cipres);border-color:var(--cipres);color:var(--blanco)}
+.btn.verde:hover{background:#244b3e}
+.vacio{padding:36px 0;font-size:20px}
+.vacio p{margin:0 0 14px;max-width:52ch}
+
+/* tasación */
+.tasa{margin-top:64px;background:var(--hormigon-claro);border-top:3px solid var(--tinta)}
+.tasa .wrap{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.3fr);gap:40px;padding-top:48px;padding-bottom:56px}
+.tasa p.lead{font-size:20px;max-width:36ch}
+.tasa-dib{max-width:320px;margin-top:20px}
+form.tf{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px}
+form.tf label{display:flex;flex-direction:column;gap:5px;font-family:var(--sans);font-size:13.5px;font-weight:700}
+form.tf .c6{grid-column:span 6}.c4{grid-column:span 4}.c3{grid-column:span 3}.c2{grid-column:span 2}
+form.tf input,form.tf select{background:var(--blanco);border:1.5px solid var(--tinta);border-radius:3px;padding:10px;font-family:var(--sans);font-size:16px;font-weight:500;width:100%;min-width:0}
+form.tf .err{color:#9B2C1F;font-family:var(--sans);font-size:14px;font-weight:600;grid-column:span 6;min-height:1em;margin:0}
+form.tf .acc{grid-column:span 6;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+form.tf .acc span{font-size:16px;color:var(--tinta-suave)}
+
+/* pie */
+footer{background:var(--tinta);color:var(--blanco);padding:44px 0 34px}
+footer .wrap{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:28px}
+footer h2{color:var(--blanco);font-size:26px}
+footer a{color:var(--blanco)}
+footer dl{margin:0;font-family:var(--sans);font-size:15px}
+footer dt{font-weight:700;color:var(--ventana);margin-top:10px}
+footer dd{margin:2px 0 0}
+footer .fin{grid-column:1/-1;border-top:1px solid rgba(251,252,252,.2);padding-top:16px;font-family:var(--sans);font-size:13px;opacity:.8}
+
+/* ficha */
+.velo{position:fixed;inset:0;background:rgba(30,42,48,.5);opacity:0;pointer-events:none;transition:opacity .25s;z-index:40}
+.velo.on{opacity:1;pointer-events:auto}
+.ficha{position:fixed;top:0;right:0;bottom:0;width:min(600px,100%);background:var(--blanco);z-index:50;transform:translateX(102%);visibility:hidden;transition:transform .32s cubic-bezier(.2,.8,.2,1),visibility 0s linear .32s;display:flex;flex-direction:column;border-left:3px solid var(--tinta)}
+.ficha.on{transform:none;visibility:visible;transition:transform .32s cubic-bezier(.2,.8,.2,1),visibility 0s}
+@media (prefers-reduced-motion:reduce){.ficha,.velo,.ph img{transition:none}}
+.ficha-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px;border-bottom:1px solid var(--hormigon);background:var(--cielo)}
+.ficha-bar .dir{font-family:var(--sans);font-weight:700;font-size:14px;background:var(--tinta);color:var(--blanco);padding:4px 9px;border-radius:2px}
+.cerrar{font-family:var(--sans);font-weight:700;font-size:14px;background:var(--blanco);border:2px solid var(--tinta);border-radius:3px;padding:7px 12px;cursor:pointer}
+.ficha-body{overflow-y:auto;flex:1;overscroll-behavior:contain}
+.gal{position:relative;background:var(--tinta)}
+.gal .ph{aspect-ratio:4/3;border-radius:0}
+.gal-nav{position:absolute;inset:auto 0 12px 0;display:flex;justify-content:space-between;align-items:center;padding:0 12px;pointer-events:none}
+.gal-nav button{pointer-events:auto;font-family:var(--sans);font-weight:700;font-size:14px;background:var(--blanco);border:2px solid var(--tinta);border-radius:3px;padding:8px 12px;cursor:pointer}
+.gal-nav output{pointer-events:auto;font-family:var(--sans);font-weight:700;font-size:13px;background:var(--tinta);color:var(--blanco);padding:4px 9px;border-radius:2px}
+.thumbs{display:flex;gap:6px;overflow-x:auto;padding:8px;background:var(--tinta)}
+.thumbs button{flex:none;width:64px;height:46px;padding:0;border:2px solid transparent;border-radius:2px;cursor:pointer;background:var(--tinta-suave);overflow:hidden}
+.thumbs button[aria-current="true"]{border-color:var(--ventana)}
+.thumbs .ph{aspect-ratio:auto;width:100%;height:100%}
+.ficha-sec{padding:20px 22px;border-bottom:1px solid var(--hormigon)}
+.ficha h2{font-size:28px}
+.ficha .precio-g{font-family:var(--sans);font-weight:800;font-size:24px;margin:8px 0 2px}
+.ficha .precio-g.consultar{font-size:18px;font-weight:600;color:var(--tinta-suave)}
+.datos{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin:16px 0 0;border:1.5px solid var(--tinta)}
+.datos div{padding:8px 10px;border-right:1px solid var(--hormigon)}
+.datos div:last-child{border-right:0}
+.datos dt{font-family:var(--sans);font-size:12px;font-weight:600;color:var(--tinta-suave)}
+.datos dd{margin:0;font-family:var(--sans);font-weight:800;font-size:18px}
+.carac{columns:2;column-gap:24px;padding:0;margin:10px 0 0;list-style:none}
+.carac li{break-inside:avoid;padding:3px 0 3px 18px;position:relative;font-size:17.5px}
+.carac li::before{content:"";position:absolute;left:0;top:.6em;width:9px;height:9px;background:var(--ventana);border:1.5px solid var(--tinta)}
+.ficha h3{font-family:var(--sans);font-weight:800;font-size:18px;margin:0 0 6px;letter-spacing:-.01em}
+.mapa{width:100%;height:240px;border:1.5px solid var(--tinta);background:var(--cielo) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cpath d='M0 30h60M30 0v60' stroke='%23A9C5D5' stroke-width='6'/%3E%3C/svg%3E")}
+.ficha-acc{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+
+/* notas de visita */
+.notas{background:var(--hormigon-claro)}
+.notas-intro{margin:0 0 12px;font-size:17.5px;color:var(--tinta-suave)}
+.chk{list-style:none;margin:0;padding:0;border-top:1.5px solid var(--tinta)}
+.chk li{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--hormigon)}
+.chk .q{font-size:18px;line-height:1.25;flex:1;min-width:0}
+.chk .q small{display:block;font-size:15px;color:var(--tinta-suave)}
+.estados{display:flex;gap:6px;flex:none}
+.estados button{font-family:var(--sans);font-weight:700;font-size:13.5px;border:1.5px solid var(--tinta);background:var(--blanco);border-radius:3px;padding:7px 10px;cursor:pointer;min-width:62px}
+.estados button.ok[aria-pressed="true"]{background:var(--cipres);border-color:var(--cipres);color:var(--blanco)}
+.estados button.duda[aria-pressed="true"]{background:var(--ventana)}
+.notas textarea{width:100%;min-height:76px;margin-top:12px;border:1.5px solid var(--tinta);border-radius:3px;padding:10px;background:var(--blanco);font-size:17px;resize:vertical}
+.notas-pie{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:12px}
+.notas-estado{font-family:var(--sans);font-size:13.5px;font-weight:600;color:var(--tinta-suave);width:100%}
+.lnk{background:none;border:0;padding:6px 2px;font-family:var(--sans);font-size:14px;font-weight:600;text-decoration:underline;cursor:pointer;color:var(--tinta)}
+
+/* responsivo */
+@media (max-width:1100px){
+  .cols{display:none}
+  .fila{grid-template-columns:170px minmax(0,1fr) 150px;grid-template-areas:"f t t" "f d p" "f a a";row-gap:8px;align-items:start}
+  .fila .ph{grid-area:f}
+  .fila-tit{grid-area:t}
+  .fila .dato.barrio{display:none}
+  .fila .dato.amb{grid-area:d}
+  .fila .precio-c{grid-area:p}
+  .fila .acc{grid-area:a}
+  .fila .dato small{display:inline}
+  .filtros{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (max-width:820px){
+  .cuadra-head{grid-template-columns:1fr;gap:12px}
+  .tasa .wrap{grid-template-columns:1fr;gap:20px}
+  footer .wrap{grid-template-columns:1fr}
+  .top nav a:not(.wa){display:none}
+  .street-hint{display:block}
+}
+@media (max-width:620px){
+  body{font-size:18px}
+  .wrap{padding:0 16px}
+  .cuadra h1{font-size:34px}
+  .cuadra-head p{font-size:18px}
+  #street{min-width:1100px;width:1100px}
+  .filtros{grid-template-columns:repeat(2,minmax(0,1fr));padding:12px}
+  .filtros .btn-limpiar{grid-column:span 2}
+  .fila{grid-template-columns:116px minmax(0,1fr);grid-template-areas:"f t" "d d" "p a";gap:10px 14px}
+  .fila .precio-c{align-self:center}
+  .fila .acc{justify-self:end}
+  .fila-tit h4{font-size:17px}
+  .fila-tit p{display:none}
+  form.tf .c4,form.tf .c3,form.tf .c2{grid-column:span 6}
+  form.tf .c2.half{grid-column:span 3}
+  .ficha{top:auto;left:0;width:100%;height:92vh;height:92dvh;border-left:0;border-top:3px solid var(--tinta);border-radius:14px 14px 0 0;transform:translateY(102%)}
+  .ficha.on{transform:none}
+  .ficha-bar{border-radius:12px 12px 0 0;padding-top:16px;position:relative}
+  .ficha-bar::before{content:"";position:absolute;top:6px;left:50%;width:44px;height:4px;margin-left:-22px;border-radius:2px;background:var(--tinta-suave)}
+  .datos{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .datos div:nth-child(2){border-right:0}
+  .datos div:nth-child(-n+2){border-bottom:1px solid var(--hormigon)}
+  .carac{columns:1}
+  .estados button{min-width:0;padding:7px 8px;font-size:13px}
+  .chk .q{font-size:17px}
+  .ficha-sec{padding:18px 16px}
+}
+</style>
+</head>
+<body>
+
+<div class="aviso" role="note">
+  <div class="wrap">
+    <strong>Prototipo de demostración preparado para Lucas Herrera Negocios Inmobiliarios</strong>
+    <span>Propiedades reales tomadas de sus publicaciones, a modo de muestra · Hecho por Resolviendo Kos</span>
+  </div>
+</div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#" aria-label="Lucas Herrera Negocios Inmobiliarios, inicio">
+      <svg class="logo-mark" viewBox="0 0 42 42" aria-hidden="true">
+        <rect x="3" y="8" width="16" height="31" fill="#2E5E4E"/>
+        <rect x="21" y="18" width="18" height="21" fill="#1E2A30"/>
+        <path d="M20 18 30 10 40 18" fill="none" stroke="#1E2A30" stroke-width="3"/>
+        <rect x="7" y="13" width="3" height="4" fill="#F2C94C"/><rect x="12" y="13" width="3" height="4" fill="#F2C94C"/>
+        <rect x="7" y="21" width="3" height="4" fill="#F2C94C"/><rect x="12" y="21" width="3" height="4" fill="#CFE0EA"/>
+        <rect x="7" y="29" width="3" height="4" fill="#CFE0EA"/><rect x="12" y="29" width="3" height="4" fill="#F2C94C"/>
+        <rect x="27" y="29" width="6" height="10" fill="#F2C94C"/>
+        <path d="M0 39.5h42" stroke="#1E2A30" stroke-width="3"/>
+      </svg>
+      <span class="logo-txt"><b>Lucas Herrera</b><small>Negocios Inmobiliarios · Olavarría</small></span>
+    </a>
+    <nav aria-label="Secciones">
+      <a href="#catalogo">Propiedades</a>
+      <a href="#tasa">Tasá tu propiedad</a>
+      <a href="#contacto">Oficina</a>
+      <a class="wa" href="https://wa.me/5492284528910?text=Hola%20Lucas%2C%20te%20escribo%20desde%20tu%20cat%C3%A1logo." target="_blank" rel="noopener">Escribir por WhatsApp</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<section class="cuadra" aria-labelledby="h1">
+  <div class="wrap cuadra-head">
+    <h1 id="h1">De San Martín 3233 a la calle 185: nueve direcciones en venta en Olavarría.</h1>
+    <p>Seis departamentos en edificio, dos casas y una casaquinta. Pasá por la cuadra: cada fachada es una propiedad publicada por Lucas. Tocala y se abre la ficha.</p>
+  </div>
+  <div class="wrap"><p class="street-hint" aria-hidden="true">Deslizá para recorrer la cuadra <svg width="26" height="10" viewBox="0 0 26 10"><path d="M0 5h22M18 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="2"/></svg></p></div>
+  <div class="street-scroll" id="streetScroll">
+    <svg id="street" viewBox="0 0 1600 520" role="group" aria-label="Ilustración de una cuadra: cada fachada es una propiedad en venta"></svg>
+  </div>
+</section>
+<div class="leyenda"><div class="wrap">
+  <span><b>Ventana encendida</b>: la propiedad que estás mirando.</span>
+  <span>Las fachadas son dibujos; las fotos reales están en cada ficha.</span>
+</div></div>
+
+<section class="catalogo" id="catalogo" aria-labelledby="hcat">
+  <div class="wrap">
+    <div class="cat-head">
+      <h2 id="hcat">La cartera, dirección por dirección</h2>
+      <p>Muchas publicaciones no tienen precio publicado: figuran como “Consultar”. Lucas te lo pasa por WhatsApp.</p>
+    </div>
+    <form class="filtros" id="filtros" aria-label="Filtrar propiedades" onsubmit="return false">
+      <label>Operación<select id="fOp"><option value="">Todas</option></select></label>
+      <label>Tipo<select id="fTipo"><option value="">Todos</option></select></label>
+      <label>Barrio<select id="fBarrio"><option value="">Todos</option></select></label>
+      <label>Precio<select id="fPrecio">
+        <option value="">Todos</option>
+        <option value="con">Con precio publicado</option>
+        <option value="hasta50">Hasta USD 50.000</option>
+        <option value="consultar">Precio a consultar</option>
+      </select></label>
+      <label>Ambientes<select id="fAmb">
+        <option value="">Todos</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4 o más</option>
+      </select></label>
+      <button type="button" class="btn-limpiar" id="limpiar">Limpiar filtros</button>
+    </form>
+    <p class="cuenta" id="cuenta" aria-live="polite"></p>
+    <div id="listado"></div>
+  </div>
+</section>
+
+<section class="tasa" id="tasa" aria-labelledby="htasa">
+  <div class="wrap">
+    <div>
+      <h2 id="htasa">Tasá tu propiedad</h2>
+      <p class="lead">Contale a Lucas qué tenés y dónde. Con estos datos te arma una tasación y te contesta por WhatsApp.</p>
+      <svg class="tasa-dib" viewBox="0 0 320 150" aria-hidden="true">
+        <rect x="0" y="136" width="320" height="4" fill="#1E2A30"/>
+        <path d="M30 136V70l50-36 50 36v66z" fill="#FBFCFC" stroke="#1E2A30" stroke-width="3"/>
+        <rect x="50" y="82" width="22" height="22" fill="#F2C94C" stroke="#1E2A30" stroke-width="2"/>
+        <rect x="88" y="96" width="24" height="40" fill="#2E5E4E" stroke="#1E2A30" stroke-width="2"/>
+        <path d="M150 136V40h34v96M184 136V60h40v76" fill="#BDB8AE" stroke="#1E2A30" stroke-width="3"/>
+        <g fill="#7D93A0"><rect x="158" y="50" width="8" height="10"/><rect x="170" y="50" width="8" height="10"/><rect x="158" y="70" width="8" height="10"/><rect x="170" y="70" width="8" height="10"/><rect x="158" y="90" width="8" height="10"/><rect x="170" y="90" width="8" height="10"/><rect x="194" y="72" width="8" height="10"/><rect x="208" y="72" width="8" height="10"/><rect x="194" y="94" width="8" height="10"/><rect x="208" y="94" width="8" height="10"/></g>
+        <rect x="250" y="20" width="60" height="44" rx="3" fill="#1E2A30"/>
+        <text x="280" y="40" text-anchor="middle" font-family="Epilogue, sans-serif" font-weight="800" font-size="13" fill="#FBFCFC">Tu</text>
+        <text x="280" y="55" text-anchor="middle" font-family="Epilogue, sans-serif" font-weight="800" font-size="13" fill="#F2C94C">dirección</text>
+        <path d="M280 64v72" stroke="#1E2A30" stroke-width="3"/>
+      </svg>
+    </div>
+    <form class="tf" id="tasaForm" novalidate>
+      <label class="c4">Dirección<input id="tDir" name="dir" autocomplete="street-address" placeholder="Ej.: Rivadavia 3100" required></label>
+      <label class="c2">Barrio<input id="tBarrio" name="barrio" list="barriosList" placeholder="Ej.: Centro"></label>
+      <datalist id="barriosList"></datalist>
+      <label class="c2">Tipo<select id="tTipo" name="tipo">
+        <option>Casa</option><option>Departamento</option><option>Dúplex</option><option>Casaquinta</option><option>Lote</option><option>Local</option>
+      </select></label>
+      <label class="c2 half">m² aproximados<input id="tM2" name="m2" inputmode="numeric" placeholder="Ej.: 120"></label>
+      <label class="c2 half">Ambientes<input id="tAmb" name="amb" inputmode="numeric" placeholder="Ej.: 3"></label>
+      <label class="c3">Tu nombre<input id="tNom" name="nombre" autocomplete="name" required></label>
+      <label class="c3">Tu teléfono<input id="tTel" name="tel" type="tel" autocomplete="tel" placeholder="Ej.: 2284 15…" required></label>
+      <p class="err" id="tErr" role="alert"></p>
+      <div class="acc">
+        <button class="btn verde" type="submit">Pedir tasación por WhatsApp</button>
+        <span>Se abre WhatsApp con el mensaje armado; lo revisás antes de mandarlo.</span>
+      </div>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer id="contacto">
+  <div class="wrap">
+    <div>
+      <h2>Lucas Herrera<br>Negocios Inmobiliarios</h2>
+      <p style="font-size:18px;opacity:.9;max-width:34ch">Oficina en Lamadrid 2620, Olavarría. Si querés ver una propiedad, pasá o escribí y coordinan la visita.</p>
+    </div>
+    <dl>
+      <dt>Oficina</dt><dd>Lamadrid 2620, Olavarría (B7400)</dd>
+      <dt>Teléfono</dt><dd><a href="tel:+5492284528910">(02284) 15528910</a></dd>
+      <dt>WhatsApp</dt><dd><a href="https://wa.me/5492284528910" target="_blank" rel="noopener">+54 9 2284 52-8910</a></dd>
+    </dl>
+    <dl>
+      <dt>Mail</dt><dd><a href="mailto:lhnegociosinmobiliarios@gmail.com">lhnegociosinmobiliarios@gmail.com</a></dd>
+      <dt>Instagram</dt><dd><a href="https://www.instagram.com/lucasherrerainmobiliaria/" target="_blank" rel="noopener">@lucasherrerainmobiliaria</a></dd>
+      <dt>Matrícula</dt><dd>Tomo VII, Folio 22, Legajo 1731 (según su ficha en OlavaProp)</dd>
+    </dl>
+    <p class="fin">Prototipo de demostración preparado para Lucas Herrera Negocios Inmobiliarios. Datos y fotos tomados de sus publicaciones en OlavaProp. Hecho por Resolviendo Kos.</p>
+  </div>
+</footer>
+
+<div class="velo" id="velo"></div>
+<aside class="ficha" id="ficha" role="dialog" aria-modal="true" aria-labelledby="fTit" aria-hidden="true" tabindex="-1">
+  <div class="ficha-bar">
+    <span class="dir" id="fDir"></span>
+    <button class="cerrar" id="cerrar" type="button">Cerrar ficha</button>
+  </div>
+  <div class="ficha-body" id="fBody"></div>
+</aside>
+
+<script>
+(function(){
+"use strict";
+var WA = "5492284528910";
+var IMG = "https://i0.wp.com/www.olavaprop.com/wp-content/uploads/";
+function seq(prefix, list){ return list.map(function(s){ return IMG + prefix + s; }); }
+
+var PROPS = [
+ {id:"altos", grupo:"edificios", tipo:"Departamento", op:"Venta", forma:"torre", pisos:10, ancho:150, nombre:"ALTOS DEL LIBERTADOR",
+  titulo:"Depto en Altos del Libertador", dir:"San Martín 3233", chapa:"San Martín 3233", barrio:"Microcentro", mapa:"San Martín 3233",
+  amb:2, dorm:1, banos:"1", precio:null,
+  carac:["Living comedor","Cocina","Baño","1 dormitorio"],
+  desc:"Departamento de un dormitorio en el edificio Altos del Libertador, sobre San Martín al 3200. Tiene living comedor, cocina y baño.",
+  fotos:seq("2025/01/",["lis.jpg","1-3.jpg","2-3.jpg","3-3.jpg","4-3.jpg","5-3.jpg","6-3.jpg","7-3.jpg","8-3.jpg"]),
+  url:"https://www.olavaprop.com/properties/depto-en-venta-altos-del-libertador/", pub:"enero 2025"},
+ {id:"gralpaz", grupo:"edificios", tipo:"Departamento", op:"Venta", forma:"medio", pisos:5, ancho:118,
+  titulo:"Depto en Gral. Paz 2678, 3.° G", dir:"Gral. Paz 2678, piso 3, depto G", chapa:"Gral. Paz 2678", barrio:"Centro", mapa:"General Paz 2678",
+  amb:3, dorm:2, banos:"1", precio:null,
+  carac:["Piso 3, departamento G","Living comedor","Baulera","2 dormitorios"],
+  desc:"Departamento en el tercer piso, unidad G, de Gral. Paz 2678. Dos dormitorios, baño y living comedor, con baulera.",
+  fotos:seq("2025/01/",["PORTADAS-OLAVAPROP-4.jpg","1-4.jpg","2-4.jpg","3-4.jpg","4-4.jpg","5-4.jpg","6-4.jpg","7-4.jpg","8-4.jpg","9-3.jpg","10-2.jpg","11.jpg","12.jpg"]),
+  url:"https://www.olavaprop.com/properties/departamento-en-venta-en-gral-paz-2678/", pub:"enero 2025"},
+ {id:"gpmoreno", grupo:"edificios", tipo:"Departamento", op:"Venta", forma:"duplex", pisos:3, ancho:112,
+  titulo:"Dúplex en Gral. Paz y Moreno", dir:"Gral. Paz y Moreno", chapa:"Gral. Paz y Moreno", barrio:"Sin barrio informado", mapa:"General Paz y Moreno",
+  amb:null, dorm:4, banos:"2 + servicio", precio:null,
+  carac:["Para remodelar","Cocina comedor muy luminosa","Living amplio","Parrilla","Terraza","Baño de servicio","4 dormitorios arriba"],
+  desc:"Departamento tipo dúplex para remodelar. Abajo, cocina comedor muy luminosa, living amplio, parrilla, terraza y baño de servicio; arriba, cuatro dormitorios y dos baños.",
+  fotos:seq("2025/01/",["PORTADAS-OLAVAPROP.jpg","1.jpg","2.jpg","3.jpg","4.jpg","5.jpg","6.jpg","7.jpg","8.jpg","9.jpg"]),
+  url:"https://www.olavaprop.com/properties/depto-en-venta-gral-paz-y-moreno/", pub:"enero 2025"},
+ {id:"cedros", grupo:"edificios", tipo:"Departamento", op:"Venta", forma:"torre", pisos:8, ancho:140, nombre:"LOS CEDROS", balcones:true,
+  titulo:"Depto en Edificio Los Cedros", dir:"Moreno y Vélez Sarsfield", chapa:"Moreno y V. Sarsfield", barrio:"Microcentro", mapa:"Moreno y Vélez Sarsfield",
+  amb:2, dorm:1, banos:"1", precio:null,
+  carac:["Living comedor amplio","Cocina con horno y anafe","Dormitorio con placard","Balcón a la calle","Cochera cubierta","SUM de uso compartido"],
+  desc:"Unidad de un dormitorio en el edificio Los Cedros, en la esquina de Moreno y Vélez Sarsfield. Balcón a la calle, cochera cubierta y SUM compartido.",
+  fotos:seq("2025/01/",["PORTADAS-OLAVAPROP-3.jpg","1-2.jpg","2-2.jpg","3-2.jpg","4-2.jpg","5-2.jpg","6-2.jpg","7-2.jpg","8-2.jpg","9-2.jpg","10-1.jpg"]),
+  url:"https://www.olavaprop.com/properties/departamento-en-venta-edificio-los-cedros/", pub:"enero 2025"},
+ {id:"grimaldi", grupo:"edificios", tipo:"Departamento", op:"Venta", forma:"esquina", pisos:4, ancho:128, balcones:true,
+  titulo:"Depto en Moreno esq. Grimaldi", dir:"Moreno esquina Grimaldi", chapa:"Moreno y Grimaldi", barrio:"Sin barrio informado", mapa:"Moreno y Grimaldi",
+  amb:2, dorm:1, banos:"1", precio:null,
+  carac:["Living comedor","Cocina separada","Baño completo","Balcón"],
+  desc:"Departamento de un dormitorio en la esquina de Moreno y Grimaldi. Living comedor, cocina separada, baño completo y balcón.",
+  fotos:seq("2024/08/",["PORTADAS-OLAVAPROP.jpg","1.jpg","2.jpg","3.jpg","4.jpg","5.jpg","6.jpg"]),
+  url:"https://www.olavaprop.com/properties/depto-en-venta-moreno-esq-grimaldi/", pub:"agosto 2024"},
+ {id:"espana", grupo:"edificios", tipo:"Departamento", op:"Venta", forma:"bajo", pisos:2, ancho:110,
+  titulo:"Depto en España 3478, UF 4", dir:"España 3478, UF 4", chapa:"España 3478", barrio:"Mariano Moreno", mapa:"España 3478",
+  amb:4, dorm:1, banos:"1", precio:"USD 43.000", precioNum:43000,
+  carac:["Cocina","Comedor","Lavadero","Cochera","1 dormitorio"],
+  desc:"Unidad funcional 4 en España 3478, barrio Mariano Moreno. Un dormitorio, cocina, comedor, baño, lavadero y cochera.",
+  fotos:seq("2021/09/",["20210831_232959_0000.jpg","20210831_233026_0000.jpg","20210831_233026_0001.jpg","20210831_233026_0002.jpg","20210831_233026_0003.jpg","20210831_233026_0004.jpg","20210831_233026_0005.jpg","20210831_233026_0006.jpg","20210831_233026_0007.jpg","20210831_233026_0008.jpg"]),
+  url:"https://www.olavaprop.com/properties/venta-depto-espana-3478-uf-4/", pub:"septiembre 2021, actualizada en noviembre 2024"},
+ {id:"libano", grupo:"casas", tipo:"Casa", op:"Venta", forma:"casa", pisos:1, ancho:160, garage:true, pileta:true,
+  titulo:"Casa con pileta en Rep. del Líbano al 2600", dir:"República del Líbano al 2600", chapa:"Rep. del Líbano 2600", barrio:"Sin barrio informado", mapa:"República del Líbano 2600",
+  amb:null, dorm:2, banos:"1 + toilette", precio:null,
+  carac:["Lote de 10,80 × 23 m","Garage para dos autos","Pileta","Churrasquera","Living, comedor y cocina separada","Lavadero"],
+  desc:"Casa con pileta sobre un lote de 10,80 × 23 m. Dos dormitorios, baño y toilette, living, comedor y cocina separada, lavadero y garage para dos autos.",
+  fotos:seq("2025/01/",["PORTADAS-OLAVAPROP-2.jpg","10.jpg","9-1.jpg","8-1.jpg","7-1.jpg","6-1.jpg","5-1.jpg","4-1.jpg","3-1.jpg","2-1.jpg","1-1.jpg"]),
+  url:"https://www.olavaprop.com/properties/casa-en-venta-republica-del-libano-al-2600/", pub:"enero 2025"},
+ {id:"alsina", grupo:"casas", tipo:"Casa", op:"Venta", forma:"casa2", pisos:2, ancho:132, garage:true,
+  titulo:"Casa en Alsina 2343", dir:"Alsina 2343", chapa:"Alsina 2343", barrio:"Microcentro", mapa:"Alsina 2343",
+  amb:4, dorm:4, banos:"2", precio:null,
+  carac:["Para remodelar","Lote de 10,80 × 33 m","Dos plantas","Cochera techada para 2 autos","Terraza y patio","Galponcito","Gas natural","Calefactores"],
+  desc:"Casa para remodelar en dos plantas, sobre lote de 10,80 × 33 m. Arriba, living amplio, cocina, lavadero, baño completo y un dormitorio; abajo, tres dormitorios, baño, terraza, cochera para dos autos, patio y galponcito.",
+  fotos:seq("2024/08/",["11.jpg","IMG_8158.jpg","IMG_8161.jpg","IMG_8163.jpg","IMG_8165.jpg"]),
+  url:"https://www.olavaprop.com/properties/casa-en-venta-alsina-2343/", pub:"agosto 2024"},
+ {id:"quinta", grupo:"quintas", tipo:"Casaquinta", op:"Venta", forma:"quinta", pisos:1, ancho:270, pileta:true,
+  titulo:"Casaquinta en calle 185", dir:"Calle 185 2475", chapa:"Calle 185 2475", barrio:"Sin barrio informado", mapa:"Calle 185 2475",
+  amb:3, dorm:2, banos:"2", precio:null,
+  carac:["Gran terreno con parque","Pileta","Churrasquera con parrilla","Fogón","Salamandra","Entrada para autos","Estacionamiento","Electricidad"],
+  desc:"Casaquinta en un terreno grande, con detalles cuidados en la construcción. Dos dormitorios, living comedor amplio, churrasquera con parrilla y pileta.",
+  fotos:seq("2024/07/",["PORTADAS-OLAVAPROP.jpg","FEL8616.jpg","FEL8624.jpg","FEL8626.jpg"]),
+  url:"https://www.olavaprop.com/properties/casaquinta-en-venta-2/", pub:"julio 2024"}
+];
+var GRUPOS = [
+  {k:"edificios", t:"Edificios", s:"departamentos en edificios con nombre y dirección"},
+  {k:"casas", t:"Casas", s:"casas en la ciudad"},
+  {k:"quintas", t:"Quintas y lotes", s:"en las afueras"}
+];
+var byId = {}; PROPS.forEach(function(p){ byId[p.id]=p; });
+
+function esc(s){ return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
+
+/* ---------- dibujo de fachadas ---------- */
+var C = {cielo:"#CFE0EA",cipres:"#2E5E4E",horm:"#BDB8AE",hormC:"#E4E1DB",tinta:"#1E2A30",blanco:"#FBFCFC",vidrio:"#7D93A0"};
+var FH = 30; /* alto por piso */
+function win(x,y,w,h){ return '<rect class="win" x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" stroke="'+C.tinta+'" stroke-width="1.5"/>'; }
+function arbol(x,g,s){ s=s||1; return '<rect x="'+(x-3*s)+'" y="'+(g-34*s)+'" width="'+(6*s)+'" height="'+(34*s)+'" fill="'+C.tinta+'"/>'+
+  '<ellipse cx="'+x+'" cy="'+(g-58*s)+'" rx="'+(24*s)+'" ry="'+(36*s)+'" fill="'+C.cipres+'" stroke="'+C.tinta+'" stroke-width="2"/>'; }
+function cipres(x,g,s){ s=s||1; return '<path d="M'+x+' '+(g-110*s)+' C'+(x+16*s)+' '+(g-70*s)+' '+(x+14*s)+' '+(g-20*s)+' '+x+' '+g+' C'+(x-14*s)+' '+(g-20*s)+' '+(x-16*s)+' '+(g-70*s)+' '+x+' '+(g-110*s)+'z" fill="'+C.cipres+'" stroke="'+C.tinta+'" stroke-width="2"/>'; }
+
+/* devuelve el dibujo de una fachada con origen (x, g) donde g = nivel de vereda */
+function dibujo(p, x, g){
+  var w = p.ancho, s = "", i, j, top, cols, cw, y;
+  if(p.forma==="torre" || p.forma==="medio"){
+    var hb = 44 + (p.pisos-1)*FH; top = g-hb;
+    s += '<rect x="'+x+'" y="'+top+'" width="'+w+'" height="'+hb+'" fill="'+(p.forma==="torre"?C.horm:C.hormC)+'" stroke="'+C.tinta+'" stroke-width="2.5"/>';
+    s += '<rect x="'+(x-4)+'" y="'+(top-8)+'" width="'+(w+8)+'" height="10" fill="'+C.tinta+'"/>';
+    if(p.nombre){ s += '<rect x="'+(x+10)+'" y="'+(top+6)+'" width="'+(w-20)+'" height="18" fill="'+C.blanco+'" stroke="'+C.tinta+'" stroke-width="1.5"/>'+
+      '<text class="rotulo" x="'+(x+w/2)+'" y="'+(top+19)+'" text-anchor="middle">'+esc(p.nombre)+'</text>'; }
+    cols = Math.max(3, Math.floor((w-16)/30)); cw = (w-16)/cols;
+    for(i=1;i<p.pisos;i++){
+      y = top + (p.nombre?30:10) + (i-1)*FH;
+      if(y > g-44-14) break;
+      for(j=0;j<cols;j++){ s += win(x+8+j*cw+4, y, cw-8, 18); }
+      if(p.balcones && i%2===1){ s += '<rect x="'+(x+6)+'" y="'+(y+18)+'" width="'+(w-12)+'" height="4" fill="'+C.tinta+'"/>'; }
+    }
+    /* planta baja */
+    s += '<rect x="'+(x+w/2-14)+'" y="'+(g-36)+'" width="28" height="36" fill="'+C.cipres+'" stroke="'+C.tinta+'" stroke-width="2"/>';
+    s += win(x+10, g-32, w/2-30, 22) + win(x+w/2+20, g-32, w/2-30, 22);
+  } else if(p.forma==="duplex"){
+    top = g-120;
+    s += '<rect x="'+x+'" y="'+top+'" width="'+w+'" height="120" fill="'+C.blanco+'" stroke="'+C.tinta+'" stroke-width="2.5"/>';
+    /* terraza con baranda */
+    s += '<path d="M'+(x-4)+' '+top+'h'+(w+8)+'" stroke="'+C.tinta+'" stroke-width="4"/>';
+    for(i=0;i<=8;i++){ s += '<path d="M'+(x+8+i*(w-16)/8)+' '+top+'v-16" stroke="'+C.tinta+'" stroke-width="2"/>'; }
+    s += '<path d="M'+(x+6)+' '+(top-16)+'h'+(w-12)+'" stroke="'+C.tinta+'" stroke-width="2.5"/>';
+    s += '<rect x="'+(x+w-30)+'" y="'+(top-30)+'" width="14" height="30" fill="'+C.horm+'" stroke="'+C.tinta+'" stroke-width="2"/>';
+    for(j=0;j<4;j++){ s += win(x+10+j*((w-20)/4), top+12, (w-20)/4-8, 26); }
+    s += '<path d="M'+x+' '+(top+52)+'h'+w+'" stroke="'+C.tinta+'" stroke-width="2"/>';
+    s += win(x+10, top+64, w/2-18, 34) + '<rect x="'+(x+w/2+8)+'" y="'+(g-46)+'" width="30" height="46" fill="'+C.cipres+'" stroke="'+C.tinta+'" stroke-width="2"/>';
+  } else if(p.forma==="esquina"){
+    var hb2 = 44 + (p.pisos-1)*FH + 6; top = g-hb2;
+    s += '<path d="M'+x+' '+g+'V'+(top+18)+'Q'+x+' '+top+' '+(x+18)+' '+top+'H'+(x+w)+'V'+g+'z" fill="'+C.hormC+'" stroke="'+C.tinta+'" stroke-width="2.5"/>';
+    cols = 3; cw=(w-20)/cols;
+    for(i=1;i<p.pisos;i++){
+      y = top + 14 + (i-1)*FH;
+      for(j=0;j<cols;j++){ s += win(x+10+j*cw+4, y, cw-8, 18); }
+      s += '<rect x="'+(x+8)+'" y="'+(y+19)+'" width="'+(w-16)+'" height="5" fill="'+C.cipres+'" stroke="'+C.tinta+'" stroke-width="1"/>';
+    }
+    s += '<rect x="'+(x+12)+'" y="'+(g-36)+'" width="26" height="36" fill="'+C.cipres+'" stroke="'+C.tinta+'" stroke-width="2"/>';
+    s += win(x+50, g-32, w-62, 22);
+  } else if(p.forma==="bajo"){
+    top = g-96;
+    s += '<rect x="'+x+'" y="'+top+'" width="'+w+'" height="96" fill="'+C.horm+'" stroke="'+C.tinta+'" stroke-width="2.5"/>';
+    s += '<rect x="'+(x-4)+'" y="'+(top-6)+'" width="'+(w+8)+'" height="8" fill="'+C.tinta+'"/>';
+    for(j=0;j<3;j++){ s += win(x+10+j*((w-20)/3)+3, top+12, (w-20)/3-6, 22); }
+    s += win(x+10, g-38, 30, 24);
+    s += '<rect x="'+(x+50)+'" y="'+(g-40)+'" width="'+(w-60)+'" height="40" fill="'+C.blanco+'" stroke="'+C.tinta+'" stroke-width="2"/>';
+    for(i=1;i<5;i++){ s += '<path d="M'+(x+50)+' '+(g-40+i*8)+'h'+(w-60)+'" stroke="'+C.horm+'" stroke-width="1.5"/>'; }
+    s += '<text class="rotulo" x="'+(x+w-10)+'" y="'+(top+52)+'" text-anchor="end">UF 4</text>';
+  } else if(p.forma==="casa"){
+    top = g-74;
+    s += '<rect x="'+x+'" y="'+top+'" width="'+w+'" height="74" fill="'+C.blanco+'" stroke="'+C.tinta+'" stroke-width="2.5"/>';
+    s += '<path d="M'+(x-8)+' '+top+'L'+(x+w*0.38)+' '+(top-38)+'L'+(x+w+8)+' '+top+'z" fill="'+C.cipres+'" stroke="'+C.tinta+'" stroke-width="2.5"/>';
+    s += win(x+12, top+16, 34, 28);
+    s += '<rect x="'+(x+56)+'" y="'+(g-50)+'" width="24" height="50" fill="'+C.horm+'" stroke="'+C.tinta+'" stroke-width="2"/>';
+    s += '<rect x="'+(x+90)+'" y="'+(g-46)+'" width="'+(w-100)+'" height="46" fill="'+C.hormC+'" stroke="'+C.tinta+'" stroke-width="2"/>';
+    for(i=1;i<6;i++){ s += '<path d="M'+(x+90)+' '+(g-46+i*7.6)+'h'+(w-100)+'" stroke="'+C.horm+'" stroke-width="1.5"/>'; }
+    s += win(x+w*0.38-9, top-22, 18, 14);
+  } else if(p.forma==="casa2"){
+    top = g-118;
+    s += '<rect x="'+x+'" y="'+top+'" width="'+w+'" height="118" fill="'+C.hormC+'" stroke="'+C.tinta+'" stroke-width="2.5"/>';
+    s += '<path d="M'+(x-6)+' '+top+'L'+(x+w/2)+' '+(top-30)+'L'+(x+w+6)+' '+top+'z" fill="'+C.horm+'" stroke="'+C.tinta+'" stroke-width="2.5"/>';
+    s += win(x+12, top+14, 44, 34) + win(x+w-56, top+14, 44, 34);
+    s += '<path d="M'+x+' '+(top+60)+'h'+w+'" stroke="'+C.tinta+'" stroke-width="2"/>';
+    s += win(x+12, g-46, 30, 30);
+    s += '<rect x="'+(x+50)+'" y="'+(g-48)+'" width="22" height="48" fill="'+C.cipres+'" stroke="'+C.tinta+'" stroke-width="2"/>';
+    s += '<rect x="'+(x+80)+'" y="'+(g-44)+'" width="'+(w-90)+'" height="44" fill="'+C.blanco+'" stroke="'+C.tinta+'" stroke-width="2"/>';
+  } else if(p.forma==="quinta"){
+    var hx = x+70, hw = 130; top = g-66;
+    s += arbol(x+26,g,1.1) + cipres(x+58,g,.9);
+    s += '<rect x="'+hx+'" y="'+top+'" width="'+hw+'" height="66" fill="'+C.blanco+'" stroke="'+C.tinta+'" stroke-width="2.5"/>';
+    s += '<path d="M'+(hx-10)+' '+top+'L'+(hx+hw/2)+' '+(top-40)+'L'+(hx+hw+10)+' '+top+'z" fill="'+C.horm+'" stroke="'+C.tinta+'" stroke-width="2.5"/>';
+    s += '<rect x="'+(hx+hw-34)+'" y="'+(top-48)+'" width="14" height="34" fill="'+C.horm+'" stroke="'+C.tinta+'" stroke-width="2"/>';
+    s += win(hx+12, top+16, 30, 26) + win(hx+hw-42, top+16, 30, 26);
+    s += '<rect x="'+(hx+hw/2-13)+'" y="'+(g-44)+'" width="26" height="44" fill="'+C.cipres+'" stroke="'+C.tinta+'" stroke-width="2"/>';
+    s += arbol(x+w-40,g,1.25) + cipres(x+w-10,g,.75);
+    /* alambrado */
+    s += '<path d="M'+x+' '+(g-14)+'h'+w+'" stroke="'+C.tinta+'" stroke-width="1.2" stroke-dasharray="2 4"/>';
+  }
+  if(p.pileta){
+    var px = p.forma==="quinta" ? x+150 : x+w-60;
+    s += '<rect x="'+px+'" y="'+(g+2)+'" width="44" height="7" rx="2" fill="'+C.cielo+'" stroke="'+C.tinta+'" stroke-width="1.5"/>';
+  }
+  return s;
+}
+
+/* svg suelto de una fachada para usar de respaldo bajo las fotos */
+function fallbackSVG(p, ajuste){
+  var pad = 30, w = p.ancho + pad*2, g = 250;
+  var vbw = Math.max(w, 300), x = (vbw - p.ancho)/2;
+  return '<svg class="fb" viewBox="0 0 '+vbw+' 290" preserveAspectRatio="xMidYMax '+(ajuste||'slice')+'" aria-hidden="true"><rect width="'+vbw+'" height="290" fill="'+C.cielo+'"/>'+
+    '<g class="fac lit">'+dibujo(p,x,g)+'</g><rect y="'+g+'" width="'+vbw+'" height="40" fill="'+C.horm+'"/><path d="M0 '+g+'h'+vbw+'" stroke="'+C.tinta+'" stroke-width="3"/></svg>';
+}
+
+/* ---------- la cuadra ---------- */
+var street = document.getElementById("street");
+function armarCuadra(){
+  var G = 420, x = 36, gap = 30, s = "";
+  /* fondo: sierras lejanas de Olavarría, en tono cielo */
+  s += '<path d="M0 330 C120 300 200 316 300 296 C420 270 520 306 640 290 C760 272 860 300 980 284 C1110 266 1220 298 1340 282 C1450 268 1530 292 1600 286 L__W__ 300 V'+G+' H0z" fill="#A9C5D5"/>';
+  s += '<rect x="0" y="'+G+'" width="__W__" height="34" fill="'+C.horm+'"/>';
+  s += '<path d="M0 '+G+'h__W__" stroke="'+C.tinta+'" stroke-width="3"/>';
+  s += '<rect x="0" y="'+(G+34)+'" width="__W__" height="6" fill="'+C.tinta+'"/>';
+  s += '<rect x="0" y="'+(G+40)+'" width="__W__" height="80" fill="#2C3A41"/>';
+  for(var k=0;k<20;k++){ s += '<rect x="'+(20+k*82)+'" y="'+(G+76)+'" width="44" height="5" fill="'+C.blanco+'" opacity=".55"/>'; }
+  PROPS.forEach(function(p){
+    var label = esc(p.chapa), lw = Math.max(p.ancho-8, p.chapa.length*9+22);
+    var extra = Math.max(0, (lw - p.ancho)/2);
+    x += extra;
+    var cx = x + p.ancho/2;
+    s += '<g class="fac" data-id="'+p.id+'" tabindex="0" role="button" aria-label="Ver ficha: '+esc(p.titulo)+', '+esc(p.dir)+'">';
+    s += '<rect class="ring" x="'+(x-10)+'" y="40" width="'+(p.ancho+20)+'" height="'+(G+60-40)+'" rx="6"/>';
+    s += '<rect x="'+(x-6)+'" y="40" width="'+(p.ancho+12)+'" height="'+(G+64-40)+'" fill="transparent"/>';
+    s += dibujo(p, x, G);
+    /* chapa con la dirección, sobre el cordón */
+    s += '<rect class="chapa-bg" x="'+(cx-lw/2)+'" y="'+(G+46)+'" width="'+lw+'" height="26" rx="3"/>';
+    s += '<text class="chapa" x="'+cx+'" y="'+(G+64)+'" text-anchor="middle">'+label+'</text>';
+    s += '</g>';
+    p._x = x;
+    x += p.ancho + gap + extra;
+  });
+  /* farol y vereda */
+  s += '<path d="M'+(x-8)+' '+G+'v-120" stroke="'+C.tinta+'" stroke-width="4"/><rect x="'+(x-18)+'" y="'+(G-132)+'" width="20" height="14" fill="'+C.ventana+'" stroke="'+C.tinta+'" stroke-width="2"/>';
+  var total = x + 20;
+  s = s.split("__W__").join(String(Math.ceil(total)));
+  street.setAttribute("viewBox","0 0 "+total+" 520");
+  street.innerHTML = s;
+}
+armarCuadra();
+
+function facPor(id){ return street.querySelector('.fac[data-id="'+id+'"]'); }
+function encender(id, on){ var f = facPor(id); if(f) f.classList.toggle("lit", !!on); }
+
+street.addEventListener("mouseover", function(e){ var f = e.target.closest(".fac"); if(f) f.classList.add("lit"); });
+street.addEventListener("mouseout", function(e){ var f = e.target.closest(".fac"); if(f && !f.contains(e.relatedTarget) && !(abierta && abierta.id===f.dataset.id)) f.classList.remove("lit"); });
+street.addEventListener("focusin", function(e){ var f = e.target.closest(".fac"); if(f) f.classList.add("lit"); });
+street.addEventListener("focusout", function(e){ var f = e.target.closest(".fac"); if(f && !(abierta && abierta.id===f.dataset.id)) f.classList.remove("lit"); });
+street.addEventListener("click", function(e){ var f = e.target.closest(".fac"); if(f) abrir(f.dataset.id, f); });
+street.addEventListener("keydown", function(e){
+  var f = e.target.closest(".fac"); if(!f) return;
+  if(e.key==="Enter" || e.key===" "){ e.preventDefault(); abrir(f.dataset.id, f); }
+});
+
+/* un único momento al cargar: se encienden las ventanas de punta a punta */
+var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+if(!reduce){
+  PROPS.forEach(function(p,i){
+    setTimeout(function(){ encender(p.id,true); }, 300 + i*140);
+  });
+  setTimeout(function(){ PROPS.forEach(function(p){ if(!(abierta && abierta.id===p.id)) encender(p.id,false); }); }, 300 + PROPS.length*140 + 900);
+}
+
+/* ---------- notas de visita (persistencia) ---------- */
+var memoria = {};
+function leerNotas(id){
+  var raw = null;
+  try { raw = window.localStorage.getItem("lh-notas-"+id); } catch(e){ raw = null; }
+  if(raw){ try { return JSON.parse(raw); } catch(e){} }
+  return memoria[id] ? JSON.parse(JSON.stringify(memoria[id])) : {estados:{}, libre:""};
+}
+var guardaOK = true;
+function guardarNotas(id, n){
+  memoria[id] = JSON.parse(JSON.stringify(n));
+  try { window.localStorage.setItem("lh-notas-"+id, JSON.stringify(n)); guardaOK = true; } catch(e){ guardaOK = false; }
+}
+var PUNTOS = [
+  {k:"luz", t:"Luz natural", d:"¿Entra sol? ¿A qué hora?"},
+  {k:"humedad", t:"Humedad", d:"Manchas en paredes, techos y placares"},
+  {k:"ruido", t:"Ruido de la calle", d:"Con ventanas cerradas y abiertas"},
+  {k:"aberturas", t:"Estado de aberturas", d:"Cierran bien, burletes, persianas"},
+  {k:"agua", t:"Presión de agua", d:"Abrir ducha y canilla a la vez"},
+  {k:"orientacion", t:"Orientación", d:"Hacia dónde dan los ambientes"},
+  {k:"expensas", t:"Expensas", d:"Cuánto son y qué incluyen"}
+];
+function contarDudas(id){
+  var n = leerNotas(id), c = 0;
+  PUNTOS.forEach(function(pt){ if(n.estados[pt.k]==="duda") c++; });
+  return c;
+}
+
+/* ---------- catálogo y filtros ---------- */
+var fOp = document.getElementById("fOp"), fTipo = document.getElementById("fTipo"), fBarrio = document.getElementById("fBarrio"),
+    fPrecio = document.getElementById("fPrecio"), fAmb = document.getElementById("fAmb");
+function uniq(k){ var o=[]; PROPS.forEach(function(p){ if(o.indexOf(p[k])<0) o.push(p[k]); }); return o; }
+function llenar(sel, vals){ vals.forEach(function(v){ var o=document.createElement("option"); o.value=v; o.textContent=v; sel.appendChild(o); }); }
+llenar(fOp, uniq("op")); llenar(fTipo, uniq("tipo"));
+var barrios = uniq("barrio").filter(function(b){return b!=="Sin barrio informado";}).sort();
+llenar(fBarrio, barrios.concat(["Sin barrio informado"]));
+var dl = document.getElementById("barriosList");
+barrios.forEach(function(b){ var o=document.createElement("option"); o.value=b; dl.appendChild(o); });
+
+function pasa(p){
+  if(fOp.value && p.op!==fOp.value) return false;
+  if(fTipo.value && p.tipo!==fTipo.value) return false;
+  if(fBarrio.value && p.barrio!==fBarrio.value) return false;
+  if(fPrecio.value==="con" && !p.precio) return false;
+  if(fPrecio.value==="consultar" && p.precio) return false;
+  if(fPrecio.value==="hasta50" && !(p.precioNum && p.precioNum<=50000)) return false;
+  if(fAmb.value){
+    if(!p.amb) return false;
+    var a = +fAmb.value;
+    if(a===4 ? p.amb<4 : p.amb!==a) return false;
+  }
+  return true;
+}
+function img(src, alt, p, size, cls, ajuste){
+  var q = size ? "?resize="+size+"&ssl=1" : "?ssl=1";
+  return '<div class="ph'+(cls?" "+cls:"")+'">'+fallbackSVG(p, ajuste)+
+    '<img src="'+esc(src+q)+'" alt="'+esc(alt)+'" loading="lazy" decoding="async" onload="this.classList.add(\'ok\')" onerror="this.classList.remove(\'ok\');this.style.display=\'none\'"></div>';
+}
+function precioHTML(p, cls){
+  return p.precio ? '<span class="'+cls+'">'+esc(p.precio)+'</span>' : '<span class="'+cls+' consultar">Consultar</span>';
+}
+var listado = document.getElementById("listado"), cuenta = document.getElementById("cuenta");
+function render(){
+  var vis = PROPS.filter(pasa), h = "";
+  GRUPOS.forEach(function(gr){
+    var items = vis.filter(function(p){ return p.grupo===gr.k; });
+    if(!items.length) return;
+    h += '<section class="grupo" aria-label="'+gr.t+'"><div class="grupo-h"><h3>'+gr.t+'</h3><span>'+items.length+' '+(items.length===1?"propiedad":"propiedades")+' · '+gr.s+'</span></div>';
+    h += '<div class="cols" aria-hidden="true"><span>Foto</span><span>Propiedad</span><span>Barrio</span><span>Amb. · dorm. · baños</span><span>Precio</span><span></span></div>';
+    items.forEach(function(p){
+      var d = contarDudas(p.id);
+      h += '<article class="fila" data-id="'+p.id+'">'+
+        img(p.fotos[0], "Foto de "+p.titulo, p, "400,267")+
+        '<div class="fila-tit"><span class="dir">'+esc(p.chapa)+'</span><h4>'+esc(p.titulo)+'</h4><p>'+esc(p.desc)+'</p>'+
+          (d?'<span class="notas-badge">'+d+(d===1?" duda anotada":" dudas anotadas")+'</span>':'')+'</div>'+
+        '<div class="dato barrio">'+esc(p.barrio)+'</div>'+
+        '<div class="dato amb">'+(p.amb?p.amb+'<small> amb.</small>':'–')+' · '+p.dorm+'<small> dorm.</small> · '+esc(p.banos)+'<small> baños</small></div>'+
+        '<div class="precio-c">'+precioHTML(p,"precio")+'</div>'+
+        '<div class="acc"><button type="button" class="btn" data-abrir="'+p.id+'">Ver ficha</button></div>'+
+      '</article>';
+    });
+    h += '</section>';
+  });
+  if(!vis.length){
+    h = '<div class="vacio"><p>Ninguna propiedad cumple estos filtros. Probá sacando alguno, o preguntale a Lucas: puede tener algo que todavía no publicó.</p>'+
+      '<button type="button" class="btn" id="limpiar2">Limpiar filtros</button> '+
+      '<a class="btn verde" target="_blank" rel="noopener" href="https://wa.me/'+WA+'?text='+encodeURIComponent("Hola Lucas, busco una propiedad en Olavarría y no encontré lo que quería en tu catálogo.")+'">Escribir por WhatsApp</a></div>';
+  }
+  listado.innerHTML = h;
+  cuenta.textContent = "Mostrando "+vis.length+" de "+PROPS.length+" propiedades";
+  PROPS.forEach(function(p){ var f = facPor(p.id); if(f) f.classList.toggle("dim", vis.indexOf(p)<0); });
+  var l2 = document.getElementById("limpiar2"); if(l2) l2.addEventListener("click", limpiar);
+}
+function limpiar(){ [fOp,fTipo,fBarrio,fPrecio,fAmb].forEach(function(s){ s.value=""; }); render(); }
+[fOp,fTipo,fBarrio,fPrecio,fAmb].forEach(function(s){ s.addEventListener("change", render); });
+document.getElementById("limpiar").addEventListener("click", limpiar);
+listado.addEventListener("click", function(e){
+  var b = e.target.closest("[data-abrir]"); if(b){ abrir(b.getAttribute("data-abrir"), b); return; }
+  var r = e.target.closest(".fila"); if(r && !e.target.closest("a,button")) abrir(r.dataset.id, r.querySelector("[data-abrir]"));
+});
+listado.addEventListener("mouseover", function(e){ var r = e.target.closest(".fila"); if(r) encender(r.dataset.id, true); });
+listado.addEventListener("mouseout", function(e){ var r = e.target.closest(".fila"); if(r && !r.contains(e.relatedTarget) && !(abierta && abierta.id===r.dataset.id)) encender(r.dataset.id, false); });
+render();
+
+/* ---------- ficha ---------- */
+var ficha = document.getElementById("ficha"), velo = document.getElementById("velo"), fBody = document.getElementById("fBody"), fDir = document.getElementById("fDir");
+var abierta = null, origen = null, fotoIdx = 0;
+function waLink(txt){ return "https://wa.me/"+WA+"?text="+encodeURIComponent(txt); }
+
+function abrir(id, desde){
+  var p = byId[id]; if(!p) return;
+  if(abierta) encender(abierta.id,false);
+  abierta = p; origen = desde || null; fotoIdx = 0;
+  encender(p.id, true);
+  fDir.textContent = p.chapa;
+  var datos = [
+    ["Ambientes", p.amb || "–"], ["Dormitorios", p.dorm], ["Baños", p.banos], ["Operación", p.op]
+  ];
+  var h = '<div class="gal" id="gal" aria-roledescription="galería" aria-label="Fotos de '+esc(p.titulo)+'">'+
+      '<div id="galMain"></div>'+
+      '<div class="gal-nav"><button type="button" id="gPrev">Anterior</button><output id="gCont" aria-live="polite"></output><button type="button" id="gNext">Siguiente</button></div>'+
+    '</div>'+
+    '<div class="thumbs" id="thumbs">'+p.fotos.map(function(f,i){ return '<button type="button" data-i="'+i+'" aria-label="Ver foto '+(i+1)+'">'+img(f,"",p,"128,92")+'</button>'; }).join("")+'</div>'+
+    '<div class="ficha-sec">'+
+      '<h2 id="fTit">'+esc(p.titulo)+'</h2>'+
+      '<p style="margin:4px 0 0;color:var(--tinta-suave)">'+esc(p.dir)+' · '+esc(p.barrio==="Sin barrio informado"?"Olavarría":p.barrio+", Olavarría")+'</p>'+
+      (p.precio ? '<p class="precio-g">'+esc(p.precio)+'</p>' : '<p class="precio-g consultar">Precio a consultar</p>')+
+      '<dl class="datos">'+datos.map(function(d){ return '<div><dt>'+d[0]+'</dt><dd>'+esc(d[1])+'</dd></div>'; }).join("")+'</dl>'+
+      '<p style="margin:16px 0 0">'+esc(p.desc)+'</p>'+
+      '<div class="ficha-acc">'+
+        '<a class="btn verde" target="_blank" rel="noopener" href="'+waLink("Hola Lucas, me interesa «"+p.titulo+"» ("+p.dir+", Olavarría). ¿Me pasás más información y precio?")+'">Escribir por WhatsApp</a>'+
+        '<a class="btn" target="_blank" rel="noopener" href="'+esc(p.url)+'">Ver publicación en OlavaProp</a>'+
+      '</div>'+
+    '</div>'+
+    '<div class="ficha-sec"><h3>Características</h3><ul class="carac">'+p.carac.map(function(c){return '<li>'+esc(c)+'</li>';}).join("")+'</ul>'+
+      '<p style="margin:12px 0 0;font-size:15.5px;color:var(--tinta-suave)">Publicada en '+esc(p.pub)+'. Datos tal como figuran en la publicación.</p></div>'+
+    '<div class="ficha-sec notas" id="notas"></div>'+
+    '<div class="ficha-sec"><h3>Dónde queda</h3>'+
+      '<iframe class="mapa" title="Mapa de '+esc(p.mapa)+', Olavarría" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q='+encodeURIComponent(p.mapa+", Olavarría, Buenos Aires")+'&output=embed"></iframe></div>';
+  fBody.innerHTML = h;
+  fBody.scrollTop = 0;
+  mostrarFoto(0);
+  armarNotas(p);
+  document.getElementById("gPrev").addEventListener("click", function(){ mostrarFoto(fotoIdx-1); });
+  document.getElementById("gNext").addEventListener("click", function(){ mostrarFoto(fotoIdx+1); });
+  document.getElementById("thumbs").addEventListener("click", function(e){ var b = e.target.closest("[data-i]"); if(b) mostrarFoto(+b.getAttribute("data-i")); });
+  swipe(document.getElementById("gal"));
+  ficha.classList.add("on"); velo.classList.add("on");
+  ficha.setAttribute("aria-hidden","false");
+  document.body.style.overflow = "hidden";
+  setTimeout(function(){ document.getElementById("cerrar").focus(); }, 30);
+}
+function mostrarFoto(i){
+  var p = abierta; if(!p) return;
+  var n = p.fotos.length; fotoIdx = (i+n)%n;
+  document.getElementById("galMain").innerHTML = img(p.fotos[fotoIdx], "Foto "+(fotoIdx+1)+" de "+p.titulo, p, "1000,750", "", "meet");
+  document.getElementById("gCont").textContent = (fotoIdx+1)+" de "+n;
+  var bs = document.querySelectorAll("#thumbs [data-i]");
+  for(var k=0;k<bs.length;k++){ bs[k].setAttribute("aria-current", k===fotoIdx ? "true" : "false"); }
+  var cur = bs[fotoIdx]; if(cur && cur.scrollIntoView){ try{ cur.scrollIntoView({block:"nearest",inline:"nearest"}); }catch(e){} }
+}
+function swipe(el){
+  var x0 = null, y0 = null;
+  el.addEventListener("touchstart", function(e){ x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, {passive:true});
+  el.addEventListener("touchend", function(e){
+    if(x0===null) return;
+    var dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0;
+    if(Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) mostrarFoto(fotoIdx + (dx<0?1:-1));
+    x0 = null;
+  });
+}
+function cerrar(){
+  if(!abierta) return;
+  ficha.classList.remove("on"); velo.classList.remove("on");
+  ficha.setAttribute("aria-hidden","true");
+  document.body.style.overflow = "";
+  encender(abierta.id,false);
+  var id = abierta.id; abierta = null;
+  render();
+  var back = origen && document.contains(origen) ? origen : (listado.querySelector('[data-abrir="'+id+'"]') || facPor(id));
+  if(back && back.focus) back.focus();
+}
+document.getElementById("cerrar").addEventListener("click", cerrar);
+velo.addEventListener("click", cerrar);
+document.addEventListener("keydown", function(e){
+  if(!abierta) return;
+  var t = e.target;
+  var escribiendo = t && (t.tagName==="TEXTAREA" || t.tagName==="INPUT");
+  if(e.key==="Escape"){ cerrar(); }
+  else if(!escribiendo && e.key==="ArrowRight"){ mostrarFoto(fotoIdx+1); }
+  else if(!escribiendo && e.key==="ArrowLeft"){ mostrarFoto(fotoIdx-1); }
+  else if(e.key==="Tab"){
+    var foc = ficha.querySelectorAll('button, a[href], textarea, input, select, iframe, [tabindex]:not([tabindex="-1"])');
+    if(!foc.length) return;
+    var first = foc[0], last = foc[foc.length-1];
+    if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
+    else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
+  }
+});
+
+/* ---------- notas de visita (interfaz) ---------- */
+function armarNotas(p){
+  var cont = document.getElementById("notas");
+  var n = leerNotas(p.id);
+  var h = '<h3>Notas de visita</h3><p class="notas-intro">Llevá esta lista cuando vayas a verla. Marcá lo que está bien y lo que te deja dudas; queda guardado en este teléfono o compu.</p><ul class="chk">';
+  PUNTOS.forEach(function(pt){
+    var est = n.estados[pt.k] || "";
+    h += '<li><span class="q">'+pt.t+'<small>'+pt.d+'</small></span><span class="estados" role="group" aria-label="'+pt.t+'">'+
+      '<button type="button" class="ok" data-k="'+pt.k+'" data-v="ok" aria-pressed="'+(est==="ok")+'">✓ Bien</button>'+
+      '<button type="button" class="duda" data-k="'+pt.k+'" data-v="duda" aria-pressed="'+(est==="duda")+'">? Duda</button></span></li>';
+  });
+  h += '</ul><label class="sr" for="libre">Otra cosa para preguntar</label><textarea id="libre" placeholder="Otra cosa para preguntar o revisar (ej.: si se puede ampliar, si la cochera es fija)">'+esc(n.libre||"")+'</textarea>'+
+    '<div class="notas-pie"><span class="notas-estado" id="nEstado" aria-live="polite"></span>'+
+    '<a class="btn verde" id="mandarDudas" target="_blank" rel="noopener" href="#">Mandar mis dudas a Lucas por WhatsApp</a>'+
+    '<button type="button" class="lnk" id="borrarNotas">Borrar mis notas</button></div>';
+  cont.innerHTML = h;
+  function actualizar(){
+    var n2 = leerNotas(p.id), dudas = [], oks = 0;
+    PUNTOS.forEach(function(pt){ if(n2.estados[pt.k]==="duda") dudas.push(pt.t); if(n2.estados[pt.k]==="ok") oks++; });
+    var est = oks+" "+(oks===1?"punto bien":"puntos bien")+", "+dudas.length+" "+(dudas.length===1?"duda":"dudas")+".";
+    est += guardaOK ? " Guardado en este dispositivo." : " No se pudo guardar en el navegador: tus notas se pierden al cerrar la página.";
+    document.getElementById("nEstado").textContent = est;
+    var msg = "Hola Lucas, estoy viendo «"+p.titulo+"» ("+p.dir+", Olavarría).";
+    if(dudas.length){ msg += "\nAntes o durante la visita quiero consultarte:\n" + dudas.map(function(d){ return "- "+d; }).join("\n"); }
+    if(n2.libre && n2.libre.trim()){ msg += "\nTambién: " + n2.libre.trim(); }
+    if(!dudas.length && !(n2.libre && n2.libre.trim())){ msg += "\n¿Podemos coordinar una visita?"; }
+    msg += "\n" + p.url;
+    document.getElementById("mandarDudas").href = waLink(msg);
+  }
+  cont.addEventListener("click", function(e){
+    var b = e.target.closest("[data-k]");
+    if(b){
+      var n3 = leerNotas(p.id), k = b.getAttribute("data-k"), v = b.getAttribute("data-v");
+      n3.estados[k] = n3.estados[k]===v ? "" : v;
+      guardarNotas(p.id, n3);
+      var grp = b.parentNode.querySelectorAll("button");
+      for(var i=0;i<grp.length;i++){ grp[i].setAttribute("aria-pressed", String(grp[i].getAttribute("data-v")===n3.estados[k])); }
+      actualizar(); return;
+    }
+    if(e.target.id==="borrarNotas"){
+      guardarNotas(p.id, {estados:{}, libre:""});
+      try { window.localStorage.removeItem("lh-notas-"+p.id); } catch(err){}
+      armarNotas(p);
+    }
+  });
+  document.getElementById("libre").addEventListener("input", function(e){
+    var n4 = leerNotas(p.id); n4.libre = e.target.value; guardarNotas(p.id, n4); actualizar();
+  });
+  actualizar();
+}
+
+/* ---------- tasación ---------- */
+document.getElementById("tasaForm").addEventListener("submit", function(e){
+  e.preventDefault();
+  var v = function(id){ return document.getElementById(id).value.trim(); };
+  var err = document.getElementById("tErr"), faltan = [];
+  if(!v("tDir")) faltan.push("la dirección");
+  if(!v("tNom")) faltan.push("tu nombre");
+  if(!v("tTel")) faltan.push("tu teléfono");
+  if(faltan.length){ err.textContent = "Para pedir la tasación falta completar " + faltan.join(", ").replace(/, ([^,]*)$/," y $1") + "."; return; }
+  err.textContent = "";
+  var msg = "Hola Lucas, quiero tasar mi propiedad.\n" +
+    "Dirección: " + v("tDir") + "\n" +
+    (v("tBarrio") ? "Barrio: " + v("tBarrio") + "\n" : "") +
+    "Tipo: " + v("tTipo") + "\n" +
+    (v("tM2") ? "Superficie aprox.: " + v("tM2") + " m²\n" : "") +
+    (v("tAmb") ? "Ambientes: " + v("tAmb") + "\n" : "") +
+    "Nombre: " + v("tNom") + "\nTeléfono: " + v("tTel");
+  window.open(waLink(msg), "_blank", "noopener");
+});
+
+/* pista de desplazamiento: arranca la cuadra un poco corrida en celular */
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Lucas Herrera Negocios Inmobiliarios"></script>
+</body>
+</html>
