@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>La Serena · Cabañas & Hostería en Villa Pehuenia</title>
+<meta name="description" content="Prototipo de demostración: web de reservas directas para La Serena Cabañas & Hostería, Villa Pehuenia, Neuquén.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400;1,7..72,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--agua:#17414f;--agua2:#2f6f7e;--arena:#efe5d2;--papel:#faf6ee;--oxido:#b4532a;--tinta:#1c2427;--gris:#5d676a;--linea:#d9cdb6;--serif:"Literata",Georgia,serif;--sans:"Work Sans",system-ui,sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--papel);color:var(--tinta);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}a{color:inherit}
+.aviso{background:var(--tinta);color:#f4ecdc;font-size:13px;text-align:center;padding:8px 16px}
+.wrap{max-width:1240px;margin:0 auto;padding:0 28px}
+header.mast{border-bottom:1px solid var(--linea)}
+.mast .wrap{display:flex;align-items:center;justify-content:space-between;gap:24px;padding-top:18px;padding-bottom:18px}
+.logo{font:italic 600 30px/1 var(--serif);letter-spacing:-.01em;text-decoration:none;color:var(--agua)}
+.logo small{display:block;font:500 11px/1.4 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--gris);font-style:normal;margin-top:6px}
+.mast nav{display:flex;gap:26px;font-size:14px}
+.mast nav a{text-decoration:none;color:var(--gris)}.mast nav a:hover{color:var(--agua)}
+.btn{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:12px 22px;font:600 15px/1 var(--sans);text-decoration:none;border:1.5px solid var(--agua);background:var(--agua);color:#fff;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--agua)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.coords{font:500 12px/1 var(--sans);letter-spacing:.12em;color:var(--gris);text-transform:uppercase}
+/* hero */
+.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;padding:64px 28px 72px;align-items:end}
+.hero h1{font:400 clamp(40px,5.4vw,76px)/1.02 var(--serif);letter-spacing:-.025em;margin:18px 0 26px;color:var(--agua)}
+.hero h1 em{color:var(--oxido)}
+.hero p.lead{font-size:19px;max-width:34em;color:#33403f;margin:0 0 30px}
+.hero .ctas{display:flex;gap:12px;flex-wrap:wrap}
+.hero-photo{position:relative;aspect-ratio:4/5}
+.hero-photo img{width:100%;height:100%;object-fit:cover;border-radius:240px 240px 6px 6px;background:var(--agua2) linear-gradient(160deg,#2f6f7e,#17414f)}
+.rosa{position:absolute;left:-36px;bottom:34px;width:220px;background:var(--papel);border-radius:6px;padding:16px 16px 14px;box-shadow:0 18px 40px rgba(23,65,79,.18)}
+.rosa{display:grid;grid-template-columns:72px 1fr;gap:12px;align-items:center}
+.rosa svg{width:72px;height:72px;grid-row:span 2}
+.rosa b{font:600 15px/1.25 var(--serif);display:block;color:var(--agua)}
+.rosa span{font-size:12.5px;line-height:1.4;color:var(--gris)}
+.ticker{border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);background:var(--arena)}
+.ticker ul{list-style:none;margin:0;padding:18px 0;display:flex;flex-wrap:wrap;gap:10px 34px;justify-content:space-between;font:italic 400 18px/1.3 var(--serif);color:var(--agua)}
+.ticker li::before{content:"·";margin-right:10px;color:var(--oxido);font-style:normal}
+/* grupo */
+section{padding:96px 0}
+.kicker{font:600 12px/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--oxido);margin:0 0 14px}
+h2{font:400 clamp(32px,3.6vw,50px)/1.08 var(--serif);letter-spacing:-.02em;margin:0 0 18px;color:var(--agua)}
+.grupo{display:grid;grid-template-columns:.9fr 1.1fr;gap:64px;align-items:start}
+.stepper{display:flex;align-items:center;gap:18px;margin:26px 0 10px}
+.stepper button{width:52px;height:52px;border-radius:50%;border:1.5px solid var(--agua);background:transparent;color:var(--agua);font:500 26px/1 var(--sans);cursor:pointer}
+.stepper output{font:400 88px/1 var(--serif);color:var(--agua);min-width:110px;text-align:center}
+.stepper small{font-size:14px;color:var(--gris)}
+.combo{background:#fff;border:1px solid var(--linea);border-radius:8px;padding:28px}
+.combo h3{font:600 22px/1.2 var(--serif);margin:0 0 6px;color:var(--agua)}
+.combo .u{display:grid;grid-template-columns:150px 1fr;gap:16px;align-items:center;padding:14px 0;border-top:1px dashed var(--linea)}
+.combo .u:first-of-type{border-top:0}
+.combo .u b{font:600 15px/1.3 var(--sans)}
+.beds{display:flex;flex-wrap:wrap;gap:6px}
+.beds i{width:16px;height:16px;border-radius:50%;background:var(--agua2);display:block}
+.beds i.e{background:transparent;border:1.5px dashed var(--agua2)}
+.combo .tot{display:flex;justify-content:space-between;align-items:baseline;margin-top:16px;padding-top:16px;border-top:2px solid var(--agua)}
+.combo .tot b{font:600 26px/1 var(--serif);color:var(--agua)}
+.fine{font-size:13px;color:var(--gris)}
+/* unidades */
+.units{border-top:1px solid var(--linea)}
+.unit{display:grid;grid-template-columns:150px 1fr 380px;gap:40px;padding:44px 0;border-bottom:1px solid var(--linea);align-items:center}
+.unit .num{font:400 140px/.8 var(--serif);color:var(--agua);letter-spacing:-.04em}
+.unit .num small{display:block;font:600 11px/1.3 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--gris);margin-top:14px}
+.unit h3{font:600 30px/1.1 var(--serif);margin:0 0 10px;color:var(--agua)}
+.unit p{margin:0 0 16px;color:#3c4a49;max-width:36em}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.chips span{font-size:13px;border:1px solid var(--linea);border-radius:999px;padding:5px 12px;background:#fff}
+.unit figure{margin:0;aspect-ratio:4/3;border-radius:6px;overflow:hidden;background:var(--agua2)}
+.unit figure img{width:100%;height:100%;object-fit:cover}
+/* cocina */
+.cocina{background:var(--agua);color:#e9efe9}
+.cocina .wrap{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.cocina h2{color:#fff}.cocina .kicker{color:#f0b48f}
+.cocina blockquote{margin:28px 0 0;padding:0 0 0 22px;border-left:2px solid #f0b48f;font:italic 400 24px/1.35 var(--serif);color:#fff}
+.cocina blockquote cite{display:block;font:500 12px/1.4 var(--sans);letter-spacing:.1em;text-transform:uppercase;font-style:normal;color:#a9c4c6;margin-top:12px}
+.cocina .pics{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.cocina .pics div{aspect-ratio:3/4;border-radius:6px;overflow:hidden;background:var(--agua2)}
+.cocina .pics div:nth-child(2){margin-top:60px}
+.cocina .pics img{width:100%;height:100%;object-fit:cover}
+/* reservar */
+.reservar{background:var(--arena)}
+.res-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:28px;margin-top:34px}
+.panel{background:#fff;border-radius:8px;padding:26px;border:1px solid var(--linea);min-width:0}
+.res-grid>*{min-width:0}
+.calhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:12px}
+.calhead b{font:600 18px/1.2 var(--serif);color:var(--agua)}
+.calhead .navs{display:flex;gap:6px;flex-shrink:0}
+.calhead .navs button{width:38px;height:38px;border-radius:50%;border:1px solid var(--linea);background:#fff;cursor:pointer;font-size:18px;color:var(--agua)}
+#rk-cal{display:grid;grid-template-columns:1fr 1fr;gap:30px}
+.rk-mtitle{font:600 15px/1 var(--sans);text-transform:capitalize;margin-bottom:12px}
+.rk-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.rk-dow{font-size:11px;color:var(--gris);text-align:center;padding-bottom:4px}
+.rk-day{aspect-ratio:1;border:0;border-radius:4px;background:#f3eee3;font:500 13px/1 var(--sans);cursor:pointer;color:var(--tinta)}
+.rk-day:hover:not(:disabled){outline:2px solid var(--agua2)}
+.rk-day.is-busy{background:repeating-linear-gradient(135deg,#eadfcb 0 4px,#f6f1e7 4px 8px);color:#b7ab95;text-decoration:line-through;cursor:not-allowed}
+.rk-day.is-past{background:transparent;color:#c9c0b0;cursor:default}
+.rk-day.s-verano,.rk-day.s-nieve,.rk-day.s-santa,.rk-day.s-finde{box-shadow:inset 0 -3px 0 var(--oxido)}
+.rk-day.is-in{background:#cfe0e0}
+.rk-day.is-from,.rk-day.is-to{background:var(--agua);color:#fff}
+.legend{display:flex;flex-wrap:wrap;gap:16px;margin-top:16px;font-size:12.5px;color:var(--gris)}
+.legend i{display:inline-block;width:14px;height:14px;border-radius:3px;vertical-align:-2px;margin-right:6px}
+.sync{margin-top:14px;font-size:13px;color:var(--agua2);display:flex;gap:8px;align-items:center}
+.sync::before{content:"";width:8px;height:8px;border-radius:50%;background:#3aa17e;box-shadow:0 0 0 4px rgba(58,161,126,.18)}
+.form{display:grid;gap:12px}
+.form label{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--gris);display:grid;gap:6px}
+.form input,.form select{min-width:0;font:500 15px var(--sans);padding:11px 12px;border:1px solid var(--linea);border-radius:6px;background:#fdfbf7;color:var(--tinta);width:100%}
+.form .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+#rk-quote{border-top:1px solid var(--linea);margin-top:6px;padding-top:12px}
+.rk-qrow{display:flex;justify-content:space-between;gap:12px;font-size:15px}
+.rk-qrow b{font:600 20px/1.2 var(--serif);color:var(--agua)}
+.rk-sena{margin-top:12px;padding-top:12px;border-top:1px dashed var(--linea)}
+.rk-sena b{color:var(--oxido)}
+.rk-qdet{font-size:13px;color:var(--gris);margin-top:4px}
+.rk-warn{background:#fbe9df;color:#8a3a17;border-radius:6px;padding:10px 12px;font-size:13.5px;margin:12px 0 0}
+.rk-hint{font-size:14px;color:var(--gris);margin:0}
+.paybtns{display:grid;gap:10px;margin-top:6px}
+.mp{background:#009ee3;border-color:#009ee3;justify-content:center}
+/* temporadas */
+.tabla{overflow-x:auto;margin-top:30px;border:1px solid var(--linea);border-radius:8px;background:#fff}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:14.5px}
+th,td{padding:14px 16px;text-align:left;border-bottom:1px solid #eee5d4}
+thead th{font:600 13px/1.3 var(--sans);background:#f7f1e5;color:var(--agua)}
+th small,td small{display:block;font-weight:400;color:var(--gris);font-size:12px}
+tbody th{font:600 16px/1.2 var(--serif);color:var(--agua)}
+/* alrededores */
+.cerca{display:grid;grid-template-columns:.8fr 1.2fr;gap:64px}
+.lugares{list-style:none;margin:0;padding:0;border-top:2px solid var(--agua)}
+.lugares li{display:grid;grid-template-columns:120px 1fr;gap:20px;padding:20px 0;border-bottom:1px solid var(--linea)}
+.lugares .d{font:italic 400 22px/1.1 var(--serif);color:var(--oxido)}
+.lugares b{font:600 18px/1.3 var(--serif);color:var(--agua);display:block}
+.lugares span{color:#47524f;font-size:15px}
+/* faq */
+.faq{display:grid;grid-template-columns:.8fr 1.2fr;gap:64px}
+details{border-bottom:1px solid var(--linea);padding:18px 0}
+summary{cursor:pointer;font:600 19px/1.3 var(--serif);color:var(--agua);list-style:none;display:flex;justify-content:space-between;gap:12px}
+summary::after{content:"+";font:400 26px/1 var(--sans);color:var(--oxido)}
+details[open] summary::after{content:"–"}
+details p{margin:10px 0 0;color:#3c4a49}
+/* llegar */
+.llegar{background:var(--arena)}
+.llegar .wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.ruta{background:#fff;border-radius:8px;border:1px solid var(--linea);padding:22px}
+.ruta svg{width:100%;height:auto}
+footer{background:var(--tinta);color:#cfd6d3;padding:56px 0 110px}
+footer .wrap{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:40px}
+footer .logo{color:#fff}
+footer a{color:#fff}
+footer p{margin:6px 0;font-size:14.5px}
+.mbar{display:none}
+dialog{border:0;border-radius:10px;padding:28px;max-width:420px;width:calc(100% - 32px);box-shadow:0 30px 60px rgba(0,0,0,.3)}
+dialog::backdrop{background:rgba(23,40,45,.55)}
+dialog h3{font:600 24px/1.2 var(--serif);color:var(--agua);margin:0 0 10px}
+@media (max-width:980px){
+ .mast nav{display:none}
+ .hero,.grupo,.cocina .wrap,.res-grid,.cerca,.faq,.llegar .wrap{grid-template-columns:1fr;gap:36px}
+ .hero{padding:36px 18px 56px}
+ .hero-photo{max-width:440px}.hero-photo img{border-radius:200px 200px 6px 6px}
+ .rosa{left:12px;bottom:12px}
+ .unit{grid-template-columns:90px 1fr;gap:20px}
+ .unit .num{font-size:88px}
+ .unit figure{grid-column:1/-1}
+ footer .wrap{grid-template-columns:1fr}
+}
+@media (max-width:720px){
+ .wrap{padding:0 18px}
+ section{padding:64px 0}
+ #rk-cal{grid-template-columns:1fr}
+ .ticker ul{font-size:16px;justify-content:flex-start}
+ .mast .btn{display:none}
+ .stepper output{font-size:68px;min-width:80px}
+ .combo,.panel{padding:18px}.combo .u{grid-template-columns:1fr;gap:8px}
+ .lugares li{grid-template-columns:1fr;gap:4px}
+ .cocina .pics div:nth-child(2){margin-top:30px}
+ .mbar{display:grid;grid-template-columns:1fr 1fr;gap:10px;position:fixed;left:0;right:0;bottom:0;padding:10px 14px calc(10px + env(safe-area-inset-bottom));background:rgba(250,246,238,.96);border-top:1px solid var(--linea);z-index:20}
+ .mbar .btn{justify-content:center;padding:13px 10px}
+}
+</style>
+</head>
+<body>
+<div class="aviso" role="note"><strong>Prototipo de demostración preparado para La Serena Cabañas &amp; Hostería.</strong> Precios, disponibilidad y pagos son de ejemplo.</div>
+
+<header class="mast"><div class="wrap">
+ <a class="logo" href="#">La Serena<small>Cabañas &amp; Hostería · Villa Pehuenia</small></a>
+ <nav aria-label="Secciones"><a href="#grupo">Armá tu grupo</a><a href="#unidades">Cabañas y hostería</a><a href="#cocina">La cocina</a><a href="#tarifas">Temporadas</a><a href="#llegar">Cómo llegar</a></nav>
+ <a class="btn" href="#reservar">Ver fechas libres</a>
+</div></header>
+
+<main>
+<div class="wrap hero">
+ <div>
+  <p class="coords">38°53′ S · 71°11′ O · Península de Villa Pehuenia</p>
+  <h1>Desde 1998 frente al Aluminé, con <em>playa propia</em> del lado donde no llega el viento.</h1>
+  <p class="lead">Cabañas para dos, para cuatro o para siete, habitaciones con vista al lago y una cocina de chef en la hostería. Elegí las fechas, mirá qué está libre y reservá con seña desde acá.</p>
+  <div class="ctas"><a class="btn" href="#reservar">Reservar con seña</a><a class="btn ghost" href="#grupo">¿Cuántos son?</a></div>
+ </div>
+ <div class="hero-photo">
+  <img src="https://static.wixstatic.com/media/a4c4be_6ced44fcadc049a49a70f358150b5adf~mv2.jpg" alt="La Serena frente al lago Aluminé">
+  <div class="rosa">
+   <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="44" fill="none" stroke="#d9cdb6"/><circle cx="50" cy="50" r="30" fill="none" stroke="#efe5d2"/>
+    <path d="M50 8 L56 50 L50 92 L44 50Z" fill="#17414f" opacity=".18"/><path d="M8 50 L50 44 L92 50 L50 56Z" fill="#17414f" opacity=".18"/>
+    <path d="M92 50 L56 46 L56 54Z" fill="#b4532a"/><path d="M6 40 h22 M4 50 h22 M6 60 h22" stroke="#2f6f7e" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="6 5"/>
+    <text x="50" y="7" font-size="8" text-anchor="middle" fill="#5d676a" font-family="Work Sans">N</text><text x="96" y="53" font-size="8" fill="#b4532a" font-family="Work Sans">E</text><text x="0" y="53" font-size="8" fill="#5d676a" font-family="Work Sans">O</text></svg>
+   <b>Mirando al este</b><span>La playa queda al reparo del viento oeste que baja de la cordillera.</span>
+  </div>
+ </div>
+</div>
+
+<div class="ticker"><div class="wrap"><ul>
+ <li>28 temporadas en la península</li><li>Playa privada sobre el Aluminé</li><li>Restaurante con chef</li><li>Sauna y spa</li><li>Mascotas bienvenidas</li>
+</ul></div></div>
+
+<section id="grupo"><div class="wrap grupo">
+ <div>
+  <p class="kicker">Armá tu grupo</p>
+  <h2>Decinos cuántos vienen y te armamos la combinación.</h2>
+  <p>Una pareja, una familia con abuelos o dos familias amigas: en La Serena entran todos, repartidos entre cabañas y habitaciones. Mové el número y mirá cómo quedan.</p>
+  <div class="stepper" role="group" aria-label="Cantidad de personas">
+   <button type="button" id="g-menos" aria-label="Una persona menos">−</button>
+   <output id="g-n" aria-live="polite">6</output>
+   <button type="button" id="g-mas" aria-label="Una persona más">+</button>
+  </div>
+  <small class="fine">personas en total (hasta 20 en esta simulación)</small>
+ </div>
+ <div class="combo" aria-live="polite">
+  <h3 id="g-title">Combinación sugerida</h3>
+  <p class="fine" id="g-sub"></p>
+  <div id="g-list"></div>
+  <div class="tot"><span>Por noche, temporada baja</span><b id="g-tot"></b></div>
+  <p class="fine" style="margin-top:12px">Sujeto a disponibilidad. Precios de ejemplo para el prototipo.</p>
+  <button class="btn" type="button" id="g-go" style="margin-top:10px">Ver fechas para esta combinación</button>
+ </div>
+</div></section>
+
+<section id="unidades" style="padding-top:0"><div class="wrap">
+ <p class="kicker">Dónde dormir</p>
+ <h2>Tres maneras de quedarse en La Serena.</h2>
+ <div class="units">
+  <article class="unit">
+   <div class="num">4<small>personas</small></div>
+   <div><h3>Cabañas del Lago</h3><p>Para parejas o familias chicas, cerca de la orilla. Equipadas para cocinar, con calefacción y todo lo necesario para quedarse varios días.</p>
+    <div class="chips"><span>Hasta 4 personas</span><span>Cerca de la playa</span><span>Desayuno buffet</span></div>
+    <button class="btn ghost" type="button" data-pick="lago">Ver fechas libres</button></div>
+   <figure><img loading="lazy" src="https://static.wixstatic.com/media/a4c4be_888c2c2f18984f46b5ee69d7013352a5~mv2.jpeg" alt="Cabaña del Lago"></figure>
+  </article>
+  <article class="unit">
+   <div class="num">7<small>personas</small></div>
+   <div><h3>Cabañas del Parque</h3><p>Las más grandes, pensadas para grupos o familias numerosas. Con balcón y vista al lago por encima de los árboles del parque.</p>
+    <div class="chips"><span>Hasta 7 personas</span><span>Vista al lago</span><span>Balcón</span></div>
+    <button class="btn ghost" type="button" data-pick="parque">Ver fechas libres</button></div>
+   <figure><img loading="lazy" src="https://static.wixstatic.com/media/a4c4be_c2dc3ab3e2a14007bc5a25ec8724201a~mv2.jpeg" alt="Cabaña del Parque"></figure>
+  </article>
+  <article class="unit">
+   <div class="num">4<small>personas</small></div>
+   <div><h3>Habitaciones de la Hostería</h3><p>Con vista al Aluminé y el restaurante a pocos pasos. Para los que prefieren no cocinar y salir a recorrer liviano.</p>
+    <div class="chips"><span>Hasta 4 personas</span><span>Vista al lago</span><span>Servicio a la habitación</span></div>
+    <button class="btn ghost" type="button" data-pick="hosteria">Ver fechas libres</button></div>
+   <figure><img loading="lazy" src="https://static.wixstatic.com/media/a4c4be_e46f092c589b4777808f2de5ebfe9583~mv2.jpeg" alt="Habitación de la hostería"></figure>
+  </article>
+ </div>
+</div></section>
+
+<section class="cocina" id="cocina"><div class="wrap">
+ <div>
+  <p class="kicker">La cocina de la hostería</p>
+  <h2>Después de la excursión, la mesa ya está puesta.</h2>
+  <p>El restaurante-bar de la hostería tiene chef propio. A la mañana, desayuno buffet; a la noche, cocina para cerrar el día sin tener que salir del complejo.</p>
+  <blockquote>“El pan del desayuno, el mejor del mundo.”<cite>Reseña de un huésped que vuelve hace años · TripAdvisor, julio 2025</cite></blockquote>
+ </div>
+ <div class="pics">
+  <div><img loading="lazy" src="https://static.wixstatic.com/media/a4c4be_77ff92c30a6549e0bb9f92305100e1a1~mv2.jpg" alt="La Serena"></div>
+  <div><img loading="lazy" src="https://www.welcomeargentina.com/plantillas/webp/grandes/10226-02Gr.webp?1757883023" alt="La Serena, Villa Pehuenia"></div>
+ </div>
+</div></section>
+
+<section class="reservar" id="reservar"><div class="wrap">
+ <p class="kicker">Reservá directo</p>
+ <h2>Fechas libres de verdad, sin esperar respuesta.</h2>
+ <p style="max-width:40em">El calendario se sincroniza con Booking y Airbnb: si alguien reserva allá, la fecha se bloquea acá al instante. Sin dobles reservas y sin comisión en las reservas directas.</p>
+ <div class="res-grid">
+  <div class="panel">
+   <div class="calhead"><b>Disponibilidad · <span id="rk-cal-unit"></span></b><div class="navs"><button type="button" id="rk-prev" aria-label="Mes anterior">‹</button> <button type="button" id="rk-next" aria-label="Mes siguiente">›</button></div></div>
+   <div id="rk-cal"></div>
+   <div class="legend"><span><i style="background:#f3eee3"></i>Libre</span><span><i style="background:repeating-linear-gradient(135deg,#eadfcb 0 3px,#f6f1e7 3px 6px)"></i>Ocupado</span><span><i style="background:#f3eee3;box-shadow:inset 0 -3px 0 #b4532a"></i>Temporada alta</span><span><i style="background:#17414f"></i>Tu estadía</span></div>
+   <div class="sync">Sincronizado con Booking y Airbnb · ejemplo</div>
+  </div>
+  <div class="panel form">
+   <label>Unidad<select id="rk-unit"></select></label>
+   <div class="two"><label>Llegada<input type="date" id="rk-in"></label><label>Salida<input type="date" id="rk-out"></label></div>
+   <label>Personas<select id="rk-guests"></select></label>
+   <div id="rk-quote"></div>
+   <div class="paybtns"><button class="btn mp" type="button" id="rk-pay" disabled>Pagar seña con Mercado Pago</button><a class="btn ghost" id="rk-wa" href="#" target="_blank" rel="noopener" style="justify-content:center">Consultar por WhatsApp</a></div>
+  </div>
+ </div>
+</div></section>
+
+<section id="tarifas"><div class="wrap">
+ <p class="kicker">Temporadas 2026 · 2027</p>
+ <h2>Precio por noche según la época.</h2>
+ <p style="max-width:42em">El huésped ve de antemano cuánto sale cada fecha. Ustedes cambian los valores desde un panel y se actualizan solos en la web.</p>
+ <div class="tabla"><table id="rk-seasons"></table></div>
+ <p class="fine" style="margin-top:12px">Valores de ejemplo en pesos, por unidad y por noche.</p>
+</div></section>
+
+<section style="padding-top:0"><div class="wrap cerca">
+ <div><p class="kicker">Alrededor</p><h2>La península como punto de partida.</h2><p>Desde La Serena se sale caminando a la playa y en pocos minutos de auto al centro, a La Angostura o a la nieve del Batea Mahuida.</p></div>
+ <ul class="lugares">
+  <li><span class="d">0 m</span><div><b>Playa propia sobre el Aluminé</b><span>Acceso directo desde el complejo, del lado reparado del viento.</span></div></li>
+  <li><span class="d">a pasos</span><div><b>Centro de Villa Pehuenia</b><span>Proveedurías, restaurantes y la costanera, a minutos de la península.</span></div></li>
+  <li><span class="d">≈ 10 km</span><div><b>Volcán y Parque de Nieve Batea Mahuida</b><span>Nieve en invierno y caminata a la cumbre en verano, con la cordillera de frente.</span></div></li>
+  <li><span class="d">La Angostura</span><div><b>Donde se juntan el Aluminé y el Moquehue</b><span>Para kayak, pesca y las mejores fotos del atardecer entre araucarias.</span></div></li>
+  <li><span class="d">Moquehue</span><div><b>El lago vecino</b><span>Playas tranquilas y bosques de pehuenes del otro lado de La Angostura.</span></div></li>
+  <li><span class="d">Paso Icalma</span><div><b>Cruce a Chile</b><span>El paso internacional más cercano, para una escapada al otro lado.</span></div></li>
+ </ul>
+</div></section>
+
+<section style="padding-top:0"><div class="wrap faq">
+ <div><p class="kicker">Antes de viajar</p><h2>Preguntas que llegan todas las semanas.</h2></div>
+ <div>
+  <details open><summary>¿Aceptan mascotas?</summary><p>Sí, son bienvenidas. Avisanos al reservar para darles la unidad más cómoda.</p></details>
+  <details><summary>¿El desayuno está incluido?</summary><p>Sí, desayuno buffet en la hostería. El restaurante-bar también abre para almuerzos y cenas.</p></details>
+  <details><summary>¿Hay wifi y estacionamiento?</summary><p>Wifi y estacionamiento sin cargo para todos los huéspedes.</p></details>
+  <details><summary>¿Cómo funciona la seña?</summary><p>Se paga el 30% con Mercado Pago para confirmar y el resto al llegar. Acá va la política de cancelación de La Serena.</p></details>
+  <details><summary>¿Qué hay para hacer si llueve?</summary><p>Sauna, spa y la mesa del restaurante. Y en invierno, la nieve del Batea Mahuida a pocos kilómetros.</p></details>
+ </div>
+</div></section>
+
+<section class="llegar" id="llegar"><div class="wrap">
+ <div>
+  <p class="kicker">Cómo llegar</p>
+  <h2>A unos 300 km de Neuquén capital.</h2>
+  <p>Por ruta hasta Zapala y de ahí por la Ruta Provincial 13 hacia la cordillera, hasta la península de Villa Pehuenia. El aeropuerto más cercano es Chapelco, en San Martín de los Andes.</p>
+  <p><a class="btn ghost" href="https://www.google.com/maps?q=-38.8952,-71.1848" target="_blank" rel="noopener">Abrir en Google Maps</a></p>
+ </div>
+ <div class="ruta">
+  <svg viewBox="0 0 520 220" role="img" aria-label="Esquema de ruta Neuquén, Zapala, Villa Pehuenia">
+   <path d="M480 150 C400 150 380 120 320 120 C250 120 220 80 160 80 C110 80 80 110 60 110" fill="none" stroke="#2f6f7e" stroke-width="3" stroke-dasharray="2 8" stroke-linecap="round"/>
+   <circle cx="480" cy="150" r="7" fill="#17414f"/><circle cx="320" cy="120" r="6" fill="#17414f"/><circle cx="60" cy="110" r="10" fill="#b4532a"/>
+   <text x="480" y="180" text-anchor="middle" font-family="Work Sans" font-size="14" fill="#1c2427">Neuquén</text>
+   <text x="320" y="150" text-anchor="middle" font-family="Work Sans" font-size="14" fill="#1c2427">Zapala</text>
+   <text x="200" y="66" text-anchor="middle" font-family="Work Sans" font-size="12" fill="#5d676a">RP 13</text>
+   <text x="60" y="145" text-anchor="middle" font-family="Literata" font-style="italic" font-size="17" fill="#b4532a">La Serena</text>
+   <path d="M20 40 l18 -26 l18 26z M44 40 l14 -20 l14 20z" fill="#d9cdb6"/>
+  </svg>
+  <p class="fine" style="margin:8px 0 0">Esquema orientativo, no a escala.</p>
+ </div>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+ <div><span class="logo">La Serena</span><p style="margin-top:14px">Cabañas &amp; Hostería frente al lago Aluminé.<br>Península de Villa Pehuenia, Neuquén.</p></div>
+ <div><p><b>Reservas</b></p><p><a href="https://wa.me/5491123920780">WhatsApp +54 9 11 2392-0780</a></p><p><a href="mailto:info@laserenavillapehuenia.ar">info@laserenavillapehuenia.ar</a></p></div>
+ <div><p><b>Seguinos</b></p><p><a href="https://www.instagram.com/laserenavillapehuenia/" target="_blank" rel="noopener">@laserenavillapehuenia</a></p><p class="fine" style="color:#9aa6a3">Prototipo de demostración · Resolviendo Kos</p></div>
+</div></footer>
+
+<div class="mbar"><a class="btn" href="#reservar">Reservar</a><a class="btn ghost" href="https://wa.me/5491123920780" style="background:#fff">WhatsApp</a></div>
+
+<dialog id="rk-dialog" aria-labelledby="dlg-t"><h3 id="dlg-t">Pedido de reserva</h3><div id="rk-dlg-body"></div><button class="btn" type="button" id="rk-dlg-close" style="margin-top:8px">Entendido</button></dialog>
+
+<script>
+window.CFG={wa:"5491123920780",
+ units:[{id:"lago",name:"Cabaña del Lago",cap:4,base:98000,min:{low:2,high:4}},{id:"parque",name:"Cabaña del Parque",cap:7,base:158000,min:{low:2,high:5}},{id:"hosteria",name:"Habitación de la Hostería",cap:4,base:84000,min:{low:1,high:3}}],
+ base:{id:"base",name:"Temporada baja",mult:1,busy:.26},
+ seasons:[{id:"finde",name:"Finde largo",label:"20 al 22 de noviembre",from:"2026-11-20",to:"2026-11-22",mult:1.25,busy:.4},
+  {id:"verano",name:"Verano",label:"26 dic al 28 feb",from:"2026-12-26",to:"2027-02-28",mult:1.7,busy:.45,min:"high"},
+  {id:"santa",name:"Semana Santa",label:"24 al 28 de marzo",from:"2027-03-24",to:"2027-03-28",mult:1.4,busy:.5},
+  {id:"nieve",name:"Invierno",label:"vacaciones de julio",from:"2027-07-10",to:"2027-07-25",mult:1.5,busy:.5,min:"high"}]};
+(function(){
+"use strict";
+var C = window.CFG;
+var MES = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+var DOW = ["L","M","M","J","V","S","D"];
+function iso(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function parse(s){var p=s.split("-");return new Date(+p[0],+p[1]-1,+p[2]);}
+function money(n){return "$ "+Math.round(n).toLocaleString("es-AR");}
+function fmt(d){return d.getDate()+" de "+MES[d.getMonth()];}
+function seasonOf(d){var s=iso(d);for(var i=0;i<C.seasons.length;i++){var t=C.seasons[i];if(s>=t.from&&s<=t.to)return t;}return C.base;}
+function unitById(id){for(var i=0;i<C.units.length;i++)if(C.units[i].id===id)return C.units[i];return C.units[0];}
+// ocupación de ejemplo, determinística
+function h(str){var x=2166136261;for(var i=0;i<str.length;i++){x^=str.charCodeAt(i);x=Math.imul(x,16777619);}return (x>>>0)/4294967295;}
+function busy(uid,d){var s=seasonOf(d);var p=s.busy!=null?s.busy:0.18;var wk=Math.floor((d-new Date(2026,0,5))/864e5/3);return h(uid+":"+wk)<p;}
+var today=new Date();today.setHours(0,0,0,0);
+var st={unit:C.units[0].id,from:null,to:null,month:new Date(today.getFullYear(),today.getMonth(),1),guests:2};
+window.RK=st;
+var cal=document.getElementById("rk-cal");
+function q(id){return document.getElementById(id);}
+function renderCal(){
+  if(!cal)return;
+  var html="";
+  var months=window.innerWidth<720?1:2;
+  for(var m=0;m<months;m++){
+    var first=new Date(st.month.getFullYear(),st.month.getMonth()+m,1);
+    html+='<div class="rk-month"><div class="rk-mtitle">'+MES[first.getMonth()]+' '+first.getFullYear()+'</div><div class="rk-grid">';
+    for(var k=0;k<7;k++)html+='<span class="rk-dow">'+DOW[k]+'</span>';
+    var off=(first.getDay()+6)%7;for(k=0;k<off;k++)html+='<span></span>';
+    var days=new Date(first.getFullYear(),first.getMonth()+1,0).getDate();
+    for(var d=1;d<=days;d++){
+      var dt=new Date(first.getFullYear(),first.getMonth(),d);var s=iso(dt);
+      var cls="rk-day";var past=dt<today;var b=!past&&busy(st.unit,dt);
+      if(past)cls+=" is-past";else if(b)cls+=" is-busy";
+      var se=seasonOf(dt);if(se.id!=="base")cls+=" s-"+se.id;
+      if(st.from&&s===st.from)cls+=" is-from";
+      if(st.to&&s===st.to)cls+=" is-to";
+      if(st.from&&st.to&&s>st.from&&s<st.to)cls+=" is-in";
+      html+='<button type="button" class="'+cls+'" data-d="'+s+'" '+((past||b)?'disabled aria-disabled="true"':'')+' aria-label="'+fmt(dt)+(b?' ocupado':'')+'">'+d+'</button>';
+    }
+    html+='</div></div>';
+  }
+  cal.innerHTML=html;
+  var lab=q("rk-cal-unit");if(lab)lab.textContent=unitById(st.unit).name;
+}
+function rangeFree(a,b){for(var d=new Date(a);d<b;d.setDate(d.getDate()+1)){if(busy(st.unit,d))return false;}return true;}
+if(cal)cal.addEventListener("click",function(e){
+  var b=e.target.closest("button[data-d]");if(!b||b.disabled)return;var s=b.getAttribute("data-d");
+  if(!st.from||(st.from&&st.to)||s<=st.from){st.from=s;st.to=null;}
+  else{ if(rangeFree(parse(st.from),parse(s))){st.to=s;} else {st.from=s;st.to=null;} }
+  syncInputs();renderCal();quote();
+});
+function nav(n){st.month=new Date(st.month.getFullYear(),st.month.getMonth()+n,1);renderCal();}
+if(q("rk-prev"))q("rk-prev").addEventListener("click",function(){nav(-1);});
+if(q("rk-next"))q("rk-next").addEventListener("click",function(){nav(1);});
+function syncInputs(){
+  if(q("rk-in"))q("rk-in").value=st.from||"";
+  if(q("rk-out"))q("rk-out").value=st.to||"";
+}
+function readInputs(){
+  var a=q("rk-in"),b=q("rk-out"),u=q("rk-unit"),g=q("rk-guests");
+  if(a&&a.value)st.from=a.value; if(b&&b.value)st.to=b.value||null;
+  if(u)st.unit=u.value; if(g)st.guests=+g.value||1;
+}
+function quote(){
+  var out=q("rk-quote");if(!out)return;
+  var u=unitById(st.unit);
+  if(!st.from||!st.to||st.to<=st.from){out.innerHTML='<p class="rk-hint">Elegí llegada y salida en el calendario o en los campos de arriba.</p>';setCta(false);return;}
+  var a=parse(st.from),b=parse(st.to);var n=0,total=0,rows={};var minN=0,warn="";
+  for(var d=new Date(a);d<b;d.setDate(d.getDate()+1)){var se=seasonOf(d);var p=u.base*se.mult;total+=p;n++;rows[se.name]=(rows[se.name]||0)+1;var mn=(u.min&&u.min[se.min||"low"])||se.minN||0;if(mn>minN)minN=mn;}
+  if(!rangeFree(a,b))warn="Hay noches ocupadas en ese rango para "+u.name+". Probá otras fechas u otra unidad.";
+  else if(minN&&n<minN)warn="En esas fechas la estadía mínima en "+u.name+" es de "+minN+" noches.";
+  else if(st.guests>u.cap)warn=u.name+" es para hasta "+u.cap+" personas.";
+  var det=Object.keys(rows).map(function(k){return rows[k]+" noche"+(rows[k]>1?"s":"")+" en "+k.toLowerCase();}).join(" · ");
+  var sena=total*0.3;
+  out.innerHTML='<div class="rk-qrow"><span>'+u.name+' · '+n+' noche'+(n>1?'s':'')+'</span><b>'+money(total)+'</b></div>'+
+    '<div class="rk-qdet">'+fmt(a)+' → '+fmt(b)+' · '+st.guests+' persona'+(st.guests>1?'s':'')+'<br>'+det+'</div>'+
+    '<div class="rk-qrow rk-sena"><span>Seña del 30% para confirmar</span><b>'+money(sena)+'</b></div>'+
+    '<div class="rk-qdet">El saldo ('+money(total-sena)+') se abona al llegar.</div>'+
+    (warn?'<p class="rk-warn">'+warn+'</p>':'');
+  setCta(!warn,{u:u,a:a,b:b,n:n,total:total,sena:sena});
+}
+var last=null;
+function setCta(ok,data){var b=q("rk-pay");if(!b)return;b.disabled=!ok;last=ok?data:null;
+  var w=q("rk-wa");if(w){var t="Hola! Quiero consultar por "+(data?data.u.name+" del "+fmt(data.a)+" al "+fmt(data.b)+" ("+st.guests+" personas)":"una estadía")+".";w.href="https://wa.me/"+C.wa+"?text="+encodeURIComponent(t);}}
+["rk-in","rk-out","rk-unit","rk-guests"].forEach(function(id){var el=q(id);if(el)el.addEventListener("change",function(){readInputs();if(id==="rk-in"&&st.from){var f=parse(st.from);st.month=new Date(f.getFullYear(),f.getMonth(),1);}renderCal();quote();});});
+var dlg=q("rk-dialog");
+if(q("rk-pay"))q("rk-pay").addEventListener("click",function(){
+  if(!last||!dlg)return;
+  q("rk-dlg-body").innerHTML='<p><b>'+last.u.name+'</b><br>'+fmt(last.a)+' → '+fmt(last.b)+' · '+last.n+' noches</p><p>Total '+money(last.total)+'<br>Seña a pagar ahora: <b>'+money(last.sena)+'</b></p><p class="rk-hint">En la versión final este botón abre el pago de Mercado Pago y la fecha queda bloqueada también en Booking y Airbnb.</p>';
+  if(dlg.showModal)dlg.showModal();else dlg.setAttribute("open","");
+});
+if(q("rk-dlg-close"))q("rk-dlg-close").addEventListener("click",function(){dlg.close?dlg.close():dlg.removeAttribute("open");});
+// selección de unidad desde las fichas
+document.addEventListener("click",function(e){var b=e.target.closest("[data-pick]");if(!b)return;var u=q("rk-unit");st.unit=b.getAttribute("data-pick");if(u)u.value=st.unit;var g=q("rk-guests");var un=unitById(st.unit);if(g&&+g.value>un.cap){g.value=un.cap;st.guests=un.cap;}renderCal();quote();var t=q("reservar");if(t)t.scrollIntoView({behavior:"smooth"});});
+// unidad select
+var us=q("rk-unit");if(us&&!us.options.length){C.units.forEach(function(u){var o=document.createElement("option");o.value=u.id;o.textContent=u.name+" · hasta "+u.cap;us.appendChild(o);});}
+var gs=q("rk-guests");if(gs&&!gs.options.length){var mx=Math.max.apply(null,C.units.map(function(u){return u.cap;}));for(var i=1;i<=mx;i++){var o=document.createElement("option");o.value=i;o.textContent=i+(i>1?" personas":" persona");if(i===2)o.selected=true;gs.appendChild(o);}}
+// tabla de temporadas
+var tt=q("rk-seasons");
+if(tt){var hd='<thead><tr><th scope="col">Unidad</th><th scope="col">'+C.base.name+'</th>';var ss=C.seasonCols||C.seasons;ss.forEach(function(s){hd+='<th scope="col">'+s.name+'<small>'+s.label+'</small></th>';});hd+='</tr></thead><tbody>';
+  C.units.forEach(function(u){hd+='<tr><th scope="row">'+u.name+'<small>hasta '+u.cap+'</small></th><td>'+money(u.base*C.base.mult)+'</td>';ss.forEach(function(s){hd+='<td>'+money(u.base*s.mult)+'</td>';});hd+='</tr>';});
+  tt.innerHTML=hd+'</tbody>';}
+renderCal();quote();
+var rt;window.addEventListener("resize",function(){clearTimeout(rt);rt=setTimeout(renderCal,150);});
+})();
+
+(function(){
+ var U={parque:{n:"Cabaña del Parque",c:7,p:158000},lago:{n:"Cabaña del Lago",c:4,p:98000},hosteria:{n:"Habitación de la Hostería",c:4,p:84000}};
+ var n=6,best=null;
+ function solve(n){var b=null;for(var p=0;p<=3;p++)for(var l=0;l<=3;l++)for(var r=0;r<=4;r++){var cap=p*7+l*4+r*4;if(cap<n||p+l+r===0)continue;var waste=cap-n,units=p+l+r,cost=p*158000+l*98000+r*84000;var sc=waste*10+units*3+cost/1e5;if(!b||sc<b.sc)b={p:p,l:l,r:r,sc:sc,cap:cap,cost:cost};}return b;}
+ function dots(k,c){var s="";for(var i=0;i<c;i++)s+='<i class="'+(i<k?"":"e")+'"></i>';return s;}
+ function render(){document.getElementById("g-n").textContent=n;best=solve(n);var left=n,html="";
+  [["parque",best.p],["lago",best.l],["hosteria",best.r]].forEach(function(x){for(var i=0;i<x[1];i++){var u=U[x[0]];var k=Math.min(u.c,left);left-=k;html+='<div class="u"><b>'+u.n+'</b><div class="beds" aria-label="'+k+' de '+u.c+' lugares">'+dots(k,u.c)+'</div></div>';}});
+  document.getElementById("g-list").innerHTML=html;var units=best.p+best.l+best.r;
+  document.getElementById("g-sub").textContent=units+(units>1?" unidades":" unidad")+" · "+best.cap+" lugares para "+n+(n>1?" personas":" persona");
+  document.getElementById("g-tot").textContent="$ "+best.cost.toLocaleString("es-AR");}
+ document.getElementById("g-menos").onclick=function(){if(n>1){n--;render();}};
+ document.getElementById("g-mas").onclick=function(){if(n<20){n++;render();}};
+ document.getElementById("g-go").onclick=function(){var id=best.p?"parque":best.l?"lago":"hosteria";var b=document.createElement("span");b.setAttribute("data-pick",id);document.body.appendChild(b);b.click();b.remove();};
+ render();
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="La Serena Cabañas & Hostería"></script>
+</body>
+</html>
