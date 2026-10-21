@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Bahíamia · Cabañas con bahía propia en Villa Pehuenia</title>
+<meta name="description" content="Prototipo de demostración: web de reservas directas para Cabañas Bahíamia, margen oeste del lago Aluminé, Villa Pehuenia.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Overpass:wght@300;400;600;700&family=Overpass+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--papel:#f4f0e6;--papel2:#ebe5d6;--tinta:#1d3557;--prof1:#d6e7ec;--prof2:#b3d0dc;--prof3:#8db7c8;--boya:#d1495b;--bronce:#a8823a;--gris:#5b6675;--linea:#cfc6b2;--o:"Old Standard TT",Georgia,serif;--s:"Overpass",system-ui,sans-serif;--m:"Overpass Mono",ui-monospace,monospace}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--papel);color:var(--tinta);font:400 16px/1.65 var(--s)}
+img{max-width:100%;display:block}a{color:inherit}
+.aviso{background:var(--tinta);color:#f4f0e6;text-align:center;font-size:13px;padding:8px 16px}
+.mono{font-family:var(--m);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.wrap{max-width:1200px;margin:0 auto;padding:0 32px}
+.top{border-bottom:3px double var(--tinta)}
+.top .wrap{display:flex;justify-content:space-between;align-items:center;gap:20px;padding-top:16px;padding-bottom:14px}
+.marca{text-decoration:none;display:flex;align-items:baseline;gap:14px}
+.marca b{font:700 30px/1 var(--o);letter-spacing:.04em}
+.marca span{color:var(--gris)}
+.top nav{display:flex;gap:22px}
+.top nav a{text-decoration:none;font:600 14px var(--s);color:var(--gris)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;border:1.5px solid var(--tinta);background:var(--tinta);color:var(--papel);font:600 15px/1 var(--s);text-decoration:none;cursor:pointer;border-radius:2px}
+.btn.l{background:transparent;color:var(--tinta)}
+.btn.r{background:var(--boya);border-color:var(--boya);color:#fff}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+/* carta */
+.carta{position:relative;border-bottom:1px solid var(--tinta)}
+.carta svg.c{width:100%;height:auto;display:block;max-height:760px}
+.cartucho{position:absolute;right:32px;top:36px;max-width:470px;background:var(--papel);border:1.5px solid var(--tinta);outline:1px solid var(--tinta);outline-offset:4px;padding:28px 30px}
+.cartucho h1{font:400 clamp(34px,3.8vw,52px)/1.05 var(--o);margin:10px 0 16px}
+.cartucho h1 i{color:var(--boya)}
+.cartucho p{margin:0 0 20px;color:#34475f}
+.boyas .b{cursor:pointer}
+.boyas .b:hover circle,.boyas .b.on circle{fill:var(--boya)}
+.ficha-boya{position:absolute;left:32px;bottom:32px;width:300px;background:var(--papel);border:1.5px solid var(--tinta);padding:18px 20px}
+.ficha-boya h3{font:400 24px/1.1 var(--o);margin:6px 0 8px}
+.ficha-boya p{margin:0 0 12px;font-size:14px;color:#34475f}
+/* leyenda */
+.leyenda{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--tinta)}
+.leyenda div{padding:24px 28px;border-right:1px solid var(--linea)}
+.leyenda div:last-child{border-right:0}
+.leyenda b{display:block;font:400 44px/1 var(--o)}
+.leyenda span{font-size:14px;color:var(--gris)}
+section{padding:96px 0}
+.kick{color:var(--boya);margin:0 0 14px}
+h2{font:400 clamp(32px,3.4vw,48px)/1.08 var(--o);margin:0 0 18px}
+/* cabañas */
+.cabs{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:36px}
+.cab{border-top:1.5px solid var(--tinta);padding-top:22px}
+.cab .ph{aspect-ratio:3/2;background:linear-gradient(160deg,var(--prof3),var(--tinta));overflow:hidden;margin-bottom:20px}
+.cab .ph img{width:100%;height:100%;object-fit:cover}
+.cab h3{font:400 34px/1.05 var(--o);margin:4px 0 10px}
+.cab dl{display:grid;grid-template-columns:140px 1fr;margin:0 0 18px;border-top:1px dotted var(--linea)}
+.cab dt,.cab dd{padding:8px 0;border-bottom:1px dotted var(--linea);margin:0;font-size:14.5px}
+.cab dt{font-family:var(--m);font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--gris);padding-top:10px}
+.resto{margin-top:40px;display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.resto .r{border:1px solid var(--linea);padding:16px;background:#fbf9f3}
+.resto .n{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--tinta);display:flex;align-items:center;justify-content:center;font:600 14px var(--m);margin-bottom:10px}
+.resto b{font:400 20px var(--o);display:block}
+.resto span{font-size:13.5px;color:var(--gris)}
+/* desayuno */
+.desayuno{background:var(--tinta);color:#dfe7ef}
+.desayuno .wrap{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.desayuno h2{color:#fff}.desayuno .kick{color:#f2a1ac}
+.desayuno .ph{aspect-ratio:4/3;background:#2c4a6e;overflow:hidden;border:6px solid #f4f0e6}
+.desayuno .ph img{width:100%;height:100%;object-fit:cover}
+.desayuno ul{padding:0;margin:20px 0 0;list-style:none}
+.desayuno li{padding:10px 0;border-bottom:1px solid rgba(255,255,255,.15);display:flex;gap:12px}
+.desayuno li::before{content:"⚓";color:var(--bronce)}
+/* reservar */
+.res{display:grid;grid-template-columns:1.3fr .7fr;gap:24px;margin-top:30px}
+.res>*{min-width:0}
+.box{background:#fbf9f3;border:1.5px solid var(--tinta);padding:24px;min-width:0}
+.calhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}
+.calhead b{font:400 22px/1.1 var(--o)}
+.navs{display:flex;gap:6px;flex-shrink:0}
+.navs button{width:38px;height:38px;border:1.5px solid var(--tinta);background:transparent;font-size:18px;cursor:pointer;color:var(--tinta)}
+#rk-cal{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.rk-mtitle{font:600 13px var(--m);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
+.rk-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.rk-dow{font:400 11px var(--m);text-align:center;color:var(--gris)}
+.rk-day{aspect-ratio:1;border:0;background:var(--prof1);font:600 13px var(--m);color:var(--tinta);cursor:pointer}
+.rk-day:hover:not(:disabled){outline:2px solid var(--tinta)}
+.rk-day.is-busy{background:var(--papel2);color:#b4ab97;cursor:not-allowed;text-decoration:line-through}
+.rk-day.is-past{background:transparent;color:#c9bfab}
+.rk-day.s-verano,.rk-day.s-santa,.rk-day.s-nieve,.rk-day.s-finde{background-image:linear-gradient(135deg,var(--boya) 0 7px,transparent 7px)}
+.rk-day.is-busy.s-verano,.rk-day.is-busy.s-santa,.rk-day.is-busy.s-nieve,.rk-day.is-busy.s-finde{background-color:var(--papel2)}
+.rk-day.is-in{background:var(--prof3);color:#fff}
+.rk-day.is-from,.rk-day.is-to{background:var(--tinta);color:#fff}
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:14px;font-size:12.5px;color:var(--gris)}
+.legend i{display:inline-block;width:13px;height:13px;margin-right:6px;vertical-align:-2px}
+.form{display:grid;gap:12px}
+.form label{display:grid;gap:5px;font:600 11px var(--m);text-transform:uppercase;letter-spacing:.08em;color:var(--gris)}
+.form input,.form select{min-width:0;width:100%;font:400 15px var(--s);padding:10px 12px;border:1px solid var(--tinta);background:var(--papel);color:var(--tinta);border-radius:0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+#rk-quote{border-top:1.5px solid var(--tinta);padding-top:12px}
+.rk-qrow{display:flex;justify-content:space-between;gap:10px}
+.rk-qrow b{font:400 24px/1.1 var(--o)}
+.rk-sena{border-top:1px dotted var(--linea);margin-top:12px;padding-top:12px}.rk-sena b{color:var(--boya)}
+.rk-qdet{font-size:13px;color:var(--gris)}
+.rk-warn{background:#f9e1e4;color:#8e2433;padding:10px 12px;font-size:13.5px;margin:10px 0 0}
+.rk-hint{font-size:14px;color:var(--gris);margin:0}
+.mp{background:#009ee3;border-color:#009ee3}
+.modo{display:inline-flex;border:1.5px solid var(--tinta);margin:10px 0 0}
+.modo button{border:0;background:transparent;padding:9px 16px;font:600 13px var(--m);text-transform:uppercase;letter-spacing:.06em;cursor:pointer;color:var(--tinta)}
+.modo button[aria-pressed=true]{background:var(--tinta);color:var(--papel)}
+.tabla{overflow-x:auto;margin-top:20px;border:1.5px solid var(--tinta);background:#fbf9f3}
+table{border-collapse:collapse;width:100%;min-width:780px;font-size:14.5px}
+th,td{padding:13px 16px;border-bottom:1px dotted var(--linea);text-align:left;font-family:var(--m);font-size:13.5px}
+thead th{font:600 12px var(--m);text-transform:uppercase;letter-spacing:.05em;border-bottom:1.5px solid var(--tinta)}
+th small{display:block;font:400 11px var(--s);text-transform:none;letter-spacing:0;color:var(--gris)}
+tbody th{font:400 18px var(--o)}
+.bitacora{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:30px;border:1.5px solid var(--tinta)}
+.bitacora article{padding:24px;border-right:1px solid var(--linea)}
+.bitacora article:last-child{border-right:0}
+.bitacora q{font:italic 400 24px/1.2 var(--o);display:block;margin:10px 0}
+.bitacora p{margin:0;color:var(--gris);font-size:14.5px}
+.faq{display:grid;grid-template-columns:.8fr 1.2fr;gap:56px}
+details{border-bottom:1px dotted var(--tinta);padding:16px 0}
+summary{cursor:pointer;font:400 21px/1.25 var(--o)}
+details p{margin:8px 0 0;color:#34475f}
+.llegar{background:var(--papel2);border-top:1px solid var(--tinta)}
+.llegar .wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.rumbo{border:1.5px solid var(--tinta);padding:20px;background:var(--papel)}
+.rumbo div{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px dotted var(--linea);gap:12px}
+.rumbo div:last-child{border-bottom:0}
+.rumbo b{font:600 14px var(--m)}
+footer{background:var(--tinta);color:#c6d1dd;padding:48px 0 110px;font-size:14.5px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:30px;justify-content:space-between}
+footer a{color:#fff}
+.mbar{display:none}
+dialog{border:1.5px solid var(--tinta);padding:26px;max-width:420px;width:calc(100% - 32px);background:var(--papel);color:var(--tinta)}
+dialog::backdrop{background:rgba(29,53,87,.55)}
+dialog h3{font:400 28px/1.1 var(--o);margin:0 0 10px}
+@media (max-width:1000px){
+ .top nav{display:none}
+ .cartucho{position:relative;right:auto;top:auto;max-width:none;margin:24px 18px 0}
+ .ficha-boya{position:relative;left:auto;bottom:auto;width:auto;margin:0 18px 24px}
+ .leyenda{grid-template-columns:1fr 1fr}.leyenda div:nth-child(2){border-right:0}.leyenda div:nth-child(-n+2){border-bottom:1px solid var(--linea)}
+ .cabs,.res,.faq,.llegar .wrap,.desayuno .wrap{grid-template-columns:1fr}
+ .resto{grid-template-columns:1fr 1fr}
+ .bitacora{grid-template-columns:1fr}.bitacora article{border-right:0;border-bottom:1px solid var(--linea)}
+}
+@media (max-width:720px){
+ .wrap{padding:0 18px}section{padding:64px 0}
+ .top .btn{display:none}.marca span{display:none}
+ .leyenda div{padding:18px}.leyenda b{font-size:34px}
+ #rk-cal{grid-template-columns:1fr}.box{padding:16px}
+ .cab dl{grid-template-columns:110px 1fr}
+ .mbar{display:grid;grid-template-columns:1fr 1fr;gap:10px;position:fixed;left:0;right:0;bottom:0;z-index:40;padding:10px 14px calc(10px + env(safe-area-inset-bottom));background:rgba(244,240,230,.97);border-top:1.5px solid var(--tinta)}
+}
+</style>
+</head>
+<body>
+<div class="aviso" role="note"><strong>Prototipo de demostración preparado para Cabañas Bahíamia.</strong> Precios, disponibilidad y pagos son de ejemplo.</div>
+<header class="top"><div class="wrap">
+ <a class="marca" href="#"><b>BAHÍAMIA</b><span class="mono">Cabañas · Lago Aluminé · margen oeste</span></a>
+ <nav aria-label="Secciones"><a href="#carta">La bahía</a><a href="#cabanas">Cabañas</a><a href="#desayuno">Desayuno</a><a href="#reservar">Reservar</a><a href="#llegar">Cómo llegar</a></nav>
+ <a class="btn r" href="#reservar">Fechas libres</a>
+</div></header>
+
+<main>
+<div class="carta" id="carta">
+ <svg class="c" viewBox="0 0 1400 760" role="img" aria-label="Carta ilustrada de la bahía: costa, playa de arena, muelle, bosque y las seis cabañas">
+  <defs>
+   <pattern id="bosque" width="26" height="26" patternUnits="userSpaceOnUse"><path d="M13 5 l6 11 h-12z" fill="none" stroke="#7d8f7a" stroke-width="1.2"/></pattern>
+   <pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse"><path d="M100 0 V100 H0" fill="none" stroke="#1d3557" stroke-opacity=".08"/></pattern>
+  </defs>
+  <rect width="1400" height="760" fill="#b3d0dc"/>
+  <path d="M1400 0 H560 C620 120 700 180 760 260 C800 320 780 380 840 430 C900 480 980 470 1020 540 C1060 610 1040 690 1080 760 H1400Z" fill="#8db7c8" opacity=".55"/>
+  <path d="M1400 0 H700 C760 120 820 200 880 280 C930 350 920 410 980 450 C1040 490 1110 500 1140 570 C1170 640 1160 700 1190 760 H1400Z" fill="#6fa3b8" opacity=".5"/>
+  <path d="M0 0 H520 C560 90 600 150 640 220 C680 290 660 330 690 380 C700 400 690 430 660 440 C620 452 600 470 610 520 C620 580 700 620 720 680 C730 720 740 740 760 760 H0Z" fill="#f4f0e6"/>
+  <path d="M0 0 H520 C560 90 600 150 640 220 C680 290 660 330 690 380 C700 400 690 430 660 440 C620 452 600 470 610 520 C620 580 700 620 720 680 C730 720 740 740 760 760 H0Z" fill="url(#bosque)" opacity=".85"/>
+  <path d="M690 380 C700 400 690 430 660 440 C620 452 600 470 610 520 C618 560 660 590 690 620" fill="none" stroke="#e7d7a8" stroke-width="22" stroke-linecap="round"/>
+  <path d="M520 0 C560 90 600 150 640 220 C680 290 660 330 690 380 C700 400 690 430 660 440 C620 452 600 470 610 520 C620 580 700 620 720 680 C730 720 740 740 760 760" fill="none" stroke="#1d3557" stroke-width="2"/>
+  <path d="M560 0 C600 90 640 150 680 220 C720 290 700 330 730 380 C740 420 720 450 690 462 C660 474 646 490 652 520 C660 570 730 610 750 670 C760 710 770 740 790 760" fill="none" stroke="#1d3557" stroke-opacity=".35" stroke-dasharray="3 6"/>
+  <path d="M620 0 C660 90 700 150 740 220 C780 290 760 340 790 390 C800 440 770 470 740 484 C710 498 700 515 704 540 C712 590 780 630 800 690 C808 720 818 745 830 760" fill="none" stroke="#1d3557" stroke-opacity=".25" stroke-dasharray="3 6"/>
+  <rect width="1400" height="760" fill="url(#grid)"/>
+  <path d="M640 500 H760" stroke="#1d3557" stroke-width="5"/><path d="M760 492 v16" stroke="#1d3557" stroke-width="3"/>
+  <text x="772" y="506" font-family="Overpass Mono" font-size="15" fill="#1d3557" letter-spacing="1">MUELLE · AMARRE</text>
+  <text x="560" y="590" font-family="Overpass Mono" font-size="14" fill="#7a6533" transform="rotate(58 560 590)" letter-spacing="1">PLAYA DE ARENA ≈150 m</text>
+  <text x="770" y="560" font-family="Old Standard TT" font-style="italic" font-size="44" fill="#1d3557" fill-opacity=".75">Lago Aluminé</text>
+  <text x="120" y="60" font-family="Overpass Mono" font-size="15" fill="#4f5f4c" letter-spacing="2">6 HECTÁREAS DE BOSQUE NATIVO · SENDEROS</text>
+  <g transform="translate(1130 620)"><circle r="54" fill="none" stroke="#1d3557" stroke-opacity=".5"/><circle r="40" fill="none" stroke="#1d3557" stroke-opacity=".3"/><path d="M0 -62 L7 0 L0 62 L-7 0Z" fill="#1d3557"/><path d="M-62 0 L0 -7 L62 0 L0 7Z" fill="#1d3557" fill-opacity=".45"/><text y="-68" text-anchor="middle" font-family="Overpass Mono" font-size="14" fill="#1d3557">N</text></g>
+  <g transform="translate(1080 715)" font-family="Overpass Mono" font-size="12" fill="#1d3557"><rect width="200" height="8" fill="none" stroke="#1d3557"/><rect width="50" height="8" fill="#1d3557"/><rect x="100" width="50" height="8" fill="#1d3557"/><text y="26">≈ 400 m de costa propia</text></g>
+  <g class="boyas" id="boyas"></g>
+  <text x="20" y="745" font-family="Overpass Mono" font-size="12" fill="#5b6675">ESQUEMA ILUSTRATIVO · NO A ESCALA</text>
+ </svg>
+ <div class="cartucho">
+  <p class="mono kick">Carta de la bahía · Villa Pehuenia</p>
+  <h1>Seis hectáreas de bosque y una <i>bahía propia</i> sobre el Aluminé.</h1>
+  <p>Seis cabañas de madera y piedra, playa de arena, muelle y kayaks. Tocá una boya del mapa para conocer cada cabaña, o elegí fechas y reservá con seña.</p>
+  <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn" href="#reservar">Reservar con seña</a><a class="btn l" href="#cabanas">Ver cabañas</a></div>
+ </div>
+ <div class="ficha-boya" id="ficha" aria-live="polite"></div>
+</div>
+
+<div class="leyenda">
+ <div><b>6 ha</b><span>de bosque nativo con senderos</span></div>
+ <div><b>400 m</b><span>de costa sobre el lago Aluminé</span></div>
+ <div><b>150 m</b><span>de playa de arena en la bahía</span></div>
+ <div><b>1 muelle</b><span>con amarre y kayaks por cabaña</span></div>
+</div>
+
+<section id="cabanas"><div class="wrap">
+ <p class="mono kick">Las cabañas</p>
+ <h2>Madera, piedra y ventanales al lago.</h2>
+ <p style="max-width:42em">Estilo patagónico con equipamiento moderno: losa radiante, hogar a leña, cocina completa y baño con hidromasaje. Desayuno casero y limpieza diaria incluidos.</p>
+ <div class="cabs">
+  <article class="cab"><div class="ph"><img loading="lazy" src="https://www.welcomeargentina.com/plantillas/webp/grandes/65894-01Gr.webp?1774614228" alt="Cabaña de la Bahía"></div>
+   <span class="mono" style="color:var(--boya)">Boya 1</span><h3>Cabaña de la Bahía</h3>
+   <dl><dt>Vista</dt><dd>Al lago, sobre la bahía</dd><dt>Baño</dt><dd>Con bañera de hidromasaje</dd><dt>Afuera</dt><dd>Parrilla y mesa propias</dd><dt>Incluye</dt><dd>Desayuno y limpieza diaria</dd></dl>
+   <button class="btn l" type="button" data-pick="bahia">Ver fechas libres</button></article>
+  <article class="cab"><div class="ph"><img loading="lazy" src="https://www.welcomeargentina.com/plantillas/webp/grandes/65894-03Gr.webp?1774614228" alt="Cabaña del Alto"></div>
+   <span class="mono" style="color:var(--boya)">Boya 2</span><h3>Cabaña del Alto</h3>
+   <dl><dt>Superficie</dt><dd>100 m², la más amplia</dd><dt>Estilo</dt><dd>Moderno, interior y exterior integrados</dd><dt>Playa</dt><dd>A unos 50 m del acceso</dd><dt>Incluye</dt><dd>Desayuno casero diario</dd></dl>
+   <button class="btn l" type="button" data-pick="alto">Ver fechas libres</button></article>
+ </div>
+ <div class="resto">
+  <div class="r"><span class="n">3</span><b>Cabaña 3</b><span>Hasta 5 personas · equipada completa</span></div>
+  <div class="r"><span class="n">4</span><b>Cabaña 4</b><span>Hasta 5 personas · equipada completa</span></div>
+  <div class="r"><span class="n">5</span><b>Cabaña 5</b><span>Hasta 5 personas · equipada completa</span></div>
+  <div class="r"><span class="n">6</span><b>Cabaña 6</b><span>Hasta 5 personas · equipada completa</span></div>
+ </div>
+ <p style="font-size:13px;color:var(--gris);margin-top:12px">En la versión final cada cabaña lleva su nombre, sus fotos y su ficha.</p>
+</div></section>
+
+<section class="desayuno" id="desayuno"><div class="wrap">
+ <div class="ph"><img loading="lazy" src="https://www.welcomeargentina.com/plantillas/webp/grandes/65894-06Gr.webp?1774614228" alt="Bahíamia"></div>
+ <div>
+  <p class="mono kick">Por la mañana</p>
+  <h2>El desayuno casero de Adriana.</h2>
+  <p>Cada mañana llega a la cabaña el desayuno que prepara Adriana. Después, la playa con reposeras y sombrillas, o un kayak desde el muelle.</p>
+  <ul><li>Desayuno casero incluido</li><li>Leña para el hogar</li><li>Kayaks para cada cabaña</li><li>Set de playa: reposeras, sombrillas y mesitas</li><li>Mascotas bienvenidas</li></ul>
+ </div>
+</div></section>
+
+<section id="reservar"><div class="wrap">
+ <p class="mono kick">Reservá directo</p>
+ <h2>Por noche o por semana, con seña por Mercado Pago.</h2>
+ <p style="max-width:42em">Las fechas ocupadas se bloquean solas: el calendario se sincroniza con Booking y Airbnb. Sin dobles reservas y sin comisión en lo que entra directo.</p>
+ <div class="res">
+  <div class="box">
+   <div class="calhead"><b id="rk-cal-unit"></b><div class="navs"><button type="button" id="rk-prev" aria-label="Mes anterior">‹</button><button type="button" id="rk-next" aria-label="Mes siguiente">›</button></div></div>
+   <div id="rk-cal"></div>
+   <div class="legend"><span><i style="background:#d6e7ec"></i>Libre</span><span><i style="background:#ebe5d6"></i>Ocupado</span><span><i style="background:linear-gradient(135deg,#d1495b 0 6px,#d6e7ec 6px)"></i>Temporada alta</span><span><i style="background:#1d3557"></i>Tu estadía</span></div>
+   <p class="mono" style="margin:12px 0 0;color:#2f7a5d">● Sincronizado con Booking y Airbnb · ejemplo</p>
+  </div>
+  <div class="box form">
+   <label>Cabaña<select id="rk-unit"></select></label>
+   <div class="two"><label>Llegada<input type="date" id="rk-in"></label><label>Salida<input type="date" id="rk-out"></label></div>
+   <button class="btn l" type="button" id="semana">+ 7 noches desde la llegada</button>
+   <label>Personas<select id="rk-guests"></select></label>
+   <div id="rk-quote"></div>
+   <button class="btn mp" type="button" id="rk-pay" disabled>Pagar seña con Mercado Pago</button>
+   <a class="btn l" id="rk-wa" href="#" target="_blank" rel="noopener">Consultar por WhatsApp</a>
+  </div>
+ </div>
+</div></section>
+
+<section style="padding-top:0" id="tarifas"><div class="wrap">
+ <p class="mono kick">Temporadas 2026 · 2027</p>
+ <h2>Tarifas a la vista.</h2>
+ <div class="modo" role="group" aria-label="Ver precios"><button type="button" aria-pressed="true" data-m="1">Por noche</button><button type="button" aria-pressed="false" data-m="7">Por semana</button></div>
+ <div class="tabla"><table id="rk-seasons"></table></div>
+ <p style="font-size:13px;color:var(--gris)">Valores de ejemplo en pesos, por cabaña. Se editan desde un panel.</p>
+</div></section>
+
+<section style="padding-top:0"><div class="wrap">
+ <p class="mono kick">Bitácora de huéspedes · TripAdvisor 4,9 / 5</p>
+ <h2>Lo que anotaron los que ya vinieron.</h2>
+ <div class="bitacora">
+  <article><span class="mono">Febrero 2026</span><q>Excelente experiencia en un paraíso</q><p>Muy familiar; destacan la naturaleza y la calidez de los dueños y el personal.</p></article>
+  <article><span class="mono">Febrero 2025</span><q>Paz, tranquilidad.</q><p>Descanso total, con el lago como protagonista.</p></article>
+  <article><span class="mono">Septiembre 2024</span><q>Hermoso complejo de cabañas</q><p>El acceso a la bahía, la losa radiante, el desayuno casero y la leña de regalo.</p></article>
+ </div>
+</div></section>
+
+<section style="padding-top:0"><div class="wrap faq">
+ <div><p class="mono kick">Antes de zarpar</p><h2>Preguntas frecuentes</h2></div>
+ <div>
+  <details open><summary>¿Aceptan mascotas?</summary><p>Sí, las mascotas son bienvenidas.</p></details>
+  <details><summary>¿A qué hora es el ingreso y la salida?</summary><p>Ingreso desde las 15:00 y salida hasta las 10:00.</p></details>
+  <details><summary>¿Se puede alquilar por semana?</summary><p>Sí, por día o por semana. Con el botón “+ 7 noches” el simulador arma la semana completa.</p></details>
+  <details><summary>¿Hace frío en las cabañas en invierno?</summary><p>Tienen losa radiante y hogar a leña, con la leña incluida.</p></details>
+  <details><summary>¿Cómo se paga?</summary><p>La seña del 30% con Mercado Pago y el saldo al llegar. Acá va la política de cancelación de Bahíamia.</p></details>
+ </div>
+</div></section>
+
+<section class="llegar" id="llegar"><div class="wrap">
+ <div><p class="mono kick">Cómo llegar</p><h2>Margen oeste del lago Aluminé.</h2><p>Villa Pehuenia, Neuquén. Por Zapala y la Ruta Provincial 13 hacia la cordillera. El aeropuerto más cercano queda a unos 160 km.</p><p><a class="btn" href="https://www.google.com/maps/search/Caba%C3%B1as+Bah%C3%ADamia+Villa+Pehuenia" target="_blank" rel="noopener">Abrir en Google Maps</a></p></div>
+ <div class="rumbo">
+  <div><span>Rumbo</span><b>Neuquén → Zapala → RP 13</b></div>
+  <div><span>Destino</span><b>Villa Pehuenia · CP 8345</b></div>
+  <div><span>Aeropuerto</span><b>≈ 160 km</b></div>
+  <div><span>Ingreso / salida</span><b>15:00 / 10:00</b></div>
+ </div>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+ <div><b style="font:700 24px var(--o);letter-spacing:.04em;color:#fff">BAHÍAMIA</b><br>Cabañas · margen oeste del lago Aluminé · Villa Pehuenia</div>
+ <div><a href="https://wa.me/5491154643407">WhatsApp +54 9 11 5464-3407</a><br><a href="mailto:consultas@bahiamia.com.ar">consultas@bahiamia.com.ar</a></div>
+ <div style="color:#8fa0b4">Prototipo de demostración · Resolviendo Kos</div>
+</div></footer>
+<div class="mbar"><a class="btn" href="#reservar">Reservar</a><a class="btn l" href="https://wa.me/5491154643407">WhatsApp</a></div>
+<dialog id="rk-dialog" aria-labelledby="dt"><h3 id="dt">Pedido de reserva</h3><div id="rk-dlg-body"></div><button class="btn" type="button" id="rk-dlg-close">Entendido</button></dialog>
+
+<script>
+window.CFG={wa:"5491154643407",
+ units:[{id:"bahia",name:"Cabaña de la Bahía",cap:5,base:150000,min:{low:2,high:4}},{id:"alto",name:"Cabaña del Alto",cap:5,base:170000,min:{low:2,high:4}},{id:"c3",name:"Cabaña 3",cap:5,base:140000,min:{low:2,high:4}},{id:"c4",name:"Cabaña 4",cap:5,base:140000,min:{low:2,high:4}},{id:"c5",name:"Cabaña 5",cap:5,base:132000,min:{low:2,high:4}},{id:"c6",name:"Cabaña 6",cap:5,base:132000,min:{low:2,high:4}}],
+ base:{id:"base",name:"Temporada baja",mult:1,busy:.26},
+ seasons:[{id:"finde",name:"Finde largo",label:"20 al 22 de noviembre",from:"2026-11-20",to:"2026-11-22",mult:1.25,busy:.4},
+  {id:"verano",name:"Verano",label:"26 dic al 28 feb",from:"2026-12-26",to:"2027-02-28",mult:1.7,busy:.45,min:"high"},
+  {id:"santa",name:"Semana Santa",label:"24 al 28 de marzo",from:"2027-03-24",to:"2027-03-28",mult:1.4,busy:.5},
+  {id:"nieve",name:"Invierno",label:"vacaciones de julio",from:"2027-07-10",to:"2027-07-25",mult:1.5,busy:.5,min:"high"}]};
+(function(){
+"use strict";
+var C = window.CFG;
+var MES = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+var DOW = ["L","M","M","J","V","S","D"];
+function iso(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function parse(s){var p=s.split("-");return new Date(+p[0],+p[1]-1,+p[2]);}
+function money(n){return "$ "+Math.round(n).toLocaleString("es-AR");}
+function fmt(d){return d.getDate()+" de "+MES[d.getMonth()];}
+function seasonOf(d){var s=iso(d);for(var i=0;i<C.seasons.length;i++){var t=C.seasons[i];if(s>=t.from&&s<=t.to)return t;}return C.base;}
+function unitById(id){for(var i=0;i<C.units.length;i++)if(C.units[i].id===id)return C.units[i];return C.units[0];}
+// ocupación de ejemplo, determinística
+function h(str){var x=2166136261;for(var i=0;i<str.length;i++){x^=str.charCodeAt(i);x=Math.imul(x,16777619);}return (x>>>0)/4294967295;}
+function busy(uid,d){var s=seasonOf(d);var p=s.busy!=null?s.busy:0.18;var wk=Math.floor((d-new Date(2026,0,5))/864e5/3);return h(uid+":"+wk)<p;}
+var today=new Date();today.setHours(0,0,0,0);
+var st={unit:C.units[0].id,from:null,to:null,month:new Date(today.getFullYear(),today.getMonth(),1),guests:2};
+window.RK=st;
+var cal=document.getElementById("rk-cal");
+function q(id){return document.getElementById(id);}
+function renderCal(){
+  if(!cal)return;
+  var html="";
+  var months=window.innerWidth<720?1:2;
+  for(var m=0;m<months;m++){
+    var first=new Date(st.month.getFullYear(),st.month.getMonth()+m,1);
+    html+='<div class="rk-month"><div class="rk-mtitle">'+MES[first.getMonth()]+' '+first.getFullYear()+'</div><div class="rk-grid">';
+    for(var k=0;k<7;k++)html+='<span class="rk-dow">'+DOW[k]+'</span>';
+    var off=(first.getDay()+6)%7;for(k=0;k<off;k++)html+='<span></span>';
+    var days=new Date(first.getFullYear(),first.getMonth()+1,0).getDate();
+    for(var d=1;d<=days;d++){
+      var dt=new Date(first.getFullYear(),first.getMonth(),d);var s=iso(dt);
+      var cls="rk-day";var past=dt<today;var b=!past&&busy(st.unit,dt);
+      if(past)cls+=" is-past";else if(b)cls+=" is-busy";
+      var se=seasonOf(dt);if(se.id!=="base")cls+=" s-"+se.id;
+      if(st.from&&s===st.from)cls+=" is-from";
+      if(st.to&&s===st.to)cls+=" is-to";
+      if(st.from&&st.to&&s>st.from&&s<st.to)cls+=" is-in";
+      html+='<button type="button" class="'+cls+'" data-d="'+s+'" '+((past||b)?'disabled aria-disabled="true"':'')+' aria-label="'+fmt(dt)+(b?' ocupado':'')+'">'+d+'</button>';
+    }
+    html+='</div></div>';
+  }
+  cal.innerHTML=html;
+  var lab=q("rk-cal-unit");if(lab)lab.textContent=unitById(st.unit).name;
+}
+function rangeFree(a,b){for(var d=new Date(a);d<b;d.setDate(d.getDate()+1)){if(busy(st.unit,d))return false;}return true;}
+if(cal)cal.addEventListener("click",function(e){
+  var b=e.target.closest("button[data-d]");if(!b||b.disabled)return;var s=b.getAttribute("data-d");
+  if(!st.from||(st.from&&st.to)||s<=st.from){st.from=s;st.to=null;}
+  else{ if(rangeFree(parse(st.from),parse(s))){st.to=s;} else {st.from=s;st.to=null;} }
+  syncInputs();renderCal();quote();
+});
+function nav(n){st.month=new Date(st.month.getFullYear(),st.month.getMonth()+n,1);renderCal();}
+if(q("rk-prev"))q("rk-prev").addEventListener("click",function(){nav(-1);});
+if(q("rk-next"))q("rk-next").addEventListener("click",function(){nav(1);});
+function syncInputs(){
+  if(q("rk-in"))q("rk-in").value=st.from||"";
+  if(q("rk-out"))q("rk-out").value=st.to||"";
+}
+function readInputs(){
+  var a=q("rk-in"),b=q("rk-out"),u=q("rk-unit"),g=q("rk-guests");
+  if(a&&a.value)st.from=a.value; if(b&&b.value)st.to=b.value||null;
+  if(u)st.unit=u.value; if(g)st.guests=+g.value||1;
+}
+function quote(){
+  var out=q("rk-quote");if(!out)return;
+  var u=unitById(st.unit);
+  if(!st.from||!st.to||st.to<=st.from){out.innerHTML='<p class="rk-hint">Elegí llegada y salida en el calendario o en los campos de arriba.</p>';setCta(false);return;}
+  var a=parse(st.from),b=parse(st.to);var n=0,total=0,rows={};var minN=0,warn="";
+  for(var d=new Date(a);d<b;d.setDate(d.getDate()+1)){var se=seasonOf(d);var p=u.base*se.mult;total+=p;n++;rows[se.name]=(rows[se.name]||0)+1;var mn=(u.min&&u.min[se.min||"low"])||se.minN||0;if(mn>minN)minN=mn;}
+  if(!rangeFree(a,b))warn="Hay noches ocupadas en ese rango para "+u.name+". Probá otras fechas u otra unidad.";
+  else if(minN&&n<minN)warn="En esas fechas la estadía mínima en "+u.name+" es de "+minN+" noches.";
+  else if(st.guests>u.cap)warn=u.name+" es para hasta "+u.cap+" personas.";
+  var det=Object.keys(rows).map(function(k){return rows[k]+" noche"+(rows[k]>1?"s":"")+" en "+k.toLowerCase();}).join(" · ");
+  var sena=total*0.3;
+  out.innerHTML='<div class="rk-qrow"><span>'+u.name+' · '+n+' noche'+(n>1?'s':'')+'</span><b>'+money(total)+'</b></div>'+
+    '<div class="rk-qdet">'+fmt(a)+' → '+fmt(b)+' · '+st.guests+' persona'+(st.guests>1?'s':'')+'<br>'+det+'</div>'+
+    '<div class="rk-qrow rk-sena"><span>Seña del 30% para confirmar</span><b>'+money(sena)+'</b></div>'+
+    '<div class="rk-qdet">El saldo ('+money(total-sena)+') se abona al llegar.</div>'+
+    (warn?'<p class="rk-warn">'+warn+'</p>':'');
+  setCta(!warn,{u:u,a:a,b:b,n:n,total:total,sena:sena});
+}
+var last=null;
+function setCta(ok,data){var b=q("rk-pay");if(!b)return;b.disabled=!ok;last=ok?data:null;
+  var w=q("rk-wa");if(w){var t="Hola! Quiero consultar por "+(data?data.u.name+" del "+fmt(data.a)+" al "+fmt(data.b)+" ("+st.guests+" personas)":"una estadía")+".";w.href="https://wa.me/"+C.wa+"?text="+encodeURIComponent(t);}}
+["rk-in","rk-out","rk-unit","rk-guests"].forEach(function(id){var el=q(id);if(el)el.addEventListener("change",function(){readInputs();if(id==="rk-in"&&st.from){var f=parse(st.from);st.month=new Date(f.getFullYear(),f.getMonth(),1);}renderCal();quote();});});
+var dlg=q("rk-dialog");
+if(q("rk-pay"))q("rk-pay").addEventListener("click",function(){
+  if(!last||!dlg)return;
+  q("rk-dlg-body").innerHTML='<p><b>'+last.u.name+'</b><br>'+fmt(last.a)+' → '+fmt(last.b)+' · '+last.n+' noches</p><p>Total '+money(last.total)+'<br>Seña a pagar ahora: <b>'+money(last.sena)+'</b></p><p class="rk-hint">En la versión final este botón abre el pago de Mercado Pago y la fecha queda bloqueada también en Booking y Airbnb.</p>';
+  if(dlg.showModal)dlg.showModal();else dlg.setAttribute("open","");
+});
+if(q("rk-dlg-close"))q("rk-dlg-close").addEventListener("click",function(){dlg.close?dlg.close():dlg.removeAttribute("open");});
+// selección de unidad desde las fichas
+document.addEventListener("click",function(e){var b=e.target.closest("[data-pick]");if(!b)return;var u=q("rk-unit");st.unit=b.getAttribute("data-pick");if(u)u.value=st.unit;var g=q("rk-guests");var un=unitById(st.unit);if(g&&+g.value>un.cap){g.value=un.cap;st.guests=un.cap;}renderCal();quote();var t=q("reservar");if(t)t.scrollIntoView({behavior:"smooth"});});
+// unidad select
+var us=q("rk-unit");if(us&&!us.options.length){C.units.forEach(function(u){var o=document.createElement("option");o.value=u.id;o.textContent=u.name+" · hasta "+u.cap;us.appendChild(o);});}
+var gs=q("rk-guests");if(gs&&!gs.options.length){var mx=Math.max.apply(null,C.units.map(function(u){return u.cap;}));for(var i=1;i<=mx;i++){var o=document.createElement("option");o.value=i;o.textContent=i+(i>1?" personas":" persona");if(i===2)o.selected=true;gs.appendChild(o);}}
+// tabla de temporadas
+var tt=q("rk-seasons");
+if(tt){var hd='<thead><tr><th scope="col">Unidad</th><th scope="col">'+C.base.name+'</th>';var ss=C.seasonCols||C.seasons;ss.forEach(function(s){hd+='<th scope="col">'+s.name+'<small>'+s.label+'</small></th>';});hd+='</tr></thead><tbody>';
+  C.units.forEach(function(u){hd+='<tr><th scope="row">'+u.name+'<small>hasta '+u.cap+'</small></th><td>'+money(u.base*C.base.mult)+'</td>';ss.forEach(function(s){hd+='<td>'+money(u.base*s.mult)+'</td>';});hd+='</tr>';});
+  tt.innerHTML=hd+'</tbody>';}
+renderCal();quote();
+var rt;window.addEventListener("resize",function(){clearTimeout(rt);rt=setTimeout(renderCal,150);});
+})();
+
+(function(){
+ var B=[{id:"bahia",n:"Cabaña de la Bahía",x:600,y:330,t:"Vista al lago sobre la bahía, hidromasaje, parrilla propia. Desayuno y limpieza diaria."},
+  {id:"alto",n:"Cabaña del Alto",x:520,y:470,t:"100 m², estilo moderno, a unos 50 m del acceso a la playa."},
+  {id:"c3",n:"Cabaña 3",x:470,y:250,t:"Hasta 5 personas, equipada completa."},{id:"c4",n:"Cabaña 4",x:440,y:140,t:"Hasta 5 personas, equipada completa."},
+  {id:"c5",n:"Cabaña 5",x:350,y:380,t:"Hasta 5 personas, equipada completa."},{id:"c6",n:"Cabaña 6",x:320,y:220,t:"Hasta 5 personas, equipada completa."}];
+ var g=document.getElementById("boyas"),h="";
+ B.forEach(function(b,i){h+='<g class="b" data-b="'+i+'" tabindex="0" role="button" aria-label="'+b.n+'"><circle cx="'+b.x+'" cy="'+b.y+'" r="20" fill="#1d3557" stroke="#f4f0e6" stroke-width="4"/><text x="'+b.x+'" y="'+(b.y+6)+'" text-anchor="middle" font-family="Overpass Mono" font-size="17" font-weight="600" fill="#fff">'+(i+1)+'</text></g>';});
+ g.innerHTML=h;
+ function show(i){var b=B[i];document.querySelectorAll("#boyas .b").forEach(function(e){e.classList.toggle("on",+e.getAttribute("data-b")===i);});
+  document.getElementById("ficha").innerHTML='<span class="mono" style="color:var(--boya)">Boya '+(i+1)+' de 6</span><h3>'+b.n+'</h3><p>'+b.t+'</p><button class="btn" type="button" data-pick="'+b.id+'">Ver fechas libres</button>';}
+ g.addEventListener("click",function(e){var b=e.target.closest(".b");if(b)show(+b.getAttribute("data-b"));});
+ g.addEventListener("keydown",function(e){var b=e.target.closest(".b");if(b&&e.key==="Enter")show(+b.getAttribute("data-b"));});
+ show(0);
+ document.getElementById("semana").addEventListener("click",function(){var i=document.getElementById("rk-in");if(!i.value){var d=new Date();d.setDate(d.getDate()+14);i.value=d.toISOString().slice(0,10);}var p=i.value.split("-");var o=new Date(+p[0],+p[1]-1,+p[2]+7);document.getElementById("rk-out").value=o.getFullYear()+"-"+String(o.getMonth()+1).padStart(2,"0")+"-"+String(o.getDate()).padStart(2,"0");i.dispatchEvent(new Event("change"));});
+ document.querySelectorAll(".modo button").forEach(function(b){b.addEventListener("click",function(){var m=+b.getAttribute("data-m");document.querySelectorAll(".modo button").forEach(function(x){x.setAttribute("aria-pressed",x===b);});
+  document.querySelectorAll("#rk-seasons td").forEach(function(td){if(!td.dataset.v)td.dataset.v=td.textContent.replace(/\D/g,"");td.textContent="$ "+(+td.dataset.v*m).toLocaleString("es-AR");});});});
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Cabañas Bahíamia"></script>
+</body>
+</html>
