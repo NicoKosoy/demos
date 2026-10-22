@@ -1,0 +1,663 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>El Bulevar Aberturas · Del boceto al presupuesto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --papel:#FBFCFD; --grilla:#DFE7EF; --grilla2:#C9D6E3; --grafito:#2B2F33; --gris:#646B73; --lapiz:#2F5D9E; --lapiz2:#4E7BBE;
+  --marcador:#F2D04B; --fondo:#EEF2F5; --linea:#CDD5DD;
+  --glass:#CFE0EC; --glass2:#B4CDE0; --ink:#2B2F33; --cota:#2F5D9E;
+  --tit:"Josefin Sans", "Century Gothic", sans-serif; --txt:"Source Sans 3", "Segoe UI", sans-serif; --mano:"Caveat", "Comic Sans MS", cursive;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--fondo);color:var(--grafito);font:400 17.5px/1.55 var(--txt);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:2.5px solid var(--lapiz);outline-offset:2px}
+.wrap{width:min(1200px,100% - 40px);margin-inline:auto}
+.demo{background:var(--grafito);color:#E9EDF1;font-size:14px}
+.demo .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 0;flex-wrap:wrap}
+.demo button{background:none;border:1px solid #7C848C;color:#fff;border-radius:3px;padding:4px 12px;cursor:pointer;font-size:13.5px}
+
+header.top{background:var(--papel);border-bottom:1px solid var(--linea)}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:14px 0}
+.brand{text-decoration:none;display:flex;flex-direction:column;line-height:1}
+.brand b{font:300 27px/1 var(--tit);letter-spacing:.06em}
+.brand b strong{font-weight:700}
+.brand span{font:400 13px var(--txt);color:var(--gris);margin-top:5px;letter-spacing:.02em}
+nav.main{display:flex;gap:26px;font-size:15.5px}
+nav.main a{text-decoration:none;color:var(--gris)}
+nav.main a:hover{color:var(--lapiz)}
+.cta{display:inline-flex;align-items:center;gap:8px;background:var(--lapiz);color:#fff;border:0;border-radius:3px;padding:10px 16px;font-weight:600;font-size:15px;text-decoration:none;cursor:pointer;white-space:nowrap}
+.cta:hover{background:#244b82}
+.cta.line{background:transparent;color:var(--lapiz);box-shadow:inset 0 0 0 1.5px var(--lapiz)}
+.cta.line:hover{background:var(--lapiz);color:#fff}
+
+.grid-bg{background:linear-gradient(var(--grilla) 1px,transparent 1px) 0 0/24px 24px,linear-gradient(90deg,var(--grilla) 1px,transparent 1px) 0 0/24px 24px,var(--papel)}
+
+/* HERO */
+.hero{border-bottom:1px solid var(--linea)}
+.hero .wrap{display:grid;grid-template-columns:.95fr 1.05fr;gap:40px;align-items:center;padding:60px 0 54px}
+.hero h1{font:300 clamp(46px,6.4vw,92px)/.95 var(--tit);letter-spacing:-.01em;margin:0 0 26px}
+.hero h1 b{font-weight:700;display:block}
+.hero p{font-size:19px;max-width:30em;margin:0 0 26px}
+.hero .acts{display:flex;gap:12px;flex-wrap:wrap}
+.notas{display:flex;gap:28px;margin-top:34px;flex-wrap:wrap}
+.notas div{font:500 21px/1.15 var(--mano);color:var(--lapiz);max-width:150px}
+.notas b{display:block;font:700 40px/1 var(--mano)}
+.boceto{position:relative}
+.boceto svg{width:100%;height:auto;display:block}
+.hand{font-family:var(--mano)}
+
+/* CUADERNO */
+section.cuaderno{padding:70px 0 30px}
+.sec-t{display:flex;justify-content:space-between;align-items:end;gap:26px;flex-wrap:wrap;margin-bottom:28px}
+.sec-t h2{font:300 clamp(34px,4.2vw,56px)/1 var(--tit);margin:0}
+.sec-t h2 b{font-weight:700}
+.sec-t p{margin:0;max-width:28em;color:var(--gris)}
+.spread{display:grid;grid-template-columns:1fr 1fr;background:var(--papel);border:1px solid var(--linea);box-shadow:0 1px 0 var(--linea),0 18px 40px -26px rgba(43,47,51,.45);position:relative}
+.spread::before{content:"";position:absolute;left:50%;top:18px;bottom:18px;width:18px;margin-left:-9px;background:radial-gradient(circle,#9AA5B1 3.2px,transparent 3.6px) center top/18px 26px repeat-y;z-index:2;pointer-events:none}
+.pag{padding:30px 34px 34px;min-width:0}
+.pag.izq{border-right:1px solid var(--linea);background:repeating-linear-gradient(var(--papel) 0 31px,#E4EBF3 31px 32px)}
+.paso{margin-bottom:24px}
+.paso h3{font:700 15px/1.2 var(--tit);letter-spacing:.04em;margin:0 0 10px;display:flex;gap:10px;align-items:baseline}
+.paso h3 i{font:700 22px/1 var(--mano);color:var(--lapiz);font-style:normal}
+.lista{display:flex;flex-direction:column;gap:2px}
+.lista label{display:grid;grid-template-columns:24px 1fr auto;gap:10px;align-items:center;padding:5px 8px;border-radius:2px;cursor:pointer;position:relative}
+.lista input{position:absolute;opacity:0}
+.lista .box{width:20px;height:20px;border:1.6px solid var(--grafito);border-radius:2px;position:relative;background:#fff}
+.lista input:checked ~ .box::after{content:"";position:absolute;left:3px;top:-5px;width:9px;height:15px;border:solid var(--lapiz);border-width:0 3px 3px 0;transform:rotate(40deg)}
+.lista input:checked ~ .t{background:linear-gradient(transparent 52%,rgba(242,208,75,.75) 52% 90%,transparent 90%)}
+.lista input:focus-visible ~ .box{outline:2.5px solid var(--lapiz);outline-offset:2px}
+.lista .t{justify-self:start}
+.lista .t b{font-weight:600}
+.lista .t small{display:block;color:var(--gris);font-size:14px;line-height:1.3}
+.lista .tag{font:500 18px var(--mano);color:var(--gris)}
+.lista label.off{opacity:.4;cursor:not-allowed}
+.medidas{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.medidas label{display:block;font-size:14.5px;color:var(--gris)}
+.medidas .in{display:flex;align-items:baseline;gap:6px;border-bottom:2px solid var(--grafito);padding:2px 0}
+.medidas input[type=number]{width:100%;border:0;background:transparent;font:700 34px/1.1 var(--mano);color:var(--lapiz);padding:0;min-width:0}
+.medidas .in em{font:500 20px var(--mano);font-style:normal;color:var(--gris)}
+input[type=range]{width:100%;accent-color:var(--lapiz);margin-top:10px}
+.qty{display:flex;gap:12px;align-items:center}
+.qty button{width:34px;height:34px;border:1.6px solid var(--grafito);background:#fff;border-radius:50%;cursor:pointer;font-size:19px;line-height:1}
+.qty output{font:700 30px var(--mano);color:var(--lapiz);min-width:2ch;text-align:center}
+
+.pag.der{display:flex;flex-direction:column;gap:14px}
+.der .top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.der .top strong{font:600 20px/1.2 var(--tit)}
+.der .top small{display:block;color:var(--gris);font:400 14px var(--txt)}
+.modo{display:flex;border:1.5px solid var(--grafito);border-radius:3px;overflow:hidden}
+.modo button{background:#fff;border:0;padding:7px 12px;font-size:14.5px;cursor:pointer}
+.modo button[aria-pressed=true]{background:var(--grafito);color:#fff}
+.lam{border:1px solid var(--linea);position:relative}
+.lam svg{width:100%;height:auto;display:block}
+.lam .sello{position:absolute;right:14px;top:12px;font:700 13px/1.2 var(--tit);letter-spacing:.06em;color:var(--lapiz);border:1.5px solid var(--lapiz);padding:6px 9px;transform:rotate(-4deg);background:rgba(251,252,253,.85)}
+.lam.tec .sello{transform:none}
+.comentario{font:500 22px/1.25 var(--mano);color:var(--lapiz);min-height:56px;margin:0}
+.precio{border-top:2px solid var(--grafito);padding-top:14px;display:grid;grid-template-columns:1fr auto;gap:4px 16px;align-items:end}
+.precio .k{font-size:14px;color:var(--gris)}
+.precio .amt{font:600 clamp(26px,2.8vw,34px)/1.1 var(--tit)}
+.precio .sub{grid-column:1/-1;font-size:14.5px;color:var(--gris)}
+.precio .acts{grid-column:1/-1;display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+.precio .acts .cta{flex:1 1 210px;justify-content:center;padding:12px 16px}
+
+.hoja{margin-top:22px;background:var(--papel);border:1px solid var(--linea);padding:22px 28px}
+.hoja h3{font:600 22px var(--tit);margin:0 0 6px}
+.hoja .vacio{margin:0;color:var(--gris)}
+.hoja table{width:100%;border-collapse:collapse;font-size:15.5px}
+.hoja th{font:700 13px var(--tit);letter-spacing:.05em;text-align:left;color:var(--gris);padding:8px 8px;border-bottom:1.5px solid var(--grafito)}
+.hoja td{padding:10px 8px;border-bottom:1px solid var(--linea);vertical-align:middle}
+.hoja td svg{width:46px;height:46px;display:block}
+.hoja td.p{white-space:nowrap;font-weight:600;text-align:right}
+.hoja td button{background:none;border:0;color:var(--gris);text-decoration:underline;cursor:pointer;font-size:14px}
+.hoja .tot{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-top:14px}
+.hoja .tot b{font:600 24px var(--tit)}
+
+/* PRIORIDADES */
+section.prior{padding:70px 0;background:var(--grafito);color:#E7EBEF}
+.prior h2{font:300 clamp(32px,4vw,52px)/1.02 var(--tit);margin:0 0 10px;color:#fff}
+.prior h2 b{font-weight:700}
+.prior p.lead{color:#B9C1C9;max-width:34em;margin:0 0 26px}
+.tabs{display:flex;gap:0;border-bottom:1px solid #4A5158;margin-bottom:0;overflow-x:auto}
+.tabs button{background:none;border:0;color:#B9C1C9;padding:12px 20px;font:600 16px var(--tit);letter-spacing:.03em;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap}
+.tabs button[aria-selected=true]{color:#fff;border-bottom-color:var(--marcador)}
+.sist{list-style:none;margin:0;padding:0}
+.sist li{display:grid;grid-template-columns:220px 1fr 130px auto;gap:20px;align-items:center;padding:18px 0;border-bottom:1px solid #41474E;transition:opacity .3s}
+.sist li.dim{opacity:.38}
+.sist li b{font:600 19px/1.15 var(--tit);color:#fff}
+.sist li b small{display:block;font:400 13.5px var(--txt);color:#9BA4AD;margin-top:4px;letter-spacing:0}
+.sist li p{margin:0;color:#C9D0D7;font-size:15.5px}
+.sist li .mat{font:500 20px var(--mano);color:var(--marcador)}
+.sist li button{background:none;border:1.5px solid #8B949C;color:#fff;border-radius:3px;padding:7px 12px;cursor:pointer;font-size:14px;white-space:nowrap}
+.sist li button:hover{border-color:var(--marcador);color:var(--marcador)}
+
+/* PROCESO */
+section.proceso{padding:72px 0}
+.proceso ol{list-style:none;margin:28px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:0;counter-reset:p}
+.proceso li{padding:0 22px 0 0;position:relative}
+.proceso li::before{counter-increment:p;content:counter(p);font:700 46px/1 var(--mano);color:var(--lapiz);display:block;margin-bottom:6px}
+.proceso li b{font:700 17px var(--tit);letter-spacing:.03em;display:block;margin-bottom:4px}
+.proceso li span{color:var(--gris);font-size:15.5px}
+.proceso .bajada{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.proceso .bajada p{margin:0}
+.cifras{display:flex;gap:34px;flex-wrap:wrap}
+.cifras div{font-size:15px;color:var(--gris)}
+.cifras b{display:block;font:300 48px/1 var(--tit);color:var(--grafito)}
+.schueco{display:inline-block;margin-top:18px;font:700 14px var(--tit);letter-spacing:.08em;border:1.5px solid var(--grafito);padding:8px 12px}
+
+section.contacto{padding:64px 0;border-top:1px solid var(--linea)}
+.contacto .wrap{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.contacto h2{font:300 clamp(30px,3.6vw,46px)/1.05 var(--tit);margin:0 0 14px}
+.contacto h2 b{font-weight:700}
+.contacto dl{display:grid;grid-template-columns:auto 1fr;gap:8px 20px;margin:0;font-size:16.5px}
+.contacto dt{color:var(--gris)}
+.contacto dd{margin:0}
+footer.pie{background:var(--grafito);color:#9BA4AD;font-size:14px;padding:20px 0}
+footer.pie .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+dialog{border:0;border-radius:3px;padding:0;max-width:min(680px,94vw);width:100%;background:var(--papel);box-shadow:0 30px 80px rgba(0,0,0,.35)}
+dialog::backdrop{background:rgba(43,47,51,.55)}
+.dlg-h{display:flex;justify-content:space-between;align-items:center;padding:16px 22px;border-bottom:1px solid var(--linea);position:sticky;top:0;background:var(--papel);z-index:1}
+.dlg-h h3{margin:0;font:600 22px var(--tit)}
+.dlg-b{padding:6px 22px 22px;max-height:70vh;overflow:auto}
+.dlg-b p{color:var(--gris);font-size:15px}
+fieldset{border:0;padding:0;margin:14px 0 0}
+legend{font:700 14px var(--tit);letter-spacing:.04em;color:var(--lapiz);margin-bottom:6px}
+.adm-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:6px 0;border-bottom:1px dashed var(--linea);font-size:15px}
+.adm-in{display:flex;align-items:center;gap:6px}
+.adm-in input{width:120px;padding:6px 8px;border:1px solid var(--linea);border-radius:3px;text-align:right}
+.adm-in em{font-style:normal;color:var(--gris);font-size:13px;width:44px}
+.dlg-f{padding:14px 22px;border-top:1px solid var(--linea)}
+.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,30px);opacity:0;background:var(--grafito);color:#fff;padding:10px 18px;border-radius:3px;transition:.3s;z-index:60}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+@media (max-width:980px){
+  nav.main{display:none}
+  .hero .wrap{grid-template-columns:1fr;padding:40px 0}
+  .spread{grid-template-columns:1fr}
+  .spread::before{display:none}
+  .pag.izq{border-right:0;border-bottom:1px solid var(--linea)}
+  .pag.der{order:-1}
+  .sist li{grid-template-columns:1fr auto;gap:8px 14px}
+  .sist li p{grid-column:1/-1}
+  .sist li .mat{grid-row:1;grid-column:2}
+  .sist li button{grid-column:1/-1;justify-self:start}
+  .proceso ol{grid-template-columns:1fr 1fr;gap:24px 0}
+  .proceso .bajada,.contacto .wrap{grid-template-columns:1fr}
+}
+@media (max-width:560px){
+  body{font-size:16.5px}
+  .wrap{width:calc(100% - 32px)}
+  .brand b{font-size:22px}
+  .brand span{font-size:12px}
+  header .cta{padding:8px 12px;font-size:14px}
+  .hero h1{font-size:50px}
+  .hero p{font-size:17px}
+  .notas{gap:18px}
+  .notas b{font-size:34px}
+  .pag{padding:22px 16px 24px}
+  .medidas input[type=number]{font-size:30px}
+  .hoja{padding:18px 14px}
+  .hoja thead{display:none}
+  .hoja tr{display:grid;grid-template-columns:46px 1fr auto;gap:4px 10px;padding:10px 0;border-bottom:1px solid var(--linea)}
+  .hoja td{border:0;padding:0}
+  .hoja td.d{grid-column:2/-1}
+  .hoja td.x{grid-column:2}
+  .hoja td svg{grid-row:1/3}
+  .tabs button{padding:12px 14px;font-size:15px}
+}
+@media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} .toast,.sist li{transition:none} }
+</style>
+</head>
+<body>
+<div class="demo"><div class="wrap"><span>Prototipo de demostración preparado para <b>El Bulevar Aberturas</b>. Los precios son de ejemplo.</span><button type="button" id="openAdm">Editar tabla de precios</button></div></div>
+
+<header class="top"><div class="wrap">
+  <a class="brand" href="#top"><b><strong>EL BULEVAR</strong> ABERTURAS</b><span>Aluminio y PVC · Schüco Partner · Tandil</span></a>
+  <nav class="main" aria-label="Secciones"><a href="#cuaderno">Cotizar</a><a href="#sistemas">Sistemas Schüco</a><a href="#proceso">Cómo trabajamos</a><a href="#contacto">Contacto</a></nav>
+  <a class="cta" href="#cuaderno">Armar presupuesto</a>
+</div></header>
+
+<main id="top">
+<section class="hero grid-bg"><div class="wrap">
+  <div>
+    <h1>Desde el primer <b>boceto.</b></h1>
+    <p>Ventanas, puertas y fachadas en aluminio y PVC, con sistemas Schüco. Dibujá tu abertura acá mismo: elegís el sistema, ponés las medidas y ves un precio estimado antes de hablar con nosotros.</p>
+    <div class="acts"><a class="cta" href="#cuaderno">Empezar mi boceto</a><a class="cta line" href="#sistemas">Ver los sistemas</a></div>
+    <div class="notas" aria-label="El Bulevar en números"><div><b>25 años</b>fabricando en Tandil</div><div><b>+30</b>personas en el equipo</div><div><b>189</b>proyectos terminados</div></div>
+  </div>
+  <div class="boceto" aria-hidden="true">
+    <svg viewBox="0 0 600 470">
+      <defs><filter id="hr"><feTurbulence type="fractalNoise" baseFrequency=".03" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="5"/></filter></defs>
+      <g filter="url(#hr)" fill="none" stroke="#2B2F33" stroke-width="2" stroke-linecap="round">
+        <path d="M70 70H520V400H70Z"/><path d="M84 84H506V386H84Z" stroke-width="1.3"/>
+        <path d="M84 84H300V386H84Z" fill="#CFE0EC" fill-opacity=".55"/><path d="M290 90H506V380H290Z" fill="#CFE0EC" fill-opacity=".4"/>
+        <path d="M110 110L190 200M130 104L250 236" stroke="#fff" stroke-width="3" opacity=".9"/>
+        <path d="M150 236h60m-12-10l12 10l-12 10M440 236h-60m12-10l-12 10l12 10" stroke="#2F5D9E" stroke-width="2.2"/>
+        <path d="M40 430H560" stroke-width="1.2"/><path d="M50 418l-14 24M80 418l-14 24M110 418l-14 24M140 418l-14 24" stroke-width="1"/>
+      </g>
+      <g stroke="#2F5D9E" stroke-width="1.4" fill="none">
+        <path d="M70 52H520M70 44v16M520 44v16"/><path d="M548 70V400M540 70h16M540 400h16"/>
+      </g>
+      <g class="hand" fill="#2F5D9E" font-size="26" font-weight="700">
+        <text x="270" y="38">2,40 m</text>
+        <text x="556" y="250" transform="rotate(90 556 250)">1,60 m</text>
+        <text x="110" y="150" font-size="23">AWS 60, aluminio</text>
+        <text x="96" y="460" font-size="22" fill="#646B73">DVH para el invierno de Tandil</text>
+      </g>
+    </svg>
+  </div>
+</div></section>
+
+<section class="cuaderno" id="cuaderno"><div class="wrap">
+  <div class="sec-t"><h2>Tu abertura, <b>en el cuaderno.</b></h2><p>Marcá en la hoja izquierda, mirá cómo queda en la derecha. Pasalo de boceto a plano técnico con un toque.</p></div>
+  <div class="spread">
+    <form class="pag izq" id="f" onsubmit="return false">
+      <div class="paso"><h3><i>1</i> Sistema</h3><div class="lista" id="types"></div></div>
+      <div class="paso"><h3><i>2</i> Medidas del vano</h3>
+        <div class="medidas">
+          <label>Ancho<span class="in"><input id="w" type="number" inputmode="numeric" aria-label="Ancho en centímetros"><em>cm</em></span><input id="wr" type="range" aria-label="Ancho"></label>
+          <label>Alto<span class="in"><input id="h" type="number" inputmode="numeric" aria-label="Alto en centímetros"><em>cm</em></span><input id="hr" type="range" aria-label="Alto"></label>
+        </div></div>
+      <div class="paso"><h3><i>3</i> Vidrio</h3><div class="lista" id="glass"></div></div>
+      <div class="paso"><h3><i>4</i> Color</h3><div class="lista" id="colors"></div></div>
+      <div class="paso"><h3><i>5</i> Extras y cantidad</h3><div class="lista" id="extras"></div>
+        <div class="qty" style="margin-top:12px"><button type="button" id="qm" aria-label="Una menos">−</button><output id="q">1</output><button type="button" id="qp" aria-label="Una más">+</button><span style="color:var(--gris);font-size:15px">unidades iguales</span></div></div>
+    </form>
+    <div class="pag der">
+      <div class="top"><strong id="tag">AWS 60</strong>
+        <div class="modo" role="group" aria-label="Estilo del dibujo"><button type="button" id="mBoceto" aria-pressed="true">Boceto</button><button type="button" id="mTec" aria-pressed="false">Plano técnico</button></div></div>
+      <div class="lam" id="lam"><svg id="draw" viewBox="0 0 560 420" role="img" aria-label="Dibujo de la abertura con sus medidas"></svg><span class="sello" id="sello">SCHÜCO</span></div>
+      <p class="comentario" id="coment"></p>
+      <div class="precio" aria-live="polite">
+        <div><div class="k">Precio estimado</div><div class="amt" id="amt">–</div></div>
+        <div class="sub" id="sub"></div>
+        <div class="acts"><button type="button" class="cta" id="sendOne">Pedir presupuesto por WhatsApp</button><button type="button" class="cta line" id="add">Pasar a la hoja de obra</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hoja" id="hoja">
+    <h3>Hoja de obra</h3>
+    <p class="vacio" id="empty">Pasá cada abertura de la casa a esta hoja y mandala completa por WhatsApp o por mail.</p>
+    <table id="tbl" hidden><thead><tr><th></th><th>Abertura</th><th style="text-align:right">Estimado</th><th></th></tr></thead><tbody id="items"></tbody></table>
+    <div class="tot" id="totRow" hidden><span>Total estimado <b id="total"></b></span><span style="display:flex;gap:10px;flex-wrap:wrap"><button type="button" class="cta line" id="mailAll">Mandar por mail</button><button type="button" class="cta" id="sendAll">Mandar por WhatsApp</button></span></div>
+  </div>
+</div></section>
+
+<section class="prior" id="sistemas"><div class="wrap">
+  <h2>¿Qué priorizás <b>en tu obra?</b></h2>
+  <p class="lead">Diseño, eficiencia energética, confort y seguridad: son los tres pilares con los que trabajamos. Elegí uno y te marcamos los sistemas Schüco que mejor responden.</p>
+  <div class="tabs" role="tablist" id="tabs">
+    <button role="tab" aria-selected="true" data-p="dis">Diseño</button>
+    <button role="tab" aria-selected="false" data-p="efi">Eficiencia energética</button>
+    <button role="tab" aria-selected="false" data-p="seg">Confort y seguridad</button>
+  </div>
+  <ul class="sist" id="sist"></ul>
+</div></section>
+
+<section class="proceso grid-bg" id="proceso"><div class="wrap">
+  <div class="bajada">
+    <div><div class="sec-t" style="margin-bottom:12px"><h2>Del boceto <b>a la obra.</b></h2></div>
+      <p>Hace 25 años que desarrollamos ventanas, puertas y fachadas en aluminio y PVC. Schüco es nuestro principal proveedor de sistemas, y en la planta de Tandil fabricamos cada abertura a medida.</p>
+      <span class="schueco">SCHÜCO PARTNER</span></div>
+    <div class="cifras"><div><b>25+</b>años de experiencia</div><div><b>30+</b>personas en el equipo</div><div><b>180+</b>proyectos realizados</div></div>
+  </div>
+  <ol>
+    <li><b>Consultoría</b><span>Vemos el proyecto, el uso de cada ambiente y qué sistema conviene.</span></li>
+    <li><b>Presupuesto</b><span>Sin cargo. Este cotizador te da un estimado; lo cerramos con las medidas reales.</span></li>
+    <li><b>Fabricación</b><span>En nuestra planta, con perfiles y herrajes Schüco.</span></li>
+    <li><b>Instalación</b><span>Nuestro equipo coloca y deja todo funcionando.</span></li>
+  </ol>
+</div></section>
+
+<section class="contacto" id="contacto"><div class="wrap">
+  <div><h2>Pasá por <b>Av. Monseñor Actis.</b></h2><p style="color:var(--gris);margin:0 0 18px">Atendemos a particulares, arquitectos y constructoras de Tandil y la región.</p>
+    <a class="cta" href="#cuaderno">Armar mi presupuesto</a></div>
+  <dl>
+    <dt>Dirección</dt><dd>Av. Monseñor Actis 1547, Tandil</dd>
+    <dt>Horario</dt><dd>Lunes a viernes, 9 a 15 h</dd>
+    <dt>Teléfono</dt><dd>(0249) 442-6749</dd>
+    <dt>Mail</dt><dd>elbulevaraberturas@yahoo.com.ar</dd>
+    <dt>Instagram</dt><dd>@aberturaselbulevar</dd>
+  </dl>
+</div></section>
+</main>
+<footer class="pie"><div class="wrap"><span>El Bulevar Aberturas · Tandil</span><span>Prototipo de cotizador · precios de ejemplo</span></div></footer>
+
+<dialog id="adm"><div class="dlg-h"><h3>Tabla de precios</h3><button type="button" class="cta line" id="admClose">Listo</button></div>
+  <div class="dlg-b"><p>Cambien estos valores y el cotizador se actualiza al instante. Quedan guardados en este navegador.</p><div id="admBody"></div></div>
+  <div class="dlg-f"><button type="button" class="cta line" id="admReset">Volver a los valores de ejemplo</button></div></dialog>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* Motor del cotizador (precios, dibujo, lista, pedido por WhatsApp, tabla editable) */
+const E = (function(){
+  let C, P, S, items = [];
+  const subs = [];
+  const $ = id => document.getElementById(id);
+  const byId = (arr,id) => arr.find(x => x.id === id);
+  const ars = n => "$ " + Math.round(n).toLocaleString("es-AR");
+  const rnd = n => Math.round(n/1000)*1000;
+  const clone = o => JSON.parse(JSON.stringify(o));
+
+  function load(){
+    try{ const s = localStorage.getItem(C.key+"_precios"); if(s){ const o = JSON.parse(s); const d = clone(C.prices);
+      for(const k in d){ if(typeof d[k]==="object") Object.assign(d[k], o[k]||{}); else if(o[k]!==undefined) d[k]=o[k]; } return d; } }catch(e){}
+    return clone(C.prices);
+  }
+  function save(){ try{ localStorage.setItem(C.key+"_precios", JSON.stringify(P)); }catch(e){} }
+
+  function init(cfg){
+    C = cfg; P = load();
+    S = Object.assign({q:1, inst:true, ex:[]}, clone(cfg.start));
+  }
+  function set(k,v){ S[k]=v; fire(); }
+  function setMany(o){ Object.assign(S,o); fire(); }
+  function toggleEx(id,on){ const i=S.ex.indexOf(id); if(on && i<0) S.ex.push(id); if(!on && i>=0) S.ex.splice(i,1); fire(); }
+  function on(fn){ subs.push(fn); }
+  function fire(){ subs.forEach(f => f(S)); }
+
+  const type = st => byId(C.types, st.type);
+  function exAllowed(st, x){ const t = type(st); return !x.only || x.only.includes(t.kind) || x.only.includes(t.id); }
+
+  function calc(st){
+    const t = type(st);
+    const area = Math.max((st.w/100)*(st.h/100), P.minM2);
+    let unit = area * (P.m2[st.type]||0) * (P.line[st.line]||1);
+    if(!t.noGlass) unit += area * (P.glass[st.glass]||0);
+    unit *= 1 + (P.colorPct[st.color]||0)/100;
+    (st.ex||[]).forEach(id => { const x = byId(C.extras,id); if(!x || !exAllowed(st,x)) return;
+      const v = P.extra[id]||0; unit += x.per==="m2" ? area*v : x.per==="pct" ? unit*v/100 : v; });
+    if(st.inst) unit *= 1 + P.instPct/100;
+    const total = unit * st.q, r = P.rangePct/100;
+    return {area, unit, total, lo:rnd(total*(1-r)), hi:rnd(total*(1+r)), mid:rnd(total)};
+  }
+
+  function describe(st){
+    const t = type(st), li = byId(C.lines, st.line), gl = byId(C.glass, st.glass), co = byId(C.colors, st.color);
+    const parts = [`${st.w} × ${st.h} cm`];
+    if(li) parts.push(li.name);
+    if(gl && !t.noGlass) parts.push(gl.name);
+    if(co) parts.push(co.name.toLowerCase());
+    (st.ex||[]).forEach(id => { const x = byId(C.extras,id); if(x && exAllowed(st,x)) parts.push(x.name.toLowerCase()); });
+    parts.push(st.inst ? "con colocación" : "sin colocación");
+    return {name: t.name, detail: parts.join(", ")};
+  }
+
+  /* ---------- Dibujo en elevación ---------- */
+  function draw(st, o={}){
+    const VW=o.vw||560, VH=o.vh||420, mini=!!o.mini, u=o.uid||"m";
+    const t = type(st), k = t.kind;
+    const co = byId(C.colors, st.color) || {hex:"#ddd", stroke:"#888"};
+    const pad = mini ? 4 : (o.pad||74);
+    const sc = Math.min((VW-pad*2)/st.w, (VH-pad*2)/st.h);
+    const W = st.w*sc, H = st.h*sc;
+    const x = (VW-W)/2 + (mini?0:10), y = (VH-H)/2 - (mini?0:8);
+    const fr = mini ? 2.5 : Math.max(7, Math.min(15, W*.034));
+    const sw = mini ? 1 : 1.4;
+    const dvh = (st.glass||"").match(/dvh|tvh|low/i);
+    const gf = dvh ? "var(--glass2)" : "var(--glass)";
+    const hasMq = (st.ex||[]).includes("mosq") && !mini;
+    let g = `<defs><linearGradient id="gl${u}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".5"/><stop offset=".4" stop-color="#fff" stop-opacity="0"/></linearGradient>
+      <pattern id="mq${u}" width="5" height="5" patternUnits="userSpaceOnUse"><path d="M0 0H5M0 0V5" stroke="#2c3a40" stroke-width=".5" opacity=".4"/></pattern></defs>`;
+    const R = (a,b,c,d,f,s,w) => `<rect x="${a}" y="${b}" width="${Math.max(c,0)}" height="${Math.max(d,0)}" fill="${f}" stroke="${s}" stroke-width="${w}"/>`;
+    const pane = (a,b,c,d,mq) => R(a,b,c,d,gf,co.stroke,sw*.8) + `<rect x="${a}" y="${b}" width="${Math.max(c,0)}" height="${Math.max(d,0)}" fill="url(#gl${u})"/>`
+      + (dvh && !mini ? `<rect x="${a+4}" y="${b+4}" width="${Math.max(c-8,0)}" height="${Math.max(d-8,0)}" fill="none" stroke="#fff" stroke-opacity=".7"/>` : "")
+      + (mq ? `<rect x="${a}" y="${b}" width="${Math.max(c,0)}" height="${Math.max(d,0)}" fill="url(#mq${u})"/>` : "");
+    const sash = (a,b,c,d) => R(a,b,c,d,co.hex,co.stroke,sw*.8);
+    const ol = pts => `<polyline points="${pts}" fill="none" stroke="var(--ink)" stroke-width="${mini?.8:1.1}" stroke-dasharray="${mini?'2.5 2':'6 5'}" opacity=".65"/>`;
+    const hd = (hx,hy) => mini ? "" : `<rect x="${hx-2}" y="${hy-11}" width="4" height="22" rx="2" fill="var(--ink)" opacity=".8"/>`;
+    const arrow = (ax,ay,dir) => mini ? "" : `<path d="M${ax-20*dir} ${ay}H${ax+20*dir}M${ax+12*dir} ${ay-7}L${ax+20*dir} ${ay}L${ax+12*dir} ${ay+7}" stroke="var(--ink)" stroke-width="1.5" fill="none" opacity=".7"/>`;
+
+    g += R(x,y,W,H,co.hex,co.stroke,sw);
+    const ix=x+fr, iy=y+fr, iW=W-fr*2, iH=H-fr*2, s1=fr*.6;
+
+    if(k==="corr" || k==="balc" || k==="elev" || k==="desliz"){
+      const n = k==="desliz" ? (st.w>=300?4:3) : 2, ov = mini?1:5, pw = iW/n;
+      for(let i=0;i<n;i++){
+        const px = ix + pw*i - (i?ov:0), w2 = pw + (i&&i<n-1?ov*2:ov);
+        g += sash(px,iy,w2,iH) + pane(px+s1,iy+s1,w2-s1*2,iH-s1*2, hasMq && i===n-1);
+      }
+      if(!mini){
+        const ay=iy+iH/2;
+        g += arrow(ix+pw*.5, ay, 1) + arrow(ix+pw*(n-.5), ay, -1);
+        g += hd(ix+pw-ov-s1/2-2, ay);
+        if(k==="elev") g += `<path d="M${ix+pw*(n-.5)} ${ay+26}v-14m-6 6l6-6l6 6" stroke="var(--ink)" stroke-width="1.4" fill="none" opacity=".7"/>`;
+        if(k==="balc"||k==="elev") g += `<rect x="${ix}" y="${iy+iH*.62}" width="${iW}" height="3" fill="${co.stroke}" opacity=".3"/>`;
+      }
+    } else if(k==="bat" || k==="osc"){
+      const n = st.w>=110 ? 2 : 1, pw = iW/n;
+      for(let i=0;i<n;i++){
+        const px = ix+pw*i; const left = n===1 || i===0;
+        g += sash(px,iy,pw,iH) + pane(px+s1,iy+s1,pw-s1*2,iH-s1*2, hasMq && i===n-1);
+        g += left ? ol(`${px+pw-s1},${iy+s1} ${px+s1},${iy+iH/2} ${px+pw-s1},${iy+iH-s1}`) : ol(`${px+s1},${iy+s1} ${px+pw-s1},${iy+iH/2} ${px+s1},${iy+iH-s1}`);
+        if(k==="osc") g += ol(`${px+s1},${iy+s1} ${px+pw/2},${iy+iH-s1} ${px+pw-s1},${iy+s1}`);
+        g += hd(left ? px+pw-s1-6 : px+s1+6, iy+iH/2);
+      }
+    } else if(k==="proy"){
+      g += sash(ix,iy,iW,iH) + pane(ix+s1,iy+s1,iW-s1*2,iH-s1*2);
+      g += ol(`${ix+s1},${iy+iH-s1} ${ix+iW/2},${iy+s1} ${ix+iW-s1},${iy+iH-s1}`);
+    } else if(k==="fijo"){
+      g += pane(ix,iy,iW,iH);
+    } else if(k==="pleg"){
+      const n = Math.max(3, Math.min(7, Math.round(st.w/80))), pw = iW/n;
+      for(let i=0;i<n;i++){ const px=ix+pw*i; g += sash(px,iy,pw,iH) + pane(px+s1,iy+s1,pw-s1*2,iH-s1*2); }
+      if(!mini){ let z=""; for(let i=0;i<=n;i++) z += `${ix+pw*i},${iy+iH+ (i%2? -10:0) + 18} `; g += `<polyline points="${z}" fill="none" stroke="var(--ink)" stroke-width="1.3" opacity=".6"/>`; }
+    } else if(k==="puer" || k==="puerv" || k==="blind"){
+      const leaves = st.w>=130 ? 2 : 1, pw = iW/leaves;
+      for(let i=0;i<leaves;i++){
+        const px = ix+pw*i;
+        g += sash(px,iy,pw,iH);
+        if(k==="puerv"){ g += pane(px+s1*2,iy+s1*2,pw-s1*4,iH-s1*4); }
+        else if(k==="blind"){ const m=mini?2:10; for(let j=0;j<3;j++){ g += `<rect x="${px+m}" y="${iy+m+j*(iH-m*2)/3+ (mini?0:4)}" width="${Math.max(pw-m*2,0)}" height="${Math.max((iH-m*2)/3-(mini?1:8),0)}" fill="none" stroke="${co.stroke}" stroke-width="${sw*.8}"/>`; } }
+        else { const gh=iH*.5; g += pane(px+s1*2,iy+s1*2,pw-s1*4,gh-s1*2); g += `<rect x="${px+s1*2}" y="${iy+gh+s1}" width="${Math.max(pw-s1*4,0)}" height="${Math.max(iH-gh-s1*3,0)}" fill="none" stroke="${co.stroke}" stroke-width="${sw*.8}"/>`; }
+        const left = leaves===1 || i===0;
+        g += left ? ol(`${px+pw-s1},${iy+s1} ${px+s1},${iy+iH/2} ${px+pw-s1},${iy+iH-s1}`) : ol(`${px+s1},${iy+s1} ${px+pw-s1},${iy+iH/2} ${px+s1},${iy+iH-s1}`);
+        g += hd(left ? px+pw-s1*3 : px+s1*3, iy+iH*.55);
+      }
+    } else if(k==="lev"){
+      const n = mini?4:Math.max(4,Math.round(iH/34));
+      for(let i=0;i<n;i++){ const py=iy+iH/n*i; g += R(ix,py,iW,iH/n,co.hex,co.stroke,sw*.7); if(!mini) g += `<line x1="${ix+8}" y1="${py+iH/n/2}" x2="${ix+iW-8}" y2="${py+iH/n/2}" stroke="${co.stroke}" stroke-width=".6" opacity=".5"/>`; }
+      if(!mini) g += `<path d="M${ix+iW/2} ${iy+iH*.7}v-${iH*.4}m-8 8l8-8l8 8" stroke="var(--ink)" stroke-width="1.6" fill="none" opacity=".7"/>`;
+    } else if(k==="pcorr"){
+      g += R(ix,iy,iW,iH,"none",co.stroke,sw*.8);
+      const bars = mini?6:Math.max(8, Math.round(iW/22));
+      for(let i=1;i<bars;i++){ const bx=ix+iW/bars*i; g += `<line x1="${bx}" y1="${iy}" x2="${bx}" y2="${iy+iH}" stroke="${co.stroke}" stroke-width="${mini?1:2.2}"/>`; }
+      g += `<rect x="${ix}" y="${iy+iH*.12}" width="${iW}" height="${mini?1.5:5}" fill="${co.stroke}"/><rect x="${ix}" y="${iy+iH*.85}" width="${iW}" height="${mini?1.5:5}" fill="${co.stroke}"/>`;
+      if(!mini) g += arrow(ix+iW*.75, y+H+16, -1).replace(/opacity=".7"/,'opacity=".7"');
+    }
+
+    if(o.sketch && !mini){
+      g = `<filter id="rough${u}"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="4"/><feDisplacementMap in="SourceGraphic" scale="4.5"/></filter><g filter="url(#rough${u})">${g}</g>`;
+    }
+    if(!mini && !o.noCota){
+      const c="var(--cota)", yb=y+H+28, xl=x-28, ff = o.font || "inherit";
+      const hand = o.sketch;
+      g += `<g stroke="${c}" stroke-width="1" fill="${c}" font-family="${ff}" font-size="${hand?20:14}" font-weight="${hand?400:600}">
+        <line x1="${x}" y1="${y+H+6}" x2="${x}" y2="${yb+6}"/><line x1="${x+W}" y1="${y+H+6}" x2="${x+W}" y2="${yb+6}"/>
+        <line x1="${x}" y1="${yb}" x2="${x+W}" y2="${yb}"/>
+        <line x1="${x-4}" y1="${yb+4}" x2="${x+4}" y2="${yb-4}" stroke-width="1.6"/><line x1="${x+W-4}" y1="${yb+4}" x2="${x+W+4}" y2="${yb-4}" stroke-width="1.6"/>
+        <text x="${x+W/2}" y="${yb+(hand?24:20)}" text-anchor="middle" stroke="none">${st.w} cm</text>
+        <line x1="${x-6}" y1="${y}" x2="${xl-6}" y2="${y}"/><line x1="${x-6}" y1="${y+H}" x2="${xl-6}" y2="${y+H}"/>
+        <line x1="${xl}" y1="${y}" x2="${xl}" y2="${y+H}"/>
+        <line x1="${xl-4}" y1="${y+4}" x2="${xl+4}" y2="${y-4}" stroke-width="1.6"/><line x1="${xl-4}" y1="${y+H+4}" x2="${xl+4}" y2="${y+H-4}" stroke-width="1.6"/>
+        <text x="${xl-10}" y="${y+H/2}" text-anchor="middle" stroke="none" transform="rotate(-90 ${xl-10} ${y+H/2})">${st.h} cm</text></g>`;
+    }
+    return g;
+  }
+  function icon(typeId, extra={}){
+    const t = byId(C.types,typeId);
+    const st = Object.assign({}, S, {type:typeId, w:t.icon?t.icon[0]:70, h:t.icon?t.icon[1]:50, ex:[], color: extra.color || C.iconColor || S.color, glass:"x"});
+    return `<svg viewBox="0 0 60 60" aria-hidden="true">${draw(st,{vw:60,vh:60,mini:true,uid:"i"+typeId})}</svg>`;
+  }
+
+  /* ---------- Lista y pedido ---------- */
+  function add(){ items.push(clone(S)); fire(); }
+  function remove(i){ items.splice(i,1); fire(); }
+  function totals(){ return items.reduce((a,it)=>{ const c=calc(it); a.lo+=c.lo; a.hi+=c.hi; return a; },{lo:0,hi:0}); }
+  function message(list){
+    let m = C.greeting + "\n\n"; let lo=0, hi=0;
+    list.forEach((it,i)=>{ const d=describe(it), c=calc(it); lo+=c.lo; hi+=c.hi;
+      m += `${i+1}. ${d.name}${it.q>1?` (x${it.q})`:""}\n   ${d.detail}\n   Estimado: ${ars(c.lo)} a ${ars(c.hi)}\n\n`; });
+    if(list.length>1) m += `Total estimado: ${ars(lo)} a ${ars(hi)}\n\n`;
+    if(C.extraMsg) m += C.extraMsg() ;
+    m += C.closing;
+    return m;
+  }
+  function send(list){
+    const m = message(list || [clone(S)]);
+    window.open(`https://wa.me/${C.wa}?text=${encodeURIComponent(m)}`, "_blank", "noopener");
+  }
+
+  /* ---------- Tabla de precios editable ---------- */
+  function adminHTML(){
+    const row = (label, grp, id, suf) => `<label class="adm-row"><span>${label}</span><span class="adm-in"><input type="number" inputmode="decimal" step="any" data-g="${grp}" data-k="${id}" value="${grp?P[grp][id]:P[id]}"><em>${suf}</em></span></label>`;
+    let h = `<fieldset><legend>Precio base por m² (línea de referencia, sin vidrio)</legend>${C.types.map(t=>row(t.name,"m2",t.id,"$/m²")).join("")}</fieldset>`;
+    h += `<fieldset><legend>Multiplicador por línea</legend>${C.lines.map(l=>row(l.name,"line",l.id,"×")).join("")}</fieldset>`;
+    if(C.glass.length) h += `<fieldset><legend>Vidrio (se suma por m²)</legend>${C.glass.map(gl=>row(gl.name,"glass",gl.id,"$/m²")).join("")}</fieldset>`;
+    h += `<fieldset><legend>Recargo por color</legend>${C.colors.map(c=>row(c.name,"colorPct",c.id,"%")).join("")}</fieldset>`;
+    if(C.extras.length) h += `<fieldset><legend>Adicionales</legend>${C.extras.map(x=>row(x.name,"extra",x.id,x.per==="m2"?"$/m²":x.per==="pct"?"%":"$ c/u")).join("")}</fieldset>`;
+    h += `<fieldset><legend>General</legend>${row("Colocación","","instPct","%")}${row("Margen del rango","","rangePct","± %")}${row("Superficie mínima","","minM2","m²")}</fieldset>`;
+    return h;
+  }
+  function bindAdmin(root){
+    root.innerHTML = adminHTML();
+    root.oninput = e => { const i=e.target; if(!i.dataset) return; const v=parseFloat(i.value); if(isNaN(v)) return;
+      if(i.dataset.g) P[i.dataset.g][i.dataset.k]=v; else P[i.dataset.k]=v; save(); fire(); };
+  }
+  function resetPrices(root){ P = clone(C.prices); try{localStorage.removeItem(C.key+"_precios");}catch(e){} if(root) bindAdmin(root); fire(); }
+
+  return { init, set, setMany, toggleEx, on, fire, calc, describe, draw, icon, add, remove, totals, message, send,
+    bindAdmin, resetPrices, ars, byId, exAllowed,
+    get S(){return S}, get items(){return items}, get C(){return C}, get P(){return P} };
+})();
+
+</script>
+<script>
+const MAIL = "elbulevaraberturas@yahoo.com.ar";
+E.init({
+  key:"elbulevar", wa:"542494426749", iconColor:"blanco",
+  greeting:"Hola El Bulevar, armé este presupuesto en el cotizador de la web:",
+  closing:"¿Podemos coordinar una visita para medir?",
+  types:[
+    {id:"aws_b", name:"AWS 60 · Ventana de abrir", mat:"Aluminio", kind:"bat", def:[120,120], icon:[70,55], lim:[40,240,40,240], p:["seg","efi"], note:"Aluminio con aislación térmica, herrajes ocultos y protección antirrobo."},
+    {id:"aws_o", name:"AWS 60 · Oscilobatiente", mat:"Aluminio", kind:"osc", def:[90,130], icon:[50,62], lim:[40,160,50,240], p:["efi","seg"], note:"Abre como batiente y se inclina para ventilar sin perder seguridad."},
+    {id:"ct70", name:"CT 70 HS · Elevable corrediza", mat:"PVC", kind:"elev", def:[300,220], icon:[70,50], lim:[180,600,180,280], p:["efi","dis"], note:"PVC de 70 mm con refuerzos de ruptura térmica, para terrazas y balcones."},
+    {id:"liv", name:"LivIng · Ventana PVC", mat:"PVC", kind:"bat", def:[110,120], icon:[64,56], lim:[40,220,40,240], p:["efi"], note:"La nueva generación de PVC: esquinas soldadas y selladas, perfiles Classic, Rondo o Viva."},
+    {id:"pan", name:"Panorama · Corredera", mat:"Aluminio", kind:"desliz", def:[360,230], icon:[72,48], lim:[200,800,180,300], p:["dis"], note:"Perfiles mínimos para tener la mayor vista posible."},
+    {id:"cla", name:"Corredera clásica", mat:"Aluminio", kind:"corr", def:[180,200], icon:[70,52], lim:[100,500,60,280], p:["dis","seg"], note:"Diseño clásico, versátil, con muchos detalles de confort."},
+    {id:"ple", name:"Plegable", mat:"Aluminio", kind:"pleg", def:[400,230], icon:[72,48], lim:[200,800,180,300], p:["dis"], note:"Grandes medidas y hojas pesadas que se pliegan a un costado."},
+    {id:"fach", name:"Fachada · paño fijo", mat:"Aluminio", kind:"fijo", def:[300,300], icon:[60,60], lim:[100,1200,100,1000], p:["dis","efi"], note:"Frentes vidriados a medida. Se cotizan siempre con visita técnica."}
+  ],
+  lines:[{id:"sch",name:"Sistema Schüco"}],
+  glass:[{id:"simple",name:"Simple 4 mm"},{id:"lam",name:"Laminado de seguridad 3+3"},{id:"dvh",name:"DVH (doble vidrio)"},{id:"dvhlow",name:"DVH con Low-E"}],
+  colors:[
+    {id:"blanco",name:"Blanco",hex:"#F5F6F6",stroke:"#9AA2A8"},
+    {id:"negro",name:"Negro",hex:"#232628",stroke:"#121314"},
+    {id:"anod",name:"Anodizado natural",hex:"#BCC3C8",stroke:"#7E888F"},
+    {id:"bronce",name:"Bronce",hex:"#6E5640",stroke:"#4B3A2A"},
+    {id:"madera",name:"Símil madera",hex:"#946640",stroke:"#664428"}
+  ],
+  extras:[
+    {id:"mosq",name:"Mosquitero",per:"m2",only:["bat","osc","corr","desliz"]},
+    {id:"motor",name:"Motorización",per:"unit",only:["elev","desliz"]}
+  ],
+  prices:{
+    m2:{aws_b:430000,aws_o:500000,ct70:560000,liv:470000,pan:620000,cla:360000,ple:640000,fach:390000},
+    line:{sch:1},
+    glass:{simple:0,lam:42000,dvh:98000,dvhlow:140000},
+    colorPct:{blanco:0,negro:10,anod:0,bronce:8,madera:18},
+    extra:{mosq:48000,motor:1300000},
+    instPct:15, rangePct:8, minM2:1
+  },
+  start:{type:"aws_b", w:120, h:120, line:"sch", glass:"dvh", color:"blanco", ex:[]}
+});
+const $=id=>document.getElementById(id);
+let sketch=true;
+const T=()=>E.byId(E.C.types,E.S.type);
+
+const item=(name,id,val,checked,inner,tag="",dis=false,type="radio")=>`<label class="${dis?"off":""}"><input type="${type}" name="${name}" value="${val}" id="${id}" ${checked?"checked":""} ${dis?"disabled":""}><span class="box"></span><span class="t">${inner}</span><span class="tag">${tag}</span></label>`;
+function buildTypes(){ $("types").innerHTML = E.C.types.map(t=>item("type","t-"+t.id,t.id,t.id===E.S.type,`<b>${t.name}</b>`,t.mat)).join(""); }
+function buildGlass(){ const fj=T().kind; $("glass").innerHTML = E.C.glass.map(g=>item("glass","g-"+g.id,g.id,g.id===E.S.glass,g.name)).join(""); }
+function buildColors(){ $("colors").innerHTML = E.C.colors.map(c=>item("color","c-"+c.id,c.id,c.id===E.S.color,`${c.name}`,`<span style="display:inline-block;width:18px;height:18px;border-radius:50%;background:${c.hex};border:1px solid rgba(0,0,0,.3);vertical-align:-3px"></span>`)).join(""); }
+function buildExtras(){
+  $("extras").innerHTML = E.C.extras.map(x=>{ const ok=E.exAllowed(E.S,x); return item("ex","x-"+x.id,x.id,ok&&E.S.ex.includes(x.id),x.name,"",!ok,"checkbox"); }).join("")
+    + item("inst","inst","1",E.S.inst,"Colocación en obra","", false, "checkbox");
+}
+function setLimits(){ const [a,b,c,d]=T().lim; [["w",a,b],["h",c,d]].forEach(([k,mn,mx])=>["","r"].forEach(s=>{const el=$(k+s); el.min=mn; el.max=mx; el.value=E.S[k];})); }
+function pair(k){ const n=$(k), r=$(k+"r"); const put=v=>{v=Math.max(+n.min,Math.min(+n.max,Math.round(+v||0))); n.value=v; r.value=v; E.set(k,v);};
+  r.addEventListener("input",e=>put(e.target.value)); n.addEventListener("change",e=>put(e.target.value));
+  n.addEventListener("input",e=>{const v=+e.target.value; if(v>=+n.min&&v<=+n.max){r.value=v; E.set(k,v);}}); }
+pair("w"); pair("h");
+function chooseType(id){ const t=E.byId(E.C.types,id); E.S.type=id; E.S.w=t.def[0]; E.S.h=t.def[1]; setLimits(); buildExtras(); E.fire(); }
+$("f").addEventListener("change",e=>{ const t=e.target;
+  if(t.name==="type") chooseType(t.value);
+  else if(t.name==="glass") E.set("glass",t.value);
+  else if(t.name==="color") E.set("color",t.value);
+  else if(t.name==="ex") E.toggleEx(t.value,t.checked);
+  else if(t.name==="inst") E.set("inst",t.checked); });
+$("qm").onclick=()=>E.set("q",Math.max(1,E.S.q-1));
+$("qp").onclick=()=>E.set("q",Math.min(40,E.S.q+1));
+$("mBoceto").onclick=()=>{sketch=true;render();};
+$("mTec").onclick=()=>{sketch=false;render();};
+
+function comentario(st){
+  const t=T();
+  if(t.kind==="fijo") return "Las fachadas las medimos y calculamos en obra: esto es solo una referencia.";
+  if(st.glass==="simple") return "Con vidrio simple se pierde gran parte de la aislación del sistema. ¿Probamos DVH?";
+  if(t.kind==="pleg" && st.w>500) return `${Math.max(3,Math.min(7,Math.round(st.w/80)))} hojas plegables: se apilan a un costado y abren el vano completo.`;
+  return t.note;
+}
+function render(){
+  const st=E.S, t=T(), c=E.calc(st);
+  $("tag").textContent = t.name + (st.q>1?` × ${st.q}`:"");
+  $("mBoceto").setAttribute("aria-pressed",sketch); $("mTec").setAttribute("aria-pressed",!sketch);
+  $("lam").className = "lam" + (sketch ? " grid-bg" : " tec grid-bg");
+  $("draw").innerHTML = E.draw(st,{uid:"m",sketch,font: sketch?"Caveat, cursive":"Josefin Sans, sans-serif"});
+  $("sello").textContent = `SCHÜCO · ${t.mat.toUpperCase()}`;
+  $("coment").textContent = comentario(st);
+  $("q").textContent = st.q;
+  $("amt").textContent = `${E.ars(c.lo)} a ${E.ars(c.hi)}`;
+  $("sub").textContent = `${c.area.toFixed(2).replace(".",",")} m² por unidad${st.q>1?`, ${st.q} unidades`:""}. ${st.inst?"Con colocación.":"Sin colocación."}`;
+  renderList();
+}
+function renderList(){
+  const it=E.items; $("empty").hidden=it.length>0; $("tbl").hidden=it.length===0; $("totRow").hidden=it.length===0;
+  $("items").innerHTML = it.map((s,i)=>{ const d=E.describe(s), c=E.calc(s); return `<tr><td><svg viewBox="0 0 60 60" aria-hidden="true">${E.draw(s,{vw:60,vh:60,mini:true,uid:"l"+i})}</svg></td><td class="d"><b>${d.name}${s.q>1?` × ${s.q}`:""}</b><br><span style="color:var(--gris);font-size:14px">${d.detail}</span></td><td class="p">${E.ars(c.mid)}</td><td class="x"><button type="button" data-rm="${i}">Quitar</button></td></tr>`; }).join("");
+  const tt=E.totals(); $("total").textContent=`${E.ars(tt.lo)} a ${E.ars(tt.hi)}`;
+}
+$("items").addEventListener("click",e=>{const i=e.target.dataset.rm; if(i!==undefined) E.remove(+i);});
+$("add").onclick=()=>{E.add(); toast("Pasada a la hoja de obra");};
+$("sendOne").onclick=()=>E.send();
+$("sendAll").onclick=()=>E.send(E.items);
+$("mailAll").onclick=()=>{ location.href=`mailto:${MAIL}?subject=${encodeURIComponent("Presupuesto desde la web")}&body=${encodeURIComponent(E.message(E.items))}`; };
+E.on(render);
+
+/* Pilares y sistemas */
+let pilar="dis";
+function buildSist(){
+  $("sist").innerHTML = E.C.types.map(t=>`<li class="${t.p.includes(pilar)?"":"dim"}"><b>${t.name.split(" · ")[0]}<small>${t.name.includes(" · ")?t.name.split(" · ")[1]:""}</small></b><p>${t.note}</p><span class="mat">${t.mat}</span><button type="button" data-use="${t.id}">Dibujar este</button></li>`).join("");
+}
+$("tabs").addEventListener("click",e=>{ const b=e.target.closest("button"); if(!b) return; pilar=b.dataset.p;
+  [...$("tabs").children].forEach(x=>x.setAttribute("aria-selected", x===b)); buildSist(); });
+$("sist").addEventListener("click",e=>{ const id=e.target.dataset.use; if(!id) return; $("t-"+id).checked=true; chooseType(id); $("cuaderno").scrollIntoView(); });
+
+$("openAdm").onclick=()=>{E.bindAdmin($("admBody")); $("adm").showModal();};
+$("admClose").onclick=()=>$("adm").close();
+$("admReset").onclick=()=>{E.resetPrices($("admBody")); toast("Valores de ejemplo restaurados");};
+let tt; function toast(m){const t=$("toast"); t.textContent=m; t.classList.add("on"); clearTimeout(tt); tt=setTimeout(()=>t.classList.remove("on"),1800);}
+
+buildTypes(); buildGlass(); buildColors(); buildExtras(); setLimits(); buildSist(); render();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="El Bulevar Aberturas"></script>
+</body>
+</html>
