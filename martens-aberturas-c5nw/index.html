@@ -1,0 +1,622 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Martens · Orden de trabajo online</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Fira+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --acero:#3A4046; --acero2:#2A2F34; --minio:#D9572B; --minio2:#B9441C; --galva:#C8CDD1; --galva2:#E3E6E8;
+  --remito:#F6F1D6; --remito2:#ECE5C2; --carbon:#2B3FA0; --negro:#1C1F22; --gris:#5E656C; --linea:#CBBF8E;
+  --glass:#CADBE3; --glass2:#AFC8D4; --ink:#1C1F22; --cota:#2B3FA0;
+  --slab:"Alfa Slab One", Rockwell, serif; --sans:"Fira Sans", "Segoe UI", sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--galva2);color:var(--negro);font:400 17px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--minio);outline-offset:2px}
+.wrap{width:min(1180px,100% - 40px);margin-inline:auto}
+.demo{background:var(--negro);color:#E3E6E8;font-size:14px}
+.demo .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 0;flex-wrap:wrap}
+.demo button{background:none;border:1px solid #6b737a;color:#fff;border-radius:2px;padding:4px 12px;cursor:pointer;font-size:13.5px}
+
+/* chapa */
+.chapa{background:linear-gradient(180deg,#454c53,#363c42);color:#fff;position:relative}
+.chapa::before,.chapa::after{content:"";position:absolute;top:50%;width:11px;height:11px;margin-top:-5px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#d5dadd,#7d858c 60%,#40464c)}
+.chapa::before{left:12px}.chapa::after{right:12px}
+header.top .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:14px 0}
+.brand{display:flex;align-items:center;gap:14px;text-decoration:none}
+.brand b{font:400 32px/1 var(--slab);letter-spacing:.02em;color:#fff;text-shadow:0 1px 0 #1d2125,0 -1px 0 #5b636a}
+.brand span{font-size:13.5px;color:#C2C8CD;line-height:1.25}
+.wa{display:inline-flex;align-items:center;gap:8px;background:var(--minio);color:#fff;text-decoration:none;font-weight:600;padding:10px 16px;border-radius:2px;white-space:nowrap;border:0;cursor:pointer}
+.wa:hover{background:var(--minio2)}
+
+/* HERO */
+.hero{padding:58px 0 46px;background:var(--acero);color:#EEF0F1}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:46px;align-items:end}
+.hero h1{font:400 clamp(44px,6.2vw,86px)/.98 var(--slab);margin:0 0 22px;color:#fff}
+.hero h1 span{color:var(--minio)}
+.hero p{font-size:19px;color:#D3D8DC;max-width:31em;margin:0 0 24px}
+.hero .acts{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:2px;padding:12px 20px;font-weight:600;cursor:pointer;text-decoration:none;border:0;font-size:16px}
+.btn.min{background:var(--minio);color:#fff}
+.btn.min:hover{background:var(--minio2)}
+.btn.out{background:transparent;color:#fff;box-shadow:inset 0 0 0 2px #8A939A}
+.btn.out:hover{box-shadow:inset 0 0 0 2px #fff}
+.eras{list-style:none;margin:0;padding:0;border-left:3px solid var(--minio)}
+.eras li{padding:0 0 18px 22px;position:relative}
+.eras li::before{content:"";position:absolute;left:-9px;top:6px;width:15px;height:15px;border-radius:50%;background:var(--acero);border:3px solid var(--minio)}
+.eras li:last-child{padding-bottom:0}
+.eras b{display:block;font:400 19px/1.2 var(--slab);color:#fff;margin-bottom:2px}
+.eras span{font-size:15px;color:#C2C8CD}
+
+/* ORDEN */
+section.orden{padding:64px 0 50px}
+.orden .head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:24px}
+.orden h2{font:400 clamp(32px,4vw,50px)/1.02 var(--slab);margin:0;color:var(--acero)}
+.orden .head p{margin:0;max-width:30em;color:var(--gris)}
+.talon{background:var(--remito);border:1px solid var(--linea);box-shadow:0 2px 0 var(--remito2),0 4px 0 #e2d9b0,0 24px 40px -24px rgba(28,31,34,.45);position:relative}
+.talon::before{content:"";position:absolute;left:0;right:0;top:0;height:10px;background:radial-gradient(circle at 8px 0,var(--galva2) 5px,transparent 5.5px) 0 0/16px 10px repeat-x}
+.t-head{display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;padding:24px 28px 16px;border-bottom:2px solid var(--acero)}
+.t-head .logo{font:400 26px/1 var(--slab);color:var(--acero)}
+.t-head .logo small{display:block;font:500 12.5px var(--sans);color:var(--gris);letter-spacing:.02em;margin-top:4px}
+.t-head h3{margin:0;font:600 16px var(--sans);text-align:center;color:var(--gris)}
+.t-head .nro{font:500 14px var(--sans);color:var(--gris);text-align:right}
+.t-head .nro b{display:block;font:400 22px var(--slab);color:var(--minio)}
+.t-cli{display:grid;grid-template-columns:1.2fr 1fr;gap:16px 24px;padding:16px 28px;border-bottom:1px solid var(--linea)}
+.campo label{display:block;font-size:13.5px;color:var(--gris)}
+.campo input,.campo select{width:100%;border:0;border-bottom:1.5px solid var(--acero);background:transparent;padding:4px 0;font:italic 500 19px var(--sans);color:var(--carbon);border-radius:0}
+.t-body{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--linea)}
+.croquis{padding:18px 22px;border-right:1px dashed var(--linea);position:relative}
+.croquis h4,.renglon h4{margin:0 0 8px;font:600 14px var(--sans);color:var(--gris)}
+.croquis svg{width:100%;height:auto;display:block;background:#fbf8e8;border:1px solid var(--linea)}
+.croquis .sello{position:absolute;right:30px;top:44px;font:400 15px/1.05 var(--slab);color:var(--minio);border:2.5px solid var(--minio);padding:6px 9px;transform:rotate(-7deg);opacity:.85;text-align:center;background:rgba(246,241,214,.6)}
+.croquis .sello small{display:block;font:600 11px var(--sans)}
+.croquis .nota{font:italic 500 16px/1.35 var(--sans);color:var(--carbon);margin:10px 0 0;min-height:44px}
+.renglon{padding:18px 22px}
+.fila{margin-bottom:16px}
+.fila>span{display:block;font-size:13.5px;color:var(--gris);margin-bottom:6px}
+.tipos{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.tipos label,.segs label{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 4px 7px;border:1.5px solid #CFC6A0;background:#FFFDF0;cursor:pointer;text-align:center;font-size:13px;line-height:1.15;border-radius:2px;position:relative}
+.tipos svg{width:38px;height:38px}
+.tipos input,.segs input{position:absolute;opacity:0}
+.tipos input:checked+label,.segs input:checked+label{border-color:var(--acero);background:var(--acero);color:#fff}
+.tipos input:focus-visible+label,.segs input:focus-visible+label{outline:3px solid var(--minio)}
+.tipos div,.segs div{position:relative}
+.segs{display:flex;flex-wrap:wrap;gap:6px}
+.segs label{flex-direction:row;padding:7px 12px;font-size:14.5px}
+.segs .sw{width:14px;height:14px;border-radius:50%;border:1px solid rgba(0,0,0,.3)}
+.medi{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.medi label{font-size:13.5px;color:var(--gris)}
+.medi input{width:100%;border:0;border-bottom:1.5px solid var(--acero);background:transparent;font:italic 600 24px var(--sans);color:var(--carbon);padding:2px 0}
+.medi input:focus{outline:none;border-bottom-color:var(--minio)}
+.chk{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:15px}
+.chk label{display:flex;gap:8px;align-items:center;cursor:pointer}
+.chk input{accent-color:var(--acero);width:17px;height:17px}
+.chk label.off{opacity:.4}
+.precio{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;padding:16px 22px;background:var(--acero);color:#fff}
+.precio .k{font-size:13.5px;color:#BCC3C9}
+.precio .amt{font:400 clamp(24px,2.6vw,32px)/1.1 var(--slab)}
+.precio .sub{font-size:14px;color:#BCC3C9}
+.precio .acts{display:flex;gap:10px;flex-wrap:wrap}
+
+.renglones{padding:10px 28px 24px}
+.renglones table{width:100%;border-collapse:collapse;font-size:15.5px}
+.renglones th{text-align:left;font:600 13px var(--sans);color:var(--gris);border-bottom:1.5px solid var(--acero);padding:10px 6px 6px}
+.renglones td{border-bottom:1px solid var(--linea);padding:9px 6px;vertical-align:middle}
+.renglones td.n{font:400 18px var(--slab);color:var(--minio);width:36px}
+.renglones td.d{color:var(--carbon);font-style:italic}
+.renglones td.d b{font-style:normal;color:var(--negro)}
+.renglones td.p{text-align:right;white-space:nowrap;font-weight:600}
+.renglones td.x button{background:none;border:0;text-decoration:underline;color:var(--gris);cursor:pointer;font-size:14px}
+.renglones .vacia td{color:var(--gris);font-style:italic;text-align:center;padding:18px}
+.renglones .tot td{border-bottom:0;padding-top:14px;font-weight:600}
+.renglones .tot td.p{font:400 22px var(--slab);color:var(--acero)}
+.pie-orden{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;padding:0 28px 26px}
+.pie-orden p{margin:0;color:var(--gris);font-size:14.5px;max-width:36em}
+
+/* especiales */
+.esp{margin-top:26px;display:grid;grid-template-columns:.8fr 1.2fr;gap:30px;align-items:start;background:#fff;border:1px solid var(--galva);padding:26px 28px}
+.esp h3{font:400 28px/1.1 var(--slab);color:var(--acero);margin:0 0 8px}
+.esp p{margin:0;color:var(--gris)}
+.esp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.esp-grid button{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;background:var(--galva2);border:1.5px solid var(--galva);padding:12px 14px;border-radius:2px;cursor:pointer;font-weight:600}
+.esp-grid button small{font-weight:400;color:var(--gris);font-size:13.5px}
+.esp-grid button:hover{border-color:var(--acero)}
+.esp-grid button.on{border-color:var(--minio);background:#FBE9E1}
+
+/* historia */
+section.historia{padding:70px 0;background:#fff}
+.historia .wrap{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center}
+.historia h2{font:400 clamp(30px,3.6vw,46px)/1.05 var(--slab);color:var(--acero);margin:0 0 16px}
+.historia p{margin:0 0 14px}
+.fotos{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fotos figure{margin:0;aspect-ratio:4/5;background:var(--acero);position:relative;overflow:hidden}
+.fotos figure:nth-child(2){margin-top:40px}
+.fotos img{width:100%;height:100%;object-fit:cover}
+.fotos figure.err{background:repeating-linear-gradient(45deg,#3A4046 0 12px,#343a40 12px 24px)}
+.fotos figure.err::after{content:attr(data-alt);position:absolute;left:14px;bottom:12px;color:#fff;font:400 18px var(--slab)}
+.valores{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.valores span{background:var(--galva2);padding:6px 12px;font-size:14.5px;border-left:3px solid var(--minio)}
+
+section.local{padding:60px 0}
+.local .wrap{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.local h2{font:400 clamp(28px,3.4vw,42px)/1.05 var(--slab);color:var(--acero);margin:0 0 12px}
+.local dl{display:grid;grid-template-columns:auto 1fr;gap:8px 20px;margin:0;background:#fff;padding:24px;border:1px solid var(--galva)}
+.local dt{color:var(--gris)}
+.local dd{margin:0;overflow-wrap:anywhere;min-width:0}
+.local .wrap>*{min-width:0}
+footer.pie{color:#BCC3C9;font-size:14px;padding:20px 0}
+footer.pie .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+dialog{border:0;border-radius:2px;padding:0;max-width:min(680px,94vw);width:100%;background:var(--remito);box-shadow:0 30px 80px rgba(0,0,0,.4)}
+dialog::backdrop{background:rgba(28,31,34,.6)}
+.dlg-h{display:flex;justify-content:space-between;align-items:center;padding:16px 22px;border-bottom:2px solid var(--acero);position:sticky;top:0;background:var(--remito);z-index:1}
+.dlg-h h3{margin:0;font:400 22px var(--slab);color:var(--acero)}
+.dlg-b{padding:6px 22px 22px;max-height:70vh;overflow:auto}
+.dlg-b p{color:var(--gris);font-size:15px}
+fieldset{border:0;padding:0;margin:14px 0 0}
+legend{font-weight:600;color:var(--minio2);margin-bottom:6px}
+.adm-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:6px 0;border-bottom:1px dashed var(--linea);font-size:15px}
+.adm-in{display:flex;align-items:center;gap:6px}
+.adm-in input{width:120px;padding:6px 8px;border:1px solid var(--linea);text-align:right;background:#fff}
+.adm-in em{font-style:normal;color:var(--gris);font-size:13px;width:44px}
+.dlg-f{padding:14px 22px;border-top:1px solid var(--linea)}
+.btn.dk{background:var(--acero);color:#fff}
+.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,30px);opacity:0;background:var(--negro);color:#fff;padding:10px 18px;transition:.3s;z-index:60}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+@media (max-width:980px){
+  .hero .wrap,.historia .wrap,.local .wrap,.esp{grid-template-columns:1fr}
+  .t-body{grid-template-columns:1fr}
+  .croquis{border-right:0;border-bottom:1px dashed var(--linea)}
+}
+@media (max-width:560px){
+  body{font-size:16px}
+  .wrap{width:calc(100% - 32px)}
+  .brand b{font-size:25px}
+  .brand span{display:none}
+  .wa{padding:9px 12px;font-size:14.5px}
+  .chapa::before{left:5px}.chapa::after{right:5px}
+  .hero{padding:40px 0}
+  .hero h1{font-size:44px}
+  .hero p{font-size:17px}
+  .t-head{grid-template-columns:1fr auto;padding:22px 16px 14px}
+  .t-head h3{display:none}
+  .t-cli{grid-template-columns:1fr;padding:14px 16px}
+  .croquis,.renglon{padding:16px}
+  .croquis .sello{right:22px;top:40px;font-size:13px}
+  .tipos{grid-template-columns:repeat(3,1fr)}
+  .medi{grid-template-columns:1fr 1fr 1fr;gap:10px}
+  .precio{padding:16px}
+  .precio .acts{width:100%}
+  .precio .acts .btn{flex:1 1 140px}
+  .renglones{padding:8px 16px 18px}
+  .renglones thead{display:none}
+  .renglones tr:not(.vacia):not(.tot){display:grid;grid-template-columns:30px 1fr auto;gap:2px 8px;padding:8px 0;border-bottom:1px solid var(--linea)}
+  .renglones tr td{border:0;padding:0}
+  .renglones td.x{grid-column:2}
+  .renglones tr.tot{display:flex;justify-content:space-between}
+  .pie-orden{padding:0 16px 20px}
+  .pie-orden .btn{width:100%}
+  .esp{padding:20px 16px}
+  .esp-grid{grid-template-columns:1fr 1fr}
+}
+@media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} .toast{transition:none} }
+</style>
+</head>
+<body>
+<div class="demo"><div class="wrap"><span>Prototipo de demostración preparado para <b>Martens Todo en Aberturas</b>. Los precios son de ejemplo.</span><button type="button" id="openAdm">Editar tabla de precios</button></div></div>
+
+<header class="top chapa"><div class="wrap">
+  <a class="brand" href="#top"><b>MARTENS</b><span>Todo en aberturas<br>Tandil, desde 1957</span></a>
+  <a class="wa" href="https://wa.me/5492494588210" target="_blank" rel="noopener">WhatsApp</a>
+</div></header>
+
+<main id="top">
+<section class="hero"><div class="wrap">
+  <div>
+    <h1>Fabricamos aberturas desde 1957.</h1>
+    <p>Empezamos con hierro fundido y herrería pesada, y hoy hacemos todo en aberturas, a medida. Cargá tu pedido como una orden de trabajo: te damos un precio estimado al instante y nos llega completo por WhatsApp.</p>
+    <div class="acts"><a class="btn min" href="#orden">Cargar mi orden</a><a class="btn out" href="#especiales">Trabajos especiales</a></div>
+  </div>
+  <ol class="eras" aria-label="Nuestra historia">
+    <li><b>Hierro fundido</b><span>Carlos Martens y su grupo arrancan con muebles de jardín.</span></li>
+    <li><b>Herrería pesada</b><span>De a poco, trabajos cada vez más finos.</span></li>
+    <li><b>La plegadora</b><span>Llega la máquina y Héctor Martens arma la fábrica de aberturas.</span></li>
+    <li><b>Hoy</b><span>Aberturas, cerramientos, puertas automáticas, escaleras y chapa.</span></li>
+  </ol>
+</div></section>
+
+<section class="orden" id="orden"><div class="wrap">
+  <div class="head"><h2>Orden de trabajo</h2><p>Un renglón por abertura. Lo que no tiene precio de lista, como una escalera o un portón especial, también entra: lo cotizamos en la visita.</p></div>
+  <div class="talon">
+    <div class="t-head"><div class="logo">MARTENS<small>Primera Junta y Av. Espora · Tandil</small></div><h3>Pedido de presupuesto</h3><div class="nro">Renglones<b id="nro">0</b></div></div>
+    <div class="t-cli">
+      <div class="campo"><label for="cli">Nombre</label><input id="cli" autocomplete="name" placeholder="Tu nombre"></div>
+      <div class="campo"><label for="loc">Dónde es la obra</label><select id="loc"><option>Tandil ciudad</option><option>Zona rural de Tandil</option><option>Otra localidad de la provincia</option></select></div>
+    </div>
+    <form class="t-body" id="f" onsubmit="return false">
+      <div class="croquis">
+        <h4>Croquis</h4>
+        <svg id="draw" viewBox="0 0 560 420" role="img" aria-label="Croquis de la abertura con medidas"></svg>
+        <div class="sello" id="sello">A MEDIDA<small>Martens</small></div>
+        <p class="nota" id="nota"></p>
+      </div>
+      <div class="renglon">
+        <h4>Renglón en carga</h4>
+        <div class="fila"><span>Abertura</span><div class="tipos" id="types"></div></div>
+        <div class="fila"><span>Material</span><div class="segs" id="lines"></div></div>
+        <div class="fila"><span>Medidas en cm y cantidad</span><div class="medi">
+          <label>Ancho<input id="w" type="number" inputmode="numeric"></label>
+          <label>Alto<input id="h" type="number" inputmode="numeric"></label>
+          <label>Cantidad<input id="q" type="number" inputmode="numeric" min="1" max="40" value="1"></label></div></div>
+        <div class="fila" id="glassRow"><span>Vidrio</span><div class="segs" id="glass"></div></div>
+        <div class="fila"><span>Color</span><div class="segs" id="colors"></div></div>
+        <div class="fila"><span>Extras</span><div class="chk" id="extras"></div></div>
+      </div>
+    </form>
+    <div class="precio" aria-live="polite">
+      <div><div class="k">Este renglón, estimado</div><div class="amt" id="amt">–</div><div class="sub" id="sub"></div></div>
+      <div class="acts"><button type="button" class="btn min" id="add">Agregar renglón</button><button type="button" class="btn out" id="sendOne">Consultar solo esta</button></div>
+    </div>
+    <div class="renglones"><table><thead><tr><th>Nº</th><th>Detalle</th><th style="text-align:right">Estimado</th><th></th></tr></thead><tbody id="items"></tbody></table></div>
+    <div class="pie-orden"><p>Los precios son estimados y se confirman al medir en obra. Garantía y colocación las acordamos en la visita.</p><button type="button" class="btn min" id="sendAll">Enviar orden por WhatsApp</button></div>
+  </div>
+
+  <div class="esp" id="especiales">
+    <div><h3>Trabajos especiales</h3><p>Lo que heredamos de la herrería. Tocá lo que necesitás y se suma a la orden como “a cotizar en visita”.</p></div>
+    <div class="esp-grid" id="esp"></div>
+  </div>
+</div></section>
+
+<section class="historia"><div class="wrap">
+  <div class="fotos">
+    <figure data-alt="El taller"><img src="https://res.cloudinary.com/dmatgvjjy/image/upload/v1684960628/martens/WhatsApp_Image_2023-05-24_at_5.29.14_PM_1_gc3mbt.jpg" alt="El taller de Martens" loading="lazy"></figure>
+    <figure data-alt="Desde 1957"><img src="https://res.cloudinary.com/dmatgvjjy/image/upload/v1682619752/martens/martens_pkx8qa.png" alt="Logo de Martens" loading="lazy" style="object-fit:contain;background:#fff;padding:18px"></figure>
+  </div>
+  <div>
+    <h2>Más de 60 años en el oficio.</h2>
+    <p>Somos una pyme de Tandil. Carlos Martens y su grupo arrancaron en 1957 con muebles de jardín de hierro fundido y herrería pesada; cuando llegó la plegadora, Héctor Martens armó la fábrica de aberturas.</p>
+    <p>Trabajamos para Tandil, el campo de la zona y toda la provincia de Buenos Aires. Nos conocen, sobre todo, por el boca en boca.</p>
+    <div class="valores"><span>Trabajos a medida</span><span>Modelos únicos</span><span>Nuevos diseños y materiales</span></div>
+  </div>
+</div></section>
+
+<section class="local"><div class="wrap">
+  <div><h2>Primera Junta y Av. Espora.</h2><p style="color:var(--gris);margin:0 0 18px">Vení a ver muestras al local o mandanos la orden y coordinamos la visita.</p><a class="btn min" href="https://wa.me/5492494588210" target="_blank" rel="noopener">Escribir por WhatsApp</a></div>
+  <dl><dt>Lunes a viernes</dt><dd>8 a 16 h</dd><dt>Sábados</dt><dd>8:30 a 12:30 h</dd><dt>WhatsApp</dt><dd>249 458-8210</dd><dt>Mail</dt><dd>martensaberturas@gmail.com</dd><dt>Instagram</dt><dd>@martensaberturas</dd></dl>
+</div></section>
+</main>
+<footer class="pie chapa"><div class="wrap"><span>Martens Todo en Aberturas · Tandil</span><span>Prototipo de cotizador · precios de ejemplo</span></div></footer>
+
+<dialog id="adm"><div class="dlg-h"><h3>Tabla de precios</h3><button type="button" class="btn dk" id="admClose">Listo</button></div>
+  <div class="dlg-b"><p>Cambien estos valores y el cotizador se actualiza al instante. Quedan guardados en este navegador.</p><div id="admBody"></div></div>
+  <div class="dlg-f"><button type="button" class="btn dk" id="admReset">Volver a los valores de ejemplo</button></div></dialog>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* Motor del cotizador (precios, dibujo, lista, pedido por WhatsApp, tabla editable) */
+const E = (function(){
+  let C, P, S, items = [];
+  const subs = [];
+  const $ = id => document.getElementById(id);
+  const byId = (arr,id) => arr.find(x => x.id === id);
+  const ars = n => "$ " + Math.round(n).toLocaleString("es-AR");
+  const rnd = n => Math.round(n/1000)*1000;
+  const clone = o => JSON.parse(JSON.stringify(o));
+
+  function load(){
+    try{ const s = localStorage.getItem(C.key+"_precios"); if(s){ const o = JSON.parse(s); const d = clone(C.prices);
+      for(const k in d){ if(typeof d[k]==="object") Object.assign(d[k], o[k]||{}); else if(o[k]!==undefined) d[k]=o[k]; } return d; } }catch(e){}
+    return clone(C.prices);
+  }
+  function save(){ try{ localStorage.setItem(C.key+"_precios", JSON.stringify(P)); }catch(e){} }
+
+  function init(cfg){
+    C = cfg; P = load();
+    S = Object.assign({q:1, inst:true, ex:[]}, clone(cfg.start));
+  }
+  function set(k,v){ S[k]=v; fire(); }
+  function setMany(o){ Object.assign(S,o); fire(); }
+  function toggleEx(id,on){ const i=S.ex.indexOf(id); if(on && i<0) S.ex.push(id); if(!on && i>=0) S.ex.splice(i,1); fire(); }
+  function on(fn){ subs.push(fn); }
+  function fire(){ subs.forEach(f => f(S)); }
+
+  const type = st => byId(C.types, st.type);
+  function exAllowed(st, x){ const t = type(st); return !x.only || x.only.includes(t.kind) || x.only.includes(t.id); }
+
+  function calc(st){
+    const t = type(st);
+    const area = Math.max((st.w/100)*(st.h/100), P.minM2);
+    let unit = area * (P.m2[st.type]||0) * (P.line[st.line]||1);
+    if(!t.noGlass) unit += area * (P.glass[st.glass]||0);
+    unit *= 1 + (P.colorPct[st.color]||0)/100;
+    (st.ex||[]).forEach(id => { const x = byId(C.extras,id); if(!x || !exAllowed(st,x)) return;
+      const v = P.extra[id]||0; unit += x.per==="m2" ? area*v : x.per==="pct" ? unit*v/100 : v; });
+    if(st.inst) unit *= 1 + P.instPct/100;
+    const total = unit * st.q, r = P.rangePct/100;
+    return {area, unit, total, lo:rnd(total*(1-r)), hi:rnd(total*(1+r)), mid:rnd(total)};
+  }
+
+  function describe(st){
+    const t = type(st), li = byId(C.lines, st.line), gl = byId(C.glass, st.glass), co = byId(C.colors, st.color);
+    const parts = [`${st.w} × ${st.h} cm`];
+    if(li) parts.push(li.name);
+    if(gl && !t.noGlass) parts.push(gl.name);
+    if(co) parts.push(co.name.toLowerCase());
+    (st.ex||[]).forEach(id => { const x = byId(C.extras,id); if(x && exAllowed(st,x)) parts.push(x.name.toLowerCase()); });
+    parts.push(st.inst ? "con colocación" : "sin colocación");
+    return {name: t.name, detail: parts.join(", ")};
+  }
+
+  /* ---------- Dibujo en elevación ---------- */
+  function draw(st, o={}){
+    const VW=o.vw||560, VH=o.vh||420, mini=!!o.mini, u=o.uid||"m";
+    const t = type(st), k = t.kind;
+    const co = byId(C.colors, st.color) || {hex:"#ddd", stroke:"#888"};
+    const pad = mini ? 4 : (o.pad||74);
+    const sc = Math.min((VW-pad*2)/st.w, (VH-pad*2)/st.h);
+    const W = st.w*sc, H = st.h*sc;
+    const x = (VW-W)/2 + (mini?0:10), y = (VH-H)/2 - (mini?0:8);
+    const fr = mini ? 2.5 : Math.max(7, Math.min(15, W*.034));
+    const sw = mini ? 1 : 1.4;
+    const dvh = (st.glass||"").match(/dvh|tvh|low/i);
+    const gf = dvh ? "var(--glass2)" : "var(--glass)";
+    const hasMq = (st.ex||[]).includes("mosq") && !mini;
+    let g = `<defs><linearGradient id="gl${u}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".5"/><stop offset=".4" stop-color="#fff" stop-opacity="0"/></linearGradient>
+      <pattern id="mq${u}" width="5" height="5" patternUnits="userSpaceOnUse"><path d="M0 0H5M0 0V5" stroke="#2c3a40" stroke-width=".5" opacity=".4"/></pattern></defs>`;
+    const R = (a,b,c,d,f,s,w) => `<rect x="${a}" y="${b}" width="${Math.max(c,0)}" height="${Math.max(d,0)}" fill="${f}" stroke="${s}" stroke-width="${w}"/>`;
+    const pane = (a,b,c,d,mq) => R(a,b,c,d,gf,co.stroke,sw*.8) + `<rect x="${a}" y="${b}" width="${Math.max(c,0)}" height="${Math.max(d,0)}" fill="url(#gl${u})"/>`
+      + (dvh && !mini ? `<rect x="${a+4}" y="${b+4}" width="${Math.max(c-8,0)}" height="${Math.max(d-8,0)}" fill="none" stroke="#fff" stroke-opacity=".7"/>` : "")
+      + (mq ? `<rect x="${a}" y="${b}" width="${Math.max(c,0)}" height="${Math.max(d,0)}" fill="url(#mq${u})"/>` : "");
+    const sash = (a,b,c,d) => R(a,b,c,d,co.hex,co.stroke,sw*.8);
+    const ol = pts => `<polyline points="${pts}" fill="none" stroke="var(--ink)" stroke-width="${mini?.8:1.1}" stroke-dasharray="${mini?'2.5 2':'6 5'}" opacity=".65"/>`;
+    const hd = (hx,hy) => mini ? "" : `<rect x="${hx-2}" y="${hy-11}" width="4" height="22" rx="2" fill="var(--ink)" opacity=".8"/>`;
+    const arrow = (ax,ay,dir) => mini ? "" : `<path d="M${ax-20*dir} ${ay}H${ax+20*dir}M${ax+12*dir} ${ay-7}L${ax+20*dir} ${ay}L${ax+12*dir} ${ay+7}" stroke="var(--ink)" stroke-width="1.5" fill="none" opacity=".7"/>`;
+
+    g += R(x,y,W,H,co.hex,co.stroke,sw);
+    const ix=x+fr, iy=y+fr, iW=W-fr*2, iH=H-fr*2, s1=fr*.6;
+
+    if(k==="corr" || k==="balc" || k==="elev" || k==="desliz"){
+      const n = k==="desliz" ? (st.w>=300?4:3) : 2, ov = mini?1:5, pw = iW/n;
+      for(let i=0;i<n;i++){
+        const px = ix + pw*i - (i?ov:0), w2 = pw + (i&&i<n-1?ov*2:ov);
+        g += sash(px,iy,w2,iH) + pane(px+s1,iy+s1,w2-s1*2,iH-s1*2, hasMq && i===n-1);
+      }
+      if(!mini){
+        const ay=iy+iH/2;
+        g += arrow(ix+pw*.5, ay, 1) + arrow(ix+pw*(n-.5), ay, -1);
+        g += hd(ix+pw-ov-s1/2-2, ay);
+        if(k==="elev") g += `<path d="M${ix+pw*(n-.5)} ${ay+26}v-14m-6 6l6-6l6 6" stroke="var(--ink)" stroke-width="1.4" fill="none" opacity=".7"/>`;
+        if(k==="balc"||k==="elev") g += `<rect x="${ix}" y="${iy+iH*.62}" width="${iW}" height="3" fill="${co.stroke}" opacity=".3"/>`;
+      }
+    } else if(k==="bat" || k==="osc"){
+      const n = st.w>=110 ? 2 : 1, pw = iW/n;
+      for(let i=0;i<n;i++){
+        const px = ix+pw*i; const left = n===1 || i===0;
+        g += sash(px,iy,pw,iH) + pane(px+s1,iy+s1,pw-s1*2,iH-s1*2, hasMq && i===n-1);
+        g += left ? ol(`${px+pw-s1},${iy+s1} ${px+s1},${iy+iH/2} ${px+pw-s1},${iy+iH-s1}`) : ol(`${px+s1},${iy+s1} ${px+pw-s1},${iy+iH/2} ${px+s1},${iy+iH-s1}`);
+        if(k==="osc") g += ol(`${px+s1},${iy+s1} ${px+pw/2},${iy+iH-s1} ${px+pw-s1},${iy+s1}`);
+        g += hd(left ? px+pw-s1-6 : px+s1+6, iy+iH/2);
+      }
+    } else if(k==="proy"){
+      g += sash(ix,iy,iW,iH) + pane(ix+s1,iy+s1,iW-s1*2,iH-s1*2);
+      g += ol(`${ix+s1},${iy+iH-s1} ${ix+iW/2},${iy+s1} ${ix+iW-s1},${iy+iH-s1}`);
+    } else if(k==="fijo"){
+      g += pane(ix,iy,iW,iH);
+    } else if(k==="pleg"){
+      const n = Math.max(3, Math.min(7, Math.round(st.w/80))), pw = iW/n;
+      for(let i=0;i<n;i++){ const px=ix+pw*i; g += sash(px,iy,pw,iH) + pane(px+s1,iy+s1,pw-s1*2,iH-s1*2); }
+      if(!mini){ let z=""; for(let i=0;i<=n;i++) z += `${ix+pw*i},${iy+iH+ (i%2? -10:0) + 18} `; g += `<polyline points="${z}" fill="none" stroke="var(--ink)" stroke-width="1.3" opacity=".6"/>`; }
+    } else if(k==="puer" || k==="puerv" || k==="blind"){
+      const leaves = st.w>=130 ? 2 : 1, pw = iW/leaves;
+      for(let i=0;i<leaves;i++){
+        const px = ix+pw*i;
+        g += sash(px,iy,pw,iH);
+        if(k==="puerv"){ g += pane(px+s1*2,iy+s1*2,pw-s1*4,iH-s1*4); }
+        else if(k==="blind"){ const m=mini?2:10; for(let j=0;j<3;j++){ g += `<rect x="${px+m}" y="${iy+m+j*(iH-m*2)/3+ (mini?0:4)}" width="${Math.max(pw-m*2,0)}" height="${Math.max((iH-m*2)/3-(mini?1:8),0)}" fill="none" stroke="${co.stroke}" stroke-width="${sw*.8}"/>`; } }
+        else { const gh=iH*.5; g += pane(px+s1*2,iy+s1*2,pw-s1*4,gh-s1*2); g += `<rect x="${px+s1*2}" y="${iy+gh+s1}" width="${Math.max(pw-s1*4,0)}" height="${Math.max(iH-gh-s1*3,0)}" fill="none" stroke="${co.stroke}" stroke-width="${sw*.8}"/>`; }
+        const left = leaves===1 || i===0;
+        g += left ? ol(`${px+pw-s1},${iy+s1} ${px+s1},${iy+iH/2} ${px+pw-s1},${iy+iH-s1}`) : ol(`${px+s1},${iy+s1} ${px+pw-s1},${iy+iH/2} ${px+s1},${iy+iH-s1}`);
+        g += hd(left ? px+pw-s1*3 : px+s1*3, iy+iH*.55);
+      }
+    } else if(k==="lev"){
+      const n = mini?4:Math.max(4,Math.round(iH/34));
+      for(let i=0;i<n;i++){ const py=iy+iH/n*i; g += R(ix,py,iW,iH/n,co.hex,co.stroke,sw*.7); if(!mini) g += `<line x1="${ix+8}" y1="${py+iH/n/2}" x2="${ix+iW-8}" y2="${py+iH/n/2}" stroke="${co.stroke}" stroke-width=".6" opacity=".5"/>`; }
+      if(!mini) g += `<path d="M${ix+iW/2} ${iy+iH*.7}v-${iH*.4}m-8 8l8-8l8 8" stroke="var(--ink)" stroke-width="1.6" fill="none" opacity=".7"/>`;
+    } else if(k==="pcorr"){
+      g += R(ix,iy,iW,iH,"none",co.stroke,sw*.8);
+      const bars = mini?6:Math.max(8, Math.round(iW/22));
+      for(let i=1;i<bars;i++){ const bx=ix+iW/bars*i; g += `<line x1="${bx}" y1="${iy}" x2="${bx}" y2="${iy+iH}" stroke="${co.stroke}" stroke-width="${mini?1:2.2}"/>`; }
+      g += `<rect x="${ix}" y="${iy+iH*.12}" width="${iW}" height="${mini?1.5:5}" fill="${co.stroke}"/><rect x="${ix}" y="${iy+iH*.85}" width="${iW}" height="${mini?1.5:5}" fill="${co.stroke}"/>`;
+      if(!mini) g += arrow(ix+iW*.75, y+H+16, -1).replace(/opacity=".7"/,'opacity=".7"');
+    }
+
+    if(o.sketch && !mini){
+      g = `<filter id="rough${u}"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="4"/><feDisplacementMap in="SourceGraphic" scale="4.5"/></filter><g filter="url(#rough${u})">${g}</g>`;
+    }
+    if(!mini && !o.noCota){
+      const c="var(--cota)", yb=y+H+28, xl=x-28, ff = o.font || "inherit";
+      const hand = o.sketch;
+      g += `<g stroke="${c}" stroke-width="1" fill="${c}" font-family="${ff}" font-size="${hand?20:14}" font-weight="${hand?400:600}">
+        <line x1="${x}" y1="${y+H+6}" x2="${x}" y2="${yb+6}"/><line x1="${x+W}" y1="${y+H+6}" x2="${x+W}" y2="${yb+6}"/>
+        <line x1="${x}" y1="${yb}" x2="${x+W}" y2="${yb}"/>
+        <line x1="${x-4}" y1="${yb+4}" x2="${x+4}" y2="${yb-4}" stroke-width="1.6"/><line x1="${x+W-4}" y1="${yb+4}" x2="${x+W+4}" y2="${yb-4}" stroke-width="1.6"/>
+        <text x="${x+W/2}" y="${yb+(hand?24:20)}" text-anchor="middle" stroke="none">${st.w} cm</text>
+        <line x1="${x-6}" y1="${y}" x2="${xl-6}" y2="${y}"/><line x1="${x-6}" y1="${y+H}" x2="${xl-6}" y2="${y+H}"/>
+        <line x1="${xl}" y1="${y}" x2="${xl}" y2="${y+H}"/>
+        <line x1="${xl-4}" y1="${y+4}" x2="${xl+4}" y2="${y-4}" stroke-width="1.6"/><line x1="${xl-4}" y1="${y+H+4}" x2="${xl+4}" y2="${y+H-4}" stroke-width="1.6"/>
+        <text x="${xl-10}" y="${y+H/2}" text-anchor="middle" stroke="none" transform="rotate(-90 ${xl-10} ${y+H/2})">${st.h} cm</text></g>`;
+    }
+    return g;
+  }
+  function icon(typeId, extra={}){
+    const t = byId(C.types,typeId);
+    const st = Object.assign({}, S, {type:typeId, w:t.icon?t.icon[0]:70, h:t.icon?t.icon[1]:50, ex:[], color: extra.color || C.iconColor || S.color, glass:"x"});
+    return `<svg viewBox="0 0 60 60" aria-hidden="true">${draw(st,{vw:60,vh:60,mini:true,uid:"i"+typeId})}</svg>`;
+  }
+
+  /* ---------- Lista y pedido ---------- */
+  function add(){ items.push(clone(S)); fire(); }
+  function remove(i){ items.splice(i,1); fire(); }
+  function totals(){ return items.reduce((a,it)=>{ const c=calc(it); a.lo+=c.lo; a.hi+=c.hi; return a; },{lo:0,hi:0}); }
+  function message(list){
+    let m = C.greeting + "\n\n"; let lo=0, hi=0;
+    list.forEach((it,i)=>{ const d=describe(it), c=calc(it); lo+=c.lo; hi+=c.hi;
+      m += `${i+1}. ${d.name}${it.q>1?` (x${it.q})`:""}\n   ${d.detail}\n   Estimado: ${ars(c.lo)} a ${ars(c.hi)}\n\n`; });
+    if(list.length>1) m += `Total estimado: ${ars(lo)} a ${ars(hi)}\n\n`;
+    if(C.extraMsg) m += C.extraMsg() ;
+    m += C.closing;
+    return m;
+  }
+  function send(list){
+    const m = message(list || [clone(S)]);
+    window.open(`https://wa.me/${C.wa}?text=${encodeURIComponent(m)}`, "_blank", "noopener");
+  }
+
+  /* ---------- Tabla de precios editable ---------- */
+  function adminHTML(){
+    const row = (label, grp, id, suf) => `<label class="adm-row"><span>${label}</span><span class="adm-in"><input type="number" inputmode="decimal" step="any" data-g="${grp}" data-k="${id}" value="${grp?P[grp][id]:P[id]}"><em>${suf}</em></span></label>`;
+    let h = `<fieldset><legend>Precio base por m² (línea de referencia, sin vidrio)</legend>${C.types.map(t=>row(t.name,"m2",t.id,"$/m²")).join("")}</fieldset>`;
+    h += `<fieldset><legend>Multiplicador por línea</legend>${C.lines.map(l=>row(l.name,"line",l.id,"×")).join("")}</fieldset>`;
+    if(C.glass.length) h += `<fieldset><legend>Vidrio (se suma por m²)</legend>${C.glass.map(gl=>row(gl.name,"glass",gl.id,"$/m²")).join("")}</fieldset>`;
+    h += `<fieldset><legend>Recargo por color</legend>${C.colors.map(c=>row(c.name,"colorPct",c.id,"%")).join("")}</fieldset>`;
+    if(C.extras.length) h += `<fieldset><legend>Adicionales</legend>${C.extras.map(x=>row(x.name,"extra",x.id,x.per==="m2"?"$/m²":x.per==="pct"?"%":"$ c/u")).join("")}</fieldset>`;
+    h += `<fieldset><legend>General</legend>${row("Colocación","","instPct","%")}${row("Margen del rango","","rangePct","± %")}${row("Superficie mínima","","minM2","m²")}</fieldset>`;
+    return h;
+  }
+  function bindAdmin(root){
+    root.innerHTML = adminHTML();
+    root.oninput = e => { const i=e.target; if(!i.dataset) return; const v=parseFloat(i.value); if(isNaN(v)) return;
+      if(i.dataset.g) P[i.dataset.g][i.dataset.k]=v; else P[i.dataset.k]=v; save(); fire(); };
+  }
+  function resetPrices(root){ P = clone(C.prices); try{localStorage.removeItem(C.key+"_precios");}catch(e){} if(root) bindAdmin(root); fire(); }
+
+  return { init, set, setMany, toggleEx, on, fire, calc, describe, draw, icon, add, remove, totals, message, send,
+    bindAdmin, resetPrices, ars, byId, exAllowed,
+    get S(){return S}, get items(){return items}, get C(){return C}, get P(){return P} };
+})();
+
+</script>
+<script>
+const ESP = [
+  {id:"esc",name:"Escalera",d:"De chapa o hierro, a medida"},
+  {id:"pauto",name:"Puerta de ingreso automática",d:"Para comercios"},
+  {id:"cerr",name:"Cerramiento",d:"Galerías, quinchos, balcones"},
+  {id:"chapa",name:"Solución en chapa",d:"Plegados y piezas especiales"},
+  {id:"vid",name:"Vidriera o espejo",d:"Vidrios y frentes de local"},
+  {id:"perg",name:"Pérgola",d:"Estructura a medida"}
+];
+const esp = new Set();
+E.init({
+  key:"martens", wa:"5492494588210", iconColor:"blanco",
+  greeting:"Hola Martens, les mando una orden cargada en la web:",
+  closing:"¿Cuándo pueden venir a medir?",
+  extraMsg:()=>{ let m=""; const n=document.getElementById("cli").value.trim(); const l=document.getElementById("loc").value;
+    if(esp.size){ m+="A cotizar en visita:\n"+[...esp].map(id=>"- "+ESP.find(e=>e.id===id).name).join("\n")+"\n\n"; }
+    m+=`Obra: ${l}${n?`. Nombre: ${n}`:""}\n`; return m; },
+  types:[
+    {id:"v_cor",name:"Ventana corrediza",kind:"corr",def:[150,110],icon:[70,50],lim:[50,500,30,260]},
+    {id:"v_bat",name:"Ventana de abrir",kind:"bat",def:[100,110],icon:[64,52],lim:[40,240,40,240]},
+    {id:"v_luz",name:"Ventiluz",kind:"proy",def:[60,40],icon:[62,40],lim:[30,150,25,100]},
+    {id:"p_ext",name:"Puerta con vidrio",kind:"puer",def:[90,205],icon:[38,60],lim:[70,180,180,260]},
+    {id:"p_cie",name:"Puerta ciega",kind:"blind",def:[90,205],icon:[38,60],lim:[70,180,180,260],noGlass:true},
+    {id:"pb",name:"Puerta balcón",kind:"balc",def:[180,210],icon:[64,60],lim:[120,400,180,260]},
+    {id:"po_lev",name:"Portón levadizo",kind:"lev",def:[250,210],icon:[70,55],lim:[180,500,180,300],noGlass:true},
+    {id:"po_cor",name:"Portón corredizo",kind:"pcorr",def:[350,180],icon:[70,45],lim:[150,800,100,260],noGlass:true}
+  ],
+  lines:[{id:"alu",name:"Aluminio"},{id:"pvc",name:"PVC"},{id:"hie",name:"Chapa y hierro"}],
+  glass:[{id:"simple",name:"Simple"},{id:"lam",name:"Laminado 3+3"},{id:"dvh",name:"DVH"}],
+  colors:[
+    {id:"blanco",name:"Blanco",hex:"#F2F3F1",stroke:"#9AA1A5"},
+    {id:"negro",name:"Negro",hex:"#26292B",stroke:"#141617"},
+    {id:"natural",name:"Natural",hex:"#B9C0C3",stroke:"#7D878C"},
+    {id:"gris",name:"Gris grafito",hex:"#545B61",stroke:"#373C40"},
+    {id:"madera",name:"Símil madera",hex:"#946640",stroke:"#664428"}
+  ],
+  extras:[
+    {id:"mosq",name:"Mosquitero",per:"m2",only:["corr","bat","proy","balc"]},
+    {id:"reja",name:"Reja",per:"m2",only:["corr","bat","proy","balc"]},
+    {id:"motor",name:"Motor",per:"unit",only:["lev","pcorr"]}
+  ],
+  prices:{
+    m2:{v_cor:255000,v_bat:300000,v_luz:330000,p_ext:470000,p_cie:420000,pb:280000,po_lev:220000,po_cor:175000},
+    line:{alu:1,pvc:1.55,hie:.85},
+    glass:{simple:0,lam:38000,dvh:92000},
+    colorPct:{blanco:0,negro:10,natural:0,gris:10,madera:18},
+    extra:{mosq:42000,reja:120000,motor:1100000},
+    instPct:15, rangePct:8, minM2:.5
+  },
+  start:{type:"v_cor",w:150,h:110,line:"alu",glass:"simple",color:"blanco",ex:[]}
+});
+const $=id=>document.getElementById(id);
+const T=()=>E.byId(E.C.types,E.S.type);
+const radio=(name,o,checked,inner)=>`<div><input type="radio" name="${name}" id="${name}-${o.id}" value="${o.id}" ${checked?"checked":""}><label for="${name}-${o.id}">${inner}</label></div>`;
+$("types").innerHTML = E.C.types.map(t=>radio("type",t,t.id===E.S.type,E.icon(t.id)+t.name)).join("");
+$("lines").innerHTML = E.C.lines.map(l=>radio("line",l,l.id===E.S.line,l.name)).join("");
+$("glass").innerHTML = E.C.glass.map(g=>radio("glass",g,g.id===E.S.glass,g.name)).join("");
+$("colors").innerHTML = E.C.colors.map(c=>radio("color",c,c.id===E.S.color,`<span class="sw" style="background:${c.hex}"></span>${c.name}`)).join("");
+function buildExtras(){ $("extras").innerHTML = E.C.extras.map(x=>{const ok=E.exAllowed(E.S,x); return `<label class="${ok?"":"off"}"><input type="checkbox" data-ex="${x.id}" ${ok&&E.S.ex.includes(x.id)?"checked":""} ${ok?"":"disabled"}>${x.name}</label>`;}).join("")
+  + `<label><input type="checkbox" id="inst" ${E.S.inst?"checked":""}>Colocación</label>`; }
+function setLimits(){ const [a,b,c,d]=T().lim; $("w").min=a;$("w").max=b;$("h").min=c;$("h").max=d; $("w").value=E.S.w; $("h").value=E.S.h; }
+function num(id,key,mn,mx){ const el=$(id); const put=commit=>{ let v=Math.round(+el.value||0); const lo=+el.min||mn, hi=+el.max||mx; if(v>=lo&&v<=hi){E.set(key,v);} else if(commit){ v=Math.max(lo,Math.min(hi,v)); el.value=v; E.set(key,v);} };
+  el.addEventListener("input",()=>put(false)); el.addEventListener("change",()=>put(true)); }
+num("w","w",30,800); num("h","h",25,300); num("q","q",1,40);
+$("f").addEventListener("change",e=>{ const t=e.target;
+  if(t.name==="type"){ const ty=E.byId(E.C.types,t.value); E.S.type=t.value; E.S.w=ty.def[0]; E.S.h=ty.def[1]; setLimits(); buildExtras(); E.fire(); }
+  else if(t.name==="line") E.set("line",t.value);
+  else if(t.name==="glass") E.set("glass",t.value);
+  else if(t.name==="color") E.set("color",t.value);
+  else if(t.dataset.ex) E.toggleEx(t.dataset.ex,t.checked);
+  else if(t.id==="inst") E.set("inst",t.checked); });
+
+function nota(st){
+  const t=T();
+  if(st.line==="hie" && !t.noGlass && t.kind!=="puer") return "En chapa y hierro conviene para galpones y casas de campo. Para la casa, mirá aluminio o PVC.";
+  if(t.kind==="pcorr") return `Para abrir del todo necesita ${st.w} cm de pared libre al costado.`;
+  if(t.kind==="lev") return "Lo fabricamos con la plegadora y lo podés motorizar.";
+  if(st.line==="pvc" && st.glass!=="dvh") return "Si vas a PVC, sumale DVH: es donde más se nota la aislación.";
+  return "Medidas del vano. Las confirmamos cuando vamos a medir.";
+}
+function render(){
+  const st=E.S, t=T(), c=E.calc(st);
+  $("draw").innerHTML = E.draw(st,{uid:"m",font:"Fira Sans, sans-serif"});
+  $("nota").textContent = nota(st);
+  $("glassRow").hidden = !!t.noGlass;
+  $("amt").textContent = `${E.ars(c.lo)} a ${E.ars(c.hi)}`;
+  $("sub").textContent = `${t.name}${st.q>1?` × ${st.q}`:""} · ${c.area.toFixed(2).replace(".",",")} m² c/u · ${st.inst?"con colocación":"sin colocación"}`;
+  renderList();
+}
+function renderList(){
+  const it=E.items; let rows="";
+  it.forEach((s,i)=>{ const d=E.describe(s), c=E.calc(s); rows+=`<tr><td class="n">${i+1}</td><td class="d"><b>${d.name}${s.q>1?` × ${s.q}`:""}</b><br>${d.detail}</td><td class="p">${E.ars(c.mid)}</td><td class="x"><button type="button" data-rm="${i}">Quitar</button></td></tr>`; });
+  [...esp].forEach((id,j)=>{ const e=ESP.find(x=>x.id===id); rows+=`<tr><td class="n">${it.length+j+1}</td><td class="d"><b>${e.name}</b><br>${e.d.toLowerCase()}</td><td class="p" style="font-weight:400;color:var(--gris)">a cotizar en visita</td><td class="x"><button type="button" data-esp="${id}">Quitar</button></td></tr>`; });
+  if(!rows) rows = `<tr class="vacia"><td colspan="4">Todavía no hay renglones. Cargá una abertura y tocá “Agregar renglón”.</td></tr>`;
+  else if(it.length){ const tt=E.totals(); rows += `<tr class="tot"><td></td><td>Total estimado</td><td class="p">${E.ars(tt.lo)} a ${E.ars(tt.hi)}</td><td></td></tr>`; }
+  $("items").innerHTML = rows;
+  $("sendAll").disabled = !(it.length||esp.size); $("sendAll").style.opacity = (it.length||esp.size)?1:.5;
+  $("nro").textContent = it.length+esp.size;
+}
+$("items").addEventListener("click",e=>{ const i=e.target.dataset.rm, s=e.target.dataset.esp; if(i!==undefined) E.remove(+i); if(s){ esp.delete(s); buildEsp(); renderList(); } });
+$("add").onclick=()=>{ E.add(); toast("Renglón agregado a la orden"); };
+$("sendOne").onclick=()=>E.send();
+$("sendAll").onclick=()=>E.send(E.items);
+function buildEsp(){ $("esp").innerHTML = ESP.map(e=>`<button type="button" class="${esp.has(e.id)?"on":""}" aria-pressed="${esp.has(e.id)}" data-id="${e.id}">${e.name}<small>${e.d}</small></button>`).join(""); }
+$("esp").addEventListener("click",e=>{ const b=e.target.closest("button"); if(!b) return; const id=b.dataset.id; esp.has(id)?esp.delete(id):esp.add(id); buildEsp(); renderList(); if(esp.has(id)) toast("Sumado a la orden, a cotizar en visita"); });
+E.on(render);
+document.querySelectorAll(".fotos img").forEach(img=>{ const f=img.closest("figure"); const bad=()=>{f.classList.add("err"); img.remove();}; if(img.complete&&!img.naturalWidth) bad(); else img.addEventListener("error",bad); });
+$("openAdm").onclick=()=>{E.bindAdmin($("admBody")); $("adm").showModal();};
+$("admClose").onclick=()=>$("adm").close();
+$("admReset").onclick=()=>{E.resetPrices($("admBody")); toast("Valores de ejemplo restaurados");};
+let tt; function toast(m){const t=$("toast"); t.textContent=m; t.classList.add("on"); clearTimeout(tt); tt=setTimeout(()=>t.classList.remove("on"),1800);}
+buildExtras(); setLimits(); buildEsp(); render();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Martens Todo en Aberturas"></script>
+</body>
+</html>
