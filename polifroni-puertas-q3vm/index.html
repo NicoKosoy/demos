@@ -1,0 +1,850 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Polifroni Puertas · Cotizá tu abertura</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Brygada+1918:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --verde:#1F3B33; --verde2:#2E5546; --laton:#B8913A; --laton2:#D8B866; --cal:#EEF0EA; --cal2:#E2E6DE; --papel:#F8F9F5;
+  --tinta:#17201C; --gris:#5B655F; --roble:#7A4B2A; --linea:#C9CFC6;
+  --glass:#C5DAD6; --glass2:#A9C7C3; --ink:#17201C; --cota:#8A6A24;
+  --serif:"Brygada 1918", Georgia, serif; --sans:"Barlow", "Segoe UI", sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--cal);color:var(--tinta);font:400 17px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2.5px solid var(--laton);outline-offset:2px}
+.wrap{width:min(1180px,100% - 40px);margin-inline:auto}
+
+.demo{background:var(--tinta);color:#E8EBE6;font-size:14px}
+.demo .wrap{display:flex;gap:14px;align-items:center;justify-content:space-between;padding:8px 0;flex-wrap:wrap}
+.demo button{background:transparent;border:1px solid #6E7A73;color:#fff;border-radius:999px;padding:4px 14px;cursor:pointer;font-size:13.5px}
+.demo button:hover{border-color:var(--laton2)}
+
+header.top{background:var(--papel);border-bottom:1px solid var(--linea);position:sticky;top:0;z-index:20}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0}
+.brand{display:flex;align-items:baseline;gap:12px;text-decoration:none}
+.brand b{font:600 28px/1 var(--serif);letter-spacing:-.01em;color:var(--verde)}
+.brand span{font-size:13.5px;color:var(--gris)}
+nav.main{display:flex;gap:22px;font-weight:500;font-size:15.5px}
+nav.main a{text-decoration:none;color:var(--gris)}
+nav.main a:hover{color:var(--verde)}
+.wa-top{display:inline-flex;align-items:center;gap:8px;background:var(--verde);color:#fff;text-decoration:none;padding:9px 16px;border-radius:6px;font-weight:600;font-size:15px;white-space:nowrap}
+.wa-top:hover{background:var(--verde2)}
+
+/* HERO */
+.hero{background:var(--papel);overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:end;padding:56px 0 0}
+.hero h1{font:500 clamp(42px,6vw,78px)/1.02 var(--serif);letter-spacing:-.02em;margin:0 0 22px;color:var(--verde)}
+.hero p.lead{font-size:19px;max-width:30em;margin:0 0 28px;color:#2F3A35}
+.hero .acts{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:56px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:6px;padding:13px 22px;font-weight:600;font-size:16px;cursor:pointer;text-decoration:none;border:0}
+.btn.pri{background:var(--laton);color:var(--tinta)}
+.btn.pri:hover{background:var(--laton2)}
+.btn.sec{background:transparent;border:1.5px solid var(--verde);color:var(--verde)}
+.btn.sec:hover{background:var(--verde);color:#fff}
+
+.doorstage{position:relative;height:540px;display:flex;align-items:flex-end;justify-content:center}
+.doorframe{position:relative;width:300px;height:500px;background:var(--verde);padding:16px 16px 0;border-radius:3px 3px 0 0;box-shadow:inset 0 0 0 1px #0d221c}
+.doorframe .opening{position:relative;width:100%;height:100%;perspective:1400px;overflow:visible;background:#d9e6e3}
+.doorframe .view{position:absolute;inset:0;overflow:hidden}
+.doorframe .view svg{width:100%;height:100%}
+.leaf{position:absolute;inset:0;transform-origin:left center;transform-style:preserve-3d;transition:transform 1.6s cubic-bezier(.6,.05,.2,1);cursor:pointer;background:var(--roble);
+  background-image:repeating-linear-gradient(92deg,rgba(0,0,0,.06) 0 2px,transparent 2px 9px),linear-gradient(180deg,#86542F,#6B4024);box-shadow:inset 0 0 0 1px #4d2d17}
+.leaf .panel{position:absolute;left:14%;right:14%;border:2px solid rgba(0,0,0,.18);box-shadow:inset 0 0 0 6px rgba(255,255,255,.05)}
+.leaf .p1{top:7%;height:38%}.leaf .p2{top:52%;height:40%}
+.leaf .knob{position:absolute;right:10%;top:53%;width:16px;height:16px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#F2DA95,var(--laton) 60%,#7a5d1e)}
+.leaf .plate{position:absolute;right:calc(10% + 2px);top:calc(53% - 34px);width:12px;height:84px;border-radius:6px;background:linear-gradient(90deg,#9c7a2c,#d9bb6c,#9c7a2c);opacity:.9}
+.doorstage.open .leaf{transform:rotateY(-74deg)}
+.doorstage .step{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:360px;height:14px;background:#b7beb4}
+.doorstage .num{position:absolute;top:30px;left:0;font:500 15px var(--serif);color:var(--gris);text-align:left}
+.doorstage .num b{display:block;font:600 42px/1 var(--serif);color:var(--laton)}
+.doorcap{position:absolute;left:calc(50% + 170px);bottom:60px;font-size:14px;color:var(--gris);max-width:150px;line-height:1.35}
+
+/* AÑOS */
+.anios{background:var(--verde);color:#E6ECE8}
+.anios ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr)}
+.anios li{padding:26px 22px 28px;border-left:1px solid rgba(255,255,255,.14)}
+.anios li:first-child{border-left:0;padding-left:0}
+.anios b{display:block;font:600 34px/1 var(--serif);color:var(--laton2);margin-bottom:8px}
+.anios span{font-size:15.5px;line-height:1.4}
+
+/* TALLER / COTIZADOR */
+section.taller{padding:84px 0 40px}
+.sec-h{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:30px;flex-wrap:wrap}
+.sec-h h2{font:500 clamp(32px,4vw,50px)/1.05 var(--serif);letter-spacing:-.015em;margin:0;color:var(--verde);max-width:15em}
+.sec-h p{margin:0;max-width:27em;color:var(--gris)}
+.bench{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:28px;align-items:start}
+.ficha{background:var(--papel);border:1px solid var(--linea);border-radius:4px}
+.blk{padding:22px 24px;border-top:1px solid var(--linea)}
+.blk:first-child{border-top:0}
+.blk h3{font:600 15px/1.2 var(--sans);margin:0 0 12px;color:var(--verde);display:flex;justify-content:space-between;gap:10px}
+.blk h3 small{font-weight:400;color:var(--gris)}
+.grp{display:flex;gap:0;margin-bottom:14px;border:1px solid var(--linea);border-radius:6px;overflow:hidden;width:max-content;max-width:100%}
+.grp button{background:transparent;border:0;padding:8px 16px;cursor:pointer;font-weight:500;font-size:15px;color:var(--gris)}
+.grp button[aria-pressed=true]{background:var(--verde);color:#fff}
+.types{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.chip{position:relative}
+.chip input{position:absolute;opacity:0;pointer-events:none}
+.chip label{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 6px 9px;border:1px solid var(--linea);border-radius:6px;cursor:pointer;text-align:center;font-size:14px;line-height:1.2;background:#fff;min-height:100%}
+.chip label svg{width:44px;height:44px}
+.chip input:checked+label{border-color:var(--verde);box-shadow:inset 0 0 0 1.5px var(--verde);background:#F1F5F2}
+.chip input:focus-visible+label{outline:2.5px solid var(--laton);outline-offset:2px}
+.mats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.mats label{display:block;padding:12px 12px 11px;border:1px solid var(--linea);border-radius:6px;cursor:pointer;background:#fff}
+.mats label b{display:block;font:600 19px/1.1 var(--serif);color:var(--verde)}
+.mats label span{font-size:13.5px;color:var(--gris);line-height:1.3;display:block;margin-top:3px}
+.mats input:checked+label{border-color:var(--verde);box-shadow:inset 0 0 0 1.5px var(--verde);background:#F1F5F2}
+.mats input{position:absolute;opacity:0}
+.mats div{position:relative}
+.mats input:focus-visible+label{outline:2.5px solid var(--laton)}
+.dims{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.dim label{display:flex;justify-content:space-between;font-size:14.5px;color:var(--gris);margin-bottom:6px}
+.dim .num{display:flex;align-items:center;border:1px solid var(--linea);border-radius:6px;background:#fff;overflow:hidden}
+.dim .num input{width:100%;border:0;padding:9px 10px;font:600 18px var(--sans);background:transparent;min-width:0}
+.dim .num em{font-style:normal;color:var(--gris);padding-right:10px;font-size:14px}
+input[type=range]{width:100%;accent-color:var(--verde);margin-top:10px}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pills input{position:absolute;opacity:0}
+.pills div{position:relative}
+.pills label{display:inline-flex;align-items:center;gap:8px;padding:8px 13px;border:1px solid var(--linea);border-radius:999px;cursor:pointer;background:#fff;font-size:14.5px}
+.pills input:checked+label{border-color:var(--verde);background:var(--verde);color:#fff}
+.pills input:focus-visible+label{outline:2.5px solid var(--laton)}
+.sw{width:16px;height:16px;border-radius:50%;border:1px solid rgba(0,0,0,.25)}
+.checks{display:flex;flex-direction:column;gap:9px}
+.checks label{display:flex;gap:10px;align-items:flex-start;font-size:15px;cursor:pointer}
+.checks input{accent-color:var(--verde);width:18px;height:18px;margin-top:2px}
+.checks label.off{opacity:.45;cursor:not-allowed}
+.qty{display:flex;align-items:center;gap:12px}
+.qty button{width:36px;height:36px;border-radius:50%;border:1px solid var(--linea);background:#fff;font-size:20px;cursor:pointer;line-height:1}
+.qty output{font:600 20px var(--sans);min-width:2ch;text-align:center}
+
+.mesa{position:sticky;top:84px}
+.lamina{background:#fff;border:1px solid var(--linea);border-radius:4px;overflow:hidden}
+.lamina .bar{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:1px solid var(--linea);gap:12px}
+.lamina .bar strong{font:600 17px var(--serif);color:var(--verde)}
+.vista{display:flex;border:1px solid var(--linea);border-radius:6px;overflow:hidden}
+.vista button{border:0;background:#fff;padding:6px 12px;font-size:14px;cursor:pointer;color:var(--gris)}
+.vista button[aria-pressed=true]{background:var(--tinta);color:#fff}
+.lamina svg.big{width:100%;height:auto;display:block;background:
+  linear-gradient(var(--cal2) 1px,transparent 1px) 0 0/28px 28px,linear-gradient(90deg,var(--cal2) 1px,transparent 1px) 0 0/28px 28px,#fbfcfa}
+.nota{padding:10px 14px;font-size:14px;color:var(--gris);border-top:1px dashed var(--linea);min-height:42px}
+.ticket{margin-top:14px;background:var(--verde);color:#fff;border-radius:4px;padding:20px 22px;display:grid;grid-template-columns:1fr auto;gap:8px 16px;align-items:end}
+.ticket .k{font-size:14px;color:#BFD0C8}
+.ticket .amt{font:600 clamp(26px,3vw,34px)/1.1 var(--serif);letter-spacing:-.01em}
+.ticket .sub{font-size:14px;color:#C9D7D0;grid-column:1/-1}
+.ticket .acts{grid-column:1/-1;display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+.ticket .btn.pri{flex:1 1 200px}
+.ticket .btn.ghost{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.5);flex:1 1 160px}
+.ticket .btn.ghost:hover{border-color:#fff}
+
+/* OBRA */
+.obra{margin-top:26px;background:var(--papel);border:1px solid var(--linea);border-radius:4px;padding:22px 24px}
+.obra h3{font:500 26px/1.1 var(--serif);margin:0 0 4px;color:var(--verde)}
+.obra .hint{color:var(--gris);margin:0 0 12px;font-size:15px}
+.obra ul{list-style:none;margin:0;padding:0}
+.obra li{display:grid;grid-template-columns:52px 1fr auto auto;gap:14px;align-items:center;padding:12px 0;border-top:1px solid var(--linea)}
+.obra li svg{width:52px;height:52px}
+.obra li .d{font-size:14px;color:var(--gris)}
+.obra li .p{font-weight:600;white-space:nowrap}
+.obra li button{background:none;border:0;color:var(--gris);text-decoration:underline;cursor:pointer;font-size:14px}
+.obra .tot{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;border-top:2px solid var(--verde);padding-top:14px;margin-top:4px}
+.obra .tot b{font:600 24px var(--serif)}
+
+/* CONSEJERO */
+section.consejo{padding:70px 0;background:var(--cal2)}
+.consejo .grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:44px;align-items:start}
+.consejo h2{font:500 clamp(30px,3.6vw,46px)/1.06 var(--serif);margin:0 0 14px;color:var(--verde)}
+.consejo p.lead{color:#3A4540;margin:0 0 20px;max-width:30em}
+.prio{display:flex;flex-direction:column;gap:10px}
+.prio label{display:flex;gap:12px;align-items:center;background:#fff;border:1px solid var(--linea);border-radius:6px;padding:12px 14px;cursor:pointer;font-weight:500}
+.prio input{accent-color:var(--verde);width:19px;height:19px}
+.veredicto{background:#fff;border:1px solid var(--linea);border-radius:4px;overflow:hidden}
+.mat-row{display:grid;grid-template-columns:120px 1fr 48px;gap:14px;align-items:center;padding:16px 20px;border-top:1px solid var(--linea)}
+.mat-row:first-child{border-top:0}
+.mat-row b{font:600 21px var(--serif);color:var(--verde)}
+.meter{height:10px;background:var(--cal2);border-radius:5px;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--laton);width:0;transition:width .5s ease}
+.mat-row.win{background:#F3F6F2}
+.mat-row.win .meter i{background:var(--verde)}
+.mat-row output{font-weight:600;text-align:right;color:var(--gris)}
+.veredicto .why{padding:18px 20px;border-top:1px solid var(--linea);background:var(--papel)}
+.veredicto .why p{margin:0 0 12px}
+.veredicto .why q{font-family:var(--serif);font-style:italic;font-size:19px;color:var(--verde)}
+
+/* FAMILIA */
+section.familia{padding:80px 0}
+.familia .grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.fotos{display:grid;grid-template-columns:1.2fr 1fr;grid-template-rows:200px 200px;gap:10px}
+.fotos figure{margin:0;border-radius:3px;overflow:hidden;background:var(--verde2);position:relative}
+.fotos figure:first-child{grid-row:1/3}
+.fotos img{width:100%;height:100%;object-fit:cover}
+.fotos figure.err{background:repeating-linear-gradient(135deg,#2E5546 0 14px,#2a4f41 14px 28px)}
+.fotos figure.err::after{content:attr(data-alt);position:absolute;left:12px;bottom:10px;color:#cfe0d8;font:500 italic 16px var(--serif)}
+.familia h2{font:500 clamp(30px,3.6vw,46px)/1.06 var(--serif);margin:0 0 16px;color:var(--verde)}
+.familia blockquote{margin:22px 0 0;padding-left:18px;border-left:3px solid var(--laton);font:italic 400 20px/1.45 var(--serif);color:#2F3A35}
+.familia blockquote footer{font:500 14.5px var(--sans);color:var(--gris);margin-top:8px}
+.marcas{margin-top:26px;font-size:15px;color:var(--gris)}
+.marcas b{color:var(--tinta);font-weight:600}
+
+/* FAQ + VISITA */
+section.visita{padding:70px 0;background:var(--verde);color:#E6ECE8}
+.visita .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:48px}
+.visita h2{font:500 clamp(30px,3.6vw,44px)/1.05 var(--serif);margin:0 0 20px;color:#fff}
+details{border-top:1px solid rgba(255,255,255,.18);padding:14px 0}
+details:last-of-type{border-bottom:1px solid rgba(255,255,255,.18)}
+summary{cursor:pointer;font-weight:600;font-size:17px;list-style:none;display:flex;justify-content:space-between;gap:12px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font:400 22px/1 var(--serif);color:var(--laton2)}
+details[open] summary::after{content:"–"}
+details p{margin:10px 0 0;color:#C9D7D0}
+.dir{background:rgba(0,0,0,.18);border-radius:4px;padding:26px}
+.dir address{font-style:normal;font:500 26px/1.2 var(--serif);color:#fff;margin-bottom:14px}
+.dir dl{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;margin:0 0 20px;font-size:15.5px}
+.dir dt{color:#A9BFB4}
+.dir dd{margin:0}
+footer.pie{background:var(--tinta);color:#9DA8A2;font-size:14px;padding:22px 0}
+footer.pie .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+/* diálogos */
+dialog{border:0;border-radius:6px;padding:0;max-width:min(680px,94vw);width:100%;background:var(--papel);color:var(--tinta);box-shadow:0 30px 80px rgba(0,0,0,.35)}
+dialog::backdrop{background:rgba(23,32,28,.55)}
+.dlg-h{display:flex;justify-content:space-between;align-items:center;padding:18px 22px;border-bottom:1px solid var(--linea);position:sticky;top:0;background:var(--papel);z-index:1}
+.dlg-h h3{margin:0;font:600 22px var(--serif);color:var(--verde)}
+.dlg-b{padding:8px 22px 22px;max-height:70vh;overflow:auto}
+.dlg-b p{color:var(--gris);font-size:15px}
+fieldset{border:0;padding:0;margin:16px 0 0}
+legend{font-weight:600;color:var(--verde);margin-bottom:6px}
+.adm-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:6px 0;border-bottom:1px dashed var(--linea);font-size:15px}
+.adm-in{display:flex;align-items:center;gap:6px}
+.adm-in input{width:120px;padding:6px 8px;border:1px solid var(--linea);border-radius:4px;text-align:right;background:#fff}
+.adm-in em{font-style:normal;color:var(--gris);font-size:13px;width:44px}
+.dlg-f{display:flex;justify-content:space-between;gap:10px;padding:14px 22px;border-top:1px solid var(--linea)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,30px);opacity:0;background:var(--tinta);color:#fff;padding:10px 18px;border-radius:6px;transition:.3s;z-index:60;font-size:15px}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.mob-bar{display:none}
+
+@media (max-width:980px){
+  nav.main{display:none}
+  .hero .wrap{grid-template-columns:1fr;gap:10px;padding-top:36px}
+  .hero .acts{margin-bottom:10px}
+  .doorstage{height:420px}
+  .doorframe{width:230px;height:390px}
+  .doorstage .num{display:none}
+  .doorcap{left:auto;right:0;bottom:40px}
+  .anios ol{grid-template-columns:1fr 1fr}
+  .anios li:nth-child(3){border-left:0;padding-left:0}
+  .anios li{padding:20px 16px 22px}
+  .bench{grid-template-columns:1fr}
+  .mesa{position:static;order:-1}
+  .consejo .grid,.familia .grid,.visita .grid{grid-template-columns:1fr}
+}
+@media (max-width:560px){
+  body{font-size:16px}
+  .wrap{width:calc(100% - 32px)}
+  .brand span{display:none}
+  .wa-top{padding:8px 12px;font-size:14px}
+  .hero h1{font-size:44px}
+  .hero p.lead{font-size:17px}
+  .doorstage{height:380px}
+  .doorframe{width:200px;height:350px}
+  .doorcap{display:none}
+  .doorstage .num b{font-size:34px}
+  .anios b{font-size:28px}
+  .types{grid-template-columns:repeat(3,1fr)}
+  .mats{grid-template-columns:1fr}
+  .blk{padding:18px 16px}
+  .dims{gap:12px}
+  .mat-row{grid-template-columns:80px 1fr 40px;padding:14px 14px}
+  .mat-row b{font-size:18px}
+  .obra{padding:18px 16px}
+  .obra li{grid-template-columns:44px 1fr auto;gap:10px}
+  .obra li svg{width:44px;height:44px}
+  .obra li button{grid-column:2/-1;justify-self:start;padding:0}
+  .fotos{grid-template-rows:150px 150px}
+  .mob-bar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--verde);color:#fff;padding:10px 16px;gap:12px;align-items:center;justify-content:space-between;box-shadow:0 -6px 20px rgba(0,0,0,.18);transform:translateY(110%);transition:transform .3s}
+  .mob-bar.on{transform:none}
+  .mob-bar b{font:600 18px var(--serif)}
+  .mob-bar small{display:block;color:#BFD0C8;font-size:12.5px}
+  .mob-bar a{background:var(--laton);color:var(--tinta);text-decoration:none;font-weight:600;padding:9px 14px;border-radius:6px;font-size:14.5px}
+  footer.pie{padding-bottom:84px}
+}
+@media (prefers-reduced-motion:reduce){ .leaf,.meter i,.toast,.mob-bar{transition:none} html{scroll-behavior:auto} }
+</style>
+</head>
+<body>
+<div class="demo"><div class="wrap"><span>Prototipo de demostración preparado para <b>Polifroni Puertas</b>. Los precios son de ejemplo.</span><button type="button" id="openAdm">Editar tabla de precios</button></div></div>
+
+<header class="top"><div class="wrap">
+  <a class="brand" href="#top"><b>Polifroni</b><span>Puertas y aberturas · Tandil, desde 1972</span></a>
+  <nav class="main" aria-label="Secciones"><a href="#taller">Cotizar</a><a href="#consejo">Qué material</a><a href="#familia">Historia</a><a href="#visita">Visitanos</a></nav>
+  <a class="wa-top" href="https://wa.me/542494535460" target="_blank" rel="noopener">WhatsApp</a>
+</div></header>
+
+<main id="top">
+<section class="hero"><div class="wrap">
+  <div>
+    <h1>Medio siglo abriendo puertas en Tandil.</h1>
+    <p class="lead">Puertas, ventanas y portones a medida en PVC, aluminio y madera, hechos en el taller de Av. Marconi. Elegí la abertura, cargá las medidas y mirá un precio estimado antes de pedir que vayamos a medir.</p>
+    <div class="acts"><a class="btn pri" href="#taller">Cotizar mi abertura</a><a class="btn sec" href="#consejo">¿PVC, aluminio o madera?</a></div>
+  </div>
+  <div class="doorstage" id="door">
+    <div class="num"><b>1972</b>Pablo Polifroni<br>abre el negocio</div>
+    <div class="doorframe"><div class="opening">
+      <div class="view" aria-hidden="true">
+        <svg viewBox="0 0 268 484" preserveAspectRatio="xMidYMax slice">
+          <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cfe2e4"/><stop offset="1" stop-color="#eef1e6"/></linearGradient></defs>
+          <rect width="268" height="484" fill="url(#sky)"/>
+          <path d="M0 300 L40 262 L78 284 L120 232 L150 254 L190 214 L232 252 L268 236 V484 H0Z" fill="#8FA89A"/>
+          <path d="M0 340 L54 306 L96 326 L140 292 L186 318 L226 296 L268 316 V484 H0Z" fill="#6E8D7C"/>
+          <ellipse cx="166" cy="246" rx="9" ry="6" fill="#5c6b62"/><rect x="164" y="236" width="4" height="10" fill="#5c6b62"/>
+          <path d="M0 400 Q134 372 268 400 V484 H0Z" fill="#4F6F5E"/>
+          <text x="134" y="452" text-anchor="middle" font-family="Barlow, sans-serif" font-size="13" fill="#E6ECE8" opacity=".85">las sierras de Tandil</text>
+        </svg>
+      </div>
+      <div class="leaf" id="leaf" role="button" tabindex="0" aria-label="Abrir la puerta y bajar al cotizador"><div class="panel p1"></div><div class="panel p2"></div><div class="plate"></div><div class="knob"></div></div>
+    </div></div>
+    <div class="step"></div>
+    <p class="doorcap">Todo se fabrica a medida, en PVC, aluminio o madera.</p>
+  </div>
+</div></section>
+
+<section class="anios" aria-label="Nuestra historia en cuatro fechas"><div class="wrap"><ol>
+  <li><b>1972</b><span>Pablo Polifroni abre el negocio en Tandil.</span></li>
+  <li><b>1980</b><span>Taller propio para trabajos a medida.</span></li>
+  <li><b>2006</b><span>Nace la división de carpintería de PVC.</span></li>
+  <li><b>Hoy</b><span>Tres generaciones en Av. Marconi 1155.</span></li>
+</ol></div></section>
+
+<section class="taller" id="taller"><div class="wrap">
+  <div class="sec-h"><h2>Armá tu abertura y mirá cuánto sale.</h2><p>El precio es un estimado. Lo confirmamos cuando vamos a medir a la obra, como siempre.</p></div>
+  <div class="bench">
+    <form class="ficha" id="f" onsubmit="return false">
+      <div class="blk">
+        <h3>Qué necesitás</h3>
+        <div class="grp" role="group" aria-label="Familia de producto" id="fam"></div>
+        <div class="types" id="types"></div>
+      </div>
+      <div class="blk">
+        <h3>Material <small>Los tres los trabajamos en el taller</small></h3>
+        <div class="mats" id="mats"></div>
+      </div>
+      <div class="blk">
+        <h3>Medidas del vano <small id="rangoTxt"></small></h3>
+        <div class="dims">
+          <div class="dim"><label for="w">Ancho</label><div class="num"><input id="w" type="number" inputmode="numeric"><em>cm</em></div><input id="wr" type="range" aria-label="Ancho"></div>
+          <div class="dim"><label for="h">Alto</label><div class="num"><input id="h" type="number" inputmode="numeric"><em>cm</em></div><input id="hr" type="range" aria-label="Alto"></div>
+        </div>
+      </div>
+      <div class="blk" id="glassBlk"><h3>Vidrio</h3><div class="pills" id="glass"></div></div>
+      <div class="blk"><h3>Terminación <small id="colTxt"></small></h3><div class="pills" id="colors"></div></div>
+      <div class="blk">
+        <h3>Extras</h3>
+        <div class="checks" id="extras"></div>
+        <div class="checks" style="margin-top:9px"><label><input type="checkbox" id="inst" checked> Con colocación en obra</label></div>
+      </div>
+      <div class="blk"><h3>Cantidad</h3><div class="qty"><button type="button" id="qm" aria-label="Una menos">−</button><output id="q">1</output><button type="button" id="qp" aria-label="Una más">+</button></div></div>
+    </form>
+
+    <div class="mesa">
+      <div class="lamina">
+        <div class="bar"><strong id="tag">Puerta exterior</strong>
+          <div class="vista" role="group" aria-label="Vista del dibujo"><button type="button" id="vFrente" aria-pressed="true">Frente</button><button type="button" id="vPlanta" aria-pressed="false">Planta</button></div></div>
+        <svg class="big" id="draw" viewBox="0 0 560 420" role="img" aria-label="Dibujo de la abertura con sus medidas"></svg>
+        <div class="nota" id="nota"></div>
+      </div>
+      <div class="ticket" aria-live="polite">
+        <div><div class="k">Precio estimado</div><div class="amt" id="amt">–</div></div>
+        <div class="sub" id="sub"></div>
+        <div class="acts"><button type="button" class="btn pri" id="sendOne">Pedir presupuesto por WhatsApp</button><button type="button" class="btn ghost" id="add">Sumar a mi obra</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="obra" id="obra">
+    <h3>Mi obra</h3>
+    <p class="hint" id="empty">Sumá cada abertura de la casa y mandanos la lista completa en un solo mensaje.</p>
+    <ul id="items"></ul>
+    <div class="tot" id="totRow" hidden><span>Total estimado <b id="total"></b></span><button type="button" class="btn pri" id="sendAll">Enviar mi obra por WhatsApp</button></div>
+  </div>
+</div></section>
+
+<section class="consejo" id="consejo"><div class="wrap grid">
+  <div>
+    <h2>¿Qué material me conviene?</h2>
+    <p class="lead">Es lo que más nos preguntan en el local. Marcá lo que te importa y te decimos por dónde arrancar.</p>
+    <div class="prio" id="prio">
+      <label><input type="checkbox" value="aisla" checked> Que no entre el frío ni el ruido</label>
+      <label><input type="checkbox" value="panos"> Paños grandes de vidrio, estética moderna</label>
+      <label><input type="checkbox" value="calidez"> Calidez y terminación artesanal</label>
+      <label><input type="checkbox" value="mant"> No tener que pintar ni mantener</label>
+      <label><input type="checkbox" value="precio"> Cuidar el presupuesto</label>
+    </div>
+  </div>
+  <div class="veredicto" aria-live="polite">
+    <div class="mat-row" data-m="pvc"><b>PVC</b><div class="meter"><i></i></div><output></output></div>
+    <div class="mat-row" data-m="alu"><b>Aluminio</b><div class="meter"><i></i></div><output></output></div>
+    <div class="mat-row" data-m="mad"><b>Madera</b><div class="meter"><i></i></div><output></output></div>
+    <div class="why"><p><q id="whyQ"></q></p><button type="button" class="btn sec" id="useMat">Cotizar en PVC</button></div>
+  </div>
+</div></section>
+
+<section class="familia" id="familia"><div class="wrap grid">
+  <div class="fotos">
+    <figure data-alt="El taller"><img src="https://www.polifronipuertas.com.ar/_astro/history-1.BPvPXQua.webp" alt="Historia de Polifroni Puertas" loading="lazy"></figure>
+    <figure data-alt="Av. Marconi"><img src="https://www.polifronipuertas.com.ar/_astro/history-2.CQLU_nxv.webp" alt="El local de Polifroni" loading="lazy"></figure>
+    <figure data-alt="Tres generaciones"><img src="https://www.polifronipuertas.com.ar/_astro/history-3.NAYE7WHT.webp" alt="La familia Polifroni" loading="lazy"></figure>
+  </div>
+  <div>
+    <h2>Una empresa familiar de Tandil.</h2>
+    <p>Pablo Polifroni abrió el negocio el 2 de noviembre de 1972. En 1980 sumó el taller propio para los trabajos a medida y en 2006 la división de PVC. Hoy lo llevan las familias González y Sabino, y ya trabaja la tercera generación.</p>
+    <blockquote>“Ser una empresa de fabricación y venta de aberturas líder y en continuo crecimiento.”<footer>Javier Viera, gerente</footer></blockquote>
+    <p class="marcas">Trabajamos con <b>Aluar, Roto, GU Herrajes, Assa Abloy, Giesse, Pavir</b> y otros proveedores de primera línea.</p>
+  </div>
+</div></section>
+
+<section class="visita" id="visita"><div class="wrap grid">
+  <div>
+    <h2>Lo que más nos consultan</h2>
+    <details open><summary>¿Fabrican a medida?</summary><p>Sí. Todo nuestro trabajo es a medida: tomamos las medidas en obra y fabricamos en el taller propio.</p></details>
+    <details><summary>¿Cuánto tarda un pedido?</summary><p>Depende del material y del volumen. Con el presupuesto te confirmamos el plazo de fabricación y una fecha estimada de colocación.</p></details>
+    <details><summary>¿Hacen la instalación?</summary><p>Sí, hacemos instalación, personalización y mantenimiento, y atendemos la post venta.</p></details>
+    <details><summary>¿Trabajan fuera de Tandil?</summary><p>Sí, atendemos Tandil y toda la zona. Coordinamos visita o envío según la obra.</p></details>
+  </div>
+  <div class="dir">
+    <address>Av. Marconi 1155<br>Tandil</address>
+    <dl><dt>Lun a vie</dt><dd>8 a 12 y 14 a 18 h</dd><dt>Sábados</dt><dd>8 a 12:30 h</dd><dt>Teléfono</dt><dd>(0249) 453-5460</dd><dt>Mail</dt><dd>info@polifronipuertas.com.ar</dd></dl>
+    <a class="btn pri" href="https://wa.me/542494535460" target="_blank" rel="noopener">Escribinos por WhatsApp</a>
+  </div>
+</div></section>
+</main>
+
+<footer class="pie"><div class="wrap"><span>Polifroni Puertas S.R.L. · Av. Marconi 1155, Tandil</span><span>Prototipo de cotizador · precios de ejemplo</span></div></footer>
+
+<div class="mob-bar" id="mob"><div><small>Estimado</small><b id="mamt">–</b></div><a href="#taller">Ver mi abertura</a></div>
+
+<dialog id="adm"><div class="dlg-h"><h3>Tabla de precios</h3><button type="button" class="btn sec" id="admClose">Listo</button></div>
+  <div class="dlg-b"><p>Estos valores los cambian ustedes y el cotizador se actualiza al instante. Quedan guardados en este navegador.</p><div id="admBody"></div></div>
+  <div class="dlg-f"><button type="button" class="btn sec" id="admReset">Volver a los valores de ejemplo</button></div></dialog>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* Motor del cotizador (precios, dibujo, lista, pedido por WhatsApp, tabla editable) */
+const E = (function(){
+  let C, P, S, items = [];
+  const subs = [];
+  const $ = id => document.getElementById(id);
+  const byId = (arr,id) => arr.find(x => x.id === id);
+  const ars = n => "$ " + Math.round(n).toLocaleString("es-AR");
+  const rnd = n => Math.round(n/1000)*1000;
+  const clone = o => JSON.parse(JSON.stringify(o));
+
+  function load(){
+    try{ const s = localStorage.getItem(C.key+"_precios"); if(s){ const o = JSON.parse(s); const d = clone(C.prices);
+      for(const k in d){ if(typeof d[k]==="object") Object.assign(d[k], o[k]||{}); else if(o[k]!==undefined) d[k]=o[k]; } return d; } }catch(e){}
+    return clone(C.prices);
+  }
+  function save(){ try{ localStorage.setItem(C.key+"_precios", JSON.stringify(P)); }catch(e){} }
+
+  function init(cfg){
+    C = cfg; P = load();
+    S = Object.assign({q:1, inst:true, ex:[]}, clone(cfg.start));
+  }
+  function set(k,v){ S[k]=v; fire(); }
+  function setMany(o){ Object.assign(S,o); fire(); }
+  function toggleEx(id,on){ const i=S.ex.indexOf(id); if(on && i<0) S.ex.push(id); if(!on && i>=0) S.ex.splice(i,1); fire(); }
+  function on(fn){ subs.push(fn); }
+  function fire(){ subs.forEach(f => f(S)); }
+
+  const type = st => byId(C.types, st.type);
+  function exAllowed(st, x){ const t = type(st); return !x.only || x.only.includes(t.kind) || x.only.includes(t.id); }
+
+  function calc(st){
+    const t = type(st);
+    const area = Math.max((st.w/100)*(st.h/100), P.minM2);
+    let unit = area * (P.m2[st.type]||0) * (P.line[st.line]||1);
+    if(!t.noGlass) unit += area * (P.glass[st.glass]||0);
+    unit *= 1 + (P.colorPct[st.color]||0)/100;
+    (st.ex||[]).forEach(id => { const x = byId(C.extras,id); if(!x || !exAllowed(st,x)) return;
+      const v = P.extra[id]||0; unit += x.per==="m2" ? area*v : x.per==="pct" ? unit*v/100 : v; });
+    if(st.inst) unit *= 1 + P.instPct/100;
+    const total = unit * st.q, r = P.rangePct/100;
+    return {area, unit, total, lo:rnd(total*(1-r)), hi:rnd(total*(1+r)), mid:rnd(total)};
+  }
+
+  function describe(st){
+    const t = type(st), li = byId(C.lines, st.line), gl = byId(C.glass, st.glass), co = byId(C.colors, st.color);
+    const parts = [`${st.w} × ${st.h} cm`];
+    if(li) parts.push(li.name);
+    if(gl && !t.noGlass) parts.push(gl.name);
+    if(co) parts.push(co.name.toLowerCase());
+    (st.ex||[]).forEach(id => { const x = byId(C.extras,id); if(x && exAllowed(st,x)) parts.push(x.name.toLowerCase()); });
+    parts.push(st.inst ? "con colocación" : "sin colocación");
+    return {name: t.name, detail: parts.join(", ")};
+  }
+
+  /* ---------- Dibujo en elevación ---------- */
+  function draw(st, o={}){
+    const VW=o.vw||560, VH=o.vh||420, mini=!!o.mini, u=o.uid||"m";
+    const t = type(st), k = t.kind;
+    const co = byId(C.colors, st.color) || {hex:"#ddd", stroke:"#888"};
+    const pad = mini ? 4 : (o.pad||74);
+    const sc = Math.min((VW-pad*2)/st.w, (VH-pad*2)/st.h);
+    const W = st.w*sc, H = st.h*sc;
+    const x = (VW-W)/2 + (mini?0:10), y = (VH-H)/2 - (mini?0:8);
+    const fr = mini ? 2.5 : Math.max(7, Math.min(15, W*.034));
+    const sw = mini ? 1 : 1.4;
+    const dvh = (st.glass||"").match(/dvh|tvh|low/i);
+    const gf = dvh ? "var(--glass2)" : "var(--glass)";
+    const hasMq = (st.ex||[]).includes("mosq") && !mini;
+    let g = `<defs><linearGradient id="gl${u}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".5"/><stop offset=".4" stop-color="#fff" stop-opacity="0"/></linearGradient>
+      <pattern id="mq${u}" width="5" height="5" patternUnits="userSpaceOnUse"><path d="M0 0H5M0 0V5" stroke="#2c3a40" stroke-width=".5" opacity=".4"/></pattern></defs>`;
+    const R = (a,b,c,d,f,s,w) => `<rect x="${a}" y="${b}" width="${Math.max(c,0)}" height="${Math.max(d,0)}" fill="${f}" stroke="${s}" stroke-width="${w}"/>`;
+    const pane = (a,b,c,d,mq) => R(a,b,c,d,gf,co.stroke,sw*.8) + `<rect x="${a}" y="${b}" width="${Math.max(c,0)}" height="${Math.max(d,0)}" fill="url(#gl${u})"/>`
+      + (dvh && !mini ? `<rect x="${a+4}" y="${b+4}" width="${Math.max(c-8,0)}" height="${Math.max(d-8,0)}" fill="none" stroke="#fff" stroke-opacity=".7"/>` : "")
+      + (mq ? `<rect x="${a}" y="${b}" width="${Math.max(c,0)}" height="${Math.max(d,0)}" fill="url(#mq${u})"/>` : "");
+    const sash = (a,b,c,d) => R(a,b,c,d,co.hex,co.stroke,sw*.8);
+    const ol = pts => `<polyline points="${pts}" fill="none" stroke="var(--ink)" stroke-width="${mini?.8:1.1}" stroke-dasharray="${mini?'2.5 2':'6 5'}" opacity=".65"/>`;
+    const hd = (hx,hy) => mini ? "" : `<rect x="${hx-2}" y="${hy-11}" width="4" height="22" rx="2" fill="var(--ink)" opacity=".8"/>`;
+    const arrow = (ax,ay,dir) => mini ? "" : `<path d="M${ax-20*dir} ${ay}H${ax+20*dir}M${ax+12*dir} ${ay-7}L${ax+20*dir} ${ay}L${ax+12*dir} ${ay+7}" stroke="var(--ink)" stroke-width="1.5" fill="none" opacity=".7"/>`;
+
+    g += R(x,y,W,H,co.hex,co.stroke,sw);
+    const ix=x+fr, iy=y+fr, iW=W-fr*2, iH=H-fr*2, s1=fr*.6;
+
+    if(k==="corr" || k==="balc" || k==="elev" || k==="desliz"){
+      const n = k==="desliz" ? (st.w>=300?4:3) : 2, ov = mini?1:5, pw = iW/n;
+      for(let i=0;i<n;i++){
+        const px = ix + pw*i - (i?ov:0), w2 = pw + (i&&i<n-1?ov*2:ov);
+        g += sash(px,iy,w2,iH) + pane(px+s1,iy+s1,w2-s1*2,iH-s1*2, hasMq && i===n-1);
+      }
+      if(!mini){
+        const ay=iy+iH/2;
+        g += arrow(ix+pw*.5, ay, 1) + arrow(ix+pw*(n-.5), ay, -1);
+        g += hd(ix+pw-ov-s1/2-2, ay);
+        if(k==="elev") g += `<path d="M${ix+pw*(n-.5)} ${ay+26}v-14m-6 6l6-6l6 6" stroke="var(--ink)" stroke-width="1.4" fill="none" opacity=".7"/>`;
+        if(k==="balc"||k==="elev") g += `<rect x="${ix}" y="${iy+iH*.62}" width="${iW}" height="3" fill="${co.stroke}" opacity=".3"/>`;
+      }
+    } else if(k==="bat" || k==="osc"){
+      const n = st.w>=110 ? 2 : 1, pw = iW/n;
+      for(let i=0;i<n;i++){
+        const px = ix+pw*i; const left = n===1 || i===0;
+        g += sash(px,iy,pw,iH) + pane(px+s1,iy+s1,pw-s1*2,iH-s1*2, hasMq && i===n-1);
+        g += left ? ol(`${px+pw-s1},${iy+s1} ${px+s1},${iy+iH/2} ${px+pw-s1},${iy+iH-s1}`) : ol(`${px+s1},${iy+s1} ${px+pw-s1},${iy+iH/2} ${px+s1},${iy+iH-s1}`);
+        if(k==="osc") g += ol(`${px+s1},${iy+s1} ${px+pw/2},${iy+iH-s1} ${px+pw-s1},${iy+s1}`);
+        g += hd(left ? px+pw-s1-6 : px+s1+6, iy+iH/2);
+      }
+    } else if(k==="proy"){
+      g += sash(ix,iy,iW,iH) + pane(ix+s1,iy+s1,iW-s1*2,iH-s1*2);
+      g += ol(`${ix+s1},${iy+iH-s1} ${ix+iW/2},${iy+s1} ${ix+iW-s1},${iy+iH-s1}`);
+    } else if(k==="fijo"){
+      g += pane(ix,iy,iW,iH);
+    } else if(k==="pleg"){
+      const n = Math.max(3, Math.min(7, Math.round(st.w/80))), pw = iW/n;
+      for(let i=0;i<n;i++){ const px=ix+pw*i; g += sash(px,iy,pw,iH) + pane(px+s1,iy+s1,pw-s1*2,iH-s1*2); }
+      if(!mini){ let z=""; for(let i=0;i<=n;i++) z += `${ix+pw*i},${iy+iH+ (i%2? -10:0) + 18} `; g += `<polyline points="${z}" fill="none" stroke="var(--ink)" stroke-width="1.3" opacity=".6"/>`; }
+    } else if(k==="puer" || k==="puerv" || k==="blind"){
+      const leaves = st.w>=130 ? 2 : 1, pw = iW/leaves;
+      for(let i=0;i<leaves;i++){
+        const px = ix+pw*i;
+        g += sash(px,iy,pw,iH);
+        if(k==="puerv"){ g += pane(px+s1*2,iy+s1*2,pw-s1*4,iH-s1*4); }
+        else if(k==="blind"){ const m=mini?2:10; for(let j=0;j<3;j++){ g += `<rect x="${px+m}" y="${iy+m+j*(iH-m*2)/3+ (mini?0:4)}" width="${Math.max(pw-m*2,0)}" height="${Math.max((iH-m*2)/3-(mini?1:8),0)}" fill="none" stroke="${co.stroke}" stroke-width="${sw*.8}"/>`; } }
+        else { const gh=iH*.5; g += pane(px+s1*2,iy+s1*2,pw-s1*4,gh-s1*2); g += `<rect x="${px+s1*2}" y="${iy+gh+s1}" width="${Math.max(pw-s1*4,0)}" height="${Math.max(iH-gh-s1*3,0)}" fill="none" stroke="${co.stroke}" stroke-width="${sw*.8}"/>`; }
+        const left = leaves===1 || i===0;
+        g += left ? ol(`${px+pw-s1},${iy+s1} ${px+s1},${iy+iH/2} ${px+pw-s1},${iy+iH-s1}`) : ol(`${px+s1},${iy+s1} ${px+pw-s1},${iy+iH/2} ${px+s1},${iy+iH-s1}`);
+        g += hd(left ? px+pw-s1*3 : px+s1*3, iy+iH*.55);
+      }
+    } else if(k==="lev"){
+      const n = mini?4:Math.max(4,Math.round(iH/34));
+      for(let i=0;i<n;i++){ const py=iy+iH/n*i; g += R(ix,py,iW,iH/n,co.hex,co.stroke,sw*.7); if(!mini) g += `<line x1="${ix+8}" y1="${py+iH/n/2}" x2="${ix+iW-8}" y2="${py+iH/n/2}" stroke="${co.stroke}" stroke-width=".6" opacity=".5"/>`; }
+      if(!mini) g += `<path d="M${ix+iW/2} ${iy+iH*.7}v-${iH*.4}m-8 8l8-8l8 8" stroke="var(--ink)" stroke-width="1.6" fill="none" opacity=".7"/>`;
+    } else if(k==="pcorr"){
+      g += R(ix,iy,iW,iH,"none",co.stroke,sw*.8);
+      const bars = mini?6:Math.max(8, Math.round(iW/22));
+      for(let i=1;i<bars;i++){ const bx=ix+iW/bars*i; g += `<line x1="${bx}" y1="${iy}" x2="${bx}" y2="${iy+iH}" stroke="${co.stroke}" stroke-width="${mini?1:2.2}"/>`; }
+      g += `<rect x="${ix}" y="${iy+iH*.12}" width="${iW}" height="${mini?1.5:5}" fill="${co.stroke}"/><rect x="${ix}" y="${iy+iH*.85}" width="${iW}" height="${mini?1.5:5}" fill="${co.stroke}"/>`;
+      if(!mini) g += arrow(ix+iW*.75, y+H+16, -1).replace(/opacity=".7"/,'opacity=".7"');
+    }
+
+    if(o.sketch && !mini){
+      g = `<filter id="rough${u}"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="4"/><feDisplacementMap in="SourceGraphic" scale="4.5"/></filter><g filter="url(#rough${u})">${g}</g>`;
+    }
+    if(!mini && !o.noCota){
+      const c="var(--cota)", yb=y+H+28, xl=x-28, ff = o.font || "inherit";
+      const hand = o.sketch;
+      g += `<g stroke="${c}" stroke-width="1" fill="${c}" font-family="${ff}" font-size="${hand?20:14}" font-weight="${hand?400:600}">
+        <line x1="${x}" y1="${y+H+6}" x2="${x}" y2="${yb+6}"/><line x1="${x+W}" y1="${y+H+6}" x2="${x+W}" y2="${yb+6}"/>
+        <line x1="${x}" y1="${yb}" x2="${x+W}" y2="${yb}"/>
+        <line x1="${x-4}" y1="${yb+4}" x2="${x+4}" y2="${yb-4}" stroke-width="1.6"/><line x1="${x+W-4}" y1="${yb+4}" x2="${x+W+4}" y2="${yb-4}" stroke-width="1.6"/>
+        <text x="${x+W/2}" y="${yb+(hand?24:20)}" text-anchor="middle" stroke="none">${st.w} cm</text>
+        <line x1="${x-6}" y1="${y}" x2="${xl-6}" y2="${y}"/><line x1="${x-6}" y1="${y+H}" x2="${xl-6}" y2="${y+H}"/>
+        <line x1="${xl}" y1="${y}" x2="${xl}" y2="${y+H}"/>
+        <line x1="${xl-4}" y1="${y+4}" x2="${xl+4}" y2="${y-4}" stroke-width="1.6"/><line x1="${xl-4}" y1="${y+H+4}" x2="${xl+4}" y2="${y+H-4}" stroke-width="1.6"/>
+        <text x="${xl-10}" y="${y+H/2}" text-anchor="middle" stroke="none" transform="rotate(-90 ${xl-10} ${y+H/2})">${st.h} cm</text></g>`;
+    }
+    return g;
+  }
+  function icon(typeId, extra={}){
+    const t = byId(C.types,typeId);
+    const st = Object.assign({}, S, {type:typeId, w:t.icon?t.icon[0]:70, h:t.icon?t.icon[1]:50, ex:[], color: extra.color || C.iconColor || S.color, glass:"x"});
+    return `<svg viewBox="0 0 60 60" aria-hidden="true">${draw(st,{vw:60,vh:60,mini:true,uid:"i"+typeId})}</svg>`;
+  }
+
+  /* ---------- Lista y pedido ---------- */
+  function add(){ items.push(clone(S)); fire(); }
+  function remove(i){ items.splice(i,1); fire(); }
+  function totals(){ return items.reduce((a,it)=>{ const c=calc(it); a.lo+=c.lo; a.hi+=c.hi; return a; },{lo:0,hi:0}); }
+  function message(list){
+    let m = C.greeting + "\n\n"; let lo=0, hi=0;
+    list.forEach((it,i)=>{ const d=describe(it), c=calc(it); lo+=c.lo; hi+=c.hi;
+      m += `${i+1}. ${d.name}${it.q>1?` (x${it.q})`:""}\n   ${d.detail}\n   Estimado: ${ars(c.lo)} a ${ars(c.hi)}\n\n`; });
+    if(list.length>1) m += `Total estimado: ${ars(lo)} a ${ars(hi)}\n\n`;
+    if(C.extraMsg) m += C.extraMsg() ;
+    m += C.closing;
+    return m;
+  }
+  function send(list){
+    const m = message(list || [clone(S)]);
+    window.open(`https://wa.me/${C.wa}?text=${encodeURIComponent(m)}`, "_blank", "noopener");
+  }
+
+  /* ---------- Tabla de precios editable ---------- */
+  function adminHTML(){
+    const row = (label, grp, id, suf) => `<label class="adm-row"><span>${label}</span><span class="adm-in"><input type="number" inputmode="decimal" step="any" data-g="${grp}" data-k="${id}" value="${grp?P[grp][id]:P[id]}"><em>${suf}</em></span></label>`;
+    let h = `<fieldset><legend>Precio base por m² (línea de referencia, sin vidrio)</legend>${C.types.map(t=>row(t.name,"m2",t.id,"$/m²")).join("")}</fieldset>`;
+    h += `<fieldset><legend>Multiplicador por línea</legend>${C.lines.map(l=>row(l.name,"line",l.id,"×")).join("")}</fieldset>`;
+    if(C.glass.length) h += `<fieldset><legend>Vidrio (se suma por m²)</legend>${C.glass.map(gl=>row(gl.name,"glass",gl.id,"$/m²")).join("")}</fieldset>`;
+    h += `<fieldset><legend>Recargo por color</legend>${C.colors.map(c=>row(c.name,"colorPct",c.id,"%")).join("")}</fieldset>`;
+    if(C.extras.length) h += `<fieldset><legend>Adicionales</legend>${C.extras.map(x=>row(x.name,"extra",x.id,x.per==="m2"?"$/m²":x.per==="pct"?"%":"$ c/u")).join("")}</fieldset>`;
+    h += `<fieldset><legend>General</legend>${row("Colocación","","instPct","%")}${row("Margen del rango","","rangePct","± %")}${row("Superficie mínima","","minM2","m²")}</fieldset>`;
+    return h;
+  }
+  function bindAdmin(root){
+    root.innerHTML = adminHTML();
+    root.oninput = e => { const i=e.target; if(!i.dataset) return; const v=parseFloat(i.value); if(isNaN(v)) return;
+      if(i.dataset.g) P[i.dataset.g][i.dataset.k]=v; else P[i.dataset.k]=v; save(); fire(); };
+  }
+  function resetPrices(root){ P = clone(C.prices); try{localStorage.removeItem(C.key+"_precios");}catch(e){} if(root) bindAdmin(root); fire(); }
+
+  return { init, set, setMany, toggleEx, on, fire, calc, describe, draw, icon, add, remove, totals, message, send,
+    bindAdmin, resetPrices, ars, byId, exAllowed,
+    get S(){return S}, get items(){return items}, get C(){return C}, get P(){return P} };
+})();
+
+</script>
+<script>
+const FAM = [{id:"puertas",name:"Puertas"},{id:"ventanas",name:"Ventanas"},{id:"portones",name:"Portones"}];
+E.init({
+  key:"polifroni", wa:"542494535460", iconColor:"blanco",
+  greeting:"Hola Polifroni, armé este presupuesto en el cotizador de la web:",
+  closing:"¿Cuándo pueden venir a medir?",
+  types:[
+    {id:"p_ext", fam:"puertas", name:"Puerta exterior", kind:"puer", def:[90,205], icon:[38,60], lim:[70,180,180,260]},
+    {id:"p_int", fam:"puertas", name:"Puerta interior", kind:"blind", def:[80,200], icon:[38,60], lim:[60,120,180,240], noGlass:true},
+    {id:"p_bli", fam:"puertas", name:"Ingreso blindado", kind:"blind", def:[90,210], icon:[38,60], lim:[80,140,190,260], noGlass:true},
+    {id:"v_cor", fam:"ventanas", name:"Corrediza", kind:"corr", def:[150,110], icon:[70,50], lim:[60,400,40,260]},
+    {id:"v_bat", fam:"ventanas", name:"Batiente", kind:"bat", def:[120,110], icon:[70,50], lim:[40,240,40,240]},
+    {id:"v_osc", fam:"ventanas", name:"Oscilobatiente", kind:"osc", def:[80,120], icon:[50,60], lim:[40,160,50,240]},
+    {id:"po_lev", fam:"portones", name:"Levadizo", kind:"lev", def:[250,210], icon:[70,55], lim:[180,500,180,300], noGlass:true},
+    {id:"po_cor", fam:"portones", name:"Corredizo", kind:"pcorr", def:[350,180], icon:[70,45], lim:[150,800,100,260], noGlass:true}
+  ],
+  lines:[{id:"pvc",name:"PVC"},{id:"alu",name:"Aluminio"},{id:"mad",name:"Madera"}],
+  glass:[{id:"simple",name:"Simple 4 mm"},{id:"lam",name:"Laminado 3+3"},{id:"dvh",name:"DVH (doble vidrio)"}],
+  colors:[
+    {id:"blanco",name:"Blanco",hex:"#F3F4F1",stroke:"#9AA39E",mat:["pvc","alu"]},
+    {id:"roble",name:"Símil roble",hex:"#9A6B43",stroke:"#6E4A2C",mat:["pvc"]},
+    {id:"antra",name:"Gris antracita",hex:"#3D4347",stroke:"#2A2E31",mat:["pvc","alu"]},
+    {id:"negro",name:"Negro",hex:"#26292B",stroke:"#141617",mat:["alu"]},
+    {id:"natural",name:"Natural",hex:"#B9C0C3",stroke:"#7D878C",mat:["alu"]},
+    {id:"cedro",name:"Cedro natural",hex:"#B37A4C",stroke:"#7E5230",mat:["mad"]},
+    {id:"nogal",name:"Lustre nogal",hex:"#6A4329",stroke:"#472B18",mat:["mad"]}
+  ],
+  extras:[
+    {id:"mosq",name:"Mosquitero",per:"m2",only:["corr","bat","osc"]},
+    {id:"motor",name:"Motorización",per:"unit",only:["lev","pcorr"]},
+    {id:"cerr",name:"Cerradura de seguridad",per:"unit",only:["puer","blind"]}
+  ],
+  prices:{
+    m2:{p_ext:520000,p_int:240000,p_bli:880000,v_cor:265000,v_bat:315000,v_osc:395000,po_lev:235000,po_cor:185000},
+    line:{pvc:1.6,alu:1,mad:1.35},
+    glass:{simple:0,lam:40000,dvh:95000},
+    colorPct:{blanco:0,roble:15,antra:12,negro:10,natural:0,cedro:0,nogal:8},
+    extra:{mosq:45000,motor:1150000,cerr:180000},
+    instPct:15, rangePct:8, minM2:1
+  },
+  start:{type:"p_ext", w:90, h:205, line:"pvc", glass:"dvh", color:"blanco", ex:[]}
+});
+
+const $ = id => document.getElementById(id);
+let fam = "puertas", vista = "frente";
+const T = () => E.byId(E.C.types, E.S.type);
+
+function buildFam(){ $("fam").innerHTML = FAM.map(f=>`<button type="button" data-fam="${f.id}" aria-pressed="${f.id===fam}">${f.name}</button>`).join(""); }
+function buildTypes(){
+  $("types").innerHTML = E.C.types.filter(t=>t.fam===fam).map(t=>`<div class="chip"><input type="radio" name="type" id="t-${t.id}" value="${t.id}" ${t.id===E.S.type?"checked":""}><label for="t-${t.id}">${E.icon(t.id)}${t.name}</label></div>`).join("");
+}
+const MATTXT = {pvc:"Aislación y cero mantenimiento", alu:"Grandes paños, estética moderna", mad:"Calidez y terminación artesanal"};
+$("mats").innerHTML = E.C.lines.map(l=>`<div><input type="radio" name="line" id="l-${l.id}" value="${l.id}" ${l.id===E.S.line?"checked":""}><label for="l-${l.id}"><b>${l.name}</b><span>${MATTXT[l.id]}</span></label></div>`).join("");
+$("glass").innerHTML = E.C.glass.map(g=>`<div><input type="radio" name="glass" id="g-${g.id}" value="${g.id}" ${g.id===E.S.glass?"checked":""}><label for="g-${g.id}">${g.name}</label></div>`).join("");
+function buildColors(){
+  const ok = E.C.colors.filter(c=>c.mat.includes(E.S.line));
+  if(!ok.find(c=>c.id===E.S.color)) E.S.color = ok[0].id;
+  $("colors").innerHTML = ok.map(c=>`<div><input type="radio" name="color" id="c-${c.id}" value="${c.id}" ${c.id===E.S.color?"checked":""}><label for="c-${c.id}"><span class="sw" style="background:${c.hex}"></span>${c.name}</label></div>`).join("");
+  $("colTxt").textContent = E.byId(E.C.lines,E.S.line).name;
+}
+function buildExtras(){
+  $("extras").innerHTML = E.C.extras.map(x=>{ const ok=E.exAllowed(E.S,x); return `<label class="${ok?"":"off"}"><input type="checkbox" data-ex="${x.id}" ${E.S.ex.includes(x.id)&&ok?"checked":""} ${ok?"":"disabled"}> ${x.name}</label>`; }).join("");
+}
+function setLimits(){
+  const t=T(), [a,b,c,d]=t.lim;
+  [["w",a,b],["h",c,d]].forEach(([k,mn,mx])=>{ ["", "r"].forEach(s=>{ const el=$(k+s); el.min=mn; el.max=mx; el.step=1; el.value=E.S[k]; }); });
+  $("rangoTxt").textContent = `${a}–${b} × ${c}–${d} cm`;
+}
+function pair(k){
+  const n=$(k), r=$(k+"r");
+  const put = v => { v=Math.max(+n.min,Math.min(+n.max,Math.round(+v||0))); n.value=v; r.value=v; E.set(k,v); };
+  r.addEventListener("input",e=>put(e.target.value));
+  n.addEventListener("change",e=>put(e.target.value));
+  n.addEventListener("input",e=>{ const v=+e.target.value; if(v>=+n.min && v<=+n.max){ r.value=v; E.set(k,v); } });
+}
+pair("w"); pair("h");
+
+$("fam").addEventListener("click",e=>{ const b=e.target.closest("button"); if(!b) return; fam=b.dataset.fam; buildFam();
+  const t=E.C.types.find(t=>t.fam===fam); chooseType(t.id); });
+function chooseType(id){ const t=E.byId(E.C.types,id); E.S.type=id; E.S.w=t.def[0]; E.S.h=t.def[1]; buildTypes(); setLimits(); buildExtras(); E.fire(); }
+$("f").addEventListener("change",e=>{
+  const t=e.target;
+  if(t.name==="type") chooseType(t.value);
+  else if(t.name==="line"){ E.S.line=t.value; buildColors(); E.fire(); }
+  else if(t.name==="glass") E.set("glass",t.value);
+  else if(t.name==="color") E.set("color",t.value);
+  else if(t.dataset.ex) E.toggleEx(t.dataset.ex,t.checked);
+  else if(t.id==="inst") E.set("inst",t.checked);
+});
+$("qm").onclick=()=>E.set("q",Math.max(1,E.S.q-1));
+$("qp").onclick=()=>E.set("q",Math.min(40,E.S.q+1));
+$("vFrente").onclick=()=>{vista="frente";render();};
+$("vPlanta").onclick=()=>{vista="planta";render();};
+
+/* Vista en planta: cómo abre y cuánto lugar ocupa */
+function planta(st){
+  const t=T(), k=t.kind, VW=560, VH=420;
+  const sc=Math.min(360/st.w, 1.6), W=st.w*sc, x=(VW-W)/2, y=170, wall=22;
+  let g=`<g fill="#cdd3cb" stroke="#8d968c" stroke-width="1"><rect x="20" y="${y}" width="${x-20}" height="${wall}"/><rect x="${x+W}" y="${y}" width="${VW-20-x-W}" height="${wall}"/></g>`;
+  g+=`<g fill="none" stroke="var(--ink)" stroke-width="1.6">`;
+  let nota="";
+  if(k==="puer"||k==="blind"){
+    const n=st.w>=130?2:1, pw=W/n;
+    for(let i=0;i<n;i++){ const hx = i===0? x : x+W, dir = i===0?1:-1;
+      g+=`<line x1="${hx}" y1="${y+wall}" x2="${hx}" y2="${y+wall+pw}" stroke-width="4" stroke="${E.byId(E.C.colors,st.color).stroke}"/>`;
+      g+=`<path d="M${hx} ${y+wall+pw} A${pw} ${pw} 0 0 ${dir>0?0:1} ${hx+pw*dir} ${y+wall}" stroke-dasharray="6 5" opacity=".6"/>`; }
+    nota=`La hoja barre un radio de ${Math.round(st.w/n)} cm hacia adentro: dejá ese espacio libre de muebles.`;
+  } else if(k==="bat"||k==="osc"){
+    const n=st.w>=110?2:1, pw=W/n;
+    for(let i=0;i<n;i++){ const hx=i===0?x:x+W, dir=i===0?1:-1;
+      g+=`<line x1="${hx}" y1="${y+wall}" x2="${hx}" y2="${y+wall+pw}" stroke-width="3"/>`;
+      g+=`<path d="M${hx} ${y+wall+pw} A${pw} ${pw} 0 0 ${dir>0?0:1} ${hx+pw*dir} ${y+wall}" stroke-dasharray="6 5" opacity=".6"/>`; }
+    nota = k==="osc" ? `Abre hacia adentro como batiente y también se inclina arriba para ventilar.` : `${n} hoja${n>1?"s":""} de ${Math.round(st.w/n)} cm que abren hacia adentro.`;
+  } else if(k==="corr"){
+    g+=`<line x1="${x}" y1="${y+8}" x2="${x+W*.55}" y2="${y+8}" stroke-width="4"/><line x1="${x+W*.45}" y1="${y+15}" x2="${x+W}" y2="${y+15}" stroke-width="4"/>`;
+    g+=`<path d="M${x+W*.2} ${y-14}h40m-8-6l8 6l-8 6M${x+W*.8} ${y-14}h-40m8-6l-8 6l8 6" stroke-width="1.4"/>`;
+    nota=`Las hojas corren sobre su riel: no ocupa lugar adentro. Ideal donde hay muebles cerca.`;
+  } else if(k==="lev"){
+    g+=`<rect x="${x}" y="${y+wall}" width="${W}" height="${Math.min(st.h*sc*.9,200)}" stroke-dasharray="6 5" opacity=".55"/>`;
+    g+=`<path d="M${x+W/2} ${y+wall+20}v60m-7-8l7 8l7-8" stroke-width="1.4"/>`;
+    nota=`Al abrir sube y queda bajo el techo: necesita unos ${st.h} cm de fondo libre arriba, adentro del garage.`;
+  } else if(k==="pcorr"){
+    g+=`<line x1="${x}" y1="${y-10}" x2="${x+W}" y2="${y-10}" stroke-width="4"/>`;
+    const L=Math.min(W, x-24);
+    g+=`<rect x="${x-L}" y="${y-18}" width="${L}" height="16" stroke-dasharray="6 5" opacity=".55"/><path d="M${x+W*.6} ${y-34}h-60m8-6l-8 6l8 6" stroke-width="1.4"/>`;
+    nota=`Para abrir del todo corre sobre la línea municipal: hacen falta ${st.w} cm de pared libre al costado.`;
+  }
+  g+=`</g><text x="${VW/2}" y="${y+wall+16}" text-anchor="middle" font-size="12" fill="var(--gris)" font-family="Barlow">interior</text><text x="${VW/2}" y="${y-44}" text-anchor="middle" font-size="12" fill="var(--gris)" font-family="Barlow">exterior</text>`;
+  g+=`<g stroke="var(--cota)" fill="var(--cota)" font-family="Barlow" font-size="14" font-weight="600"><line x1="${x}" y1="${y+wall+250>VH-20?VH-30:y+wall+250}" x2="${x+W}" y2="${y+wall+250>VH-20?VH-30:y+wall+250}"/><text x="${VW/2}" y="${VH-12}" text-anchor="middle" stroke="none">${st.w} cm</text></g>`;
+  return {g,nota};
+}
+
+function notaFrente(st){
+  const t=T();
+  if(t.kind==="corr" && st.w>250) return "Con más de 2,5 m de ancho conviene pensar en tres hojas: lo vemos al medir.";
+  if(st.line==="alu" && st.glass!=="dvh" && t.kind!=="lev" && !t.noGlass) return "En aluminio, el DVH ayuda mucho con el frío de Tandil en invierno.";
+  if(st.line==="pvc") return "PVC: máxima aislación, cero mantenimiento y sellado hermético.";
+  if(st.line==="mad") return "Madera: la terminación se elige con muestra en el local.";
+  return "Medidas del vano terminado. Las confirmamos en obra.";
+}
+
+function render(){
+  const st=E.S, t=T(), c=E.calc(st);
+  $("tag").textContent = t.name + (st.q>1?` × ${st.q}`:"");
+  $("vFrente").setAttribute("aria-pressed", vista==="frente"); $("vPlanta").setAttribute("aria-pressed", vista==="planta");
+  if(vista==="frente"){ $("draw").innerHTML = E.draw(st,{uid:"m",font:"Barlow"}); $("nota").textContent = notaFrente(st); }
+  else { const p=planta(st); $("draw").innerHTML=p.g; $("nota").textContent=p.nota; }
+  $("glassBlk").hidden = !!t.noGlass;
+  $("q").textContent = st.q;
+  $("amt").textContent = `${E.ars(c.lo)} a ${E.ars(c.hi)}`;
+  $("mamt").textContent = `${E.ars(c.lo)} a ${E.ars(c.hi)}`;
+  $("sub").textContent = `${c.area.toFixed(2).replace(".",",")} m² por unidad${st.q>1?`, ${st.q} unidades`:""}. ${st.inst?"Incluye colocación.":"Sin colocación."}`;
+  renderList();
+}
+function renderList(){
+  const it=E.items;
+  $("empty").hidden = it.length>0; $("totRow").hidden = it.length===0;
+  $("items").innerHTML = it.map((s,i)=>{ const d=E.describe(s), c=E.calc(s);
+    return `<li><svg viewBox="0 0 60 60" aria-hidden="true">${E.draw(s,{vw:60,vh:60,mini:true,uid:"l"+i})}</svg><div><div>${d.name}${s.q>1?` × ${s.q}`:""}</div><div class="d">${d.detail}</div></div><div class="p">${E.ars(c.mid)}</div><button type="button" data-rm="${i}">Quitar</button></li>`; }).join("");
+  const t=E.totals(); $("total").textContent = `${E.ars(t.lo)} a ${E.ars(t.hi)}`;
+}
+$("items").addEventListener("click",e=>{ const i=e.target.dataset.rm; if(i!==undefined) E.remove(+i); });
+$("add").onclick=()=>{ E.add(); toast("Sumada a tu obra"); };
+$("sendOne").onclick=()=>E.send();
+$("sendAll").onclick=()=>E.send(E.items);
+E.on(render);
+
+/* Consejero de material, con las respuestas del local */
+const SCORE = {aisla:{pvc:3,alu:1,mad:2}, panos:{pvc:1,alu:3,mad:0}, calidez:{pvc:0,alu:0,mad:3}, mant:{pvc:3,alu:2,mad:0}, precio:{pvc:1,alu:3,mad:1}};
+const WHY = {pvc:"PVC, para máxima aislación y cero mantenimiento.", alu:"Aluminio, para grandes paños y estética moderna.", mad:"Madera, para calidez y terminación artesanal."};
+let best="pvc";
+function consejo(){
+  const on=[...document.querySelectorAll("#prio input:checked")].map(i=>i.value);
+  const s={pvc:0,alu:0,mad:0}; on.forEach(k=>{ for(const m in s) s[m]+=SCORE[k][m]; });
+  const max=Math.max(1,...Object.values(s)); best=Object.keys(s).sort((a,b)=>s[b]-s[a])[0];
+  document.querySelectorAll(".mat-row").forEach(r=>{ const m=r.dataset.m; r.classList.toggle("win", m===best && on.length>0);
+    r.querySelector("i").style.width = (on.length? s[m]/max*100 : 0)+"%"; r.querySelector("output").textContent = on.length? Math.round(s[m]/max*10)+"/10" : "–"; });
+  $("whyQ").textContent = on.length ? WHY[best] : "Marcá al menos una prioridad.";
+  $("useMat").textContent = `Cotizar en ${E.byId(E.C.lines,best).name}`; $("useMat").disabled = !on.length;
+}
+$("prio").addEventListener("change",consejo);
+$("useMat").onclick=()=>{ E.S.line=best; document.getElementById("l-"+best).checked=true; buildColors(); E.fire(); document.getElementById("taller").scrollIntoView(); toast(`Material: ${E.byId(E.C.lines,best).name}`); };
+
+/* Puerta del inicio */
+const door=$("door"), leaf=$("leaf");
+const openDoor=()=>door.classList.add("open");
+if(!matchMedia("(prefers-reduced-motion: reduce)").matches) setTimeout(openDoor, 700); else openDoor();
+leaf.addEventListener("click",()=>{ if(door.classList.contains("open")) $("taller").scrollIntoView(); else openDoor(); });
+leaf.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); leaf.click(); } });
+
+/* Fotos: si no cargan, queda la placa */
+document.querySelectorAll(".fotos img").forEach(img=>{ const f=img.closest("figure"); const bad=()=>{f.classList.add("err"); img.remove();}; if(img.complete && !img.naturalWidth) bad(); else img.addEventListener("error",bad); });
+
+/* Barra móvil */
+const mob=$("mob");
+new IntersectionObserver(es=>es.forEach(e=>mob.classList.toggle("on", e.isIntersecting)),{threshold:0.05}).observe($("taller"));
+
+/* Admin */
+$("openAdm").onclick=()=>{ E.bindAdmin($("admBody")); $("adm").showModal(); };
+$("admClose").onclick=()=>$("adm").close();
+$("admReset").onclick=()=>{ E.resetPrices($("admBody")); toast("Valores de ejemplo restaurados"); };
+
+let tt; function toast(m){ const t=$("toast"); t.textContent=m; t.classList.add("on"); clearTimeout(tt); tt=setTimeout(()=>t.classList.remove("on"),1800); }
+
+buildFam(); buildTypes(); buildColors(); buildExtras(); setLimits(); consejo(); render();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Polifroni Puertas"></script>
+</body>
+</html>
