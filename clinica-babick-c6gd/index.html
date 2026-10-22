@@ -505,7 +505,7 @@ dr.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',close)
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&dr.classList.contains('open'))close();});
 document.addEventListener('click',e=>{const b=e.target.closest('[data-book]');if(b&&!b.closest('.drawer')){e.preventDefault();open(b.dataset.book||null,b.dataset.pro,b.dataset.zone);}});
 function days(){const o=[];const d=new Date();d.setHours(0,0,0,0);while(o.length<12){d.setDate(d.getDate()+1);if(d.getDay()>=1&&d.getDay()<=5)o.push(new Date(d));}return o;}
-function slots(day,dur){const o=[];const end=day.getDay()===6?13*60:20*60;for(let m=9*60;m+dur<=end;m+=30){const k=(day.getDate()*17+m*3+dur)%9;o.push({t:String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0'),busy:k<3});}return o;}
+function slots(day,dur){const o=[];const end=day.getDay()===6?13*60:20*60;for(let m=9*60;m+dur<=end;m+=30){const k=(day.getDate()*5+(m/30)*4+dur)%9;o.push({t:String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0'),busy:k<3});}return o;}
 const fd=d=>DAYS[d.getDay()]+' '+d.getDate()+'/'+(d.getMonth()+1);
 function render(){
   [...document.getElementById('prog').children].forEach((x,i)=>x.className=i<S.step?'done':(i===S.step?'on':''));
