@@ -1,0 +1,619 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Cardozo Inmobiliaria · Junín | De Suiza 1030 a Italia 318</title>
+<meta name="description" content="Prototipo: catálogo de Cardozo Inmobiliaria (Av. Arias 143, Junín) ordenado por estado de cada propiedad, con cálculo de precio más obra.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Geologica:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --papel:#F5F1E8; --papel-2:#EDE6D6; --hoja:#FBF9F4;
+  --tinta:#161512; --tinta-2:#4A463F; --gris:#8F8A80; --linea:#D8D0BE;
+  --obra:#D9531E; --obra-osc:#9C3510; --obra-claro:#F7DCCD;
+  --verde:#2F6B4F; --verde-claro:#DCEBE2;
+  --cap1:#2F6B4F; --cap2:#D9531E; --cap3:#33507A; --cap4:#7A8A3A;
+  --serif:"EB Garamond", Georgia, "Times New Roman", serif;
+  --sans:"Geologica", "Segoe UI", system-ui, sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--papel);color:var(--tinta);font-family:var(--sans);font-weight:300;font-size:16px;line-height:1.6;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--obra);outline-offset:2px}
+.wrap{max-width:1240px;margin:0 auto;padding:0 28px}
+@media (max-width:640px){.wrap{padding:0 16px}}
+
+/* aviso */
+.aviso{background:var(--tinta);color:#EFE9DC;font-size:13px;text-align:center;padding:7px 16px;letter-spacing:.02em}
+.aviso b{font-weight:500;color:#fff}
+
+/* cabecera */
+header.top{border-bottom:1px solid var(--linea);background:var(--papel);position:sticky;top:0;z-index:30}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:64px}
+.marca{display:flex;align-items:baseline;gap:12px;text-decoration:none}
+.marca .nom{font-family:var(--serif);font-size:28px;font-weight:600;letter-spacing:.01em;line-height:1}
+.marca .sub{font-size:11px;text-transform:uppercase;letter-spacing:.16em;color:var(--gris)}
+nav.menu{display:flex;gap:22px;font-size:14px}
+nav.menu a{text-decoration:none;color:var(--tinta-2)}
+nav.menu a:hover{color:var(--obra)}
+.btn-wa{display:inline-flex;align-items:center;gap:8px;background:var(--verde);color:#fff;text-decoration:none;border-radius:999px;padding:9px 16px;font-size:14px;font-weight:400;white-space:nowrap}
+.btn-wa svg{width:16px;height:16px}
+@media (max-width:860px){nav.menu{display:none}.marca .sub{display:none}}
+
+/* portada: tapa del libro */
+.tapa{padding:56px 0 40px}
+.tapa .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:start}
+.tapa .kicker{font-size:12px;text-transform:uppercase;letter-spacing:.2em;color:var(--obra);margin:0 0 18px}
+.tapa h1{font-family:var(--serif);font-weight:400;font-size:clamp(40px,5.6vw,76px);line-height:1.02;margin:0 0 22px;letter-spacing:-.01em}
+.tapa h1 em{font-style:italic;color:var(--obra-osc)}
+.tapa .bajada{font-size:18px;max-width:34em;color:var(--tinta-2);margin:0 0 28px}
+.tapa .datos{display:flex;flex-wrap:wrap;gap:28px;border-top:1px solid var(--linea);padding-top:18px}
+.tapa .datos div{min-width:110px}
+.tapa .datos b{display:block;font-family:var(--serif);font-size:34px;font-weight:500;line-height:1}
+.tapa .datos span{font-size:12px;color:var(--gris);text-transform:uppercase;letter-spacing:.12em}
+
+/* índice */
+.indice{background:var(--hoja);border:1px solid var(--linea);padding:28px 30px 22px;box-shadow:0 1px 0 var(--linea),0 18px 40px -28px rgba(22,21,18,.35);position:relative}
+.indice::before{content:"";position:absolute;inset:8px;border:1px solid var(--papel-2);pointer-events:none}
+.indice h2{font-family:var(--serif);font-weight:500;font-size:15px;text-transform:uppercase;letter-spacing:.24em;text-align:center;margin:0 0 18px}
+.cap{margin:0 0 14px}
+.cap-tit{display:flex;align-items:center;gap:10px;width:100%;background:none;border:0;padding:4px 0;cursor:pointer;text-align:left;font-family:var(--serif);font-size:19px;font-style:italic}
+.cap-tit .num{font-style:normal;font-family:var(--sans);font-size:11px;font-weight:500;letter-spacing:.14em;color:#fff;border-radius:3px;padding:2px 6px}
+.cap-tit[aria-pressed="true"]{text-decoration:underline;text-underline-offset:4px}
+.cap ol{list-style:none;margin:2px 0 0;padding:0}
+.cap li a{display:flex;align-items:baseline;gap:6px;text-decoration:none;font-size:14px;padding:3px 0;color:var(--tinta-2)}
+.cap li a:hover{color:var(--obra)}
+.cap li .dir{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:60%}
+.cap li .pts{flex:1;border-bottom:1px dotted var(--gris);transform:translateY(-4px);min-width:16px}
+.cap li .pr{font-variant-numeric:tabular-nums;white-space:nowrap}
+.cap li .pg{font-family:var(--serif);font-style:italic;color:var(--gris);width:26px;text-align:right}
+.indice .pie-ind{font-size:12px;color:var(--gris);text-align:center;margin:12px 0 0}
+@media (max-width:960px){.tapa .wrap{grid-template-columns:1fr;gap:36px}}
+
+/* barra de filtros */
+.filtros{position:sticky;top:64px;z-index:20;background:rgba(245,241,232,.96);backdrop-filter:blur(6px);border-top:1px solid var(--linea);border-bottom:1px solid var(--linea)}
+.filtros .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;padding-top:10px;padding-bottom:10px}
+.filtros label{font-size:12px;color:var(--gris);text-transform:uppercase;letter-spacing:.1em;display:flex;align-items:center;gap:8px}
+.filtros input[type=range]{accent-color:var(--obra)}
+.filtros select,.filtros input[type=range]{font-size:14px;text-transform:none;letter-spacing:0;color:var(--tinta)}
+.filtros select{background:var(--hoja);border:1px solid var(--linea);border-radius:6px;padding:6px 8px}
+.chip{border:1px solid var(--linea);background:var(--hoja);border-radius:999px;padding:5px 12px;font-size:13px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--tinta);color:#fff;border-color:var(--tinta)}
+.filtros .cuenta{margin-left:auto;font-family:var(--serif);font-style:italic;font-size:17px}
+.pmax-out{font-variant-numeric:tabular-nums;color:var(--tinta);text-transform:none;letter-spacing:0;font-size:14px;min-width:84px}
+@media (max-width:640px){.filtros{position:static}.filtros .cuenta{margin-left:0;width:100%}}
+
+/* páginas: cada propiedad es un pliego */
+.libro{padding:40px 0 20px}
+.capitulo-sep{display:flex;align-items:center;gap:16px;margin:46px 0 18px}
+.capitulo-sep:first-child{margin-top:0}
+.capitulo-sep .rom{font-family:var(--serif);font-size:56px;line-height:1;font-weight:400}
+.capitulo-sep h3{font-family:var(--serif);font-weight:400;font-style:italic;font-size:28px;margin:0;line-height:1.1}
+.capitulo-sep p{margin:2px 0 0;font-size:14px;color:var(--tinta-2)}
+.capitulo-sep .raya{flex:1;height:1px;background:var(--linea)}
+.pliego{display:grid;grid-template-columns:1fr 1fr;background:var(--hoja);border:1px solid var(--linea);margin:0 0 26px;position:relative;box-shadow:0 22px 40px -34px rgba(22,21,18,.5)}
+.pliego::after{content:"";position:absolute;top:0;bottom:0;left:50%;width:36px;transform:translateX(-50%);background:linear-gradient(90deg,transparent,rgba(22,21,18,.07) 45%,rgba(22,21,18,.12) 50%,rgba(22,21,18,.07) 55%,transparent);pointer-events:none}
+.pliego.par .pag-foto{order:2}
+.pag-foto{position:relative;min-height:420px;overflow:hidden;background:var(--papel-2)}
+.pag-foto img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.pag-foto .sello{position:absolute;top:18px;left:18px;background:var(--obra);color:#fff;font-size:12px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;padding:5px 10px;transform:rotate(-3deg)}
+.pag-foto .mini{position:absolute;bottom:14px;right:14px;display:flex;gap:6px}
+.pag-foto .mini button{width:54px;height:40px;padding:0;border:2px solid #fff;background:var(--papel-2) center/cover;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,.25)}
+/* si la foto no carga: lámina tipográfica, nunca un hueco gris */
+.sinfoto img,.sinfoto .mini{display:none}
+.lamina{display:none;position:absolute;inset:0;padding:34px;flex-direction:column;justify-content:flex-end;color:var(--hoja);background:var(--c,var(--tinta))}
+.lamina::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(255,255,255,.06) 0 2px,transparent 2px 14px)}
+.lamina .l-dir{font-family:var(--serif);font-size:clamp(34px,4vw,54px);line-height:1;position:relative}
+.lamina .l-sub{position:relative;font-size:13px;letter-spacing:.14em;text-transform:uppercase;opacity:.85;margin-top:10px}
+.sinfoto .lamina{display:flex}
+.pag-txt{padding:40px 46px 34px;display:flex;flex-direction:column}
+.pag-txt .folio{display:flex;justify-content:space-between;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gris);margin-bottom:22px}
+.estado{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:500;letter-spacing:.06em;color:var(--c)}
+.estado::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--c)}
+.pag-txt h4{font-family:var(--serif);font-weight:400;font-size:clamp(28px,3vw,40px);line-height:1.05;margin:8px 0 6px}
+.pag-txt .barrio{font-size:14px;color:var(--tinta-2);margin:0 0 18px}
+.pag-txt .precio{font-family:var(--serif);font-size:34px;font-weight:500;margin:0 0 18px;font-variant-numeric:lining-nums}
+.pag-txt .precio small{font-family:var(--sans);font-size:12px;font-weight:400;color:var(--gris);letter-spacing:.1em;text-transform:uppercase;margin-left:8px}
+.ficha-tec{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--tinta);border-bottom:1px solid var(--linea);margin:0 0 18px}
+.ficha-tec div{padding:10px 0 9px;border-right:1px solid var(--linea);text-align:center}
+.ficha-tec div:last-child{border-right:0}
+.ficha-tec b{display:block;font-family:var(--serif);font-size:24px;font-weight:500;line-height:1.1}
+.ficha-tec span{font-size:11px;color:var(--gris);text-transform:uppercase;letter-spacing:.1em}
+.pag-txt .desc{font-family:var(--serif);font-size:18.5px;line-height:1.5;margin:0 0 18px}
+.pag-txt .desc::first-letter{font-size:3.1em;float:left;line-height:.85;padding:6px 8px 0 0;color:var(--c)}
+.acciones{display:flex;flex-wrap:wrap;gap:10px;margin-top:auto}
+.btn{border:1px solid var(--tinta);background:transparent;padding:9px 15px;border-radius:999px;font-size:14px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn.lleno{background:var(--tinta);color:#fff}
+.btn.obra{border-color:var(--obra);color:var(--obra-osc)}
+.btn.obra:hover{background:var(--obra);color:#fff}
+.btn.wa{background:var(--verde);border-color:var(--verde);color:#fff}
+.vacio{padding:60px 20px;text-align:center;font-family:var(--serif);font-size:22px;font-style:italic;color:var(--tinta-2)}
+@media (max-width:860px){
+  .pliego{grid-template-columns:1fr}
+  .pliego::after{display:none}
+  .pliego.par .pag-foto{order:0}
+  .pag-foto{min-height:260px;aspect-ratio:4/3}
+  .pag-txt{padding:26px 20px 24px}
+  .ficha-tec{grid-template-columns:repeat(2,1fr)}
+  .ficha-tec div:nth-child(2){border-right:0}
+  .ficha-tec div:nth-child(-n+2){border-bottom:1px solid var(--linea)}
+  .capitulo-sep .rom{font-size:42px}
+  .capitulo-sep h3{font-size:23px}
+}
+
+/* precio + obra */
+.obra-sec{padding:64px 0;border-top:1px solid var(--linea)}
+.obra-sec .wrap{display:grid;grid-template-columns:.8fr 1.2fr;gap:52px}
+.obra-sec .kicker{font-size:12px;text-transform:uppercase;letter-spacing:.2em;color:var(--obra);margin:0 0 12px}
+.obra-sec h2{font-family:var(--serif);font-weight:400;font-size:clamp(34px,4vw,52px);line-height:1.04;margin:0 0 16px}
+.obra-sec h2 em{color:var(--obra-osc)}
+.obra-sec .intro p{color:var(--tinta-2);margin:0 0 14px}
+.nota{font-size:13px;color:var(--gris);border-left:3px solid var(--obra);padding-left:12px}
+.calc{background:var(--hoja);border:1px solid var(--linea);padding:28px}
+.calc .fila{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.calc label{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--gris);margin-bottom:6px}
+.calc select,.calc input[type=number]{width:100%;background:var(--papel);border:1px solid var(--linea);border-radius:6px;padding:9px 10px;font-size:15px}
+.niveles{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.niveles button{border:1px solid var(--linea);background:var(--papel);border-radius:6px;padding:8px 12px;font-size:13.5px;cursor:pointer;text-align:left;line-height:1.25}
+.niveles button small{display:block;color:var(--gris);font-size:11.5px}
+.niveles button[aria-pressed="true"]{border-color:var(--obra);background:var(--obra-claro)}
+.barra{display:flex;height:34px;border:1px solid var(--tinta);margin:20px 0 10px;overflow:hidden}
+.barra span{display:block;height:100%;transition:width .35s ease}
+.barra .b1{background:var(--tinta)}
+.barra .b2{background:repeating-linear-gradient(135deg,var(--obra) 0 8px,#E8734A 8px 16px)}
+.barra .b3{background:var(--gris)}
+.leyenda{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--tinta-2);margin-bottom:14px}
+.leyenda i{display:inline-block;width:12px;height:12px;margin-right:6px;vertical-align:-1px}
+.totales{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--tinta);padding-top:12px;gap:10px}
+.totales b{display:block;font-family:var(--serif);font-size:30px;font-weight:500;line-height:1.1;font-variant-numeric:tabular-nums}
+.totales span{font-size:11.5px;color:var(--gris);text-transform:uppercase;letter-spacing:.1em}
+.calc .btn.wa{margin-top:18px}
+@media (max-width:960px){.obra-sec .wrap{grid-template-columns:1fr;gap:28px}}
+@media (max-width:560px){.calc{padding:18px}.calc .fila{grid-template-columns:1fr}.totales{grid-template-columns:1fr 1fr}.totales div:last-child{grid-column:1/-1}}
+
+/* contratapa: tasación */
+.contratapa{padding:64px 0 72px;background:var(--papel-2);border-top:1px solid var(--linea)}
+.contratapa .wrap{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.contratapa h2{font-family:var(--serif);font-weight:400;font-size:clamp(32px,3.6vw,46px);line-height:1.05;margin:0 0 14px}
+.contratapa p{color:var(--tinta-2)}
+.tasa{background:var(--hoja);border:1px solid var(--linea);padding:26px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.tasa .full{grid-column:1/-1}
+.tasa label{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--gris);display:block;margin-bottom:6px}
+.tasa input,.tasa select,.tasa textarea{width:100%;background:var(--papel);border:1px solid var(--linea);border-radius:6px;padding:9px 10px;font:inherit;font-size:15px}
+.tasa textarea{min-height:76px;resize:vertical}
+@media (max-width:860px){.contratapa .wrap{grid-template-columns:1fr}.tasa{grid-template-columns:1fr}}
+
+footer{background:var(--tinta);color:#CFC8B8;padding:40px 0 28px;font-size:14px}
+footer .wrap{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:28px}
+footer .fnom{font-family:var(--serif);font-size:28px;color:#fff;margin:0 0 6px}
+footer a{color:#fff}
+footer .proto{grid-column:1/-1;border-top:1px solid #3A3730;padding-top:16px;font-size:12.5px;color:#9C9585}
+@media (max-width:760px){footer .wrap{grid-template-columns:1fr}}
+
+/* ficha completa */
+dialog.ficha{border:0;padding:0;overflow:auto;width:min(1040px,96vw);max-height:92vh;background:var(--hoja);color:var(--tinta);box-shadow:0 30px 80px rgba(0,0,0,.4)}
+dialog.ficha::backdrop{background:rgba(22,21,18,.6)}
+.f-top{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid var(--linea);position:sticky;top:0;background:var(--hoja);z-index:2}
+.f-top .folio{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gris)}
+.cerrar{border:1px solid var(--linea);background:var(--papel);border-radius:999px;width:38px;height:38px;cursor:pointer;font-size:20px;line-height:1}
+.f-cuerpo{display:grid;grid-template-columns:1.25fr 1fr;gap:0}
+.galeria{background:var(--tinta);position:relative;align-self:start}
+.galeria .principal{aspect-ratio:4/3;position:relative;overflow:hidden;background:var(--papel-2)}
+.galeria .principal img{width:100%;height:100%;object-fit:cover}
+.galeria .principal .lamina{display:none}
+.galeria .principal.sinfoto .lamina{display:flex}
+.galeria .tiras{display:flex;gap:6px;padding:8px;overflow-x:auto}
+.galeria .tiras button{flex:0 0 76px;height:56px;border:2px solid transparent;padding:0;background:#333 center/cover;cursor:pointer}
+.galeria .tiras button[aria-current="true"]{border-color:var(--obra)}
+.galeria .flecha{position:absolute;top:50%;transform:translateY(-50%);border:0;background:rgba(251,249,244,.9);width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:18px}
+.galeria .flecha.izq{left:10px}.galeria .flecha.der{right:10px}
+.f-datos{padding:24px 26px}
+.f-datos h3{font-family:var(--serif);font-weight:400;font-size:32px;line-height:1.05;margin:6px 0}
+.f-datos ul{padding-left:18px;margin:10px 0 16px;font-size:14.5px}
+.f-datos .mapa{border:1px solid var(--linea);height:190px;margin:12px 0}
+.f-datos .mapa iframe{width:100%;height:100%;border:0}
+.f-datos .aclara{font-size:12px;color:var(--gris)}
+.f-cuerpo>*{min-width:0}
+@media (max-width:860px){.f-cuerpo{grid-template-columns:1fr}dialog.ficha{max-height:100vh;height:100%;width:100%;max-width:100%;margin:0}.f-datos{padding:20px 16px}.f-datos .ficha-tec{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="aviso"><b>Prototipo de demostración preparado para Cardozo Inmobiliaria.</b> Propiedades y fotos tomadas de su web pública; precios orientativos.</div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="marca" href="#inicio"><span class="nom">Cardozo</span><span class="sub">Inmobiliaria · Junín</span></a>
+    <nav class="menu" aria-label="Secciones">
+      <a href="#indice">Índice</a><a href="#libro">Propiedades</a><a href="#obra">Precio + obra</a><a href="#tasacion">Tasá tu casa</a>
+    </nav>
+    <a class="btn-wa" id="waTop" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.2-.2-.5-.3Z"/></svg>WhatsApp</a>
+  </div>
+</header>
+
+<main id="inicio">
+<section class="tapa">
+  <div class="wrap">
+    <div>
+      <p class="kicker">Catálogo de propiedades · Av. Arias 143, Junín</p>
+      <h1>De un depto en <em>Suiza 1030</em> a una casa con quincho en <em>Italia 318</em>.</h1>
+      <p class="bajada">Diez propiedades reales de Cardozo Inmobiliaria, ordenadas como se eligen de verdad: por cómo están. Las que están listas para entrar, las que hay que terminar, las que dejan renta y las que tienen verde. Y para cada una, cuánto cuesta en total con la obra incluida.</p>
+      <div class="datos">
+        <div><b id="dCant">10</b><span>en este catálogo</span></div>
+        <div><b>95</b><span>publicadas en su web</span></div>
+        <div><b id="dRango">USD 39 a 250 mil</b><span>rango de precios</span></div>
+      </div>
+    </div>
+    <aside class="indice" id="indice" aria-label="Índice del catálogo">
+      <h2>Índice</h2>
+      <div id="indiceCaps"></div>
+      <p class="pie-ind">Tocá un capítulo para quedarte solo con esas propiedades.</p>
+    </aside>
+  </div>
+</section>
+
+<div class="filtros" role="region" aria-label="Filtros">
+  <div class="wrap">
+    <label>Tipo
+      <select id="fTipo"><option value="">Todas</option><option>Casa</option><option>Casa quinta</option><option>Departamento</option><option>Lote</option></select>
+    </label>
+    <label>Barrio
+      <select id="fBarrio"><option value="">Todos</option></select>
+    </label>
+    <label>Dormitorios
+      <select id="fDorm"><option value="0">Cualquiera</option><option value="1">1 o más</option><option value="2">2 o más</option><option value="3">3 o más</option><option value="4">4 o más</option></select>
+    </label>
+    <label>Hasta <input type="range" id="fMax" min="40000" max="250000" step="5000" value="250000" aria-label="Precio máximo en dólares"><span class="pmax-out" id="fMaxOut">USD 250.000</span></label>
+    <button class="chip" id="fPileta" aria-pressed="false">Con pileta</button>
+    <button class="chip" id="fCochera" aria-pressed="false">Con cochera</button>
+    <button class="chip" id="fCredito" aria-pressed="false">Apta crédito</button>
+    <span class="cuenta" id="cuenta" aria-live="polite"></span>
+  </div>
+</div>
+
+<section class="libro" id="libro">
+  <div class="wrap" id="paginas"></div>
+</section>
+
+<section class="obra-sec" id="obra">
+  <div class="wrap">
+    <div class="intro">
+      <p class="kicker">Elemento propio de este catálogo</p>
+      <h2>Precio <em>+ obra</em>: lo que sale entrar a vivir.</h2>
+      <p>Varias casas de Cardozo se publican como lo que son: "a refaccionar-modernizar", "para terminar", "departamento para mejorar y destinar a renta". El comprador siempre se hace la misma cuenta en la cabeza. Acá la hace la página.</p>
+      <p>Elegí una propiedad, decí qué le harías y cuántos metros tocarías. Te muestra precio, obra y gastos de compra en una sola barra, y cuánto termina saliendo el metro cuadrado.</p>
+      <p class="nota">Los valores por m² y el porcentaje de gastos son de ejemplo y se pueden cambiar. Para un número firme, pedí presupuesto a un constructor y consultá los gastos con la inmobiliaria.</p>
+    </div>
+    <div class="calc" aria-label="Calculadora precio más obra">
+      <div class="fila">
+        <div><label for="cProp">Propiedad</label><select id="cProp"></select></div>
+        <div><label for="cPrecio">Precio (USD)</label><input type="number" id="cPrecio" min="0" step="1000"></div>
+      </div>
+      <label>¿Qué le harías?</label>
+      <div class="niveles" id="niveles"></div>
+      <div class="fila">
+        <div><label for="cM2">m² a intervenir</label><input type="number" id="cM2" min="0" step="5"></div>
+        <div><label for="cUsdM2">USD por m² (ejemplo)</label><input type="number" id="cUsdM2" min="0" step="10"></div>
+      </div>
+      <div class="fila">
+        <div><label for="cGastos">Gastos de compra (%)</label><input type="number" id="cGastos" min="0" max="20" step="0.5" value="7"></div>
+        <div><label for="cM2tot">m² finales de la casa</label><input type="number" id="cM2tot" min="0" step="5"></div>
+      </div>
+      <div class="barra" aria-hidden="true"><span class="b1" id="b1"></span><span class="b2" id="b2"></span><span class="b3" id="b3"></span></div>
+      <div class="leyenda"><span><i style="background:var(--tinta)"></i>Precio <b id="lPrecio"></b></span><span><i style="background:var(--obra)"></i>Obra <b id="lObra"></b></span><span><i style="background:var(--gris)"></i>Gastos <b id="lGastos"></b></span></div>
+      <div class="totales">
+        <div><b id="tTotal"></b><span>total para entrar</span></div>
+        <div><b id="tM2"></b><span>USD por m² final</span></div>
+        <div><b id="tObraPct"></b><span>de la cuenta es obra</span></div>
+      </div>
+      <a class="btn wa" id="cWa" href="#" target="_blank" rel="noopener">Mandar esta cuenta a Cardozo por WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<section class="contratapa" id="tasacion">
+  <div class="wrap">
+    <div>
+      <h2>¿Tenés una casa en Junín y querés saber cuánto vale?</h2>
+      <p>Contanos dónde está y cómo es. Te responde Cardozo Inmobiliaria con una tasación hecha por alguien que conoce los barrios, desde Villa Belgrano hasta la zona de quintas.</p>
+      <p>Av. Arias 143, Junín · Colegiado T° X F° 1063, Departamento Judicial Junín.</p>
+    </div>
+    <form class="tasa" id="tasaForm">
+      <div><label for="tTipo">Tipo</label><select id="tTipo"><option>Casa</option><option>Departamento</option><option>Casa quinta</option><option>Lote</option><option>Local</option></select></div>
+      <div><label for="tBarrio">Barrio o dirección</label><input id="tBarrio" placeholder="Ej.: Villa Belgrano" required></div>
+      <div><label for="tDorm">Dormitorios</label><select id="tDorm"><option>1</option><option selected>2</option><option>3</option><option>4 o más</option><option>No aplica</option></select></div>
+      <div><label for="tM2">m² aproximados</label><input id="tM2" type="number" min="0" placeholder="Ej.: 120"></div>
+      <div class="full"><label for="tObs">Algo más</label><textarea id="tObs" placeholder="Estado, cochera, patio, si la querés vender o alquilar…"></textarea></div>
+      <div><label for="tNom">Tu nombre</label><input id="tNom" required></div>
+      <div style="align-self:end"><button class="btn wa" type="submit">Pedir tasación por WhatsApp</button></div>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div><p class="fnom">Cardozo Inmobiliaria</p><p>Av. Arias 143, Junín, Buenos Aires.<br>Colegiado T° X F° 1063 · Depto. Judicial Junín.</p></div>
+    <div><p>WhatsApp<br><a href="#" id="waF1" target="_blank" rel="noopener">0236 422-6570</a> · <a href="#" id="waF2" target="_blank" rel="noopener">0236 437-0819</a></p><p>Mail<br><a href="mailto:info@cardozoinmobiliaria.com">info@cardozoinmobiliaria.com</a></p></div>
+    <div><p>Instagram<br><a href="https://www.instagram.com/cardozo_inmobiliaria_junin/" target="_blank" rel="noopener">@cardozo_inmobiliaria_junin</a></p><p>Web actual<br><a href="https://cardozoinmobiliaria.com/" target="_blank" rel="noopener">cardozoinmobiliaria.com</a></p></div>
+    <p class="proto">Prototipo de demostración preparado para Cardozo Inmobiliaria por Resolviendo Kos. Datos, precios y fotos tomados de cardozoinmobiliaria.com en octubre de 2026; son orientativos y las medidas exactas surgen de cada título.</p>
+  </div>
+</footer>
+
+<dialog class="ficha" id="ficha" aria-labelledby="fTit">
+  <div class="f-top"><span class="folio" id="fFolio"></span><button class="cerrar" id="fCerrar" aria-label="Cerrar ficha">×</button></div>
+  <div class="f-cuerpo">
+    <div class="galeria">
+      <div class="principal" id="gPrin"><img id="gImg" alt=""><div class="lamina" id="gLam"><div class="l-dir" id="gLamDir"></div><div class="l-sub">Fotos en la web de Cardozo</div></div>
+        <button class="flecha izq" id="gIzq" aria-label="Foto anterior">‹</button><button class="flecha der" id="gDer" aria-label="Foto siguiente">›</button></div>
+      <div class="tiras" id="gTiras"></div>
+    </div>
+    <div class="f-datos">
+      <span class="estado" id="fEstado"></span>
+      <h3 id="fTit"></h3>
+      <p class="barrio" id="fBarrioTxt" style="margin:0 0 10px;color:var(--tinta-2);font-size:14px"></p>
+      <p class="precio" id="fPrecio" style="font-family:var(--serif);font-size:32px;margin:0 0 10px"></p>
+      <div class="ficha-tec" id="fTec"></div>
+      <ul id="fCar"></ul>
+      <div class="mapa"><iframe id="fMapa" title="Mapa de la zona" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+      <p class="aclara">El mapa muestra la calle o el barrio publicados, no la ubicación exacta.</p>
+      <div class="acciones"><a class="btn wa" id="fWa" href="#" target="_blank" rel="noopener">Consultar por WhatsApp</a><button class="btn obra" id="fObra">Precio + obra</button></div>
+    </div>
+  </div>
+</dialog>
+
+<script>
+(function(){
+"use strict";
+var WA1="5492364226570", WA2="5492364370819";
+function wa(t,n){return "https://wa.me/"+(n||WA1)+"?text="+encodeURIComponent(t);}
+var U="https://cardozoinmobiliaria.com/wp-content/uploads/";
+var CAPS=[
+  {id:1,rom:"I",tit:"Listas para entrar",txt:"Se mudan con la valija.",c:"var(--cap1)"},
+  {id:2,rom:"II",tit:"Para refaccionar o terminar",txt:"El precio deja margen para la obra.",c:"var(--cap2)"},
+  {id:3,rom:"III",tit:"Con renta",txt:"Casa más local o depto, o un depto para alquilar.",c:"var(--cap3)"},
+  {id:4,rom:"IV",tit:"Verde y quintas",txt:"Ruta 188, Parque Borchex y zona de quintas.",c:"var(--cap4)"}
+];
+/* nivel por defecto para la calculadora: 0 entrar así, 1 refresco, 2 refacción, 3 terminar/ampliar, 4 construir */
+var P=[
+ {id:"italia-318",cap:1,tipo:"Casa",dir:"Italia 318",barrio:"Centro",zona:"entre Av. San Martín y Alem",precio:250000,dorm:4,banos:4,coch:1,m2:300,lote:"8,66 × 34,57 m",pileta:false,credito:false,
+  desc:"Casa de dos plantas pensada para la vida en familia y para recibir: living comedor con barra y hogar a leña, cocina comedor abierta, dormitorio u oficina en suite en planta baja y tres dormitorios arriba, dos con balcón.",
+  car:["Quincho equipado con cocina, baño completo y sótano","Galería y jardín con lugar para una futura pileta","Cochera","Aire acondicionado, gas natural, cloacas"],
+  fotos:["2026/09/3-2.jpg","2026/09/4-3.jpg","2026/09/5-2.jpg","2026/09/7-5.jpg","2026/09/8-4.jpg","2026/09/9-2.jpg"],nivel:0,q:"Italia 318, Junín, Buenos Aires"},
+ {id:"alemania-600",cap:1,tipo:"Casa",dir:"Alemania al 600",barrio:"A minutos del centro",zona:"cerca de Circunvalación",precio:70000,dorm:2,banos:1,coch:2,m2:103,lote:"150 m² totales",pileta:false,credito:true,
+  desc:"Casa lista para habitar, sin necesidad de reformas: living, cocina comedor, galería y patio con jardín. Cochera para dos autos y apta crédito.",
+  car:["103 m² cubiertos y 45 m² semicubiertos","Cochera para 2 autos","Apta crédito","Aire acondicionado y servicios completos"],
+  fotos:["2026/09/posadas-y-alemania-verde.jpg","2026/09/3-copia-2-copia-copia-copia-copia.jpg","2026/09/4-copia-copia-copia.jpg","2026/09/5-1.jpg","2026/09/6-copia-copia.jpg","2026/09/7-3.jpg"],nivel:0,q:"Alemania 600, Junín, Buenos Aires"},
+ {id:"guido-spano-900",cap:1,tipo:"Casa",dir:"Guido Spano 900",barrio:"Barrio Eusebio Marcilla",zona:"a metros de la Ruta 7",precio:130000,dorm:3,banos:2,coch:2,m2:200,lote:"10 × 43 m",pileta:true,credito:false,reservada:true,
+  desc:"Casa de dos plantas sobre lote de 10 × 43: cocina comedor amplia, galería con parrilla y cochera para dos autos abajo; tres dormitorios arriba, el principal con balcón a la calle.",
+  car:["Pileta de fibra de 3 × 6 m","Galpón multiuso de 10 × 5 m","Acepta permuta","Quincho, jardín y aire acondicionado"],
+  fotos:["2026/10/guido-spano-900-4.jpg","2026/10/3.jpg","2026/10/4.jpg","2026/10/5.jpg","2026/10/6.jpg","2026/10/7.jpg"],nivel:0,q:"Guido Spano 900, Junín, Buenos Aires"},
+ {id:"av-libertad-750",cap:2,tipo:"Casa",dir:"Av. Libertad al 750",barrio:"Sobre Av. Libertad",zona:"estilo chalet",precio:75000,dorm:2,banos:1,coch:1,m2:90,lote:"10 × 29,5 m",pileta:false,credito:false,
+  desc:"Chalet habitable que pide refacción y puesta al día. Living, cocina comedor, amplio patio y lugar de guardado, con un terreno que deja crecer.",
+  car:["Unos 90 m² construidos según la descripción","Lote de 295 m²","Cochera","Agua, cloaca, luz y gas natural"],
+  fotos:["2026/09/3-3.jpg","2026/09/4-4.jpg","2026/09/5-3.jpg","2026/09/6-4.jpg","2026/09/7-6.jpg","2026/09/8-5.jpg"],nivel:2,q:"Avenida Libertad 750, Junín, Buenos Aires"},
+ {id:"matheu-proyecto-alvear",cap:2,tipo:"Casa",dir:"Calle Matheu",barrio:"Barrio Proyecto Alvear",zona:"obra en curso",precio:70000,dorm:1,banos:1,coch:2,m2:97,lote:"10 × 44 m",pileta:true,credito:false,
+  desc:"Casa en construcción para terminar a gusto: cocina comedor integrada, baño completo y un patio con pileta de 7 × 3,5 que ya está hecha. Lote amplio de 440 m².",
+  car:["97 m² construidos","Pileta de 7 × 3,5 m","Cochera cubierta para 2 autos","Servicios: agua, cloaca, luz y gas"],
+  fotos:["2026/09/3-8.jpg","2026/09/4-9.jpg","2026/09/5-8.jpg","2026/09/6-9.jpg","2026/09/7-10.jpg","2026/09/8-9.jpg"],nivel:3,q:"Matheu, Barrio Proyecto Alvear, Junín, Buenos Aires"},
+ {id:"villa-belgrano",cap:3,tipo:"Casa",dir:"Cdte. Escribano y Rioja",barrio:"Villa Belgrano",zona:"esquina",precio:105000,dorm:4,banos:2,coch:1,m2:150,lote:"10,39 × 30,31 m",pileta:false,credito:false,
+  desc:"En la esquina, una casa en muy buen estado y un departamento independiente con entrada propia y patio: vivir en una y alquilar la otra, o usar las dos.",
+  car:["Casa: living, comedor, cocina, lavadero y patio","Depto: living, cocina comedor y patio propio, para mejorar","2 dormitorios en cada unidad","Cochera"],
+  fotos:["2026/09/3-7.jpg","2026/09/4-8.jpg","2026/09/5-7.jpg","2026/09/6-8.jpg","2026/09/7-9.jpg","2026/09/8-8.jpg"],nivel:1,q:"Comandante Escribano y Rioja, Junín, Buenos Aires"},
+ {id:"winter-y-ameghino",cap:3,tipo:"Casa",dir:"Winter y Ameghino",barrio:"Barrio Las Morochas",zona:"a pocas cuadras del centro",precio:92000,dorm:4,banos:3,coch:3,m2:211,lote:"10,30 × 32,30 m",pileta:false,credito:false,
+  desc:"Casa de cuatro dormitorios con local comercial y baño propio: sirve para un negocio, un consultorio o para alquilar. Patio con parrilla y lugar para ampliar.",
+  car:["211 m² cubiertos y 43 m² semicubiertos","Local comercial con baño","Cochera para 2 o 3 autos","Patio con parrilla"],
+  fotos:["2026/09/3-1.jpg","2026/09/4-2.jpg","2026/09/6-2.jpg","2026/09/7-2.jpg","2026/09/8-2.jpg","2026/09/10-2.jpg"],nivel:1,q:"Winter y Ameghino, Junín, Buenos Aires"},
+ {id:"suiza-1030",cap:3,tipo:"Departamento",dir:"Suiza 1030",barrio:"Junín",zona:"departamento interno",precio:39000,dorm:2,banos:1,coch:0,m2:60,lote:"60 m² + 30 m² de patio",pileta:false,credito:false,amb:3,
+  desc:"Departamento interno de 3 ambientes con entrada común y patio propio amplio. Para vivir o para poner en alquiler.",
+  car:["Unos 60 m² cubiertos y 30 m² descubiertos","Cocina, living y comedor integrados","Patio privado","Agua, cloaca, luz y gas natural"],
+  fotos:["2026/08/2-5.jpg","2026/08/3-10.jpg","2026/08/4-11.jpg","2026/08/5-13.jpg","2026/08/6-10.jpg"],nivel:1,q:"Suiza 1030, Junín, Buenos Aires"},
+ {id:"san-carlos-ruta-188",cap:4,tipo:"Casa quinta",dir:"Barrio San Carlos",barrio:"Ruta 188",zona:"a minutos del centro",precio:70000,dorm:1,banos:2,coch:0,m2:47,lote:"700 m²",pileta:true,credito:false,
+  desc:"Casa quinta para salir de la ciudad sin irse lejos: cocina, living y comedor integrados, dormitorio en suite y una galería semicubierta de 33 m² frente a la pileta.",
+  car:["Pileta de 5 × 2 m con filtro","Galería de 33 m² y parrilla","Aberturas DVH, termo solar y alarma perimetral","Parque amplio"],
+  fotos:["2026/08/3-9.jpg","2026/08/5-12.jpg","2026/08/6-9.jpg","2026/08/7-7.jpg","2026/08/9-6.jpg","2026/08/11-5.jpg"],nivel:3,q:"Barrio San Carlos, Ruta 188, Junín, Buenos Aires"},
+ {id:"garibaldi-y-los-naranjos",cap:4,tipo:"Lote",dir:"Garibaldi y Los Naranjos",barrio:"Zona de quintas",zona:"a pasos del Parque Borchex",precio:45000,dorm:0,banos:0,coch:0,m2:0,lote:"60 × 34 m (2.040 m²)",pileta:false,credito:false,
+  desc:"Lote parquizado de 2.040 m² en la zona de quintas, a cinco minutos del centro y a pasos del Parque Borchex. Para una casa, una quinta o un espacio verde propio.",
+  car:["60 × 34 m","Luz y perforación","Cerco perimetral","Entorno tranquilo"],
+  fotos:["2026/08/lote-garibaldi-y-los-naranjos.jpg","2026/08/3-2.jpg","2026/08/4-4.jpg","2026/08/5-5.jpg"],nivel:4,q:"Garibaldi y Los Naranjos, Junín, Buenos Aires"}
+];
+var NIV=[
+  {t:"Entrar así",s:"sin obra",usd:0},
+  {t:"Refresco",s:"pintura, detalles",usd:70},
+  {t:"Refacción integral",s:"baños, cocina, instalaciones",usd:320},
+  {t:"Terminar o ampliar",s:"completar o sumar m²",usd:550},
+  {t:"Construir",s:"casa nueva en el lote",usd:800}
+];
+var $=function(id){return document.getElementById(id);};
+function usd(n){return "USD "+Math.round(n).toLocaleString("es-AR");}
+function capOf(p){return CAPS[p.cap-1];}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+
+/* índice */
+var capSel=0;
+function armarIndice(){
+  var h="";
+  CAPS.forEach(function(c){
+    h+='<div class="cap"><button class="cap-tit" data-cap="'+c.id+'" aria-pressed="false"><span class="num" style="background:'+c.c+'">'+c.rom+'</span>'+esc(c.tit)+'</button><ol>';
+    P.forEach(function(p,i){ if(p.cap!==c.id) return;
+      h+='<li><a href="#p-'+p.id+'" data-ir="'+p.id+'"><span class="dir">'+esc(p.dir)+'</span><span class="pts"></span><span class="pr">'+usd(p.precio).replace("USD ","U$S ")+'</span><span class="pg">'+(i+1)+'</span></a></li>';
+    });
+    h+='</ol></div>';
+  });
+  $("indiceCaps").innerHTML=h;
+  [].forEach.call(document.querySelectorAll(".cap-tit"),function(b){
+    b.addEventListener("click",function(){
+      var c=+b.dataset.cap; capSel=(capSel===c)?0:c;
+      [].forEach.call(document.querySelectorAll(".cap-tit"),function(x){x.setAttribute("aria-pressed",String(+x.dataset.cap===capSel));});
+      render(); $("libro").scrollIntoView({behavior:"smooth"});
+    });
+  });
+  [].forEach.call(document.querySelectorAll("[data-ir]"),function(a){
+    a.addEventListener("click",function(e){
+      var p=P.find(function(x){return x.id===a.dataset.ir;});
+      if(!visible(p)){ limpiar(); render(); }
+    });
+  });
+}
+/* barrios */
+(function(){var b={};P.forEach(function(p){b[p.barrio]=1;});Object.keys(b).sort().forEach(function(n){var o=document.createElement("option");o.textContent=n;$("fBarrio").appendChild(o);});})();
+
+var st={tipo:"",barrio:"",dorm:0,max:250000,pileta:false,coch:false,cred:false};
+function visible(p){
+  if(capSel && p.cap!==capSel) return false;
+  if(st.tipo && p.tipo!==st.tipo) return false;
+  if(st.barrio && p.barrio!==st.barrio) return false;
+  if(st.dorm && p.dorm<st.dorm) return false;
+  if(p.precio>st.max) return false;
+  if(st.pileta && !p.pileta) return false;
+  if(st.coch && !p.coch) return false;
+  if(st.cred && !p.credito) return false;
+  return true;
+}
+function limpiar(){capSel=0;st={tipo:"",barrio:"",dorm:0,max:250000,pileta:false,coch:false,cred:false};
+  $("fTipo").value="";$("fBarrio").value="";$("fDorm").value="0";$("fMax").value=250000;$("fMaxOut").textContent="USD 250.000";
+  ["fPileta","fCochera","fCredito"].forEach(function(i){$(i).setAttribute("aria-pressed","false");});
+  [].forEach.call(document.querySelectorAll(".cap-tit"),function(x){x.setAttribute("aria-pressed","false");});}
+
+function tec(p){
+  if(p.tipo==="Lote") return [["2.040","m² de lote"],["60 × 34","metros"],["Luz","y perforación"],["Quintas","zona"]];
+  return [[p.amb?p.amb:p.dorm, p.amb?"ambientes":"dormitorios"],[p.banos,"baños"],[p.m2,"m² cubiertos"],[p.coch?p.coch:"—", p.coch?"cocheras":"cochera"]];
+}
+function fotoHTML(p,i){
+  var c=capOf(p);
+  var h='<div class="pag-foto" style="--c:'+c.c+'">';
+  h+='<img src="'+U+p.fotos[0]+'" alt="'+esc(p.tipo+" en "+p.dir)+'" loading="lazy" onerror="this.parentNode.classList.add(\'sinfoto\')">';
+  h+='<div class="lamina"><div class="l-dir">'+esc(p.dir)+'</div><div class="l-sub">'+esc(p.barrio)+' · '+esc(p.tipo)+'</div></div>';
+  if(p.reservada) h+='<span class="sello">Reservada</span>';
+  h+='<div class="mini">';
+  p.fotos.slice(1,4).forEach(function(f,k){h+='<button aria-label="Ver foto '+(k+2)+'" data-abrir="'+p.id+'" data-foto="'+(k+1)+'" style="background-image:url(\''+U+f+'\')"></button>';});
+  h+='</div></div>';
+  return h;
+}
+function render(){
+  var vis=P.filter(visible), h="", n=0;
+  CAPS.forEach(function(c){
+    var lista=vis.filter(function(p){return p.cap===c.id;});
+    if(!lista.length) return;
+    h+='<div class="capitulo-sep"><span class="rom" style="color:'+c.c+'">'+c.rom+'</span><div><h3>'+esc(c.tit)+'</h3><p>'+esc(c.txt)+'</p></div><span class="raya"></span></div>';
+    lista.forEach(function(p){
+      var idx=P.indexOf(p)+1; n++;
+      h+='<article class="pliego'+(n%2===0?" par":"")+'" id="p-'+p.id+'" style="--c:'+c.c+'">';
+      h+=fotoHTML(p);
+      h+='<div class="pag-txt"><div class="folio"><span>Cap. '+c.rom+'</span><span>Pág. '+(idx<10?"0":"")+idx+'</span></div>';
+      h+='<span class="estado">'+esc(NIV[p.nivel].t==="Entrar así"?"Lista para entrar":(p.nivel===4?"Para construir":(p.cap===3?"Con renta":NIV[p.nivel].t)))+'</span>';
+      h+='<h4>'+esc(p.dir)+'</h4><p class="barrio">'+esc(p.tipo)+' · '+esc(p.barrio)+', '+esc(p.zona)+'</p>';
+      h+='<p class="precio">'+usd(p.precio)+(p.credito?'<small>apta crédito</small>':'')+(p.reservada?'<small>reservada</small>':'')+'</p>';
+      h+='<div class="ficha-tec">'+tec(p).map(function(t){return '<div><b>'+t[0]+'</b><span>'+t[1]+'</span></div>';}).join("")+'</div>';
+      h+='<p class="desc">'+esc(p.desc)+'</p>';
+      h+='<div class="acciones"><button class="btn lleno" data-abrir="'+p.id+'">Ver ficha y fotos</button><button class="btn obra" data-obra="'+p.id+'">Precio + obra</button><a class="btn wa" target="_blank" rel="noopener" href="'+wa("Hola Cardozo, vi en el catálogo la propiedad de "+p.dir+" ("+p.barrio+", "+usd(p.precio)+") y quiero consultar.")+'">WhatsApp</a></div>';
+      h+='</div></article>';
+    });
+  });
+  if(!n) h='<p class="vacio">Ninguna propiedad cumple todo eso. Probá aflojar un filtro, o escribile a Cardozo: tienen 95 publicadas.</p>';
+  $("paginas").innerHTML=h;
+  $("cuenta").textContent=n+(n===1?" propiedad":" propiedades");
+  bindPag();
+}
+function bindPag(){
+  [].forEach.call(document.querySelectorAll("[data-abrir]"),function(b){b.addEventListener("click",function(){abrir(b.dataset.abrir,+(b.dataset.foto||0));});});
+  [].forEach.call(document.querySelectorAll("[data-obra]"),function(b){b.addEventListener("click",function(){irObra(b.dataset.obra);});});
+}
+$("fTipo").addEventListener("change",function(){st.tipo=this.value;render();});
+$("fBarrio").addEventListener("change",function(){st.barrio=this.value;render();});
+$("fDorm").addEventListener("change",function(){st.dorm=+this.value;render();});
+$("fMax").addEventListener("input",function(){st.max=+this.value;$("fMaxOut").textContent=usd(st.max);render();});
+[["fPileta","pileta"],["fCochera","coch"],["fCredito","cred"]].forEach(function(x){
+  $(x[0]).addEventListener("click",function(){st[x[1]]=!st[x[1]];this.setAttribute("aria-pressed",String(st[x[1]]));render();});
+});
+
+/* ficha */
+var dlg=$("ficha"), cur=null, fi=0;
+function mostrarFoto(){
+  var p=cur, f=p.fotos[fi];
+  $("gPrin").classList.remove("sinfoto");
+  $("gImg").src=U+f; $("gImg").alt=p.tipo+" en "+p.dir+", foto "+(fi+1);
+  [].forEach.call($("gTiras").children,function(b,k){b.setAttribute("aria-current",String(k===fi));});
+}
+$("gImg").addEventListener("error",function(){$("gPrin").classList.add("sinfoto");});
+function abrir(id,foto){
+  cur=P.find(function(p){return p.id===id;}); fi=foto||0;
+  var c=capOf(cur);
+  $("fFolio").textContent="Cap. "+c.rom+" · "+c.tit;
+  $("fEstado").textContent=c.tit; $("fEstado").style.setProperty("--c",c.c);
+  $("fTit").textContent=cur.dir;
+  $("fBarrioTxt").textContent=cur.tipo+" · "+cur.barrio+", "+cur.zona+" · lote "+cur.lote;
+  $("fPrecio").textContent=usd(cur.precio)+(cur.reservada?" · reservada":"");
+  $("fTec").innerHTML=tec(cur).map(function(t){return '<div><b>'+t[0]+'</b><span>'+t[1]+'</span></div>';}).join("");
+  $("fCar").innerHTML=cur.car.map(function(x){return "<li>"+esc(x)+"</li>";}).join("")+"<li>"+esc(cur.desc)+"</li>";
+  $("gLamDir").textContent=cur.dir;
+  $("gPrin").style.setProperty("--c",c.c);
+  $("gTiras").innerHTML=cur.fotos.map(function(f,k){return '<button aria-label="Foto '+(k+1)+'" style="background-image:url(\''+U+f+'\')"></button>';}).join("");
+  [].forEach.call($("gTiras").children,function(b,k){b.addEventListener("click",function(){fi=k;mostrarFoto();});});
+  $("fMapa").src="https://maps.google.com/maps?q="+encodeURIComponent(cur.q)+"&z=15&output=embed";
+  $("fWa").href=wa("Hola Cardozo, quiero consultar por "+cur.dir+" ("+cur.tipo+", "+cur.barrio+", "+usd(cur.precio)+"). ¿Se puede ver esta semana?");
+  mostrarFoto();
+  if(typeof dlg.showModal==="function") dlg.showModal(); else dlg.setAttribute("open","");
+}
+$("gIzq").addEventListener("click",function(){fi=(fi-1+cur.fotos.length)%cur.fotos.length;mostrarFoto();});
+$("gDer").addEventListener("click",function(){fi=(fi+1)%cur.fotos.length;mostrarFoto();});
+$("fCerrar").addEventListener("click",function(){dlg.close();});
+dlg.addEventListener("click",function(e){if(e.target===dlg) dlg.close();});
+dlg.addEventListener("close",function(){$("fMapa").src="about:blank";});
+document.addEventListener("keydown",function(e){ if(!dlg.open) return; if(e.key==="ArrowLeft") $("gIzq").click(); if(e.key==="ArrowRight") $("gDer").click(); });
+$("fObra").addEventListener("click",function(){var id=cur.id;dlg.close();irObra(id);});
+
+/* precio + obra */
+var nivel=0;
+P.forEach(function(p){var o=document.createElement("option");o.value=p.id;o.textContent=p.dir+" · "+usd(p.precio);$("cProp").appendChild(o);});
+$("niveles").innerHTML=NIV.map(function(n,k){return '<button type="button" data-n="'+k+'" aria-pressed="false">'+n.t+'<small>'+n.s+'</small></button>';}).join("");
+[].forEach.call($("niveles").children,function(b){b.addEventListener("click",function(){setNivel(+b.dataset.n,true);});});
+function propCalc(){return P.find(function(p){return p.id===$("cProp").value;});}
+function setNivel(k,manual){
+  nivel=k; var p=propCalc();
+  [].forEach.call($("niveles").children,function(b){b.setAttribute("aria-pressed",String(+b.dataset.n===k));});
+  $("cUsdM2").value=NIV[k].usd;
+  var m2=p.m2;
+  if(k===0) $("cM2").value=0;
+  else if(k===1||k===2) $("cM2").value=m2;
+  else if(k===3) $("cM2").value=p.tipo==="Lote"?120:Math.max(40,Math.round(m2*0.4/5)*5);
+  else $("cM2").value=p.tipo==="Lote"?120:60;
+  $("cM2tot").value=(k>=3?m2+(+$("cM2").value):m2)||(+$("cM2").value);
+  calc();
+}
+function cargarProp(){var p=propCalc();$("cPrecio").value=p.precio;setNivel(p.nivel);}
+function calc(){
+  var p=propCalc(), precio=+$("cPrecio").value||0, obra=(+$("cM2").value||0)*(+$("cUsdM2").value||0), gastos=precio*(+$("cGastos").value||0)/100, tot=precio+obra+gastos, m2f=+$("cM2tot").value||0;
+  $("b1").style.width=(tot?precio/tot*100:0)+"%";$("b2").style.width=(tot?obra/tot*100:0)+"%";$("b3").style.width=(tot?gastos/tot*100:0)+"%";
+  $("lPrecio").textContent=usd(precio);$("lObra").textContent=usd(obra);$("lGastos").textContent=usd(gastos);
+  $("tTotal").textContent=usd(tot);
+  $("tM2").textContent=m2f?usd(tot/m2f).replace("USD ","U$S "):"—";
+  $("tObraPct").textContent=(tot?Math.round(obra/tot*100):0)+"%";
+  $("cWa").href=wa("Hola Cardozo, hice la cuenta de "+p.dir+" en el catálogo: precio "+usd(precio)+", obra ("+NIV[nivel].t.toLowerCase()+", "+($("cM2").value||0)+" m²) "+usd(obra)+" y gastos "+usd(gastos)+". Total "+usd(tot)+". ¿Lo charlamos?");
+}
+["cPrecio","cM2","cUsdM2","cGastos","cM2tot"].forEach(function(i){$(i).addEventListener("input",calc);});
+$("cProp").addEventListener("change",cargarProp);
+function irObra(id){$("cProp").value=id;cargarProp();$("obra").scrollIntoView({behavior:"smooth"});}
+
+/* tasación */
+$("tasaForm").addEventListener("submit",function(e){
+  e.preventDefault();
+  var t="Hola Cardozo, soy "+$("tNom").value+". Quiero tasar un/a "+$("tTipo").value.toLowerCase()+" en "+$("tBarrio").value+", "+$("tDorm").value+" dormitorios"+($("tM2").value?", unos "+$("tM2").value+" m²":"")+"."+($("tObs").value?" "+$("tObs").value:"");
+  window.open(wa(t),"_blank","noopener");
+});
+$("waTop").href=wa("Hola Cardozo, vi su catálogo de propiedades y quiero hacer una consulta.");
+$("waF1").href=wa("Hola Cardozo, quiero hacer una consulta.",WA1);
+$("waF2").href=wa("Hola Cardozo, quiero hacer una consulta.",WA2);
+
+armarIndice(); render(); $("cProp").value="av-libertad-750"; cargarProp();
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Cardozo Inmobiliaria"></script>
+</body>
+</html>
