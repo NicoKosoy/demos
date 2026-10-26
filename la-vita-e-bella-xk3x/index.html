@@ -1,0 +1,887 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>La Vita è Bella · Cabañas en San Rafael</title>
+<meta name="description" content="Prototipo de demostración: web de reservas directas para La Vita è Bella, cinco cabañas amarillas y naranjas a minutos del centro de San Rafael, Mendoza.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ultra&family=Sen:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --giallo:#F2C230;      /* cabañas amarillas */
+  --giallo-2:#F7DA7A;
+  --arancio:#E8742C;     /* cabañas naranja */
+  --arancio-2:#C85A1A;
+  --vigna:#3E5B2E;       /* parral */
+  --vigna-2:#2C4220;
+  --vino:#7A1E2B;        /* malbec */
+  --crema:#FBF4E4;
+  --carta:#FFFBF1;
+  --linea:#E6D9BC;
+  --tinta:#2B1E16;
+  --tinta-2:#5C4A3C;
+  --display:"Ultra","Rockwell","Georgia",serif;
+  --sans:"Sen","Avenir Next","Helvetica Neue",Arial,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;overflow-x:clip}
+body{margin:0;background:var(--crema);color:var(--tinta);font-family:var(--sans);font-size:17px;line-height:1.6;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:var(--vino);text-underline-offset:3px}
+:focus-visible{outline:3px solid var(--vino);outline-offset:3px}
+h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;line-height:1.02;letter-spacing:-.01em}
+p{margin:0 0 1em}
+button,input,select{font:inherit;color:inherit}
+.env{max-width:1220px;margin:0 auto;padding:0 28px}
+.kicker{font-size:.78rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+
+/* aviso de prototipo */
+.aviso{background:var(--tinta);color:var(--crema);font-size:.82rem;text-align:center;padding:8px 16px}
+.aviso b{color:var(--giallo)}
+
+/* cabecera */
+.top{position:sticky;top:0;z-index:40;background:rgba(251,244,228,.94);backdrop-filter:blur(8px);border-bottom:2px solid var(--tinta)}
+.top .env{display:flex;align-items:center;justify-content:space-between;gap:16px;height:64px}
+.marca{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--tinta)}
+.marca .sol{width:34px;height:34px;border-radius:50%;background:conic-gradient(var(--giallo) 0 50%,var(--arancio) 50% 100%);border:2px solid var(--tinta)}
+.marca span{font-family:var(--display);font-size:1.25rem}
+.top nav{display:flex;gap:22px;font-weight:600;font-size:.92rem}
+.top nav a{color:var(--tinta);text-decoration:none}
+.top nav a:hover{color:var(--vino)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:2px solid var(--tinta);background:var(--tinta);color:var(--crema);padding:11px 20px;border-radius:999px;font-weight:700;text-decoration:none;cursor:pointer;transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 var(--arancio)}
+.btn.claro{background:transparent;color:var(--tinta)}
+.btn.giallo{background:var(--giallo);color:var(--tinta)}
+
+/* portada cartel */
+.cartel{position:relative;border-bottom:2px solid var(--tinta);overflow:hidden}
+.cartel-grid{display:grid;grid-template-columns:1.05fr .95fr;min-height:640px}
+.cartel-izq{background:var(--giallo);padding:64px 48px 56px;position:relative;display:flex;flex-direction:column;justify-content:space-between}
+.cartel-der{background:var(--arancio);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:40px}
+.cartel h1{font-size:clamp(3.4rem,8.4vw,7.6rem);color:var(--tinta)}
+.cartel h1 em{font-style:normal;color:var(--crema);-webkit-text-stroke:2px var(--tinta);paint-order:stroke fill}
+.cartel .bajada{font-size:1.22rem;max-width:30ch;font-weight:500;margin-top:22px}
+.cartel .sello{display:flex;gap:18px;flex-wrap:wrap;margin-top:34px}
+.dato{border-top:2px solid var(--tinta);padding-top:8px;min-width:130px}
+.dato b{display:block;font-family:var(--display);font-size:2rem;line-height:1}
+.dato span{font-size:.85rem;font-weight:600}
+.ventana{width:min(440px,100%);aspect-ratio:1;border-radius:50%;border:3px solid var(--tinta);overflow:hidden;position:relative;background:radial-gradient(circle at 30% 30%,var(--giallo-2),var(--arancio-2));box-shadow:14px 14px 0 var(--tinta)}
+.ventana img{width:100%;height:100%;object-fit:cover}
+.etiqueta-giro{position:absolute;right:28px;bottom:28px;width:150px;height:150px;animation:gira 26s linear infinite}
+@keyframes gira{to{transform:rotate(360deg)}}
+.etiqueta-giro text{font-family:var(--sans);font-weight:800;font-size:11.5px;letter-spacing:2.4px;fill:var(--tinta)}
+.cartel .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+
+/* cinta */
+.cinta{background:var(--tinta);color:var(--crema);overflow:hidden;white-space:nowrap;border-bottom:2px solid var(--tinta)}
+.cinta div{display:inline-block;padding:12px 0;animation:corre 40s linear infinite;font-weight:700;letter-spacing:.06em}
+.cinta i{font-style:normal;color:var(--giallo);margin:0 18px}
+@keyframes corre{to{transform:translateX(-50%)}}
+
+section{padding:96px 0}
+.titulo-sec{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:end;margin-bottom:44px}
+.titulo-sec .num{font-family:var(--display);font-size:5.5rem;line-height:.8;color:var(--arancio);-webkit-text-stroke:2px var(--tinta)}
+.titulo-sec h2{font-size:clamp(2.2rem,4.6vw,3.6rem)}
+.titulo-sec p{max-width:60ch;color:var(--tinta-2);margin:12px 0 0}
+
+/* due colori */
+.due{display:grid;grid-template-columns:1fr 1fr;border:2px solid var(--tinta);border-radius:28px;overflow:hidden;box-shadow:10px 10px 0 var(--tinta)}
+.tipo{padding:36px 34px 34px;display:flex;flex-direction:column;gap:18px}
+.tipo.amarilla{background:var(--giallo)}
+.tipo.naranja{background:var(--arancio);border-left:2px solid var(--tinta)}
+.tipo header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.tipo h3{font-size:2.6rem}
+.tipo .chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:2px solid var(--tinta);border-radius:999px;padding:3px 12px;font-size:.84rem;font-weight:700;background:var(--carta)}
+.fotos{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr;gap:10px;height:300px}
+.fotos div{border:2px solid var(--tinta);border-radius:16px;overflow:hidden;background:linear-gradient(135deg,rgba(255,255,255,.35),rgba(0,0,0,.08))}
+.fotos div:first-child{grid-row:span 2}
+.fotos img{width:100%;height:100%;object-fit:cover}
+.tipo ul{margin:0;padding:0;list-style:none;display:grid;gap:6px}
+.tipo li{padding-left:22px;position:relative}
+.tipo li::before{content:"";position:absolute;left:0;top:.62em;width:10px;height:10px;border-radius:50%;background:var(--tinta)}
+.planta{background:var(--carta);border:2px solid var(--tinta);border-radius:16px;padding:12px}
+.planta svg{width:100%;height:auto}
+.planta small{display:block;font-size:.75rem;color:var(--tinta-2);margin-top:4px}
+
+/* compositor */
+.compositor{margin-top:56px;display:grid;grid-template-columns:.9fr 1.1fr;gap:28px;background:var(--carta);border:2px solid var(--tinta);border-radius:28px;padding:34px}
+.compositor h3{font-size:2rem;margin-bottom:8px}
+.contador{display:flex;align-items:center;justify-content:space-between;border-bottom:1px dashed var(--linea);padding:12px 0}
+.contador .lbl b{display:block}
+.contador .lbl span{font-size:.85rem;color:var(--tinta-2)}
+.paso{display:flex;align-items:center;gap:10px}
+.paso button{width:38px;height:38px;border-radius:50%;border:2px solid var(--tinta);background:var(--crema);font-weight:800;font-size:1.1rem;cursor:pointer}
+.paso button:hover{background:var(--giallo)}
+.paso output{min-width:22px;text-align:center;font-weight:800;font-size:1.15rem}
+.propuesta{border-radius:20px;background:var(--crema);border:2px solid var(--tinta);padding:24px;display:flex;flex-direction:column;gap:14px}
+.casitas{display:flex;gap:10px;flex-wrap:wrap;min-height:78px}
+.casita{width:66px;height:74px;position:relative}
+.casita svg{width:100%;height:100%}
+.propuesta .msg{font-size:1.08rem;font-weight:600}
+.propuesta .nota{font-size:.88rem;color:var(--tinta-2)}
+
+/* menu tutto incluso */
+.menu-sec{background:var(--vigna);color:var(--crema);border-top:2px solid var(--tinta);border-bottom:2px solid var(--tinta);position:relative;overflow:hidden}
+.menu-sec::before{content:"";position:absolute;inset:0;background-image:radial-gradient(circle at 1px 1px,rgba(255,255,255,.08) 1px,transparent 0);background-size:22px 22px}
+.menu-sec .env{position:relative;display:grid;grid-template-columns:.8fr 1.2fr;gap:56px;align-items:start}
+.menu-sec h2{font-size:clamp(2.4rem,4.8vw,3.8rem);color:var(--giallo)}
+.menu-sec .lead{font-size:1.1rem;color:#E5E9D8;margin-top:18px}
+.carta{background:var(--carta);color:var(--tinta);border-radius:6px;padding:40px 42px;box-shadow:0 0 0 2px var(--tinta),12px 12px 0 var(--vigna-2);position:relative}
+.carta::before{content:"";position:absolute;inset:10px;border:1px solid var(--linea);border-radius:3px;pointer-events:none}
+.carta h3{font-size:1.6rem;text-align:center;margin-bottom:4px}
+.carta .sub{text-align:center;font-size:.82rem;letter-spacing:.18em;text-transform:uppercase;color:var(--tinta-2);margin-bottom:22px}
+.plato{display:flex;align-items:baseline;gap:10px;padding:9px 0}
+.plato b{font-weight:700}
+.plato .pun{flex:1;border-bottom:2px dotted #CDBB95;transform:translateY(-4px)}
+.plato .px{font-family:var(--display);color:var(--vino);white-space:nowrap}
+.plato small{display:block;font-size:.84rem;color:var(--tinta-2);font-weight:400}
+.foto-pileta{margin-top:26px;border-radius:999px 999px 18px 18px;overflow:hidden;border:2px solid var(--crema);aspect-ratio:4/3;background:linear-gradient(160deg,#6FA9B8,#3E7C8C)}
+.foto-pileta img{width:100%;height:100%;object-fit:cover}
+
+/* reserva */
+.reserva-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:28px;align-items:start}
+.cal-box{background:var(--carta);border:2px solid var(--tinta);border-radius:24px;padding:24px}
+.cal-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.selector{display:inline-flex;border:2px solid var(--tinta);border-radius:999px;overflow:hidden}
+.selector button{border:0;background:transparent;padding:8px 16px;font-weight:700;cursor:pointer}
+.selector button[aria-pressed="true"].am{background:var(--giallo)}
+.selector button[aria-pressed="true"].na{background:var(--arancio)}
+.nav-mes{display:flex;gap:8px}
+.nav-mes button{width:38px;height:38px;border-radius:50%;border:2px solid var(--tinta);background:var(--crema);cursor:pointer;font-weight:800}
+.meses{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.mes h4{font-family:var(--display);font-weight:400;font-size:1.2rem;margin:0 0 8px}
+.dias{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.dias .dn{font-size:.72rem;font-weight:700;text-align:center;color:var(--tinta-2)}
+.dia{aspect-ratio:1;border-radius:10px;border:1.5px solid transparent;background:var(--crema);font-size:.86rem;font-weight:600;cursor:pointer;position:relative;padding:0}
+.dia small{position:absolute;bottom:2px;left:0;right:0;font-size:.55rem;font-weight:700;color:var(--tinta-2)}
+.dia.alta{background:#FBE3C9}
+.dia.media{background:#FCEFC4}
+.dia.lleno{background:repeating-linear-gradient(135deg,#EFE5CF 0 4px,#E3D6B8 4px 8px);color:#A99A7E;cursor:not-allowed;text-decoration:line-through}
+.dia.pasado{opacity:.35;cursor:not-allowed}
+.dia.sel{background:var(--tinta);color:var(--crema)}
+.dia.sel small{color:var(--giallo)}
+.dia.rango{background:#4A3A2E;color:var(--crema)}
+.dia.rango small{color:var(--giallo-2)}
+.dia:not(.lleno):not(.pasado):hover{border-color:var(--tinta)}
+.leyenda{display:flex;gap:16px;flex-wrap:wrap;font-size:.8rem;margin-top:14px;color:var(--tinta-2)}
+.leyenda i{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-2px;margin-right:6px;border:1px solid var(--linea)}
+.sync{margin-top:14px;font-size:.84rem;background:var(--crema);border-radius:12px;padding:10px 14px;border:1px dashed var(--tinta-2)}
+.ticket{background:var(--tinta);color:var(--crema);border-radius:24px;padding:28px;position:sticky;top:84px}
+.ticket h3{font-size:1.8rem;color:var(--giallo);margin-bottom:14px}
+.campo{display:grid;gap:6px;margin-bottom:14px}
+.campo label{font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#D8CBB5}
+.campo select,.campo input{background:#3B2D23;border:1.5px solid #5D4B3E;border-radius:12px;padding:10px 12px;color:var(--crema)}
+.fila{display:flex;justify-content:space-between;gap:12px;padding:6px 0;font-size:.95rem}
+.fila.total{border-top:1.5px dashed #6B584A;margin-top:8px;padding-top:12px;font-size:1.1rem;font-weight:800}
+.fila.sena{color:var(--giallo);font-weight:800;font-size:1.15rem}
+.pago{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0}
+.pago div{background:#3B2D23;border-radius:12px;padding:10px 12px;font-size:.82rem}
+.pago b{display:block;font-size:1rem;color:var(--crema)}
+.cancel{margin-top:14px;background:var(--crema);color:var(--tinta);border-radius:16px;padding:14px 16px;font-size:.88rem}
+.cancel b{display:block;font-family:var(--display);font-weight:400;font-size:1.05rem;margin-bottom:4px}
+.aviso-sim{font-size:.82rem;color:#E9B9A0;margin:8px 0 0;min-height:1em}
+.ticket .btn{width:100%;margin-top:16px;background:var(--giallo);color:var(--tinta);border-color:var(--giallo)}
+.ticket .btn:hover{box-shadow:4px 4px 0 var(--arancio)}
+.mp{font-size:.78rem;color:#CDBFA8;text-align:center;margin-top:10px}
+
+/* temporadas */
+.temporadas{display:grid;grid-template-columns:repeat(4,1fr);border:2px solid var(--tinta);border-radius:24px;overflow:hidden;margin-top:28px}
+.temp{padding:22px;border-right:2px solid var(--tinta);background:var(--carta)}
+.temp:last-child{border-right:0}
+.temp .kicker{color:var(--tinta-2)}
+.temp h3{font-size:1.45rem;margin:6px 0 4px}
+.temp .fechas{font-weight:700;font-size:.92rem}
+.temp .pr{margin-top:12px;display:grid;gap:4px;font-size:.92rem}
+.temp .pr span{display:flex;justify-content:space-between;border-bottom:1px dotted var(--linea)}
+.temp.t-alta{background:#FBE3C9}.temp.t-media{background:#FCEFC4}
+.nota-precios{font-size:.85rem;color:var(--tinta-2);margin-top:12px}
+
+/* San Rafael */
+.paseos{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.paseo{border:2px solid var(--tinta);border-radius:22px;padding:24px;background:var(--carta);position:relative;overflow:hidden}
+.paseo .km{font-family:var(--display);font-size:2.6rem;color:var(--arancio);-webkit-text-stroke:1.5px var(--tinta);line-height:1}
+.paseo h3{font-size:1.35rem;margin:10px 0 6px}
+.paseo p{font-size:.94rem;color:var(--tinta-2);margin:0}
+.paseo.ancho{grid-column:span 2;background:var(--vigna);color:var(--crema)}
+.paseo.ancho p{color:#E5E9D8}
+.paseo.ancho .km{color:var(--giallo)}
+
+/* voces */
+.voces{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:20px;align-items:stretch}
+.voz{border-radius:22px;padding:26px;border:2px solid var(--tinta)}
+.voz.premio{background:var(--vino);color:var(--crema)}
+.voz.premio b{font-family:var(--display);font-size:2.8rem;display:block;line-height:1;color:var(--giallo)}
+.voz blockquote{margin:0;font-size:1.2rem;font-weight:600;line-height:1.4}
+.voz cite{display:block;margin-top:14px;font-style:normal;font-size:.84rem;color:var(--tinta-2)}
+.voz.g{background:var(--giallo)}.voz.n{background:var(--arancio)}
+
+/* faq */
+.faq{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+details{border:2px solid var(--tinta);border-radius:18px;background:var(--carta);padding:16px 20px}
+summary{font-weight:700;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:12px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-family:var(--display);font-size:1.3rem;line-height:1}
+details[open] summary::after{content:"–"}
+details p{margin:10px 0 0;color:var(--tinta-2)}
+
+/* llegar */
+.llegar{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center}
+.mapa{border:2px solid var(--tinta);border-radius:24px;overflow:hidden;background:var(--carta)}
+.mapa svg{width:100%;height:auto;display:block}
+.contacto{display:grid;gap:12px;margin-top:20px}
+.contacto a{display:flex;justify-content:space-between;align-items:center;border:2px solid var(--tinta);border-radius:16px;padding:14px 18px;text-decoration:none;color:var(--tinta);font-weight:700;background:var(--carta)}
+.contacto a:hover{background:var(--giallo)}
+.contacto small{font-weight:500;color:var(--tinta-2)}
+
+footer{background:var(--tinta);color:#D8CBB5;padding:44px 0 110px;font-size:.88rem}
+footer .env{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+footer b{font-family:var(--display);font-weight:400;font-size:1.4rem;color:var(--crema)}
+
+/* barra celular */
+.barra{position:fixed;left:12px;right:12px;bottom:12px;z-index:50;display:none;gap:8px;background:var(--tinta);border-radius:999px;padding:6px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.barra a{flex:1;text-align:center;padding:12px;border-radius:999px;font-weight:800;text-decoration:none;color:var(--crema)}
+.barra a.r{background:var(--giallo);color:var(--tinta)}
+
+.modal{position:fixed;inset:0;background:rgba(43,30,22,.6);display:none;align-items:center;justify-content:center;z-index:60;padding:16px}
+.modal.abierto{display:flex}
+.modal .caja{background:var(--crema);border:2px solid var(--tinta);border-radius:24px;max-width:460px;width:100%;padding:28px;box-shadow:10px 10px 0 var(--arancio)}
+.modal h3{font-size:1.7rem;margin-bottom:10px}
+
+@media (max-width:980px){
+  .top nav{display:none}
+  .cartel-grid{grid-template-columns:1fr}
+  .cartel-izq{padding:44px 24px}
+  .cartel-der{padding:36px 24px 48px}
+  .ventana{width:min(340px,86%)}
+  .etiqueta-giro{width:110px;height:110px;right:14px;bottom:14px}
+  .due{grid-template-columns:1fr}
+  .tipo.naranja{border-left:0;border-top:2px solid var(--tinta)}
+  .compositor{grid-template-columns:1fr;padding:24px}
+  .menu-sec .env{grid-template-columns:1fr;gap:32px}
+  .reserva-grid{grid-template-columns:1fr}
+  .ticket{position:static}
+  .temporadas{grid-template-columns:1fr 1fr}
+  .temp:nth-child(2){border-right:0}
+  .temp:nth-child(-n+2){border-bottom:2px solid var(--tinta)}
+  .paseos{grid-template-columns:1fr}
+  .paseo.ancho{grid-column:auto}
+  .voces{grid-template-columns:1fr}
+  .faq{grid-template-columns:1fr}
+  .llegar{grid-template-columns:1fr}
+  .barra{display:flex}
+}
+@media (max-width:620px){
+  body{font-size:16px}
+  .env{padding:0 16px}
+  section{padding:68px 0}
+  .titulo-sec{grid-template-columns:1fr;gap:6px}
+  .titulo-sec .num{font-size:3.6rem}
+  .tipo{padding:24px 18px}
+  .tipo h3{font-size:2rem}
+  .fotos{height:220px}
+  .carta{padding:28px 20px}
+  .meses{grid-template-columns:1fr}
+  .mes+.mes{display:none}
+  .temporadas{grid-template-columns:1fr}
+  .temp{border-right:0;border-bottom:2px solid var(--tinta)}
+  .temp:last-child{border-bottom:0}
+  .pago{grid-template-columns:1fr}
+  .cartel h1 em{-webkit-text-stroke:1.5px var(--tinta)}
+}
+@media (prefers-reduced-motion:reduce){.etiqueta-giro,.cinta div{animation:none}}
+</style>
+</head>
+<body>
+
+<div class="aviso">Prototipo de demostración preparado para <b>La Vita è Bella</b> · Fotos de su web · Disponibilidad y tarifas de ejemplo</div>
+
+<header class="top">
+  <div class="env">
+    <a class="marca" href="#inicio" aria-label="La Vita è Bella, inicio"><i class="sol" aria-hidden="true"></i><span>La Vita è Bella</span></a>
+    <nav aria-label="Secciones">
+      <a href="#cabanas">Cabañas</a>
+      <a href="#incluido">Incluido</a>
+      <a href="#reservar">Disponibilidad</a>
+      <a href="#temporadas">Tarifas</a>
+      <a href="#san-rafael">San Rafael</a>
+    </nav>
+    <a class="btn" href="#reservar">Reservar</a>
+  </div>
+</header>
+
+<main id="inicio">
+<section class="cartel" style="padding:0">
+  <div class="cartel-grid">
+    <div class="cartel-izq">
+      <div>
+        <div class="kicker">San Rafael · Mendoza · desde 2010</div>
+        <h1 style="margin-top:18px">Cinco cabañas, <em>dos colores,</em> una familia.</h1>
+        <p class="bajada">Amarillas para tres, naranjas para cinco, con pileta, quincho con horno de pizza y Domenico y Jaquelina atendiendo, a tres minutos del centro.</p>
+        <div class="cta">
+          <a class="btn" href="#reservar">Ver fechas libres</a>
+          <a class="btn claro" href="#cabanas">¿Amarilla o naranja?</a>
+        </div>
+      </div>
+      <div class="sello">
+        <div class="dato"><b>4,8</b><span>de 5 en TripAdvisor</span></div>
+        <div class="dato"><b>8 años</b><span>seguidos con Certificado de Excelencia</span></div>
+        <div class="dato"><b>3 min</b><span>del centro y del aeropuerto</span></div>
+      </div>
+    </div>
+    <div class="cartel-der">
+      <div class="ventana">
+        <img src="https://static.wixstatic.com/media/c85e2a_7e133c556d6d47b987a772a95c45ae85~mv2.jpg/v1/fill/w_900,h_900,al_c,q_80/portada.jpg" alt="El complejo La Vita è Bella en San Rafael" loading="eager" onerror="this.remove()">
+      </div>
+      <svg class="etiqueta-giro" viewBox="0 0 150 150" aria-hidden="true">
+        <defs><path id="circ" d="M75,75 m-58,0 a58,58 0 1,1 116,0 a58,58 0 1,1 -116,0"/></defs>
+        <circle cx="75" cy="75" r="72" fill="#FBF4E4" stroke="#2B1E16" stroke-width="3"/>
+        <text><textPath href="#circ">SALÓN DE LA FAMA · TRIPADVISOR · SAN RAFAEL · </textPath></text>
+        <circle cx="75" cy="75" r="22" fill="#7A1E2B"/>
+        <text x="75" y="80" text-anchor="middle" style="fill:#FBF4E4;font-size:15px;letter-spacing:0">★</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<div class="cinta" aria-hidden="true"><div>
+  Pileta sin horario <i>●</i> Quincho con horno de pizza, asador y disco <i>●</i> Visita a una microbodega artesanal <i>●</i> Cuna, bañera y silla de bebé sin cargo <i>●</i> Centro de equitación enfrente <i>●</i> Cochera techada <i>●</i>
+  Pileta sin horario <i>●</i> Quincho con horno de pizza, asador y disco <i>●</i> Visita a una microbodega artesanal <i>●</i> Cuna, bañera y silla de bebé sin cargo <i>●</i> Centro de equitación enfrente <i>●</i> Cochera techada <i>●</i>
+</div></div>
+
+<section id="cabanas">
+  <div class="env">
+    <div class="titulo-sec">
+      <div class="num" aria-hidden="true">01</div>
+      <div>
+        <h2>Due colori</h2>
+        <p>Las cabañas se eligen por color: el color dice el tamaño. Todas con pérgola techada, parrilla propia, hamaca paraguaya y un cerco de tuyas para que nadie mire.</p>
+      </div>
+    </div>
+
+    <div class="due">
+      <article class="tipo amarilla" aria-labelledby="t-am">
+        <header>
+          <div>
+            <div class="kicker">Para parejas o tres</div>
+            <h3 id="t-am">Amarilla</h3>
+          </div>
+          <div class="chips"><span class="chip">36 m²</span><span class="chip">hasta 3</span><span class="chip">1 dormitorio</span></div>
+        </header>
+        <div class="fotos">
+          <div><img src="https://static.wixstatic.com/media/c85e2a_26570ce1601c4b0384661636d5001e12~mv2.jpg/v1/fill/w_700,h_620,al_c,q_80/am1.jpg" alt="Cabaña Amarilla" loading="lazy" onerror="this.remove()"></div>
+          <div><img src="https://static.wixstatic.com/media/c85e2a_9a7d35d219734fbc81db22770b1c43bf~mv2.jpg/v1/fill/w_400,h_300,al_c,q_80/am2.jpg" alt="Interior de la cabaña Amarilla" loading="lazy" onerror="this.remove()"></div>
+          <div><img src="https://static.wixstatic.com/media/c85e2a_709362d3d10b47aaa4453dbadf798dbd~mv2.jpg/v1/fill/w_400,h_300,al_c,q_80/am3.jpg" alt="Detalle de la cabaña Amarilla" loading="lazy" onerror="this.remove()"></div>
+        </div>
+        <ul>
+          <li>Dormitorio con cama matrimonial</li>
+          <li>Sofá cama en el living, frente a la TV</li>
+          <li>Baño con ducha y antebaño</li>
+          <li>Cocina completa con horno y microondas</li>
+        </ul>
+        <div class="planta" aria-label="Esquema de la cabaña Amarilla">
+          <svg viewBox="0 0 300 120" role="img" aria-label="Esquema: pérgola, living con sofá cama, cocina, baño y dormitorio">
+            <rect x="2" y="2" width="296" height="116" rx="8" fill="none" stroke="#2B1E16" stroke-width="2"/>
+            <rect x="2" y="2" width="70" height="116" fill="#F7DA7A" stroke="#2B1E16" stroke-width="2"/>
+            <text x="37" y="64" text-anchor="middle" font-size="11" font-weight="700" font-family="Sen">pérgola</text>
+            <line x1="180" y1="2" x2="180" y2="118" stroke="#2B1E16" stroke-width="2"/>
+            <line x1="180" y1="70" x2="298" y2="70" stroke="#2B1E16" stroke-width="2"/>
+            <text x="126" y="56" text-anchor="middle" font-size="11" font-weight="700" font-family="Sen">living + cocina</text>
+            <text x="126" y="72" text-anchor="middle" font-size="10" font-family="Sen">sofá cama</text>
+            <text x="239" y="40" text-anchor="middle" font-size="11" font-weight="700" font-family="Sen">dormitorio</text>
+            <text x="239" y="98" text-anchor="middle" font-size="11" font-weight="700" font-family="Sen">baño</text>
+          </svg>
+          <small>Esquema ilustrativo, no a escala.</small>
+        </div>
+      </article>
+
+      <article class="tipo naranja" aria-labelledby="t-na">
+        <header>
+          <div>
+            <div class="kicker">Para familias</div>
+            <h3 id="t-na">Naranja</h3>
+          </div>
+          <div class="chips"><span class="chip">46 m²</span><span class="chip">hasta 5</span><span class="chip">2 dormitorios</span></div>
+        </header>
+        <div class="fotos">
+          <div><img src="https://static.wixstatic.com/media/c85e2a_bc7be64e3d484cde9c1e47b007a06efe~mv2.jpg/v1/fill/w_700,h_620,al_c,q_80/na1.jpg" alt="Cabaña Naranja" loading="lazy" onerror="this.remove()"></div>
+          <div><img src="https://static.wixstatic.com/media/c85e2a_bd9aee3a78534de8bccf9f51deecca38~mv2.jpg/v1/fill/w_400,h_300,al_c,q_80/na2.jpg" alt="Interior de la cabaña Naranja" loading="lazy" onerror="this.remove()"></div>
+          <div><img src="https://static.wixstatic.com/media/c85e2a_6c3876e43ab2461bbd285153b66d11d7~mv2.jpg/v1/fill/w_400,h_300,al_c,q_80/na3.jpg" alt="Detalle de la cabaña Naranja" loading="lazy" onerror="this.remove()"></div>
+        </div>
+        <ul>
+          <li>Dormitorio con cama matrimonial</li>
+          <li>Dormitorio con camas marineras</li>
+          <li>Sofá cama para dos en el living</li>
+          <li>Cocina completa con horno y microondas</li>
+        </ul>
+        <div class="planta" aria-label="Esquema de la cabaña Naranja">
+          <svg viewBox="0 0 300 120" role="img" aria-label="Esquema: pérgola, living con sofá cama, cocina, baño y dos dormitorios">
+            <rect x="2" y="2" width="296" height="116" rx="8" fill="none" stroke="#2B1E16" stroke-width="2"/>
+            <rect x="2" y="2" width="62" height="116" fill="#F3A472" stroke="#2B1E16" stroke-width="2"/>
+            <text x="33" y="64" text-anchor="middle" font-size="11" font-weight="700" font-family="Sen">pérgola</text>
+            <line x1="160" y1="2" x2="160" y2="118" stroke="#2B1E16" stroke-width="2"/>
+            <line x1="160" y1="58" x2="298" y2="58" stroke="#2B1E16" stroke-width="2"/>
+            <line x1="240" y1="58" x2="240" y2="118" stroke="#2B1E16" stroke-width="2"/>
+            <text x="112" y="56" text-anchor="middle" font-size="11" font-weight="700" font-family="Sen">living + cocina</text>
+            <text x="112" y="72" text-anchor="middle" font-size="10" font-family="Sen">sofá cama</text>
+            <text x="229" y="34" text-anchor="middle" font-size="11" font-weight="700" font-family="Sen">matrimonial</text>
+            <text x="200" y="92" text-anchor="middle" font-size="10" font-weight="700" font-family="Sen">marineras</text>
+            <text x="269" y="92" text-anchor="middle" font-size="11" font-weight="700" font-family="Sen">baño</text>
+          </svg>
+          <small>Esquema ilustrativo, no a escala.</small>
+        </div>
+      </article>
+    </div>
+
+    <div class="compositor" id="compositor">
+      <div>
+        <div class="kicker" style="color:var(--vino)">Compositor de familia</div>
+        <h3>¿Quiénes vienen?</h3>
+        <p style="color:var(--tinta-2)">Contá quiénes viajan y le decimos qué combinación de colores les sirve. Se carga sola en el calendario.</p>
+        <div class="contador"><div class="lbl"><b>Adultos</b><span>13 años o más</span></div><div class="paso"><button type="button" data-k="ad" data-d="-1" aria-label="Menos adultos">−</button><output id="c-ad">2</output><button type="button" data-k="ad" data-d="1" aria-label="Más adultos">+</button></div></div>
+        <div class="contador"><div class="lbl"><b>Chicos</b><span>de 3 a 12</span></div><div class="paso"><button type="button" data-k="ch" data-d="-1" aria-label="Menos chicos">−</button><output id="c-ch">0</output><button type="button" data-k="ch" data-d="1" aria-label="Más chicos">+</button></div></div>
+        <div class="contador"><div class="lbl"><b>Bebés</b><span>menores de 3, en cuna</span></div><div class="paso"><button type="button" data-k="be" data-d="-1" aria-label="Menos bebés">−</button><output id="c-be">0</output><button type="button" data-k="be" data-d="1" aria-label="Más bebés">+</button></div></div>
+        <div class="contador" style="border:0"><div class="lbl"><b>¿Traen mascota?</b><span>la aceptan, a coordinar</span></div><label style="display:flex;gap:8px;align-items:center;font-weight:700"><input type="checkbox" id="c-ma"> Sí</label></div>
+      </div>
+      <div class="propuesta" aria-live="polite">
+        <div class="kicker">Nuestra propuesta</div>
+        <div class="casitas" id="casitas"></div>
+        <div class="msg" id="msg-prop"></div>
+        <div class="nota" id="nota-prop"></div>
+        <button class="btn" type="button" id="usar-prop" style="align-self:flex-start">Ver fechas libres para esto</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="menu-sec" id="incluido">
+  <div class="env">
+    <div>
+      <div class="kicker" style="color:var(--giallo-2)">02 · Tutto incluso</div>
+      <h2 style="margin-top:14px">Lo que no se cobra aparte.</h2>
+      <p class="lead">Todo esto ya viene con la cabaña. Escrito como una carta de trattoria, porque así lo cuentan sus huéspedes: como una casa de familia italiana en el medio de Mendoza.</p>
+      <div class="foto-pileta"><img src="https://static.wixstatic.com/media/c85e2a_b1af0bae181d444a9ae4ee23d7af66b9~mv2.jpeg/v1/fill/w_800,h_600,al_c,q_80/pileta.jpg" alt="La pileta del complejo" loading="lazy" onerror="this.remove()"></div>
+    </div>
+    <div class="carta">
+      <h3>Menù della casa</h3>
+      <div class="sub">incluido en todas las estadías</div>
+      <div class="plato"><div><b>Pileta sin restricción de horario</b><small>de dos profundidades, para grandes y chicos</small></div><span class="pun"></span><span class="px">0 $</span></div>
+      <div class="plato"><div><b>Quincho multiuso</b><small>parrilla, horno de pizza grande, asador, cruz y disco</small></div><span class="pun"></span><span class="px">0 $</span></div>
+      <div class="plato"><div><b>Visita a una microbodega artesanal</b><small>y asesoramiento vitivinícola y gastronómico</small></div><span class="pun"></span><span class="px">0 $</span></div>
+      <div class="plato"><div><b>Kit bebé</b><small>cuna, bañera y silla de comer</small></div><span class="pun"></span><span class="px">0 $</span></div>
+      <div class="plato"><div><b>Juegos infantiles</b><small>y juguetes en el quincho</small></div><span class="pun"></span><span class="px">0 $</span></div>
+      <div class="plato"><div><b>Centro de equitación</b><small>acceso, justo enfrente del complejo</small></div><span class="pun"></span><span class="px">0 $</span></div>
+      <div class="plato"><div><b>Cochera techada y portón con control</b></div><span class="pun"></span><span class="px">0 $</span></div>
+      <div class="plato"><div><b>Emergencia médica 24 horas</b></div><span class="pun"></span><span class="px">0 $</span></div>
+      <div class="plato"><div><b>Wi-Fi en cada cabaña y en todo el predio</b></div><span class="pun"></span><span class="px">0 $</span></div>
+      <div class="plato"><div><b>Ropa de cama, toallones y secador</b></div><span class="pun"></span><span class="px">0 $</span></div>
+      <p style="text-align:center;font-size:.85rem;color:var(--tinta-2);margin:18px 0 0">Excursiones: salen y vuelven desde el complejo, al mismo precio que los prestadores.</p>
+    </div>
+  </div>
+</section>
+
+<section id="reservar">
+  <div class="env">
+    <div class="titulo-sec">
+      <div class="num" aria-hidden="true">03</div>
+      <div>
+        <h2>Fechas libres, precio y seña</h2>
+        <p>Elegí el color, tocá el día de llegada y el de salida. La seña del 30% congela el precio, como siempre, pero ahora se paga en el momento por Mercado Pago.</p>
+      </div>
+    </div>
+    <div class="reserva-grid">
+      <div class="cal-box">
+        <div class="cal-head">
+          <div class="selector" role="group" aria-label="Tipo de cabaña">
+            <button type="button" class="am" data-u="amarilla" aria-pressed="true">Amarilla</button>
+            <button type="button" class="na" data-u="naranja" aria-pressed="false">Naranja</button>
+          </div>
+          <div class="nav-mes"><button type="button" id="prev" aria-label="Mes anterior">‹</button><button type="button" id="next" aria-label="Mes siguiente">›</button></div>
+        </div>
+        <div class="meses" id="meses"></div>
+        <div class="leyenda">
+          <span><i style="background:var(--crema)"></i>Baja</span>
+          <span><i style="background:#FCEFC4"></i>Media</span>
+          <span><i style="background:#FBE3C9"></i>Alta</span>
+          <span><i style="background:repeating-linear-gradient(135deg,#EFE5CF 0 3px,#E3D6B8 3px 6px)"></i>Sin lugar</span>
+        </div>
+        <div class="sync">⟳ La disponibilidad se sincroniza con Booking y Airbnb: si una cabaña se ocupa por otro canal, acá se bloquea sola. <b>En este prototipo la ocupación es de ejemplo.</b></div>
+      </div>
+      <aside class="ticket" aria-live="polite">
+        <h3>Tu estadía</h3>
+        <div class="campo"><label for="s-u">Cabaña</label>
+          <select id="s-u"><option value="amarilla">Amarilla · hasta 3</option><option value="naranja">Naranja · hasta 5</option><option value="combo">Una Amarilla + una Naranja · hasta 8</option><option value="dosn">Dos Naranja · hasta 10</option></select></div>
+        <div class="campo"><label for="s-p">Personas (sin contar bebés)</label><input id="s-p" type="number" min="1" max="10" value="2"></div>
+        <div class="fila"><span>Llegada</span><b id="r-in">elegí en el calendario</b></div>
+        <div class="fila"><span>Salida</span><b id="r-out">—</b></div>
+        <div id="r-noches"></div>
+        <div class="fila total"><span>Total</span><span id="r-total">—</span></div>
+        <div class="fila sena"><span>Seña 30% (congela el precio)</span><span id="r-sena">—</span></div>
+        <div class="pago">
+          <div>Saldo al llegar, efectivo o débito<b id="r-saldo">—</b></div>
+          <div>Saldo con crédito (+10%)<b id="r-saldo-c">—</b></div>
+        </div>
+        <p class="aviso-sim" id="r-aviso"></p>
+        <div class="cancel" id="r-cancel"><b>¿Y si tengo que cancelar?</b>Elegí las fechas y te contamos qué pasa con la seña según la temporada.</div>
+        <button class="btn" type="button" id="pagar">Pagar seña con Mercado Pago</button>
+        <div class="mp">Demo: no se cobra nada. En la versión real el pago va directo a la cuenta del complejo.</div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section id="temporadas" style="padding-top:0">
+  <div class="env">
+    <div class="titulo-sec">
+      <div class="num" aria-hidden="true">04</div>
+      <div>
+        <h2>Temporadas 2026-27</h2>
+        <p>Por noche, la cabaña entera. Los fines de semana largos se cobran como temporada media.</p>
+      </div>
+    </div>
+    <div class="temporadas" id="tabla-temp"></div>
+    <p class="nota-precios">Tarifas y fechas de ejemplo para mostrar cómo funciona: en la versión real se cargan las suyas y se cambian desde el panel en un minuto.</p>
+  </div>
+</section>
+
+<section id="san-rafael" style="background:var(--carta);border-top:2px solid var(--tinta);border-bottom:2px solid var(--tinta)">
+  <div class="env">
+    <div class="titulo-sec">
+      <div class="num" aria-hidden="true">05</div>
+      <div>
+        <h2>Desde la cabaña</h2>
+        <p>Están en el Camino del Vino, a minutos del centro. Lo demás, en auto o en las excursiones que salen del complejo.</p>
+      </div>
+    </div>
+    <div class="paseos">
+      <article class="paseo ancho">
+        <div class="km">Camino del Vino</div>
+        <h3>Bodegas a la vuelta</h3>
+        <p>El complejo está en la zona de bodegas de San Rafael. Domenico y Jaquelina recomiendan cuáles visitar, y la microbodega artesanal está incluida.</p>
+      </article>
+      <article class="paseo">
+        <div class="km">3 min</div>
+        <h3>Centro de San Rafael</h3>
+        <p>Restaurantes, la avenida Hipólito Yrigoyen y el aeropuerto, todo a minutos.</p>
+      </article>
+      <article class="paseo">
+        <div class="km">~35 km</div>
+        <h3>Cañón del Atuel y Valle Grande</h3>
+        <p>Rafting, kayak, el lago y las formaciones del cañón. Hay excursión con salida desde el complejo.</p>
+      </article>
+      <article class="paseo">
+        <div class="km">~35 km</div>
+        <h3>Los Reyunos</h3>
+        <p>Embalse entre sierras, con paseos náuticos y miradores.</p>
+      </article>
+      <article class="paseo">
+        <div class="km">~80 km</div>
+        <h3>El Nihuil</h3>
+        <p>El dique y el lago más grande del sur mendocino.</p>
+      </article>
+    </div>
+    <p class="nota-precios">Distancias aproximadas por ruta.</p>
+  </div>
+</section>
+
+<section>
+  <div class="env">
+    <div class="titulo-sec">
+      <div class="num" aria-hidden="true">06</div>
+      <div><h2>Lo que dicen</h2></div>
+    </div>
+    <div class="voces">
+      <div class="voz premio">
+        <b>Salón de la Fama</b>
+        <p style="margin:12px 0 0">Ocho años consecutivos con el Certificado de Excelencia de TripAdvisor. Puntaje 4,8 de 5 en WelcomeArgentina.</p>
+      </div>
+      <figure class="voz g" style="margin:0">
+        <blockquote>“El complejo es hermoso, súper amplio, cuidado y muy limpio.”</blockquote>
+        <cite>Opinión en TripAdvisor · febrero de 2024</cite>
+      </figure>
+      <figure class="voz n" style="margin:0">
+        <blockquote>“El lugar es realmente precioso y acogedor.”</blockquote>
+        <cite>Opinión en TripAdvisor · enero de 2024</cite>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="env">
+    <div class="titulo-sec">
+      <div class="num" aria-hidden="true">07</div>
+      <div><h2>Antes de viajar</h2></div>
+    </div>
+    <div class="faq">
+      <details><summary>¿A qué hora entramos y salimos?</summary><p>Check-in desde las 14 h y check-out hasta las 10 h.</p></details>
+      <details><summary>¿Aceptan mascotas?</summary><p>Sí. Avisen al reservar para coordinar.</p></details>
+      <details><summary>¿Cómo se paga?</summary><p>Seña del 30% al reservar, que congela el precio. El saldo, al llegar: efectivo o débito, o tarjeta de crédito con un 10% de recargo.</p></details>
+      <details><summary>¿Qué pasa si cancelo?</summary><p>En temporada baja, con más de 48 horas de aviso, la seña queda como crédito por 90 días. En temporada alta, o con menos de 48 horas, la seña no se devuelve.</p></details>
+      <details><summary>¿Tengo que llevar toallas o ropa de cama?</summary><p>No: hay ropa de cama, toallones, toallas de mano y secador de pelo.</p></details>
+      <details><summary>¿Viajamos con un bebé?</summary><p>Hay cuna, bañera y silla de comer sin cargo. Pedila al reservar.</p></details>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="env llegar">
+    <div>
+      <div class="kicker" style="color:var(--vino)">08 · Cómo llegar</div>
+      <h2 style="font-size:clamp(2rem,4vw,3rem);margin-top:10px">Las Vírgenes 1390, San Rafael</h2>
+      <p style="color:var(--tinta-2);margin-top:12px">A unos 3 minutos del centro y del aeropuerto de San Rafael, frente al centro de equitación.</p>
+      <div class="contacto">
+        <a href="https://wa.me/5492604620272" target="_blank" rel="noopener">WhatsApp de Jaquelina <small>260 462-0272</small></a>
+        <a href="https://wa.me/5492604351000" target="_blank" rel="noopener">WhatsApp de Domenico <small>260 435-1000</small></a>
+        <a href="mailto:info@lavitaebella.com.ar">Mail <small>info@lavitaebella.com.ar</small></a>
+        <a href="https://www.instagram.com/lavitaebellacabanas" target="_blank" rel="noopener">Instagram <small>@lavitaebellacabanas</small></a>
+      </div>
+    </div>
+    <a class="mapa" href="https://www.google.com/maps/search/?api=1&query=Las+V%C3%ADrgenes+1390+San+Rafael+Mendoza" target="_blank" rel="noopener" aria-label="Abrir en Google Maps">
+      <svg viewBox="0 0 520 380" role="img" aria-label="Esquema de ubicación: el complejo, el centro de San Rafael y el aeropuerto">
+        <rect width="520" height="380" fill="#FFFBF1"/>
+        <g stroke="#E6D9BC" stroke-width="1">
+          <path d="M0 60H520M0 120H520M0 180H520M0 240H520M0 300H520M80 0V380M160 0V380M240 0V380M320 0V380M400 0V380M480 0V380"/>
+        </g>
+        <g fill="#3E5B2E" opacity=".18"><rect x="300" y="200" width="200" height="160"/><rect x="20" y="250" width="140" height="110"/></g>
+        <path d="M30 120 C 160 130, 250 150, 500 140" stroke="#2B1E16" stroke-width="6" fill="none"/>
+        <text x="40" y="108" font-family="Sen" font-size="12" font-weight="700" fill="#2B1E16">Av. Hipólito Yrigoyen</text>
+        <path d="M250 145 L 300 300" stroke="#2B1E16" stroke-width="3" stroke-dasharray="8 6" fill="none"/>
+        <circle cx="120" cy="125" r="12" fill="#7A1E2B"/><text x="120" y="160" text-anchor="middle" font-family="Sen" font-size="13" font-weight="800">Centro</text>
+        <circle cx="440" cy="142" r="12" fill="#2B1E16"/><text x="440" y="176" text-anchor="middle" font-family="Sen" font-size="13" font-weight="800">Aeropuerto</text>
+        <circle cx="300" cy="300" r="26" fill="#F2C230" stroke="#2B1E16" stroke-width="3"/><path d="M300 274 A26 26 0 0 1 300 326 Z" fill="#E8742C"/>
+        <text x="300" y="350" text-anchor="middle" font-family="Ultra" font-size="15">La Vita è Bella</text>
+        <text x="300" y="368" text-anchor="middle" font-family="Sen" font-size="11">Las Vírgenes 1390</text>
+        <text x="500" y="30" text-anchor="end" font-family="Sen" font-size="11" fill="#5C4A3C">Esquema, no a escala · abrir en Google Maps ↗</text>
+      </svg>
+    </a>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="env">
+    <div><b>La Vita è Bella</b><br>Complejo turístico de cabañas · San Rafael, Mendoza</div>
+    <div>Prototipo de demostración preparado para La Vita è Bella por Resolviendo Kos.<br>Tarifas y disponibilidad de ejemplo. Fotos tomadas de su web.</div>
+  </div>
+</footer>
+
+<nav class="barra" aria-label="Acciones rápidas">
+  <a href="https://wa.me/5492604620272" target="_blank" rel="noopener">WhatsApp</a>
+  <a class="r" href="#reservar">Reservar</a>
+</nav>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="m-t">
+  <div class="caja">
+    <h3 id="m-t">Así seguiría el pago</h3>
+    <p id="m-txt"></p>
+    <p style="font-size:.9rem;color:var(--tinta-2)">En la versión real se abre Mercado Pago, la seña entra a la cuenta del complejo, las fechas se bloquean en Booking y Airbnb, y a ustedes les llega el aviso con los datos del huésped.</p>
+    <button class="btn" type="button" id="m-cerrar">Entendido</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var HOY = new Date(); HOY.setHours(0,0,0,0);
+  var fmt = function(n){ return "$ " + Math.round(n).toLocaleString("es-AR"); };
+  var iso = function(d){ return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); };
+  var fechaTxt = function(d){ return d.toLocaleDateString("es-AR",{weekday:"short",day:"numeric",month:"short"}); };
+
+  /* Temporadas de ejemplo (fechas reales del calendario 2026-27) */
+  var TEMPS = [
+    {id:"alta", nombre:"Verano", desde:"2026-12-26", hasta:"2027-02-28", txt:"26 dic → 28 feb"},
+    {id:"media", nombre:"Semana Santa", desde:"2027-03-25", hasta:"2027-03-28", txt:"jue 25 → dom 28 mar 2027"},
+    {id:"media", nombre:"Invierno", desde:"2027-07-10", hasta:"2027-07-25", txt:"vacaciones de julio (a confirmar)"},
+    {id:"media", nombre:"Fin de semana largo", desde:"2026-11-21", hasta:"2026-11-23", txt:"21 → 23 nov 2026"},
+    {id:"media", nombre:"Fin de semana largo", desde:"2026-12-05", hasta:"2026-12-08", txt:"puente del 8 de diciembre (a confirmar)"}
+  ];
+  var PRECIO = {amarilla:{baja:68000,media:82000,alta:96000}, naranja:{baja:88000,media:106000,alta:124000}};
+  var CAP = {amarilla:3, naranja:5, combo:8, dosn:10};
+  var CANT = {amarilla:2, naranja:3}; /* 5 cabañas: supuesto 2 amarillas + 3 naranjas */
+
+  function temporada(d){
+    var s = iso(d);
+    for (var i=0;i<TEMPS.length;i++){ if (s>=TEMPS[i].desde && s<=TEMPS[i].hasta) return TEMPS[i]; }
+    return {id:"baja", nombre:"Temporada baja"};
+  }
+  function hash(s){ var h=2166136261; for (var i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,16777619);} return (h>>>0)/4294967295; }
+  /* cuántas cabañas de ese color quedan libres esa noche (ejemplo) */
+  function libres(tipo, d){
+    var t = temporada(d).id, base = t==="alta"?0.55:(t==="media"?0.4:0.18);
+    var dow = d.getDay(); if (dow===5||dow===6) base += 0.15;
+    var n = CANT[tipo], ocup = 0;
+    for (var k=0;k<n;k++){ if (hash(tipo+k+iso(d)) < base) ocup++; }
+    return n-ocup;
+  }
+  function libreUnidad(u, d){
+    if (u==="amarilla"||u==="naranja") return libres(u,d)>0;
+    if (u==="combo") return libres("amarilla",d)>0 && libres("naranja",d)>0;
+    if (u==="dosn") return libres("naranja",d)>1;
+    return false;
+  }
+  function precioNoche(u, d){
+    var t = temporada(d).id;
+    if (u==="combo") return PRECIO.amarilla[t]+PRECIO.naranja[t];
+    if (u==="dosn") return PRECIO.naranja[t]*2;
+    return PRECIO[u][t];
+  }
+
+  /* estado */
+  var st = {u:"amarilla", ini:null, fin:null, vista:new Date(HOY.getFullYear(), HOY.getMonth() + (HOY.getDate()>20?1:0), 1)};
+  var selU = document.getElementById("s-u"), selP = document.getElementById("s-p");
+
+  /* calendario */
+  var meses = document.getElementById("meses");
+  function tipoCal(){ return (st.u==="combo"||st.u==="dosn") ? st.u : st.u; }
+  function render(){
+    meses.innerHTML = "";
+    for (var m=0;m<2;m++){
+      var base = new Date(st.vista.getFullYear(), st.vista.getMonth()+m, 1);
+      var wrap = document.createElement("div"); wrap.className="mes";
+      var h = document.createElement("h4"); var mt = base.toLocaleDateString("es-AR",{month:"long",year:"numeric"}); h.textContent = mt.charAt(0).toUpperCase()+mt.slice(1); wrap.appendChild(h);
+      var g = document.createElement("div"); g.className="dias";
+      ["L","M","M","J","V","S","D"].forEach(function(x){ var e=document.createElement("div"); e.className="dn"; e.textContent=x; g.appendChild(e); });
+      var off = (base.getDay()+6)%7;
+      for (var i=0;i<off;i++){ g.appendChild(document.createElement("span")); }
+      var ult = new Date(base.getFullYear(), base.getMonth()+1, 0).getDate();
+      for (var dd=1; dd<=ult; dd++){
+        var d = new Date(base.getFullYear(), base.getMonth(), dd);
+        var b = document.createElement("button"); b.type="button"; b.className="dia";
+        var t = temporada(d).id; if (t!=="baja") b.classList.add(t);
+        b.dataset.f = iso(d);
+        var txt = String(dd);
+        var lib = libreUnidad(tipoCal(), d);
+        if (d < HOY){ b.classList.add("pasado"); b.disabled = true; }
+        else if (!lib){ b.classList.add("lleno"); b.setAttribute("aria-label", dd+": sin lugar"); }
+        else if (st.u==="amarilla"||st.u==="naranja"){
+          var q = libres(st.u,d); txt += ""; b.innerHTML = dd + "<small>"+(q===1?"última":q+" libres")+"</small>";
+          b.setAttribute("aria-label", d.toLocaleDateString("es-AR",{day:"numeric",month:"long"})+": "+q+" libres");
+        }
+        if (!b.innerHTML) b.textContent = txt;
+        if (st.ini && iso(d)===iso(st.ini)) b.classList.add("sel");
+        if (st.fin && iso(d)===iso(st.fin)) b.classList.add("sel");
+        if (st.ini && st.fin && d>st.ini && d<st.fin) b.classList.add("rango");
+        g.appendChild(b);
+      }
+      wrap.appendChild(g); meses.appendChild(wrap);
+    }
+  }
+  meses.addEventListener("click", function(e){
+    var b = e.target.closest(".dia"); if (!b || b.disabled || b.classList.contains("lleno")) return;
+    var p = b.dataset.f.split("-"), d = new Date(+p[0], +p[1]-1, +p[2]);
+    if (!st.ini || (st.ini && st.fin) || d <= st.ini){ st.ini = d; st.fin = null; }
+    else {
+      /* la noche anterior a la salida tiene que estar libre en todo el rango */
+      var ok = true, x = new Date(st.ini);
+      while (x < d){ if (!libreUnidad(st.u, x)) { ok=false; break; } x.setDate(x.getDate()+1); }
+      if (!ok){ aviso("Hay una noche sin lugar en el medio: probá con otras fechas o con otro color."); st.ini = d; st.fin=null; }
+      else st.fin = d;
+    }
+    render(); calcular();
+  });
+  document.getElementById("prev").addEventListener("click", function(){ var v=new Date(st.vista.getFullYear(), st.vista.getMonth()-1, 1); if (v >= new Date(HOY.getFullYear(),HOY.getMonth(),1)) { st.vista=v; render(); } });
+  document.getElementById("next").addEventListener("click", function(){ st.vista=new Date(st.vista.getFullYear(), st.vista.getMonth()+1, 1); render(); });
+
+  var selector = document.querySelectorAll(".selector button");
+  function setU(u){
+    st.u = u; selU.value = u;
+    selector.forEach(function(b){ b.setAttribute("aria-pressed", String(b.dataset.u===u)); });
+    if (st.ini && st.fin){ var x=new Date(st.ini); while(x<st.fin){ if(!libreUnidad(u,x)){ st.ini=null; st.fin=null; aviso("Con ese cambio alguna noche quedó sin lugar: elegí las fechas de nuevo."); break;} x.setDate(x.getDate()+1);} }
+    render(); calcular();
+  }
+  selector.forEach(function(b){ b.addEventListener("click", function(){ setU(b.dataset.u); }); });
+  selU.addEventListener("change", function(){ setU(selU.value); });
+  selP.addEventListener("input", calcular);
+
+  var avisoEl = document.getElementById("r-aviso");
+  function aviso(t){ avisoEl.textContent = t || ""; if (t && t.indexOf("noche")>-1) st.msgFechas = true; }
+
+  function calcular(){
+    var inEl=document.getElementById("r-in"), outEl=document.getElementById("r-out"), nEl=document.getElementById("r-noches");
+    var tot=document.getElementById("r-total"), sena=document.getElementById("r-sena"), sal=document.getElementById("r-saldo"), salc=document.getElementById("r-saldo-c"), can=document.getElementById("r-cancel");
+    var pers = Math.max(1, parseInt(selP.value||"1",10));
+    if (pers > CAP[st.u]) aviso("Son "+pers+": "+(st.u==="amarilla"?"la Amarilla es hasta 3. Probá la Naranja o una de cada color.":st.u==="naranja"?"la Naranja es hasta 5. Probá una Amarilla + una Naranja.":"para más de "+CAP[st.u]+" escribinos y lo armamos."));
+    else if (!st.msgFechas) aviso("");
+    st.msgFechas = false;
+    inEl.textContent = st.ini ? fechaTxt(st.ini) : "elegí en el calendario";
+    outEl.textContent = st.fin ? fechaTxt(st.fin) : (st.ini ? "tocá el día de salida" : "—");
+    nEl.innerHTML = "";
+    if (!(st.ini && st.fin)){ tot.textContent="—"; sena.textContent="—"; sal.textContent="—"; salc.textContent="—";
+      can.innerHTML = "<b>¿Y si tengo que cancelar?</b>Elegí las fechas y te contamos qué pasa con la seña según la temporada."; return; }
+    var grupos = {}, total = 0, x = new Date(st.ini), hayAlta=false;
+    while (x < st.fin){ var t=temporada(x); var k=t.id==="baja"?"Temporada baja":t.nombre; var p=precioNoche(st.u,x); total+=p; if(t.id==="alta")hayAlta=true;
+      if(!grupos[k]) grupos[k]={n:0,p:p,s:0}; grupos[k].n++; grupos[k].s+=p; x.setDate(x.getDate()+1); }
+    Object.keys(grupos).forEach(function(k){ var g=grupos[k]; var f=document.createElement("div"); f.className="fila"; f.innerHTML="<span>"+g.n+" noche"+(g.n>1?"s":"")+" · "+k+"</span><span>"+fmt(g.s)+"</span>"; nEl.appendChild(f); });
+    var s = total*0.3, saldo = total - s;
+    tot.textContent = fmt(total); sena.textContent = fmt(s); sal.textContent = fmt(saldo); salc.textContent = fmt(saldo*1.1);
+    var dias = Math.round((st.ini - HOY)/86400000);
+    var txt;
+    if (hayAlta) txt = "Tu estadía toca temporada alta: la seña no es reembolsable.";
+    else if (dias > 2) txt = "Temporada baja: si avisás con más de 48 horas, la seña de "+fmt(s)+" queda como crédito por 90 días, por la misma cantidad de noches.";
+    else txt = "Llegás dentro de las próximas 48 horas: si cancelás, la seña no se devuelve.";
+    can.innerHTML = "<b>¿Y si tengo que cancelar?</b>" + txt;
+  }
+
+  document.getElementById("pagar").addEventListener("click", function(){
+    var m = document.getElementById("modal"), t = document.getElementById("m-txt");
+    if (!(st.ini && st.fin)) { t.textContent = "Primero elegí la llegada y la salida en el calendario."; }
+    else t.textContent = "Seña de " + document.getElementById("r-sena").textContent + " para " + selU.options[selU.selectedIndex].text.split(" ·")[0] + ", del " + fechaTxt(st.ini) + " al " + fechaTxt(st.fin) + ".";
+    m.classList.add("abierto"); document.getElementById("m-cerrar").focus();
+  });
+  document.getElementById("m-cerrar").addEventListener("click", function(){ document.getElementById("modal").classList.remove("abierto"); });
+  document.getElementById("modal").addEventListener("click", function(e){ if (e.target.id==="modal") e.target.classList.remove("abierto"); });
+  document.addEventListener("keydown", function(e){ if (e.key==="Escape") document.getElementById("modal").classList.remove("abierto"); });
+
+  /* tabla de temporadas */
+  var tabla = document.getElementById("tabla-temp");
+  [
+    {c:"", k:"Abril a diciembre", h:"Temporada baja", f:"todo el año fuera de las otras", t:"baja"},
+    {c:"t-media", k:"Feriados", h:"Findes largos", f:"21-23 nov · 5-8 dic 2026 (a confirmar)", t:"media"},
+    {c:"t-media", k:"Pascua e invierno", h:"Media", f:"25-28 mar 2027 · julio", t:"media"},
+    {c:"t-alta", k:"Verano", h:"Temporada alta", f:"26 dic 2026 → 28 feb 2027", t:"alta"}
+  ].forEach(function(r){
+    var el = document.createElement("div"); el.className = "temp " + r.c;
+    el.innerHTML = '<div class="kicker">'+r.k+'</div><h3>'+r.h+'</h3><div class="fechas">'+r.f+'</div><div class="pr"><span>Amarilla <b>'+fmt(PRECIO.amarilla[r.t])+'</b></span><span>Naranja <b>'+fmt(PRECIO.naranja[r.t])+'</b></span></div>';
+    tabla.appendChild(el);
+  });
+
+  /* compositor de familia */
+  var cnt = {ad:2, ch:0, be:0};
+  var casitas = document.getElementById("casitas");
+  function casa(color){ var c = color==="am" ? "#F2C230" : "#E8742C";
+    return '<span class="casita"><svg viewBox="0 0 66 74" aria-hidden="true"><path d="M6 32 L33 6 L60 32 V70 H6 Z" fill="'+c+'" stroke="#2B1E16" stroke-width="3" stroke-linejoin="round"/><rect x="26" y="46" width="14" height="24" fill="#FBF4E4" stroke="#2B1E16" stroke-width="2.5"/></svg></span>'; }
+  function propuesta(){
+    var p = cnt.ad + cnt.ch, html = "", msg, nota = [], u;
+    if (p<=3){ u="amarilla"; html=casa("am"); msg = p===1 ? "Una Amarilla: para vos solo sobra lugar." : "Una Amarilla les queda justa: 36 m², dormitorio matrimonial y sofá cama."; }
+    else if (p<=5){ u="naranja"; html=casa("na"); msg = "Una Naranja: dos dormitorios (matrimonial y marineras) y sofá cama para dos."; }
+    else if (p<=8){ u="combo"; html=casa("am")+casa("na"); msg = "Una Amarilla y una Naranja, a pasos una de la otra. Hasta 8 personas."; }
+    else if (p<=10){ u="dosn"; html=casa("na")+casa("na"); msg = "Dos Naranja: hasta 10 personas, cada familia con su parrilla."; }
+    else { u="dosn"; html=casa("na")+casa("na")+casa("na"); msg = "Para "+p+" personas conviene escribirles: arman la combinación de las cinco cabañas."; }
+    if (cnt.be>0) nota.push("Cuna, bañera y silla de comer sin cargo para "+(cnt.be>1?"los bebés":"el bebé")+".");
+    if (cnt.ch>0) nota.push("Pileta de dos profundidades y juegos en el quincho.");
+    if (document.getElementById("c-ma").checked) nota.push("Mascota bienvenida: se coordina al reservar.");
+    casitas.innerHTML = html; document.getElementById("msg-prop").textContent = msg; document.getElementById("nota-prop").textContent = nota.join(" ");
+    return {u:u, p:p};
+  }
+  document.querySelectorAll(".paso button").forEach(function(b){
+    b.addEventListener("click", function(){
+      var k=b.dataset.k, d=+b.dataset.d, min = k==="ad"?1:0;
+      cnt[k] = Math.max(min, Math.min(12, cnt[k]+d)); document.getElementById("c-"+k).textContent = cnt[k]; propuesta();
+    });
+  });
+  document.getElementById("c-ma").addEventListener("change", propuesta);
+  document.getElementById("usar-prop").addEventListener("click", function(){
+    var r = propuesta(); selP.value = Math.min(10, r.p); setU(r.u);
+    document.getElementById("reservar").scrollIntoView({behavior:"smooth"});
+  });
+
+  propuesta(); render(); calcular();
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="La Vita è Bella"></script>
+</body>
+</html>
