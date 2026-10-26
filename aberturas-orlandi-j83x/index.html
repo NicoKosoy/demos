@@ -1,0 +1,757 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Aberturas Orlandi · Cotizador (prototipo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Radio+Canada+Big:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Spline+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F1EEE7;
+  --card:#FBFAF6;
+  --ink:#14212B;
+  --ink-2:#4F5B63;
+  --line:#D6D0C4;
+  --bronze:#8A6440;
+  --bronze-2:#B88D5F;
+  --river:#245F7A;
+  --river-2:#D7E6EC;
+  --glass:#CFE2E6;
+  --glass-2:#A9CAD2;
+  --uglass:#E3ECEA;
+  --sign:#FFFFFF;
+  --ok:#1F7A4D;
+  --mono:"Spline Sans Mono",ui-monospace,monospace;
+  --sans:"Radio Canada Big",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--river);outline-offset:2px}
+img{max-width:100%;display:block}
+.wrap{max-width:1200px;margin:0 auto;padding:0 20px}
+.mono{font-family:var(--mono);letter-spacing:.02em}
+
+/* Aviso */
+.demo{background:var(--ink);color:#E5E9EC;font-size:13px}
+.demo .wrap{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding-top:8px;padding-bottom:8px}
+.demo b{color:#fff}
+.demo button{background:transparent;border:1px solid #5B6B76;color:#fff;border-radius:999px;padding:4px 12px;cursor:pointer;font-size:13px}
+.demo button:hover{border-color:#fff}
+
+/* Barra */
+.bar{border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:16px;padding-bottom:16px;flex-wrap:wrap}
+.logo{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:var(--ink)}
+.logo strong{font-size:24px;font-weight:700;letter-spacing:-.02em}
+.logo span{font-family:var(--mono);font-size:12px;color:var(--ink-2);text-transform:uppercase;letter-spacing:.08em}
+.bar nav{display:flex;gap:18px;font-size:15px;flex-wrap:wrap}
+.bar nav a{color:var(--ink);text-decoration:none;border-bottom:2px solid transparent;padding-bottom:2px}
+.bar nav a:hover{border-color:var(--bronze)}
+
+/* Portada: cartel de obra */
+.hero{padding:44px 0 30px}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:40px;align-items:center}
+@media (max-width:920px){.hero .wrap{grid-template-columns:1fr;gap:28px}}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--bronze);margin:0 0 14px}
+.hero h1{margin:0;font-weight:700;font-size:clamp(34px,5.4vw,66px);line-height:1.02;letter-spacing:-.03em;max-width:17ch}
+.hero h1 em{font-style:italic;font-weight:500;color:var(--river)}
+.hero p.lead{font-size:18px;color:var(--ink-2);max-width:54ch;margin:20px 0 0}
+.hero .ctas{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:10px;padding:13px 20px;font-weight:600;cursor:pointer;border:2px solid transparent;text-decoration:none;font-size:16px}
+.btn-main{background:var(--ink);color:#fff}
+.btn-main:hover{background:#22384A}
+.btn-ghost{background:transparent;border-color:var(--ink);color:var(--ink)}
+.btn-ghost:hover{background:var(--ink);color:#fff}
+.btn-wa{background:#1F7A4D;color:#fff}
+.btn-wa:hover{background:#17623D}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+
+.sign{background:var(--sign);border:3px solid var(--ink);box-shadow:10px 10px 0 var(--ink);position:relative;font-family:var(--mono);font-size:13px}
+.sign::before,.sign::after{content:"";position:absolute;bottom:-60px;width:10px;height:57px;background:repeating-linear-gradient(180deg,var(--ink) 0 10px,#C9A227 10px 20px)}
+.sign::before{left:18%}.sign::after{right:18%}
+.sign header{background:var(--ink);color:#fff;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.sign header b{font-family:var(--sans);font-size:18px;letter-spacing:.04em}
+.sign dl{margin:0;display:grid;grid-template-columns:auto 1fr}
+.sign dt,.sign dd{margin:0;padding:10px 14px;border-bottom:1px solid #E1DDD4}
+.sign dt{text-transform:uppercase;letter-spacing:.1em;font-size:11px;color:var(--ink-2);border-right:1px solid #E1DDD4;padding-top:12px}
+.sign dd{font-family:var(--sans);font-size:15px;font-weight:500}
+.sign dl > :nth-last-child(-n+2){border-bottom:0}
+.hero-sign{padding-bottom:64px}
+
+/* Hitos */
+.hitos{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--card)}
+.hitos .wrap{display:grid;grid-template-columns:repeat(4,1fr)}
+.hitos div{padding:18px 18px 18px 0;border-right:1px solid var(--line);padding-left:18px}
+.hitos div:first-child{padding-left:0}
+.hitos div:last-child{border-right:0}
+.hitos b{display:block;font-size:22px;font-weight:700;letter-spacing:-.02em}
+.hitos span{font-size:14px;color:var(--ink-2)}
+@media (max-width:820px){.hitos .wrap{grid-template-columns:1fr 1fr}.hitos div{border-right:0;border-bottom:1px solid var(--line);padding-left:0}.hitos div:nth-last-child(-n+2){border-bottom:0}}
+
+/* Conmutador */
+.cot{padding:56px 0 40px}
+.cot-head{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:22px}
+.cot-head h2{margin:0;font-size:clamp(28px,3.6vw,40px);letter-spacing:-.02em;line-height:1.05}
+.cot-head p{margin:8px 0 0;color:var(--ink-2);max-width:52ch}
+.switch{display:inline-grid;grid-template-columns:1fr 1fr;background:#E4DFD4;border-radius:14px;padding:5px;gap:4px}
+.switch button{border:0;background:transparent;border-radius:10px;padding:10px 18px;cursor:pointer;font-weight:600;text-align:left;line-height:1.2}
+.switch button small{display:block;font-weight:400;font-size:12px;color:var(--ink-2)}
+.switch button[aria-selected="true"]{background:var(--card);box-shadow:0 1px 0 rgba(0,0,0,.08),0 2px 8px rgba(20,33,43,.1)}
+
+.panel{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:0;background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+@media (max-width:960px){.panel{grid-template-columns:1fr}}
+.controls{padding:26px;border-right:1px solid var(--line)}
+@media (max-width:960px){.controls{border-right:0;border-bottom:1px solid var(--line)}}
+fieldset{border:0;margin:0 0 22px;padding:0}
+legend{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);margin-bottom:10px;padding:0}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+@media (max-width:480px){.tiles{grid-template-columns:repeat(2,1fr)}}
+.tile{position:relative}
+.tile input{position:absolute;opacity:0;inset:0;pointer-events:none}
+.tile label{display:flex;flex-direction:column;align-items:center;gap:6px;border:1.5px solid var(--line);border-radius:12px;padding:10px 6px 8px;cursor:pointer;font-size:13px;text-align:center;line-height:1.2;background:#fff;height:100%}
+.tile label svg{width:46px;height:38px}
+.tile input:checked + label{border-color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink);background:#F7F5EF}
+.tile input:focus-visible + label{outline:3px solid var(--river);outline-offset:2px}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:7px 14px;cursor:pointer;font-size:14px;display:inline-flex;align-items:center;gap:7px}
+.seg button[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:#fff}
+.seg .sw{width:14px;height:14px;border-radius:50%;border:1px solid rgba(0,0,0,.25)}
+.line-note{font-size:13px;color:var(--ink-2);margin:8px 0 0}
+.meas{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.num label{display:block;font-size:14px;font-weight:600;margin-bottom:4px}
+.field{display:flex;align-items:center;border:1.5px solid var(--line);border-radius:10px;background:#fff;overflow:hidden}
+.field input{border:0;width:100%;padding:9px 10px;font-family:var(--mono);font-size:16px;background:transparent}
+.field input:focus{outline:none}
+.field:focus-within{border-color:var(--river)}
+.field span{padding:0 10px;color:var(--ink-2);font-family:var(--mono);font-size:13px}
+input[type=range]{width:100%;accent-color:var(--bronze);margin-top:8px}
+.row{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.check{display:inline-flex;align-items:center;gap:8px;font-size:15px;cursor:pointer}
+.check input{width:18px;height:18px;accent-color:var(--ink)}
+.qty{display:inline-flex;align-items:center;border:1.5px solid var(--line);border-radius:10px;overflow:hidden;margin-left:auto;background:#fff}
+.qty button{border:0;background:transparent;width:38px;height:38px;cursor:pointer;font-size:18px}
+.qty output{min-width:32px;text-align:center;font-family:var(--mono)}
+
+.view{display:flex;flex-direction:column}
+.plan{position:relative;background:
+  linear-gradient(var(--river-2) 1px,transparent 1px) 0 0/24px 24px,
+  linear-gradient(90deg,var(--river-2) 1px,transparent 1px) 0 0/24px 24px,#F8FBFC;border-bottom:1px solid var(--line);min-height:360px}
+.plan svg{width:100%;height:auto;display:block}
+.plan .tag{position:absolute;left:16px;top:14px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;background:#fff;border:1px solid var(--line);border-radius:6px;padding:4px 8px}
+.plan .stamp{position:absolute;right:14px;bottom:12px;font-family:var(--mono);font-size:10.5px;color:var(--ink-2);text-align:right;line-height:1.35;border:1px solid var(--line);background:#fff;padding:6px 8px;border-radius:6px}
+.price{padding:22px 26px;display:grid;grid-template-columns:1fr auto;gap:16px;align-items:end}
+@media (max-width:560px){.price{grid-template-columns:1fr}}
+.price .lbl{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2)}
+.price .amt{font-size:clamp(28px,3.8vw,40px);font-weight:700;letter-spacing:-.02em;line-height:1.1;margin-top:4px}
+.price .sub{font-size:14px;color:var(--ink-2);margin-top:4px}
+.price .acts{display:flex;flex-direction:column;gap:8px}
+
+/* Pedido */
+.order{border-top:1px solid var(--line);padding:20px 26px 24px;background:#F6F4EE}
+.order h3{margin:0 0 10px;font-size:16px;display:flex;justify-content:space-between;align-items:baseline}
+.order h3 small{font-family:var(--mono);font-weight:400;font-size:12px;color:var(--ink-2)}
+.order ul{list-style:none;margin:0;padding:0}
+.order li{display:grid;grid-template-columns:44px 1fr auto auto;gap:12px;align-items:center;padding:10px 0;border-bottom:1px dashed var(--line)}
+.order li svg{width:44px;height:36px}
+.order li .d{font-size:14px;line-height:1.3}
+.order li .d small{display:block;color:var(--ink-2);font-size:12.5px}
+.order li .p{font-family:var(--mono);font-size:13px;text-align:right;white-space:nowrap}
+.order li button{border:0;background:transparent;cursor:pointer;color:var(--ink-2);font-size:18px;width:30px;height:30px;border-radius:6px}
+.order li button:hover{background:#E6E1D6;color:var(--ink)}
+@media (max-width:560px){.order li{grid-template-columns:40px 1fr auto}.order li .p{grid-column:2;text-align:left}.order li button{grid-column:3;grid-row:1}.plan{min-height:0}.plan .stamp{position:static;margin:0 14px 12px;display:inline-block}}
+.order .empty{color:var(--ink-2);font-size:14px;margin:0}
+.order .tot{display:flex;justify-content:space-between;align-items:baseline;margin:14px 0 12px;font-weight:700}
+.order .tot span:last-child{font-family:var(--mono);font-size:17px}
+.order .who{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+@media (max-width:520px){.order .who{grid-template-columns:1fr}}
+.order .who input{border:1.5px solid var(--line);border-radius:10px;padding:10px;background:#fff;width:100%}
+
+/* Oficina */
+.uglass-note{font-size:13px;color:var(--ink-2);margin:6px 0 0}
+.modules{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}
+
+/* Obras */
+.obras{padding:50px 0}
+.obras h2{margin:0 0 6px;font-size:clamp(26px,3.2vw,36px);letter-spacing:-.02em}
+.obras > .wrap > p{margin:0 0 22px;color:var(--ink-2);max-width:60ch}
+.strip{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(240px,1fr);gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px}
+.strip figure{margin:0;scroll-snap-align:start;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.strip .ph{aspect-ratio:4/3;background:linear-gradient(135deg,#E9E4D9,#DCD5C6);position:relative;overflow:hidden}
+.strip .ph img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.strip .ph .fb{position:absolute;inset:0;display:flex;align-items:flex-end;padding:14px;font-family:var(--mono);font-size:12px;color:var(--ink-2)}
+.strip figcaption{padding:10px 14px 12px;font-size:14px}
+.strip figcaption b{display:block;font-size:15px}
+
+.story{padding:20px 0 60px}
+.story .wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--line);border-radius:18px;background:var(--card);overflow:hidden}
+.story article{padding:24px;border-right:1px solid var(--line)}
+.story article:last-child{border-right:0}
+.story .yr{font-family:var(--mono);font-size:12px;color:var(--bronze);letter-spacing:.1em;text-transform:uppercase}
+.story h3{margin:6px 0 8px;font-size:20px;letter-spacing:-.01em}
+.story p{margin:0;color:var(--ink-2);font-size:15px}
+@media (max-width:820px){.story .wrap{grid-template-columns:1fr}.story article{border-right:0;border-bottom:1px solid var(--line)}.story article:last-child{border-bottom:0}}
+
+footer{background:var(--ink);color:#C9D1D6;padding:34px 0;font-size:14px}
+footer .wrap{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:24px}
+footer b{color:#fff;display:block;margin-bottom:6px;font-size:15px}
+footer a{color:#fff}
+footer .fine{grid-column:1/-1;border-top:1px solid #2C3D4A;padding-top:16px;font-size:12.5px;color:#93A2AC}
+@media (max-width:760px){footer .wrap{grid-template-columns:1fr}}
+
+dialog{border:0;border-radius:18px;padding:0;max-width:min(560px,calc(100vw - 32px));width:100%;box-shadow:0 30px 80px rgba(0,0,0,.35)}
+dialog::backdrop{background:rgba(20,33,43,.55)}
+.dlg{padding:24px}
+.dlg h2{margin:0 0 6px;font-size:22px}
+.dlg p{margin:0 0 14px;color:var(--ink-2);font-size:14px}
+.wa-msg{background:#E7F3EC;border-radius:12px;padding:14px;font-size:14px;white-space:pre-wrap;max-height:46vh;overflow:auto;font-family:var(--sans)}
+.dlg .row{margin-top:14px;justify-content:flex-end}
+.adm{max-height:56vh;overflow:auto;border:1px solid var(--line);border-radius:12px}
+.adm table{width:100%;border-collapse:collapse;font-size:14px}
+.adm th{position:sticky;top:0;background:#F1EEE7;text-align:left;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:8px 10px;color:var(--ink-2)}
+.adm td{padding:6px 10px;border-top:1px solid #ECE8DF}
+.adm td input{width:120px;border:1.5px solid var(--line);border-radius:8px;padding:6px 8px;font-family:var(--mono);text-align:right}
+.adm .grp td{background:#FAF8F3;font-weight:700;font-size:13px}
+
+.mbar{position:fixed;left:0;right:0;bottom:0;background:var(--ink);color:#fff;display:none;align-items:center;justify-content:space-between;padding:10px 16px calc(10px + env(safe-area-inset-bottom));gap:12px;z-index:20}
+.mbar .l{font-family:var(--mono);font-size:11px;color:#AFBCC5;text-transform:uppercase;letter-spacing:.08em}
+.mbar .v{font-weight:700;font-size:17px}
+.mbar button{background:#fff;color:var(--ink);border:0;border-radius:10px;padding:10px 14px;font-weight:600}
+@media (max-width:960px){.mbar.show{display:flex}body{padding-bottom:70px}}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:30}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<div class="demo"><div class="wrap">
+  <span><b>Prototipo de demostración preparado para Aberturas Orlandi.</b> Los precios son de ejemplo.</span>
+  <button type="button" id="openAdm">Editar tabla de precios</button>
+</div></div>
+
+<div class="bar"><div class="wrap">
+  <a class="logo" href="#top"><strong>Orlandi</strong><span>Aberturas de aluminio · Santa Fe</span></a>
+  <nav aria-label="Secciones">
+    <a href="#cotizar">Cotizar</a>
+    <a href="#obras">Obras</a>
+    <a href="#historia">Historia</a>
+    <a href="#contacto">Contacto</a>
+  </nav>
+</div></div>
+
+<main id="top">
+<section class="hero"><div class="wrap">
+  <div>
+    <p class="kicker">Fábrica familiar · Hernandarias 2066/70</p>
+    <h1>Cerramos la galería de la Basílica de Guadalupe. <em>Tu ventana la cotizás en un minuto.</em></h1>
+    <p class="lead">Más de 50 años en Santa Fe, de la herrería de obra al aluminio con ruptura de puente térmico. Elegí la abertura o el divisorio de oficina, cargá las medidas y mandanos el pedido por WhatsApp con todo listo para medir.</p>
+    <div class="ctas">
+      <a class="btn btn-main" href="#cotizar">Cotizar una abertura</a>
+      <a class="btn btn-ghost" href="#cotizar" data-go="ofi">Cotizar un divisorio</a>
+    </div>
+  </div>
+  <div class="hero-sign">
+    <div class="sign" role="img" aria-label="Cartel de obra con los datos de Aberturas Orlandi">
+      <header><b>CARTEL DE OBRA</b><span>N.º 2066</span></header>
+      <dl>
+        <dt>Empresa</dt><dd>Aberturas Orlandi</dd>
+        <dt>Rubro</dt><dd>Fábrica de aberturas de aluminio</dd>
+        <dt>Trayectoria</dt><dd>Más de 50 años, empresa familiar</dd>
+        <dt>Sistema</dt><dd>Línea Mediterránea, ruptura de puente térmico</dd>
+        <dt>Aleación</dt><dd>Aluminio 6063 T6, esmaltado y anodizado</dd>
+        <dt>Zona</dt><dd>Santa Fe, Gran Santa Fe y Centro-Este</dd>
+      </dl>
+    </div>
+  </div>
+</div></section>
+
+<section class="hitos" aria-label="Datos de la fábrica"><div class="wrap">
+  <div><b>+50 años</b><span>en la ciudad de Santa Fe</span></div>
+  <div><b>~30 años</b><span>trabajando el aluminio</span></div>
+  <div><b>RPT</b><span>Línea Mediterránea de alta prestación</span></div>
+  <div><b>UGLASS</b><span>divisorios para oficinas</span></div>
+</div></section>
+
+<section class="cot" id="cotizar"><div class="wrap">
+  <div class="cot-head">
+    <div>
+      <h2 id="cotTitle">Cotizador de aberturas</h2>
+      <p id="cotSub">Elegí el tipo, la línea y el vidrio. El dibujo y el precio se actualizan mientras movés las medidas.</p>
+    </div>
+    <div class="switch" role="tablist" aria-label="Qué querés cotizar">
+      <button type="button" role="tab" id="tabCasa" aria-selected="true" aria-controls="panelCasa">Casa<small>ventanas y puertas</small></button>
+      <button type="button" role="tab" id="tabOfi" aria-selected="false" aria-controls="panelOfi">Oficina<small>divisorios UGLASS</small></button>
+    </div>
+  </div>
+
+  <div class="panel">
+    <!-- CONTROLES CASA -->
+    <form class="controls" id="panelCasa" role="tabpanel" aria-labelledby="tabCasa" onsubmit="return false">
+      <fieldset><legend>Tipo de abertura</legend><div class="tiles" id="types"></div></fieldset>
+      <fieldset>
+        <legend>Medidas del vano</legend>
+        <div class="meas">
+          <div class="num"><label for="w">Ancho</label><div class="field"><input id="w" type="number" inputmode="numeric" min="40" max="400" step="5" value="150"><span>cm</span></div><input type="range" id="wr" min="40" max="400" step="5" value="150" aria-label="Ancho en centímetros"></div>
+          <div class="num"><label for="h">Alto</label><div class="field"><input id="h" type="number" inputmode="numeric" min="40" max="260" step="5" value="110"><span>cm</span></div><input type="range" id="hr" min="40" max="260" step="5" value="110" aria-label="Alto en centímetros"></div>
+        </div>
+      </fieldset>
+      <fieldset><legend>Línea</legend><div class="seg" id="lines"></div><p class="line-note" id="lineNote"></p></fieldset>
+      <fieldset><legend>Vidrio</legend><div class="seg" id="glass"></div></fieldset>
+      <fieldset><legend>Terminación</legend><div class="seg" id="colors"></div></fieldset>
+      <fieldset style="margin-bottom:0"><legend>Extras</legend>
+        <div class="row">
+          <label class="check"><input type="checkbox" id="mosq"> Mosquitero</label>
+          <label class="check"><input type="checkbox" id="inst" checked> Con colocación</label>
+          <div class="qty" aria-label="Cantidad"><button type="button" id="qm" aria-label="Restar una">−</button><output id="q">1</output><button type="button" id="qp" aria-label="Sumar una">+</button></div>
+        </div>
+      </fieldset>
+    </form>
+
+    <!-- CONTROLES OFICINA -->
+    <form class="controls" id="panelOfi" role="tabpanel" aria-labelledby="tabOfi" onsubmit="return false" hidden>
+      <fieldset>
+        <legend>Largo y alto del divisorio</legend>
+        <div class="meas">
+          <div class="num"><label for="ol">Largo</label><div class="field"><input id="ol" type="number" inputmode="decimal" min="1" max="20" step=".1" value="4.2"><span>m</span></div><input type="range" id="olr" min="1" max="20" step=".1" value="4.2" aria-label="Largo en metros"></div>
+          <div class="num"><label for="oh">Alto</label><div class="field"><input id="oh" type="number" inputmode="decimal" min="2" max="3.5" step=".05" value="2.6"><span>m</span></div><input type="range" id="ohr" min="2" max="3.5" step=".05" value="2.6" aria-label="Alto en metros"></div>
+        </div>
+        <p class="uglass-note">Vidrio en U (UGLASS): da privacidad y deja pasar la luz. Cada perfil mide unos 26 cm.</p>
+      </fieldset>
+      <fieldset><legend>Puertas</legend><div class="seg" id="odoor"></div>
+        <div class="row" style="margin-top:12px"><span style="font-size:14px">Cantidad de puertas</span><div class="qty" style="margin-left:0" aria-label="Cantidad de puertas"><button type="button" id="odm" aria-label="Restar puerta">−</button><output id="odq">1</output><button type="button" id="odp" aria-label="Sumar puerta">+</button></div></div>
+      </fieldset>
+      <fieldset><legend>Perfilería</legend><div class="seg" id="ocol"></div></fieldset>
+      <fieldset style="margin-bottom:0"><legend>Extras</legend>
+        <div class="row">
+          <label class="check"><input type="checkbox" id="oinst" checked> Con colocación</label>
+          <label class="check"><input type="checkbox" id="onight"> Trabajo fuera de horario</label>
+        </div>
+      </fieldset>
+    </form>
+
+    <!-- VISTA -->
+    <div class="view" aria-live="polite">
+      <div class="plan">
+        <span class="tag" id="planTag">Vista interior</span>
+        <svg id="draw" viewBox="0 0 600 400" role="img" aria-label="Dibujo de lo que estás cotizando"></svg>
+        <div class="stamp" id="stamp"></div>
+      </div>
+      <div class="price">
+        <div>
+          <div class="lbl">Precio estimado</div>
+          <div class="amt" id="amt">—</div>
+          <div class="sub" id="sub"></div>
+        </div>
+        <div class="acts">
+          <button class="btn btn-main" id="add" type="button">Agregar al pedido</button>
+        </div>
+      </div>
+      <div class="order">
+        <h3>Tu pedido <small id="cnt">vacío</small></h3>
+        <p class="empty" id="empty">Sumá una o varias aberturas (o un divisorio) y mandalas juntas.</p>
+        <ul id="items"></ul>
+        <div id="orderFoot" hidden>
+          <div class="tot"><span>Total estimado</span><span id="total"></span></div>
+          <div class="who">
+            <input id="cname" placeholder="Tu nombre" autocomplete="name" aria-label="Tu nombre">
+            <input id="czone" placeholder="Barrio o localidad de la obra" aria-label="Barrio o localidad de la obra">
+          </div>
+          <button class="btn btn-wa" id="send" type="button" style="width:100%">Mandar el pedido por WhatsApp</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<section class="obras" id="obras"><div class="wrap">
+  <h2>Obras y productos de la fábrica</h2>
+  <p>Fotos de su propia web: ventanas, Línea Mediterránea y divisorios de oficina. Tocá “Quiero una así” y la cargamos en el cotizador.</p>
+  <div class="strip" id="strip"></div>
+</div></section>
+
+<section class="story" id="historia"><div class="wrap">
+  <article><div class="yr">El comienzo</div><h3>Herrería de obra</h3><p>Orlandi arrancó como herrería de obra en Santa Fe. De esa época son trabajos que todavía se ven, como el cerramiento de la galería de la Basílica de Guadalupe.</p></article>
+  <article><div class="yr">Hace unos 30 años</div><h3>El paso al aluminio</h3><p>Liviano, resistente a la corrosión y reciclable. La fábrica sumó maquinaria propia y líneas de mediana y alta prestación en aluminio 6063 T6.</p></article>
+  <article><div class="yr">Hoy</div><h3>RPT y oficinas</h3><p>Línea Mediterránea con ruptura de puente térmico, divisorios en UGLASS y trabajos especiales para viviendas y edificios, también la estructura de las letras del aeropuerto de Sauce Viejo.</p></article>
+</div></section>
+</main>
+
+<footer id="contacto"><div class="wrap">
+  <div><b>Aberturas Orlandi</b>Hernandarias 2066/70, Santa Fe<br>Lunes a viernes de 7:30 a 12:30 y de 14 a 18</div>
+  <div><b>WhatsApp</b><a href="https://wa.me/5493426311214" rel="noopener" target="_blank">342 631-1214</a></div>
+  <div><b>Web</b><a href="https://www.aberturasorlandi.com.ar/" rel="noopener" target="_blank">aberturasorlandi.com.ar</a></div>
+  <div class="fine">Los precios son estimados y de ejemplo; el valor final se confirma después de la medición. Prototipo de demostración preparado para Aberturas Orlandi por Resolviendo Kos.</div>
+</div></footer>
+
+<dialog id="waDlg"><div class="dlg">
+  <h2>Así le llega el pedido a la fábrica</h2>
+  <p>En la versión final este botón abre WhatsApp con el 342 631-1214 y el mensaje ya escrito. Acá lo ves antes de mandarlo.</p>
+  <div class="wa-msg" id="waMsg"></div>
+  <div class="row">
+    <button class="btn btn-ghost" id="copyMsg" type="button">Copiar</button>
+    <button class="btn btn-main" id="closeWa" type="button">Listo</button>
+  </div>
+</div></dialog>
+
+<dialog id="admDlg"><div class="dlg">
+  <h2>Tabla de precios</h2>
+  <p>Esto lo usa la fábrica: cambian un valor y el cotizador se actualiza solo, sin tocar código.</p>
+  <div class="adm" id="admBody"></div>
+  <div class="row">
+    <button class="btn btn-ghost" id="resetP" type="button">Volver a los de ejemplo</button>
+    <button class="btn btn-main" id="saveP" type="button">Guardar</button>
+  </div>
+</div></dialog>
+
+<div class="mbar" id="mbar"><div><div class="l">Estimado</div><div class="v" id="mamt"></div></div><button type="button" id="mgo">Ver pedido</button></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const IMG = "https://www.aberturasorlandi.com.ar/images/imagenes/productos/";
+const TYPES = [
+  {id:"corr", name:"Ventana corrediza", mosq:true},
+  {id:"bat",  name:"Ventana de abrir", mosq:true},
+  {id:"osc",  name:"Oscilobatiente", mosq:true},
+  {id:"fijo", name:"Paño fijo", mosq:false},
+  {id:"pv",   name:"Puerta-ventana", mosq:true, door:true},
+  {id:"pta",  name:"Puerta", mosq:false, door:true}
+];
+const LINES = [
+  {id:"med", name:"Mediana prestación", note:"Para la mayoría de las ventanas de la casa."},
+  {id:"med2", name:"Alta prestación", note:"Perfiles más robustos para vanos grandes y viento."},
+  {id:"rpt", name:"Línea Mediterránea RPT", note:"Ruptura de puente térmico: el marco no transmite el frío ni el calor de afuera."}
+];
+const GLASS = [
+  {id:"simple", name:"Simple"},
+  {id:"lam", name:"Laminado 3+3"},
+  {id:"refl", name:"Reflectivo"},
+  {id:"dvh", name:"DVH"}
+];
+const COLORS = [
+  {id:"blanco", name:"Blanco", hex:"#F5F5F2", stroke:"#A3A9AB"},
+  {id:"negro", name:"Negro", hex:"#2A2D30", stroke:"#2A2D30"},
+  {id:"natural", name:"Anodizado natural", hex:"#B8BEC1", stroke:"#7F888C"},
+  {id:"bronce", name:"Anodizado bronce", hex:"#7A5A3A", stroke:"#5C432A"}
+];
+const ODOOR = [
+  {id:"none", name:"Sin puerta"},
+  {id:"alu", name:"Puerta de aluminio"},
+  {id:"placa", name:"Puerta placa"}
+];
+const OCOL = COLORS.filter(c=>c.id!=="bronce");
+const DEFAULT_PRICES = {
+  m2:{corr:250000, bat:290000, osc:370000, fijo:170000, pv:280000, pta:330000},
+  line:{med:1, med2:1.3, rpt:1.65},
+  glass:{simple:0, lam:40000, refl:30000, dvh:95000},
+  colorPct:{blanco:0, negro:10, natural:8, bronce:12},
+  mosqM2:45000, instPct:15, minM2:1,
+  ug:{m2:210000, alu:420000, placa:300000, nightPct:12},
+  rangePct:8
+};
+const KEY="orlandi_precios_v1";
+let P = load();
+function load(){ try{const s=localStorage.getItem(KEY); if(s){const o=JSON.parse(s); return merge(structuredClone(DEFAULT_PRICES),o);} }catch(e){} return structuredClone(DEFAULT_PRICES); }
+function merge(a,b){ for(const k in b){ if(b[k]&&typeof b[k]==="object"&&a[k]) merge(a[k],b[k]); else if(typeof b[k]==="number") a[k]=b[k]; } return a; }
+function save(){ try{localStorage.setItem(KEY,JSON.stringify(P));}catch(e){} }
+
+const S = {type:"corr", w:150, h:110, line:"rpt", glass:"dvh", color:"blanco", mosq:false, inst:true, q:1};
+const O = {l:4.2, h:2.6, door:"alu", dq:1, col:"natural", inst:true, night:false};
+let mode = "casa";
+const items = [];
+const $ = id=>document.getElementById(id);
+const byId=(a,id)=>a.find(x=>x.id===id);
+const ars = n=>"$"+Math.round(n).toLocaleString("es-AR");
+const r1k = n=>Math.round(n/1000)*1000;
+const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+const reduced=()=>window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function calcCasa(s){
+  const area=Math.max((s.w/100)*(s.h/100),P.minM2);
+  let u=area*P.m2[s.type]*P.line[s.line]+area*P.glass[s.glass];
+  u*=1+(P.colorPct[s.color]||0)/100;
+  if(s.mosq&&byId(TYPES,s.type).mosq) u+=area*P.mosqM2;
+  if(s.inst) u*=1+P.instPct/100;
+  const t=u*s.q, r=P.rangePct/100;
+  return {area,lo:r1k(t*(1-r)),hi:r1k(t*(1+r)),mid:r1k(t)};
+}
+function calcOfi(o){
+  const area=o.l*o.h;
+  const doorW = o.door==="none"?0:0.9*o.dq;
+  const glassArea=Math.max(area-doorW*Math.min(o.h,2.05),0.5);
+  let t=glassArea*P.ug.m2;
+  if(o.door!=="none") t+=o.dq*P.ug[o.door];
+  t*=1+(P.colorPct[o.col]||0)/100;
+  if(o.inst) t*=1+P.instPct/100;
+  if(o.night) t*=1+P.ug.nightPct/100;
+  const r=P.rangePct/100;
+  return {area,lo:r1k(t*(1-r)),hi:r1k(t*(1+r)),mid:r1k(t)};
+}
+
+/* ---------- Dibujo ---------- */
+function drawCasa(s,opt={}){
+  const VW=opt.vw||600,VH=opt.vh||400,mini=!!opt.mini;
+  const col=byId(COLORS,s.color);
+  const pad=mini?3:72;
+  const sc=Math.min((VW-pad*2)/s.w,(VH-pad*2)/s.h);
+  const W=s.w*sc,H=s.h*sc,x=(VW-W)/2+(mini?0:8),y=(VH-H)/2-(mini?0:6);
+  const fr=mini?2.5:Math.max(8,Math.min(15,W*.03));
+  const sw=mini?1:1.4;
+  const gl=s.glass==="dvh"?"var(--glass-2)":s.glass==="refl"?"#9FB3B8":"var(--glass)";
+  const uid=opt.uid||"m";
+  let g=`<defs><pattern id="mq${uid}" width="4" height="4" patternUnits="userSpaceOnUse"><path d="M0 0H4M0 0V4" stroke="#55606A" stroke-width=".35" opacity=".55"/></pattern></defs>`;
+  const rect=(rx,ry,rw,rh,f,st=col.stroke,w=sw)=>`<rect x="${rx.toFixed(1)}" y="${ry.toFixed(1)}" width="${Math.max(rw,0).toFixed(1)}" height="${Math.max(rh,0).toFixed(1)}" fill="${f}" stroke="${st}" stroke-width="${w}"/>`;
+  g+=rect(x,y,W,H,col.hex);
+  const ix=x+fr,iy=y+fr,iw=W-fr*2,ih=H-fr*2;
+  const sash=(sx,sy,swd,sh,kind,dir)=>{
+    const f=mini?2:Math.max(6,fr*.75);
+    let o=rect(sx,sy,swd,sh,col.hex)+rect(sx+f,sy+f,swd-f*2,sh-f*2,gl,col.stroke,mini?.6:1);
+    if(!mini){ o+=`<path d="M${(sx+f+8).toFixed(1)} ${(sy+sh-f-8).toFixed(1)} L${(sx+f+28).toFixed(1)} ${(sy+f+10).toFixed(1)}" stroke="#fff" stroke-width="2" opacity=".5"/>`; }
+    const st=`stroke="${s.color==="negro"?"#C8B184":"#36444E"}" stroke-width="${mini?.6:1}" stroke-dasharray="${mini?"":"5 4"}" fill="none"`;
+    if(kind==="bat"){ const hx=dir<0?sx+f:sx+swd-f, ox=dir<0?sx+swd-f:sx+f; o+=`<path d="M${ox} ${sy+f} L${hx} ${sy+sh/2} L${ox} ${sy+sh-f}" ${st}/>`; }
+    if(kind==="osc"){ o+=`<path d="M${sx+swd-f} ${sy+f} L${sx+f} ${sy+sh/2} L${sx+swd-f} ${sy+sh-f}" ${st}/><path d="M${sx+f} ${sy+f} L${sx+swd/2} ${sy+sh-f} L${sx+swd-f} ${sy+f}" ${st}/>`; }
+    if(kind==="corr"&&!mini){ const ay=sy+sh/2, ax=sx+swd/2; o+=`<path d="M${ax-18} ${ay} H${ax+18} M${ax+(dir>0?18:-18)} ${ay} l${dir>0?-7:7} -5 M${ax+(dir>0?18:-18)} ${ay} l${dir>0?-7:7} 5" stroke="#36444E" stroke-width="1.4" fill="none"/>`; }
+    if(s.mosq&&byId(TYPES,s.type).mosq&&kind!=="fijo") o+=`<rect x="${sx+f}" y="${sy+f}" width="${Math.max(swd-f*2,0)}" height="${Math.max(sh-f*2,0)}" fill="url(#mq${uid})"/>`;
+    return o;
+  };
+  const t=s.type;
+  if(t==="corr"||t==="pv"){ const half=iw/2+fr*.3; g+=sash(ix,iy,half,ih,"corr",1); g+=sash(ix+iw-half,iy,half,ih,"corr",-1); }
+  else if(t==="bat"){ if(iw>ih*1.1){ g+=sash(ix,iy,iw/2,ih,"bat",-1)+sash(ix+iw/2,iy,iw/2,ih,"bat",1);} else g+=sash(ix,iy,iw,ih,"bat",1); }
+  else if(t==="osc"){ g+=sash(ix,iy,iw,ih,"osc",1); }
+  else if(t==="fijo"){ g+=sash(ix,iy,iw,ih,"fijo",1); }
+  else if(t==="pta"){ const f=mini?2:Math.max(6,fr*.75); g+=rect(ix,iy,iw,ih,col.hex); const gh=ih*.55; g+=rect(ix+f*2,iy+f*2,iw-f*4,gh,gl,col.stroke,mini?.6:1); if(!mini){ g+=`<rect x="${ix+iw-f*2-6}" y="${iy+ih*.58}" width="5" height="26" rx="2" fill="#36444E"/>`; } }
+  if(!mini){
+    const c="#B4532A";
+    const cy=y+H+30, cx=x-30;
+    g+=`<g stroke="${c}" stroke-width="1" fill="${c}" font-family="Spline Sans Mono, monospace" font-size="13">
+      <path d="M${x} ${y+H+8} V${cy+6} M${x+W} ${y+H+8} V${cy+6} M${x} ${cy} H${x+W}"/>
+      <path d="M${x} ${cy} l7 -4 v8z M${x+W} ${cy} l-7 -4 v8z" stroke="none"/>
+      <text x="${x+W/2}" y="${cy-7}" text-anchor="middle" stroke="none">${s.w} cm</text>
+      <path d="M${x-8} ${y} H${cx-6} M${x-8} ${y+H} H${cx-6} M${cx} ${y} V${y+H}"/>
+      <path d="M${cx} ${y} l-4 7 h8z M${cx} ${y+H} l-4 -7 h8z" stroke="none"/>
+      <text x="${cx-8}" y="${y+H/2}" text-anchor="middle" stroke="none" transform="rotate(-90 ${cx-8} ${y+H/2})">${s.h} cm</text>
+    </g>`;
+    if(s.line==="rpt"){ g+=`<g transform="translate(${VW-118} 18)"><rect width="100" height="44" rx="6" fill="#fff" stroke="#D6D0C4"/><rect x="10" y="10" width="14" height="24" fill="${col.hex}" stroke="${col.stroke}"/><rect x="24" y="16" width="8" height="12" fill="#245F7A"/><rect x="32" y="10" width="14" height="24" fill="${col.hex}" stroke="${col.stroke}"/><text x="54" y="20" font-family="Spline Sans Mono" font-size="9" fill="#4F5B63">CORTE</text><text x="54" y="32" font-family="Spline Sans Mono" font-size="9" fill="#245F7A">RPT</text></g>`; }
+  }
+  return g;
+}
+function drawOfi(o,opt={}){
+  const VW=opt.vw||600,VH=opt.vh||400,mini=!!opt.mini;
+  const col=byId(COLORS,o.col);
+  const pad=mini?3:60;
+  const sc=Math.min((VW-pad*2)/o.l,(VH-pad*2-(mini?0:30))/o.h);
+  const W=o.l*sc,H=o.h*sc,x=(VW-W)/2,y=(VH-H)/2-(mini?0:4);
+  let g="";
+  if(!mini) g+=`<rect x="${x-20}" y="${y+H}" width="${W+40}" height="8" fill="#D9D3C6"/>`;
+  g+=`<rect x="${x}" y="${y}" width="${W}" height="${H}" fill="${col.hex}" stroke="${col.stroke}" stroke-width="${mini?1:1.5}"/>`;
+  const fr=mini?2:6;
+  const dw=0.9*sc, dh=Math.min(2.05,o.h-.1)*sc;
+  const doors=o.door==="none"?0:o.dq;
+  // posiciones de puertas repartidas
+  const slots=[]; for(let i=0;i<doors;i++){ slots.push(x+fr+(W-2*fr-dw)*(doors===1?.72:(i/(doors-1||1))*.9+.05)); }
+  const strip=Math.max(0.26*sc,mini?3:6);
+  let cx=x+fr;
+  const top=y+fr, bot=y+H-fr;
+  const inDoor=(a,b)=>slots.some(s=>b>s-1&&a<s+dw+1);
+  while(cx<x+W-fr-0.5){
+    const w=Math.min(strip,x+W-fr-cx);
+    if(!inDoor(cx,cx+w)){
+      g+=`<rect x="${cx.toFixed(1)}" y="${top.toFixed(1)}" width="${w.toFixed(1)}" height="${(bot-top).toFixed(1)}" fill="var(--uglass)" stroke="#9FB2B0" stroke-width="${mini?.3:.7}"/>`;
+      if(!mini) g+=`<line x1="${(cx+w/2).toFixed(1)}" y1="${top}" x2="${(cx+w/2).toFixed(1)}" y2="${bot}" stroke="#fff" stroke-width="1.2" opacity=".7"/>`;
+    }else{
+      // sobre la puerta: banda de UGLASS arriba
+      const dTop=y+H-fr-dh;
+      if(dTop-top>2) g+=`<rect x="${cx.toFixed(1)}" y="${top.toFixed(1)}" width="${w.toFixed(1)}" height="${(dTop-top).toFixed(1)}" fill="var(--uglass)" stroke="#9FB2B0" stroke-width="${mini?.3:.7}"/>`;
+    }
+    cx+=w;
+  }
+  slots.forEach(s=>{
+    const dy=y+H-fr-dh;
+    if(o.door==="alu"){
+      g+=`<rect x="${s}" y="${dy}" width="${dw}" height="${dh}" fill="${col.hex}" stroke="${col.stroke}" stroke-width="${mini?.6:1.2}"/><rect x="${s+(mini?1.5:6)}" y="${dy+(mini?1.5:6)}" width="${dw-(mini?3:12)}" height="${dh-(mini?3:12)}" fill="var(--glass)" stroke="${col.stroke}" stroke-width="${mini?.4:.8}"/>`;
+    }else{
+      g+=`<rect x="${s}" y="${dy}" width="${dw}" height="${dh}" fill="#C9A77E" stroke="#8A6440" stroke-width="${mini?.6:1.2}"/>`;
+    }
+    if(!mini) g+=`<circle cx="${s+dw-10}" cy="${dy+dh*.52}" r="3" fill="#36444E"/><path d="M${s} ${dy+dh} A${dw} ${dw} 0 0 1 ${s+dw} ${dy+dh-dw}" stroke="#B4532A" stroke-dasharray="4 4" fill="none" opacity=".0"/>`;
+  });
+  if(!mini){
+    const c="#B4532A", cy=y+H+30;
+    g+=`<g stroke="${c}" fill="${c}" font-family="Spline Sans Mono, monospace" font-size="13">
+      <path d="M${x} ${cy} H${x+W} M${x} ${cy-6} V${cy+6} M${x+W} ${cy-6} V${cy+6}"/>
+      <text x="${x+W/2}" y="${cy-8}" text-anchor="middle" stroke="none">${o.l.toFixed(2).replace(".",",")} m</text>
+      <path d="M${x-24} ${y} V${y+H} M${x-30} ${y} H${x-18} M${x-30} ${y+H} H${x-18}"/>
+      <text x="${x-32}" y="${y+H/2}" text-anchor="middle" stroke="none" transform="rotate(-90 ${x-32} ${y+H/2})">${o.h.toFixed(2).replace(".",",")} m</text>
+    </g>`;
+  }
+  return g;
+}
+
+/* ---------- UI Casa ---------- */
+const ICON={
+  corr:'<rect x="3" y="4" width="40" height="30" fill="none" stroke="currentColor" stroke-width="2"/><path d="M23 4v30M12 19h7M27 19h7" stroke="currentColor" stroke-width="2"/>',
+  bat:'<rect x="3" y="4" width="40" height="30" fill="none" stroke="currentColor" stroke-width="2"/><path d="M23 4v30M5 6l16 13L5 32M41 6L25 19l16 13" stroke="currentColor" stroke-width="1.5" fill="none"/>',
+  osc:'<rect x="8" y="2" width="30" height="34" fill="none" stroke="currentColor" stroke-width="2"/><path d="M36 4L10 19l26 15M10 4l13 30L36 4" stroke="currentColor" stroke-width="1.3" fill="none"/>',
+  fijo:'<rect x="3" y="4" width="40" height="30" fill="none" stroke="currentColor" stroke-width="2"/><rect x="8" y="9" width="30" height="20" fill="none" stroke="currentColor" stroke-width="1"/>',
+  pv:'<rect x="6" y="1" width="34" height="36" fill="none" stroke="currentColor" stroke-width="2"/><path d="M23 1v36M12 19h6M28 19h6" stroke="currentColor" stroke-width="2"/>',
+  pta:'<rect x="12" y="1" width="22" height="36" fill="none" stroke="currentColor" stroke-width="2"/><rect x="16" y="5" width="14" height="16" fill="none" stroke="currentColor" stroke-width="1"/><circle cx="30" cy="24" r="1.6" fill="currentColor"/>'
+};
+function buildCasa(){
+  $("types").innerHTML=TYPES.map(t=>`<div class="tile"><input type="radio" name="type" id="t_${t.id}" value="${t.id}" ${t.id===S.type?"checked":""}><label for="t_${t.id}"><svg viewBox="0 0 46 38" aria-hidden="true">${ICON[t.id]}</svg>${t.name}</label></div>`).join("");
+  $("types").onchange=e=>{S.type=e.target.value; if(byId(TYPES,S.type).door&&S.h<200){S.h=210;} if(!byId(TYPES,S.type).door&&S.h>200){S.h=110;} syncMeas(); render();};
+  seg("lines",LINES,()=>S.line,v=>S.line=v);
+  seg("glass",GLASS,()=>S.glass,v=>S.glass=v);
+  seg("colors",COLORS,()=>S.color,v=>S.color=v,true);
+  bindNum("w","wr",v=>S.w=v,40,400);
+  bindNum("h","hr",v=>S.h=v,40,260);
+  $("mosq").onchange=e=>{S.mosq=e.target.checked;render();};
+  $("inst").onchange=e=>{S.inst=e.target.checked;render();};
+  $("qm").onclick=()=>{S.q=Math.max(1,S.q-1);render();};
+  $("qp").onclick=()=>{S.q=Math.min(50,S.q+1);render();};
+}
+function seg(id,arr,get,set,sw){
+  const el=$(id);
+  el.innerHTML=arr.map(o=>`<button type="button" data-v="${o.id}" aria-pressed="${o.id===get()}">${sw?`<span class="sw" style="background:${o.hex}"></span>`:""}${o.name}</button>`).join("");
+  el.onclick=e=>{const b=e.target.closest("button"); if(!b) return; set(b.dataset.v); el.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b)); render();};
+}
+function bindNum(nid,rid,set,min,max,dec){
+  const n=$(nid), r=$(rid);
+  const go=v=>{ v=parseFloat(String(v).replace(",",".")); if(isNaN(v)) return; v=clamp(v,min,max); set(v); r.value=v; render(); };
+  n.addEventListener("input",()=>{ const v=parseFloat(n.value); if(!isNaN(v)&&v>=min&&v<=max) go(v); });
+  n.addEventListener("change",()=>{ go(n.value); n.value=r.value; });
+  r.addEventListener("input",()=>{ n.value=r.value; go(r.value); });
+}
+function syncMeas(){ $("w").value=$("wr").value=S.w; $("h").value=$("hr").value=S.h; }
+
+/* ---------- UI Oficina ---------- */
+function buildOfi(){
+  seg("odoor",ODOOR,()=>O.door,v=>O.door=v);
+  seg("ocol",OCOL,()=>O.col,v=>O.col=v,true);
+  bindNum("ol","olr",v=>O.l=v,1,20);
+  bindNum("oh","ohr",v=>O.h=v,2,3.5);
+  $("odm").onclick=()=>{O.dq=Math.max(1,O.dq-1);render();};
+  $("odp").onclick=()=>{O.dq=Math.min(Math.max(1,Math.floor(O.l/1.4)),O.dq+1);render();};
+  $("oinst").onchange=e=>{O.inst=e.target.checked;render();};
+  $("onight").onchange=e=>{O.night=e.target.checked;render();};
+}
+
+function setMode(m){
+  mode=m;
+  $("tabCasa").setAttribute("aria-selected",m==="casa");
+  $("tabOfi").setAttribute("aria-selected",m==="ofi");
+  $("panelCasa").hidden=m!=="casa"; $("panelOfi").hidden=m!=="ofi";
+  $("cotTitle").textContent=m==="casa"?"Cotizador de aberturas":"Cotizador de divisorios de oficina";
+  $("cotSub").textContent=m==="casa"?"Elegí el tipo, la línea y el vidrio. El dibujo y el precio se actualizan mientras movés las medidas.":"Cargá el largo del frente, el alto y las puertas. Lo dibujamos en UGLASS como los que fabrica Orlandi.";
+  render();
+}
+$("tabCasa").onclick=()=>setMode("casa");
+$("tabOfi").onclick=()=>setMode("ofi");
+document.querySelector(".switch").addEventListener("keydown",e=>{ if(e.key==="ArrowRight"||e.key==="ArrowLeft"){ const m=mode==="casa"?"ofi":"casa"; setMode(m); $(m==="casa"?"tabCasa":"tabOfi").focus(); }});
+document.querySelectorAll("[data-go]").forEach(a=>a.addEventListener("click",()=>setMode(a.dataset.go)));
+
+function describeCasa(s){ return {title:`${byId(TYPES,s.type).name} ${s.w}×${s.h} cm`, sub:`${byId(LINES,s.line).name} · ${byId(GLASS,s.glass).name} · ${byId(COLORS,s.color).name}${s.mosq&&byId(TYPES,s.type).mosq?" · mosquitero":""}${s.inst?" · con colocación":""}`}; }
+function describeOfi(o){ const dn=o.door==="alu"?["puerta de aluminio","puertas de aluminio"]:["puerta placa","puertas placa"]; const d=o.door==="none"?"sin puerta":`${o.dq} ${dn[o.dq>1?1:0]}`; return {title:`Divisorio UGLASS ${o.l.toFixed(2).replace(".",",")} × ${o.h.toFixed(2).replace(".",",")} m`, sub:`${d} · perfil ${byId(COLORS,o.col).name.toLowerCase()}${o.inst?" · con colocación":""}${o.night?" · fuera de horario":""}`}; }
+
+function render(){
+  let c,txt;
+  if(mode==="casa"){
+    c=calcCasa(S); $("draw").innerHTML=drawCasa(S); $("planTag").textContent="Vista interior · "+byId(TYPES,S.type).name;
+    $("lineNote").textContent=byId(LINES,S.line).note;
+    $("stamp").innerHTML=`ORLANDI · ALUMINIO 6063 T6<br>${byId(LINES,S.line).name.toUpperCase()}`;
+    txt=`${c.area.toFixed(2).replace(".",",")} m² por unidad · ${S.q} ${S.q===1?"unidad":"unidades"}`;
+    $("q").textContent=S.q;
+  }else{
+    O.dq=Math.min(O.dq,Math.max(1,Math.floor(O.l/1.4)));
+    c=calcOfi(O); $("draw").innerHTML=drawOfi(O); $("planTag").textContent="Elevación · divisorio de oficina";
+    $("stamp").innerHTML=`ORLANDI · TRABAJOS ESPECIALES<br>UGLASS + ${O.door==="none"?"SIN PUERTA":O.door==="alu"?"PUERTA ALUMINIO":"PUERTA PLACA"}`;
+    $("odq").textContent=O.dq;
+    txt=`${c.area.toFixed(2).replace(".",",")} m² de frente`;
+  }
+  $("amt").textContent=`${ars(c.lo)} a ${ars(c.hi)}`;
+  $("sub").textContent=txt;
+  $("mamt").textContent=ars(c.mid);
+}
+
+/* ---------- Pedido ---------- */
+$("add").onclick=()=>{
+  if(mode==="casa") items.push({k:"casa",s:{...S}}); else items.push({k:"ofi",o:{...O}});
+  renderItems(); toast("Agregado al pedido");
+};
+function itemCalc(it){ return it.k==="casa"?calcCasa(it.s):calcOfi(it.o); }
+function itemDesc(it){ return it.k==="casa"?describeCasa(it.s):describeOfi(it.o); }
+function renderItems(){
+  const ul=$("items");
+  ul.innerHTML=items.map((it,i)=>{const d=itemDesc(it),c=itemCalc(it); const svg=it.k==="casa"?drawCasa(it.s,{vw:44,vh:36,mini:true,uid:"i"+i}):drawOfi(it.o,{vw:44,vh:36,mini:true}); return `<li><svg viewBox="0 0 44 36" aria-hidden="true">${svg}</svg><div class="d">${d.title}${it.k==="casa"&&it.s.q>1?` <b>×${it.s.q}</b>`:""}<small>${d.sub}</small></div><div class="p">${ars(c.mid)}</div><button type="button" data-rm="${i}" aria-label="Quitar ${d.title}">×</button></li>`;}).join("");
+  $("empty").hidden=items.length>0; $("orderFoot").hidden=!items.length;
+  const lo=items.reduce((s,it)=>s+itemCalc(it).lo,0), hi=items.reduce((s,it)=>s+itemCalc(it).hi,0);
+  $("total").textContent=`${ars(lo)} a ${ars(hi)}`;
+  $("cnt").textContent=items.length?`${items.length} ${items.length===1?"ítem":"ítems"}`:"vacío";
+  $("mbar").classList.toggle("show",true);
+}
+$("items").addEventListener("click",e=>{const i=e.target.dataset.rm; if(i!==undefined){items.splice(+i,1);renderItems();}});
+function buildMsg(){
+  const n=$("cname").value.trim(), z=$("czone").value.trim();
+  let m=`Hola Orlandi, quiero pedir presupuesto${n?`. Soy ${n}`:""}.\n`;
+  if(z) m+=`Obra en: ${z}\n`;
+  m+="\n";
+  items.forEach((it,i)=>{const d=itemDesc(it),c=itemCalc(it); m+=`${i+1}) ${d.title}${it.k==="casa"&&it.s.q>1?` x${it.s.q}`:""}\n   ${d.sub}\n   Estimado web: ${ars(c.lo)} a ${ars(c.hi)}\n`;});
+  const lo=items.reduce((s,it)=>s+itemCalc(it).lo,0), hi=items.reduce((s,it)=>s+itemCalc(it).hi,0);
+  m+=`\nTotal estimado: ${ars(lo)} a ${ars(hi)}\n¿Cuándo pueden venir a medir?`;
+  return m;
+}
+$("send").onclick=()=>{ $("waMsg").textContent=buildMsg(); openDlg("waDlg"); };
+$("closeWa").onclick=()=>$("waDlg").close();
+$("copyMsg").onclick=async()=>{ try{await navigator.clipboard.writeText($("waMsg").textContent);toast("Mensaje copiado");}catch(e){toast("No se pudo copiar");} };
+function openDlg(id){ const d=$(id); if(typeof d.showModal==="function") d.showModal(); else d.setAttribute("open",""); }
+$("mgo").onclick=()=>document.querySelector(".order").scrollIntoView({behavior:reduced()?"auto":"smooth",block:"start"});
+
+/* ---------- Tabla de precios ---------- */
+const ADM=[
+  ["Precio por m² (línea mediana)",null],
+  ...TYPES.map(t=>[t.name,["m2",t.id],"$"]),
+  ["Multiplicador por línea",null],
+  ...LINES.map(l=>[l.name,["line",l.id],"×"]),
+  ["Vidrio (suma por m²)",null],
+  ...GLASS.map(g=>[g.name,["glass",g.id],"$"]),
+  ["Terminación (recargo %)",null],
+  ...COLORS.map(c=>[c.name,["colorPct",c.id],"%"]),
+  ["Divisorios de oficina",null],
+  ["UGLASS por m²",["ug","m2"],"$"],["Puerta de aluminio (c/u)",["ug","alu"],"$"],["Puerta placa (c/u)",["ug","placa"],"$"],["Fuera de horario (%)",["ug","nightPct"],"%"],
+  ["Generales",null],
+  ["Mosquitero por m²",["mosqM2"],"$"],["Colocación (%)",["instPct"],"%"],["Margen del rango (±%)",["rangePct"],"%"]
+];
+const getP=p=>p.reduce((o,k)=>o[k],P);
+const setP=(p,v)=>{let o=P; for(let i=0;i<p.length-1;i++) o=o[p[i]]; o[p[p.length-1]]=v;};
+function buildAdm(){
+  $("admBody").innerHTML=`<table><thead><tr><th>Concepto</th><th style="text-align:right">Valor</th></tr></thead><tbody>${ADM.map(([l,p,u],i)=>p?`<tr><td>${l} <span style="color:var(--ink-2);font-size:12px">${u}</span></td><td style="text-align:right"><input type="number" step="any" data-i="${i}" value="${getP(p)}" aria-label="${l}"></td></tr>`:`<tr class="grp"><td colspan="2">${l}</td></tr>`).join("")}</tbody></table>`;
+}
+$("openAdm").onclick=()=>{buildAdm();openDlg("admDlg");};
+$("saveP").onclick=()=>{ $("admBody").querySelectorAll("input").forEach(inp=>{const v=parseFloat(inp.value); if(!isNaN(v)&&v>=0) setP(ADM[+inp.dataset.i][1],v);}); save(); render(); renderItems(); $("admDlg").close(); toast("Precios guardados"); };
+$("resetP").onclick=()=>{ P=structuredClone(DEFAULT_PRICES); try{localStorage.removeItem(KEY);}catch(e){} buildAdm(); render(); renderItems(); toast("Precios de ejemplo restaurados"); };
+
+/* ---------- Obras ---------- */
+const OBRAS=[
+  {src:IMG+"linea-mediterranea/LM1.JPG",t:"Línea Mediterránea",d:"Ruptura de puente térmico",go:{mode:"casa",type:"corr",line:"rpt",glass:"dvh"}},
+  {src:IMG+"ventanas/V001.jpg",t:"Ventanas",d:"Aluminio a medida",go:{mode:"casa",type:"corr",line:"med"}},
+  {src:IMG+"divisorios-oficina/DO1.JPG",t:"Divisorio de oficina",d:"UGLASS con puerta",go:{mode:"ofi",door:"alu"}},
+  {src:IMG+"linea-mediterranea/LM4.JPG",t:"Línea Mediterránea",d:"Para climas exigentes",go:{mode:"casa",type:"osc",line:"rpt",glass:"dvh"}},
+  {src:IMG+"ventanas/V009.jpg",t:"Puertas-ventana",d:"Mediana y alta prestación",go:{mode:"casa",type:"pv",line:"med2"}},
+  {src:IMG+"divisorios-oficina/DO1b.JPG",t:"Divisorio de oficina",d:"Privacidad con luz",go:{mode:"ofi",door:"placa"}}
+];
+$("strip").innerHTML=OBRAS.map((o,i)=>`<figure><div class="ph"><span class="fb">${o.t}</span><img loading="lazy" src="${o.src}" alt="${o.t}, trabajo de Aberturas Orlandi" onerror="this.remove()"></div><figcaption><b>${o.t}</b>${o.d}<br><button type="button" class="btn btn-ghost" data-ob="${i}" style="margin-top:10px;padding:7px 12px;font-size:14px">Quiero una así</button></figcaption></figure>`).join("");
+$("strip").addEventListener("click",e=>{const i=e.target.dataset.ob; if(i===undefined) return; const g=OBRAS[+i].go;
+  if(g.mode==="casa"){ Object.assign(S,{type:g.type,line:g.line,glass:g.glass||S.glass}); if(byId(TYPES,S.type).door&&S.h<200) S.h=210; buildCasa(); syncMeas(); }
+  else { O.door=g.door; buildOfi(); }
+  setMode(g.mode); $("cotizar").scrollIntoView({behavior:reduced()?"auto":"smooth"});
+});
+
+let tt; function toast(m){ const t=$("toast"); t.textContent=m; t.classList.add("on"); clearTimeout(tt); tt=setTimeout(()=>t.classList.remove("on"),1800); }
+
+buildCasa(); buildOfi(); setMode("casa"); renderItems(); $("mbar").classList.add("show");
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Aberturas Orlandi"></script>
+</body>
+</html>
