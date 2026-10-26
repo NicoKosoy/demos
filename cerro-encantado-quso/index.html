@@ -1,0 +1,724 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Cerro Encantado · Cabañas en Valle Grande</title>
+<meta name="description" content="Prototipo de demostración: web de reservas directas para Cerro Encantado, cabañas sobre el río Atuel y al pie del cerro en Valle Grande, San Rafael.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Semi+Condensed:wght@400;500;600;700;800&family=Lusitana:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --asfalto:#1E2328;
+  --asfalto-2:#2C333A;
+  --linea:#F2B705;      /* línea amarilla de ruta */
+  --lago:#1F5E8C;       /* lago de Valle Grande */
+  --lago-2:#174A6F;
+  --atuel:#3C9A9A;      /* agua del Atuel */
+  --roca:#B8553A;       /* roca rojiza del cañón */
+  --roca-2:#8F3F2A;
+  --monte:#5C6B3C;
+  --cal:#EEF0EE;
+  --papel:#F8F8F5;
+  --gris:#C9CDD0;
+  --tinta:#1A1E22;
+  --tinta-2:#4F575E;
+  --cond:"Saira Semi Condensed","Arial Narrow",Arial,sans-serif;
+  --serif:"Lusitana",Georgia,serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;overflow-x:clip}
+body{margin:0;background:var(--cal);color:var(--tinta);font-family:var(--serif);font-size:18px;line-height:1.6;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:var(--lago)}
+:focus-visible{outline:3px solid var(--linea);outline-offset:3px}
+h1,h2,h3,h4{font-family:var(--cond);font-weight:800;margin:0;line-height:1;text-transform:uppercase;letter-spacing:.01em}
+p{margin:0 0 1em}
+button,input,select{font:inherit;color:inherit}
+.env{max-width:1240px;margin:0 auto;padding:0 28px}
+.cond{font-family:var(--cond)}
+.rot{font-family:var(--cond);font-weight:700;font-size:.8rem;letter-spacing:.18em;text-transform:uppercase}
+
+.aviso{background:var(--linea);color:var(--asfalto);font-family:var(--cond);font-weight:600;font-size:.88rem;text-align:center;padding:7px 16px}
+
+/* barra superior */
+.top{position:sticky;top:0;z-index:40;background:var(--asfalto);color:#fff}
+.top .env{display:flex;justify-content:space-between;align-items:center;height:62px;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-family:var(--cond);font-weight:800;font-size:1.25rem;text-transform:uppercase;letter-spacing:.04em}
+.escudo{width:34px;height:38px;flex:none}
+.top nav{display:flex;gap:22px;font-family:var(--cond);font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:.9rem}
+.top nav a{color:#D7DCE0;text-decoration:none}
+.top nav a:hover{color:var(--linea)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--cond);font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:.95rem;background:var(--linea);color:var(--asfalto);border:0;padding:12px 22px;border-radius:6px;text-decoration:none;cursor:pointer}
+.btn:hover{filter:brightness(1.06)}
+.btn.lago{background:var(--lago);color:#fff}
+.btn.borde{background:transparent;border:2px solid currentColor}
+
+/* portada */
+.portada{position:relative;min-height:88vh;display:grid;grid-template-columns:1fr;align-items:end;color:#fff;background:linear-gradient(180deg,#24506F 0%,#3C7A8A 45%,#8F5A3E 75%,#5B3A2A 100%);overflow:hidden}
+.portada > img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.portada::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(20,24,28,.82) 0%,rgba(20,24,28,.45) 50%,rgba(20,24,28,.1) 100%),linear-gradient(0deg,rgba(20,24,28,.55),transparent 40%)}
+.portada .env{position:relative;z-index:2;width:100%;padding-top:80px;padding-bottom:56px;display:grid;grid-template-columns:1.2fr .8fr;gap:40px;align-items:end}
+.cartel-vial{background:var(--lago);border:4px solid #fff;border-radius:12px;padding:16px 20px;display:inline-grid;gap:6px;font-family:var(--cond);box-shadow:0 0 0 3px var(--lago);margin-bottom:28px}
+.cartel-vial div{display:flex;justify-content:space-between;gap:28px;font-weight:700;font-size:1.05rem;letter-spacing:.04em;text-transform:uppercase}
+.cartel-vial .flecha{color:var(--linea)}
+.portada h1{font-size:clamp(2.6rem,6.2vw,5.6rem);max-width:15ch}
+.portada h1 span{color:var(--linea)}
+.portada .baj{font-size:1.2rem;max-width:44ch;margin-top:18px;color:#E9EDF0}
+.portada .acc{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+.oficial{background:rgba(255,255,255,.96);color:var(--tinta);border-radius:12px;padding:18px 20px;border-left:8px solid var(--linea);max-width:360px;justify-self:end}
+.oficial b{font-family:var(--cond);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:4px}
+.oficial .tel{font-family:var(--cond);font-weight:800;font-size:1.9rem;color:var(--lago)}
+.oficial p{font-size:.92rem;margin:6px 0 0;color:var(--tinta-2)}
+
+/* asfalto con línea */
+.ruta{height:26px;background:var(--asfalto);position:relative}
+.ruta::before{content:"";position:absolute;left:0;right:0;top:11px;height:4px;background:repeating-linear-gradient(90deg,var(--linea) 0 46px,transparent 46px 80px)}
+
+section{padding:92px 0}
+.cab{display:flex;align-items:flex-end;justify-content:space-between;gap:28px;margin-bottom:40px;flex-wrap:wrap}
+.cab h2{font-size:clamp(2.2rem,4.6vw,3.8rem)}
+.cab p{max-width:52ch;color:var(--tinta-2);margin:0}
+.km{display:inline-flex;align-items:center;gap:8px;font-family:var(--cond);font-weight:800;background:#fff;border:2px solid var(--tinta);border-radius:6px;padding:2px 10px;font-size:.9rem;margin-bottom:12px}
+.km i{font-style:normal;background:var(--tinta);color:#fff;border-radius:3px;padding:0 5px}
+
+/* corte transversal */
+.corte{background:var(--papel);border:2px solid var(--tinta);border-radius:16px;overflow:hidden}
+.corte svg{display:block;width:100%;height:auto}
+.zona{cursor:pointer}
+.zona rect.hit{fill:transparent}
+.zona:hover .marco,.zona.activa .marco{stroke:var(--linea);stroke-width:5}
+.lados{display:grid;grid-template-columns:1fr 1fr;border-top:2px solid var(--tinta)}
+.lado{padding:28px;display:grid;grid-template-columns:150px 1fr;gap:20px;align-items:start;cursor:pointer;transition:background .2s}
+.lado + .lado{border-left:2px solid var(--tinta)}
+.lado.activa{background:#FFF7DC}
+.lado .ft{aspect-ratio:1;border-radius:10px;overflow:hidden;background:linear-gradient(135deg,var(--atuel),var(--lago))}
+.lado.cerro .ft{background:linear-gradient(135deg,var(--roca),var(--monte))}
+.lado .ft img{width:100%;height:100%;object-fit:cover}
+.lado h3{font-size:1.6rem;margin-bottom:6px}
+.lado p{font-size:.98rem;color:var(--tinta-2);margin:0 0 10px}
+.cruce{font-family:var(--cond);font-weight:700;font-size:.92rem;display:flex;gap:8px;align-items:center;color:var(--lago)}
+
+/* la cabaña */
+.ficha{display:grid;grid-template-columns:.9fr 1.1fr;gap:40px;align-items:start}
+.ficha > div{min-width:0}
+.tabla-tec{border:2px solid var(--tinta);border-radius:12px;overflow:hidden;background:#fff}
+.tabla-tec div{display:grid;grid-template-columns:150px 1fr;border-bottom:1px solid var(--gris)}
+.tabla-tec div:last-child{border-bottom:0}
+.tabla-tec dt,.tabla-tec dd{margin:0;padding:12px 16px}
+.tabla-tec dt{font-family:var(--cond);font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:.85rem;background:var(--cal)}
+.equipo{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.equipo span{font-family:var(--cond);font-weight:600;font-size:.92rem;border:1.5px solid var(--tinta);border-radius:999px;padding:4px 12px;background:#fff}
+.rollo{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(240px,32%);gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px;scrollbar-width:thin}
+.rollo figure{margin:0;scroll-snap-align:start;aspect-ratio:4/3;border-radius:10px;overflow:hidden;position:relative;background:linear-gradient(135deg,#C9CDD0,#9AA3A9)}
+.rollo figure:nth-child(3n+2){background:linear-gradient(135deg,#C88A6E,#8F3F2A)}
+.rollo figure:nth-child(3n){background:linear-gradient(135deg,#7FB5B5,#1F5E8C)}
+.rollo img{width:100%;height:100%;object-fit:cover}
+.rollo figcaption{position:absolute;left:8px;bottom:8px;background:var(--asfalto);color:#fff;font-family:var(--cond);font-size:.75rem;padding:2px 8px;border-radius:4px}
+.rollo-nav{display:flex;gap:8px;justify-content:flex-end;margin-bottom:10px}
+.rollo-nav button{width:40px;height:40px;border-radius:6px;border:2px solid var(--tinta);background:#fff;cursor:pointer;font-weight:800}
+
+/* reserva */
+.reserva{background:var(--asfalto);color:#fff}
+.reserva .cab p{color:#C3CAD0}
+.res-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:26px;align-items:start}
+.panel{background:var(--asfalto-2);border-radius:14px;padding:22px;border:1px solid #3B444C}
+.ctrl{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.seg{display:inline-flex;background:#14181B;border-radius:8px;padding:4px}
+.seg button{border:0;background:transparent;color:#C3CAD0;font-family:var(--cond);font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:8px 14px;border-radius:6px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--linea);color:var(--asfalto)}
+.flechas{display:flex;gap:8px}
+.flechas button{width:38px;height:38px;border-radius:6px;border:1px solid #4A545D;background:#14181B;color:#fff;cursor:pointer;font-weight:800}
+.meses{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.mes h4{font-size:1.1rem;margin-bottom:8px;color:var(--linea)}
+.dias{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.dn{text-align:center;font-family:var(--cond);font-size:.75rem;color:#8D979F}
+.dia{aspect-ratio:1;border:0;border-radius:6px;background:#38414A;color:#fff;font-family:var(--cond);font-weight:600;font-size:.95rem;cursor:pointer;position:relative;padding:0}
+.dia .pts{position:absolute;left:0;right:0;bottom:4px;display:flex;justify-content:center;gap:2px}
+.dia .pts i{width:4px;height:4px;border-radius:50%;background:#7CD0C5}
+.dia .pts i.o{background:#5A646D}
+.dia.media{box-shadow:inset 0 -3px 0 #E39B3B}
+.dia.alta{box-shadow:inset 0 -3px 0 var(--roca)}
+.dia.lleno{background:#262C31;color:#5D666E;cursor:not-allowed;text-decoration:line-through}
+.dia.pasado{opacity:.3;cursor:not-allowed}
+.dia.sel{background:var(--linea);color:var(--asfalto)}
+.dia.rango{background:#6B5A1A}
+.dia:not(.lleno):not(.pasado):hover{outline:2px solid var(--linea)}
+.ley{display:flex;gap:16px;flex-wrap:wrap;margin-top:14px;font-family:var(--cond);font-size:.85rem;color:#B5BDC4}
+.ley i{display:inline-block;width:18px;height:6px;border-radius:3px;vertical-align:middle;margin-right:6px}
+.sync{margin-top:14px;font-size:.88rem;color:#C3CAD0;border-top:1px dashed #4A545D;padding-top:12px}
+.boleta{background:#fff;color:var(--tinta);border-radius:14px;overflow:hidden;position:sticky;top:80px}
+.boleta .cab-b{background:var(--lago);color:#fff;padding:16px 20px;display:flex;justify-content:space-between;align-items:center}
+.boleta .cab-b h3{font-size:1.4rem}
+.boleta .cuerpo{padding:18px 20px}
+.campo{display:grid;gap:4px;margin-bottom:12px}
+.campo label{font-family:var(--cond);font-weight:700;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--tinta-2)}
+.campo select,.campo input{border:2px solid var(--gris);border-radius:8px;padding:9px 12px;background:var(--papel)}
+.fila{display:flex;justify-content:space-between;gap:12px;padding:5px 0;font-size:.98rem}
+.fila b{font-family:var(--cond)}
+.fila.tot{border-top:2px solid var(--tinta);margin-top:8px;padding-top:10px;font-family:var(--cond);font-weight:800;font-size:1.25rem}
+.fila.sena{font-family:var(--cond);font-weight:800;color:var(--roca);font-size:1.15rem}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:.92rem;margin:10px 0;background:var(--cal);border-radius:8px;padding:10px 12px}
+.msg{font-size:.88rem;color:var(--roca-2);min-height:1em;margin:6px 0 0}
+.boleta .btn{width:100%;margin-top:12px}
+.demo{font-size:.78rem;color:var(--tinta-2);text-align:center;margin-top:8px}
+
+/* temporadas */
+.temp-tabla{width:100%;border-collapse:collapse;background:#fff;border:2px solid var(--tinta);border-radius:12px;overflow:hidden}
+.temp-tabla th,.temp-tabla td{padding:14px 18px;text-align:left;border-bottom:1px solid var(--gris)}
+.temp-tabla th{font-family:var(--cond);text-transform:uppercase;letter-spacing:.08em;font-size:.82rem;background:var(--asfalto);color:#fff}
+.temp-tabla td.p{font-family:var(--cond);font-weight:800;font-size:1.15rem;white-space:nowrap}
+.marca-t{display:inline-block;width:12px;height:12px;border-radius:2px;margin-right:8px;vertical-align:-1px}
+.nota{font-size:.88rem;color:var(--tinta-2);margin-top:12px}
+
+/* verificador */
+.verif{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center;background:#FFF7DC;border:2px solid var(--tinta);border-radius:16px;padding:32px}
+.verif h3{font-size:2rem;margin-bottom:10px}
+.verif form{display:flex;gap:10px;flex-wrap:wrap}
+.verif input{flex:1;min-width:180px;border:2px solid var(--tinta);border-radius:8px;padding:12px 14px;background:#fff;font-family:var(--cond);font-size:1.15rem}
+.resultado{margin-top:14px;font-family:var(--cond);font-weight:700;font-size:1.1rem;min-height:1.6em}
+.resultado.ok{color:#2E7D4F}.resultado.no{color:var(--roca-2)}
+
+/* hoja de ruta */
+.hoja{position:relative;padding-left:70px}
+.hoja::before{content:"";position:absolute;left:24px;top:0;bottom:0;width:20px;background:var(--asfalto);border-radius:10px}
+.hoja::after{content:"";position:absolute;left:32px;top:10px;bottom:10px;width:4px;background:repeating-linear-gradient(180deg,var(--linea) 0 22px,transparent 22px 40px)}
+.parada{position:relative;margin-bottom:22px;background:#fff;border:2px solid var(--tinta);border-radius:12px;padding:18px 22px;display:grid;grid-template-columns:120px 1fr;gap:18px;align-items:center}
+.parada::before{content:"";position:absolute;left:-52px;top:50%;width:26px;height:26px;margin-top:-13px;border-radius:50%;background:#fff;border:4px solid var(--tinta)}
+.parada.aqui{background:var(--linea)}
+.parada.aqui::before{background:var(--roca)}
+.parada .dist{font-family:var(--cond);font-weight:800;font-size:1.6rem;line-height:1}
+.parada .dist small{display:block;font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--tinta-2)}
+.parada h3{font-size:1.3rem;margin-bottom:4px}
+.parada p{margin:0;font-size:.96rem;color:var(--tinta-2)}
+
+/* opiniones */
+.ops{display:grid;grid-template-columns:.8fr 1fr 1fr;gap:20px}
+.op{background:#fff;border:2px solid var(--tinta);border-radius:12px;padding:24px}
+.op.n{background:var(--lago);color:#fff;display:flex;flex-direction:column;justify-content:center}
+.op.n b{font-family:var(--cond);font-size:4rem;line-height:1;color:var(--linea)}
+.op blockquote{margin:0;font-size:1.25rem;line-height:1.4}
+.op cite{display:block;margin-top:12px;font-style:normal;font-family:var(--cond);font-size:.9rem;color:var(--tinta-2)}
+
+.faq{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+details{background:#fff;border:2px solid var(--tinta);border-radius:10px;padding:14px 18px}
+summary{font-family:var(--cond);font-weight:700;font-size:1.08rem;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:10px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"↓";color:var(--roca)}
+details[open] summary::after{content:"↑"}
+details p{margin:10px 0 0;color:var(--tinta-2);font-size:.98rem}
+
+.contacto{background:var(--lago);color:#fff}
+.contacto .env{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center}
+.contacto h2{font-size:clamp(2rem,4vw,3.2rem)}
+.lista-c{display:grid;gap:10px}
+.lista-c a{display:flex;justify-content:space-between;gap:12px;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.35);border-radius:10px;padding:14px 18px;color:#fff;text-decoration:none;font-family:var(--cond);font-weight:700;font-size:1.05rem}
+.lista-c a:hover{background:rgba(255,255,255,.2)}
+.lista-c small{font-weight:500;opacity:.85}
+
+footer{background:var(--asfalto);color:#9AA4AC;padding:34px 0 100px;font-family:var(--cond);font-size:.92rem}
+footer .env{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+
+.barra{position:fixed;left:0;right:0;bottom:0;z-index:50;display:none;background:var(--asfalto);padding:10px 12px;gap:10px;border-top:3px solid var(--linea)}
+.barra a{flex:1;text-align:center;padding:12px;border-radius:6px;font-family:var(--cond);font-weight:800;text-transform:uppercase;text-decoration:none;color:#fff;border:1.5px solid #5A646D}
+.barra a.r{background:var(--linea);color:var(--asfalto);border-color:var(--linea)}
+
+.modal{position:fixed;inset:0;background:rgba(20,24,28,.7);display:none;align-items:center;justify-content:center;z-index:60;padding:16px}
+.modal.abierto{display:flex}
+.modal .caja{background:#fff;border-radius:14px;max-width:460px;width:100%;padding:26px;border-top:8px solid var(--linea)}
+.modal h3{font-size:1.6rem;margin-bottom:10px}
+
+@media (max-width:980px){
+  .top nav{display:none}
+  .portada .env{grid-template-columns:1fr}
+  .oficial{justify-self:start}
+  .lados{grid-template-columns:1fr}
+  .lado + .lado{border-left:0;border-top:2px solid var(--tinta)}
+  .ficha{grid-template-columns:1fr}
+  .res-grid{grid-template-columns:1fr}
+  .boleta{position:static}
+  .verif{grid-template-columns:1fr;padding:22px}
+  .ops{grid-template-columns:1fr}
+  .faq{grid-template-columns:1fr}
+  .contacto .env{grid-template-columns:1fr}
+  .barra{display:flex}
+}
+@media (max-width:620px){
+  body{font-size:16.5px}
+  .env{padding:0 16px}
+  section{padding:64px 0}
+  .portada{min-height:auto}
+  .portada .env{padding-top:48px;padding-bottom:36px}
+  .cartel-vial div{gap:14px;font-size:.92rem}
+  .lado{grid-template-columns:96px 1fr;padding:18px}
+  .tabla-tec div{grid-template-columns:110px 1fr}
+  .rollo{grid-auto-columns:82%}
+  .meses{grid-template-columns:1fr}
+  .mes + .mes{display:none}
+  .hoja{padding-left:46px}
+  .hoja::before{left:10px;width:14px}
+  .hoja::after{left:15px;width:4px}
+  .parada{grid-template-columns:1fr;gap:6px}
+  .parada::before{left:-44px;width:22px;height:22px;margin-top:-11px}
+  .temp-tabla th,.temp-tabla td{padding:10px 10px;font-size:.9rem}
+  .temp-tabla td.p{font-size:1rem}
+}
+</style>
+</head>
+<body>
+
+<div class="aviso">Prototipo de demostración preparado para Cerro Encantado · Fotos de su web · Disponibilidad y tarifas de ejemplo</div>
+
+<header class="top">
+  <div class="env">
+    <a class="logo" href="#inicio">
+      <svg class="escudo" viewBox="0 0 34 38" aria-hidden="true"><path d="M3 3h28v20c0 7-7 11-14 13C10 34 3 30 3 23Z" fill="#fff" stroke="#1E2328" stroke-width="2"/><text x="17" y="15" text-anchor="middle" font-family="Saira Semi Condensed,Arial" font-weight="800" font-size="7" fill="#1E2328">RP</text><text x="17" y="27" text-anchor="middle" font-family="Saira Semi Condensed,Arial" font-weight="800" font-size="11" fill="#1E2328">173</text></svg>
+      Cerro Encantado
+    </a>
+    <nav aria-label="Secciones">
+      <a href="#lados">Río o cerro</a>
+      <a href="#cabana">La cabaña</a>
+      <a href="#reservar">Disponibilidad</a>
+      <a href="#tarifas">Tarifas</a>
+      <a href="#ruta">La ruta</a>
+    </nav>
+    <a class="btn" href="#reservar">Reservar</a>
+  </div>
+</header>
+
+<main id="inicio">
+<section class="portada" style="padding:0">
+  <img src="https://www.cerroencantado.com/images/bg-1.jpg" alt="Cabañas Cerro Encantado en Valle Grande" onerror="this.remove()">
+  <div class="env">
+    <div>
+      <div class="cartel-vial" aria-label="Cartel de ruta">
+        <div><span>San Rafael</span><span>25 km <span class="flecha">↑</span></span></div>
+        <div><span>Río Atuel</span><span>0 m <span class="flecha">→</span></span></div>
+      </div>
+      <h1>Dos piletas. Una junto al Atuel, otra al pie del cerro. <span>Usás las dos.</span></h1>
+      <p class="baj">Cabañas para seis en Valle Grande, de un lado sobre la costa del río y del otro contra la montaña. Cada huésped disfruta su lado y el de enfrente.</p>
+      <div class="acc">
+        <a class="btn" href="#reservar">Ver fechas libres</a>
+        <a class="btn borde" href="#lados" style="color:#fff">Elegí tu lado</a>
+      </div>
+    </div>
+    <aside class="oficial">
+      <b>Canal oficial de reservas</b>
+      <div class="tel">260 482-2000</div>
+      <p>Es el único teléfono autorizado para reservar. Desde esta web la reserva y la seña entran directo al complejo, sin intermediarios.</p>
+    </aside>
+  </div>
+</section>
+<div class="ruta" aria-hidden="true"></div>
+
+<section id="lados">
+  <div class="env">
+    <div class="cab">
+      <div><div class="km"><i>KM</i> 1 · los dos sectores</div><h2>¿Río o cerro?</h2></div>
+      <p>Las cabañas son iguales; lo que cambia es la vista. Tocá un lado en el corte para ver cómo es y cargarlo en el calendario.</p>
+    </div>
+    <div class="corte">
+      <svg viewBox="0 0 1200 360" role="img" aria-label="Corte del terreno: río Atuel, cabañas de la costa con su pileta, el camino, cabañas al pie del cerro con su pileta y el cerro">
+        <defs>
+          <linearGradient id="cielo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#CFE3EE"/><stop offset="1" stop-color="#F8F8F5"/></linearGradient>
+          <pattern id="estratos" width="40" height="14" patternUnits="userSpaceOnUse"><rect width="40" height="14" fill="#B8553A"/><path d="M0 10 Q10 6 20 10 T40 10" stroke="#8F3F2A" stroke-width="2" fill="none"/></pattern>
+        </defs>
+        <rect width="1200" height="360" fill="url(#cielo)"/>
+        <!-- cerro -->
+        <path d="M760 300 L900 120 L960 150 L1040 60 L1120 140 L1200 110 V360 H760 Z" fill="url(#estratos)"/>
+        <path d="M900 120 L930 150 L960 150 M1040 60 L1070 95" stroke="#F8F8F5" stroke-width="3" fill="none" opacity=".6"/>
+        <!-- suelo -->
+        <path d="M0 300 H1200 V360 H0 Z" fill="#7C6A4E"/>
+        <!-- río -->
+        <path d="M0 296 Q60 284 120 296 T240 296 V330 H0 Z" fill="#3C9A9A"/>
+        <path d="M20 304 q20 -6 40 0 M110 312 q20 -6 40 0 M170 302 q20 -6 40 0" stroke="#BFE6E3" stroke-width="3" fill="none"/>
+        <text x="80" y="350" font-family="Saira Semi Condensed,Arial" font-weight="800" font-size="16" fill="#fff">RÍO ATUEL</text>
+        <!-- sector río -->
+        <g class="zona" data-lado="rio" tabindex="0" role="button" aria-label="Sector costa del río">
+          <rect class="hit" x="240" y="150" width="300" height="160"/>
+          <rect x="280" y="282" width="110" height="18" rx="4" fill="#4FB3C9"/>
+          <g fill="#F8F8F5" stroke="#1E2328" stroke-width="3">
+            <path d="M400 300 V240 L440 210 L480 240 V300 Z"/><path d="M470 300 V250 L505 224 L540 250 V300 Z"/>
+          </g>
+          <rect x="425" y="260" width="16" height="16" fill="#F2B705"/><rect x="495" y="266" width="16" height="16" fill="#F2B705"/>
+          <rect class="marco" x="250" y="160" width="300" height="146" rx="12" fill="none" stroke="#1F5E8C" stroke-width="3" stroke-dasharray="10 8"/>
+          <text x="265" y="190" font-family="Saira Semi Condensed,Arial" font-weight="800" font-size="20" fill="#1F5E8C">COSTA DEL RÍO</text>
+          <text x="265" y="212" font-family="Lusitana,Georgia" font-size="14" fill="#1A1E22">pileta junto al Atuel</text>
+        </g>
+        <!-- camino -->
+        <rect x="560" y="294" width="130" height="10" fill="#1E2328"/>
+        <path d="M566 299 H684" stroke="#F2B705" stroke-width="2" stroke-dasharray="10 8"/>
+        <text x="625" y="285" text-anchor="middle" font-family="Saira Semi Condensed,Arial" font-weight="700" font-size="13" fill="#4F575E">ida y vuelta entre piletas</text>
+        <path d="M600 270 h50 m-8 -6 l8 6 l-8 6 M600 270 l8 -6 m-8 6 l8 6" stroke="#4F575E" stroke-width="2" fill="none"/>
+        <!-- sector cerro -->
+        <g class="zona" data-lado="cerro" tabindex="0" role="button" aria-label="Sector al pie del cerro">
+          <rect class="hit" x="700" y="150" width="300" height="160"/>
+          <g fill="#F8F8F5" stroke="#1E2328" stroke-width="3">
+            <path d="M720 300 V240 L760 210 L800 240 V300 Z"/><path d="M790 300 V250 L825 224 L860 250 V300 Z"/>
+          </g>
+          <rect x="745" y="260" width="16" height="16" fill="#F2B705"/><rect x="815" y="266" width="16" height="16" fill="#F2B705"/>
+          <rect x="870" y="282" width="110" height="18" rx="4" fill="#4FB3C9"/>
+          <rect class="marco" x="706" y="160" width="290" height="146" rx="12" fill="none" stroke="#B8553A" stroke-width="3" stroke-dasharray="10 8"/>
+          <text x="720" y="190" font-family="Saira Semi Condensed,Arial" font-weight="800" font-size="20" fill="#8F3F2A">AL PIE DEL CERRO</text>
+          <text x="720" y="212" font-family="Lusitana,Georgia" font-size="14" fill="#1A1E22">pileta junto a la montaña</text>
+        </g>
+      </svg>
+      <div class="lados">
+        <div class="lado rio activa" data-lado="rio" tabindex="0" role="button" aria-pressed="true">
+          <div class="ft"><img src="https://www.cerroencantado.com/images/team-1.jpg" alt="Cabañas en la costa del río" loading="lazy" onerror="this.remove()"></div>
+          <div>
+            <h3>Costa del río</h3>
+            <p>El Atuel a pocos pasos, el ruido del agua de fondo y la pileta junto al río.</p>
+            <div class="cruce">⇄ Además usan la pileta y los espacios del lado del cerro</div>
+          </div>
+        </div>
+        <div class="lado cerro" data-lado="cerro" tabindex="0" role="button" aria-pressed="false">
+          <div class="ft"><img src="https://www.cerroencantado.com/images/team-2.jpg" alt="Cabañas al pie del cerro" loading="lazy" onerror="this.remove()"></div>
+          <div>
+            <h3>Al pie del cerro</h3>
+            <p>Contra la montaña, con la pileta junto a las rocas y vista abierta al valle.</p>
+            <div class="cruce">⇄ Además usan la pileta y los espacios junto al río</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="cabana" style="padding-top:0">
+  <div class="env">
+    <div class="cab">
+      <div><div class="km"><i>KM</i> 2 · la cabaña</div><h2>Para seis, con balcón</h2></div>
+      <p>Las dos zonas tienen la misma cabaña: dos dormitorios, cocina-comedor, baño y balcón, con parrilla propia y cochera techada.</p>
+    </div>
+    <div class="ficha">
+      <div>
+        <dl class="tabla-tec">
+          <div><dt>Capacidad</dt><dd>Hasta 6 personas</dd></div>
+          <div><dt>Dormitorios</dt><dd>2: matrimonial amplio con sommier y aire acondicionado, y otro con camas</dd></div>
+          <div><dt>Ambientes</dt><dd>Cocina-comedor, baño y balcón</dd></div>
+          <div><dt>Afuera</dt><dd>Parrilla de uso privado y cochera propia techada</dd></div>
+          <div><dt>Clima</dt><dd>Aire acondicionado y calefacción a gas</dd></div>
+          <div><dt>Seguridad</dt><dd>Servicio de emergencias médicas contratado</dd></div>
+        </dl>
+        <div class="equipo">
+          <span>Horno</span><span>Microondas</span><span>Heladera</span><span>Pava eléctrica</span><span>Tostadora</span><span>Vajilla completa</span><span>Smart TV</span><span>Wi-Fi</span><span>Ropa blanca</span><span>Secador de pelo</span>
+        </div>
+      </div>
+      <div>
+        <div class="rollo-nav"><button type="button" data-r="-1" aria-label="Fotos anteriores">←</button><button type="button" data-r="1" aria-label="Más fotos">→</button></div>
+        <div class="rollo" id="rollo" tabindex="0" aria-label="Galería de fotos"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="reserva" id="reservar">
+  <div class="env">
+    <div class="cab">
+      <div><div class="km" style="color:var(--tinta)"><i>KM</i> 3 · reservar</div><h2>Fechas libres y seña</h2></div>
+      <p>Elegí el lado, tocá la llegada y la salida. Cada día muestra con puntitos cuántas cabañas quedan en ese sector.</p>
+    </div>
+    <div class="res-grid">
+      <div class="panel">
+        <div class="ctrl">
+          <div class="seg" role="group" aria-label="Sector">
+            <button type="button" data-lado="rio" aria-pressed="true">Costa del río</button>
+            <button type="button" data-lado="cerro" aria-pressed="false">Pie del cerro</button>
+          </div>
+          <div class="flechas"><button type="button" id="prev" aria-label="Mes anterior">‹</button><button type="button" id="next" aria-label="Mes siguiente">›</button></div>
+        </div>
+        <div class="meses" id="meses"></div>
+        <div class="ley">
+          <span><i style="background:#7CD0C5"></i>cabaña libre</span>
+          <span><i style="background:#E39B3B"></i>temporada media</span>
+          <span><i style="background:#B8553A"></i>temporada alta</span>
+        </div>
+        <p class="sync">⟳ El calendario se sincroniza con Booking y Airbnb, así no hay dobles reservas. En este prototipo la ocupación y la cantidad de cabañas por sector son de ejemplo.</p>
+      </div>
+      <aside class="boleta" aria-live="polite">
+        <div class="cab-b"><h3>Tu reserva</h3><span class="cond" id="b-lado">Costa del río</span></div>
+        <div class="cuerpo">
+          <div class="campo"><label for="b-pers">Personas</label><input id="b-pers" type="number" min="1" max="12" value="4"></div>
+          <div class="fila"><span>Cabañas</span><b id="b-cabs">1</b></div>
+          <div class="fila"><span>Llegada</span><b id="b-in">elegí en el calendario</b></div>
+          <div class="fila"><span>Salida</span><b id="b-out">—</b></div>
+          <div id="b-det"></div>
+          <div class="fila tot"><span>Total</span><span id="b-tot">—</span></div>
+          <div class="fila sena"><span>Seña 30% por Mercado Pago</span><span id="b-sena">—</span></div>
+          <div class="fila"><span>Saldo al llegar</span><b id="b-saldo">—</b></div>
+          <label class="check"><input type="checkbox" id="b-toal"> <span>Entendido: traigo toallones para la pileta (la ropa blanca es para usar adentro).</span></label>
+          <p class="msg" id="b-msg"></p>
+          <button class="btn" type="button" id="pagar">Pagar seña con Mercado Pago</button>
+          <p class="demo">Demo: no se cobra nada. En la versión real el pago va directo a la cuenta del complejo.</p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section id="tarifas">
+  <div class="env">
+    <div class="cab">
+      <div><div class="km"><i>KM</i> 4 · tarifas</div><h2>Temporadas 2026-27</h2></div>
+      <p>Por noche y por cabaña completa, hasta 6 personas.</p>
+    </div>
+    <table class="temp-tabla">
+      <thead><tr><th>Temporada</th><th>Fechas</th><th>Por noche</th></tr></thead>
+      <tbody id="t-body"></tbody>
+    </table>
+    <p class="nota">Tarifas y fechas de ejemplo para mostrar cómo funciona: en la versión real se cargan las suyas y se cambian desde un panel.</p>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="env">
+    <div class="verif">
+      <div>
+        <div class="km"><i>KM</i> 5 · reservá seguro</div>
+        <h3>¿Te ofrecieron una reserva por otro lado?</h3>
+        <p style="color:var(--tinta-2);margin:0">Escribí el número que te contactó y te decimos si es el oficial del complejo. Así nadie cobra señas en nombre de Cerro Encantado.</p>
+      </div>
+      <div>
+        <form id="f-verif" autocomplete="off">
+          <label for="v-num" class="rot" style="width:100%">Número de teléfono o WhatsApp</label>
+          <input id="v-num" inputmode="tel" placeholder="Ej: 260 482-2000">
+          <button class="btn lago" type="submit">Verificar</button>
+        </form>
+        <div class="resultado" id="v-res" aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="ruta" style="background:var(--papel);border-top:2px solid var(--tinta);border-bottom:2px solid var(--tinta)">
+  <div class="env">
+    <div class="cab">
+      <div><div class="km"><i>KM</i> 6 · la ruta</div><h2>Por la 173, de San Rafael al cañón</h2></div>
+      <p>El complejo queda en el medio del recorrido: lo de más arriba y lo de más abajo, a un rato de auto.</p>
+    </div>
+    <div class="hoja">
+      <div class="parada"><div class="dist">25 km<small>antes</small></div><div><h3>San Rafael</h3><p>Centro, bodegas del Camino del Vino y aeropuerto.</p></div></div>
+      <div class="parada"><div class="dist">Valle Grande<small>al lado</small></div><div><h3>Rafting, kayak y tirolesa</h3><p>Las bases de aventura del Atuel están sobre la misma ruta.</p></div></div>
+      <div class="parada aqui"><div class="dist">0 m<small>del río</small></div><div><h3>Cerro Encantado</h3><p>Ruta 173, Valle Grande. Cabañas a la costa del Atuel y al pie del cerro.</p></div></div>
+      <div class="parada"><div class="dist">Dique<small>Valle Grande</small></div><div><h3>El lago</h3><p>Paseos en catamarán y miradores sobre el embalse.</p></div></div>
+      <div class="parada"><div class="dist">Cañón<small>del Atuel</small></div><div><h3>Formaciones del cañón</h3><p>Camino de ripio entre paredes rojas hasta El Nihuil.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="env">
+    <div class="cab"><div><div class="km"><i>KM</i> 7 · opiniones</div><h2>Lo que dicen</h2></div></div>
+    <div class="ops">
+      <div class="op n"><b>4,9</b><span class="cond" style="font-weight:700;font-size:1.1rem">de 5 en WelcomeArgentina</span><span style="font-size:.9rem;opacity:.85;margin-top:6px">Ubicación, habitaciones, limpieza y precio: 5 de 5.</span></div>
+      <figure class="op" style="margin:0"><blockquote>“Muy lindo lugar con dos secciones de cabañas.”</blockquote><cite>Guillermo A. G. · abril de 2026</cite></figure>
+      <figure class="op" style="margin:0"><blockquote>“Tenía todo lo necesario.”</blockquote><cite>Janet B. · marzo de 2026</cite></figure>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="env">
+    <div class="cab"><div><div class="km"><i>KM</i> 8 · antes de viajar</div><h2>Preguntas</h2></div></div>
+    <div class="faq">
+      <details><summary>¿Tengo que llevar toallones?</summary><p>Sí, para la pileta y para afuera. La ropa blanca de la cabaña es para usar adentro.</p></details>
+      <details><summary>¿Puedo usar la pileta del otro sector?</summary><p>Sí: los de la costa usan también la pileta y los espacios junto a la montaña, y los del cerro, los de junto al río.</p></details>
+      <details><summary>¿Cuántos entran por cabaña?</summary><p>Hasta 6 personas. Para grupos más grandes se reservan dos cabañas.</p></details>
+      <details><summary>¿Hay asistencia médica?</summary><p>Sí, el complejo tiene contratado un servicio de emergencias médicas.</p></details>
+      <details><summary>¿Se puede ir con mascota?</summary><p>Consultalo al reservar y te confirman las condiciones.</p></details>
+      <details><summary>¿Cómo sé que mi reserva es real?</summary><p>Reservá desde esta web o al 260 482-2000, el único teléfono autorizado. Te llega la confirmación con la seña acreditada.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="contacto">
+  <div class="env">
+    <div>
+      <div class="rot" style="color:var(--linea)">Contacto</div>
+      <h2 style="margin-top:10px">Ruta 173, Valle Grande, San Rafael</h2>
+      <p style="margin-top:14px;color:#D9E6EF">A 25 km del centro de San Rafael, junto al río Atuel.</p>
+    </div>
+    <div class="lista-c">
+      <a href="https://wa.me/5492604822000" target="_blank" rel="noopener">WhatsApp <small>260 482-2000</small></a>
+      <a href="mailto:info@cerroencantado.com">Mail <small>info@cerroencantado.com</small></a>
+      <a href="https://www.instagram.com/cerro_encantado/" target="_blank" rel="noopener">Instagram <small>@cerro_encantado</small></a>
+      <a href="https://www.google.com/maps/search/?api=1&query=Cerro+Encantado+caba%C3%B1as+Valle+Grande+San+Rafael" target="_blank" rel="noopener">Cómo llegar <small>Google Maps ↗</small></a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="env">
+    <span>Cerro Encantado · Cabañas en Valle Grande, San Rafael, Mendoza</span>
+    <span>Prototipo de demostración preparado para Cerro Encantado por Resolviendo Kos. Tarifas y disponibilidad de ejemplo.</span>
+  </div>
+</footer>
+
+<nav class="barra" aria-label="Acciones rápidas">
+  <a href="https://wa.me/5492604822000" target="_blank" rel="noopener">WhatsApp</a>
+  <a class="r" href="#reservar">Reservar</a>
+</nav>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="m-t">
+  <div class="caja">
+    <h3 id="m-t">Así seguiría el pago</h3>
+    <p id="m-txt"></p>
+    <p style="font-size:.92rem;color:var(--tinta-2)">En la versión real se abre Mercado Pago, la seña entra a la cuenta del complejo, las fechas se bloquean en Booking y Airbnb, y les llega el aviso con los datos del huésped.</p>
+    <button class="btn" type="button" id="m-cerrar">Entendido</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var HOY = new Date(); HOY.setHours(0,0,0,0);
+  var fmt = function(n){ return "$ " + Math.round(n).toLocaleString("es-AR"); };
+  var iso = function(d){ return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); };
+  var fTxt = function(d){ return d.toLocaleDateString("es-AR",{weekday:"short",day:"numeric",month:"short"}); };
+
+  /* galería con sus fotos */
+  var rollo = document.getElementById("rollo");
+  for (var i=1;i<=20;i++){
+    var f = document.createElement("figure");
+    f.innerHTML = '<img src="https://www.cerroencantado.com/images/grandes/foto'+i+'.jpg" alt="Cerro Encantado, foto '+i+'" loading="lazy" onerror="this.remove()"><figcaption>'+String(i).padStart(2,"0")+' / 20</figcaption>';
+    rollo.appendChild(f);
+  }
+  document.querySelectorAll(".rollo-nav button").forEach(function(b){
+    b.addEventListener("click", function(){ rollo.scrollBy({left: +b.dataset.r * rollo.clientWidth * .8, behavior:"smooth"}); });
+  });
+
+  var TEMPS = [
+    {id:"alta", n:"Verano", d:"2026-12-26", h:"2027-02-28", t:"26 dic 2026 → 28 feb 2027"},
+    {id:"media", n:"Semana Santa", d:"2027-03-25", h:"2027-03-28", t:"jue 25 → dom 28 mar 2027"},
+    {id:"media", n:"Fin de semana largo", d:"2026-11-21", h:"2026-11-23", t:"sáb 21 → lun 23 nov 2026"},
+    {id:"media", n:"Invierno", d:"2027-07-10", h:"2027-07-25", t:"vacaciones de julio (a confirmar)"}
+  ];
+  var PRECIO = {baja:85000, media:105000, alta:132000};
+  var POR_LADO = 3; /* supuesto del prototipo */
+  function temp(d){ var s=iso(d); for (var i=0;i<TEMPS.length;i++){ if (s>=TEMPS[i].d && s<=TEMPS[i].h) return TEMPS[i]; } return {id:"baja", n:"Temporada baja"}; }
+  function hash(s){ var h=2166136261; for (var i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,16777619);} return (h>>>0)/4294967295; }
+  function libres(lado, d){
+    var t=temp(d).id, base = t==="alta"?.6:(t==="media"?.45:.2); var w=d.getDay(); if(w===5||w===6) base+=.15;
+    var n=0; for (var k=0;k<POR_LADO;k++){ if (hash(lado+k+iso(d)) >= base) n++; } return n;
+  }
+
+  /* tbody tarifas */
+  var tb = document.getElementById("t-body");
+  [{n:"Temporada baja", f:"Resto del año", id:"baja", c:"#C9CDD0"},
+   {n:"Fin de semana largo", f:"21-23 nov 2026 y feriados largos", id:"media", c:"#E39B3B"},
+   {n:"Semana Santa", f:"25-28 mar 2027", id:"media", c:"#E39B3B"},
+   {n:"Invierno", f:"Vacaciones de julio (a confirmar)", id:"media", c:"#E39B3B"},
+   {n:"Verano", f:"26 dic 2026 → 28 feb 2027", id:"alta", c:"#B8553A"}].forEach(function(r){
+    var tr=document.createElement("tr"); tr.innerHTML='<td><span class="marca-t" style="background:'+r.c+'"></span>'+r.n+'</td><td>'+r.f+'</td><td class="p">'+fmt(PRECIO[r.id])+'</td>'; tb.appendChild(tr);
+  });
+
+  var st = {lado:"rio", ini:null, fin:null, vista:new Date(HOY.getFullYear(), HOY.getMonth()+(HOY.getDate()>20?1:0), 1)};
+  var persEl = document.getElementById("b-pers");
+  function cabs(){ return Math.max(1, Math.ceil(Math.max(1, +persEl.value||1)/6)); }
+
+  var meses = document.getElementById("meses");
+  function render(){
+    meses.innerHTML=""; var nc=cabs();
+    for (var m=0;m<2;m++){
+      var base=new Date(st.vista.getFullYear(), st.vista.getMonth()+m, 1);
+      var w=document.createElement("div"); w.className="mes";
+      var tt=base.toLocaleDateString("es-AR",{month:"long",year:"numeric"});
+      w.innerHTML='<h4>'+tt+'</h4>';
+      var g=document.createElement("div"); g.className="dias";
+      ["L","M","M","J","V","S","D"].forEach(function(x){ var e=document.createElement("div"); e.className="dn"; e.textContent=x; g.appendChild(e); });
+      for (var i=0;i<(base.getDay()+6)%7;i++) g.appendChild(document.createElement("span"));
+      var ult=new Date(base.getFullYear(), base.getMonth()+1, 0).getDate();
+      for (var dd=1; dd<=ult; dd++){
+        var d=new Date(base.getFullYear(), base.getMonth(), dd), b=document.createElement("button");
+        b.type="button"; b.className="dia"; b.dataset.f=iso(d);
+        var t=temp(d).id; if (t!=="baja") b.classList.add(t);
+        var q=libres(st.lado,d);
+        var pts=""; for (var k=0;k<POR_LADO;k++) pts+='<i class="'+(k<q?"":"o")+'"></i>';
+        b.innerHTML=dd+'<span class="pts">'+pts+'</span>';
+        b.setAttribute("aria-label", d.toLocaleDateString("es-AR",{day:"numeric",month:"long"})+": "+q+" de "+POR_LADO+" libres");
+        if (d<HOY){ b.classList.add("pasado"); b.disabled=true; }
+        else if (q<nc) b.classList.add("lleno");
+        if (st.ini && iso(d)===iso(st.ini)) b.classList.add("sel");
+        if (st.fin && iso(d)===iso(st.fin)) b.classList.add("sel");
+        if (st.ini && st.fin && d>st.ini && d<st.fin) b.classList.add("rango");
+        g.appendChild(b);
+      }
+      w.appendChild(g); meses.appendChild(w);
+    }
+  }
+  var msg=document.getElementById("b-msg");
+  meses.addEventListener("click", function(e){
+    var b=e.target.closest(".dia"); if(!b||b.disabled||b.classList.contains("lleno")) return;
+    var p=b.dataset.f.split("-"), d=new Date(+p[0],+p[1]-1,+p[2]); msg.textContent="";
+    if (!st.ini || st.fin || d<=st.ini){ st.ini=d; st.fin=null; }
+    else { var x=new Date(st.ini), ok=true; while(x<d){ if(libres(st.lado,x)<cabs()){ok=false;break;} x.setDate(x.getDate()+1); }
+      if(!ok){ msg.textContent="Hay una noche sin lugar en el medio en este sector: probá el otro lado u otras fechas."; st.ini=d; st.fin=null; } else st.fin=d; }
+    render(); calc();
+  });
+  document.getElementById("prev").addEventListener("click", function(){ var v=new Date(st.vista.getFullYear(), st.vista.getMonth()-1, 1); if (v>=new Date(HOY.getFullYear(),HOY.getMonth(),1)){ st.vista=v; render(); } });
+  document.getElementById("next").addEventListener("click", function(){ st.vista=new Date(st.vista.getFullYear(), st.vista.getMonth()+1, 1); render(); });
+
+  function setLado(l, scroll){
+    st.lado=l;
+    document.querySelectorAll(".seg button").forEach(function(b){ b.setAttribute("aria-pressed", String(b.dataset.lado===l)); });
+    document.querySelectorAll(".lado").forEach(function(x){ var on=x.dataset.lado===l; x.classList.toggle("activa",on); x.setAttribute("aria-pressed",String(on)); });
+    document.querySelectorAll(".zona").forEach(function(z){ z.classList.toggle("activa", z.dataset.lado===l); });
+    document.getElementById("b-lado").textContent = l==="rio" ? "Costa del río" : "Pie del cerro";
+    if (st.ini && st.fin){ var x=new Date(st.ini); while(x<st.fin){ if(libres(l,x)<cabs()){ st.ini=null; st.fin=null; msg.textContent="En este lado alguna noche no tiene lugar: elegí las fechas de nuevo."; break;} x.setDate(x.getDate()+1);} }
+    render(); calc();
+    if (scroll) document.getElementById("reservar").scrollIntoView({behavior:"smooth"});
+  }
+  document.querySelectorAll(".seg button").forEach(function(b){ b.addEventListener("click", function(){ setLado(b.dataset.lado); }); });
+  document.querySelectorAll(".lado,.zona").forEach(function(el){
+    el.addEventListener("click", function(){ setLado(el.dataset.lado, el.classList.contains("zona")); });
+    el.addEventListener("keydown", function(e){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); setLado(el.dataset.lado, true); } });
+  });
+  document.querySelector('.zona[data-lado="rio"]').classList.add("activa");
+  persEl.addEventListener("input", function(){ render(); calc(); });
+
+  function calc(){
+    var nc=cabs(), p=Math.max(1,+persEl.value||1);
+    document.getElementById("b-cabs").textContent = nc + (nc>1 ? " cabañas (hasta "+(nc*6)+")" : " cabaña (hasta 6)");
+    if (nc>POR_LADO) msg.textContent="Para "+p+" personas conviene escribirles: arman la combinación con los dos sectores.";
+    document.getElementById("b-in").textContent = st.ini ? fTxt(st.ini) : "elegí en el calendario";
+    document.getElementById("b-out").textContent = st.fin ? fTxt(st.fin) : (st.ini ? "tocá la salida" : "—");
+    var det=document.getElementById("b-det"); det.innerHTML="";
+    if(!(st.ini&&st.fin)){ ["b-tot","b-sena","b-saldo"].forEach(function(id){ document.getElementById(id).textContent="—"; }); return; }
+    var gr={}, tot=0, x=new Date(st.ini);
+    while(x<st.fin){ var t=temp(x), k=t.id==="baja"?"Temporada baja":t.n, pr=PRECIO[t.id]*nc; tot+=pr; if(!gr[k]) gr[k]={n:0,s:0}; gr[k].n++; gr[k].s+=pr; x.setDate(x.getDate()+1); }
+    Object.keys(gr).forEach(function(k){ var r=document.createElement("div"); r.className="fila"; r.innerHTML="<span>"+gr[k].n+" noche"+(gr[k].n>1?"s":"")+" · "+k+"</span><span>"+fmt(gr[k].s)+"</span>"; det.appendChild(r); });
+    document.getElementById("b-tot").textContent=fmt(tot);
+    document.getElementById("b-sena").textContent=fmt(tot*.3);
+    document.getElementById("b-saldo").textContent=fmt(tot*.7);
+  }
+
+  document.getElementById("pagar").addEventListener("click", function(){
+    var t=document.getElementById("m-txt");
+    if(!(st.ini&&st.fin)) t.textContent="Primero elegí la llegada y la salida en el calendario.";
+    else if(!document.getElementById("b-toal").checked) t.textContent="Antes de pagar, marcá que traés toallones para la pileta: es la única aclaración que el complejo pide.";
+    else t.textContent="Seña de "+document.getElementById("b-sena").textContent+" para "+document.getElementById("b-cabs").textContent+" en "+document.getElementById("b-lado").textContent.toLowerCase()+", del "+fTxt(st.ini)+" al "+fTxt(st.fin)+".";
+    document.getElementById("modal").classList.add("abierto"); document.getElementById("m-cerrar").focus();
+  });
+  document.getElementById("m-cerrar").addEventListener("click", function(){ document.getElementById("modal").classList.remove("abierto"); });
+  document.getElementById("modal").addEventListener("click", function(e){ if(e.target.id==="modal") e.target.classList.remove("abierto"); });
+  document.addEventListener("keydown", function(e){ if(e.key==="Escape") document.getElementById("modal").classList.remove("abierto"); });
+
+  /* verificador de número oficial */
+  document.getElementById("f-verif").addEventListener("submit", function(e){
+    e.preventDefault();
+    var raw=document.getElementById("v-num").value.replace(/\D/g,""), r=document.getElementById("v-res");
+    if (raw.length<7){ r.className="resultado"; r.textContent="Escribí el número completo, con característica."; return; }
+    if (/4822000$/.test(raw)){ r.className="resultado ok"; r.textContent="✓ Es el número oficial de Cerro Encantado (260 482-2000)."; }
+    else { r.className="resultado no"; r.textContent="✗ Ese número no es del complejo. No pagues nada y escribiles al 260 482-2000."; }
+  });
+
+  render(); calc();
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Cerro Encantado"></script>
+</body>
+</html>
