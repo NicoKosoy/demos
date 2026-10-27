@@ -1,0 +1,939 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Cabañas Ruphay · Santa Rosa de Calamuchita</title>
+<meta name="description" content="Prototipo de web de reservas para Cabañas Ruphay: seis cabañas de dos plantas y una hostería en Santa Rosa de Calamuchita, Córdoba.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Syne:wght@400..800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F4ECDF; --paper-2:#EBE0CE; --card:#FBF6EE;
+  --ink:#2A221D; --ink-2:#5A4C42; --line:#CDBBA3; --grid:rgba(120,92,60,.07);
+  --sun:#A63D24; --sun-2:#C9572F; --ochre:#E0A33A; --ochre-soft:#F2D9A6;
+  --sierra:#35513D; --river:#275F7A; --river-soft:#CFE0E6;
+  --serif:"Fraunces",Georgia,serif; --sans:"Syne",system-ui,sans-serif;
+  --rail:280px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:24px 24px;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:var(--sun)}
+:focus-visible{outline:3px solid var(--river);outline-offset:3px;border-radius:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+h1,h2,h3{font-family:var(--serif);font-weight:500;letter-spacing:-.01em;line-height:1.08;margin:0}
+.mono{font-family:var(--sans);text-transform:uppercase;letter-spacing:.14em;font-size:.72rem;font-weight:600}
+.demo-note{background:var(--ink);color:var(--paper);text-align:center;font-size:.8rem;padding:.45rem 1rem;letter-spacing:.03em}
+.demo-note strong{color:var(--ochre)}
+
+/* ===== layout: juego de láminas + rótulo ===== */
+.sheet{display:block}
+.rail{position:sticky;top:0;z-index:30;background:var(--paper);border-bottom:1.5px solid var(--ink)}
+.rail-top{display:flex;align-items:center;justify-content:space-between;gap:.75rem;padding:.6rem 16px}
+.brand{display:flex;align-items:baseline;gap:.5rem;text-decoration:none;color:var(--ink)}
+.brand b{font-family:var(--serif);font-size:1.45rem;font-weight:600;letter-spacing:.02em}
+.brand span{font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-2);font-weight:600}
+.now-plate{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--sun);text-align:right}
+.rail nav,.rail .rail-extra{display:none}
+main{min-width:0}
+.plate{position:relative;margin:28px 16px;padding:28px 18px 64px;border:1.5px solid var(--ink);background:rgba(251,246,238,.72)}
+.plate::before,.plate::after{content:"";position:absolute;width:14px;height:14px;border:1.5px solid var(--sun)}
+.plate::before{top:-8px;left:-8px;border-right:0;border-bottom:0}
+.plate::after{bottom:-8px;right:-8px;border-left:0;border-top:0}
+.titleblock{position:absolute;right:-1.5px;bottom:-1.5px;display:flex;border:1.5px solid var(--ink);background:var(--card);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;max-width:calc(100% + 3px)}
+.titleblock>span{padding:.35rem .6rem;border-left:1.5px solid var(--ink);white-space:nowrap}
+.titleblock>span:first-child{border-left:0;background:var(--ink);color:var(--paper)}
+.titleblock>span.hide-s{display:none}
+.plate-head{display:grid;gap:.6rem;margin-bottom:1.6rem}
+.plate-head .mono{color:var(--sun)}
+.plate-head h2{font-size:clamp(1.9rem,6vw,3.2rem)}
+.plate-head p{margin:0;max-width:60ch;color:var(--ink-2)}
+.ex{display:inline-block;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--sun);border:1.5px dashed var(--sun);padding:.15rem .45rem;border-radius:2px}
+
+/* ===== portada ===== */
+.hero{display:grid;gap:26px}
+.kicker{display:flex;flex-wrap:wrap;gap:.4rem .9rem;align-items:center}
+.kicker .q{font-family:var(--serif);font-style:italic;font-size:1.05rem;color:var(--sun)}
+.hero h1{font-size:clamp(2.2rem,8.4vw,4.6rem);font-weight:400;margin-top:.9rem}
+.hero h1 em{font-style:italic;color:var(--sun);font-weight:400}
+.hero .lede{font-size:1.06rem;max-width:52ch;margin:1.1rem 0 0;color:var(--ink-2)}
+.cta-row{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.4rem}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;font-family:var(--sans);font-weight:700;font-size:.95rem;padding:.85rem 1.2rem;border:1.5px solid var(--ink);background:var(--ink);color:var(--paper);text-decoration:none;cursor:pointer;border-radius:0;min-height:48px}
+.btn.alt{background:transparent;color:var(--ink)}
+.btn.sun{background:var(--sun);border-color:var(--sun);color:#fff}
+.btn:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ochre)}
+.hero-fig{position:relative;margin:0}
+.ph{position:relative;margin:0;overflow:hidden;background:var(--ochre-soft);border:1.5px solid var(--ink)}
+.ph>svg.fb{position:absolute;inset:0;width:100%;height:100%}
+.ph>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ph figcaption{position:absolute;left:0;bottom:0;background:var(--card);border-top:1.5px solid var(--ink);border-right:1.5px solid var(--ink);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;padding:.3rem .55rem;z-index:2}
+.hero .ph{aspect-ratio:4/3.1}
+.sunclock{display:flex;align-items:center;gap:.6rem;margin-top:.7rem;font-size:.82rem;color:var(--ink-2)}
+.sunclock svg{flex:0 0 auto}
+.facts{display:grid;grid-template-columns:repeat(2,1fr);border-top:1.5px solid var(--ink);margin-top:2rem}
+.facts div{padding:.85rem .2rem .85rem 0;border-bottom:1px solid var(--line)}
+.facts b{display:block;font-family:var(--serif);font-size:1.9rem;font-weight:500;line-height:1}
+.facts span{font-size:.82rem;color:var(--ink-2)}
+.reviews{display:grid;gap:.7rem;margin-top:1.6rem}
+.reviews blockquote{margin:0;padding:.8rem 1rem;border-left:3px solid var(--ochre);background:var(--card)}
+.reviews blockquote p{margin:0;font-family:var(--serif);font-style:italic;font-size:1.12rem}
+.reviews cite{font-style:normal;font-size:.75rem;color:var(--ink-2)}
+.score{display:flex;flex-wrap:wrap;gap:.5rem 1.3rem;font-size:.85rem;margin-top:.9rem;color:var(--ink-2)}
+.score b{color:var(--ink)}
+
+/* ===== implantación / armador ===== */
+.planner{display:grid;gap:22px}
+.plan-wrap{border:1.5px solid var(--ink);background:var(--card);position:relative}
+.plan-wrap svg{width:100%;height:auto;display:block}
+.plan-d{display:none!important}
+.plan-m .u text{font-size:18px}
+.plan-legend{display:flex;flex-wrap:wrap;gap:.4rem 1rem;padding:.6rem .8rem;border-top:1.5px solid var(--ink);font-size:.75rem;color:var(--ink-2)}
+.plan-legend i{display:inline-block;width:12px;height:12px;border:1.5px solid var(--ink);vertical-align:-1px;margin-right:.3rem}
+.u{cursor:pointer}
+.u rect,.u path.b{fill:var(--paper);stroke:var(--ink);stroke-width:1.6;transition:fill .25s}
+.u text{font-family:var(--sans);font-size:17px;font-weight:700;fill:var(--ink);pointer-events:none}
+.u.on rect,.u.on path.b{fill:var(--sun)}
+.u.on text{fill:#fff}
+.u:hover rect,.u:focus rect{stroke:var(--sun);stroke-width:2.6}
+.u:focus{outline:none}
+.u:focus-visible rect{stroke:var(--river);stroke-width:3.5}
+.unit-info{padding:.8rem .9rem;border-top:1.5px solid var(--ink);font-size:.9rem;min-height:3.2rem}
+.unit-info b{font-family:var(--serif);font-size:1.1rem;font-weight:600}
+.builder{border:1.5px solid var(--ink);background:var(--card);padding:18px}
+.builder h3{font-size:1.6rem}
+.builder > p{margin:.4rem 0 1rem;color:var(--ink-2);font-size:.92rem}
+.step{display:flex;align-items:center;justify-content:space-between;gap:.8rem;padding:.6rem 0;border-bottom:1px solid var(--line)}
+.step label,.step .lab{font-weight:600;font-size:.92rem}
+.step small{display:block;color:var(--ink-2);font-weight:400;font-size:.76rem}
+.stepper{display:flex;align-items:center;border:1.5px solid var(--ink);flex:0 0 auto}
+.stepper button{width:42px;height:42px;border:0;background:transparent;font-size:1.3rem;font-weight:700;cursor:pointer;color:var(--ink);font-family:var(--sans)}
+.stepper button:hover{background:var(--ochre-soft)}
+.stepper output{min-width:2.2rem;text-align:center;font-family:var(--serif);font-size:1.25rem;font-weight:600}
+.chk{display:flex;gap:.6rem;align-items:flex-start;padding:.7rem 0;font-size:.9rem;cursor:pointer}
+.chk input{width:20px;height:20px;accent-color:var(--sun);margin-top:2px;flex:0 0 auto}
+.opts{display:grid;gap:.7rem;margin-top:1rem}
+.opt{display:grid;gap:.35rem;text-align:left;border:1.5px solid var(--ink);background:var(--paper);padding:.85rem .9rem;cursor:pointer;font-family:var(--sans);color:var(--ink);font-size:.9rem;position:relative}
+.opt[aria-pressed="true"]{background:var(--ink);color:var(--paper);box-shadow:4px 4px 0 var(--sun)}
+.opt .tag{font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;font-weight:800;color:var(--sun)}
+.opt[aria-pressed="true"] .tag{color:var(--ochre)}
+.opt .what{font-family:var(--serif);font-size:1.2rem;font-weight:600;line-height:1.2}
+.opt .why{font-size:.82rem;opacity:.85}
+.opt .pr{font-weight:700}
+.use-combo{margin-top:1rem;width:100%}
+.none{padding:.8rem;border:1.5px dashed var(--sun);font-size:.9rem}
+
+/* ===== unidades ===== */
+.units{display:grid;gap:22px}
+.unit-card{border:1.5px solid var(--ink);background:var(--card)}
+.unit-card .ph{aspect-ratio:16/10;border:0;border-bottom:1.5px solid var(--ink)}
+.unit-body{padding:16px}
+.unit-body h3{font-size:1.7rem}
+.unit-body .cap{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--sun);margin:.35rem 0 .7rem}
+.unit-body ul{margin:.6rem 0 0;padding:0;list-style:none;display:grid;gap:.25rem;font-size:.9rem}
+.unit-body li{padding-left:1.1rem;position:relative}
+.unit-body li::before{content:"";position:absolute;left:0;top:.62em;width:7px;height:7px;background:var(--ochre);border-radius:50%}
+.section-svg{border:1.5px solid var(--ink);background:var(--paper);margin-top:.9rem}
+.section-svg svg{width:100%;height:auto;display:block}
+.section-svg p{margin:0;padding:.4rem .6rem;border-top:1px solid var(--line);font-size:.72rem;color:var(--ink-2)}
+.host-list{display:grid;gap:.6rem;margin-top:.8rem}
+.host-row{display:grid;grid-template-columns:auto 1fr;gap:.2rem .8rem;align-items:baseline;padding:.65rem 0;border-top:1px solid var(--line)}
+.host-row b{font-family:var(--serif);font-size:1.25rem;font-weight:600}
+.host-row .n{grid-row:span 2;font-family:var(--serif);font-size:2.2rem;line-height:1;color:var(--sun);min-width:2.2rem}
+.host-row span{font-size:.85rem;color:var(--ink-2)}
+.common{display:grid;grid-template-columns:repeat(2,1fr);gap:0;border:1.5px solid var(--ink);margin-top:22px;background:var(--card)}
+.common div{padding:.9rem;border-right:1px solid var(--line);border-bottom:1px solid var(--line);font-size:.86rem}
+.common b{display:block;font-family:var(--serif);font-size:1.06rem;font-weight:600}
+
+/* ===== asoleamiento / tarifas ===== */
+.sunchart{border:1.5px solid var(--ink);background:var(--card);padding:16px 10px 10px;overflow:hidden}
+.bars{display:grid;grid-template-columns:repeat(12,1fr);gap:4px;align-items:end;height:190px;border-bottom:1.5px solid var(--ink);position:relative}
+.bar{position:relative;background:linear-gradient(to top,var(--sun),var(--ochre));min-height:6px;border-radius:40px 40px 0 0}
+.bar.t0{background:linear-gradient(to top,#b9a88f,#d9c9ad)}
+.bar span{position:absolute;top:-1.4rem;left:50%;transform:translateX(-50%);font-size:.62rem;font-weight:700;white-space:nowrap}
+.months{display:grid;grid-template-columns:repeat(12,1fr);gap:4px;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;text-align:center;padding-top:.35rem}
+.chart-note{font-size:.76rem;color:var(--ink-2);margin:.6rem .2rem 0}
+.rates{width:100%;border-collapse:collapse;margin-top:22px;font-size:.88rem;background:var(--card);border:1.5px solid var(--ink)}
+.rates th,.rates td{padding:.55rem .45rem;border-bottom:1px solid var(--line);text-align:right}
+.rates th:first-child,.rates td:first-child{text-align:left}
+.rates thead th{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;background:var(--ink);color:var(--paper);vertical-align:bottom}
+.rates td b{font-family:var(--serif);font-weight:600;font-size:1rem}
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.events{display:grid;gap:0;margin-top:22px;border-top:1.5px solid var(--ink)}
+.ev{display:grid;grid-template-columns:7.2rem 1fr;gap:.8rem;padding:.75rem 0;border-bottom:1px solid var(--line);font-size:.9rem}
+.ev time{font-weight:700;font-size:.8rem;letter-spacing:.04em}
+.ev b{font-family:var(--serif);font-weight:600;font-size:1.05rem}
+.ev .t{display:inline-block;margin-left:.4rem;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;font-weight:800;padding:.1rem .35rem;border:1.5px solid currentColor}
+.t-pico{color:var(--sun)} .t-alta{color:#8a5a0c} .t-media{color:var(--sierra)}
+
+/* ===== reserva ===== */
+.booking{display:grid;gap:22px}
+.cal{border:1.5px solid var(--ink);background:var(--card)}
+.cal-head{display:flex;align-items:center;justify-content:space-between;padding:.5rem;border-bottom:1.5px solid var(--ink)}
+.cal-head h3{font-size:1.3rem;text-transform:capitalize}
+.cal-head button{width:44px;height:44px;border:1.5px solid var(--ink);background:var(--paper);font-size:1.2rem;cursor:pointer;color:var(--ink)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;padding:6px}
+.cal-grid .dow{text-align:center;font-size:.64rem;font-weight:800;letter-spacing:.1em;color:var(--ink-2);padding:.3rem 0}
+.day{aspect-ratio:1/1.05;border:1px solid var(--line);background:var(--paper);font-family:var(--sans);color:var(--ink);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0;font-size:.9rem;font-weight:700;position:relative;min-width:0}
+.day small{font-size:.58rem;font-weight:600;color:var(--sierra);line-height:1}
+.day.full{background:repeating-linear-gradient(135deg,var(--paper-2) 0 4px,var(--paper) 4px 8px);color:#8d7d6d;cursor:not-allowed}
+.day.full small{color:var(--sun)}
+.day.past{opacity:.35;cursor:default}
+.day.ti2::after,.day.ti3::after{content:"";position:absolute;top:3px;right:3px;width:6px;height:6px;border-radius:50%;background:var(--ochre)}
+.day.ti3::after{background:var(--sun)}
+.day.sel{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.day.sel small{color:var(--ochre-soft)}
+.day.rng{background:var(--ochre-soft)}
+.cal-foot{padding:.55rem .7rem;border-top:1.5px solid var(--ink);font-size:.74rem;color:var(--ink-2);display:flex;flex-wrap:wrap;gap:.3rem .9rem;align-items:center}
+.sync{display:flex;align-items:center;gap:.45rem;font-weight:700;color:var(--sierra)}
+.sync::before{content:"";width:8px;height:8px;border-radius:50%;background:#3d8b4f;box-shadow:0 0 0 3px rgba(61,139,79,.2)}
+.sim{border:1.5px solid var(--ink);background:var(--card);padding:18px;display:grid;gap:.9rem}
+.sim h3{font-size:1.6rem}
+.field{display:grid;gap:.3rem}
+.field label{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;font-weight:800}
+.field input,.field select{font-family:var(--sans);font-size:1rem;padding:.7rem .7rem;border:1.5px solid var(--ink);background:var(--paper);color:var(--ink);border-radius:0;min-height:48px;width:100%;min-width:0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
+.warn{font-size:.85rem;padding:.6rem .7rem;border-left:3px solid var(--sun);background:#f8e2d7}
+.warn:empty{display:none}
+.receipt{border-top:1.5px dashed var(--ink);padding-top:.8rem;font-size:.9rem}
+.receipt .ln{display:flex;justify-content:space-between;gap:1rem;padding:.2rem 0}
+.receipt .tot{font-family:var(--serif);font-size:1.5rem;font-weight:600;border-top:1.5px solid var(--ink);margin-top:.4rem;padding-top:.5rem}
+.receipt .sena{background:var(--ink);color:var(--paper);padding:.6rem .7rem;margin-top:.6rem;font-weight:700}
+.receipt .sena b{font-family:var(--serif);font-size:1.4rem;color:var(--ochre)}
+.mp{background:#009ee3;border-color:#007eb6;color:#fff;width:100%}
+.fine{font-size:.74rem;color:var(--ink-2);margin:0}
+dialog{border:1.5px solid var(--ink);padding:0;max-width:min(440px,calc(100vw - 32px));background:var(--card);color:var(--ink)}
+dialog::backdrop{background:rgba(42,34,29,.55)}
+.dlg{padding:20px;display:grid;gap:.8rem}
+.dlg h3{font-size:1.5rem}
+
+/* ===== fotos ===== */
+.gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.gallery .ph{aspect-ratio:1/1}
+.gallery .ph.w{grid-column:span 2;aspect-ratio:16/9}
+
+/* ===== alrededores ===== */
+.around{display:grid;gap:22px}
+.map{border:1.5px solid var(--ink);background:var(--card)}
+.map svg{width:100%;height:auto;display:block}
+.map p{margin:0;padding:.45rem .7rem;border-top:1px solid var(--line);font-size:.72rem;color:var(--ink-2)}
+.places{display:grid;gap:0;border-top:1.5px solid var(--ink)}
+.place{display:grid;grid-template-columns:4.6rem 1fr;gap:.8rem;padding:.8rem 0;border-bottom:1px solid var(--line)}
+.place .d{font-family:var(--serif);font-size:1.25rem;font-weight:600;color:var(--sun);line-height:1.1}
+.place .d small{display:block;font-family:var(--sans);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);font-weight:700}
+.place b{font-family:var(--serif);font-weight:600;font-size:1.1rem}
+.place p{margin:.15rem 0 0;font-size:.88rem;color:var(--ink-2)}
+.route{margin-top:18px;padding:16px;border:1.5px solid var(--ink);background:var(--ink);color:var(--paper)}
+.route h3{font-size:1.4rem;color:var(--ochre-soft)}
+.route ol{margin:.6rem 0 0;padding-left:1.2rem;display:grid;gap:.35rem;font-size:.92rem}
+
+/* ===== faq ===== */
+.faq details{border-top:1px solid var(--line);padding:.2rem 0}
+.faq details:last-child{border-bottom:1px solid var(--line)}
+.faq summary{cursor:pointer;list-style:none;padding:.85rem 2rem .85rem 0;font-family:var(--serif);font-size:1.18rem;font-weight:500;position:relative}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";position:absolute;right:.2rem;top:.65rem;font-family:var(--sans);font-size:1.4rem;color:var(--sun)}
+.faq details[open] summary::after{content:"–"}
+.faq details p{margin:0 0 .9rem;color:var(--ink-2);max-width:65ch}
+
+/* ===== contacto ===== */
+.contact{display:grid;gap:18px}
+.contact .big{font-family:var(--serif);font-size:clamp(1.8rem,6vw,2.8rem);line-height:1.1}
+.clist{display:grid;gap:0;border-top:1.5px solid var(--ink)}
+.clist a,.clist div{display:flex;justify-content:space-between;gap:1rem;padding:.8rem 0;border-bottom:1px solid var(--line);color:var(--ink);text-decoration:none;font-size:.95rem;flex-wrap:wrap}
+.clist span{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:800;color:var(--ink-2)}
+.clist a:hover{color:var(--sun)}
+footer{margin:0 16px 110px;padding:18px 0;border-top:1.5px solid var(--ink);font-size:.78rem;color:var(--ink-2);display:grid;gap:.4rem}
+
+/* barra fija móvil */
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:40;display:grid;grid-template-columns:1fr 1fr;border-top:1.5px solid var(--ink);background:var(--paper);padding:8px 10px calc(8px + env(safe-area-inset-bottom));gap:8px}
+.dock .btn{width:100%;padding:.75rem .5rem}
+.wa{background:#1f7a45;border-color:#1f7a45;color:#fff}
+
+@media (min-width:720px){
+  .plate{margin:36px 28px;padding:40px 36px 70px}
+  .titleblock>span.hide-s{display:inline}
+  .facts{grid-template-columns:repeat(3,1fr)}
+  .reviews{grid-template-columns:repeat(3,1fr)}
+  .units{grid-template-columns:1fr 1fr}
+  .plan-d{display:block!important}.plan-m{display:none!important}
+  .common{grid-template-columns:repeat(4,1fr)}
+  .gallery{grid-template-columns:repeat(4,1fr)}
+  .gallery .ph.w{grid-column:span 2}
+  .contact{grid-template-columns:1fr 1fr;align-items:start}
+  footer{margin:0 28px 110px}
+}
+@media (min-width:1000px){
+  .hero{grid-template-columns:1.05fr .95fr;align-items:center}
+  .planner{grid-template-columns:1.25fr .9fr;align-items:start}
+  .plan-wrap{position:sticky;top:70px}
+  .plan-d{display:none!important}.plan-m{display:block!important}
+  .booking{grid-template-columns:1fr 1fr;align-items:start}
+  .around{grid-template-columns:1.1fr .9fr;align-items:start}
+}
+@media (min-width:1180px){
+  .sheet{display:grid;grid-template-columns:minmax(0,1fr) var(--rail)}
+  .rail{order:2;height:100vh;border-bottom:0;border-left:1.5px solid var(--ink);display:flex;flex-direction:column}
+  .rail-top{flex-direction:column;align-items:flex-start;padding:22px 20px;border-bottom:1.5px solid var(--ink)}
+  .brand{flex-direction:column;gap:.15rem}
+  .brand b{font-size:2.3rem}
+  .now-plate{text-align:left;font-size:.72rem}
+  .rail nav{display:block;flex:1;overflow:auto;padding:10px 0}
+  .rail nav a{display:grid;grid-template-columns:2.2rem 1fr;padding:.5rem 20px;color:var(--ink);text-decoration:none;font-size:.88rem;font-weight:600;border-left:3px solid transparent}
+  .rail nav a span{font-size:.7rem;color:var(--ink-2);font-weight:700;padding-top:.15rem}
+  .rail nav a[aria-current="true"]{border-left-color:var(--sun);background:var(--paper-2);color:var(--sun)}
+  .rail nav a:hover{color:var(--sun)}
+  .rail .rail-extra{display:grid;gap:.6rem;padding:16px 20px 20px;border-top:1.5px solid var(--ink);font-size:.72rem}
+  .rail .rail-extra .rb{display:grid;grid-template-columns:auto 1fr;border:1.5px solid var(--ink)}
+  .rail .rail-extra .rb span{padding:.3rem .45rem;border-bottom:1px solid var(--line);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+  .rail .rail-extra .rb span:nth-child(odd){background:var(--paper-2);border-right:1px solid var(--line);color:var(--ink-2)}
+  .plate{margin:44px 44px}
+  .dock{display:none}
+  footer{margin:0 44px 40px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="demo-note" role="note"><strong>Prototipo de demostración preparado para Cabañas Ruphay</strong> · tarifas, disponibilidad y pagos de ejemplo</div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#CDBBA3" stroke-width="2"/></pattern>
+    <symbol id="art-cabin" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
+      <rect width="400" height="300" fill="#F2D9A6"/>
+      <circle cx="300" cy="92" r="46" fill="#E0A33A"/><circle cx="300" cy="92" r="64" fill="none" stroke="#C9572F" stroke-width="2" stroke-dasharray="3 7"/>
+      <path d="M0 210 Q80 150 160 188 T320 170 T400 180 V300 H0Z" fill="#35513D" opacity=".85"/>
+      <path d="M0 236 Q120 206 220 230 T400 222 V300 H0Z" fill="#2A221D" opacity=".18"/>
+      <g stroke="#2A221D" stroke-width="3" fill="#FBF6EE"><path d="M110 250 V170 L170 118 L230 170 V250Z"/><path d="M98 176 L170 110 L242 176" fill="none"/><rect x="152" y="200" width="36" height="50"/><rect x="128" y="158" width="26" height="22"/><rect x="186" y="158" width="26" height="22"/></g>
+      <path d="M0 250 H400" stroke="#2A221D" stroke-width="3"/>
+    </symbol>
+    <symbol id="art-pool" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
+      <rect width="400" height="300" fill="#F4ECDF"/>
+      <circle cx="90" cy="70" r="38" fill="#E0A33A"/>
+      <g stroke="#C9572F" stroke-width="2.5"><path d="M90 14v-12M90 138v-12M34 70H22M158 70h-12M50 30l-8-8M138 118l-8-8M130 30l8-8M42 118l8-8"/></g>
+      <rect x="60" y="160" width="300" height="110" fill="#CFE0E6" stroke="#2A221D" stroke-width="3"/>
+      <path d="M80 200 q20 -10 40 0 t40 0 t40 0 t40 0 t40 0 t40 0M80 232 q20 -10 40 0 t40 0 t40 0 t40 0 t40 0 t40 0" fill="none" stroke="#275F7A" stroke-width="2.5"/>
+      <g stroke="#2A221D" stroke-width="3" fill="none"><path d="M330 160 v-40 M350 160 v-40 M330 132 h20 M330 146 h20"/></g>
+    </symbol>
+    <symbol id="art-fire" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
+      <rect width="400" height="300" fill="#2A221D"/>
+      <g stroke="#F2D9A6" stroke-width="3" fill="none"><path d="M120 280 V120 H280 V280"/><path d="M100 120 H300"/><path d="M150 280 V170 Q200 140 250 170 V280"/></g>
+      <path d="M200 270 C170 250 178 220 196 200 C196 222 214 222 210 196 C236 220 236 254 200 270Z" fill="#E0A33A"/>
+      <path d="M200 270 C186 258 190 240 200 228 C204 244 216 246 210 234 C222 252 216 264 200 270Z" fill="#C9572F"/>
+      <path d="M165 272 H235" stroke="#F2D9A6" stroke-width="5"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="sheet">
+<aside class="rail" aria-label="Índice de láminas">
+  <div class="rail-top">
+    <a class="brand" href="#l0"><b>Ruphay</b><span>Cabañas &amp; Hostería</span></a>
+    <div class="now-plate" id="nowPlate" aria-live="polite">Lám. 00 · Portada</div>
+  </div>
+  <nav id="railNav">
+    <a href="#l0"><span>00</span>Portada</a>
+    <a href="#l1"><span>01</span>Implantación y grupo</a>
+    <a href="#l2"><span>02</span>Cabañas y hostería</a>
+    <a href="#l3"><span>03</span>Asoleamiento y tarifas</a>
+    <a href="#l4"><span>04</span>Disponibilidad y reserva</a>
+    <a href="#l5"><span>05</span>Registro fotográfico</a>
+    <a href="#l6"><span>06</span>Alrededores y cómo llegar</a>
+    <a href="#l7"><span>07</span>Preguntas</a>
+    <a href="#l8"><span>08</span>Contacto</a>
+  </nav>
+  <div class="rail-extra">
+    <div class="rb"><span>Obra</span><span>Cabañas Ruphay</span><span>Lugar</span><span>Av. Fuerza Aérea 150</span><span>Ciudad</span><span>Sta. Rosa de Calamuchita</span><span>Orient.</span><span>Norte = sol de mediodía</span></div>
+    <a class="btn sun" href="#l4">Reservar</a>
+    <a class="btn wa" href="https://wa.me/5493546650105?text=Hola%20Ruphay%2C%20quiero%20consultar%20disponibilidad" target="_blank" rel="noopener">WhatsApp</a>
+  </div>
+</aside>
+
+<main id="top">
+<!-- ===== LÁMINA 00 ===== -->
+<section class="plate" id="l0" data-plate="00 · Portada" aria-labelledby="h0">
+  <div class="hero">
+    <div>
+      <div class="kicker"><span class="mono" style="color:var(--sun)">Santa Rosa de Calamuchita · Córdoba</span><span class="q">rupha, en quechua: «lo que calienta, lo que quema»</span></div>
+      <h1 id="h0">Seis cabañas de dos plantas y una hostería <em>alrededor de la misma pileta</em>, a una cuadra del río.</h1>
+      <p class="lede">Las cabañas son para la familia entera: dos baños, matrimonial y cuatro camas, cochera y parrilla propias. La hostería suma cuatro habitaciones dobles y dos aparts con cocina. Acá abajo armás la combinación justa para tu grupo y ves cuánto sale, en el momento.</p>
+      <div class="cta-row">
+        <a class="btn sun" href="#l1">Armá tu grupo en el plano</a>
+        <a class="btn alt" href="#l4">Ver disponibilidad</a>
+      </div>
+    </div>
+    <figure class="hero-fig">
+      <div class="ph">
+        <svg class="fb" aria-hidden="true"><use href="#art-cabin"/></svg>
+        <img src="https://www.welcomeargentina.com/plantillas/webp/34578-top.webp?1758039381" alt="Cabañas Ruphay, vista del complejo" referrerpolicy="no-referrer" onerror="this.remove()">
+        <figcaption>Ruphay · foto del complejo</figcaption>
+      </div>
+      <div class="sunclock">
+        <svg width="120" height="46" viewBox="0 0 120 46" aria-hidden="true"><path d="M6 42 Q60 -14 114 42" fill="none" stroke="#2A221D" stroke-width="1.5" stroke-dasharray="3 4"/><line x1="0" y1="42" x2="120" y2="42" stroke="#2A221D" stroke-width="1.5"/><circle id="sunDot" cx="60" cy="14" r="7" fill="#E0A33A" stroke="#A63D24" stroke-width="2"/></svg>
+        <span id="sunText">Ahora en Santa Rosa…</span>
+      </div>
+    </figure>
+  </div>
+  <div class="facts" role="list">
+    <div role="listitem"><b>6</b><span>cabañas de dos plantas, para 4 a 6</span></div>
+    <div role="listitem"><b>4 + 2</b><span>habitaciones dobles y aparts (doble y triple) en la hostería</span></div>
+    <div role="listitem"><b>2</b><span>baños por cabaña, cochera y parrilla individual</span></div>
+    <div role="listitem"><b>1</b><span>pileta con solárium para todo el predio</span></div>
+    <div role="listitem"><b>24 h</b><span>vigilancia, con sereno nocturno</span></div>
+    <div role="listitem"><b>Hogar</b><span>a leña en el salón de recepción</span></div>
+  </div>
+  <div class="reviews">
+    <blockquote><p>«Excelente ubicación»</p><cite>Título de una opinión en TripAdvisor, 2018</cite></blockquote>
+    <blockquote><p>«Ideal para relajarse.. Cerca de todo..»</p><cite>Título de una opinión en TripAdvisor, 2018</cite></blockquote>
+    <blockquote><p>«Excelente complejo»</p><cite>Título de una opinión en TripAdvisor, 2019</cite></blockquote>
+  </div>
+  <div class="score"><span><b>4,5</b> en TripAdvisor</span><span><b>4,3</b> en WelcomeArgentina</span><span><b>70</b> opiniones verificadas en Booking</span></div>
+  <div class="titleblock"><span>Lám. 00</span><span>Portada</span><span class="hide-s">Esc. 1:1</span></div>
+</section>
+
+<!-- ===== LÁMINA 01 ===== -->
+<section class="plate" id="l1" data-plate="01 · Implantación" aria-labelledby="h1">
+  <div class="plate-head">
+    <span class="mono">Lámina 01 · Implantación y armado del grupo</span>
+    <h2 id="h1">Dos formas de alojarse en un mismo predio. Decí cuántos son y el plano se pinta.</h2>
+    <p>En Ruphay una familia grande, dos parejas amigas o los abuelos con los nietos pueden quedar juntos sin compartir cama ni baño: cabaña para unos, habitación o apart de la hostería para otros, la pileta en el medio. Contanos el grupo y te proponemos combinaciones.</p>
+  </div>
+  <div class="planner">
+    <div class="plan-wrap">
+      <svg viewBox="0 0 800 560" role="group" aria-label="Plano esquemático del predio con las unidades" id="plan" class="plan-d">
+        
+        <!-- arco solar -->
+        <path d="M40 120 Q400 -70 760 120" fill="none" stroke="#C9572F" stroke-width="1.5" stroke-dasharray="4 7"/>
+        <text x="40" y="142" font-size="11" font-family="Syne, sans-serif" font-weight="700" fill="#5A4C42">SALE · E</text>
+        <text x="702" y="142" font-size="11" font-family="Syne, sans-serif" font-weight="700" fill="#5A4C42">SE PONE · O</text>
+        <circle cx="400" cy="25" r="13" fill="#E0A33A" stroke="#A63D24" stroke-width="2"/>
+        <!-- norte -->
+        <g transform="translate(748 40)"><circle r="18" fill="#FBF6EE" stroke="#2A221D" stroke-width="1.5"/><path d="M0 -14 L6 6 L0 2 L-6 6Z" fill="#2A221D"/><text y="32" text-anchor="middle" font-size="12" font-family="Syne, sans-serif" font-weight="800">N</text></g>
+        <!-- lote -->
+        <rect x="40" y="150" width="720" height="330" fill="none" stroke="#2A221D" stroke-width="2.5"/>
+        <!-- verde -->
+        <rect x="42" y="152" width="716" height="326" fill="#e8ecd9" opacity=".55"/>
+        <!-- pileta -->
+        <rect x="330" y="300" width="150" height="80" fill="#CFE0E6" stroke="#275F7A" stroke-width="2"/>
+        <path d="M342 330 q12 -7 24 0 t24 0 t24 0 t24 0 t24 0 M342 352 q12 -7 24 0 t24 0 t24 0 t24 0 t24 0" fill="none" stroke="#275F7A" stroke-width="1.5"/>
+        <rect x="310" y="285" width="190" height="110" fill="none" stroke="#2A221D" stroke-dasharray="5 4"/>
+        <text x="405" y="412" text-anchor="middle" font-size="12" font-family="Syne, sans-serif" font-weight="700" fill="#275F7A">PILETA Y SOLÁRIUM</text>
+        <!-- cabañas -->
+        <g class="u" data-u="C1" tabindex="0" role="button" aria-label="Cabaña 1"><rect x="70" y="175" width="92" height="74"/><text x="116" y="217" text-anchor="middle">C1</text></g>
+        <g class="u" data-u="C2" tabindex="0" role="button" aria-label="Cabaña 2"><rect x="186" y="175" width="92" height="74"/><text x="232" y="217" text-anchor="middle">C2</text></g>
+        <g class="u" data-u="C3" tabindex="0" role="button" aria-label="Cabaña 3"><rect x="302" y="175" width="92" height="74"/><text x="348" y="217" text-anchor="middle">C3</text></g>
+        <g class="u" data-u="C4" tabindex="0" role="button" aria-label="Cabaña 4"><rect x="418" y="175" width="92" height="74"/><text x="464" y="217" text-anchor="middle">C4</text></g>
+        <g class="u" data-u="C5" tabindex="0" role="button" aria-label="Cabaña 5"><rect x="534" y="175" width="92" height="74"/><text x="580" y="217" text-anchor="middle">C5</text></g>
+        <g class="u" data-u="C6" tabindex="0" role="button" aria-label="Cabaña 6"><rect x="650" y="175" width="92" height="74"/><text x="696" y="217" text-anchor="middle">C6</text></g>
+        <!-- parrillas -->
+        <g fill="#2A221D"><rect x="111" y="255" width="10" height="8"/><rect x="227" y="255" width="10" height="8"/><rect x="343" y="255" width="10" height="8"/><rect x="459" y="255" width="10" height="8"/><rect x="575" y="255" width="10" height="8"/><rect x="691" y="255" width="10" height="8"/></g>
+        <text x="70" y="280" font-size="10" font-family="Syne, sans-serif" font-weight="700" fill="#5A4C42">■ parrilla individual</text>
+        <!-- hostería -->
+        <rect x="560" y="290" width="182" height="172" fill="url(#hatch)" stroke="#2A221D" stroke-width="1.5"/>
+        <text x="651" y="284" text-anchor="middle" font-size="12" font-family="Syne, sans-serif" font-weight="800">HOSTERÍA</text>
+        <g class="u" data-u="H1" tabindex="0" role="button" aria-label="Habitación doble 1"><rect x="570" y="300" width="78" height="46"/><text x="609" y="328" text-anchor="middle">H1</text></g>
+        <g class="u" data-u="H2" tabindex="0" role="button" aria-label="Habitación doble 2"><rect x="654" y="300" width="78" height="46"/><text x="693" y="328" text-anchor="middle">H2</text></g>
+        <g class="u" data-u="H3" tabindex="0" role="button" aria-label="Habitación doble 3"><rect x="570" y="352" width="78" height="46"/><text x="609" y="380" text-anchor="middle">H3</text></g>
+        <g class="u" data-u="H4" tabindex="0" role="button" aria-label="Habitación doble 4"><rect x="654" y="352" width="78" height="46"/><text x="693" y="380" text-anchor="middle">H4</text></g>
+        <g class="u" data-u="AD" tabindex="0" role="button" aria-label="Apart doble"><rect x="570" y="404" width="78" height="48"/><text x="609" y="433" text-anchor="middle">AD</text></g>
+        <g class="u" data-u="AT" tabindex="0" role="button" aria-label="Apart triple"><rect x="654" y="404" width="78" height="48"/><text x="693" y="433" text-anchor="middle">AT</text></g>
+        <!-- recepción -->
+        <rect x="70" y="330" width="150" height="90" fill="#FBF6EE" stroke="#2A221D" stroke-width="1.6"/>
+        <path d="M128 404 h34 v-14 q-17 -12 -34 0z" fill="#C9572F"/>
+        <text x="145" y="358" text-anchor="middle" font-size="12" font-family="Syne, sans-serif" font-weight="800">RECEPCIÓN</text>
+        <text x="145" y="374" text-anchor="middle" font-size="10" font-family="Syne, sans-serif" font-weight="600" fill="#5A4C42">salón con hogar a leña</text>
+        <!-- cocheras -->
+        <g stroke="#2A221D" stroke-width="1" fill="none"><path d="M250 440 h280 M250 440 v30 M285 440 v30 M320 440 v30 M355 440 v30 M390 440 v30 M425 440 v30 M460 440 v30 M495 440 v30 M530 440 v30"/></g>
+        <text x="390" y="462" text-anchor="middle" font-size="10" font-family="Syne, sans-serif" font-weight="700" fill="#5A4C42">COCHERAS INDIVIDUALES</text>
+        <!-- calle -->
+        <rect x="0" y="496" width="800" height="40" fill="#2A221D"/>
+        <text x="400" y="521" text-anchor="middle" font-size="13" font-family="Syne, sans-serif" font-weight="800" fill="#F4ECDF" letter-spacing="3">AV. FUERZA AÉREA · Nº 150</text>
+        <path d="M200 484 v12" stroke="#2A221D" stroke-width="2"/>
+        <text x="20" y="552" font-size="11" font-family="Syne, sans-serif" font-weight="700" fill="#275F7A">← hacia el río Santa Rosa (≈ 1 cuadra) y el Puente de Hierro</text>
+      </svg>
+<svg viewBox="0 0 400 628" role="group" aria-label="Plano esquemático del predio con las unidades" class="plan-m">
+        <path d="M20 92 Q200 -42 380 92" fill="none" stroke="#C9572F" stroke-width="1.5" stroke-dasharray="4 7"/>
+        <circle cx="200" cy="25" r="11" fill="#E0A33A" stroke="#A63D24" stroke-width="2"/>
+        <text x="20" y="80" font-size="11" font-family="Syne, sans-serif" font-weight="700" fill="#5A4C42">E</text><text x="372" y="80" font-size="11" font-family="Syne, sans-serif" font-weight="700" fill="#5A4C42">O</text>
+        <g transform="translate(366 30)"><circle r="14" fill="#FBF6EE" stroke="#2A221D" stroke-width="1.5"/><path d="M0 -10 L5 5 L0 2 L-5 5Z" fill="#2A221D"/></g>
+        <rect x="20" y="100" width="360" height="440" fill="#e8ecd9" fill-opacity=".55" stroke="#2A221D" stroke-width="2.5"/>
+        <g class="u" data-u="C1" tabindex="0" role="button" aria-label="Cabaña 1"><rect x="34" y="116" width="84" height="60"/><text x="76" y="152" text-anchor="middle">C1</text></g>
+        <g class="u" data-u="C2" tabindex="0" role="button" aria-label="Cabaña 2"><rect x="126" y="116" width="84" height="60"/><text x="168" y="152" text-anchor="middle">C2</text></g>
+        <g class="u" data-u="C3" tabindex="0" role="button" aria-label="Cabaña 3"><rect x="34" y="190" width="84" height="60"/><text x="76" y="226" text-anchor="middle">C3</text></g>
+        <g class="u" data-u="C4" tabindex="0" role="button" aria-label="Cabaña 4"><rect x="126" y="190" width="84" height="60"/><text x="168" y="226" text-anchor="middle">C4</text></g>
+        <g class="u" data-u="C5" tabindex="0" role="button" aria-label="Cabaña 5"><rect x="34" y="264" width="84" height="60"/><text x="76" y="300" text-anchor="middle">C5</text></g>
+        <g class="u" data-u="C6" tabindex="0" role="button" aria-label="Cabaña 6"><rect x="126" y="264" width="84" height="60"/><text x="168" y="300" text-anchor="middle">C6</text></g>
+        <g fill="#2A221D"><rect x="71" y="179" width="9" height="7"/><rect x="163" y="179" width="9" height="7"/><rect x="71" y="253" width="9" height="7"/><rect x="163" y="253" width="9" height="7"/><rect x="71" y="327" width="9" height="7"/><rect x="163" y="327" width="9" height="7"/></g>
+        <text x="34" y="348" font-size="11" font-family="Syne, sans-serif" font-weight="700" fill="#5A4C42">■ parrilla individual</text>
+        <rect x="226" y="112" width="142" height="226" fill="url(#hatch)" stroke="#2A221D" stroke-width="1.5"/>
+        <text x="297" y="130" text-anchor="middle" font-size="12" font-family="Syne, sans-serif" font-weight="800">HOSTERÍA</text>
+        <g class="u" data-u="H1" tabindex="0" role="button" aria-label="Habitación doble 1"><rect x="234" y="140" width="60" height="56"/><text x="264" y="174" text-anchor="middle">H1</text></g>
+        <g class="u" data-u="H2" tabindex="0" role="button" aria-label="Habitación doble 2"><rect x="300" y="140" width="60" height="56"/><text x="330" y="174" text-anchor="middle">H2</text></g>
+        <g class="u" data-u="H3" tabindex="0" role="button" aria-label="Habitación doble 3"><rect x="234" y="204" width="60" height="56"/><text x="264" y="238" text-anchor="middle">H3</text></g>
+        <g class="u" data-u="H4" tabindex="0" role="button" aria-label="Habitación doble 4"><rect x="300" y="204" width="60" height="56"/><text x="330" y="238" text-anchor="middle">H4</text></g>
+        <g class="u" data-u="AD" tabindex="0" role="button" aria-label="Apart doble"><rect x="234" y="268" width="60" height="62"/><text x="264" y="305" text-anchor="middle">AD</text></g>
+        <g class="u" data-u="AT" tabindex="0" role="button" aria-label="Apart triple"><rect x="300" y="268" width="60" height="62"/><text x="330" y="305" text-anchor="middle">AT</text></g>
+        <rect x="34" y="370" width="104" height="84" fill="#FBF6EE" stroke="#2A221D" stroke-width="1.6"/>
+        <path d="M70 440 h32 v-13 q-16 -11 -32 0z" fill="#C9572F"/>
+        <text x="86" y="394" text-anchor="middle" font-size="11" font-family="Syne, sans-serif" font-weight="800">RECEPCIÓN</text>
+        <text x="86" y="410" text-anchor="middle" font-size="10" font-family="Syne, sans-serif" font-weight="600" fill="#5A4C42">hogar a leña</text>
+        <rect x="170" y="364" width="190" height="104" fill="none" stroke="#2A221D" stroke-dasharray="5 4"/>
+        <rect x="186" y="376" width="158" height="66" fill="#CFE0E6" stroke="#275F7A" stroke-width="2"/>
+        <path d="M198 400 q12 -7 24 0 t24 0 t24 0 t24 0 t24 0 t24 0 M198 422 q12 -7 24 0 t24 0 t24 0 t24 0 t24 0 t24 0" fill="none" stroke="#275F7A" stroke-width="1.5"/>
+        <text x="265" y="460" text-anchor="middle" font-size="11" font-family="Syne, sans-serif" font-weight="700" fill="#275F7A">PILETA Y SOLÁRIUM</text>
+        <g stroke="#2A221D" stroke-width="1" fill="none"><path d="M40 490 h320 M40 490 v34 M80 490 v34 M120 490 v34 M160 490 v34 M200 490 v34 M240 490 v34 M280 490 v34 M320 490 v34 M360 490 v34"/></g>
+        <text x="200" y="512" text-anchor="middle" font-size="11" font-family="Syne, sans-serif" font-weight="700" fill="#5A4C42">COCHERAS INDIVIDUALES</text>
+        <rect x="0" y="552" width="400" height="38" fill="#2A221D"/>
+        <text x="200" y="576" text-anchor="middle" font-size="12" font-family="Syne, sans-serif" font-weight="800" fill="#F4ECDF" letter-spacing="2">AV. FUERZA AÉREA · Nº 150</text>
+        <text x="200" y="614" text-anchor="middle" font-size="11" font-family="Syne, sans-serif" font-weight="700" fill="#275F7A">← río Santa Rosa a ≈ 1 cuadra · Puente de Hierro</text>
+      </svg>
+      <div class="plan-legend"><span><i style="background:var(--paper)"></i>Unidad libre</span><span><i style="background:var(--sun)"></i>Tu combinación</span><span>Plano esquemático, no a escala; ubicación de cada unidad supuesta</span></div>
+      <div class="unit-info" id="unitInfo" aria-live="polite">Tocá una unidad del plano para ver qué tiene.</div>
+    </div>
+
+    <div class="builder">
+      <span class="mono" style="color:var(--sun)">Armador de grupo</span>
+      <h3>¿Quiénes vienen?</h3>
+      <p>Te devolvemos las combinaciones posibles con las 12 unidades del predio y su precio por noche.</p>
+      <div class="step"><span class="lab" id="lblA">Adultos<small>13 años o más</small></span><div class="stepper" role="group" aria-labelledby="lblA"><button type="button" data-k="a" data-d="-1" aria-label="Menos adultos">−</button><output id="oA">4</output><button type="button" data-k="a" data-d="1" aria-label="Más adultos">+</button></div></div>
+      <div class="step"><span class="lab" id="lblK">Menores<small>las cunas van aparte, a pedido</small></span><div class="stepper" role="group" aria-labelledby="lblK"><button type="button" data-k="k" data-d="-1" aria-label="Menos menores">−</button><output id="oK">3</output><button type="button" data-k="k" data-d="1" aria-label="Más menores">+</button></div></div>
+      <div class="step"><span class="lab" id="lblN">¿Cuántos grupos quieren su propio espacio?<small>parejas o familias que prefieren dormir aparte</small></span><div class="stepper" role="group" aria-labelledby="lblN"><button type="button" data-k="n" data-d="-1" aria-label="Menos grupos">−</button><output id="oN">2</output><button type="button" data-k="n" data-d="1" aria-label="Más grupos">+</button></div></div>
+      <label class="chk"><input type="checkbox" id="kitchen"> <span>Todos necesitan cocina propia <small style="display:block;color:var(--ink-2)">deja afuera las habitaciones dobles de la hostería</small></span></label>
+      <div class="opts" id="opts" aria-live="polite"></div>
+      <button class="btn sun use-combo" id="useCombo" type="button">Llevar esta combinación a la reserva</button>
+      <p class="fine" style="margin-top:.7rem">Precios por noche en temporada media, <span class="ex">tarifas de ejemplo</span></p>
+    </div>
+  </div>
+  <div class="titleblock"><span>Lám. 01</span><span>Implantación</span><span class="hide-s">Esc. s/e</span></div>
+</section>
+
+<!-- ===== LÁMINA 02 ===== -->
+<section class="plate" id="l2" data-plate="02 · Unidades" aria-labelledby="h2">
+  <div class="plate-head">
+    <span class="mono">Lámina 02 · Cabañas y hostería</span>
+    <h2 id="h2">Planta baja para estar, planta alta para dormir. O una habitación con sommier y aire.</h2>
+  </div>
+  <div class="units">
+    <article class="unit-card">
+      <div class="ph"><svg class="fb" aria-hidden="true"><use href="#art-cabin"/></svg><img src="https://argentinacabanas.com/santarosadecalamuchita/fotos/ruphay/01.jpg" alt="Cabaña de Ruphay" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()"><figcaption>Cabañas · C1 a C6</figcaption></div>
+      <div class="unit-body">
+        <h3>Cabaña de dos plantas</h3>
+        <div class="cap">6 unidades · de 4 a 6 personas</div>
+        <ul>
+          <li>Cama matrimonial con sommier + 4 camas individuales</li>
+          <li>Dos baños</li>
+          <li>Cocina equipada: microondas, anafe, heladera y vajilla</li>
+          <li>Living-comedor con TV por cable</li>
+          <li>Calefacción y ventiladores de techo</li>
+          <li>Ropa blanca incluida, cunas a pedido</li>
+          <li>Cochera y parrilla individual</li>
+        </ul>
+        <div class="section-svg">
+          <svg viewBox="0 0 400 230" role="img" aria-label="Corte esquemático de la cabaña: planta alta con dormitorios y baño, planta baja con living-comedor, cocina y baño">
+            <path d="M40 210 V60 L200 14 L360 60 V210" fill="#FBF6EE" stroke="#2A221D" stroke-width="2.5"/>
+            <line x1="40" y1="118" x2="360" y2="118" stroke="#2A221D" stroke-width="2.5"/>
+            <line x1="20" y1="210" x2="380" y2="210" stroke="#2A221D" stroke-width="3"/>
+            <line x1="250" y1="60" x2="250" y2="118" stroke="#2A221D" stroke-width="1.5"/><line x1="150" y1="60" x2="150" y2="118" stroke="#2A221D" stroke-width="1.5"/>
+            <line x1="230" y1="118" x2="230" y2="210" stroke="#2A221D" stroke-width="1.5"/><line x1="300" y1="118" x2="300" y2="210" stroke="#2A221D" stroke-width="1.5"/>
+            <g font-family="Syne, sans-serif" font-size="11" font-weight="700" fill="#2A221D" text-anchor="middle">
+              <text x="95" y="88">Matrimonial</text><text x="95" y="102" font-size="9" fill="#5A4C42">con sommier</text>
+              <text x="200" y="94">Baño</text>
+              <text x="305" y="88">4 camas</text><text x="305" y="102" font-size="9" fill="#5A4C42">individuales</text>
+              <text x="135" y="165">Living-comedor</text><text x="135" y="180" font-size="9" fill="#5A4C42">TV · calefacción</text>
+              <text x="265" y="165">Cocina</text>
+              <text x="330" y="165">Baño</text>
+            </g>
+            <g font-family="Syne, sans-serif" font-size="9" font-weight="800" fill="#A63D24"><text x="366" y="92">PA</text><text x="366" y="168">PB</text></g>
+            <path d="M200 118 l20 -28" stroke="#A63D24" stroke-width="2" stroke-dasharray="3 3"/>
+          </svg>
+          <p>Corte esquemático. La distribución por planta es ilustrativa: confirmá con el complejo.</p>
+        </div>
+      </div>
+    </article>
+    <article class="unit-card">
+      <div class="ph"><svg class="fb" aria-hidden="true"><use href="#art-pool"/></svg><img src="https://argentinacabanas.com/santarosadecalamuchita/fotos/ruphay/02.jpg" alt="Hostería de Ruphay" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()"><figcaption>Hostería · la parte más nueva</figcaption></div>
+      <div class="unit-body">
+        <h3>Hostería</h3>
+        <div class="cap">6 unidades · de 2 a 3 personas</div>
+        <div class="host-list">
+          <div class="host-row"><span class="n">4</span><b>Habitaciones dobles</b><span>Sommier, aire acondicionado. Para parejas, o para los abuelos al lado de la cabaña de la familia.</span></div>
+          <div class="host-row"><span class="n">1</span><b>Apart doble</b><span>Con cocina. Para quedarse varios días sin depender de afuera.</span></div>
+          <div class="host-row"><span class="n">1</span><b>Apart triple</b><span>Con cocina. Pareja con un hijo, o tres amigos.</span></div>
+        </div>
+        <ul>
+          <li>Sommier y aire acondicionado</li>
+          <li>Cochera y parrilla</li>
+          <li>Desayuno opcional</li>
+          <li>Misma pileta, solárium y salón con hogar que las cabañas</li>
+        </ul>
+      </div>
+    </article>
+  </div>
+  <div class="common">
+    <div><b>Pileta con solárium</b>De temporada, compartida por el predio</div>
+    <div><b>Salón con hogar a leña</b>En la recepción, para las noches de invierno</div>
+    <div><b>Wifi</b>En el complejo</div>
+    <div><b>Vigilancia 24 h</b>Con sereno nocturno</div>
+  </div>
+  <div class="titleblock"><span>Lám. 02</span><span>Unidades</span><span class="hide-s">Esc. 1:100</span></div>
+</section>
+
+<!-- ===== LÁMINA 03 ===== -->
+<section class="plate" id="l3" data-plate="03 · Tarifas" aria-labelledby="h3">
+  <div class="plate-head">
+    <span class="mono">Lámina 03 · Estudio de asoleamiento</span>
+    <h2 id="h3">Cuánto calienta cada temporada.</h2>
+    <p>Ruphay viene de <i>rupha</i>: calor. Lo usamos como medida: cuanto más alto el sol, más alta la demanda en el valle y la tarifa. <span class="ex">Tarifas de ejemplo 2026-27</span></p>
+  </div>
+  <div class="sunchart" aria-label="Gráfico de temporadas de noviembre 2026 a octubre 2027">
+    <div class="bars" id="bars"></div>
+    <div class="months" id="months"></div>
+    <p class="chart-note">Altura = qué tan caliente viene cada mes. Número = noches de temporada alta o pico.</p>
+  </div>
+  <div class="table-scroll">
+  <table class="rates" aria-label="Tarifas de ejemplo por noche">
+    <thead><tr><th>Por noche, en miles de $</th><th>Baja</th><th>Media</th><th>Alta</th><th>Pico</th></tr></thead>
+    <tbody id="ratesBody"></tbody>
+  </table>
+  </div>
+  <p class="fine" style="margin-top:.5rem">Baja: días de semana de abril a junio y de agosto a noviembre. Media: viernes y sábados, marzo y diciembre hasta Navidad. Alta: verano y vacaciones de invierno (mínimo 3 noches). Pico: Semana Santa y fines de semana largos. Desayuno opcional: $7.000 por persona por noche. Todo de ejemplo.</p>
+  <div class="events">
+    <div class="ev"><time>26 dic – 28 feb</time><div><b>Verano 2027</b><span class="t t-alta">Alta</span><br>Río, balnearios y pileta. Incluye Carnaval (8 y 9 de febrero).</div></div>
+    <div class="ev"><time>25 – 28 mar 2027</time><div><b>Semana Santa · Fiesta de las Delicias de Pascua</b><span class="t t-pico">Pico</span><br>La fiesta de Santa Rosa, con la Fiesta del Chocolate Alpino en Villa General Belgrano los mismos días.</div></div>
+    <div class="ev"><time>Julio 2027</time><div><b>Vacaciones de invierno en Córdoba</b><span class="t t-alta">Alta</span><br>Estimamos del 5 al 16 de julio: el calendario escolar 2027 todavía no está publicado. Hogar a leña prendido.</div></div>
+    <div class="ev"><time>14 – 16 ago 2027</time><div><b>Fin de semana largo de agosto</b><span class="t t-pico">Pico</span><br>Paso a la Inmortalidad de San Martín, trasladable (a confirmar).</div></div>
+    <div class="ev"><time>Octubre 2027</time><div><b>Oktoberfest en Villa General Belgrano</b><span class="t t-pico">Pico</span><br>A unos 10 km por la RP5. Fines de semana de la fiesta y el largo del 9 al 11 de octubre (fechas a confirmar).</div></div>
+    <div class="ev"><time>20 – 22 nov 2027</time><div><b>Fin de semana largo de noviembre</b><span class="t t-pico">Pico</span><br>Día de la Soberanía Nacional, trasladable (a confirmar). También el del 20 al 22 de noviembre de 2026.</div></div>
+  </div>
+  <div class="titleblock"><span>Lám. 03</span><span>Asoleamiento</span><span class="hide-s">Nov 26 – Nov 27</span></div>
+</section>
+
+<!-- ===== LÁMINA 04 ===== -->
+<section class="plate" id="l4" data-plate="04 · Reserva" aria-labelledby="h4">
+  <div class="plate-head">
+    <span class="mono">Lámina 04 · Disponibilidad y reserva</span>
+    <h2 id="h4">Elegí las fechas en el calendario. La seña se paga acá mismo.</h2>
+    <p>El calendario muestra cuántas unidades del tipo elegido quedan libres cada noche. Tocá la llegada y después la salida.</p>
+  </div>
+  <div class="booking">
+    <div class="cal">
+      <div class="cal-head"><button type="button" id="prevM" aria-label="Mes anterior">‹</button><h3 id="calTitle" aria-live="polite">—</h3><button type="button" id="nextM" aria-label="Mes siguiente">›</button></div>
+      <div class="cal-grid" id="calGrid" role="grid" aria-label="Calendario de disponibilidad"></div>
+      <div class="cal-foot"><span class="sync">Se sincroniza con Booking y Airbnb</span><span>· disponibilidad de ejemplo</span><span>· número = unidades libres</span><span>● alta ● pico</span></div>
+    </div>
+    <form class="sim" id="sim" onsubmit="return false" aria-labelledby="simT">
+      <span class="mono" style="color:var(--sun)">Simulador de reserva</span>
+      <h3 id="simT">Tu estadía</h3>
+      <div class="two">
+        <div class="field"><label for="fIn">Llegada</label><input type="date" id="fIn" min="2026-10-27" max="2027-11-30"></div>
+        <div class="field"><label for="fOut">Salida</label><input type="date" id="fOut" min="2026-10-28" max="2027-12-01"></div>
+      </div>
+      <div class="two">
+        <div class="field"><label for="fA">Adultos</label><input type="number" id="fA" min="1" max="40" value="2" inputmode="numeric"></div>
+        <div class="field"><label for="fK">Menores</label><input type="number" id="fK" min="0" max="30" value="0" inputmode="numeric"></div>
+      </div>
+      <div class="field"><label for="fU">Unidad</label>
+        <select id="fU">
+          <option value="cab">Cabaña de dos plantas (hasta 6)</option>
+          <option value="hab">Habitación doble de hostería (2)</option>
+          <option value="ad">Apart doble con cocina (2)</option>
+          <option value="at">Apart triple con cocina (3)</option>
+        </select>
+      </div>
+      <label class="chk"><input type="checkbox" id="fB"> <span>Sumar desayuno ($7.000 por persona por noche)</span></label>
+      <div class="warn" id="warn" role="status"></div>
+      <div class="receipt" id="receipt" aria-live="polite"></div>
+      <button type="button" class="btn mp" id="payBtn">Pagar seña con Mercado Pago</button>
+      <p class="fine">Demo: no se cobra nada. <span class="ex">Tarifas de ejemplo</span> El saldo se abona al ingresar.</p>
+    </form>
+  </div>
+  <div class="titleblock"><span>Lám. 04</span><span>Reserva</span><span class="hide-s">Seña 30 %</span></div>
+</section>
+
+<dialog id="dlg" aria-labelledby="dlgT">
+  <div class="dlg">
+    <span class="mono" style="color:#009ee3">Mercado Pago · demo</span>
+    <h3 id="dlgT">Seña de <span id="dlgAmt"></span></h3>
+    <p id="dlgTxt" style="margin:0;font-size:.92rem"></p>
+    <p class="fine">Esto es un prototipo: no se abrió ningún pago ni se cobró nada. En la web real, acá se abre el checkout de Mercado Pago y la reserva queda bloqueada en el calendario, en Booking y en Airbnb.</p>
+    <a class="btn wa" id="dlgWa" href="https://wa.me/5493546650105" target="_blank" rel="noopener">Consultar por WhatsApp</a>
+    <button type="button" class="btn alt" id="dlgClose">Cerrar</button>
+  </div>
+</dialog>
+
+<!-- ===== LÁMINA 05 ===== -->
+<section class="plate" id="l5" data-plate="05 · Fotos" aria-labelledby="h5">
+  <div class="plate-head">
+    <span class="mono">Lámina 05 · Registro fotográfico</span>
+    <h2 id="h5">El predio, como está hoy.</h2>
+  </div>
+  <div class="gallery">
+    <figure class="ph w"><svg class="fb" aria-hidden="true"><use href="#art-pool"/></svg><img src="https://www.welcomeargentina.com/plantillas/webp/grandes/34578-00Gr.webp?1758039381" alt="Cabañas Ruphay, foto 1" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()"><figcaption>Foto 01</figcaption></figure>
+    <figure class="ph"><svg class="fb" aria-hidden="true"><use href="#art-cabin"/></svg><img src="https://www.welcomeargentina.com/plantillas/webp/grandes/34578-01Gr.webp?1758039381" alt="Cabañas Ruphay, foto 2" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()"><figcaption>Foto 02</figcaption></figure>
+    <figure class="ph"><svg class="fb" aria-hidden="true"><use href="#art-fire"/></svg><img src="https://www.welcomeargentina.com/plantillas/webp/grandes/34578-02Gr.webp?1758039381" alt="Cabañas Ruphay, foto 3" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()"><figcaption>Foto 03</figcaption></figure>
+    <figure class="ph"><svg class="fb" aria-hidden="true"><use href="#art-cabin"/></svg><img src="https://www.welcomeargentina.com/plantillas/webp/grandes/34578-03Gr.webp?1758039381" alt="Cabañas Ruphay, foto 4" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()"><figcaption>Foto 04</figcaption></figure>
+    <figure class="ph"><svg class="fb" aria-hidden="true"><use href="#art-pool"/></svg><img src="https://www.welcomeargentina.com/plantillas/webp/grandes/34578-04Gr.webp?1758039381" alt="Cabañas Ruphay, foto 5" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()"><figcaption>Foto 05</figcaption></figure>
+    <figure class="ph w"><svg class="fb" aria-hidden="true"><use href="#art-cabin"/></svg><img src="https://www.welcomeargentina.com/plantillas/webp/grandes/34578-05Gr.webp?1758039381" alt="Cabañas Ruphay, foto 6" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()"><figcaption>Foto 06</figcaption></figure>
+    <figure class="ph w"><svg class="fb" aria-hidden="true"><use href="#art-fire"/></svg><img src="https://argentinacabanas.com/santarosadecalamuchita/fotos/ruphay/03.jpg" alt="Cabañas Ruphay, foto 7" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()"><figcaption>Foto 07</figcaption></figure>
+    <figure class="ph w"><svg class="fb" aria-hidden="true"><use href="#art-pool"/></svg><img src="https://argentinacabanas.com/santarosadecalamuchita/fotos/ruphay/04.jpg" alt="Cabañas Ruphay, foto 8" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()"><figcaption>Foto 08</figcaption></figure>
+  </div>
+  <p class="fine" style="margin-top:.7rem">Fotos publicadas del complejo en directorios turísticos. En la web definitiva van las fotos propias en alta.</p>
+  <div class="titleblock"><span>Lám. 05</span><span>Fotos</span><span class="hide-s">Registro</span></div>
+</section>
+
+<!-- ===== LÁMINA 06 ===== -->
+<section class="plate" id="l6" data-plate="06 · Alrededores" aria-labelledby="h6">
+  <div class="plate-head">
+    <span class="mono">Lámina 06 · Alrededores y cómo llegar</span>
+    <h2 id="h6">Del río a una cuadra al Champaquí en el horizonte.</h2>
+  </div>
+  <div class="around">
+    <div class="map">
+      <svg viewBox="0 0 520 560" role="img" aria-label="Mapa esquemático del Valle de Calamuchita con la RP5, Santa Rosa, Villa General Belgrano, La Cumbrecita, Yacanto, el Champaquí y el lago Los Molinos">
+        <rect width="520" height="560" fill="#FBF6EE"/>
+        <path d="M0 140 Q60 260 40 400 T70 560" fill="none" stroke="#35513D" stroke-width="22" opacity=".18"/>
+        <path d="M30 120 Q70 250 60 380 T90 560" fill="none" stroke="#35513D" stroke-width="2" stroke-dasharray="2 6"/>
+        <text x="20" y="250" font-family="Syne, sans-serif" font-size="11" font-weight="800" fill="#35513D" transform="rotate(-80 20 250)">SIERRAS GRANDES</text>
+        <!-- lago -->
+        <path d="M300 70 q40 -20 70 4 q20 26 -10 40 q-40 14 -62 -6 q-18 -18 2 -38z" fill="#CFE0E6" stroke="#275F7A" stroke-width="2"/>
+        <text x="335" y="138" text-anchor="middle" font-family="Syne, sans-serif" font-size="11" font-weight="700" fill="#275F7A">Lago Los Molinos</text>
+        <!-- RP5 -->
+        <path d="M400 0 L380 60 L360 150 L330 250 L320 330 L300 420 L290 560" fill="none" stroke="#A63D24" stroke-width="5"/>
+        <rect x="392" y="14" width="40" height="20" fill="#A63D24"/><text x="412" y="29" text-anchor="middle" font-family="Syne, sans-serif" font-size="12" font-weight="800" fill="#fff">RP5</text>
+        <text x="440" y="29" font-family="Syne, sans-serif" font-size="11" font-weight="700" fill="#5A4C42">↑ Córdoba ~100 km</text>
+        <!-- rio -->
+        <path d="M120 300 Q200 340 250 360 T330 372 T450 400" fill="none" stroke="#275F7A" stroke-width="3"/>
+        <text x="380" y="420" font-family="Syne, sans-serif" font-size="11" font-weight="700" fill="#275F7A">río Santa Rosa</text>
+        <!-- pueblos -->
+        <g font-family="Syne, sans-serif" font-weight="700" fill="#2A221D">
+          <circle cx="330" cy="250" r="6" fill="#2A221D"/><text x="342" y="254" font-size="13">Villa General Belgrano</text><text x="342" y="270" font-size="10" fill="#5A4C42">~10 km</text>
+          <circle cx="160" cy="210" r="5" fill="#2A221D"/><text x="120" y="196" font-size="12">La Cumbrecita</text>
+          <path d="M330 250 Q240 250 160 210" fill="none" stroke="#2A221D" stroke-width="1.5" stroke-dasharray="5 4"/>
+          <circle cx="170" cy="430" r="5" fill="#2A221D"/><text x="90" y="452" font-size="12">Yacanto</text>
+          <path d="M318 370 Q240 410 170 430" fill="none" stroke="#2A221D" stroke-width="1.5" stroke-dasharray="5 4"/>
+          <path d="M70 470 l18 -34 l18 34z" fill="#35513D"/><text x="52" y="492" font-size="12">Cerro Champaquí</text><text x="52" y="507" font-size="10" fill="#5A4C42">2.790 m · el techo de Córdoba</text>
+        </g>
+        <!-- ruphay -->
+        <circle cx="318" cy="365" r="16" fill="#E0A33A" stroke="#A63D24" stroke-width="3"/>
+        <circle cx="318" cy="365" r="28" fill="none" stroke="#A63D24" stroke-width="1.5" stroke-dasharray="3 5"/>
+        <text x="350" y="350" font-family="Fraunces, Georgia, serif" font-size="19" font-weight="600" fill="#A63D24">Ruphay</text>
+        <text x="350" y="366" font-family="Syne, sans-serif" font-size="10" font-weight="700" fill="#2A221D">Santa Rosa de Calamuchita</text>
+        <text x="350" y="380" font-family="Syne, sans-serif" font-size="10" font-weight="600" fill="#5A4C42">centro a ~1,3 km</text>
+      </svg>
+      <p>Mapa esquemático, distancias aproximadas.</p>
+    </div>
+    <div>
+      <div class="places">
+        <div class="place"><span class="d">1 cdra<small>a pie</small></span><div><b>Río Santa Rosa y sus balnearios</b><p>El Puente de Hierro queda a unos 300 m. Más arriba, la Falla Geológica, a menos de 1 km.</p></div></div>
+        <div class="place"><span class="d">1,3 km<small>al centro</small></span><div><b>Centro de Santa Rosa</b><p>La catedral Santa Rosa de Lima, la costanera y la Fiesta de las Delicias de Pascua en Semana Santa.</p></div></div>
+        <div class="place"><span class="d">~10 km<small>por RP5</small></span><div><b>Villa General Belgrano</b><p>Oktoberfest en octubre, Fiesta del Chocolate Alpino en Semana Santa, cervecerías y repostería centroeuropea.</p></div></div>
+        <div class="place"><span class="d">~1 h<small>auto</small></span><div><b>La Cumbrecita</b><p>Pueblo peatonal entre pinos y arroyos, por Los Reartes y Villa Berna.</p></div></div>
+        <div class="place"><span class="d">~40 min<small>auto</small></span><div><b>Yacanto de Calamuchita y el Champaquí</b><p>Base para subir al cerro más alto de Córdoba (2.790 m), a pie, a caballo o en 4x4 con guía.</p></div></div>
+        <div class="place"><span class="d">~40 km<small>al norte</small></span><div><b>Lago Los Molinos</b><p>Embalse sobre la RP5, camino a Córdoba: kayak, pesca y miradores.</p></div></div>
+      </div>
+      <div class="route">
+        <h3>Cómo llegar</h3>
+        <ol>
+          <li>Desde Córdoba capital, unos 100 km por la RP5 hacia el sur: Alta Gracia, Los Molinos, Villa General Belgrano.</li>
+          <li>Pasando Villa General Belgrano, unos 10 km más y entrás a Santa Rosa de Calamuchita.</li>
+          <li>Ruphay está en Av. Fuerza Aérea 150, cerca del río. Cochera propia para cada unidad.</li>
+          <li>En micro: terminal de Santa Rosa, y de ahí un tramo corto en remis.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+  <div class="titleblock"><span>Lám. 06</span><span>Alrededores</span><span class="hide-s">Esc. s/e</span></div>
+</section>
+
+<!-- ===== LÁMINA 07 ===== -->
+<section class="plate faq" id="l7" data-plate="07 · Preguntas" aria-labelledby="h7">
+  <div class="plate-head">
+    <span class="mono">Lámina 07 · Preguntas frecuentes</span>
+    <h2 id="h7">Antes de reservar.</h2>
+  </div>
+  <details><summary>¿Aceptan mascotas?</summary><p>Se aceptan a pedido. Avisá al reservar qué mascota traés y su tamaño, así te confirmamos la unidad. (Dato tomado de su ficha en directorios: a confirmar con el complejo.)</p></details>
+  <details><summary>¿Hay que llevar ropa blanca?</summary><p>No. Las cabañas tienen ropa blanca y vajilla completa. Si viajás con un bebé, pedí la cuna al reservar.</p></details>
+  <details><summary>¿A qué hora es el check-in y el check-out?</summary><p>Ingreso desde las 12 h y salida hasta las 10 h (horarios publicados en un directorio, a confirmar). Si llegás muy tarde, avisá: hay sereno toda la noche.</p></details>
+  <details><summary>¿Cuál conviene, cabaña u hostería?</summary><p>Si son 4 a 6 y quieren cocinar y usar la parrilla, la cabaña. Si son pareja, una habitación doble de la hostería, con aire acondicionado. Si vienen dos familias o los abuelos, combiná: usá el armador de la lámina 01.</p></details>
+  <details><summary>¿Incluye desayuno?</summary><p>Es opcional. Lo sumás en el simulador y se cobra por persona y por noche.</p></details>
+  <details><summary>¿Cómo se paga la reserva?</summary><p>Con una seña del 30 % por Mercado Pago y el saldo al llegar. <span class="ex">Condiciones de ejemplo</span></p></details>
+  <details><summary>¿La pileta está abierta todo el año?</summary><p>Es de temporada: funciona en los meses de calor. En invierno el plan es el salón con hogar a leña.</p></details>
+  <details><summary>¿Se puede fumar o hacer fiestas?</summary><p>No se fuma dentro del complejo y no se aceptan despedidas de soltero ni fiestas. Es un lugar para descansar.</p></details>
+  <div class="titleblock"><span>Lám. 07</span><span>Preguntas</span></div>
+</section>
+
+<!-- ===== LÁMINA 08 ===== -->
+<section class="plate" id="l8" data-plate="08 · Contacto" aria-labelledby="h8">
+  <div class="contact">
+    <div>
+      <span class="mono" style="color:var(--sun)">Lámina 08 · Contacto</span>
+      <p class="big" id="h8">Av. Fuerza Aérea 150,<br>Santa Rosa de Calamuchita.</p>
+      <p style="color:var(--ink-2)">Escribinos por WhatsApp con las fechas y cuántos son, y te respondemos con la combinación y el precio.</p>
+      <div class="cta-row"><a class="btn wa" href="https://wa.me/5493546650105?text=Hola%20Ruphay%2C%20quiero%20consultar%20disponibilidad" target="_blank" rel="noopener">WhatsApp +54 9 3546 650105</a></div>
+    </div>
+    <div class="clist">
+      <a href="tel:+543546422736"><span>Teléfono</span>(03546) 422736</a>
+      <a href="https://wa.me/5493546650105" target="_blank" rel="noopener"><span>WhatsApp</span>+54 9 3546 650105</a>
+      <a href="mailto:info@cabanasruphay.com.ar"><span>Mail</span>info@cabanasruphay.com.ar</a>
+      <a href="https://www.instagram.com/cabanasruphay.ok/" target="_blank" rel="noopener"><span>Instagram</span>@cabanasruphay.ok</a>
+      <div><span>Dirección</span>Av. Fuerza Aérea 150 · CP 5196</div>
+    </div>
+  </div>
+  <div class="titleblock"><span>Lám. 08</span><span>Contacto</span></div>
+</section>
+<footer>
+  <span>Cabañas Ruphay · Cabañas &amp; Hostería · Santa Rosa de Calamuchita, Córdoba.</span>
+  <span>Prototipo de demostración preparado para Cabañas Ruphay por Resolviendo Kos. Tarifas, disponibilidad y pagos de ejemplo; datos públicos tomados de directorios turísticos.</span>
+</footer>
+</main>
+</div>
+
+<div class="dock">
+  <a class="btn sun" href="#l4">Reservar</a>
+  <a class="btn wa" href="https://wa.me/5493546650105?text=Hola%20Ruphay%2C%20quiero%20consultar%20disponibilidad" target="_blank" rel="noopener">WhatsApp</a>
+</div>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const fmt=n=>'$'+Math.round(n).toLocaleString('es-AR');
+/* ---------- datos ---------- */
+const TYPES=['cab','hab','ad','at'];
+const RATES={cab:[85000,105000,140000,155000],hab:[48000,58000,78000,88000],ad:[55000,66000,88000,98000],at:[64000,78000,104000,116000]};
+const CAP={cab:6,hab:2,ad:2,at:3}, TOTAL={cab:6,hab:4,ad:1,at:1};
+const NAME={cab:['cabaña','cabañas'],hab:['habitación doble','habitaciones dobles'],ad:['apart doble','aparts dobles'],at:['apart triple','aparts triples']};
+const IDS={cab:['C1','C2','C3','C4','C5','C6'],hab:['H1','H2','H3','H4'],ad:['AD'],at:['AT']};
+const TN=['baja','media','alta','pico'];
+const BREAKFAST=7000;
+const PICO=[['2026-11-19','2026-11-21'],['2027-03-24','2027-03-27'],['2027-08-13','2027-08-15'],['2027-10-01','2027-10-02'],['2027-10-08','2027-10-10'],['2027-11-19','2027-11-21']];
+const ALTA=[['2026-12-26','2027-02-28'],['2027-07-05','2027-07-17']];
+const MEDIA=[['2026-12-01','2026-12-25'],['2027-03-01','2027-03-31'],['2027-10-01','2027-10-11']];
+const pad=n=>String(n).padStart(2,'0');
+const key=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const parse=k=>{const[a,b,c]=k.split('-').map(Number);return new Date(a,b-1,c,12)};
+const addD=(k,n)=>{const d=parse(k);d.setDate(d.getDate()+n);return key(d)};
+const inR=(k,R)=>R.some(([a,b])=>k>=a&&k<=b);
+function tier(k){if(inR(k,PICO))return 3;if(inR(k,ALTA))return 2;if(inR(k,MEDIA))return 1;const w=parse(k).getDay();return (w===5||w===6)?1:0}
+function hsh(s){let x=2166136261;for(let i=0;i<s.length;i++){x^=s.charCodeAt(i);x=Math.imul(x,16777619)}return ((x>>>0)%10000)/10000}
+function freeOf(t,k){const p=[.16,.33,.58,.72][tier(k)];let o=0;for(let i=0;i<TOTAL[t];i++)if(hsh(t+i+k)<p)o++;return TOTAL[t]-o}
+const today=(()=>{const n=new Date();return key(new Date(n.getFullYear(),n.getMonth(),n.getDate(),12))})();
+const comboCap=c=>TYPES.reduce((s,t)=>s+(c[t]||0)*CAP[t],0);
+const comboUnits=c=>TYPES.reduce((s,t)=>s+(c[t]||0),0);
+const comboNight=(c,ti)=>TYPES.reduce((s,t)=>s+(c[t]||0)*RATES[t][ti],0);
+const comboFree=(c,k)=>TYPES.every(t=>!(c[t])||freeOf(t,k)>=c[t]);
+function comboLabel(c){return TYPES.filter(t=>c[t]).map(t=>c[t]+' '+NAME[t][c[t]>1?1:0]).join(' + ')}
+
+/* ---------- reloj solar ---------- */
+(function(){const now=new Date();const ar=new Date(now.getTime()+now.getTimezoneOffset()*60000-3*3600000);const h=ar.getHours()+ar.getMinutes()/60;const dot=$('#sunDot');let txt;
+ const hhmm=pad(ar.getHours())+':'+pad(ar.getMinutes());
+ if(h>=6.5&&h<=20){const f=(h-6.5)/13.5;const x=6+108*f;dot.setAttribute('cx',x.toFixed(1));dot.setAttribute('cy',(42-112*f*(1-f)).toFixed(1));txt=h<11?'sol de mañana: desayuno al lado del hogar':h<16?'sol alto: hora de pileta o de río':'sol de tarde: se prende la parrilla';}
+ else{dot.setAttribute('cx','60');dot.setAttribute('cy','42');dot.setAttribute('fill','#5A4C42');txt='es de noche: el sereno está de guardia';}
+ $('#sunText').textContent='Ahora en Santa Rosa son las '+hhmm+', '+txt+'.';})();
+
+/* ---------- plano ---------- */
+const UNITINFO={C:'Cabaña de dos plantas · 4 a 6 personas · 2 baños, matrimonial con sommier + 4 camas, cocina, cochera y parrilla propia.',H:'Habitación doble de la hostería · 2 personas · sommier y aire acondicionado.',AD:'Apart doble · 2 personas · con cocina, sommier y aire acondicionado.',AT:'Apart triple · 3 personas · con cocina, sommier y aire acondicionado.'};
+$$('.u').forEach(g=>{const id=g.dataset.u;const f=()=>{const k=id.startsWith('C')?'C':id.startsWith('H')?'H':id;$('#unitInfo').innerHTML='<b>'+id+'</b> · '+UNITINFO[k]};g.addEventListener('click',f);g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();f()}})});
+function paint(c){const on=new Set();if(c)TYPES.forEach(t=>IDS[t].slice(0,c[t]||0).forEach(i=>on.add(i)));$$('.u').forEach(g=>g.classList.toggle('on',on.has(g.dataset.u)))}
+
+/* ---------- armador ---------- */
+const st={a:4,k:3,n:2};let picked=null,list=[];
+function combos(P,n,kitchen){const out=[];
+ for(let c=0;c<=6;c++)for(let h=0;h<=(kitchen?0:4);h++)for(let a=0;a<=1;a++)for(let t=0;t<=1;t++){
+  const o={cab:c,hab:h,ad:a,at:t};const u=c+h+a+t;if(!u)continue;const cap=comboCap(o);
+  if(cap<P||u<n||u>P)continue;const g=Math.ceil(P/n);const mx=c?6:t?3:2;if(mx<g)continue;
+  let waste=false;TYPES.forEach(tp=>{if(o[tp]&&u-1>=n&&cap-CAP[tp]>=P)waste=true});if(waste)continue;
+  o.u=u;o.cap=cap;o.price=comboNight(o,1);out.push(o)}
+ return out}
+function why(o,P){const parts=[];if(o.cab)parts.push(o.cab>1?'cada familia con su cabaña, cocina y parrilla':'la cabaña junta a la familia: 2 baños y 5 camas');if(o.hab)parts.push(o.hab>1?'habitaciones con aire para las parejas':'una habitación con aire para la pareja o los abuelos');if(o.ad||o.at)parts.push('apart con cocina propia');const libres=o.cap-P;parts.push(libres?libres+(libres>1?' camas':' cama')+' de margen':'camas justas');return parts.join(' · ')}
+function renderOpts(){['a','k','n'].forEach(k=>$('#o'+k.toUpperCase()).textContent=st[k]);
+ const P=st.a+st.k;const n=Math.min(st.n,P);const all=combos(P,n,$('#kitchen').checked);const box=$('#opts');list=[];
+ if(!all.length){box.innerHTML='<div class="none">Con esas condiciones no entra en el predio. Probá permitir habitaciones sin cocina o escribinos por WhatsApp.</div>';picked=null;paint(null);$('#useCombo').disabled=true;return}
+ $('#useCombo').disabled=false;
+ const byPrice=[...all].sort((x,y)=>x.price-y.price||x.u-y.u);
+ const fewest=[...all].sort((x,y)=>x.u-y.u||x.price-y.price)[0];
+ const minU=fewest.u;
+ const roomy=[...all].filter(o=>o.u<=minU+1).sort((x,y)=>(y.cap-y.u)-(x.cap-x.u)||(y.cap-x.cap)||x.price-y.price)[0];
+ const roomy2=[...all].sort((x,y)=>(y.cab-x.cab)||x.price-y.price)[0];
+ const cand=[[byPrice[0],'La que más rinde'],[fewest,'Más juntos, menos llaves'],[roomy,'Con más aire'],[roomy2,'Todo cabaña']];
+ const seen=new Set();cand.forEach(([o,tag])=>{if(!o)return;const id=comboLabel(o);if(seen.has(id))return;seen.add(id);list.push({o,tag})});
+ list=list.slice(0,3);
+ box.innerHTML=list.map((x,i)=>'<button type="button" class="opt" aria-pressed="false" data-i="'+i+'"><span class="tag">'+x.tag+'</span><span class="what">'+comboLabel(x.o)+'</span><span class="why">'+why(x.o,P)+'</span><span class="pr">'+fmt(x.o.price)+' por noche · '+x.o.cap+' plazas</span></button>').join('');
+ $$('.opt').forEach(b=>b.addEventListener('click',()=>selectOpt(+b.dataset.i)));selectOpt(0)}
+function selectOpt(i){picked=list[i]?list[i].o:null;$$('.opt').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.i===i)));paint(picked)}
+$$('.stepper button').forEach(b=>b.addEventListener('click',()=>{const k=b.dataset.k,d=+b.dataset.d;const lim={a:[1,30],k:[0,20],n:[1,8]}[k];st[k]=Math.min(lim[1],Math.max(lim[0],st[k]+d));renderOpts()}));
+$('#kitchen').addEventListener('change',renderOpts);
+$('#useCombo').addEventListener('click',()=>{if(!picked)return;setCombo(picked);$('#fA').value=st.a;$('#fK').value=st.k;calc();renderCal();document.getElementById('l4').scrollIntoView({behavior:'smooth'})});
+
+/* ---------- tarifas y asoleamiento ---------- */
+$('#ratesBody').innerHTML=[['cab','Cabaña (hasta 6)'],['hab','Habitación doble'],['ad','Apart doble'],['at','Apart triple']].map(([t,l])=>'<tr><td><b>'+l+'</b></td>'+RATES[t].map(v=>'<td>'+(v/1000).toLocaleString('es-AR')+'</td>').join('')+'</tr>').join('');
+(function(){const MN=['nov','dic','ene','feb','mar','abr','may','jun','jul','ago','sep','oct'];let bars='',ms='';
+ for(let i=0;i<12;i++){const y=2026+Math.floor((10+i)/12),m=(10+i)%12;const dim=new Date(y,m+1,0).getDate();let s=0,hot=0;for(let d=1;d<=dim;d++){const tt=tier(y+'-'+pad(m+1)+'-'+pad(d));s+=tt;if(tt>=2)hot++}
+  const avg=s/dim;const pct=Math.max(6,Math.round((avg/3)*100));const lab=hot?String(hot):'';bars+='<div class="bar '+(hot?'':'t0')+'" style="height:'+pct+'%" title="'+MN[i]+': '+hot+' noches alta/pico"><span>'+lab+'</span></div>';ms+='<span>'+MN[i]+'</span>'}
+ $('#bars').innerHTML=bars;$('#months').innerHTML=ms})();
+
+/* ---------- calendario + simulador ---------- */
+let sel={type:'cab',combo:{cab:1}};let viewY,viewM;
+function setCombo(c){const single=TYPES.filter(t=>c[t]);const opt=$('#fU');let o=opt.querySelector('option[value=combo]');
+ if(single.length===1&&c[single[0]]===1){if(o)o.remove();opt.value=single[0];sel={type:single[0],combo:{[single[0]]:1}};return}
+ if(!o){o=document.createElement('option');o.value='combo';opt.appendChild(o)}
+ const cc={cab:c.cab||0,hab:c.hab||0,ad:c.ad||0,at:c.at||0};o.textContent='Combinación: '+comboLabel(cc)+' ('+comboCap(cc)+')';opt.value='combo';sel={type:'combo',combo:cc}}
+$('#fU').addEventListener('change',e=>{const v=e.target.value;if(v!=='combo')sel={type:v,combo:{[v]:1}};calc();renderCal()});
+function freeLabel(k){const c=sel.combo;if(sel.type!=='combo'){return freeOf(sel.type,k)}return comboFree(c,k)?'✓':0}
+function renderCal(){const g=$('#calGrid');const first=new Date(viewY,viewM,1,12);const title=first.toLocaleDateString('es-AR',{month:'long',year:'numeric'});$('#calTitle').textContent=title;
+ let h=['L','M','M','J','V','S','D'].map(d=>'<div class="dow" role="columnheader">'+d+'</div>').join('');
+ const off=(first.getDay()+6)%7;for(let i=0;i<off;i++)h+='<div></div>';
+ const dim=new Date(viewY,viewM+1,0).getDate();const ki=$('#fIn').value,ko=$('#fOut').value;
+ for(let d=1;d<=dim;d++){const k=viewY+'-'+pad(viewM+1)+'-'+pad(d);const past=k<today;const fr=freeLabel(k);const full=!past&&(fr===0);const ti=tier(k);
+  let cls='day ti'+ti;if(past)cls+=' past';else if(full)cls+=' full';if(k===ki||k===ko)cls+=' sel';else if(ki&&ko&&k>ki&&k<ko)cls+=' rng';
+  const lbl=d+' '+title+', '+(past?'pasado':full?'completo':(sel.type==='combo'?'disponible':fr+' libres'))+', temporada '+TN[ti];
+  h+='<button type="button" class="'+cls+'" data-k="'+k+'" aria-label="'+lbl+'"'+(past?' disabled':'')+'>'+d+'<small>'+(past?'':full?'lleno':fr)+'</small></button>'}
+ g.innerHTML=h;
+ $('#prevM').disabled=(viewY===2026&&viewM<=9);$('#nextM').disabled=(viewY===2027&&viewM>=10)}
+$('#calGrid').addEventListener('click',e=>{const b=e.target.closest('.day');if(!b||b.disabled)return;const k=b.dataset.k;const i=$('#fIn'),o=$('#fOut');
+ if(!i.value||o.value||k<=i.value){i.value=k;o.value=''}else{o.value=k}calc();renderCal()});
+$('#prevM').addEventListener('click',()=>{viewM--;if(viewM<0){viewM=11;viewY--}renderCal()});
+$('#nextM').addEventListener('click',()=>{viewM++;if(viewM>11){viewM=0;viewY++}renderCal()});
+['#fIn','#fOut','#fA','#fK','#fB'].forEach(s=>$(s).addEventListener('input',()=>{if(s==='#fIn'&&$('#fIn').value){const d=parse($('#fIn').value);viewY=d.getFullYear();viewM=d.getMonth();}calc();renderCal()}));
+let last=null;
+function calc(){const ki=$('#fIn').value,ko=$('#fOut').value;const A=Math.max(0,+$('#fA').value||0),K=Math.max(0,+$('#fK').value||0),P=A+K;const c=sel.combo;const warn=[];const r=$('#receipt');last=null;
+ if(!ki||!ko){r.innerHTML='<div class="ln"><span>Elegí llegada y salida en el calendario o en los campos.</span></div>';$('#warn').textContent='';$('#payBtn').disabled=true;return}
+ if(ko<=ki){$('#warn').textContent='La salida tiene que ser posterior a la llegada.';r.innerHTML='';$('#payBtn').disabled=true;return}
+ const nights=[];for(let k=ki;k<ko;k=addD(k,1))nights.push(k);
+ const by=[0,0,0,0];let sub=0;const full=[];nights.forEach(k=>{const t=tier(k);by[t]++;sub+=comboNight(c,t);if(!comboFree(c,k))full.push(k)});
+ if(P>comboCap(c))warn.push('Son '+P+' y la unidad elegida tiene '+comboCap(c)+' plazas. Usá el armador de grupo (lámina 01) para sumar otra unidad.');
+ if(full.length)warn.push('Sin disponibilidad para esa unidad la noche del '+full.slice(0,3).map(k=>parse(k).toLocaleDateString('es-AR',{day:'numeric',month:'short'})).join(', ')+(full.length>3?'…':'')+'. Probá otras fechas o combiná unidades.');
+ if(by[2]+by[3]>0&&nights.length<3)warn.push('En temporada alta la estadía mínima es de 3 noches (condición de ejemplo).');
+ $('#warn').textContent=warn.join(' ');
+ const bf=$('#fB').checked?BREAKFAST*P*nights.length:0;const total=sub+bf;const sena=Math.round(total*.3);
+ let h='<div class="ln"><span><b>'+comboLabel(c)+'</b> · '+P+(P===1?' persona':' personas')+'</span></div>';
+ TN.forEach((n,t)=>{if(by[t])h+='<div class="ln"><span>'+by[t]+(by[t]>1?' noches':' noche')+' temporada '+n+' × '+fmt(comboNight(c,t))+'</span><span>'+fmt(by[t]*comboNight(c,t))+'</span></div>'});
+ if(bf)h+='<div class="ln"><span>Desayuno · '+P+' × '+nights.length+' noches</span><span>'+fmt(bf)+'</span></div>';
+ h+='<div class="ln tot"><span>Total</span><span id="total">'+fmt(total)+'</span></div>';
+ h+='<div class="sena">Seña 30 % hoy: <b id="sena">'+fmt(sena)+'</b><br><span style="font-weight:400;font-size:.85rem">Saldo al llegar: '+fmt(total-sena)+'</span></div>';
+ r.innerHTML=h;last={total,sena,nights:nights.length,ki,ko,P,label:comboLabel(c),ok:!full.length&&P<=comboCap(c)};$('#payBtn').disabled=!last.ok;
+ r.dataset.total=total;r.dataset.sena=sena}
+$('#payBtn').addEventListener('click',()=>{if(!last)return;const d=$('#dlg');$('#dlgAmt').textContent=fmt(last.sena);
+ const f=k=>parse(k).toLocaleDateString('es-AR',{day:'numeric',month:'long'});
+ $('#dlgTxt').textContent=last.label+', del '+f(last.ki)+' al '+f(last.ko)+' ('+last.nights+' noches, '+last.P+' personas). Total '+fmt(last.total)+'.';
+ $('#dlgWa').href='https://wa.me/5493546650105?text='+encodeURIComponent('Hola Ruphay! Quiero reservar: '+$('#dlgTxt').textContent);
+ if(d.showModal)d.showModal();else d.setAttribute('open','')});
+$('#dlgClose').addEventListener('click',()=>$('#dlg').close());
+
+/* init */
+(function(){const t=parse(today);viewY=t.getFullYear();viewM=t.getMonth();if(viewY<2026||(viewY===2026&&viewM<10)){viewY=2026;viewM=10}})();
+renderOpts();renderCal();calc();
+
+/* ---------- rótulo: lámina actual ---------- */
+const plates=$$('.plate');const navA=$$('#railNav a');
+const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){const p=e.target;$('#nowPlate').textContent='Lám. '+p.dataset.plate;navA.forEach(a=>a.setAttribute('aria-current',String(a.getAttribute('href')==='#'+p.id)))}})},{rootMargin:'-40% 0px -55% 0px'});
+plates.forEach(p=>io.observe(p));
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Cabañas Ruphay"></script>
+</body>
+</html>
