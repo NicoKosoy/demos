@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>La Madrina · Cabañas de altura · Tafí del Valle</title>
+<meta name="description" content="Prototipo de web de reservas para La Madrina, cabañas de altura sobre la Ruta 307 en Tafí del Valle, Tucumán.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..600&family=Unbounded:wght@300..800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sky:#F6E3D8; --sky-2:#EBC9B9; --dawn:#E3A48C;
+  --lake:#123D49; --lake-2:#1C5563; --lake-3:#2D7183; --foam:#D7E8EA;
+  --sand:#F5EFE6; --card:#FFFDF9; --ink:#1C2326; --ink-2:#4F5A5E; --line:#D9CFC2;
+  --cardon:#5D6B3A; --amancay:#E8A33D;
+  --display:"Unbounded",system-ui,sans-serif; --serif:"Newsreader",Georgia,serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--sand);color:var(--ink);font-family:var(--serif);font-size:18px;line-height:1.55;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit}
+button{font:inherit;cursor:pointer}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+.demo-bar{background:var(--ink);color:#F5EFE6;font-family:var(--display);font-size:11px;letter-spacing:.06em;text-align:center;padding:8px 16px;line-height:1.4}
+.demo-bar b{color:var(--amancay);font-weight:600}
+/* nav */
+.nav{position:absolute;top:34px;left:0;right:0;z-index:5}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:18px}
+.brand{font-family:var(--display);font-weight:700;font-size:15px;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;color:var(--lake)}
+.brand small{display:block;font-weight:400;font-size:9.5px;letter-spacing:.32em;color:var(--ink-2)}
+.nav ul{display:flex;gap:26px;list-style:none;margin:0;padding:0;font-family:var(--display);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.nav ul a{text-decoration:none;color:var(--lake)}
+.nav .cta{background:var(--lake);color:var(--sand);padding:10px 16px;border-radius:40px;text-decoration:none;font-family:var(--display);font-size:12px;letter-spacing:.06em}
+/* hero espejo */
+.hero{position:relative;min-height:calc(100vh - 34px);display:grid;grid-template-rows:58% 42%;}
+.hero .sky{background:linear-gradient(180deg,#FBF1EA 0%,var(--sky) 40%,var(--sky-2) 78%,var(--dawn) 100%);position:relative;display:flex;align-items:flex-end;padding-bottom:0}
+.hero .sky .wrap{width:100%;position:relative;z-index:2;padding-bottom:70px}
+.kicker{font-family:var(--display);font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--lake-2);margin:0 0 18px}
+.hero h1{font-family:var(--display);font-weight:600;font-size:clamp(40px,7.6vw,108px);line-height:.95;letter-spacing:-.02em;margin:0;color:var(--lake);max-width:12ch}
+.hero h1 em{font-family:var(--serif);font-style:italic;font-weight:400;letter-spacing:0;color:var(--cardon)}
+.ridge{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:150px;z-index:1}
+.hero .water{background:linear-gradient(180deg,var(--lake-2) 0%,var(--lake) 60%,#0C2E37 100%);position:relative;overflow:hidden;color:var(--foam)}
+.mirror{position:absolute;left:0;right:0;top:0;height:100%;transform:scaleY(-1);transform-origin:center;opacity:.16;filter:blur(1.2px);pointer-events:none;-webkit-mask-image:linear-gradient(to top,#000 0%,rgba(0,0,0,.5) 22%,transparent 46%);mask-image:linear-gradient(to top,#000 0%,rgba(0,0,0,.5) 22%,transparent 46%)}
+.mirror .wrap{position:absolute;left:0;right:0;bottom:0}
+.mirror .wrap{padding-top:0}
+.mirror h2{font-family:var(--display);font-weight:600;font-size:clamp(40px,7.6vw,108px);line-height:.95;letter-spacing:-.02em;margin:0;color:#CFE5E8;max-width:12ch}
+.mirror h2 em{font-family:var(--serif);font-style:italic;font-weight:400;letter-spacing:0}
+.ripples{position:absolute;inset:0;width:100%;height:100%;opacity:.5}
+.ripples line{stroke:#9FC9CF;stroke-width:1.2;stroke-linecap:round;animation:drift 9s ease-in-out infinite alternate}
+.ripples line:nth-child(2n){animation-duration:12s}
+.ripples line:nth-child(3n){animation-duration:7s}
+@keyframes drift{from{transform:translateX(-18px)}to{transform:translateX(18px)}}
+@media (prefers-reduced-motion:reduce){.ripples line{animation:none}}
+.water .wrap{position:relative;z-index:2;display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:end;height:100%;padding-top:44px;padding-bottom:44px}
+.water p.lead{font-size:clamp(18px,1.6vw,22px);margin:0;max-width:44ch;color:#E6F1F2}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid rgba(215,232,234,.35)}
+.facts div{padding:14px 12px 0 0}
+.facts b{display:block;font-family:var(--display);font-weight:500;font-size:clamp(22px,2.6vw,34px);color:#fff;line-height:1.1}
+.facts span{font-family:var(--display);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#A9CBD0}
+/* secciones */
+section{padding:96px 0}
+.sec-head{display:grid;grid-template-columns:220px 1fr;gap:32px;margin-bottom:46px;align-items:start}
+.sec-num{font-family:var(--display);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-2);padding-top:10px;border-top:2px solid var(--lake)}
+.sec-head h2{font-family:var(--display);font-weight:500;font-size:clamp(28px,3.8vw,48px);line-height:1.05;letter-spacing:-.01em;margin:0;color:var(--lake)}
+.sec-head h2 em{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--cardon)}
+.sec-head p{margin:14px 0 0;color:var(--ink-2);max-width:60ch}
+/* incluye */
+.incl{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.incl div{padding:26px 18px;border-right:1px solid var(--line)}
+.incl div:last-child{border-right:0}
+.incl svg{width:34px;height:34px;stroke:var(--lake);fill:none;stroke-width:1.5;margin-bottom:14px}
+.incl b{display:block;font-family:var(--display);font-weight:500;font-size:14px;letter-spacing:.02em;color:var(--lake);margin-bottom:6px}
+.incl span{font-size:15.5px;color:var(--ink-2);line-height:1.4}
+/* somos */
+.somos{background:var(--lake);color:var(--foam);position:relative;overflow:hidden}
+.somos .sec-num{color:#A9CBD0;border-color:var(--amancay)}
+.somos .sec-head h2{color:#fff}
+.somos .sec-head h2 em{color:var(--amancay)}
+.somos .sec-head p{color:#BFD8DB}
+.sentence{font-family:var(--serif);font-size:clamp(30px,4.4vw,58px);line-height:1.25;color:#fff;margin:0 0 40px}
+.stepper{display:inline-flex;align-items:center;gap:6px;border-bottom:3px solid var(--amancay);padding:0 4px;vertical-align:baseline}
+.stepper button{background:none;border:1px solid rgba(255,255,255,.35);color:#fff;width:42px;height:42px;border-radius:50%;font-size:22px;line-height:1;display:inline-grid;place-items:center}
+.stepper button:hover{background:rgba(255,255,255,.1)}
+.stepper output{font-family:var(--display);font-weight:600;min-width:1.4em;text-align:center;color:var(--amancay)}
+.chips{display:inline-flex;gap:8px;flex-wrap:wrap;vertical-align:middle}
+.chips button{background:transparent;border:1px solid rgba(255,255,255,.35);color:#E6F1F2;font-family:var(--display);font-size:13px;letter-spacing:.04em;padding:10px 16px;border-radius:40px}
+.chips button[aria-pressed=true]{background:var(--amancay);border-color:var(--amancay);color:var(--lake)}
+.terraces{display:grid;grid-template-columns:repeat(8,1fr);align-items:end;gap:6px;height:260px;margin-top:10px}
+.terr{position:relative;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);border-bottom:0;border-radius:6px 6px 0 0;padding:12px 10px;display:flex;flex-direction:column;justify-content:flex-start;transition:background .35s,border-color .35s,transform .35s;cursor:pointer;text-align:left;color:inherit}
+.terr:nth-child(1){height:46%}.terr:nth-child(2){height:54%}.terr:nth-child(3){height:62%}.terr:nth-child(4){height:70%}
+.terr:nth-child(5){height:78%}.terr:nth-child(6){height:86%}.terr:nth-child(7){height:93%}.terr:nth-child(8){height:100%}
+.terr b{font-family:var(--display);font-weight:500;font-size:13px;letter-spacing:.04em}
+.terr span{font-size:13.5px;color:#A9CBD0}
+.terr.fit{background:var(--amancay);border-color:var(--amancay);color:var(--lake);transform:translateY(-6px)}
+.terr.fit span{color:var(--lake)}
+.terr.best::after{content:"Sugerida";position:absolute;top:-30px;left:0;font-family:var(--display);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--amancay)}
+.lakeline{height:10px;background:repeating-linear-gradient(90deg,#3E8597 0 18px,transparent 18px 26px);opacity:.7}
+.verdict{margin-top:26px;display:flex;flex-wrap:wrap;gap:16px 30px;align-items:center;justify-content:space-between}
+.verdict p{margin:0;font-size:20px;color:#E6F1F2;max-width:60ch}
+.btn{display:inline-flex;align-items:center;gap:10px;font-family:var(--display);font-size:13px;letter-spacing:.06em;padding:14px 22px;border-radius:40px;border:0;text-decoration:none;background:var(--amancay);color:var(--lake);font-weight:600}
+.btn.ghost{background:transparent;border:1px solid currentColor;color:inherit;font-weight:500}
+.small-note{font-size:14px;color:#8FB4BA;margin-top:14px}
+/* las ocho */
+.ocho{display:grid;grid-template-columns:1fr 1fr;gap:0 48px}
+.unit{display:grid;grid-template-columns:64px 1fr auto;gap:18px;align-items:baseline;padding:22px 0;border-bottom:1px solid var(--line)}
+.unit .n{font-family:var(--display);font-size:12px;color:var(--ink-2);letter-spacing:.1em}
+.unit h3{font-family:var(--display);font-weight:500;font-size:clamp(24px,2.6vw,34px);margin:0;color:var(--lake);letter-spacing:-.01em}
+.unit p{margin:4px 0 0;color:var(--ink-2);font-size:16px}
+.unit .cap{font-family:var(--display);font-size:12px;letter-spacing:.06em;color:var(--lake);border:1px solid var(--lake);border-radius:30px;padding:6px 12px;white-space:nowrap}
+.unit.sauco{grid-column:1/-1;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:30px;margin-top:28px;grid-template-columns:64px 1fr auto}
+.unit.sauco h3{font-size:clamp(34px,4vw,54px)}
+.unit.sauco .cap{background:var(--lake);color:var(--sand)}
+.unit .pick{background:none;border:0;color:var(--cardon);font-family:var(--display);font-size:12px;letter-spacing:.06em;padding:8px 0;text-decoration:underline;text-underline-offset:4px}
+.cats{display:flex;gap:30px;flex-wrap:wrap;margin-bottom:10px;font-family:var(--display);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2)}
+/* reserva */
+.reserva{background:linear-gradient(180deg,var(--sand) 0%,var(--sand) 40%,#EADFD1 100%)}
+.res-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:28px;align-items:start}
+.cal{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px}
+.cal-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:10px}
+.cal-top h3{font-family:var(--display);font-weight:500;font-size:18px;margin:0;color:var(--lake);text-transform:capitalize}
+.cal-top button{background:none;border:1px solid var(--line);width:40px;height:40px;border-radius:50%;color:var(--lake);font-size:18px}
+.cal-top button:disabled{opacity:.3;cursor:default}
+.grid7{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.dow{font-family:var(--display);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);text-align:center;padding:6px 0}
+.day{aspect-ratio:1/1;border:0;background:transparent;border-radius:10px;font-family:var(--display);font-size:14px;color:var(--ink);display:grid;place-items:center;position:relative}
+.day:hover:not(:disabled){background:var(--foam)}
+.day:disabled{color:#BDB4A8;text-decoration:line-through;cursor:not-allowed}
+.day.empty{visibility:hidden}
+.day.s-verano::after,.day.s-santa::after,.day.s-fiestas::after,.day.s-invierno::after{content:"";position:absolute;bottom:5px;width:5px;height:5px;border-radius:50%;background:var(--amancay)}
+.day.s-santa::after{background:var(--cardon)}.day.s-invierno::after{background:var(--lake-3)}.day.s-fiestas::after{background:var(--dawn)}
+.day.in{background:var(--foam);border-radius:0}
+.day.sel{background:var(--lake)!important;color:#fff;border-radius:10px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:16px;font-size:14px;color:var(--ink-2)}
+.legend i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:middle}
+.sync{display:flex;gap:10px;align-items:center;margin-top:16px;padding:12px 14px;border-radius:12px;background:#EEF5F5;color:var(--lake);font-size:15px}
+.sync svg{flex:none;width:20px;height:20px;stroke:var(--lake);fill:none;stroke-width:1.8}
+.ticket{background:var(--lake);color:#E6F1F2;border-radius:18px;padding:26px;position:sticky;top:20px}
+.ticket h3{font-family:var(--display);font-weight:500;font-size:20px;margin:0 0 18px;color:#fff}
+.field{margin-bottom:14px}
+.field label{display:block;font-family:var(--display);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#A9CBD0;margin-bottom:6px}
+.field select,.field input{width:100%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:10px;padding:12px;font-family:var(--serif);font-size:17px}
+.field select option{color:var(--ink)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.dates{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.dates div{background:rgba(255,255,255,.08);border-radius:10px;padding:10px 12px}
+.dates span{display:block;font-family:var(--display);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#A9CBD0}
+.dates b{font-family:var(--display);font-weight:500;font-size:15px;color:#fff}
+.lines{border-top:1px dashed rgba(255,255,255,.3);margin-top:8px;padding-top:12px;font-size:16px}
+.lines div{display:flex;justify-content:space-between;gap:10px;padding:4px 0}
+.lines .tot{font-family:var(--display);font-size:20px;color:#fff;border-top:1px solid rgba(255,255,255,.25);margin-top:8px;padding-top:10px}
+.lines .sena{color:var(--amancay);font-family:var(--display);font-size:15px}
+.warn{font-size:14px;color:#FFD9A8;min-height:20px;margin:8px 0}
+.mp{width:100%;justify-content:center;margin-top:8px;background:#009EE3;color:#fff}
+.mp:disabled{opacity:.45;cursor:not-allowed}
+/* temporadas */
+.temps{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--card)}
+.temp{padding:24px 20px;border-right:1px solid var(--line)}
+.temp:last-child{border-right:0}
+.temp i{display:block;width:26px;height:6px;border-radius:4px;margin-bottom:14px}
+.temp h3{font-family:var(--display);font-weight:500;font-size:16px;margin:0 0 6px;color:var(--lake)}
+.temp .d{font-size:15px;color:var(--ink-2);margin-bottom:14px;min-height:46px}
+.temp .p{font-family:var(--display);font-size:22px;color:var(--ink)}
+.temp .p small{font-size:11px;color:var(--ink-2);letter-spacing:.06em}
+.temp .min{font-size:14px;color:var(--ink-2);margin-top:6px}
+.fine{font-size:14px;color:var(--ink-2);margin-top:14px}
+/* alrededor */
+.around{display:grid;grid-template-columns:1fr 1.1fr;gap:48px;align-items:center}
+.around svg.map{width:100%;height:auto;background:var(--card);border:1px solid var(--line);border-radius:18px}
+.places{list-style:none;margin:0;padding:0}
+.places li{display:grid;grid-template-columns:44px 1fr;gap:14px;padding:18px 0;border-bottom:1px solid var(--line)}
+.places li:first-child{border-top:1px solid var(--line)}
+.places .k{font-family:var(--display);font-size:12px;color:var(--cardon);padding-top:4px}
+.places b{font-family:var(--display);font-weight:500;font-size:16px;color:var(--lake);display:block}
+.places span{font-size:16px;color:var(--ink-2)}
+/* faq */
+.faq{display:grid;grid-template-columns:1fr 1fr;gap:0 48px}
+details{border-bottom:1px solid var(--line);padding:18px 0}
+summary{cursor:pointer;list-style:none;font-family:var(--display);font-weight:500;font-size:16px;color:var(--lake);display:flex;justify-content:space-between;gap:16px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-size:22px;line-height:1;color:var(--cardon)}
+details[open] summary::after{content:"–"}
+details p{margin:10px 0 0;color:var(--ink-2);font-size:16.5px}
+/* contacto */
+.contact{background:var(--lake);color:#E6F1F2}
+.contact .grid{display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:end}
+.contact h2{font-family:var(--display);font-weight:500;font-size:clamp(30px,4.4vw,58px);line-height:1.02;margin:0;color:#fff}
+.contact h2 em{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--amancay)}
+.contact ul{list-style:none;margin:0;padding:0}
+.contact li{padding:14px 0;border-bottom:1px solid rgba(255,255,255,.18);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.contact li span{font-family:var(--display);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#A9CBD0}
+.contact li a{color:#fff;text-decoration:none}
+footer{background:#0B2830;color:#8FB4BA;font-size:14px;padding:28px 0 90px}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.mbar{display:none}
+.modal{position:fixed;inset:0;background:rgba(10,30,36,.6);display:none;align-items:center;justify-content:center;padding:20px;z-index:50}
+.modal.open{display:flex}
+.modal div{background:var(--card);border-radius:18px;padding:28px;max-width:440px}
+.modal h3{font-family:var(--display);font-weight:500;color:var(--lake);margin:0 0 10px}
+.modal p{margin:0 0 18px;color:var(--ink-2)}
+.modal .btn{background:var(--lake);color:#fff}
+/* responsive */
+@media (max-width:960px){
+  .nav ul{display:none}
+  .water .wrap{grid-template-columns:1fr;gap:26px}
+  .sec-head{grid-template-columns:1fr;gap:14px}
+  .incl{grid-template-columns:1fr 1fr}
+  .incl div{border-bottom:1px solid var(--line)}
+  .ocho,.faq,.around,.contact .grid,.res-grid{grid-template-columns:1fr}
+  .temps{grid-template-columns:1fr 1fr}
+  .temp{border-bottom:1px solid var(--line)}
+  .ticket{position:static}
+}
+@media (max-width:600px){
+  body{font-size:17px}
+  .wrap{padding:0 16px}
+  section{padding:68px 0}
+  .hero{grid-template-rows:auto auto;min-height:auto}
+  .hero .sky{min-height:56vh}
+  .hero h1,.mirror h2{font-size:46px}
+  .water .wrap{padding-top:36px;padding-bottom:36px}
+  .mirror{display:none}
+  .ripples{opacity:.25}
+  .hero .sky .wrap{padding-bottom:96px;padding-top:110px}
+  .ridge{height:90px}
+  .nav .cta{display:none}
+  .facts{grid-template-columns:repeat(3,1fr)}
+  .terraces{grid-template-columns:repeat(4,1fr);height:auto;gap:8px}
+  .terr{height:auto!important;min-height:78px;border-radius:10px;border-bottom:1px solid rgba(255,255,255,.18)}
+  .terr.best::after{top:auto;bottom:6px;right:8px;left:auto;font-size:8.5px;color:var(--lake)}
+  .lakeline{display:none}
+  .unit{grid-template-columns:40px 1fr;}
+  .unit .cap{grid-column:2;justify-self:start}
+  .unit.sauco{grid-template-columns:1fr;padding:22px}
+  .unit.sauco .cap{grid-column:auto}
+  .incl{grid-template-columns:1fr}
+  .incl div{border-right:0}
+  .temps{grid-template-columns:1fr}
+  .temp{border-right:0}
+  .temp .d{min-height:0}
+  .mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--card);border-top:1px solid var(--line);padding:10px 12px;gap:10px}
+  .mbar a{flex:1;justify-content:center;padding:13px 10px}
+  .mbar .wa{background:#25D366;color:#073B1F}
+  .mbar .rs{background:var(--lake);color:#fff}
+  .sentence{font-size:30px}
+  .stepper button{width:36px;height:36px}
+}
+</style>
+</head>
+<body>
+<div class="demo-bar">Prototipo de demostración preparado para <b>La Madrina</b> por Resolviendo Kos · tarifas, disponibilidad y pagos de ejemplo</div>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top">La Madrina<small>Cabañas de altura</small></a>
+    <ul>
+      <li><a href="#somos">¿Cuántos son?</a></li>
+      <li><a href="#cabanas">Las ocho</a></li>
+      <li><a href="#temporadas">Temporadas</a></li>
+      <li><a href="#alrededor">Alrededor</a></li>
+    </ul>
+    <a class="cta" href="#reservar">Ver fechas libres</a>
+  </div>
+</header>
+
+<main id="top">
+<div class="hero">
+  <div class="sky">
+    <div class="wrap">
+      <p class="kicker">Ruta 307 · km 61,7 · Tafí del Valle</p>
+      <h1>Ocho terrazas <em>mirando</em> el dique</h1>
+    </div>
+    <svg class="ridge" viewBox="0 0 1440 150" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0 150 L0 92 L90 70 L170 84 L260 40 L330 62 L410 30 L500 58 L590 46 L660 76 L760 22 L850 54 L930 44 L1010 70 L1100 36 L1190 60 L1270 48 L1360 72 L1440 58 L1440 150 Z" fill="#7D8B6A" opacity=".55"/>
+      <path d="M0 150 L0 112 L120 98 L220 110 L330 86 L450 104 L560 92 L700 112 L820 96 L950 108 L1080 90 L1210 106 L1330 96 L1440 104 L1440 150 Z" fill="#5D6B3A"/>
+    </svg>
+  </div>
+  <div class="water">
+    <div class="mirror" aria-hidden="true"><div class="wrap"><h2>Ocho terrazas <em>mirando</em> el dique</h2></div></div>
+    <svg class="ripples" viewBox="0 0 1440 400" preserveAspectRatio="none" aria-hidden="true">
+      <line x1="80" y1="40" x2="300" y2="40"/><line x1="520" y1="62" x2="860" y2="62"/><line x1="1000" y1="34" x2="1300" y2="34"/>
+      <line x1="200" y1="120" x2="420" y2="120"/><line x1="700" y1="150" x2="980" y2="150"/><line x1="1160" y1="110" x2="1380" y2="110"/>
+      <line x1="40" y1="230" x2="240" y2="230"/><line x1="420" y1="260" x2="640" y2="260"/><line x1="900" y1="240" x2="1180" y2="240"/>
+      <line x1="260" y1="340" x2="520" y2="340"/><line x1="760" y1="350" x2="980" y2="350"/><line x1="1160" y1="320" x2="1400" y2="320"/>
+    </svg>
+    <div class="wrap">
+      <p class="lead">Cabañas modernas sobre la Ruta 307, a minutos del dique La Angostura y de El Mollar. Cada una con su terraza, su parrilla y su cochera. Elegí fechas, elegí cabaña y reservá directo con nosotros.</p>
+      <div class="facts">
+        <div><b>8</b><span>cabañas</span></div>
+        <div><b>2 → 10</b><span>huéspedes</span></div>
+        <div><b>9,7</b><span>en Booking*</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section id="incluye">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">01 · Cada cabaña</div>
+      <div><h2>Lo que tiene <em>cada una</em> de las ocho</h2>
+      <p>Las comodidades que los huéspedes destacan, a la vista antes de reservar, para que nadie tenga que preguntarlo por WhatsApp.</p></div>
+    </div>
+    <div class="incl">
+      <div><svg viewBox="0 0 34 34"><path d="M3 22h28M6 22v8M28 22v8M8 22V12h18v10M8 12l9-7 9 7"/></svg><b>Terraza privada</b><span>Con vista al lago y a los cerros, y parrilla propia.</span></div>
+      <div><svg viewBox="0 0 34 34"><path d="M4 26V14l13-8 13 8v12M8 26h18M10 20h14v6H10z"/></svg><b>Cochera propia</b><span>Una por cabaña, el auto queda al lado.</span></div>
+      <div><svg viewBox="0 0 34 34"><path d="M8 12h16v10a6 6 0 0 1-6 6h-4a6 6 0 0 1-6-6zM24 15h3a3 3 0 0 1 0 6h-3M12 4c0 2 2 2 2 4M17 4c0 2 2 2 2 4"/></svg><b>Cocina completa</b><span>Microondas, horno, heladera, pava y cafetera Nespresso.</span></div>
+      <div><svg viewBox="0 0 34 34"><path d="M5 9h24v10H5zM9 23c0 3-2 3-2 5M17 23c0 3-2 3-2 5M25 23c0 3-2 3-2 5"/></svg><b>Aire y Wi-Fi</b><span>Aire acondicionado, Wi-Fi y TV satelital.</span></div>
+      <div><svg viewBox="0 0 34 34"><path d="M6 10h22v16H6zM6 14h22M12 6v6M22 6v6"/></svg><b>Ropa blanca</b><span>Ropa de cama y de baño incluidas, con limpieza.</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="somos" id="somos">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">02 · ¿Cuántos son?</div>
+      <div><h2>Contanos quiénes vienen y <em>te mostramos</em> qué cabaña va</h2>
+      <p>Van de dos a diez huéspedes. Cambiá el número y se encienden las que les sirven.</p></div>
+    </div>
+    <p class="sentence">Somos
+      <span class="stepper"><button type="button" id="minus" aria-label="Menos personas">−</button><output id="pax">4</output><button type="button" id="plus" aria-label="Más personas">+</button></span>
+      y venimos
+      <span class="chips" role="group" aria-label="Tipo de viaje">
+        <button type="button" data-kind="pareja" aria-pressed="false">en pareja</button>
+        <button type="button" data-kind="familia" aria-pressed="true">en familia</button>
+        <button type="button" data-kind="grupo" aria-pressed="false">en grupo</button>
+      </span>
+    </p>
+    <div class="terraces" id="terraces"></div>
+    <div class="lakeline" aria-hidden="true"></div>
+    <div class="verdict">
+      <p id="verdict">Para 4 en familia les sirven 4 cabañas.</p>
+      <a class="btn" href="#reservar" id="goReserve">Ver fechas para esta cabaña →</a>
+    </div>
+    <p class="small-note">Los nombres son los reales. La capacidad de cada cabaña es de ejemplo: la cargan ustedes en dos minutos.</p>
+  </div>
+</section>
+
+<section id="cabanas">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">03 · Las ocho</div>
+      <div><h2>Con nombre de <em>planta nativa</em>, cada una con su terraza</h2>
+      <p>Para dos, para la familia o para el grupo entero. Tocá “Elegir” y queda cargada en la reserva.</p></div>
+    </div>
+    <div class="cats"><span>● Para 2 a 4</span><span>● Familiares, 4 a 6</span><span>● Sauco, la grande</span></div>
+    <div class="ocho" id="ocho"></div>
+  </div>
+</section>
+
+<section class="reserva" id="reservar">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">04 · Reservar</div>
+      <div><h2>Fechas libres, precio al instante y <em>seña</em> por Mercado Pago</h2>
+      <p>Tocá el día de llegada y el de salida. Los días tachados ya están ocupados.</p></div>
+    </div>
+    <div class="res-grid">
+      <div class="cal">
+        <div class="cal-top">
+          <button type="button" id="prev" aria-label="Mes anterior">‹</button>
+          <h3 id="mlabel">noviembre 2026</h3>
+          <button type="button" id="next" aria-label="Mes siguiente">›</button>
+        </div>
+        <div class="grid7" id="dows"></div>
+        <div class="grid7" id="days"></div>
+        <div class="legend">
+          <span><i style="background:var(--amancay)"></i>Verano</span>
+          <span><i style="background:var(--dawn)"></i>Fiestas</span>
+          <span><i style="background:var(--cardon)"></i>Semana Santa</span>
+          <span><i style="background:var(--lake-3)"></i>Invierno</span>
+        </div>
+        <div class="sync"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3M18 3v4h-4M6 21v-4h4"/></svg>El calendario se sincroniza con Booking y Airbnb: lo que se reserva allá se bloquea acá, sin dobles reservas.</div>
+      </div>
+      <aside class="ticket" aria-live="polite">
+        <h3>Tu estadía</h3>
+        <div class="dates"><div><span>Llegada</span><b id="dIn">Elegí un día</b></div><div><span>Salida</span><b id="dOut">—</b></div></div>
+        <div class="field"><label for="unitSel">Cabaña</label><select id="unitSel"></select></div>
+        <div class="two">
+          <div class="field"><label for="adults">Adultos</label><select id="adults"></select></div>
+          <div class="field"><label for="kids">Menores</label><select id="kids"></select></div>
+        </div>
+        <div class="warn" id="warn"></div>
+        <div class="lines" id="lines"><div><span>Elegí fechas en el calendario</span><span></span></div></div>
+        <button class="btn mp" id="pay" type="button" disabled>Pagar seña con Mercado Pago</button>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section id="temporadas">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">05 · Temporadas</div>
+      <div><h2>Precios por temporada, <em>con fechas</em></h2>
+      <p>Valores de ejemplo por noche para una cabaña de 2 a 4. Ustedes los cambian cuando quieran y la web recalcula todo.</p></div>
+    </div>
+    <div class="temps" id="temps"></div>
+    <p class="fine">* Puntaje informado por los huéspedes en Booking según nota de Contexto Tucumán (septiembre de 2022). Tarifas de ejemplo para el prototipo.</p>
+  </div>
+</section>
+
+<section id="alrededor">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">06 · Alrededor</div>
+      <div><h2>Entre el dique y <em>la villa</em></h2>
+      <p>La Madrina está sobre la Ruta 307, a pocos minutos del dique La Angostura y de El Mollar.</p></div>
+    </div>
+    <div class="around">
+      <svg class="map" viewBox="0 0 520 420" role="img" aria-label="Esquema de ubicación: La Madrina sobre la Ruta 307 entre El Mollar y la villa de Tafí del Valle">
+        <rect width="520" height="420" fill="#FFFDF9"/>
+        <path d="M120 300 C 150 230, 230 210, 280 240 C 330 270, 320 330, 260 350 C 200 370, 110 360, 120 300 Z" fill="#CFE3E6" stroke="#2D7183" stroke-width="1.5"/>
+        <text x="185" y="300" font-family="Newsreader" font-style="italic" font-size="17" fill="#123D49">Dique La Angostura</text>
+        <path d="M40 395 C 120 360, 150 320, 200 300 S 300 200, 360 160 S 450 80, 490 40" fill="none" stroke="#1C2326" stroke-width="3" stroke-dasharray="1 0"/>
+        <path d="M40 395 C 120 360, 150 320, 200 300 S 300 200, 360 160 S 450 80, 490 40" fill="none" stroke="#F5EFE6" stroke-width="1" stroke-dasharray="8 8"/>
+        <text x="400" y="160" font-family="Unbounded" font-size="11" fill="#4F5A5E" letter-spacing="1">RUTA 307</text>
+        <circle cx="96" cy="250" r="6" fill="#5D6B3A"/><text x="40" y="236" font-family="Unbounded" font-size="12" fill="#1C2326">El Mollar</text>
+        <circle cx="440" cy="92" r="6" fill="#5D6B3A"/><text x="360" y="72" font-family="Unbounded" font-size="12" fill="#1C2326">Villa de Tafí</text>
+        <g><circle cx="360" cy="160" r="15" fill="#E8A33D"/><circle cx="360" cy="160" r="5" fill="#123D49"/>
+        <text x="300" y="206" font-family="Unbounded" font-size="13" font-weight="600" fill="#123D49">La Madrina</text>
+        <text x="300" y="224" font-family="Newsreader" font-size="14" fill="#4F5A5E">km 61,7</text></g>
+        <path d="M0 40 L60 10 L120 34 L180 6 L240 30" fill="none" stroke="#7D8B6A" stroke-width="1.5"/>
+        <text x="16" y="70" font-family="Newsreader" font-style="italic" font-size="14" fill="#5D6B3A">cerros</text>
+        <text x="16" y="412" font-family="Unbounded" font-size="9" fill="#4F5A5E" letter-spacing="1">ESQUEMA SIN ESCALA · DESDE SAN MIGUEL DE TUCUMÁN</text>
+      </svg>
+      <ul class="places">
+        <li><span class="k">01</span><div><b>Dique La Angostura</b><span>El espejo de agua que se ve desde las terrazas. Kayak, windsurf y caminatas por la costa.</span></div></li>
+        <li><span class="k">02</span><div><b>El Mollar y los menhires</b><span>El pueblo vecino y la reserva de los menhires, las piedras talladas de la cultura Tafí.</span></div></li>
+        <li><span class="k">03</span><div><b>La villa de Tafí</b><span>Restaurantes, artesanías y la Fiesta Nacional del Queso cada febrero.</span></div></li>
+        <li><span class="k">04</span><div><b>Hacia los Valles Calchaquíes</b><span>La Ruta 307 sigue por el Abra del Infiernillo rumbo a Amaicha y Cafayate.</span></div></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="preguntas">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">07 · Preguntas</div>
+      <div><h2>Lo que <em>siempre</em> preguntan</h2></div>
+    </div>
+    <div class="faq">
+      <details><summary>¿Cuánto es la seña?</summary><p>El 30% del total, por Mercado Pago o transferencia. El resto se abona al llegar.</p></details>
+      <details><summary>¿Está incluida la ropa blanca?</summary><p>Sí: ropa de cama y de baño en todas las cabañas, con servicio de limpieza.</p></details>
+      <details><summary>¿Tienen cochera?</summary><p>Cada cabaña tiene su cochera propia, además del estacionamiento del complejo.</p></details>
+      <details><summary>¿Qué trae la cocina?</summary><p>Microondas, horno, heladera, pava eléctrica y cafetera Nespresso, con vajilla completa.</p></details>
+      <details><summary>¿Entramos diez en Sauco?</summary><p>Sauco es la más amplia: comedor para ocho, dos galerías y una mesa para diez con asador.</p></details>
+      <details><summary>¿Horario de ingreso y salida?</summary><p>Respuesta de ejemplo: ingreso desde las 14 y salida hasta las 10. La completan ustedes.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contacto">
+  <div class="wrap grid">
+    <h2>¿Dudas? <em>Escribinos</em> y te respondemos con la cabaña reservada.</h2>
+    <ul>
+      <li><span>WhatsApp</span><a href="https://wa.me/5493813506047" target="_blank" rel="noopener">381 350-6047</a></li>
+      <li><span>Mail</span><a href="mailto:lamadrinatucuman@gmail.com">lamadrinatucuman@gmail.com</a></li>
+      <li><span>Instagram</span><a href="https://www.instagram.com/lamadrina.tafidelvalle/" target="_blank" rel="noopener">@lamadrina.tafidelvalle</a></li>
+      <li><span>Dónde</span><span style="letter-spacing:0;text-transform:none;font-family:var(--serif);font-size:17px;color:#fff">Ruta Provincial 307, km 61,7 · Tafí del Valle</span></li>
+    </ul>
+  </div>
+</section>
+</main>
+
+<footer><div class="wrap"><span>Prototipo de demostración preparado para La Madrina por Resolviendo Kos. Tarifas, disponibilidad y pagos de ejemplo; datos públicos tomados de notas de prensa y directorios turísticos.</span><span>resolviendokos.com</span></div></footer>
+
+<nav class="mbar" aria-label="Acciones rápidas"><a class="btn wa" href="https://wa.me/5493813506047" target="_blank" rel="noopener">WhatsApp</a><a class="btn rs" href="#reservar">Reservar</a></nav>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mt"><div><h3 id="mt">Esto es una demo</h3><p id="mtext">En la web real, acá se abre Mercado Pago para pagar la seña y la cabaña queda bloqueada en Booking y Airbnb.</p><button class="btn" type="button" id="mclose">Entendido</button></div></div>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
+const UNITS=[
+ {id:'amancay',name:'Amancay',cat:'Para 2 a 4',min:2,max:4,base:78000},
+ {id:'penca',name:'Penca',cat:'Para 2 a 4',min:2,max:4,base:78000},
+ {id:'farolito',name:'Farolito',cat:'Para 2 a 4',min:2,max:4,base:78000},
+ {id:'chilca',name:'Chilca',cat:'Para 2 a 4',min:2,max:4,base:78000},
+ {id:'amaicha',name:'Amaicha',cat:'Familiar',min:4,max:6,base:104000},
+ {id:'chinita',name:'Chinita',cat:'Familiar',min:4,max:6,base:104000},
+ {id:'cardon',name:'Cardón',cat:'Familiar',min:4,max:6,base:104000},
+ {id:'sauco',name:'Sauco',cat:'La grande',min:6,max:10,base:168000}
+];
+const SEASONS={
+ baja:{name:'Media y baja',mult:1,col:'#D9CFC2',dates:'Resto del año, de domingo a jueves',min:'2 noches'},
+ finde:{name:'Fines de semana',mult:1.15,col:'#2D7183',dates:'Viernes y sábados, y fines de semana largos',min:'2 noches'},
+ fiestas:{name:'Fiestas',mult:1.45,col:'#E3A48C',dates:'24 de diciembre de 2026 al 1 de enero de 2027',min:'3 noches'},
+ verano:{name:'Verano',mult:1.6,col:'#E8A33D',dates:'2 de enero al 28 de febrero de 2027 (con Carnaval y la Fiesta del Queso)',min:'4 noches'},
+ santa:{name:'Semana Santa',mult:1.5,col:'#5D6B3A',dates:'25 al 28 de marzo de 2027',min:'3 noches'},
+ invierno:{name:'Invierno',mult:1.3,col:'#2D7183',dates:'Vacaciones de invierno, julio de 2027',min:'3 noches'}
+};
+function season(d){const y=d.getFullYear(),m=d.getMonth(),dd=d.getDate(),w=d.getDay();
+ if((y===2026&&m===11&&dd>=24)||(y===2027&&m===0&&dd===1))return'fiestas';
+ if(y===2027&&(m===1||(m===0&&dd>=2)))return'verano';
+ if(y===2027&&m===2&&dd>=25&&dd<=28)return'santa';
+ if(m===6)return'invierno';
+ if(w===5||w===6)return'finde';
+ return'baja';}
+const fmt=n=>'$ '+Math.round(n).toLocaleString('es-AR');
+const MONTHS=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+/* ---- terrazas ---- */
+let pax=4, kind='familia', chosen='amaicha';
+const terr=$('#terraces');
+UNITS.forEach(u=>{const b=document.createElement('button');b.type='button';b.className='terr';b.dataset.id=u.id;
+ b.innerHTML='<b>'+u.name+'</b><span>'+u.min+'–'+u.max+'</span>';b.addEventListener('click',()=>{pick(u.id);location.hash='reservar'});terr.appendChild(b)});
+function updateSomos(){
+ $('#pax').textContent=pax;
+ const fits=UNITS.filter(u=>pax<=u.max);
+ let best=null;
+ if(pax<=2&&kind==='pareja')best=UNITS[0];else{best=fits.slice().sort((a,b)=>(a.max-pax)-(b.max-pax))[0]}
+ $$('.terr').forEach(t=>{const u=UNITS.find(x=>x.id===t.dataset.id);t.classList.toggle('fit',pax<=u.max);t.classList.toggle('best',best&&u.id===best.id)});
+ const k={pareja:'en pareja',familia:'en familia',grupo:'en grupo'}[kind];
+ let txt;
+ if(fits.length===0)txt='Para '+pax+' conviene Sauco más otra cabaña: escribinos y lo armamos.';
+ else if(fits.length===1)txt='Para '+pax+' '+k+' va Sauco: comedor para ocho, dos galerías y mesa para diez con asador.';
+ else txt='Para '+pax+' '+k+' les sirven '+fits.length+' cabañas. Sugerida: '+best.name+'.';
+ $('#verdict').textContent=txt;
+ if(best){chosen=best.id}
+}
+$('#minus').addEventListener('click',()=>{pax=Math.max(1,pax-1);updateSomos()});
+$('#plus').addEventListener('click',()=>{pax=Math.min(12,pax+1);updateSomos()});
+$$('.chips button').forEach(b=>b.addEventListener('click',()=>{kind=b.dataset.kind;$$('.chips button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));
+ if(kind==='pareja')pax=2;if(kind==='grupo'&&pax<6)pax=6;if(kind==='familia'&&(pax<3||pax>6))pax=4;updateSomos()}));
+$('#goReserve').addEventListener('click',()=>{pick(chosen,true)});
+/* ---- las ocho ---- */
+const ocho=$('#ocho');
+UNITS.forEach((u,i)=>{const d=document.createElement('article');d.className='unit'+(u.id==='sauco'?' sauco':'');
+ const desc=u.id==='sauco'?'La más amplia del complejo: comedor para ocho, living con sofá y Smart TV, y dos galerías, una con mesa para diez y asador.':(u.cat==='Familiar'?'Cabaña familiar con terraza privada, parrilla y cochera propia.':'Para parejas o familias chicas, con terraza al valle, parrilla y cochera propia.');
+ d.innerHTML='<span class="n">'+String(i+1).padStart(2,'0')+'</span><div><h3>'+u.name+'</h3><p>'+desc+'</p><button class="pick" type="button">Elegir '+u.name+' →</button></div><span class="cap">'+u.min+' a '+u.max+' pers.</span>';
+ d.querySelector('.pick').addEventListener('click',()=>pick(u.id,true));ocho.appendChild(d)});
+/* ---- reserva ---- */
+const unitSel=$('#unitSel'),adults=$('#adults'),kids=$('#kids');
+UNITS.forEach(u=>{const o=document.createElement('option');o.value=u.id;o.textContent=u.name+' · '+u.min+' a '+u.max+' personas';unitSel.appendChild(o)});
+for(let i=1;i<=10;i++){const o=document.createElement('option');o.value=i;o.textContent=i;adults.appendChild(o)}
+for(let i=0;i<=6;i++){const o=document.createElement('option');o.value=i;o.textContent=i;kids.appendChild(o)}
+adults.value=2;kids.value=2;unitSel.value='amaicha';
+function pick(id,go){unitSel.value=id;const u=UNITS.find(x=>x.id===id);if(pax&&pax<=u.max){if(kind==='familia'){adults.value=Math.min(2,pax);kids.value=Math.min(Math.max(0,pax-2),6)}else{adults.value=Math.min(pax,10);kids.value=0}}renderCal();calc();if(go)document.getElementById('reservar').scrollIntoView({behavior:'smooth'})}
+const start=new Date(2026,10,1);let vy=2026,vm=10;const today=new Date();today.setHours(0,0,0,0);
+if(today>start){vy=today.getFullYear();vm=today.getMonth()}
+let cin=null,cout=null;
+function rnd(seed){let x=Math.sin(seed)*10000;return x-Math.floor(x)}
+function busy(d,uid){const k=d.getFullYear()*400+d.getMonth()*32+d.getDate();const s=uid.split('').reduce((a,c)=>a+c.charCodeAt(0),0);
+ const se=season(d);const p=se==='verano'?.55:se==='fiestas'?.6:se==='santa'?.5:se==='finde'?.35:.14;return rnd(k*7.13+s)<p}
+['Lu','Ma','Mi','Ju','Vi','Sá','Do'].forEach(d=>{const e=document.createElement('div');e.className='dow';e.textContent=d;$('#dows').appendChild(e)});
+function renderCal(){const box=$('#days');box.innerHTML='';$('#mlabel').textContent=MONTHS[vm]+' '+vy;
+ const first=new Date(vy,vm,1);const off=(first.getDay()+6)%7;const n=new Date(vy,vm+1,0).getDate();const uid=unitSel.value;
+ for(let i=0;i<off;i++){const e=document.createElement('button');e.className='day empty';e.disabled=true;e.tabIndex=-1;box.appendChild(e)}
+ for(let d=1;d<=n;d++){const dt=new Date(vy,vm,d);const b=document.createElement('button');b.type='button';b.className='day s-'+season(dt);b.textContent=d;
+  const past=dt<today;const bz=busy(dt,uid);if(past||bz){b.disabled=true;b.setAttribute('aria-label',d+' ocupado')}else b.setAttribute('aria-label',d+' de '+MONTHS[vm]+' libre');
+  if(cin&&+dt===+cin)b.classList.add('sel');if(cout&&+dt===+cout)b.classList.add('sel');if(cin&&cout&&dt>cin&&dt<cout)b.classList.add('in');
+  b.addEventListener('click',()=>clickDay(dt));box.appendChild(b)}
+ $('#prev').disabled=(vy<today.getFullYear()||(vy===today.getFullYear()&&vm<=today.getMonth()));
+ $('#next').disabled=(vy===2027&&vm>=7);}
+function clickDay(dt){if(!cin||(cin&&cout)||dt<=cin){cin=dt;cout=null}else{
+ const uid=unitSel.value;let ok=true;for(let x=new Date(cin);x<dt;x.setDate(x.getDate()+1)){if(busy(x,uid)){ok=false;break}}
+ if(!ok){$('#warn').textContent='Hay noches ocupadas en el medio. Probá otras fechas u otra cabaña.';cin=dt;cout=null}else{cout=dt;$('#warn').textContent=''}}
+ renderCal();calc()}
+$('#prev').addEventListener('click',()=>{vm--;if(vm<0){vm=11;vy--}renderCal()});
+$('#next').addEventListener('click',()=>{vm++;if(vm>11){vm=0;vy++}renderCal()});
+unitSel.addEventListener('change',()=>{cin=null;cout=null;renderCal();calc()});adults.addEventListener('change',calc);kids.addEventListener('change',calc);
+const df=d=>d.getDate()+' '+MONTHS[d.getMonth()].slice(0,3)+' '+d.getFullYear();
+function calc(){const u=UNITS.find(x=>x.id===unitSel.value);const people=+adults.value+ +kids.value;
+ $('#dIn').textContent=cin?df(cin):'Elegí un día';$('#dOut').textContent=cout?df(cout):'—';
+ const L=$('#lines');const pay=$('#pay');
+ if(people>u.max){$('#warn').textContent=u.name+' es para hasta '+u.max+' personas. Probá con '+(people<=6?'una familiar':'Sauco')+'.';pay.disabled=true}
+ else if(!$('#warn').textContent.startsWith('Hay'))$('#warn').textContent='';
+ if(!cin||!cout){L.innerHTML='<div><span>'+(cin?'Ahora tocá el día de salida':'Elegí fechas en el calendario')+'</span><span></span></div>';pay.disabled=true;return}
+ let total=0,nights=0,by={};for(let x=new Date(cin);x<cout;x.setDate(x.getDate()+1)){const s=season(x);const p=u.base*SEASONS[s].mult;total+=p;nights++;by[s]=(by[s]||0)+p}
+ let h='';Object.keys(by).forEach(s=>{h+='<div><span>'+SEASONS[s].name+'</span><span>'+fmt(by[s])+'</span></div>'});
+ h+='<div class="tot"><span>'+nights+' noche'+(nights>1?'s':'')+' en '+u.name+'</span><span>'+fmt(total)+'</span></div>';
+ h+='<div class="sena"><span>Seña 30% para confirmar</span><span>'+fmt(total*.3)+'</span></div>';L.innerHTML=h;pay.disabled=people>u.max;
+ pay.dataset.msg='Reserva de '+u.name+', '+nights+' noches, seña '+fmt(total*.3)+'. En la web real acá se abre Mercado Pago y la cabaña queda bloqueada en Booking y Airbnb.'}
+$('#pay').addEventListener('click',()=>{$('#mtext').textContent=$('#pay').dataset.msg;$('#modal').classList.add('open');$('#mclose').focus()});
+$('#mclose').addEventListener('click',()=>$('#modal').classList.remove('open'));
+$('#modal').addEventListener('click',e=>{if(e.target.id==='modal')$('#modal').classList.remove('open')});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')$('#modal').classList.remove('open')});
+/* ---- temporadas ---- */
+['verano','fiestas','santa','invierno','baja'].forEach(k=>{const s=SEASONS[k];const d=document.createElement('div');d.className='temp';
+ d.innerHTML='<i style="background:'+s.col+'"></i><h3>'+s.name+'</h3><div class="d">'+s.dates+'</div><div class="p">'+fmt(78000*s.mult)+' <small>/ NOCHE</small></div><div class="min">Mínimo '+s.min+'</div>';$('#temps').appendChild(d)});
+updateSomos();renderCal();calc();
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="La Madrina"></script>
+</body>
+</html>
