@@ -1,0 +1,975 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Complejo Sueño Dorado · Santa Rosa de Calamuchita</title>
+<meta name="description" content="Prototipo de web de reservas para Complejo Sueño Dorado: 11 cabañas, 6 suites y 4 aparts, tres piletas y el río Santa Rosa a 100 metros.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shrikhand&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900;1,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FBF4E4; --paper2:#F3E6C8; --card:#FFFBF2;
+  --ink:#1E2B24; --ink2:#46544B; --line:#D9C9A3;
+  --pine:#234536; --pine2:#2F5C47;
+  --gold:#E3A21A; --gold-l:#F6D27A; --gold-d:#7E5500;
+  --pool:#1A8A93; --pool-l:#9FD8D6; --pool-d:#0E5C63;
+  --coral:#D9573B; --coral-d:#A83C24;
+  --grass:#8DB363; --grass-d:#5E8240;
+  --baja:#9FD8D6; --media:#F6D27A; --alta:#EE8E6F;
+  --r:18px;
+  --display:'Shrikhand', Georgia, serif;
+  --body:'Nunito', 'Trebuchet MS', sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:110px}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:var(--pool-d)}
+:focus-visible{outline:3px solid var(--coral);outline-offset:3px;border-radius:6px}
+h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.05;margin:0;letter-spacing:.005em}
+.vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5em;font:800 16px/1 var(--body);padding:14px 20px;border-radius:999px;border:2px solid var(--ink);background:var(--ink);color:var(--paper);text-decoration:none;cursor:pointer;transition:transform .15s, box-shadow .15s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 4px 0 var(--gold)}
+.btn.gold{background:var(--gold);color:var(--ink);border-color:var(--ink)}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.wa{background:#1F7A4A;border-color:#1F7A4A;color:#fff}
+.tag{display:inline-block;font:800 12px/1 var(--body);letter-spacing:.08em;text-transform:uppercase;padding:6px 10px;border-radius:999px;background:var(--paper2);color:var(--gold-d)}
+.demo-note{font-size:13px;color:var(--ink2);font-style:italic}
+
+/* aviso */
+.proto{background:var(--pine);color:#F7EBCB;font-size:13px;text-align:center;padding:8px 14px;line-height:1.35}
+.proto b{color:var(--gold-l)}
+
+/* header */
+header.top{position:sticky;top:0;z-index:40;background:rgba(251,244,228,.94);backdrop-filter:blur(8px);border-bottom:1.5px solid var(--line)}
+.top-in{max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:16px;padding:10px 20px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
+.brand .sun{width:38px;height:38px;flex:none}
+.brand b{font-family:var(--display);font-weight:400;font-size:22px;line-height:1}
+.brand small{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2)}
+.top-in .sp{flex:1}
+.top-in .btn{padding:11px 16px;font-size:15px}
+@media (max-width:720px){.top-in .btn.hide-m{display:none}.brand b{font-size:19px}.brand small{font-size:9.5px;white-space:nowrap}}
+
+/* hero */
+.hero{max-width:1280px;margin:0 auto;padding:36px 20px 20px;display:grid;grid-template-columns:1.05fr 1fr;gap:40px;align-items:center}
+.hero h1{font-size:clamp(38px,5.2vw,68px);color:var(--pine)}
+.hero h1 .n{color:var(--coral)}
+.hero h1 .p{color:var(--pool)}
+.hero h1 .r{color:var(--gold-d)}
+.hero .lede{font-size:19px;max-width:34em;margin:18px 0 22px;color:var(--ink2)}
+.hero .lede b{color:var(--ink)}
+.hero .ctas{display:flex;flex-wrap:wrap;gap:10px}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px;padding:0;list-style:none}
+.facts li{font-weight:700;font-size:14px;background:var(--card);border:1.5px solid var(--line);border-radius:999px;padding:6px 12px}
+.plan-wrap{position:relative}
+.plan{width:100%;height:auto;display:block;filter:drop-shadow(0 10px 24px rgba(35,69,54,.18))}
+.plan .pin{cursor:pointer}
+.plan .pin circle{transition:transform .2s;transform-box:fill-box;transform-origin:center}
+.plan .pin:hover circle,.plan .pin:focus circle{transform:scale(1.15)}
+.plan text{font-family:var(--body)}
+.polaroid{position:absolute;right:-10px;bottom:-70px;width:34%;background:#fff;padding:8px 8px 26px;border-radius:4px;box-shadow:0 10px 30px rgba(0,0,0,.2);transform:rotate(4deg)}
+.polaroid figcaption{position:absolute;bottom:5px;left:0;right:0;text-align:center;font-size:12px;font-weight:700;color:var(--ink2)}
+.plan-cap{font-size:12px;color:var(--ink2);margin-top:8px;text-align:left;max-width:60%}
+@media (max-width:900px){.hero{grid-template-columns:1fr;gap:28px;padding-top:24px}.polaroid{width:40%;right:4px;bottom:-56px}.plan-cap{max-width:50%}}
+
+/* photo frame with fallback */
+.ph{position:relative;margin:0;overflow:hidden;border-radius:12px;aspect-ratio:4/3;background:
+  radial-gradient(circle at 78% 22%, var(--gold-l) 0 12%, transparent 13%),
+  repeating-linear-gradient(-35deg, rgba(255,255,255,.18) 0 10px, transparent 10px 22px),
+  linear-gradient(180deg, var(--pool-l) 0 48%, var(--grass) 48% 100%)}
+.ph::after{content:attr(data-alt);position:absolute;left:10px;bottom:10px;right:10px;font:800 13px/1.25 var(--body);color:var(--pine);background:rgba(255,251,242,.9);padding:6px 9px;border-radius:8px;z-index:0}
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+.polaroid .ph{border-radius:2px}
+
+/* layout with rail */
+.trail{max-width:1280px;margin:40px auto 0;display:grid;grid-template-columns:200px 1fr;gap:32px;padding:0 20px}
+.rail{position:sticky;top:96px;align-self:start;padding:8px 0}
+.rail ol{list-style:none;margin:0;padding:0;position:relative}
+.rail ol::before{content:"";position:absolute;left:15px;top:14px;bottom:14px;border-left:3px dotted var(--line)}
+.rail li a{display:flex;align-items:center;gap:10px;padding:6px 0;text-decoration:none;color:var(--ink2);font-weight:700;font-size:15px;position:relative}
+.rail li a span.d{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:var(--paper);border:2px solid var(--line);font:400 15px/1 var(--display);color:var(--ink2);flex:none;transition:.2s}
+.rail li a.on{color:var(--ink)}
+.rail li a.on span.d{background:var(--gold);border-color:var(--ink);color:var(--ink);transform:scale(1.12)}
+.rail .tip{font-size:12px;color:var(--ink2);margin-top:14px;line-height:1.4}
+main{min-width:0}
+@media (max-width:900px){
+  .trail{grid-template-columns:1fr;gap:0;padding:0;margin-top:44px}
+  .rail{position:sticky;top:59px;z-index:30;background:var(--paper);border-bottom:1.5px solid var(--line);padding:6px 0;overflow-x:auto;scrollbar-width:none}
+  .rail::-webkit-scrollbar{display:none}
+  .rail ol{display:flex;gap:4px;padding:0 12px;width:max-content}
+  .rail ol::before{display:none}
+  .rail li a{padding:4px 10px 4px 4px;border-radius:999px;font-size:14px;white-space:nowrap}
+  .rail li a span.d{width:26px;height:26px;font-size:13px}
+  .rail li a.on{background:var(--paper2)}
+  .rail .tip{display:none}
+  main{padding:0 16px}
+}
+
+/* stops */
+.stop{padding:44px 0 56px;border-bottom:2px dashed var(--line)}
+.stop:last-child{border-bottom:0}
+.stop-h{display:flex;align-items:flex-start;gap:16px;margin-bottom:22px}
+.stop-h .num{width:56px;height:56px;border-radius:50%;background:var(--gold);border:2.5px solid var(--ink);display:grid;place-items:center;font:400 26px/1 var(--display);flex:none;box-shadow:3px 3px 0 var(--ink)}
+.stop-h h2{font-size:clamp(30px,3.6vw,46px);color:var(--pine)}
+.stop-h p{margin:8px 0 0;color:var(--ink2);max-width:44em}
+@media (max-width:600px){.stop{padding:34px 0 44px}.stop-h .num{width:44px;height:44px;font-size:20px}}
+
+.card{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);padding:20px}
+
+/* MESA LARGA */
+.mesa{display:grid;grid-template-columns:1.05fr 1fr;gap:20px}
+@media (max-width:1000px){.mesa{grid-template-columns:1fr}}
+.presets{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.presets button{font:700 14px/1 var(--body);padding:9px 13px;border-radius:999px;border:1.5px solid var(--ink);background:var(--paper);color:var(--ink);cursor:pointer}
+.presets button:hover{background:var(--gold-l)}
+.nucleo{display:grid;grid-template-columns:14px 1fr auto auto;gap:10px;align-items:center;padding:12px 0;border-top:1.5px dashed var(--line)}
+.nucleo:first-of-type{border-top:0}
+.nucleo .sw{width:14px;height:14px;border-radius:50%}
+.nucleo input[type=text]{width:100%;min-width:0;font:700 16px var(--body);border:0;border-bottom:1.5px solid var(--line);background:transparent;padding:4px 2px;color:var(--ink)}
+.nucleo .x{border:0;background:none;font-size:22px;line-height:1;color:var(--ink2);cursor:pointer;padding:4px 6px}
+.nucleo .row2{grid-column:2/5;display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center}
+.step{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:700}
+.step button{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--ink);background:var(--paper);font:800 18px/1 var(--body);cursor:pointer;color:var(--ink)}
+.step output{min-width:20px;text-align:center;font-weight:900;font-size:16px}
+.chk{display:inline-flex;gap:6px;align-items:center;font-size:14px;font-weight:700;cursor:pointer}
+.chk input{width:18px;height:18px;accent-color:var(--pool-d)}
+.add{margin-top:10px;font:800 15px var(--body);background:none;border:2px dashed var(--ink2);border-radius:12px;padding:10px;width:100%;cursor:pointer;color:var(--ink)}
+.table-viz{background:var(--pine);color:#F7EBCB;border-radius:var(--r);padding:20px;position:relative;overflow:hidden}
+.table-viz h3{font-size:24px;color:var(--gold-l)}
+.longtable{margin:16px 0 8px;position:relative;padding:22px 0}
+.longtable .board{height:44px;border-radius:22px;background:repeating-linear-gradient(90deg,#B98A4E 0 18px,#A97A40 18px 20px);box-shadow:inset 0 -5px 0 rgba(0,0,0,.18)}
+.seats{display:flex;flex-wrap:wrap;gap:6px;position:absolute;left:12px;right:12px}
+.seats.t{top:0}.seats.b{bottom:0}
+.seat{width:18px;height:18px;border-radius:50%;border:2px solid #F7EBCB}
+.seat.k{width:13px;height:13px;margin-top:3px}
+.tv-sum{font-size:15px}
+.keys{display:grid;gap:10px;margin-top:14px}
+.key{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;background:rgba(255,251,242,.08);border:1.5px solid rgba(247,235,203,.25);border-radius:12px;padding:10px 12px}
+.key .ic{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;background:var(--gold);color:var(--ink);font:400 18px/1 var(--display)}
+.key b{display:block;font-size:16px}
+.key small{color:#D8CCAA;font-size:13px}
+.key .why{font-size:12px;color:#D8CCAA;text-align:right;max-width:150px}
+.mesa-tot{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.mesa-tot div{flex:1 1 30%;min-width:90px;background:rgba(255,251,242,.08);border-radius:10px;padding:8px 10px}
+.mesa-tot small{display:block;font-size:12px;color:#D8CCAA}
+.mesa-tot b{font-size:17px}
+.warn{background:#FCE3D9;color:var(--coral-d);border-radius:10px;padding:10px 12px;font-weight:700;font-size:14px;margin-top:12px}
+.table-viz .warn{background:#5a2b1f;color:#FFD9C9}
+@media (max-width:600px){.key{grid-template-columns:auto 1fr}.key .why{grid-column:1/3;text-align:left;max-width:none}}
+
+/* UNIDADES */
+.units{display:grid;gap:22px}
+.unit{display:grid;grid-template-columns:1.1fr 1fr;gap:0;background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);overflow:hidden}
+.unit .gal{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr;gap:4px;min-height:300px}
+.unit .gal .ph{border-radius:0;aspect-ratio:auto}
+.unit .gal .ph:first-child{grid-row:1/3}
+.unit .txt{padding:22px 24px}
+.unit .count{font:400 54px/0.9 var(--display);color:var(--coral)}
+.unit .count small{font:800 15px var(--body);color:var(--ink2);margin-left:6px}
+.unit h3{font-size:30px;color:var(--pine);margin:6px 0 8px}
+.unit ul{padding:0;margin:12px 0;list-style:none;display:flex;flex-wrap:wrap;gap:6px}
+.unit ul li{font-size:14px;font-weight:700;background:var(--paper2);border-radius:8px;padding:5px 9px}
+.unit .cap{font-weight:800;color:var(--pool-d)}
+.unit .from{margin-top:10px;font-size:15px}
+.unit .from b{font-size:22px}
+@media (max-width:820px){.unit{grid-template-columns:1fr}.unit .gal{min-height:240px}}
+
+/* PREDIO */
+.predio{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+.pz{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column}
+.pz .ph{border-radius:0}
+.pz .t{padding:14px 16px 18px}
+.pz h3{font-size:22px;color:var(--pine);margin-bottom:6px}
+.pz p{margin:0;font-size:15px;color:var(--ink2)}
+.pz.w3{grid-column:span 3}.pz.w2{grid-column:span 2}
+.estela{grid-column:span 6;display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center;background:var(--gold);border:2px solid var(--ink);border-radius:var(--r);padding:22px 24px;box-shadow:5px 5px 0 var(--ink)}
+.estela svg{width:84px;height:84px}
+.estela h3{font-size:28px;color:var(--ink)}
+.estela p{margin:6px 0 0;font-size:16px}
+.dayline{grid-column:span 6;margin-top:6px}
+.dayline h3{font-size:24px;color:var(--pine);margin-bottom:10px}
+.ages{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.ages button{font:800 14px/1 var(--body);padding:9px 13px;border-radius:999px;border:1.5px solid var(--ink);background:var(--paper);cursor:pointer;color:var(--ink)}
+.ages button[aria-pressed=true]{background:var(--pool-d);color:#fff;border-color:var(--pool-d)}
+.dl{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.dl div{background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px}
+.dl div b{display:block;font:400 18px/1.1 var(--display);color:var(--pool-d);margin-bottom:4px}
+@media (max-width:900px){.predio{grid-template-columns:1fr 1fr}.pz.w3,.pz.w2{grid-column:span 1}.estela,.dayline{grid-column:span 2}.dl{grid-template-columns:1fr 1fr}.dl div:nth-child(5){grid-column:span 2}}
+@media (max-width:560px){.predio{grid-template-columns:1fr}.pz.w3,.pz.w2,.estela,.dayline{grid-column:span 1}.estela{grid-template-columns:1fr}.estela svg{width:64px;height:64px}}
+
+/* TEMPORADAS */
+.yearband{overflow-x:auto;padding-bottom:8px;-webkit-overflow-scrolling:touch}
+.yb{min-width:760px;padding:0 34px}
+.yb-days{display:grid;grid-template-columns:repeat(365,1fr);height:46px;border-radius:10px;overflow:hidden;border:2px solid var(--ink)}
+.yb-days i{display:block}
+.yb-months{display:grid;grid-template-columns:repeat(12,1fr);font-size:12px;font-weight:800;color:var(--ink2);margin-top:4px}
+.yb-ev{position:relative;height:84px;margin-top:4px}
+.yb-ev span{position:absolute;top:0;transform:translateX(-50%);font-size:11.5px;font-weight:800;line-height:1.15;text-align:center;width:96px;padding-top:16px}
+.yb-ev span::before{content:"";position:absolute;left:50%;top:0;height:12px;border-left:2px solid var(--ink)}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:14px;font-weight:700;margin:12px 0}
+.legend i{display:inline-block;width:16px;height:16px;border-radius:4px;vertical-align:-3px;margin-right:6px;border:1.5px solid var(--ink)}
+.rates{width:100%;border-collapse:separate;border-spacing:0;background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);overflow:hidden;margin-top:12px}
+.rates th,.rates td{padding:12px 14px;text-align:right;border-bottom:1px solid var(--line);font-size:15px}
+.rates th:first-child,.rates td:first-child{text-align:left}
+.rates thead th{background:var(--paper2);font-weight:900;font-size:13px;text-transform:uppercase;letter-spacing:.05em}
+.rates tr:last-child td{border-bottom:0}
+.rates td b{font-size:16px}
+.seasons-list{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
+.seasons-list div{border-radius:14px;padding:14px;border:1.5px solid var(--ink);font-size:14px}
+.seasons-list b{display:block;font:400 19px/1.1 var(--display);margin-bottom:4px}
+@media (max-width:700px){.seasons-list{grid-template-columns:1fr}.rates th,.rates td{padding:10px 8px;font-size:14px}}
+
+/* CALENDARIO */
+.calbox{display:grid;grid-template-columns:1.2fr 1fr;gap:20px;align-items:start}
+@media (max-width:980px){.calbox{grid-template-columns:1fr}}
+.cal-top{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.cal-top h3{font-size:24px;color:var(--pine);flex:1;min-width:150px}
+.cal-top button.nav{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--ink);background:var(--paper);font:800 18px var(--body);cursor:pointer;color:var(--ink)}
+.cal-top button.nav:disabled{opacity:.35;cursor:not-allowed}
+.seg{display:inline-flex;border:1.5px solid var(--ink);border-radius:999px;overflow:hidden;margin-bottom:12px}
+.seg button{font:800 14px/1 var(--body);padding:9px 14px;border:0;background:var(--paper);cursor:pointer;color:var(--ink)}
+.seg button[aria-pressed=true]{background:var(--ink);color:var(--paper)}
+.grid7{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.grid7 .dow{font-size:12px;font-weight:900;text-align:center;color:var(--ink2);padding:4px 0}
+.day{position:relative;aspect-ratio:1/1.05;border-radius:10px;border:1.5px solid var(--line);background:var(--card);font:800 15px var(--body);color:var(--ink);cursor:pointer;padding:4px;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;text-align:left}
+.day small{font-size:10.5px;font-weight:800;color:var(--ink2)}
+.day::after{content:"";position:absolute;left:5px;right:5px;bottom:3px;height:3px;border-radius:2px;background:var(--sc,transparent)}
+.day.full{background:repeating-linear-gradient(-45deg,#EFE4CC 0 5px,#F8F0DC 5px 10px);color:#8b8b7a;cursor:not-allowed}
+.day.full small{color:#8b8b7a}
+.day.past{opacity:.35;cursor:not-allowed}
+.day.few small{color:var(--coral-d)}
+.day.sel{background:var(--pool-d);border-color:var(--pool-d);color:#fff}
+.day.sel small{color:#DFF4F2}
+.day.rng{background:var(--pool-l);border-color:var(--pool-l)}
+.empty{visibility:hidden}
+.sync{display:flex;gap:10px;align-items:center;font-size:13px;font-weight:700;color:var(--ink2);margin-top:12px;flex-wrap:wrap}
+.sync .dot{width:9px;height:9px;border-radius:50%;background:#2FA46A;box-shadow:0 0 0 4px rgba(47,164,106,.18)}
+@media (max-width:420px){.day{font-size:13px;padding:3px}.day small{font-size:9px}}
+
+/* SIMULADOR */
+.sim{display:grid;grid-template-columns:1.1fr 1fr;gap:20px;align-items:start}
+@media (max-width:980px){.sim{grid-template-columns:1fr}}
+.fld{display:grid;gap:6px;margin-bottom:14px}
+.fld label,.fld .lb{font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--ink2)}
+.fld input[type=date]{font:700 16px var(--body);padding:11px 12px;border-radius:12px;border:1.5px solid var(--ink);background:var(--paper);color:var(--ink);width:100%;min-width:0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ulines{display:grid;gap:8px}
+.uline{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--paper)}
+.uline b{font-size:16px}
+.uline small{display:block;font-size:12.5px;color:var(--ink2)}
+.ticket{background:var(--card);border:2px solid var(--ink);border-radius:var(--r);overflow:hidden;box-shadow:6px 6px 0 var(--pool)}
+.ticket .th{background:var(--pool-d);color:#fff;padding:16px 20px}
+.ticket .th h3{font-size:24px}
+.ticket .tb{padding:18px 20px}
+.ticket .ln{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px dashed var(--line);font-size:15px}
+.ticket .ln span:last-child{font-weight:800;white-space:nowrap}
+.ticket .tot{display:flex;justify-content:space-between;align-items:baseline;padding:14px 0 6px;font-weight:900}
+.ticket .tot b{font:400 30px/1 var(--display);color:var(--pine)}
+.ticket .sena{background:var(--gold-l);border-radius:12px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px;margin:8px 0 14px}
+.ticket .sena b{font-size:22px}
+.mp{width:100%;background:#009EE3;border-color:#009EE3;color:#fff}
+.mp:hover{box-shadow:0 4px 0 #0B5E87}
+.ticket .msg{font-size:14px;color:var(--ink2);margin-top:10px}
+
+/* ALREDEDORES */
+.around{display:grid;grid-template-columns:1fr 1.1fr;gap:24px;align-items:center}
+.radar{width:100%;height:auto;max-width:520px}
+.radar text{font-family:var(--body)}
+.att{display:grid;gap:10px}
+.att > div{display:grid;grid-template-columns:62px 1fr;gap:12px;align-items:start;padding:12px 0;border-bottom:1.5px dashed var(--line)}
+.att > div:last-child{border-bottom:0}
+.att .km{font:400 20px/1 var(--display);color:var(--coral);text-align:right;padding-top:2px}
+.att .km small{display:block;font:800 11px var(--body);color:var(--ink2)}
+.att h3{font-size:19px;color:var(--pine);margin-bottom:2px}
+.att p{margin:0;font-size:15px;color:var(--ink2)}
+@media (max-width:900px){.around{grid-template-columns:1fr}.radar{margin:0 auto}}
+
+/* MAPA */
+.mapbox{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+.mapbox svg{width:100%;height:auto;background:var(--card);border:1.5px solid var(--line);border-radius:var(--r)}
+.mapbox svg text{font-family:var(--body)}
+.how{display:grid;gap:12px}
+.how div{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:14px 16px}
+.how h3{font-size:20px;color:var(--pine);margin-bottom:4px}
+.how p{margin:0;font-size:15px}
+@media (max-width:900px){.mapbox{grid-template-columns:1fr}}
+
+/* FAQ */
+.faq details{background:var(--card);border:1.5px solid var(--line);border-radius:14px;margin-bottom:10px}
+.faq summary{cursor:pointer;padding:16px 18px;font-weight:900;font-size:17px;list-style:none;display:flex;justify-content:space-between;gap:12px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font:400 24px/1 var(--display);color:var(--coral)}
+.faq details[open] summary::after{content:"–"}
+.faq details p{margin:0;padding:0 18px 16px;color:var(--ink2)}
+
+/* FOOTER */
+footer{background:var(--pine);color:#F7EBCB;margin-top:40px;padding:44px 20px 40px}
+@media (max-width:900px){footer{padding-bottom:120px}}
+.ft{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:28px}
+footer h2{font-size:34px;color:var(--gold-l)}
+footer a{color:#F7EBCB}
+footer p{margin:6px 0}
+footer .small{font-size:13px;color:#CFC3A2;margin-top:24px;max-width:1280px;margin-left:auto;margin-right:auto}
+@media (max-width:800px){.ft{grid-template-columns:1fr}}
+
+/* bottom bar */
+.bbar{position:fixed;left:0;right:0;bottom:0;z-index:60;display:none;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:rgba(251,244,228,.97);border-top:2px solid var(--ink)}
+.bbar .btn{flex:1;padding:14px 10px}
+@media (max-width:900px){.bbar{display:flex}}
+
+/* modal */
+.modal{position:fixed;inset:0;z-index:80;background:rgba(30,43,36,.6);display:none;align-items:center;justify-content:center;padding:16px}
+.modal.open{display:flex}
+.modal .box{background:var(--card);border:2px solid var(--ink);border-radius:var(--r);max-width:440px;width:100%;padding:24px;box-shadow:6px 6px 0 var(--gold)}
+.modal h3{font-size:26px;color:var(--pine);margin-bottom:8px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<div class="proto" role="note"><b>Prototipo de demostración preparado para Complejo Sueño Dorado.</b> Tarifas, capacidades y disponibilidad son de ejemplo; no se cobra nada.</div>
+
+<header class="top">
+  <div class="top-in">
+    <a class="brand" href="#inicio" aria-label="Complejo Sueño Dorado, inicio">
+      <svg class="sun" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="22" r="10" fill="#E3A21A" stroke="#1E2B24" stroke-width="2"/><g stroke="#1E2B24" stroke-width="2.2" stroke-linecap="round"><path d="M20 4v5M6 12l4 3M34 12l-4 3M3 24h5M32 24h5"/></g><path d="M2 32c5-3 8 3 12 0s8 3 12 0 8 3 12 0" fill="none" stroke="#1A8A93" stroke-width="2.6" stroke-linecap="round"/></svg>
+      <span><b>Sueño Dorado</b><small>Santa Rosa de Calamuchita</small></span>
+    </a>
+    <span class="sp"></span>
+    <a class="btn ghost hide-m" href="https://wa.me/5493546435922?text=Hola%20Sue%C3%B1o%20Dorado%2C%20quiero%20consultar%20disponibilidad" target="_blank" rel="noopener">WhatsApp</a>
+    <a class="btn gold" href="#reservar">Reservar</a>
+  </div>
+</header>
+
+<section class="hero" id="inicio">
+  <div>
+    <span class="tag">Complejo familiar · desde 2016 · abierto todo el año</span>
+    <h1 style="margin-top:14px"><span class="n">21</span> lugares para dormir, <span class="p">3 piletas</span> y el río a <span class="r">100 metros</span>.</h1>
+    <p class="lede">En Sueño Dorado hay <b>11 cabañas, 6 suites y 4 aparts</b> dentro de un predio cerrado de parque en barrio Nahuascat. Por eso es el lugar donde caben los abuelos, los primos y la barra de amigos, cada uno con su llave y todos en la misma pileta.</p>
+    <div class="ctas">
+      <a class="btn gold" href="#mesa">Armá la mesa de tu familia</a>
+      <a class="btn ghost" href="#disponibilidad">Ver disponibilidad</a>
+    </div>
+    <ul class="facts" aria-label="Lo que hay en el predio">
+      <li>Parque acuático infantil</li><li>Fútbol · tenis · pádel · vóley</li><li>Quincho con asadores</li><li>Ropa blanca incluida</li><li>Cochera cubierta</li>
+    </ul>
+  </div>
+  <div class="plan-wrap">
+    <svg class="plan" viewBox="0 0 600 460" role="img" aria-labelledby="planT">
+      <title id="planT">Plano ilustrado del predio: río al norte, piletas al centro, canchas al este, cabañas, suites y aparts alrededor, portón sobre calle 38. Esquema no a escala.</title>
+      <defs>
+        <pattern id="trees" width="26" height="26" patternUnits="userSpaceOnUse"><circle cx="13" cy="13" r="8" fill="#5E8240"/><circle cx="10" cy="10" r="3" fill="#8DB363"/></pattern>
+        <pattern id="wave" width="30" height="10" patternUnits="userSpaceOnUse"><path d="M0 5c7-5 8 5 15 0s8 5 15 0" fill="none" stroke="#DFF4F2" stroke-width="2"/></pattern>
+      </defs>
+      <rect width="600" height="460" rx="24" fill="#F3E6C8"/>
+      <!-- río -->
+      <path d="M0 26 C120 60 220 0 330 30 S520 60 600 22 L600 70 C520 100 420 66 330 78 S120 100 0 72Z" fill="#1A8A93"/>
+      <path d="M0 26 C120 60 220 0 330 30 S520 60 600 22 L600 70 C520 100 420 66 330 78 S120 100 0 72Z" fill="url(#wave)" opacity=".7"/>
+      <text x="24" y="54" font-size="15" font-weight="900" fill="#fff">Río Santa Rosa</text>
+      <!-- arboleda -->
+      <rect x="0" y="80" width="600" height="28" fill="url(#trees)" opacity=".9"/>
+      <g stroke="#1E2B24" stroke-width="1.5"><path d="M470 84v38"/><path d="M465 90l5-6 5 6M465 116l5 6 5-6" fill="none"/></g>
+      <text x="482" y="108" font-size="13" font-weight="800" fill="#1E2B24">~100 m</text>
+      <!-- predio -->
+      <rect x="24" y="126" width="552" height="306" rx="16" fill="#B9D38E" stroke="#1E2B24" stroke-width="2.5" stroke-dasharray="8 5"/>
+      <!-- piletas -->
+      <rect x="190" y="200" width="130" height="70" rx="20" fill="#9FD8D6" stroke="#0E5C63" stroke-width="2.5"/>
+      <rect x="196" y="206" width="118" height="58" rx="16" fill="url(#wave)" opacity=".9"/>
+      <rect x="335" y="208" width="66" height="50" rx="14" fill="#9FD8D6" stroke="#0E5C63" stroke-width="2.5"/>
+      <circle cx="252" cy="306" r="30" fill="#9FD8D6" stroke="#0E5C63" stroke-width="2.5"/>
+      <path d="M232 296c10-14 30-14 40 0" fill="none" stroke="#D9573B" stroke-width="5" stroke-linecap="round"/>
+      <circle cx="262" cy="314" r="5" fill="#E3A21A"/><circle cx="242" cy="316" r="4" fill="#D9573B"/>
+      <rect x="180" y="190" width="232" height="140" rx="22" fill="none" stroke="#FBF4E4" stroke-width="3" stroke-dasharray="2 6" opacity=".9"/>
+      <!-- canchas -->
+      <rect x="440" y="140" width="120" height="70" fill="#5E8240" stroke="#FBF4E4" stroke-width="2"/><path d="M500 140v70" stroke="#FBF4E4" stroke-width="2"/><circle cx="500" cy="175" r="10" fill="none" stroke="#FBF4E4" stroke-width="2"/>
+      <rect x="440" y="222" width="56" height="78" fill="#C0643E" stroke="#FBF4E4" stroke-width="2"/><path d="M440 261h56" stroke="#FBF4E4" stroke-width="2"/>
+      <rect x="504" y="222" width="56" height="78" fill="#2F6E9B" stroke="#FBF4E4" stroke-width="2"/><path d="M504 261h56" stroke="#FBF4E4" stroke-width="2"/>
+      <rect x="440" y="312" width="120" height="44" fill="#E9CF8E" stroke="#FBF4E4" stroke-width="2"/><path d="M500 312v44" stroke="#1E2B24" stroke-width="2" stroke-dasharray="3 3"/>
+      <!-- quincho -->
+      <rect x="196" y="352" width="120" height="50" rx="6" fill="#A0522D" stroke="#1E2B24" stroke-width="2"/>
+      <path d="M190 356 L256 334 L322 356" fill="#7A3A1F" stroke="#1E2B24" stroke-width="2"/>
+      <g fill="#E3A21A"><circle cx="220" cy="382" r="5"/><circle cx="256" cy="382" r="5"/><circle cx="292" cy="382" r="5"/></g>
+      <!-- cabañas -->
+      <defs><g id="cab"><rect x="0" y="8" width="30" height="22"/><path d="M-3 9 L15 -4 L33 9" fill="#D9573B"/></g></defs>
+      <g fill="#FBF4E4" stroke="#1E2B24" stroke-width="2">
+        <use href="#cab" x="44" y="146"/><use href="#cab" x="88" y="146"/><use href="#cab" x="132" y="146"/>
+        <use href="#cab" x="44" y="200"/><use href="#cab" x="88" y="200"/><use href="#cab" x="132" y="200"/>
+        <use href="#cab" x="44" y="254"/><use href="#cab" x="88" y="254"/>
+        <use href="#cab" x="44" y="308"/><use href="#cab" x="88" y="308"/><use href="#cab" x="132" y="308"/>
+      </g>
+      <!-- suites (primer piso) + aparts -->
+      <rect x="190" y="142" width="130" height="40" rx="4" fill="#FBF4E4" stroke="#1E2B24" stroke-width="2"/>
+      <g fill="#9FD8D6" stroke="#1E2B24" stroke-width="1.5"><rect x="198" y="150" width="14" height="12"/><rect x="218" y="150" width="14" height="12"/><rect x="238" y="150" width="14" height="12"/><rect x="258" y="150" width="14" height="12"/><rect x="278" y="150" width="14" height="12"/><rect x="298" y="150" width="14" height="12"/></g>
+      <rect x="335" y="142" width="80" height="40" rx="4" fill="#F6D27A" stroke="#1E2B24" stroke-width="2"/>
+      <g fill="#FBF4E4" stroke="#1E2B24" stroke-width="1.5"><rect x="343" y="152" width="14" height="20"/><rect x="361" y="152" width="14" height="20"/><rect x="379" y="152" width="14" height="20"/><rect x="397" y="152" width="12" height="20"/></g>
+      <!-- juegos + gym -->
+      <g stroke="#1E2B24" stroke-width="2" fill="none"><path d="M350 300l12-26 12 26M352 292h20"/><circle cx="392" cy="292" r="8" fill="#D9573B"/></g>
+      <rect x="342" y="352" width="66" height="34" rx="6" fill="#FBF4E4" stroke="#1E2B24" stroke-width="2"/>
+      <path d="M356 369h38M356 363v12M394 363v12" stroke="#1E2B24" stroke-width="3"/>
+      <!-- portón -->
+      <rect x="40" y="428" width="120" height="10" fill="#1E2B24"/>
+      <text x="40" y="452" font-size="13" font-weight="800" fill="#1E2B24">Portón · Calle 38 · acceso 24 h</text>
+      <!-- pins -->
+      <g class="pin" tabindex="0" role="link" aria-label="Ir a las unidades" data-go="#unidades"><circle cx="102" cy="290" r="15" fill="#E3A21A" stroke="#1E2B24" stroke-width="2.5"/><text x="102" y="296" text-anchor="middle" font-size="15" font-weight="900">2</text></g>
+      <g class="pin" tabindex="0" role="link" aria-label="Ir al predio: piletas" data-go="#predio"><circle cx="370" cy="234" r="15" fill="#E3A21A" stroke="#1E2B24" stroke-width="2.5"/><text x="370" y="240" text-anchor="middle" font-size="15" font-weight="900">3</text></g>
+      <g class="pin" tabindex="0" role="link" aria-label="Armar la mesa larga" data-go="#mesa"><circle cx="256" cy="372" r="15" fill="#E3A21A" stroke="#1E2B24" stroke-width="2.5"/><text x="256" y="378" text-anchor="middle" font-size="15" font-weight="900">1</text></g>
+      <g class="pin" tabindex="0" role="link" aria-label="Ir a los alrededores" data-go="#alrededores"><circle cx="560" cy="48" r="15" fill="#E3A21A" stroke="#1E2B24" stroke-width="2.5"/><text x="560" y="54" text-anchor="middle" font-size="15" font-weight="900">7</text></g>
+      <!-- labels -->
+      <g font-size="11.5" font-weight="900" fill="#1E2B24">
+        <text x="196" y="138">6 suites · 1er piso</text><text x="337" y="138">4 aparts</text>
+        <text x="44" y="352">11 cabañas</text>
+        <text x="190" y="346" fill="#0E5C63">3 piletas + parque acuático</text>
+        <text x="444" y="372">canchas</text><text x="344" y="400">mini gym</text><text x="346" y="320">juegos</text>
+      </g>
+    </svg>
+    <figure class="polaroid">
+      <div class="ph" data-alt="Vista aérea del complejo"><img src="https://complejosuenodorado.com.ar/wp-content/uploads/2025/10/complejo-5-vista-aerea.webp" alt="Vista aérea del Complejo Sueño Dorado con sus piletas y parque" loading="eager" onerror="this.remove()"></div>
+      <figcaption>Desde arriba, así se ve</figcaption>
+    </figure>
+    <p class="plan-cap">Esquema ilustrativo, no a escala. Tocá los números para recorrer.</p>
+  </div>
+</section>
+
+<div class="trail">
+  <nav class="rail" aria-label="Recorrido de la página">
+    <ol>
+      <li><a href="#mesa"><span class="d">1</span>La mesa larga</a></li>
+      <li><a href="#unidades"><span class="d">2</span>Las unidades</a></li>
+      <li><a href="#predio"><span class="d">3</span>El predio</a></li>
+      <li><a href="#temporadas"><span class="d">4</span>Temporadas</a></li>
+      <li><a href="#disponibilidad"><span class="d">5</span>Disponibilidad</a></li>
+      <li><a href="#reservar"><span class="d">6</span>Reservar</a></li>
+      <li><a href="#alrededores"><span class="d">7</span>Alrededores</a></li>
+      <li><a href="#llegar"><span class="d">8</span>Cómo llegar</a></li>
+      <li><a href="#preguntas"><span class="d">9</span>Preguntas</a></li>
+    </ol>
+    <p class="tip">Un recorrido por el predio, del portón al río.</p>
+  </nav>
+
+  <main>
+  <!-- 1 MESA LARGA -->
+  <section class="stop" id="mesa" aria-labelledby="mesaT">
+    <div class="stop-h"><div class="num" aria-hidden="true">1</div><div>
+      <h2 id="mesaT">La mesa larga</h2>
+      <p>Vienen los abuelos, dos familias con chicos y la tía. Cargá quiénes son y te armamos la combinación de cabañas, aparts y suites: cada núcleo con su llave, todos en el mismo predio. Las suites están en primer piso por escalera, así que si alguien prefiere planta baja, marcalo.</p>
+    </div></div>
+    <div class="mesa">
+      <div class="card">
+        <div class="presets" aria-label="Ejemplos rápidos">
+          <button type="button" data-preset="tipo">Familia tipo</button>
+          <button type="button" data-preset="tres">Tres generaciones</button>
+          <button type="button" data-preset="amigos">Barra de amigos</button>
+          <button type="button" data-preset="egresados">Gran reunión familiar</button>
+        </div>
+        <div id="nucleos"></div>
+        <button type="button" class="add" id="addN">+ Sumar otro núcleo (familia, pareja, abuelos…)</button>
+      </div>
+      <div class="table-viz" aria-live="polite">
+        <h3>Así se sientan</h3>
+        <div class="longtable"><div class="seats t" id="seatsT"></div><div class="board"></div><div class="seats b" id="seatsB"></div></div>
+        <div class="tv-sum" id="tvSum"></div>
+        <div class="keys" id="keys"></div>
+        <div class="mesa-tot" id="mesaTot"></div>
+        <div id="mesaWarn"></div>
+        <button type="button" class="btn gold" id="toSim" style="margin-top:16px;width:100%">Llevar esta combinación al simulador</button>
+        <p style="font-size:12px;color:#CFC3A2;margin:10px 0 0">Capacidades y tarifas por noche de ejemplo. El complejo confirma la asignación final.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 UNIDADES -->
+  <section class="stop" id="unidades" aria-labelledby="uniT">
+    <div class="stop-h"><div class="num" aria-hidden="true">2</div><div>
+      <h2 id="uniT">Tres formas de dormir</h2>
+      <p>Todas con aire frío/calor, smart TV, cochera cubierta y ropa blanca: sábanas, toallas, toallones y amenities.</p>
+    </div></div>
+    <div class="units">
+      <article class="unit">
+        <div class="gal">
+          <div class="ph" data-alt="Cabaña por fuera"><img src="https://complejosuenodorado.com.ar/wp-content/uploads/2025/10/Cabanas-00-4.jpeg" alt="Exterior de una cabaña de Sueño Dorado" loading="lazy" onerror="this.remove()"></div>
+          <div class="ph" data-alt="Living"><img src="https://complejosuenodorado.com.ar/wp-content/uploads/2025/10/living-cabana-01.jpg" alt="Living de una cabaña" loading="lazy" onerror="this.remove()"></div>
+          <div class="ph" data-alt="Cocina"><img src="https://complejosuenodorado.com.ar/wp-content/uploads/2025/10/cocina-cabana-01.jpg" alt="Cocina equipada de una cabaña" loading="lazy" onerror="this.remove()"></div>
+        </div>
+        <div class="txt">
+          <div class="count">11<small>cabañas</small></div>
+          <h3>Cabaña de dos dormitorios</h3>
+          <p>La casa de la familia: dos dormitorios, cocina completa y parrilla propia para el asado de la noche. <span class="cap">Hasta 5 personas (ejemplo).</span></p>
+          <ul><li>2 dormitorios</li><li>Cocina completa</li><li>Parrilla</li><li>Aire frío/calor</li><li>Smart TV</li><li>Cochera cubierta</li></ul>
+          <p class="from">Desde <b id="fromCab"></b> la noche <span class="demo-note">· tarifa de ejemplo</span></p>
+        </div>
+      </article>
+      <article class="unit">
+        <div class="gal">
+          <div class="ph" data-alt="Apart"><img src="https://complejosuenodorado.com.ar/wp-content/uploads/2025/10/Aparts.jpeg" alt="Exterior de los aparts" loading="lazy" onerror="this.remove()"></div>
+          <div class="ph" data-alt="Interior del apart"><img src="https://complejosuenodorado.com.ar/wp-content/uploads/2025/10/Apart-01.jpg" alt="Interior de un apart" loading="lazy" onerror="this.remove()"></div>
+          <div class="ph" data-alt="Living del apart"><img src="https://complejosuenodorado.com.ar/wp-content/uploads/2025/10/Living-01.jpeg" alt="Living de un apart" loading="lazy" onerror="this.remove()"></div>
+        </div>
+        <div class="txt">
+          <div class="count">4<small>aparts</small></div>
+          <h3>Apart, práctico y moderno</h3>
+          <p>Para la familia chica o los abuelos que quieren cocinar lo suyo sin subir escaleras. <span class="cap">Hasta 4 personas (ejemplo).</span></p>
+          <ul><li>Cocina completa</li><li>Aire frío/calor</li><li>Smart TV</li><li>Cochera cubierta</li></ul>
+          <p class="from">Desde <b id="fromApa"></b> la noche <span class="demo-note">· tarifa de ejemplo</span></p>
+        </div>
+      </article>
+      <article class="unit">
+        <div class="gal">
+          <div class="ph" data-alt="Suite"><img src="https://complejosuenodorado.com.ar/wp-content/uploads/2025/10/Habitacion-07.jpeg" alt="Habitación de una suite" loading="lazy" onerror="this.remove()"></div>
+          <div class="ph" data-alt="Detalle de la suite"><img src="https://complejosuenodorado.com.ar/wp-content/uploads/2025/10/Habitacion-08.jpeg" alt="Otra vista de una suite" loading="lazy" onerror="this.remove()"></div>
+          <div class="ph" data-alt="Decoración"><img src="https://complejosuenodorado.com.ar/wp-content/uploads/2025/10/Adornos-01-1.jpeg" alt="Detalle de decoración de una suite" loading="lazy" onerror="this.remove()"></div>
+        </div>
+        <div class="txt">
+          <div class="count">6<small>suites</small></div>
+          <h3>Suite en primer piso</h3>
+          <p>La llave de la pareja o de los más grandes de la barra. Se sube por escalera. <span class="cap">Para 2 personas (ejemplo).</span></p>
+          <ul><li>Frigobar</li><li>Microondas</li><li>Aire frío/calor</li><li>Smart TV</li><li>Cochera cubierta</li></ul>
+          <p class="from">Desde <b id="fromSui"></b> la noche <span class="demo-note">· tarifa de ejemplo</span></p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- 3 PREDIO -->
+  <section class="stop" id="predio" aria-labelledby="predT">
+    <div class="stop-h"><div class="num" aria-hidden="true">3</div><div>
+      <h2 id="predT">Un predio cerrado para no salir</h2>
+      <p>Más de dos hectáreas de parque con acceso las 24 horas. Los chicos van de la pileta a la cancha y vuelven solos a la cabaña.</p>
+    </div></div>
+    <div class="predio">
+      <div class="pz w3"><div class="ph" data-alt="Piletas y solárium"><img src="https://complejosuenodorado.com.ar/wp-content/uploads/2025/10/11zon_IMG_7817_11zon.jpeg" alt="Pileta del complejo" loading="lazy" onerror="this.remove()"></div><div class="t"><h3>Tres piletas y parque acuático</h3><p>Una de ellas con solárium y parque acuático infantil, que una nota de Circuito Gastronómico describió como el único de su tipo en Santa Rosa.</p></div></div>
+      <div class="pz w3"><div class="ph" data-alt="Recreación familiar"><img src="https://complejosuenodorado.com.ar/wp-content/uploads/2025/10/complejo-familiar-02.jpeg" alt="Espacios recreativos del complejo" loading="lazy" onerror="this.remove()"></div><div class="t"><h3>Juegos y parque</h3><p>Juegos infantiles, espacios para tirarse a la sombra y una arboleda hacia el río.</p></div></div>
+      <div class="pz w2"><div class="ph" data-alt="Cancha de pádel"><img src="https://complejosuenodorado.com.ar/wp-content/uploads/2025/10/paddle-03.jpeg" alt="Cancha de pádel" loading="lazy" onerror="this.remove()"></div><div class="t"><h3>Pádel y tenis</h3><p>Para el torneo de primos que nadie quiere perder.</p></div></div>
+      <div class="pz w2"><div class="ph" data-alt="Cancha de vóley"><img src="https://complejosuenodorado.com.ar/wp-content/uploads/2025/10/voley-01.jpeg" alt="Cancha de vóley" loading="lazy" onerror="this.remove()"></div><div class="t"><h3>Fútbol y vóley</h3><p>Canchas al aire libre adentro del predio.</p></div></div>
+      <div class="pz w2"><div class="ph" data-alt="Quincho y asadores"><img src="https://complejosuenodorado.com.ar/wp-content/uploads/2025/10/IMG-20251022-WA0023.jpg" alt="Espacio común del complejo" loading="lazy" onerror="this.remove()"></div><div class="t"><h3>Quincho y mini gym</h3><p>Quincho grande con asadores para la mesa larga, y un mini gimnasio.</p></div></div>
+      <div class="estela">
+        <svg viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="40" fill="#FBF4E4" stroke="#1E2B24" stroke-width="3"/><path d="M18 50h48l-5 14H23z" fill="#D9573B" stroke="#1E2B24" stroke-width="3"/><path d="M16 50h52" stroke="#1E2B24" stroke-width="3" stroke-linecap="round"/><path d="M32 40c-4-6 4-8 0-14M42 40c-4-6 4-8 0-14M52 40c-4-6 4-8 0-14" fill="none" stroke="#1A8A93" stroke-width="3" stroke-linecap="round"/></svg>
+        <div><h3>Y la cocina de Estela</h3><p>Comidas caseras hechas por Estela, “cocinera de alma”, para los días en que nadie quiere prender el fuego. Consultá el menú del día por WhatsApp.</p></div>
+      </div>
+      <div class="dayline">
+        <h3>Un día en el predio, según quién sos</h3>
+        <div class="ages" role="group" aria-label="Elegí una edad">
+          <button type="button" aria-pressed="true" data-age="chicos">Chicos</button>
+          <button type="button" aria-pressed="false" data-age="adolescentes">Adolescentes</button>
+          <button type="button" aria-pressed="false" data-age="grandes">Grandes</button>
+          <button type="button" aria-pressed="false" data-age="abuelos">Abuelos</button>
+        </div>
+        <div class="dl" id="dayline" aria-live="polite"></div>
+        <p class="demo-note" style="margin-top:8px">Sugerencias para inspirarse, no un cronograma del complejo.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 TEMPORADAS -->
+  <section class="stop" id="temporadas" aria-labelledby="tempT">
+    <div class="stop-h"><div class="num" aria-hidden="true">4</div><div>
+      <h2 id="tempT">El año en Santa Rosa</h2>
+      <p>Abierto todo el año. Cada día pinta su tarifa según la temporada; los fines de semana largos y las fiestas de la zona se cobran como alta. <b>Tarifas de ejemplo.</b></p>
+    </div></div>
+    <div class="yearband" tabindex="0" aria-label="Línea de temporadas de noviembre 2026 a octubre 2027 (se desliza de costado)">
+      <div class="yb">
+        <div class="yb-days" id="ybDays" aria-hidden="true"></div>
+        <div class="yb-months" id="ybMonths" aria-hidden="true"></div>
+        <div class="yb-ev" id="ybEv"></div>
+      </div>
+    </div>
+    <div class="legend"><span><i style="background:var(--baja)"></i>Baja</span><span><i style="background:var(--media)"></i>Media</span><span><i style="background:var(--alta)"></i>Alta y findes largos</span></div>
+    <div style="overflow-x:auto">
+    <table class="rates" id="rates">
+      <caption class="vh">Tarifas de ejemplo por noche y por unidad</caption>
+      <thead><tr><th scope="col">Por noche</th><th scope="col">Baja</th><th scope="col">Media</th><th scope="col">Alta</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    </div>
+    <div class="seasons-list">
+      <div style="background:var(--alta)"><b>Verano 2027</b>2 de enero al 28 de febrero. Carnaval del 6 al 9 de febrero. Mínimo 3 noches (ejemplo).</div>
+      <div style="background:var(--alta)"><b>Semana Santa</b>25 al 28 de marzo de 2027, con la Fiesta de las Delicias de Pascua en Santa Rosa.</div>
+      <div style="background:var(--alta)"><b>Invierno en Córdoba</b>Vacaciones de julio 2027 (aprox. 12 al 23). Fechas a confirmar por el Ministerio de Educación.</div>
+      <div style="background:var(--media)"><b>Oktoberfest</b>Primera quincena de octubre en Villa General Belgrano, a unos 10 km.</div>
+      <div style="background:var(--media)"><b>Diciembre y marzo</b>Pileta abierta y sin multitudes.</div>
+      <div style="background:var(--baja)"><b>Escapadas</b>Otoño, primavera y semanas de invierno fuera de vacaciones.</div>
+    </div>
+  </section>
+
+  <!-- 5 DISPONIBILIDAD -->
+  <section class="stop" id="disponibilidad" aria-labelledby="dispT">
+    <div class="stop-h"><div class="num" aria-hidden="true">5</div><div>
+      <h2 id="dispT">¿Hay lugar?</h2>
+      <p>Elegí el tipo de unidad y mirá cuántas llaves quedan cada día. Tocá la llegada y después la salida: el simulador se completa solo.</p>
+    </div></div>
+    <div class="calbox">
+      <div class="card">
+        <div class="seg" role="group" aria-label="Tipo de unidad">
+          <button type="button" aria-pressed="true" data-t="cab">Cabañas</button><button type="button" aria-pressed="false" data-t="apa">Aparts</button><button type="button" aria-pressed="false" data-t="sui">Suites</button>
+        </div>
+        <div class="cal-top">
+          <button type="button" class="nav" id="calPrev" aria-label="Mes anterior">‹</button>
+          <h3 id="calTitle" aria-live="polite"></h3>
+          <button type="button" class="nav" id="calNext" aria-label="Mes siguiente">›</button>
+        </div>
+        <div class="grid7" id="calGrid"></div>
+        <div class="sync"><span class="dot" aria-hidden="true"></span>Disponibilidad de ejemplo · se sincroniza con Booking y Airbnb</div>
+      </div>
+      <div class="card">
+        <h3 style="font-size:22px;color:var(--pine);margin-bottom:8px">Cómo leerlo</h3>
+        <p style="margin:0 0 10px;font-size:15px">El número chico es cuántas unidades quedan libres de ese tipo. Rayado: completo. La rayita de color abajo marca la temporada.</p>
+        <p id="calPick" style="margin:0;font-weight:800;font-size:16px">Elegí tu día de llegada.</p>
+        <button type="button" class="btn" style="margin-top:14px" onclick="location.hash='#reservar'">Ir al simulador</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 RESERVAR -->
+  <section class="stop" id="reservar" aria-labelledby="resT">
+    <div class="stop-h"><div class="num" aria-hidden="true">6</div><div>
+      <h2 id="resT">Reservá con seña</h2>
+      <p>Armá la estadía y asegurala con el 30% por Mercado Pago. El resto se paga al llegar. <b>Demo: no se cobra nada.</b></p>
+    </div></div>
+    <div class="sim">
+      <form class="card" id="simForm" onsubmit="return false">
+        <div class="two">
+          <div class="fld"><label for="dIn">Llegada</label><input type="date" id="dIn" min="2026-10-27" max="2027-10-31"></div>
+          <div class="fld"><label for="dOut">Salida</label><input type="date" id="dOut" min="2026-10-28" max="2027-11-01"></div>
+        </div>
+        <div class="two">
+          <div class="fld"><span class="lb" id="lbA">Adultos</span><div class="step" role="group" aria-labelledby="lbA"><button type="button" data-s="ad" data-d="-1" aria-label="Menos adultos">−</button><output id="ad">2</output><button type="button" data-s="ad" data-d="1" aria-label="Más adultos">+</button></div></div>
+          <div class="fld"><span class="lb" id="lbK">Chicos</span><div class="step" role="group" aria-labelledby="lbK"><button type="button" data-s="ki" data-d="-1" aria-label="Menos chicos">−</button><output id="ki">2</output><button type="button" data-s="ki" data-d="1" aria-label="Más chicos">+</button></div></div>
+        </div>
+        <div class="fld"><span class="lb">Unidades</span>
+          <div class="ulines">
+            <div class="uline"><div><b>Cabaña 2 dormitorios</b><small>hasta 5 · quedan 11</small></div><div class="step" role="group" aria-label="Cantidad de cabañas"><button type="button" data-s="cab" data-d="-1" aria-label="Menos cabañas">−</button><output id="q-cab">1</output><button type="button" data-s="cab" data-d="1" aria-label="Más cabañas">+</button></div></div>
+            <div class="uline"><div><b>Apart</b><small>hasta 4 · quedan 4</small></div><div class="step" role="group" aria-label="Cantidad de aparts"><button type="button" data-s="apa" data-d="-1" aria-label="Menos aparts">−</button><output id="q-apa">0</output><button type="button" data-s="apa" data-d="1" aria-label="Más aparts">+</button></div></div>
+            <div class="uline"><div><b>Suite (1er piso)</b><small>para 2 · quedan 6</small></div><div class="step" role="group" aria-label="Cantidad de suites"><button type="button" data-s="sui" data-d="-1" aria-label="Menos suites">−</button><output id="q-sui">0</output><button type="button" data-s="sui" data-d="1" aria-label="Más suites">+</button></div></div>
+          </div>
+        </div>
+        <p class="demo-note" style="margin:0">Capacidades, tarifas y cupos de ejemplo.</p>
+      </form>
+      <div class="ticket" aria-live="polite">
+        <div class="th"><h3>Tu estadía</h3><div id="tkDates" style="font-size:15px;margin-top:4px"></div></div>
+        <div class="tb">
+          <div id="tkLines"></div>
+          <div class="tot"><span>Total</span><b id="tkTotal">—</b></div>
+          <div class="sena"><div><small style="font-weight:800">Seña 30% hoy</small><br><b id="tkSena">—</b></div><div style="text-align:right;font-size:14px">Saldo al llegar<br><b id="tkSaldo" style="font-size:17px">—</b></div></div>
+          <div id="tkWarn"></div>
+          <button type="button" class="btn mp" id="payBtn">Pagar seña con Mercado Pago</button>
+          <a class="btn wa" id="waBtn" style="width:100%;margin-top:8px" target="_blank" rel="noopener" href="https://wa.me/5493546435922">Consultar esta estadía por WhatsApp</a>
+          <p class="msg">Tarifas de ejemplo. Demo sin cobro real.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 ALREDEDORES -->
+  <section class="stop" id="alrededores" aria-labelledby="alrT">
+    <div class="stop-h"><div class="num" aria-hidden="true">7</div><div>
+      <h2 id="alrT">Saliendo por el portón</h2>
+      <p>Para los días en que la familia se anima a salir del predio. Distancias aproximadas.</p>
+    </div></div>
+    <div class="around">
+      <svg class="radar" viewBox="0 0 400 400" role="img" aria-labelledby="radT">
+        <title id="radT">Círculos de distancia desde el complejo: río a 100 metros, Villa General Belgrano a unos 10 km, Yacanto y Embalse a unos 25 km, La Cumbrecita y Lago Los Molinos a más de 40 km.</title>
+        <g fill="none" stroke="#D9C9A3" stroke-width="2" stroke-dasharray="4 5"><circle cx="200" cy="200" r="40"/><circle cx="200" cy="200" r="95"/><circle cx="200" cy="200" r="150"/><circle cx="200" cy="200" r="192"/></g>
+        <g font-size="11" font-weight="800" fill="#46544B"><text x="204" y="156">1 km</text><text x="204" y="101">10 km</text><text x="204" y="46">25 km</text><text x="204" y="12">45 km</text></g>
+        <circle cx="200" cy="200" r="16" fill="#E3A21A" stroke="#1E2B24" stroke-width="2.5"/><text x="200" y="232" text-anchor="middle" font-size="12" font-weight="900">Sueño Dorado</text>
+        <g font-size="12.5" font-weight="900" fill="#1E2B24">
+          <circle cx="214" cy="184" r="7" fill="#1A8A93"/><text x="226" y="182">Río Santa Rosa</text>
+          <circle cx="250" cy="113" r="8" fill="#D9573B"/><text x="262" y="117">Villa General Belgrano</text>
+          <circle cx="62" cy="142" r="8" fill="#D9573B"/><text x="30" y="128">Yacanto</text>
+          <circle cx="44" cy="244" r="8" fill="#5E8240"/><text x="8" y="270">Champaquí</text>
+          <circle cx="268" cy="333" r="8" fill="#1A8A93"/><text x="246" y="358">Embalse</text>
+          <circle cx="108" cy="30" r="8" fill="#5E8240"/><text x="122" y="34">La Cumbrecita</text>
+          <circle cx="352" cy="88" r="8" fill="#1A8A93"/><text x="298" y="68">Los Molinos</text>
+        </g>
+      </svg>
+      <div class="att">
+        <div><span class="km">100<small>metros</small></span><div><h3>Río Santa Rosa</h3><p>A unos 100 metros del complejo. El pueblo tiene balnearios de arena y agua clara sobre el mismo río.</p></div></div>
+        <div><span class="km">~10<small>km</small></span><div><h3>Villa General Belgrano</h3><p>El pueblo alpino del valle: chocolates, cervecerías y la Oktoberfest cada octubre.</p></div></div>
+        <div><span class="km">~25<small>km</small></span><div><h3>Yacanto de Calamuchita</h3><p>Pueblo serrano al pie de las Sierras Grandes, punto de partida hacia el Champaquí.</p></div></div>
+        <div><span class="km">2.790<small>m alt.</small></span><div><h3>Cerro Champaquí</h3><p>El techo de Córdoba. Se sube a pie o a caballo con guías de la zona; una salida de día completo o más.</p></div></div>
+        <div><span class="km">~25<small>km</small></span><div><h3>Lago de Embalse</h3><p>El lago más grande de la provincia, para náutica y pesca.</p></div></div>
+        <div><span class="km">~45<small>km</small></span><div><h3>La Cumbrecita</h3><p>Pueblo peatonal entre bosques y cascadas, pasando por Villa General Belgrano.</p></div></div>
+        <div><span class="km">~45<small>km</small></span><div><h3>Lago Los Molinos</h3><p>Sobre la RP5, camino a Córdoba: kayak, windsurf y miradores.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 CÓMO LLEGAR -->
+  <section class="stop" id="llegar" aria-labelledby="llegT">
+    <div class="stop-h"><div class="num" aria-hidden="true">8</div><div>
+      <h2 id="llegT">Cómo llegar</h2>
+      <p>Calle 38 s/n, Barrio Nahuascat, X5196 Santa Rosa de Calamuchita, Córdoba.</p>
+    </div></div>
+    <div class="mapbox">
+      <svg viewBox="90 10 320 450" role="img" aria-labelledby="mapT">
+        <title id="mapT">Mapa esquemático: desde Córdoba capital por la Ruta Provincial 5, pasando por Alta Gracia, el Lago Los Molinos y Villa General Belgrano, hasta Santa Rosa de Calamuchita, unos 100 km.</title>
+                <path d="M360 50 C320 110 300 130 270 160 S220 230 210 270 S170 340 120 390" fill="none" stroke="#1E2B24" stroke-width="5" stroke-linecap="round"/>
+        <path d="M360 50 C320 110 300 130 270 160 S220 230 210 270 S170 340 120 390" fill="none" stroke="#E3A21A" stroke-width="2" stroke-dasharray="8 8"/>
+        <ellipse cx="236" cy="208" rx="26" ry="16" fill="#1A8A93"/>
+        <g font-size="13" font-weight="800" fill="#1E2B24">
+          <circle cx="360" cy="50" r="9" fill="#1E2B24"/><text x="290" y="34">Córdoba capital</text>
+          <circle cx="292" cy="140" r="6" fill="#FBF4E4" stroke="#1E2B24" stroke-width="2"/><text x="302" y="144">Alta Gracia</text>
+          <text x="266" y="226" fill="#0E5C63">Lago Los Molinos</text>
+          <circle cx="198" cy="300" r="6" fill="#FBF4E4" stroke="#1E2B24" stroke-width="2"/><text x="208" y="304">Villa General Belgrano</text>
+          <circle cx="132" cy="378" r="13" fill="#E3A21A" stroke="#1E2B24" stroke-width="2.5"/><text x="152" y="384" font-size="14" font-weight="900">Santa Rosa · Sueño Dorado</text>
+        </g>
+        <rect x="314" y="92" width="44" height="22" rx="5" fill="#FBF4E4" stroke="#1E2B24" stroke-width="2"/><text x="336" y="108" text-anchor="middle" font-size="13" font-weight="900">RP5</text>
+        <text x="100" y="446" font-size="12" font-weight="700" fill="#46544B">Esquema no a escala · ~100 km desde Córdoba</text>
+      </svg>
+      <div class="how">
+        <div><h3>Desde Córdoba capital</h3><p>Unos 100 km por la Ruta Provincial 5: Alta Gracia, el dique Los Molinos y Villa General Belgrano. Cerca de 1 h 30 en auto.</p></div>
+        <div><h3>Ya en Santa Rosa</h3><p>Buscá el barrio Nahuascat, del lado del río. El complejo está en calle 38, con portón y cochera cubierta para cada unidad.</p></div>
+        <div><h3>En micro</h3><p>Hay servicios diarios desde la terminal de Córdoba hasta Santa Rosa de Calamuchita; desde la terminal, un remís corto hasta el complejo.</p></div>
+        <a class="btn" href="https://maps.app.goo.gl/EhH5P1Vw564MThXVA" target="_blank" rel="noopener">Abrir en Google Maps</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 FAQ -->
+  <section class="stop faq" id="preguntas" aria-labelledby="faqT">
+    <div class="stop-h"><div class="num" aria-hidden="true">9</div><div><h2 id="faqT">Preguntas de siempre</h2></div></div>
+    <details><summary>¿Incluye ropa blanca?</summary><p>Sí. Sábanas, toallas, toallones y amenities están incluidos en todas las unidades.</p></details>
+    <details><summary>¿A qué hora es el check-in y el check-out?</summary><p>En este prototipo usamos ingreso desde las 14 h y salida hasta las 10 h como ejemplo. El complejo confirma los horarios reales al reservar.</p></details>
+    <details><summary>¿Se puede ir con mascotas?</summary><p>Consultalo por WhatsApp antes de reservar: el complejo te confirma si acepta tu mascota y en qué unidad.</p></details>
+    <details><summary>Viajan los abuelos, ¿hay unidades sin escalera?</summary><p>Las cabañas y los aparts están en planta baja. Las suites están en primer piso y se sube por escalera. La mesa larga ya tiene esto en cuenta.</p></details>
+    <details><summary>¿Cómo funciona la seña?</summary><p>Se paga el 30% del total por Mercado Pago para confirmar y el resto al llegar. En este prototipo el pago es una demostración.</p></details>
+    <details><summary>¿Hay comida en el complejo?</summary><p>Sí, comidas caseras de Estela. Pedí el menú por WhatsApp. Y si preferís el asado, cada cabaña tiene parrilla y hay un quincho con asadores.</p></details>
+    <details><summary>¿Abren fuera de temporada?</summary><p>Todo el año: temporada alta y baja, fines de semana largos y feriados.</p></details>
+    <details><summary>¿Hay wifi y estacionamiento?</summary><p>Wifi sin cargo y cochera cubierta para cada unidad.</p></details>
+  </section>
+  </main>
+</div>
+
+<footer>
+  <div class="ft">
+    <div>
+      <h2>Sueño Dorado</h2>
+      <p>Tus vacaciones en el Valle de Calamuchita.</p>
+      <p>Calle 38 s/n, Barrio Nahuascat<br>X5196 Santa Rosa de Calamuchita, Córdoba</p>
+    </div>
+    <div>
+      <p><b>WhatsApp</b><br><a href="https://wa.me/5493546435922" target="_blank" rel="noopener">+54 9 3546 43-5922</a></p>
+      <p><b>Instagram</b><br><a href="https://www.instagram.com/complejosuenodorado/" target="_blank" rel="noopener">@complejosuenodorado</a></p>
+      <p><b>Facebook</b><br><a href="https://www.facebook.com/sueno.dorado.675208" target="_blank" rel="noopener">Sueño Dorado</a></p>
+    </div>
+    <div>
+      <p><b>Web actual</b><br><a href="https://complejosuenodorado.com.ar/" target="_blank" rel="noopener">complejosuenodorado.com.ar</a></p>
+      <p style="margin-top:14px"><a class="btn gold" href="#reservar">Reservar</a></p>
+    </div>
+  </div>
+  <p class="small">Prototipo de demostración preparado para Complejo Sueño Dorado por Resolviendo Kos. Fotos de la web pública del complejo. Tarifas, capacidades, horarios y disponibilidad son de ejemplo.</p>
+</footer>
+
+<div class="bbar">
+  <a class="btn gold" href="#reservar">Reservar</a>
+  <a class="btn wa" href="https://wa.me/5493546435922?text=Hola%20Sue%C3%B1o%20Dorado%2C%20quiero%20consultar%20disponibilidad" target="_blank" rel="noopener">WhatsApp</a>
+</div>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mT">
+  <div class="box">
+    <h3 id="mT">Seña lista (demo)</h3>
+    <p id="mBody"></p>
+    <p class="demo-note">Esto es un prototipo: no se conectó con Mercado Pago ni se cobró nada.</p>
+    <button type="button" class="btn" id="mClose">Entendido</button>
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+var $=function(s,c){return (c||document).querySelector(s)}, $$=function(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s))};
+var fmt=function(n){return '$ '+Math.round(n).toLocaleString('es-AR')};
+var MESES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+var MES3=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+
+/* datos */
+var U={
+  cab:{n:'Cabaña 2 dormitorios',short:'Cabaña',cap:5,stock:11,ic:'C',r:{baja:85000,media:110000,alta:150000}},
+  apa:{n:'Apart',short:'Apart',cap:4,stock:4,ic:'A',r:{baja:70000,media:90000,alta:125000}},
+  sui:{n:'Suite (1er piso)',short:'Suite',cap:2,stock:6,ic:'S',r:{baja:55000,media:70000,alta:95000}}
+};
+var SN={baja:'Baja',media:'Media',alta:'Alta'};
+function D(y,m,d){return new Date(y,m-1,d)}
+function iso(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function parse(s){var p=s.split('-');return D(+p[0],+p[1],+p[2])}
+var RANGES=[ // [desde, hasta, temporada, etiqueta]
+  ['2026-11-21','2026-11-23','alta','Finde largo de noviembre'],
+  ['2026-12-05','2026-12-08','alta','Finde largo 8 de diciembre'],
+  ['2026-12-01','2027-01-01','media','Diciembre y fiestas'],
+  ['2027-01-02','2027-02-28','alta','Verano 2027'],
+  ['2027-03-25','2027-03-28','alta','Semana Santa + Delicias de Pascua'],
+  ['2027-03-01','2027-03-31','media','Marzo'],
+  ['2027-07-09','2027-07-25','alta','9 de julio y vacaciones de invierno'],
+  ['2027-10-01','2027-10-11','media','Oktoberfest en Villa General Belgrano']
+];
+function season(d){var s=iso(d);for(var i=0;i<RANGES.length;i++){if(s>=RANGES[i][0]&&s<=RANGES[i][1])return RANGES[i][2]}return 'baja'}
+function seasonLabel(d){var s=iso(d);for(var i=0;i<RANGES.length;i++){if(s>=RANGES[i][0]&&s<=RANGES[i][1])return RANGES[i][3]}return 'Temporada baja'}
+var SC={baja:'var(--baja)',media:'var(--media)',alta:'var(--alta)'};
+var TODAY=D(2026,10,27); (function(){var n=new Date();n=D(n.getFullYear(),n.getMonth()+1,n.getDate());if(n>TODAY)TODAY=n})();
+
+/* tarifas */
+$('#fromCab').textContent=fmt(U.cab.r.baja);$('#fromApa').textContent=fmt(U.apa.r.baja);$('#fromSui').textContent=fmt(U.sui.r.baja);
+$('#rates tbody').innerHTML=['cab','apa','sui'].map(function(k){var u=U[k];return '<tr><td><b>'+u.n+'</b><br><small>'+(k==='sui'?'para 2':'hasta '+u.cap)+' · '+u.stock+' unidades</small></td><td>'+fmt(u.r.baja)+'</td><td>'+fmt(u.r.media)+'</td><td>'+fmt(u.r.alta)+'</td></tr>'}).join('');
+
+/* banda anual */
+(function(){
+  var start=D(2026,11,1), days='', months='';
+  for(var i=0;i<365;i++){var d=new Date(start);d.setDate(d.getDate()+i);days+='<i style="background:'+SC[season(d)]+'" title="'+d.getDate()+' '+MES3[d.getMonth()]+'"></i>'}
+  $('#ybDays').innerHTML=days;
+  for(var m=0;m<12;m++){var mm=(10+m)%12;months+='<span>'+MES3[mm]+(mm===0?' 27':mm===10&&m===0?' 26':'')+'</span>'}
+  $('#ybMonths').innerHTML=months;
+  var ev=[['2026-11-21','Finde largo nov.'],['2026-12-24','Fiestas'],['2027-01-02','Arranca el verano'],['2027-02-06','Carnaval'],['2027-03-25','Semana Santa · Delicias de Pascua'],['2027-07-12','Vacaciones de invierno'],['2027-10-01','Oktoberfest VGB']];
+  $('#ybEv').innerHTML=ev.map(function(e,i){var d=parse(e[0]);var x=(d-start)/864e5/365*100;return '<span style="left:'+x.toFixed(2)+'%;'+(i%2?'top:38px':'')+'">'+e[1]+'</span>'}).join('');
+})();
+
+/* MESA LARGA */
+var COLORS=['#E3A21A','#1A8A93','#D9573B','#8DB363','#B48AD6','#F6D27A','#5FB7C9','#E98B6D'];
+var nucleos=[];
+var PRESETS={
+  tipo:[{n:'Nosotros',a:2,k:2,ns:false}],
+  tres:[{n:'Los abuelos',a:2,k:0,ns:true},{n:'Familia de Caro',a:2,k:3,ns:false},{n:'Familia de Martín',a:2,k:1,ns:false},{n:'La tía',a:1,k:0,ns:false}],
+  amigos:[{n:'Pareja 1',a:2,k:0,ns:false},{n:'Pareja 2',a:2,k:0,ns:false},{n:'Pareja 3',a:2,k:0,ns:false},{n:'Los solteros',a:4,k:0,ns:false}],
+  egresados:[{n:'Abuelos',a:2,k:0,ns:true},{n:'Familia García',a:2,k:3,ns:false},{n:'Familia Pérez',a:2,k:2,ns:false},{n:'Familia Sosa',a:2,k:2,ns:false},{n:'Primos grandes',a:5,k:0,ns:false},{n:'Bisabuela y cuidadora',a:2,k:0,ns:true}]
+};
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function renderNucleos(){
+  $('#nucleos').innerHTML=nucleos.map(function(x,i){return '<div class="nucleo"><span class="sw" style="background:'+COLORS[i%COLORS.length]+'"></span>'+
+   '<label class="vh" for="nn'+i+'">Nombre del núcleo '+(i+1)+'</label><input type="text" id="nn'+i+'" data-i="'+i+'" value="'+esc(x.n)+'" maxlength="28">'+
+   '<span></span><button type="button" class="x" data-del="'+i+'" aria-label="Quitar '+esc(x.n)+'">×</button>'+
+   '<div class="row2"><span class="step">Adultos <button type="button" data-i="'+i+'" data-f="a" data-d="-1" aria-label="Menos adultos en '+esc(x.n)+'">−</button><output>'+x.a+'</output><button type="button" data-i="'+i+'" data-f="a" data-d="1" aria-label="Más adultos en '+esc(x.n)+'">+</button></span>'+
+   '<span class="step">Chicos <button type="button" data-i="'+i+'" data-f="k" data-d="-1" aria-label="Menos chicos en '+esc(x.n)+'">−</button><output>'+x.k+'</output><button type="button" data-i="'+i+'" data-f="k" data-d="1" aria-label="Más chicos en '+esc(x.n)+'">+</button></span>'+
+   '<label class="chk"><input type="checkbox" data-i="'+i+'" data-f="ns" '+(x.ns?'checked':'')+'>Sin escaleras</label></div></div>'}).join('');
+  calcMesa();
+}
+$('#nucleos').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;
+  if(b.dataset.del!==undefined){nucleos.splice(+b.dataset.del,1);if(!nucleos.length)nucleos.push({n:'Nosotros',a:2,k:0,ns:false});renderNucleos();return}
+  var i=+b.dataset.i,f=b.dataset.f,v=nucleos[i][f]+(+b.dataset.d);var min=f==='a'?1:0;if(v<min||v>12)return;nucleos[i][f]=v;b.parentNode.querySelector('output').textContent=v;calcMesa();});
+$('#nucleos').addEventListener('input',function(e){var t=e.target;if(t.type==='text'){nucleos[+t.dataset.i].n=t.value;calcMesa()}else if(t.type==='checkbox'){nucleos[+t.dataset.i].ns=t.checked;calcMesa()}});
+$('#addN').addEventListener('click',function(){if(nucleos.length>=10)return;nucleos.push({n:'Núcleo '+(nucleos.length+1),a:2,k:0,ns:false});renderNucleos();var ins=$$('#nucleos input[type=text]');ins[ins.length-1].focus()});
+$$('.presets button').forEach(function(b){b.addEventListener('click',function(){nucleos=JSON.parse(JSON.stringify(PRESETS[b.dataset.preset]));renderNucleos()})});
+
+var lastCombo={cab:0,apa:0,sui:0},lastPeople={a:0,k:0};
+function assign(){
+  var left={cab:U.cab.stock,apa:U.apa.stock,sui:U.sui.stock},keys=[],short=false;
+  function take(pref,i,ppl,why){for(var j=0;j<pref.length;j++){var t=pref[j];if(left[t]>0&&U[t].cap>=ppl){left[t]--;keys.push({t:t,i:i,p:ppl,why:why});return true}}short=true;return false}
+  nucleos.forEach(function(x,i){
+    var n=x.a+x.k, rest=n;
+    while(rest>5){take(['cab'],i,5,'Grupo grande: se reparte en más de una llave');rest-=5;if(short)break}
+    if(rest<=0)return;
+    if(rest<=2){ if(x.ns) take(['apa','cab'],i,rest,'Planta baja, sin escalera'); else take(['sui','apa','cab'],i,rest,'Para dos: la suite alcanza'); }
+    else if(rest<=4){ take(['apa','cab'],i,rest,x.ns?'Planta baja, cocina propia':'Justo para cuatro, cocina propia'); }
+    else take(['cab','apa'],i,rest,'Dos dormitorios y parrilla');
+  });
+  return {keys:keys,short:short};
+}
+function calcMesa(){
+  var A=0,K=0,seatsT='',seatsB='',all=[];
+  nucleos.forEach(function(x,i){A+=x.a;K+=x.k;for(var j=0;j<x.a;j++)all.push('<span class="seat" style="background:'+COLORS[i%COLORS.length]+'" title="'+esc(x.n)+'"></span>');for(j=0;j<x.k;j++)all.push('<span class="seat k" style="background:'+COLORS[i%COLORS.length]+'" title="'+esc(x.n)+' (chico)"></span>')});
+  all.forEach(function(s,i){if(i%2===0)seatsT+=s;else seatsB+=s});
+  $('#seatsT').innerHTML=seatsT;$('#seatsB').innerHTML=seatsB;
+  var r=assign(),cnt={cab:0,apa:0,sui:0};
+  r.keys.forEach(function(k){cnt[k.t]++});
+  lastCombo=cnt;lastPeople={a:A,k:K};
+  var parts=[];['cab','apa','sui'].forEach(function(t){if(cnt[t])parts.push(cnt[t]+' '+(t==='cab'?'cabaña':t==='apa'?'apart':'suite')+(cnt[t]>1?'s':''))});
+  $('#tvSum').innerHTML='<b>'+(A+K)+' personas</b> ('+A+' adultos, '+K+' chicos) en <b>'+r.keys.length+' llave'+(r.keys.length!==1?'s':'')+'</b>: '+(parts.join(', ')||'—')+'.';
+  $('#keys').innerHTML=r.keys.map(function(k){var x=nucleos[k.i];return '<div class="key"><span class="ic" style="background:'+COLORS[k.i%COLORS.length]+'">'+U[k.t].ic+'</span><div><b>'+U[k.t].short+' · '+esc(x.n)+'</b><small>'+k.p+' persona'+(k.p>1?'s':'')+' · capacidad '+U[k.t].cap+'</small></div><span class="why">'+k.why+'</span></div>'}).join('');
+  var tot={};['baja','media','alta'].forEach(function(s){tot[s]=0;['cab','apa','sui'].forEach(function(t){tot[s]+=cnt[t]*U[t].r[s]})});
+  $('#mesaTot').innerHTML=['baja','media','alta'].map(function(s){return '<div><small>Noche en temp. '+SN[s].toLowerCase()+'</small><b>'+fmt(tot[s])+'</b></div>'}).join('');
+  $('#mesaWarn').innerHTML=r.short?'<div class="warn">No entran todos en las unidades del complejo con esta combinación. Escribinos por WhatsApp y lo resolvemos juntos.</div>':'';
+}
+$('#toSim').addEventListener('click',function(){
+  sim.q={cab:lastCombo.cab,apa:lastCombo.apa,sui:lastCombo.sui};sim.ad=Math.max(1,lastPeople.a);sim.ki=lastPeople.k;
+  syncSimUI();calcSim();location.hash='#reservar';
+});
+
+/* día por edades */
+var DAY={
+  chicos:[['Mañana','Parque acuático infantil y solárium con los papás cerca.'],['Mediodía','Almuerzo casero de Estela o sanguchitos a la sombra.'],['Siesta','Juegos del parque mientras los grandes descansan.'],['Tarde','Fútbol con los primos en la cancha.'],['Noche','Asado en el quincho y a dormir agotados.']],
+  adolescentes:[['Mañana','Pádel o tenis antes de que pegue el sol.'],['Mediodía','Pileta grande, música y vóley.'],['Siesta','Bajada al río Santa Rosa, a 100 metros.'],['Tarde','Partido de fútbol contra los tíos.'],['Noche','Salida al centro de Santa Rosa o a Villa General Belgrano.']],
+  grandes:[['Mañana','Mate en la galería y mini gym.'],['Mediodía','Pileta y solárium.'],['Siesta','Siesta con aire acondicionado.'],['Tarde','Escapada a Villa General Belgrano, a unos 10 km.'],['Noche','Parrilla propia o comida de Estela.']],
+  abuelos:[['Mañana','Caminata por el parque y la arboleda.'],['Mediodía','Comida casera de Estela, sin cocinar.'],['Siesta','Siesta en planta baja, sin escaleras.'],['Tarde','Sombra junto a la pileta mirando a los nietos.'],['Noche','Cabecera de la mesa larga en el quincho.']]
+};
+function renderDay(k){$('#dayline').innerHTML=DAY[k].map(function(d){return '<div><b>'+d[0]+'</b>'+d[1]+'</div>'}).join('');$$('.ages button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.age===k)})}
+$$('.ages button').forEach(function(b){b.addEventListener('click',function(){renderDay(b.dataset.age)})});
+renderDay('chicos');
+
+/* CALENDARIO */
+var calT='cab',calY=2026,calM=11,pickIn=null,pickOut=null;
+var MIN_Y=2026,MIN_M=11,MAX_Y=2027,MAX_M=10;
+function hash(s){var h=2166136261;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return (h>>>0)/4294967295}
+function free(t,d){var st=U[t].stock,s=season(d),occ={baja:.35,media:.55,alta:.82}[s];var wd=d.getDay();if(wd===5||wd===6)occ+=.15;var r=hash(t+iso(d));var used=Math.round(st*Math.min(1,occ+(r-.5)*.5));return Math.max(0,st-used)}
+function renderCal(){
+  $('#calTitle').textContent=MESES[calM-1].charAt(0).toUpperCase()+MESES[calM-1].slice(1)+' '+calY;
+  $('#calPrev').disabled=(calY===MIN_Y&&calM===MIN_M);$('#calNext').disabled=(calY===MAX_Y&&calM===MAX_M);
+  var first=D(calY,calM,1),off=(first.getDay()+6)%7,n=new Date(calY,calM,0).getDate(),h='';
+  ['L','M','M','J','V','S','D'].forEach(function(x){h+='<span class="dow" aria-hidden="true">'+x+'</span>'});
+  for(var i=0;i<off;i++)h+='<span class="empty"></span>';
+  for(var d=1;d<=n;d++){var dt=D(calY,calM,d),f=free(calT,dt),past=dt<TODAY,s=iso(dt),cls='day';
+    if(past)cls+=' past';else if(f===0)cls+=' full';else if(f<=2)cls+=' few';
+    if(pickIn&&s===pickIn||pickOut&&s===pickOut)cls+=' sel';else if(pickIn&&pickOut&&s>pickIn&&s<pickOut)cls+=' rng';
+    var lab=d+' de '+MESES[calM-1]+': '+(past?'pasado':f===0?'completo':f+' libres')+', temporada '+SN[season(dt)].toLowerCase();
+    h+='<button type="button" class="'+cls+'" data-d="'+s+'" style="--sc:'+SC[season(dt)]+'" aria-label="'+lab+'"'+(past?' disabled':'')+'>'+d+'<small>'+(past?'':f===0?'lleno':f+'/'+U[calT].stock)+'</small></button>'}
+  $('#calGrid').innerHTML=h;
+}
+$('#calGrid').addEventListener('click',function(e){var b=e.target.closest('.day');if(!b||b.disabled||b.classList.contains('past'))return;var s=b.dataset.d;
+  if(b.classList.contains('full')&&(!pickIn||pickOut)){ $('#calPick').textContent='Ese día está completo para '+U[calT].short.toLowerCase()+'s. Probá otro tipo o fecha.';return}
+  if(!pickIn||pickOut||s<=pickIn){pickIn=s;pickOut=null;$('#calPick').textContent='Llegada: '+nice(s)+'. Ahora elegí la salida.'}
+  else{pickOut=s;$('#calPick').textContent='Del '+nice(pickIn)+' al '+nice(pickOut)+'. Ya está en el simulador.';$('#dIn').value=pickIn;$('#dOut').value=pickOut;
+    if(sim.q[calT]===0){sim.q={cab:0,apa:0,sui:0};sim.q[calT]=1;syncSimUI()}calcSim()}
+  renderCal()});
+$('#calPrev').addEventListener('click',function(){calM--;if(calM<1){calM=12;calY--}renderCal()});
+$('#calNext').addEventListener('click',function(){calM++;if(calM>12){calM=1;calY++}renderCal()});
+$$('.seg button').forEach(function(b){b.addEventListener('click',function(){calT=b.dataset.t;$$('.seg button').forEach(function(x){x.setAttribute('aria-pressed',x===b)});renderCal()})});
+function nice(s){var d=parse(s);return d.getDate()+' de '+MESES[d.getMonth()]}
+
+/* SIMULADOR */
+var sim={ad:2,ki:2,q:{cab:1,apa:0,sui:0}};
+function syncSimUI(){$('#ad').textContent=sim.ad;$('#ki').textContent=sim.ki;['cab','apa','sui'].forEach(function(t){$('#q-'+t).textContent=sim.q[t]})}
+$('#simForm').addEventListener('click',function(e){var b=e.target.closest('button[data-s]');if(!b)return;var k=b.dataset.s,d=+b.dataset.d;
+  if(k==='ad'){sim.ad=Math.min(40,Math.max(1,sim.ad+d))}else if(k==='ki'){sim.ki=Math.min(30,Math.max(0,sim.ki+d))}else{sim.q[k]=Math.min(U[k].stock,Math.max(0,sim.q[k]+d))}
+  syncSimUI();calcSim()});
+$('#dIn').addEventListener('change',function(){var i=$('#dIn').value;if(i){var o=parse(i);o.setDate(o.getDate()+1);$('#dOut').min=iso(o);if(!$('#dOut').value||$('#dOut').value<=i){o.setDate(o.getDate()+2);$('#dOut').value=iso(o)}}calcSim()});
+$('#dOut').addEventListener('change',calcSim);
+var lastCalc=null;
+function calcSim(){
+  var i=$('#dIn').value,o=$('#dOut').value,lines='',warn='';lastCalc=null;
+  var units=sim.q.cab+sim.q.apa+sim.q.sui,cap=sim.q.cab*U.cab.cap+sim.q.apa*U.apa.cap+sim.q.sui*U.sui.cap,ppl=sim.ad+sim.ki;
+  if(!i||!o||o<=i){$('#tkDates').textContent='Elegí llegada y salida';$('#tkLines').innerHTML='';['#tkTotal','#tkSena','#tkSaldo'].forEach(function(s){$(s).textContent='—'});$('#tkWarn').innerHTML='';return}
+  var a=parse(i),b=parse(o),nights=Math.round((b-a)/864e5),bySeason={baja:0,media:0,alta:0},total=0;
+  for(var d=new Date(a);d<b;d.setDate(d.getDate()+1)){var s=season(d);bySeason[s]++;['cab','apa','sui'].forEach(function(t){total+=sim.q[t]*U[t].r[s]})}
+  $('#tkDates').textContent=nice(i)+' → '+nice(o)+' · '+nights+' noche'+(nights>1?'s':'')+' · '+ppl+' persona'+(ppl>1?'s':'');
+  ['cab','apa','sui'].forEach(function(t){if(!sim.q[t])return;['baja','media','alta'].forEach(function(s){if(bySeason[s])lines+='<div class="ln"><span>'+sim.q[t]+' × '+U[t].short+' · '+bySeason[s]+' noche'+(bySeason[s]>1?'s':'')+' '+SN[s].toLowerCase()+'</span><span>'+fmt(sim.q[t]*bySeason[s]*U[t].r[s])+'</span></div>'})});
+  if(!units)warn='<div class="warn">Sumá al menos una unidad.</div>';
+  else if(cap<ppl)warn='<div class="warn">Son '+ppl+' personas y estas unidades alojan hasta '+cap+'. Sumá otra unidad o usá la mesa larga.</div>';
+  if(bySeason.alta&&a>=D(2027,1,2)&&a<=D(2027,2,28)&&nights<3)warn+='<div class="warn">En verano la estadía mínima es de 3 noches (ejemplo).</div>';
+  $('#tkLines').innerHTML=lines;$('#tkTotal').textContent=fmt(total);$('#tkSena').textContent=fmt(total*.3);$('#tkSaldo').textContent=fmt(total-Math.round(total*.3));$('#tkWarn').innerHTML=warn;
+  var txt='Hola Sueño Dorado, quiero consultar del '+nice(i)+' al '+nice(o)+' para '+sim.ad+' adultos y '+sim.ki+' chicos: '+['cab','apa','sui'].filter(function(t){return sim.q[t]}).map(function(t){return sim.q[t]+' '+U[t].short.toLowerCase()}).join(', ')+'.';
+  $('#waBtn').href='https://wa.me/5493546435922?text='+encodeURIComponent(txt);
+  lastCalc={total:total,sena:Math.round(total*.3),ok:!warn};
+}
+$('#payBtn').addEventListener('click',function(){
+  if(!lastCalc){$('#tkWarn').innerHTML='<div class="warn">Primero elegí las fechas.</div>';$('#dIn').focus();return}
+  if(!lastCalc.ok){return}
+  $('#mBody').innerHTML='Te llevaríamos a Mercado Pago para abonar <b>'+fmt(lastCalc.sena)+'</b> (30% de '+fmt(lastCalc.total)+') y la reserva quedaría confirmada al instante, con aviso al complejo por WhatsApp.';
+  $('#modal').classList.add('open');$('#mClose').focus()});
+$('#mClose').addEventListener('click',function(){$('#modal').classList.remove('open');$('#payBtn').focus()});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')$('#modal').classList.remove('open')});
+
+/* plano: pins */
+$$('.plan .pin').forEach(function(p){function go(){location.hash=p.dataset.go}p.addEventListener('click',go);p.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}})});
+
+/* rail activo */
+var links=$$('.rail a'),secs=links.map(function(a){return $(a.getAttribute('href'))});
+if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){var id='#'+en.target.id;links.forEach(function(a){var on=a.getAttribute('href')===id;a.classList.toggle('on',on);if(on){a.setAttribute('aria-current','true');var r=a.closest('.rail');if(r&&r.scrollWidth>r.clientWidth){r.scrollTo({left:a.offsetLeft-20,behavior:'smooth'})}}else a.removeAttribute('aria-current')})}})},{rootMargin:'-40% 0px -55% 0px'});secs.forEach(function(s){io.observe(s)})}
+
+/* init */
+nucleos=JSON.parse(JSON.stringify(PRESETS.tres));renderNucleos();
+renderCal();
+$('#dIn').value='2027-01-15';$('#dOut').value='2027-01-20';syncSimUI();calcSim();
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Complejo Sueño Dorado"></script>
+</body>
+</html>
