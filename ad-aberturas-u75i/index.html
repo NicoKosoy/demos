@@ -1,0 +1,780 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>AD Aberturas · Cotizador por terminación (prototipo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@400;500;600;700;800&family=Funnel+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --peltre:#E9E7E2;
+  --peltre-2:#DEDBD4;
+  --paper:#F7F6F2;
+  --ink:#18191B;
+  --ink-2:#5A5D61;
+  --line:#CFCBC2;
+  --bronce:#9A6B3C;
+  --bronce-d:#6F4B27;
+  --acero:#4F5D66;
+  --glass:#CFDDE2;
+  --wa:#1F8A4C;
+  --fin:#C3C6C8; /* terminación elegida */
+  --display:"Funnel Display",Georgia,serif;
+  --sans:"Funnel Sans",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--peltre);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;overflow-x:hidden}
+img{max-width:100%;display:block}
+button,input,select{font:inherit;color:inherit}
+a{color:inherit}
+.wrap{max-width:1240px;margin:0 auto;padding:0 28px}
+.num{font-variant-numeric:tabular-nums}
+
+/* aviso */
+.proto{background:var(--ink);color:#EDEBE6;font-size:13.5px}
+.proto .wrap{display:flex;gap:14px;align-items:center;justify-content:space-between;padding-top:9px;padding-bottom:9px;flex-wrap:wrap}
+.proto b{color:#E7C89F;font-weight:600}
+.proto button{background:transparent;border:1px solid #6b6d70;border-radius:999px;padding:4px 12px;cursor:pointer;font-size:13px;color:#EDEBE6}
+.proto button:hover{border-color:#E7C89F;color:#E7C89F}
+
+/* nav */
+header.nav{position:sticky;top:0;z-index:30;background:rgba(233,231,226,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+header.nav .wrap{display:flex;align-items:center;gap:24px;height:66px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.brand img{height:34px;width:auto}
+.brand .txt{font-family:var(--display);font-weight:700;font-size:20px;letter-spacing:-.01em}
+.nav ul{display:flex;gap:22px;list-style:none;margin:0 0 0 auto;padding:0;font-size:15px}
+.nav ul a{text-decoration:none;color:var(--ink-2)}
+.nav ul a:hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:999px;padding:12px 20px;font-weight:600;cursor:pointer;text-decoration:none;font-size:15px;transition:transform .15s, background .15s}
+.btn:active{transform:translateY(1px)}
+.btn-ink{background:var(--ink);color:#fff}
+.btn-ink:hover{background:#000}
+.btn-wa{background:var(--wa);color:#fff}
+.btn-wa:hover{background:#18723f}
+.btn-ghost{background:transparent;border:1.5px solid var(--ink);color:var(--ink)}
+.btn svg{width:18px;height:18px}
+.nav .btn{padding:9px 16px;font-size:14px}
+
+/* hero */
+.hero{padding:56px 0 30px}
+.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center}
+.kick{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px}
+.kick span{font-size:13px;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:5px 12px;color:var(--ink-2)}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(40px,5.6vw,76px);line-height:.98;letter-spacing:-.025em;margin:0 0 22px}
+h1 em{font-style:normal;color:var(--bronce)}
+.lead{font-size:18.5px;color:var(--ink-2);max-width:34em;margin:0 0 28px}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap}
+.fan-box{position:relative}
+.fan{width:100%;height:auto;display:block;overflow:visible}
+.fan .blade{cursor:pointer;transform-box:view-box;transition:transform .9s cubic-bezier(.2,.8,.2,1), filter .2s}
+.fan .blade:hover{filter:brightness(1.06)}
+.fan .blade text{font-family:var(--sans);font-size:13px;font-weight:600;letter-spacing:.02em;pointer-events:none}
+.fan .blade.sel rect.b{stroke:var(--bronce);stroke-width:3}
+.fan-read{position:absolute;left:0;bottom:4px;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:12px 16px;min-width:220px;box-shadow:0 10px 30px -18px rgba(0,0,0,.4)}
+.fan-read small{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-2)}
+.fan-read strong{font-family:var(--display);font-size:22px;display:block;line-height:1.15}
+.fan-read span{font-size:14px;color:var(--ink-2)}
+.fan-hint{font-size:13px;color:var(--ink-2);text-align:right;margin-top:6px}
+
+/* datos */
+.facts{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--paper)}
+.facts .wrap{display:grid;grid-template-columns:repeat(4,1fr)}
+.facts div{padding:20px 18px;border-left:1px solid var(--line)}
+.facts div:first-child{border-left:0;padding-left:0}
+.facts b{font-family:var(--display);font-size:34px;font-weight:700;line-height:1;display:block;letter-spacing:-.02em}
+.facts span{font-size:14px;color:var(--ink-2)}
+
+/* secciones */
+section{padding:72px 0}
+.sec-h{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:30px;flex-wrap:wrap}
+.sec-h h2{font-family:var(--display);font-weight:700;font-size:clamp(30px,3.6vw,46px);line-height:1.02;letter-spacing:-.02em;margin:0;max-width:16em}
+.sec-h p{margin:0;color:var(--ink-2);max-width:30em}
+.eyebrow{font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--bronce-d);font-weight:600;margin-bottom:10px;display:block}
+
+/* banco */
+.bench{display:grid;grid-template-columns:1.25fr .9fr;gap:0;background:var(--paper);border:1px solid var(--line);border-radius:22px;overflow:hidden}
+.stage{position:relative;padding:22px 22px 0;background:
+  linear-gradient(var(--peltre-2) 1px,transparent 1px) 0 0/24px 24px,
+  linear-gradient(90deg,var(--peltre-2) 1px,transparent 1px) 0 0/24px 24px, #F1EFEA;border-right:1px solid var(--line);display:flex;flex-direction:column}
+.stage-top{display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:13px;color:var(--ink-2)}
+.stage-top .tag{background:var(--ink);color:#fff;border-radius:999px;padding:4px 11px;font-weight:600}
+#plano{width:100%;height:auto;flex:1;min-height:340px;max-height:520px;margin:6px 0 4px}
+.dim text{font-family:var(--sans);font-size:15px;font-weight:600;fill:var(--ink)}
+.obras-strip{border-top:1px solid var(--line);margin:0 -22px;padding:14px 22px 18px;background:var(--paper)}
+.obras-strip header{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:10px}
+.obras-strip h3{margin:0;font-size:15px;font-weight:600}
+.obras-strip a{font-size:13px;color:var(--ink-2)}
+.thumbs{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:4px}
+.thumbs figure{margin:0;flex:0 0 132px;height:96px;border-radius:10px;overflow:hidden;background:var(--peltre-2);scroll-snap-align:start;position:relative}
+.thumbs img{width:100%;height:100%;object-fit:cover}
+.thumbs .empty{font-size:13px;color:var(--ink-2);padding:20px 0}
+
+.ficha{padding:24px 24px 22px;display:flex;flex-direction:column;gap:18px}
+.field>label,.field>.lbl{display:flex;justify-content:space-between;font-size:13px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-2);margin-bottom:8px}
+.seg{display:flex;background:var(--peltre);border-radius:12px;padding:4px;gap:4px}
+.seg button{flex:1;border:0;background:transparent;border-radius:9px;padding:9px 6px;cursor:pointer;font-weight:600;font-size:14.5px;color:var(--ink-2)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pills button{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:7px 13px;cursor:pointer;font-size:14px}
+.pills button[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:#fff}
+.pills button:disabled{opacity:.35;cursor:not-allowed}
+.meas{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.meas .box{background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:8px 12px}
+.meas .box span{font-size:12px;color:var(--ink-2);display:block}
+.meas .box div{display:flex;align-items:baseline;gap:4px}
+.meas input[type=number]{border:0;outline:0;width:100%;font-family:var(--display);font-size:26px;font-weight:700;background:transparent;padding:0}
+.meas input[type=range]{width:100%;accent-color:var(--bronce);margin-top:4px}
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(44px,1fr));gap:8px}
+.sw{aspect-ratio:1;border-radius:10px;border:2px solid transparent;cursor:pointer;position:relative;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}
+.sw[aria-pressed="true"]{border-color:var(--bronce);box-shadow:0 0 0 2px var(--paper) inset, inset 0 0 0 3px rgba(0,0,0,.1)}
+.fin-name{font-size:14px;margin-top:6px;color:var(--ink-2)}
+.row2{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.check{display:flex;gap:9px;align-items:center;font-size:15px;cursor:pointer}
+.check input{width:18px;height:18px;accent-color:var(--bronce)}
+.qty{display:flex;align-items:center;border:1.5px solid var(--line);border-radius:999px;background:#fff}
+.qty button{border:0;background:transparent;width:36px;height:36px;font-size:20px;cursor:pointer}
+.qty output{min-width:26px;text-align:center;font-weight:700}
+.price{border-top:1px dashed var(--line);padding-top:16px}
+.price small{font-size:13px;color:var(--ink-2);display:block}
+.price .big{font-family:var(--display);font-size:clamp(30px,3vw,40px);font-weight:700;letter-spacing:-.02em;line-height:1.1}
+.price .sub{font-size:14px;color:var(--ink-2)}
+.ficha .btn{justify-content:center}
+
+/* lista */
+.lista{margin-top:22px;display:grid;grid-template-columns:1.25fr .9fr;gap:22px}
+.items{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:18px 20px}
+.items h3,.send h3{margin:0 0 10px;font-family:var(--display);font-size:22px}
+.items ol{list-style:none;margin:0;padding:0}
+.items li{display:grid;grid-template-columns:38px 1fr auto auto;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.items li .chip{width:38px;height:38px;border-radius:8px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}
+.items li b{display:block;font-size:15px}
+.items li span{font-size:13px;color:var(--ink-2)}
+.items li .p{font-weight:700;white-space:nowrap}
+.items li button{border:0;background:transparent;cursor:pointer;font-size:20px;color:var(--ink-2);padding:4px 8px}
+.items .none{color:var(--ink-2);font-size:15px;padding:8px 0}
+.items .tot{display:flex;justify-content:space-between;border-top:2px solid var(--ink);margin-top:6px;padding-top:12px;font-weight:700;font-size:18px}
+.send{background:var(--ink);color:#EDEBE6;border-radius:18px;padding:20px}
+.send p{color:#B9BBBE;font-size:14.5px;margin:0 0 14px}
+.send input{width:100%;background:#26282b;border:1px solid #3a3d41;border-radius:10px;padding:11px 12px;margin-bottom:10px;color:#fff}
+.send input::placeholder{color:#8d9094}
+.send .btn{width:100%;justify-content:center;margin-top:4px}
+.send .fine{font-size:12.5px;color:#8d9094;margin-top:10px}
+
+/* sistemas */
+.sys{border-top:1px solid var(--ink)}
+.sys-row{display:grid;grid-template-columns:60px 1.1fr 1.4fr 180px;gap:20px;align-items:center;padding:18px 0;border-bottom:1px solid var(--line)}
+.sys-row .n{font-family:var(--display);font-size:30px;font-weight:700;color:var(--bronce)}
+.sys-row h3{margin:0;font-family:var(--display);font-size:24px;line-height:1.1}
+.sys-row h3 small{display:block;font-family:var(--sans);font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-2);margin-top:4px}
+.sys-row p{margin:0;color:var(--ink-2);font-size:15.5px}
+.sys-row figure{margin:0;height:110px;border-radius:12px;overflow:hidden;background:var(--peltre-2)}
+.sys-row figure img{width:100%;height:100%;object-fit:cover}
+
+/* ruta */
+.ruta{background:var(--ink);color:#EDEBE6}
+.ruta .sec-h p{color:#B9BBBE}
+.ruta .eyebrow{color:#E7C89F}
+.route-grid{display:grid;grid-template-columns:1fr 1.4fr 1fr;gap:24px;align-items:center}
+.site{border:1px solid #3a3d41;border-radius:18px;padding:22px}
+.site small{text-transform:uppercase;letter-spacing:.1em;font-size:12px;color:#E7C89F;font-weight:600}
+.site h3{font-family:var(--display);font-size:26px;margin:6px 0 8px;line-height:1.1}
+.site p{margin:0 0 4px;color:#C9CBCE;font-size:15px}
+.site a{color:#fff}
+#rutaSvg{width:100%;height:auto}
+#rutaSvg text{font-family:var(--sans);fill:#C9CBCE;font-size:13px}
+
+footer{padding:36px 0 50px;font-size:14px;color:var(--ink-2)}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+
+/* modal precios */
+.modal{position:fixed;inset:0;background:rgba(10,10,12,.55);z-index:60;display:flex;align-items:flex-start;justify-content:center;padding:30px 14px;overflow:auto}
+.sheet{background:var(--paper);border-radius:18px;max-width:760px;width:100%;padding:24px}
+.sheet h2{font-family:var(--display);margin:0 0 4px;font-size:28px}
+.sheet p{color:var(--ink-2);margin:0 0 16px;font-size:14.5px}
+.sheet table{width:100%;border-collapse:collapse;font-size:14.5px}
+.sheet th{text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-2);padding:12px 6px 6px;border-bottom:1px solid var(--ink)}
+.sheet td{padding:6px;border-bottom:1px solid var(--line)}
+.sheet td input{width:120px;border:1.5px solid var(--line);border-radius:8px;padding:6px 8px;text-align:right;background:#fff}
+.sheet .acts{display:flex;gap:10px;justify-content:flex-end;margin-top:18px;flex-wrap:wrap}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px;font-size:14px;z-index:70;opacity:0;transition:opacity .25s;pointer-events:none}
+.toast.on{opacity:1}
+
+@media (max-width:980px){
+  .hero .wrap{grid-template-columns:1fr}
+  .fan-box{max-width:560px}
+  .bench,.lista{grid-template-columns:1fr}
+  .stage{border-right:0;border-bottom:1px solid var(--line)}
+  .route-grid{grid-template-columns:1fr}
+  .sys-row{grid-template-columns:44px 1fr 120px}
+  .sys-row p{grid-column:2 / 4;grid-row:2}
+  .nav ul{display:none}
+  .nav .btn{margin-left:auto}
+}
+@media (max-width:600px){
+  .wrap{padding:0 16px}
+  .hero{padding:34px 0 20px}
+  .facts .wrap{grid-template-columns:1fr 1fr}
+  .facts div{border-left:0;padding:16px 0;border-top:1px solid var(--line)}
+  .facts div:nth-child(-n+2){border-top:0}
+  .facts div:nth-child(even){padding-left:14px;border-left:1px solid var(--line)}
+  section{padding:52px 0}
+  .ficha{padding:18px 16px}
+  .stage{padding:16px 16px 0}
+  .obras-strip{margin:0 -16px;padding:12px 16px 16px}
+  .sys-row{grid-template-columns:36px 1fr;gap:12px}
+  .sys-row figure{grid-column:1 / 3;height:150px}
+  .sys-row p{grid-column:1 / 3;grid-row:auto}
+  .items li{grid-template-columns:32px 1fr auto;}
+  .items li .chip{width:32px;height:32px}
+  .items li button{grid-column:3;grid-row:1}
+  .items li .p{grid-column:2 / 4;font-size:14px}
+  .brand .txt{font-size:17px}
+  .fan-read{position:static;margin-top:8px}
+  .sheet td input{width:96px}
+}
+@media (prefers-reduced-motion:reduce){ .fan .blade{transition:none} html{scroll-behavior:auto} }
+</style>
+</head>
+<body>
+
+<div class="proto">
+  <div class="wrap">
+    <span><b>Prototipo de demostración preparado para AD Aberturas.</b> Los precios son de ejemplo y se cambian desde una tabla.</span>
+    <button type="button" id="openAdmin">Editar tabla de precios</button>
+  </div>
+</div>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="AD Aberturas">
+      <img src="https://www.adaberturas.com.ar/img/header-logo.svg" alt="AD Aberturas" onerror="this.remove();document.querySelector('.brand .txt').hidden=false">
+      <span class="txt" hidden>AD Aberturas</span>
+    </a>
+    <ul>
+      <li><a href="#cotizar">Cotizar</a></li>
+      <li><a href="#sistemas">Sistemas</a></li>
+      <li><a href="#donde">Fábrica y showroom</a></li>
+    </ul>
+    <a class="btn btn-wa" href="https://wa.me/5493493447230" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.6-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.1 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.7-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.3Z"/></svg>
+      WhatsApp
+    </a>
+  </div>
+</header>
+
+<main id="top">
+<section class="hero" style="padding-top:56px">
+  <div class="wrap">
+    <div>
+      <div class="kick"><span>Showroom en Rafaela</span><span>Fábrica en Humberto 1º</span><span>30 años</span></div>
+      <h1>155 obras publicadas. <em>12 terminaciones.</em> Elegí la tuya y cotizá.</h1>
+      <p class="lead">Aluminio y PVC fabricados sobre Ruta 13 y mostrados en Bv. Roca 1019. Elegí el color en el abanico, cargá las medidas y mirá un precio estimado al instante. La lista nos llega por WhatsApp, lista para ir a medir.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-ink" href="#cotizar">Cotizar mi abertura</a>
+        <a class="btn btn-ghost" href="#sistemas">Ver sistemas</a>
+      </div>
+    </div>
+    <div class="fan-box">
+      <svg class="fan" id="fan" viewBox="0 0 560 470" role="group" aria-label="Abanico de terminaciones"></svg>
+      <div class="fan-read" aria-live="polite">
+        <small>Terminación elegida</small>
+        <strong id="fanName">Anodizado Natural</strong>
+        <span id="fanInfo">Aluminio · 37 obras en la web de AD</span>
+      </div>
+      <div class="fan-hint">Tocá una hoja del abanico</div>
+    </div>
+  </div>
+</section>
+
+<div class="facts">
+  <div class="wrap">
+    <div><b class="num">30</b><span>años en el rubro, según su web</span></div>
+    <div><b class="num">155</b><span>obras publicadas en su galería</span></div>
+    <div><b class="num">2</b><span>materiales: aluminio y PVC</span></div>
+    <div><b class="num">2</b><span>lugares: fábrica en Ruta 13 y showroom en Rafaela</span></div>
+  </div>
+</div>
+
+<section id="cotizar">
+  <div class="wrap">
+    <div class="sec-h">
+      <div>
+        <span class="eyebrow">Banco de cotización</span>
+        <h2>Dibujá la abertura, elegí la terminación y sumala a la lista.</h2>
+      </div>
+      <p>Podés armar toda la casa: cada abertura se suma a la lista y se manda junta por WhatsApp con medidas, sistema, vidrio y color.</p>
+    </div>
+
+    <div class="bench">
+      <div class="stage">
+        <div class="stage-top">
+          <span class="tag" id="stageTag">Aluminio · A30 New</span>
+          <span id="stageArea" class="num">1,80 m²</span>
+        </div>
+        <svg id="plano" viewBox="0 0 640 480" aria-label="Plano de la abertura con medidas"></svg>
+        <div class="obras-strip">
+          <header>
+            <h3 id="obrasTitle">Obras de AD en Anodizado Natural</h3>
+            <a href="https://www.adaberturas.com.ar/obras/lista/" target="_blank" rel="noopener">Ver galería completa</a>
+          </header>
+          <div class="thumbs" id="thumbs"></div>
+        </div>
+      </div>
+
+      <div class="ficha">
+        <div class="field">
+          <span class="lbl">Material</span>
+          <div class="seg" id="matSeg">
+            <button type="button" data-v="alu" aria-pressed="true">Aluminio</button>
+            <button type="button" data-v="pvc" aria-pressed="false">PVC</button>
+          </div>
+        </div>
+        <div class="field">
+          <span class="lbl">Sistema</span>
+          <div class="pills" id="sysPills"></div>
+        </div>
+        <div class="field">
+          <span class="lbl">Tipo</span>
+          <div class="pills" id="typePills"></div>
+        </div>
+        <div class="field">
+          <span class="lbl">Medidas del vano <span>cm</span></span>
+          <div class="meas">
+            <div class="box"><span>Ancho</span><div><input type="number" id="wIn" min="40" max="400" value="150" inputmode="numeric" aria-label="Ancho en centímetros"></div><input type="range" id="wR" min="40" max="400" value="150" aria-label="Ancho"></div>
+            <div class="box"><span>Alto</span><div><input type="number" id="hIn" min="40" max="270" value="120" inputmode="numeric" aria-label="Alto en centímetros"></div><input type="range" id="hR" min="40" max="270" value="120" aria-label="Alto"></div>
+          </div>
+        </div>
+        <div class="field">
+          <span class="lbl">Vidrio</span>
+          <div class="pills" id="glassPills"></div>
+        </div>
+        <div class="field">
+          <span class="lbl">Terminación</span>
+          <div class="swatches" id="swatches"></div>
+          <div class="fin-name" id="finName"></div>
+        </div>
+        <div class="row2">
+          <label class="check"><input type="checkbox" id="mosq"> Con mosquitero</label>
+          <div class="qty"><button type="button" id="qMinus" aria-label="Menos">−</button><output id="qOut" class="num">1</output><button type="button" id="qPlus" aria-label="Más">+</button></div>
+        </div>
+        <div class="price">
+          <small>Precio estimado por unidad (de ejemplo)</small>
+          <div class="big num" id="priceBig">$ 0</div>
+          <div class="sub num" id="priceSub"></div>
+        </div>
+        <button type="button" class="btn btn-ink" id="addBtn">Sumar a la lista</button>
+      </div>
+    </div>
+
+    <div class="lista">
+      <div class="items">
+        <h3>Lista de la obra</h3>
+        <ol id="itemList"></ol>
+        <div class="tot"><span>Total estimado</span><span class="num" id="totOut">$ 0</span></div>
+      </div>
+      <div class="send">
+        <h3>Mandar a AD Aberturas</h3>
+        <p>Les llega por WhatsApp al showroom con cada abertura detallada. Después coordinan la medición.</p>
+        <input id="cName" placeholder="Tu nombre" autocomplete="name">
+        <input id="cCity" placeholder="Localidad (ej. Rafaela, Sunchales, Esperanza)">
+        <button type="button" class="btn btn-wa" id="sendBtn">Enviar pedido por WhatsApp</button>
+        <div class="fine">El precio es orientativo. El valor final se confirma después de medir el vano.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="sistemas" style="background:var(--paper);border-top:1px solid var(--line)">
+  <div class="wrap">
+    <div class="sec-h">
+      <div>
+        <span class="eyebrow">Lo que muestran en su web</span>
+        <h2>De la ventana de casa a la piel de vidrio.</h2>
+      </div>
+      <p>Los sistemas que AD publica en sus novedades y en su galería de obras. Los de edificios se cotizan con plano.</p>
+    </div>
+    <div class="sys" id="sysList"></div>
+  </div>
+</section>
+
+<section class="ruta" id="donde">
+  <div class="wrap">
+    <div class="sec-h">
+      <div>
+        <span class="eyebrow">Dos puntas de la misma ruta</span>
+        <h2>Se fabrica en Humberto 1º. Se elige en Rafaela.</h2>
+      </div>
+      <p>El pedido que armás acá llega al showroom; la fábrica recibe las medidas ya cargadas.</p>
+    </div>
+    <div class="route-grid">
+      <div class="site">
+        <small>Fábrica</small>
+        <h3>Ruta 13, Humberto 1º</h3>
+        <p><a href="mailto:fabrica@adaberturas.com.ar">fabrica@adaberturas.com.ar</a></p>
+      </div>
+      <svg id="rutaSvg" viewBox="0 0 460 170" aria-hidden="true">
+        <path d="M60 120 C 140 120, 150 40, 240 60 S 380 120, 430 60" fill="none" stroke="#3a3d41" stroke-width="14" stroke-linecap="round"/>
+        <path d="M60 120 C 140 120, 150 40, 240 60 S 380 120, 430 60" fill="none" stroke="#E7C89F" stroke-width="2" stroke-dasharray="10 10" id="rutaDash"/>
+        <circle cx="60" cy="120" r="11" fill="#E7C89F"/><circle cx="60" cy="120" r="4" fill="#18191B"/>
+        <circle cx="430" cy="60" r="11" fill="#fff"/><circle cx="430" cy="60" r="4" fill="#18191B"/>
+        <rect x="200" y="20" width="62" height="24" rx="5" fill="#E7C89F"/>
+        <text x="231" y="37" text-anchor="middle" style="fill:#18191B;font-weight:700">RUTA 13</text>
+        <text x="60" y="152" text-anchor="middle">Humberto 1º</text>
+        <text x="425" y="95" text-anchor="middle">Rafaela</text>
+      </svg>
+      <div class="site">
+        <small>Showroom</small>
+        <h3>Bv. Roca 1019, Rafaela</h3>
+        <p><a href="tel:+543492437013">03492 437013</a> · <a href="https://wa.me/5493493447230" target="_blank" rel="noopener">3493 447230</a></p>
+        <p><a href="mailto:ventas@adaberturas.com.ar">ventas@adaberturas.com.ar</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>AD Aberturas · Aluminio y PVC · Rafaela, Santa Fe · <a href="https://www.instagram.com/adaberturas/" target="_blank" rel="noopener">@adaberturas</a></span>
+    <span>Prototipo de demostración preparado para AD Aberturas por Resolviendo Kos. Precios de ejemplo.</span>
+  </div>
+</footer>
+
+<div class="modal" id="admin" hidden role="dialog" aria-modal="true" aria-labelledby="admTitle">
+  <div class="sheet">
+    <h2 id="admTitle">Tabla de precios</h2>
+    <p>Así cambian ustedes los valores sin tocar la página. En este prototipo se guardan solo en este navegador.</p>
+    <div id="admBody"></div>
+    <div class="acts">
+      <button type="button" class="btn btn-ghost" id="resetP">Volver a los de ejemplo</button>
+      <button type="button" class="btn btn-ghost" id="closeAdmin">Cerrar</button>
+      <button type="button" class="btn btn-ink" id="saveP">Guardar precios</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const $ = id => document.getElementById(id);
+const O = p => "https://www.adaberturas.com.ar/data/obras/" + p;
+
+/* 12 terminaciones reales de la galería de AD (cantidad de obras contadas en su web) */
+const FIN = [
+  {id:"anat", mat:"alu", name:"Anodizado Natural", n:37, kind:"metal", c:"#C3C6C8", c2:"#E6E8E9", txt:"#18191B",
+   obras:["119-0000_th.jpg","114-0000_th.jpg","110-0000_th.jpg","105-0000_th.jpg","100-0000_th.jpg","18-0002_th.jpg","18-0000_th.jpg","17-0000_th.jpg"]},
+  {id:"aneg", mat:"alu", name:"Anodizado Negro", n:21, kind:"metal", c:"#26272A", c2:"#46484C", txt:"#fff",
+   obras:["159-0000_th.jpeg","158-0000_th.jpeg","156-0000_th.jpeg","153-0000_th.jpeg","96-0000_th.jpg","92-0000_th.jpg","88-0000_th.jpg","85-0000_th.jpg"]},
+  {id:"apel", mat:"alu", name:"Anodizado Peltre", n:4, kind:"metal", c:"#7B7D7A", c2:"#A2A49F", txt:"#fff",
+   obras:["33-0000_th.jpg","32-0000_th.jpg","31-0000_th.jpg","30-0000_th.jpg"]},
+  {id:"bron", mat:"alu", name:"Bronce Antiguo", n:2, kind:"metal", c:"#5A4331", c2:"#7E6248", txt:"#fff",
+   obras:["36-0000_th.jpg","35-0000_th.jpg"]},
+  {id:"ablan", mat:"alu", name:"Aluminio Blanco", n:3, kind:"flat", c:"#F1F1EE", c2:"#FFFFFF", txt:"#18191B",
+   obras:["34-0000_th.jpg","15-0000_th.jpg","14-0000_th.jpg"]},
+  {id:"pblan", mat:"pvc", name:"PVC Blanco", n:32, kind:"flat", c:"#F6F5F1", c2:"#FFFFFF", txt:"#18191B",
+   obras:["139-0000_th.jpg","136-0000_th.jpg","132-0000_th.jpg","84-0000_th.jpg","80-0000_th.jpg","47-0003_th.jpg","47-0005_th.jpg","47-0001_th.jpg"]},
+  {id:"pneg", mat:"pvc", name:"PVC Negro", n:7, kind:"flat", c:"#1E1E20", c2:"#38383B", txt:"#fff",
+   obras:["74-0000_th.jpg","72-0000_th.jpg","71-0000_th.jpg","70-0000_th.jpg","69-0000_th.jpg","68-0000_th.jpg","67-0000_th.jpg"]},
+  {id:"pant", mat:"pvc", name:"Antracita", n:1, kind:"flat", c:"#3A3F43", c2:"#555B60", txt:"#fff",
+   obras:["37-0000_th.jpg"]},
+  {id:"pnog", mat:"pvc", name:"Nogal", n:9, kind:"wood", c:"#6A4329", c2:"#8A5B3A", txt:"#fff",
+   obras:["151-0000_th.jpeg","150-0000_th.jpeg","60-0001_th.jpg","60-0000_th.jpg","60-0003_th.jpg","60-0002_th.jpg"]},
+  {id:"pwin", mat:"pvc", name:"Winchester", n:5, kind:"wood", c:"#8B5C36", c2:"#B07E52", txt:"#fff",
+   obras:["147-0000_th.jpg","148-0000_th.jpg","146-0000_th.jpg","145-0000_th.jpg","144-0000_th.jpg"]},
+  {id:"prob", mat:"pvc", name:"Roble Dorado", n:7, kind:"wood", c:"#A4672E", c2:"#C98C4E", txt:"#fff",
+   obras:["143-0000_th.jpg","141-0000_th.jpg","142-0000_th.jpg","140-0000_th.jpg","40-0000_th.jpg","38-0000_th.jpg","39-0000_th.jpg"]},
+  {id:"pbb", mat:"pvc", name:"Black Brown", n:14, kind:"wood", c:"#3A2A22", c2:"#56402F", txt:"#fff",
+   obras:["128-0000_th.jpg","127-0000_th.jpg","125-0000_th.jpg","124-0000_th.jpg","122-0000_th.jpg","120-0000_th.jpg","41-0000_th.jpg"]}
+];
+const SYS = {
+  alu:[{id:"a30", name:"A30 New"},{id:"a40", name:"A40 Compact"}],
+  pvc:[{id:"rehau", name:"Perfil REHAU"}]
+};
+const TYPES = [
+  {id:"corr", name:"Ventana corrediza", mats:["alu","pvc"]},
+  {id:"abrir", name:"Ventana de abrir", mats:["alu","pvc"]},
+  {id:"osci", name:"Oscilobatiente", mats:["pvc"]},
+  {id:"fijo", name:"Paño fijo", mats:["alu","pvc"]},
+  {id:"pvent", name:"Puerta-ventana", mats:["alu","pvc"]},
+  {id:"pivot", name:"Puerta pivotante", mats:["pvc"]}
+];
+const GLASS = [{id:"float", name:"Float 4 mm"},{id:"lam", name:"Laminado 3+3"},{id:"dvh", name:"DVH"}];
+
+const DEFAULT_PRICES = {
+  sys:{a30:240000, a40:325000, rehau:430000},          // $ por m²
+  type:{corr:1, abrir:1.12, osci:1.28, fijo:0.72, pvent:1.08, pivot:1.65}, // multiplicador
+  fin:{anat:1, aneg:1.08, apel:1.08, bron:1.1, ablan:1, pblan:1, pneg:1.12, pant:1.12, pnog:1.16, pwin:1.16, prob:1.16, pbb:1.16},
+  glass:{float:0, lam:48000, dvh:98000},              // $ extra por m²
+  mosq:42000,                                           // $ por unidad
+  minArea:0.6                                           // m² mínimos que se cobran
+};
+const KEY="ad_aberturas_precios_v1";
+function loadP(){ try{ const s=localStorage.getItem(KEY); if(s){ const o=JSON.parse(s); const d=structuredClone(DEFAULT_PRICES); for(const k in o){ if(typeof o[k]==="object") Object.assign(d[k],o[k]); else d[k]=o[k]; } return d; } }catch(e){} return structuredClone(DEFAULT_PRICES); }
+let P = loadP();
+
+const st = {mat:"alu", sys:"a30", type:"corr", w:150, h:120, glass:"dvh", fin:"anat", mosq:false, q:1};
+let items = [];
+
+const money = v => "$ " + Math.round(v).toLocaleString("es-AR");
+const finById = id => FIN.find(f=>f.id===id);
+
+function unitPrice(s){
+  const area = Math.max(s.w*s.h/10000, P.minArea);
+  const base = P.sys[s.sys] * P.type[s.type] * P.fin[s.fin];
+  return area*base + area*P.glass[s.glass] + (s.mosq && s.type!=="fijo" ? P.mosq : 0);
+}
+
+/* ---------- abanico ---------- */
+const FANX=70, FANY=430;
+function fillFor(f){ return f.kind==="wood" ? `url(#wood-${f.id})` : f.kind==="metal" ? `url(#met-${f.id})` : f.c; }
+function defsFor(){
+  return FIN.map(f=>{
+    if(f.kind==="wood") return `<pattern id="wood-${f.id}" width="60" height="14" patternUnits="userSpaceOnUse"><rect width="60" height="14" fill="${f.c}"/><path d="M0 4 Q15 1 30 4 T60 4 M0 10 Q20 13 40 9 T60 11" stroke="${f.c2}" stroke-width="1.6" fill="none" opacity=".75"/></pattern>`;
+    if(f.kind==="metal") return `<linearGradient id="met-${f.id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${f.c2}"/><stop offset=".45" stop-color="${f.c}"/><stop offset=".55" stop-color="${f.c2}"/><stop offset="1" stop-color="${f.c}"/></linearGradient>`;
+    return "";
+  }).join("");
+}
+function buildFan(){
+  const svg=$("fan");
+  const n=FIN.length, a0=-86, a1=-4;
+  let h=`<defs>${defsFor()}</defs>`;
+  FIN.forEach((f,i)=>{
+    const ang = a0 + (a1-a0)*i/(n-1);
+    h+=`<g class="blade" data-id="${f.id}" data-ang="${ang}" style="transform-origin:${FANX}px ${FANY}px;transform:rotate(-86deg)" tabindex="0" role="button" aria-label="${f.name}">
+      <rect class="b" x="${FANX}" y="${FANY-30}" width="420" height="58" rx="12" fill="${fillFor(f)}" stroke="rgba(0,0,0,.18)" stroke-width="1"/>
+      <text x="${FANX+400}" y="${FANY+5}" text-anchor="end" fill="${f.txt}">${f.name}</text>
+      <text x="${FANX+46}" y="${FANY+5}" fill="${f.txt}" opacity=".7" style="font-size:11px;letter-spacing:.12em">${f.mat==="alu"?"ALUMINIO":"PVC"}</text>
+    </g>`;
+  });
+  h+=`<circle cx="${FANX+16}" cy="${FANY}" r="10" fill="#18191B"/><circle cx="${FANX+16}" cy="${FANY}" r="3.5" fill="#E7C89F"/>`;
+  svg.innerHTML=h;
+  const open=()=>svg.querySelectorAll(".blade").forEach(g=>g.style.transform=`rotate(${g.dataset.ang}deg)`);
+  requestAnimationFrame(()=>requestAnimationFrame(open));
+  svg.querySelectorAll(".blade").forEach(g=>{
+    const pick=()=>{ const f=finById(g.dataset.id); st.mat=f.mat; ensureValid(); st.fin=f.id; renderAll(); };
+    g.addEventListener("click",pick);
+    g.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); pick(); }});
+  });
+}
+function renderFan(){
+  const f=finById(st.fin);
+  $("fan").querySelectorAll(".blade").forEach(g=>g.classList.toggle("sel",g.dataset.id===st.fin));
+  $("fanName").textContent=f.name;
+  $("fanInfo").textContent=`${f.mat==="alu"?"Aluminio":"PVC"} · ${f.n} ${f.n===1?"obra":"obras"} en la web de AD`;
+}
+
+/* ---------- controles ---------- */
+function ensureValid(){
+  if(!SYS[st.mat].some(s=>s.id===st.sys)) st.sys=SYS[st.mat][0].id;
+  const t=TYPES.find(t=>t.id===st.type); if(!t.mats.includes(st.mat)) st.type="corr";
+  if(finById(st.fin).mat!==st.mat) st.fin = st.mat==="alu" ? "anat" : "pblan";
+}
+function pills(el, list, cur, on, disabled){
+  el.innerHTML = list.map(o=>`<button type="button" data-v="${o.id}" aria-pressed="${o.id===cur}" ${disabled&&disabled(o)?"disabled":""}>${o.name}</button>`).join("");
+  el.querySelectorAll("button").forEach(b=>b.onclick=()=>on(b.dataset.v));
+}
+function renderControls(){
+  $("matSeg").querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed", b.dataset.v===st.mat));
+  pills($("sysPills"), SYS[st.mat], st.sys, v=>{st.sys=v; renderAll();});
+  pills($("typePills"), TYPES, st.type, v=>{st.type=v; renderAll();}, t=>!t.mats.includes(st.mat));
+  pills($("glassPills"), GLASS, st.glass, v=>{st.glass=v; renderAll();});
+  const sw=$("swatches");
+  sw.innerHTML = FIN.filter(f=>f.mat===st.mat).map(f=>{
+    const bg = f.kind==="wood" ? `repeating-linear-gradient(170deg, ${f.c} 0 5px, ${f.c2} 5px 7px)` : f.kind==="metal" ? `linear-gradient(135deg, ${f.c2}, ${f.c} 45%, ${f.c2} 55%, ${f.c})` : f.c;
+    return `<button type="button" class="sw" data-v="${f.id}" aria-pressed="${f.id===st.fin}" title="${f.name}" aria-label="${f.name}" style="background:${bg}"></button>`;
+  }).join("");
+  sw.querySelectorAll("button").forEach(b=>b.onclick=()=>{st.fin=b.dataset.v; renderAll();});
+  $("finName").textContent = finById(st.fin).name;
+  $("wIn").value=st.w; $("wR").value=st.w; $("hIn").value=st.h; $("hR").value=st.h;
+  $("mosq").checked=st.mosq; $("mosq").disabled = st.type==="fijo";
+  $("qOut").textContent=st.q;
+}
+
+/* ---------- plano ---------- */
+function renderPlano(){
+  const f=finById(st.fin);
+  const svg=$("plano");
+  const VW=640, VH=480, pad=70;
+  const maxW=VW-pad*2, maxH=VH-pad*2;
+  const sc=Math.min(maxW/st.w, maxH/st.h);
+  const W=st.w*sc, H=st.h*sc, X=(VW-W)/2+10, Y=(VH-H)/2-6;
+  const fr = st.mat==="pvc" ? 16 : 11;  // marco
+  const sash = st.mat==="pvc" ? 12 : 9;
+  const fill = fillFor(f);
+  let g = `<defs>${defsFor()}
+    <linearGradient id="gl" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E3EDF0"/><stop offset=".5" stop-color="#C9DADF"/><stop offset="1" stop-color="#DCE8EB"/></linearGradient>
+    <marker id="ar" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9z" fill="#18191B"/></marker></defs>`;
+  // pared
+  g += `<rect x="${X-26}" y="${Y-26}" width="${W+52}" height="${H+52}" fill="#E4E1DA" stroke="#CFCBC2"/>`;
+  g += `<rect x="${X}" y="${Y}" width="${W}" height="${H}" fill="${fill}" stroke="rgba(0,0,0,.35)" stroke-width="1.2"/>`;
+  const iX=X+fr, iY=Y+fr, iW=W-fr*2, iH=H-fr*2;
+  const pane=(x,y,w,h,frame=true)=>{
+    let s="";
+    if(frame) s+=`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${fill}" stroke="rgba(0,0,0,.3)"/>`;
+    const k=frame?sash:0;
+    s+=`<rect x="${x+k}" y="${y+k}" width="${Math.max(w-2*k,2)}" height="${Math.max(h-2*k,2)}" fill="url(#gl)" stroke="rgba(0,0,0,.25)"/>`;
+    s+=`<path d="M${x+k+8} ${y+k+h*0.35} L${x+k+w*0.3} ${y+k+8}" stroke="#fff" stroke-width="3" opacity=".6"/>`;
+    if(st.glass==="dvh") s+=`<rect x="${x+k+3}" y="${y+k+3}" width="${Math.max(w-2*k-6,1)}" height="${Math.max(h-2*k-6,1)}" fill="none" stroke="#9FB4BB" stroke-width="1" stroke-dasharray="3 3"/>`;
+    return s;
+  };
+  const t=st.type;
+  if(t==="fijo"){ g+=pane(iX,iY,iW,iH,false); }
+  else if(t==="corr"||t==="pvent"){
+    const n = st.w>=240 ? 3 : 2, ov=sash;
+    const pw=(iW+ov*(n-1))/n;
+    for(let i=0;i<n;i++){ const px=iX+i*(pw-ov); g+=pane(px,iY,pw,iH); }
+    const ay=iY+iH*0.5;
+    g+=`<path d="M${iX+pw*0.3} ${ay} h${pw*0.4}" stroke="#18191B" stroke-width="2" marker-end="url(#ar)" marker-start="url(#ar)" opacity=".55"/>`;
+  }
+  else if(t==="abrir"||t==="osci"){
+    const n = st.w>=110 ? 2 : 1, pw=iW/n;
+    for(let i=0;i<n;i++){ const px=iX+i*pw; g+=pane(px,iY,pw,iH);
+      const hingeLeft = n===1 ? true : i===0;
+      const hx = hingeLeft ? px+sash : px+pw-sash, ox = hingeLeft ? px+pw-sash : px+sash;
+      g+=`<path d="M${ox} ${iY+sash} L${hx} ${iY+iH/2} L${ox} ${iY+iH-sash}" fill="none" stroke="#18191B" stroke-width="1.4" stroke-dasharray="7 5" opacity=".6"/>`;
+      if(t==="osci") g+=`<path d="M${px+sash} ${iY+sash} L${px+pw/2} ${iY+iH-sash} L${px+pw-sash} ${iY+sash}" fill="none" stroke="#9A6B3C" stroke-width="1.4" stroke-dasharray="3 5"/>`;
+    }
+  }
+  else if(t==="pivot"){
+    g+=`<rect x="${iX}" y="${iY}" width="${iW}" height="${iH}" fill="${fill}" stroke="rgba(0,0,0,.3)"/>`;
+    const gw=Math.min(iW*0.18,40);
+    g+=`<rect x="${iX+iW/2-gw/2}" y="${iY+iH*0.08}" width="${gw}" height="${iH*0.84}" fill="url(#gl)" stroke="rgba(0,0,0,.25)"/>`;
+    g+=`<rect x="${iX+iW*0.82}" y="${iY+iH*0.35}" width="6" height="${iH*0.3}" rx="3" fill="#111"/>`;
+    g+=`<line x1="${iX+iW*0.25}" y1="${iY-4}" x2="${iX+iW*0.25}" y2="${iY+iH+4}" stroke="#9A6B3C" stroke-width="1.4" stroke-dasharray="4 4"/>`;
+  }
+  if(st.mosq && t!=="fijo"){
+    g+=`<rect x="${iX+4}" y="${iY+4}" width="${Math.min(iW*0.5,iW-8)}" height="${iH-8}" fill="url(#mesh)" opacity=".5"/>`;
+    g=g.replace("</defs>",`<pattern id="mesh" width="5" height="5" patternUnits="userSpaceOnUse"><path d="M0 0 H5 M0 0 V5" stroke="#333" stroke-width=".5"/></pattern></defs>`);
+  }
+  // cotas
+  const dy=Y+H+46, dx=X-46;
+  g+=`<g class="dim">
+    <line x1="${X}" y1="${Y+H+30}" x2="${X}" y2="${dy+6}" stroke="#18191B" stroke-width=".8"/>
+    <line x1="${X+W}" y1="${Y+H+30}" x2="${X+W}" y2="${dy+6}" stroke="#18191B" stroke-width=".8"/>
+    <line x1="${X+6}" y1="${dy}" x2="${X+W-6}" y2="${dy}" stroke="#18191B" stroke-width="1.2" marker-start="url(#ar)" marker-end="url(#ar)"/>
+    <rect x="${X+W/2-38}" y="${dy-13}" width="76" height="24" fill="#F1EFEA"/>
+    <text x="${X+W/2}" y="${dy+5}" text-anchor="middle">${st.w} cm</text>
+    <line x1="${X-30}" y1="${Y}" x2="${dx-6}" y2="${Y}" stroke="#18191B" stroke-width=".8"/>
+    <line x1="${X-30}" y1="${Y+H}" x2="${dx-6}" y2="${Y+H}" stroke="#18191B" stroke-width=".8"/>
+    <line x1="${dx}" y1="${Y+6}" x2="${dx}" y2="${Y+H-6}" stroke="#18191B" stroke-width="1.2" marker-start="url(#ar)" marker-end="url(#ar)"/>
+    <g transform="translate(${dx},${Y+H/2}) rotate(-90)"><rect x="-38" y="-13" width="76" height="24" fill="#F1EFEA"/><text x="0" y="5" text-anchor="middle">${st.h} cm</text></g>
+  </g>`;
+  svg.innerHTML=g;
+  const sysName = SYS[st.mat].find(s=>s.id===st.sys).name;
+  $("stageTag").textContent = `${st.mat==="alu"?"Aluminio":"PVC"} · ${sysName} · ${TYPES.find(x=>x.id===st.type).name}`;
+  $("stageArea").textContent = (st.w*st.h/10000).toLocaleString("es-AR",{minimumFractionDigits:2,maximumFractionDigits:2}) + " m²";
+}
+
+/* ---------- obras reales ---------- */
+let lastFin=null;
+function renderObras(){
+  if(lastFin===st.fin) return; lastFin=st.fin;
+  const f=finById(st.fin);
+  $("obrasTitle").textContent = `Obras de AD en ${f.name}`;
+  $("thumbs").innerHTML = f.obras.map(p=>`<figure><img src="${O(p)}" alt="Obra de AD Aberturas en ${f.name}" loading="lazy" onerror="this.parentNode.remove()"></figure>`).join("");
+}
+
+/* ---------- precio ---------- */
+function renderPrice(){
+  const u=unitPrice(st);
+  $("priceBig").textContent = money(u*0.94) + " – " + money(u*1.06);
+  $("priceSub").textContent = st.q>1 ? `${st.q} unidades: ${money(u*st.q*0.94)} – ${money(u*st.q*1.06)}` : "Incluye vidrio y terminación elegidos";
+}
+
+/* ---------- lista ---------- */
+function describe(it){
+  const sysName = SYS[it.mat].find(s=>s.id===it.sys).name;
+  return {
+    title:`${TYPES.find(x=>x.id===it.type).name} ${it.w}×${it.h} cm`,
+    sub:`${it.mat==="alu"?"Aluminio":"PVC"} ${sysName} · ${finById(it.fin).name} · ${GLASS.find(g=>g.id===it.glass).name}${it.mosq&&it.type!=="fijo"?" · mosquitero":""}`
+  };
+}
+function renderItems(){
+  const ol=$("itemList");
+  if(!items.length){ ol.innerHTML=`<li class="none" style="display:block">Todavía no sumaste aberturas. Configurá una arriba y tocá “Sumar a la lista”.</li>`; $("totOut").textContent="$ 0"; return; }
+  let tot=0;
+  ol.innerHTML = items.map((it,i)=>{
+    const u=unitPrice(it)*it.q; tot+=u; const d=describe(it); const f=finById(it.fin);
+    const bg = f.kind==="wood" ? `repeating-linear-gradient(170deg, ${f.c} 0 5px, ${f.c2} 5px 7px)` : f.kind==="metal" ? `linear-gradient(135deg, ${f.c2}, ${f.c})` : f.c;
+    return `<li><span class="chip" style="background:${bg}"></span><div><b>${it.q} × ${d.title}</b><span>${d.sub}</span></div><span class="p num">${money(u)}</span><button type="button" data-i="${i}" aria-label="Quitar">×</button></li>`;
+  }).join("");
+  ol.querySelectorAll("button").forEach(b=>b.onclick=()=>{ items.splice(+b.dataset.i,1); renderItems(); });
+  $("totOut").textContent = money(tot);
+}
+
+function renderAll(){ ensureValid(); renderControls(); renderPlano(); renderObras(); renderPrice(); renderFan(); }
+
+/* eventos */
+$("matSeg").querySelectorAll("button").forEach(b=>b.onclick=()=>{ st.mat=b.dataset.v; renderAll(); });
+const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+function bindMeas(numId, rId, key, min, max){
+  const set=v=>{ if(isNaN(v)) return; st[key]=clamp(Math.round(v),min,max); renderAll(); };
+  $(rId).addEventListener("input",e=>set(+e.target.value));
+  $(numId).addEventListener("change",e=>set(+e.target.value));
+}
+bindMeas("wIn","wR","w",40,400); bindMeas("hIn","hR","h",40,270);
+$("mosq").onchange=e=>{ st.mosq=e.target.checked; renderAll(); };
+$("qMinus").onclick=()=>{ st.q=Math.max(1,st.q-1); renderAll(); };
+$("qPlus").onclick=()=>{ st.q=Math.min(30,st.q+1); renderAll(); };
+$("addBtn").onclick=()=>{ items.push({...st}); renderItems(); toast("Sumada a la lista"); };
+$("sendBtn").onclick=()=>{
+  if(!items.length){ items.push({...st}); renderItems(); }
+  let tot=0;
+  const lines = items.map((it,i)=>{ const d=describe(it); const u=unitPrice(it)*it.q; tot+=u; return `${i+1}) ${it.q} × ${d.title}\n   ${d.sub}\n   Estimado: ${money(u)}`; });
+  const name=$("cName").value.trim(), city=$("cCity").value.trim();
+  const msg = `Hola AD Aberturas, armé este pedido en el cotizador de la web:\n\n${lines.join("\n\n")}\n\nTotal estimado: ${money(tot)}${name?`\nNombre: ${name}`:""}${city?`\nLocalidad: ${city}`:""}\n\n¿Cuándo podrían venir a medir?`;
+  window.open("https://wa.me/5493493447230?text="+encodeURIComponent(msg),"_blank","noopener");
+};
+
+/* sistemas (de su web) */
+const SYSLIST = [
+  {name:"A40 Compact", tag:"Aluminio · ventanas", txt:"La línea que AD presenta en sus novedades como “Tu próxima ventana es A40Compact”. Se cotiza arriba.", img:"159-0000_th.jpeg"},
+  {name:"A30 New", tag:"Aluminio · ventanas y obra", txt:"Sistema de aluminio que aparece en su galería de edificios comerciales. También en el cotizador.", img:"2-0000_th.jpg"},
+  {name:"Puerta pivotante REHAU", tag:"PVC · acceso", txt:"Publicada en sus novedades. En el cotizador está como “Puerta pivotante” en PVC.", img:"151-0000_th.jpeg"},
+  {name:"Piel de Vidrio", tag:"Edificios comerciales", txt:"Ocho obras de piel de vidrio en su galería. Se cotiza con plano: mandalo por WhatsApp.", img:"9-0000_th.jpg"},
+  {name:"Frente Integral", tag:"Edificios comerciales", txt:"Frentes de local completos. También con plano y visita.", img:"5-0000_th.jpg"},
+  {name:"Fachada con panel compuesto", tag:"Edificios comerciales", txt:"Revestimiento de fachadas que aparece en su galería de obras.", img:"1-0000_th.jpg"}
+];
+$("sysList").innerHTML = SYSLIST.map((s,i)=>`<div class="sys-row"><span class="n num">${String(i+1).padStart(2,"0")}</span><h3>${s.name}<small>${s.tag}</small></h3><p>${s.txt}</p><figure><img src="${O(s.img)}" alt="${s.name}, obra de AD Aberturas" loading="lazy" onerror="this.parentNode.remove()"></figure></div>`).join("");
+
+/* admin */
+const LBL = {a30:"A30 New (aluminio)", a40:"A40 Compact (aluminio)", rehau:"Perfil REHAU (PVC)", float:"Float 4 mm", lam:"Laminado 3+3", dvh:"DVH"};
+function admRow(label, path, val, unit){ return `<tr><td>${label}</td><td style="text-align:right"><input data-p="${path}" type="number" step="any" value="${val}"> ${unit}</td></tr>`; }
+function openAdmin(){
+  let h=`<table><tr><th>Sistema</th><th style="text-align:right">$ por m²</th></tr>`;
+  for(const k in P.sys) h+=admRow(LBL[k],`sys.${k}`,P.sys[k],"");
+  h+=`<tr><th>Tipo de abertura</th><th style="text-align:right">Multiplicador</th></tr>`;
+  TYPES.forEach(t=>h+=admRow(t.name,`type.${t.id}`,P.type[t.id],"×"));
+  h+=`<tr><th>Terminación</th><th style="text-align:right">Multiplicador</th></tr>`;
+  FIN.forEach(f=>h+=admRow(f.name,`fin.${f.id}`,P.fin[f.id],"×"));
+  h+=`<tr><th>Vidrio</th><th style="text-align:right">$ extra por m²</th></tr>`;
+  GLASS.forEach(g=>h+=admRow(LBL[g.id],`glass.${g.id}`,P.glass[g.id],""));
+  h+=`<tr><th>Otros</th><th></th></tr>`;
+  h+=admRow("Mosquitero (por unidad)","mosq",P.mosq,"");
+  h+=admRow("Superficie mínima que se cobra","minArea",P.minArea,"m²");
+  h+=`</table>`;
+  $("admBody").innerHTML=h; $("admin").hidden=false;
+}
+$("openAdmin").onclick=openAdmin;
+$("closeAdmin").onclick=()=>$("admin").hidden=true;
+$("admin").addEventListener("click",e=>{ if(e.target.id==="admin") $("admin").hidden=true; });
+document.addEventListener("keydown",e=>{ if(e.key==="Escape") $("admin").hidden=true; });
+$("saveP").onclick=()=>{
+  $("admBody").querySelectorAll("input").forEach(i=>{ const v=parseFloat(i.value); if(isNaN(v)) return; const [a,b]=i.dataset.p.split("."); if(b) P[a][b]=v; else P[a]=v; });
+  try{ localStorage.setItem(KEY, JSON.stringify(P)); }catch(e){}
+  $("admin").hidden=true; renderAll(); renderItems(); toast("Precios guardados");
+};
+$("resetP").onclick=()=>{ P=structuredClone(DEFAULT_PRICES); try{ localStorage.removeItem(KEY); }catch(e){} openAdmin(); renderAll(); renderItems(); toast("Precios de ejemplo restaurados"); };
+
+let tt; function toast(m){ const t=$("toast"); t.textContent=m; t.classList.add("on"); clearTimeout(tt); tt=setTimeout(()=>t.classList.remove("on"),1800); }
+
+buildFan(); renderAll(); renderItems();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="AD Aberturas"></script>
+</body>
+</html>
