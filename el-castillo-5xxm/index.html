@@ -1,0 +1,828 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>El Castillo Internacional · Salsipuedes</title>
+<meta name="description" content="Prototipo de demostración para El Castillo Internacional: predio de 6 ha en Salsipuedes, Córdoba, con vista a las Sierras Chicas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alata&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --vellum:#F5EEDF;
+  --vellum-2:#EDE2CC;
+  --page:#FBF7EE;
+  --ink:#2B221E;
+  --ink-2:#5A4A40;
+  --gules:#7C1E2A;      /* rojo heráldico */
+  --gules-d:#5E1520;
+  --or:#B08433;          /* oro viejo */
+  --or-l:#E4C98A;
+  --sierra:#4F6B5E;      /* verde serrano */
+  --sierra-l:#8FA898;
+  --azur:#3E5A74;        /* azul de lejanía */
+  --sky:#E3E8E2;
+  --line:#D8C8A6;
+  --ok:#3D6B4A;
+  --busy:#A99B86;
+  --radius:14px;
+  --display:"Cinzel Decorative", "Times New Roman", serif;
+  --text:"Alata", "Trebuchet MS", system-ui, sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--vellum);color:var(--ink);font-family:var(--text);font-size:17px;line-height:1.6;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:var(--gules)}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--or);outline-offset:2px}
+.wrap{max-width:1160px;margin:0 auto;padding:0 16px}
+@media (min-width:760px){.wrap{padding:0 28px}}
+
+/* aviso */
+.aviso{background:var(--ink);color:#F3E9D2;font-size:14px;text-align:center;padding:8px 16px;line-height:1.4}
+.aviso b{color:var(--or-l);font-weight:400}
+
+/* cabecera */
+header.top{position:sticky;top:0;z-index:20;background:rgba(245,238,223,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:14px;min-height:64px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);min-width:0}
+.brand svg{width:34px;height:40px;flex:none}
+.brand span{font-family:var(--display);font-weight:700;font-size:15px;line-height:1.1;letter-spacing:.02em}
+.brand small{display:block;font-family:var(--text);font-weight:400;font-size:12px;color:var(--ink-2);letter-spacing:.08em;text-transform:uppercase}
+nav.idx{margin-left:auto;display:flex;gap:4px;flex-wrap:wrap}
+nav.idx a{text-decoration:none;color:var(--ink-2);font-size:14px;padding:6px 10px;border-radius:999px}
+nav.idx a:hover{background:var(--vellum-2);color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:999px;padding:12px 20px;font-size:16px;cursor:pointer;text-decoration:none;line-height:1.2;text-align:center}
+.btn-g{background:var(--gules);color:#FFF8EA}
+.btn-g:hover{background:var(--gules-d)}
+.btn-o{background:transparent;color:var(--ink);border:1.5px solid var(--ink)}
+.btn-o:hover{background:var(--ink);color:var(--vellum)}
+.btn-wa{background:#1F6B45;color:#fff}
+.btn-wa:hover{background:#185636}
+.top .btn{padding:9px 16px;font-size:14px;flex:none}
+@media (max-width:900px){nav.idx{display:none}.top .btn{margin-left:auto}}
+@media (max-width:420px){.brand small{display:none}.top .btn{padding:8px 12px}}
+
+/* portada */
+.portada{position:relative;background:linear-gradient(180deg,var(--sky) 0%,#EFEBDD 55%,var(--vellum) 100%);overflow:hidden}
+.portada .wrap{position:relative;z-index:2;padding-top:48px;padding-bottom:0;display:grid;grid-template-columns:minmax(0,1fr);gap:28px}
+@media (min-width:900px){.portada .wrap{grid-template-columns:minmax(0,1.35fr) minmax(0,.65fr);align-items:start;padding-top:72px}}
+.kicker{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--gules);margin:0 0 10px}
+.portada h1{font-family:var(--display);font-weight:700;font-size:clamp(30px,5.4vw,62px);line-height:1.08;margin:0 0 18px;letter-spacing:.01em;color:var(--ink)}
+.portada h1 em{font-style:normal;color:var(--gules)}
+.portada .lead{font-size:clamp(17px,1.8vw,20px);max-width:38em;color:var(--ink-2);margin:0 0 24px}
+.ctas{display:flex;flex-wrap:wrap;gap:10px}
+.sello{justify-self:center;text-align:center;max-width:280px}
+.sello svg{width:min(220px,52vw);height:auto;filter:drop-shadow(0 10px 18px rgba(60,30,20,.18))}
+.sello p{margin:8px 0 0;font-size:14px;color:var(--ink-2)}
+@media (max-width:899px){.sello{display:flex;align-items:center;gap:14px;justify-self:start;text-align:left;max-width:none}.sello svg{width:86px}.sello p{margin:0}}
+.horizonte{position:relative;z-index:1;margin-top:-10px;display:block;width:100%;height:clamp(180px,28vw,340px)}
+.datos{position:relative;z-index:3;background:var(--page);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.datos ul{list-style:none;margin:0;padding:18px 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 20px}
+@media (min-width:860px){.datos ul{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.datos li{min-width:0}
+.datos b{display:block;font-family:var(--display);font-size:24px;color:var(--gules);line-height:1.1}
+.datos span{font-size:14px;color:var(--ink-2)}
+
+/* folios */
+.folio{position:relative;margin:56px auto;background:var(--page);border:1px solid var(--line);border-radius:6px;padding:32px 20px;box-shadow:0 1px 0 #fff inset, 0 18px 40px -28px rgba(70,40,20,.35)}
+.folio::before{content:"";position:absolute;inset:8px;border:1px solid rgba(176,132,51,.45);border-radius:3px;pointer-events:none}
+@media (min-width:760px){.folio{padding:48px 52px}}
+.folio .num{position:absolute;top:-14px;left:24px;background:var(--vellum);padding:2px 12px;border:1px solid var(--line);border-radius:999px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-2)}
+.folio h2{font-family:var(--display);font-weight:700;font-size:clamp(24px,3.4vw,38px);line-height:1.15;margin:0 0 6px;color:var(--ink)}
+.folio .sub{color:var(--ink-2);margin:0 0 26px;max-width:44em}
+.capitular::first-letter{font-family:var(--display);font-weight:700;float:left;font-size:3.6em;line-height:.9;margin:.06em .12em 0 0;padding:.08em .14em;color:var(--page);background:var(--gules);border-radius:4px;box-shadow:inset 0 0 0 2px var(--or-l)}
+.orla{display:flex;align-items:center;gap:12px;color:var(--or);margin:6px 0 22px}
+.orla::before,.orla::after{content:"";height:1px;background:currentColor;flex:1;opacity:.6}
+.orla svg{width:18px;height:18px}
+
+/* imágenes con lámina de respaldo */
+.ph{position:relative;overflow:hidden;border-radius:10px;background:
+  radial-gradient(circle at 80% 18%,rgba(228,201,138,.55) 0 9%,transparent 10%),
+  linear-gradient(180deg,#DCE3DB 0 52%,transparent 52%),
+  linear-gradient(170deg,transparent 0 55%,var(--sierra-l) 55% 70%,var(--sierra) 70%);
+  min-height:180px;aspect-ratio:4/3}
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .4s}
+.ph .alt{position:absolute;left:10px;right:10px;bottom:10px;font-size:13px;line-height:1.3;color:#FFF8EA;background:rgba(43,34,30,.62);padding:6px 10px;border-radius:6px;opacity:0}
+.ph.fail img{opacity:0}
+.ph.fail .alt{opacity:1}
+.ph.fail::after{content:"";position:absolute;left:50%;top:38%;width:46px;height:54px;transform:translate(-50%,-50%);background:no-repeat center/contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 48'%3E%3Cpath d='M2 4h36v18c0 13-9 20-18 24C11 42 2 35 2 22z' fill='%237C1E2A' stroke='%23E4C98A' stroke-width='2'/%3E%3Cpath d='M13 32V18h3v3h3v-3h2v3h3v-3h3v14z' fill='%23FBF7EE'/%3E%3C/svg%3E");opacity:.9}
+
+/* espacios */
+.espacios{display:grid;grid-template-columns:minmax(0,1fr);gap:18px}
+@media (min-width:700px){.espacios{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:1040px){.espacios{grid-template-columns:repeat(6,minmax(0,1fr))}
+  .espacios .esp:nth-child(1){grid-column:span 4;grid-row:span 2}
+  .espacios .esp:nth-child(2),.espacios .esp:nth-child(3){grid-column:span 2}
+  .espacios .esp:nth-child(4),.espacios .esp:nth-child(5){grid-column:span 3}}
+.esp{min-width:0;display:flex;flex-direction:column;gap:10px}
+.esp .ph{aspect-ratio:16/10}
+.espacios .esp:nth-child(1) .ph{flex:1;aspect-ratio:auto;min-height:260px}
+.esp h3{margin:0;font-family:var(--text);font-weight:400;font-size:20px;color:var(--ink)}
+.esp p{margin:0;color:var(--ink-2);font-size:15px}
+.tag{display:inline-block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--gules);border:1px solid rgba(124,30,42,.35);border-radius:999px;padding:2px 10px;margin-right:6px}
+
+/* eventos y servicios */
+.dos{display:grid;grid-template-columns:minmax(0,1fr);gap:28px}
+@media (min-width:860px){.dos{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.lista-h{list-style:none;margin:0;padding:0}
+.lista-h li{display:flex;gap:12px;padding:12px 0;border-bottom:1px dashed var(--line);min-width:0}
+.lista-h li svg{flex:none;width:20px;height:24px;margin-top:3px}
+.lista-h b{font-weight:400;color:var(--ink)}
+.lista-h span{display:block;color:var(--ink-2);font-size:15px}
+.cecilia{margin-top:22px;padding:18px;border-radius:10px;background:var(--vellum);border-left:4px solid var(--or)}
+.cecilia p{margin:0}
+
+/* plan del día */
+.plan{display:grid;grid-template-columns:minmax(0,1fr);gap:24px}
+@media (min-width:960px){.plan{grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr)}}
+.camino{list-style:none;margin:0;padding:0;position:relative}
+.camino::before{content:"";position:absolute;left:21px;top:16px;bottom:16px;width:2px;background:repeating-linear-gradient(180deg,var(--or) 0 6px,transparent 6px 12px)}
+.parada{position:relative;display:grid;grid-template-columns:44px minmax(0,1fr);gap:14px;padding:8px 0}
+.parada .hito{width:44px;height:44px;border-radius:50%;background:var(--page);border:2px solid var(--line);display:grid;place-items:center;z-index:1;transition:all .2s}
+.parada .hito svg{width:22px;height:22px;color:var(--busy)}
+.parada.on .hito{background:var(--gules);border-color:var(--or-l)}
+.parada.on .hito svg{color:#FFF8EA}
+.parada label{display:block;cursor:pointer;border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:#fff;transition:border-color .2s, background .2s;min-width:0}
+.parada.on label{border-color:var(--gules);background:#FFFBF4}
+.parada input{position:absolute;opacity:0;pointer-events:none}
+.parada input:focus-visible + label{outline:3px solid var(--or);outline-offset:2px}
+.parada .hora{font-size:13px;color:var(--gules);letter-spacing:.06em}
+.parada .t{display:flex;justify-content:space-between;gap:10px;align-items:baseline;flex-wrap:wrap}
+.parada .t b{font-weight:400;font-size:18px}
+.parada .t i{font-style:normal;font-size:14px;color:var(--ink-2);white-space:nowrap}
+.parada p{margin:2px 0 0;font-size:14px;color:var(--ink-2)}
+.parada.fijo label{cursor:default}
+.hoja{background:var(--vellum);border:1px solid var(--line);border-radius:12px;padding:20px;align-self:start;position:sticky;top:84px}
+.hoja h3{margin:0 0 8px;font-family:var(--display);font-size:20px}
+.hoja ol{margin:0 0 14px;padding-left:20px;color:var(--ink-2);font-size:15px}
+.hoja .suma{font-size:15px;color:var(--ink-2);margin:0 0 12px}
+.hoja .suma b{color:var(--gules);font-weight:400;font-size:20px;display:block}
+@media (max-width:959px){.hoja{position:static}}
+
+/* cotizador + calendario */
+.cot{display:grid;grid-template-columns:minmax(0,1fr);gap:28px}
+@media (min-width:980px){.cot{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.campo{margin:0 0 20px;border:0;padding:0;min-width:0}
+.campo legend,.campo > label.lbl{display:block;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);margin-bottom:8px;padding:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;cursor:pointer;font-size:15px;line-height:1.2}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--vellum);border-color:var(--ink)}
+.menus{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+.menu{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;text-align:left;border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:12px 14px;cursor:pointer}
+.menu b{font-weight:400;font-size:17px}
+.menu span{grid-column:1/-1;font-size:14px;color:var(--ink-2)}
+.menu i{font-style:normal;font-size:14px;color:var(--gules);white-space:nowrap}
+.menu[aria-pressed="true"]{border-color:var(--gules);background:#FFFBF4;box-shadow:inset 0 0 0 1px var(--gules)}
+.nota-ej{font-size:13px;color:var(--ink-2);margin:6px 0 0}
+input[type=range]{width:100%;accent-color:var(--gules);height:28px}
+.inv-row{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.inv-row output{font-family:var(--display);font-size:28px;color:var(--gules)}
+.checks{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+@media (min-width:520px){.checks{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.chk{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#fff;cursor:pointer;min-width:0}
+.chk input{accent-color:var(--gules);width:18px;height:18px;margin-top:3px;flex:none}
+.chk small{display:block;color:var(--ink-2);font-size:13px}
+
+.cal-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.cal-head b{font-family:var(--display);font-size:20px}
+.cal-nav{display:flex;gap:6px}
+.cal-nav button{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--line);background:#fff;cursor:pointer;font-size:18px}
+.cal-nav button:disabled{opacity:.35;cursor:not-allowed}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.cal .dow{font-size:12px;text-align:center;color:var(--ink-2);padding:4px 0;text-transform:uppercase;letter-spacing:.05em}
+.cal .d{aspect-ratio:1/1;min-width:0;display:grid;place-items:center;border-radius:8px;font-size:15px;color:#A89A88;background:transparent;border:0}
+.cal .d.sab{cursor:pointer;color:var(--ink);background:#E5EFE6;border:1.5px solid #B9D0BE;font-weight:400}
+.cal .d.sab:hover{border-color:var(--ok)}
+.cal .d.ocu{background:repeating-linear-gradient(135deg,#ECE4D5 0 5px,#E2D8C6 5px 10px);color:#8F8270;border:1.5px solid transparent;cursor:not-allowed;text-decoration:line-through}
+.cal .d.sel{background:var(--gules);color:#fff;border-color:var(--gules)}
+.cal .d.past{opacity:.45}
+.leyenda{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--ink-2);margin-top:10px}
+.leyenda i{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-2px;margin-right:6px}
+.presu{margin-top:22px;background:var(--ink);color:#F3E9D2;border-radius:14px;padding:20px;position:relative;overflow:hidden}
+.presu::after{content:"";position:absolute;right:-30px;top:-30px;width:140px;height:160px;opacity:.08;background:no-repeat center/contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 48'%3E%3Cpath d='M2 4h36v18c0 13-9 20-18 24C11 42 2 35 2 22z' fill='%23F3E9D2'/%3E%3C/svg%3E")}
+.presu .fila{display:flex;justify-content:space-between;gap:12px;font-size:15px;padding:4px 0;border-bottom:1px solid rgba(243,233,210,.14)}
+.presu .fila span:last-child{text-align:right}
+.presu .total{margin:14px 0 4px;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--or-l)}
+.presu .monto{font-family:var(--display);font-size:clamp(24px,3.4vw,34px);line-height:1.15;color:#fff;word-break:break-word}
+.presu .pp{font-size:15px;color:#E4D8BF;margin:2px 0 14px}
+.presu small{display:block;color:#CDBFA4;font-size:13px;margin-top:10px}
+.presu .btn{width:100%}
+
+/* visita */
+.visita{display:grid;grid-template-columns:minmax(0,1fr);gap:24px}
+@media (min-width:900px){.visita{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr)}}
+.dias{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 10px;scroll-snap-type:x mandatory}
+.dia{flex:none;scroll-snap-align:start;width:76px;border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:8px 4px;text-align:center;cursor:pointer;line-height:1.2}
+.dia small{display:block;font-size:12px;color:var(--ink-2);text-transform:uppercase;letter-spacing:.06em}
+.dia b{display:block;font-family:var(--display);font-size:22px;font-weight:700}
+.dia em{display:block;font-style:normal;font-size:12px;color:var(--ok)}
+.dia[aria-pressed="true"]{background:var(--sierra);border-color:var(--sierra);color:#fff}
+.dia[aria-pressed="true"] small,.dia[aria-pressed="true"] em{color:#E8F0EA}
+.dia:disabled{opacity:.45;cursor:not-allowed}
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;margin:6px 0 18px}
+.slot{border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:10px 6px;cursor:pointer;font-size:16px}
+.slot[aria-pressed="true"]{background:var(--gules);border-color:var(--gules);color:#fff}
+.slot:disabled{background:repeating-linear-gradient(135deg,#F1EBDF 0 5px,#E8DFCF 5px 10px);color:#9A8C79;cursor:not-allowed;text-decoration:line-through}
+.form2{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+@media (min-width:560px){.form2{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.form2 label{font-size:13px;color:var(--ink-2);display:block;min-width:0}
+.form2 input,.form2 select{display:block;width:100%;margin-top:4px;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;background:#fff;font-size:16px}
+.ticket{border:1px solid var(--line);border-radius:14px;background:var(--vellum);padding:20px;align-self:start}
+.ticket h3{margin:0 0 6px;font-family:var(--display);font-size:20px}
+.ticket .que{font-size:15px;color:var(--ink-2);margin:0 0 14px}
+.ticket .resumen{background:#fff;border:1px dashed var(--or);border-radius:10px;padding:12px 14px;margin:0 0 14px;font-size:15px;white-space:pre-line;min-height:64px}
+.ticket .btn{width:100%}
+.ticket .alt-link{display:block;text-align:center;font-size:14px;margin-top:10px}
+
+/* galería */
+.galeria{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (min-width:860px){.galeria{grid-template-columns:repeat(4,minmax(0,1fr))}.galeria .ph:first-child{grid-column:span 2;grid-row:span 2;aspect-ratio:auto}}
+.galeria .ph{min-height:0;aspect-ratio:1/1}
+
+/* mapa */
+.llegar{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;align-items:center}
+@media (min-width:860px){.llegar{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr)}}
+.mapa{width:100%;height:auto;border-radius:12px;border:1px solid var(--line);background:#F2EDE0}
+.dir{font-size:20px;margin:0 0 8px}
+.pasos{margin:0 0 18px;padding-left:20px;color:var(--ink-2)}
+
+/* pie (colofón) */
+.colofon{background:var(--ink);color:#E9DEC6;margin-top:64px;padding:44px 0 36px}
+.colofon .wrap{display:grid;grid-template-columns:minmax(0,1fr);gap:22px}
+@media (min-width:800px){.colofon .wrap{grid-template-columns:auto minmax(0,1fr) minmax(0,1fr);align-items:start}}
+.colofon svg{width:56px;height:66px}
+.colofon h4{margin:0 0 6px;font-family:var(--display);font-size:18px;color:#fff}
+.colofon p{margin:0 0 6px;font-size:15px}
+.colofon a{color:var(--or-l)}
+.colofon .fine{grid-column:1/-1;font-size:13px;color:#B9AB90;border-top:1px solid rgba(233,222,198,.18);padding-top:16px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="blason" viewBox="0 0 120 144">
+      <path d="M6 8h108v58c0 38-27 60-54 72C33 126 6 104 6 66z" fill="#7C1E2A"/>
+      <path d="M6 8h108v58c0 38-27 60-54 72C33 126 6 104 6 66z" fill="none" stroke="#E4C98A" stroke-width="4"/>
+      <path d="M14 16h92v50c0 32-23 51-46 61C37 117 14 98 14 66z" fill="none" stroke="#E4C98A" stroke-width="1.2" opacity=".7"/>
+      <!-- sierras en oro -->
+      <path d="M14 92 L36 70 L48 80 L66 58 L84 76 L94 68 L106 80 L106 98 C98 112 80 122 60 130 C40 122 22 110 14 96z" fill="#B08433"/>
+      <path d="M14 104 L34 90 L52 98 L70 84 L90 96 L106 90 L104 100 C96 114 80 123 60 130 C40 122 24 112 14 104z" fill="#8C6A2A"/>
+      <!-- torre -->
+      <path d="M44 74V40h7v7h6v-7h6v7h6v-7h7v34z" fill="#FBF7EE"/>
+      <path d="M56 74V62a4 4 0 0 1 8 0v12z" fill="#7C1E2A"/>
+      <rect x="51" y="50" width="4" height="6" rx="1" fill="#7C1E2A"/>
+      <rect x="65" y="50" width="4" height="6" rx="1" fill="#7C1E2A"/>
+      <!-- estrellas -->
+      <path d="M28 30l2 5 5 .4-4 3 1.4 5-4.4-3-4.4 3 1.4-5-4-3 5-.4z" fill="#E4C98A"/>
+      <path d="M92 30l2 5 5 .4-4 3 1.4 5-4.4-3-4.4 3 1.4-5-4-3 5-.4z" fill="#E4C98A"/>
+    </symbol>
+    <symbol id="flor" viewBox="0 0 20 20"><path d="M10 1c1.6 2.6 1.6 4.4 0 6-1.6-1.6-1.6-3.4 0-6zm0 18c-1.6-2.6-1.6-4.4 0-6 1.6 1.6 1.6 3.4 0 6zM1 10c2.6-1.6 4.4-1.6 6 0-1.6 1.6-3.4 1.6-6 0zm18 0c-2.6 1.6-4.4 1.6-6 0 1.6-1.6 3.4-1.6 6 0z" fill="currentColor"/><circle cx="10" cy="10" r="1.6" fill="currentColor"/></symbol>
+    <symbol id="escudito" viewBox="0 0 20 24"><path d="M1 2h18v9c0 6.5-4.5 10-9 12C5.5 21 1 17.5 1 11z" fill="#7C1E2A"/><path d="M6 15V8h2v2h1.3V8h1.4v2H12V8h2v7z" fill="#FBF7EE"/></symbol>
+  </defs>
+</svg>
+
+<div class="aviso" role="note">Prototipo de demostración preparado para <b>El Castillo Internacional</b> · precios, menús y fechas de ejemplo</div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#inicio" aria-label="El Castillo Internacional, inicio">
+      <svg aria-hidden="true"><use href="#blason"/></svg>
+      <span>El Castillo<small>Internacional · Salsipuedes</small></span>
+    </a>
+    <nav class="idx" aria-label="Índice">
+      <a href="#predio">El predio</a>
+      <a href="#dia">Del té a la fiesta</a>
+      <a href="#cotizar">Fechas y cotización</a>
+      <a href="#visita">Visita</a>
+      <a href="#llegar">Cómo llegar</a>
+    </nav>
+    <a class="btn btn-g" href="#visita">Agendá la visita</a>
+  </div>
+</header>
+
+<main id="inicio">
+<section class="portada" aria-labelledby="h1">
+  <div class="wrap">
+    <div>
+      <p class="kicker">Ruta E53 km 21 · Salsipuedes, Córdoba</p>
+      <h1 id="h1">Seis hectáreas mirando a las <em>Sierras Chicas</em>, a quince minutos del aeropuerto</h1>
+      <p class="lead">Un castillo con casona, Casa de Té, piscina, jardines para la ceremonia y un salón para hasta 500 invitados. Lo creó Cecilia Villanueva hace más de 30 años, y con ella coordinás la visita.</p>
+      <div class="ctas">
+        <a class="btn btn-g" href="#visita">Agendá la visita al castillo</a>
+        <a class="btn btn-o" href="#cotizar">Ver sábados y cotizar</a>
+      </div>
+    </div>
+    <div class="sello">
+      <svg viewBox="0 0 120 144" role="img" aria-label="Blasón ilustrado de El Castillo: una torre sobre las sierras"><use href="#blason"/></svg>
+      <p>Blasón ilustrado para este prototipo</p>
+    </div>
+  </div>
+  <svg class="horizonte" viewBox="0 0 1200 320" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    <circle cx="930" cy="96" r="34" fill="#F1D99A" opacity=".85"/>
+    <path d="M0 190 C120 150 200 120 300 140 C380 156 430 110 520 104 C610 98 660 140 760 128 C860 116 920 84 1020 96 C1100 106 1160 130 1200 124 V320 H0z" fill="#B9C7C6" opacity=".8"/>
+    <path d="M0 222 C90 196 170 170 260 182 C350 194 400 150 500 150 C600 150 640 196 740 186 C840 176 900 140 1000 150 C1090 160 1150 186 1200 180 V320 H0z" fill="#8FA898"/>
+    <path d="M0 258 C140 236 230 214 340 226 C450 238 520 204 620 210 C720 216 800 250 900 240 C1000 230 1100 214 1200 222 V320 H0z" fill="#6C8A7A"/>
+    <!-- loma del castillo -->
+    <path d="M520 262 C600 226 700 222 790 248 L820 320 H480z" fill="#4F6B5E"/>
+    <g fill="#3A2E2A">
+      <path d="M612 234 v-44 h8 v6 h6 v-6 h8 v6 h6 v-6 h8 v44z"/>
+      <path d="M652 234 v-30 h70 v30z"/>
+      <path d="M652 204 v-8 h7 v5 h7 v-5 h7 v5 h7 v-5 h7 v5 h7 v-5 h7 v5 h7 v-5 h8 v8z"/>
+      <path d="M722 234 v-52 h8 v6 h6 v-6 h8 v6 h6 v-6 h8 v52z"/>
+      <path d="M738 182 l11 -22 l11 22z"/>
+      <path d="M628 190 l8 -18 l8 18z"/>
+      <rect x="745" y="150" width="2" height="12"/>
+      <path d="M747 150 h12 l-3 4 3 4 h-12z" fill="#7C1E2A"/>
+    </g>
+    <g fill="#E4C98A"><rect x="684" y="214" width="6" height="9" rx="3"/><rect x="700" y="214" width="6" height="9" rx="3"/><rect x="740" y="198" width="5" height="8" rx="2.5"/></g>
+    <path d="M0 290 C200 270 380 280 560 288 C760 296 980 272 1200 282 V320 H0z" fill="#41594D"/>
+    <g fill="#33473D">
+      <path d="M90 292 l14 -40 l14 40z"/><path d="M118 294 l10 -30 l10 30z"/>
+      <path d="M1040 286 l14 -42 l14 42z"/><path d="M1070 288 l10 -28 l10 28z"/>
+      <path d="M430 296 l9 -26 l9 26z"/><path d="M860 292 l11 -32 l11 32z"/>
+    </g>
+  </svg>
+  <div class="datos">
+    <ul class="wrap">
+      <li><b>6 ha</b><span>de predio con vista a las Sierras Chicas</span></li>
+      <li><b>500</b><span>invitados como máximo en el salón de fiestas</span></li>
+      <li><b>+30 años</b><span>desde que Cecilia Villanueva creó El Castillo</span></li>
+      <li><b>15 min</b><span>aprox. desde el aeropuerto de Córdoba</span></li>
+    </ul>
+  </div>
+</section>
+
+<div class="wrap">
+
+<!-- FOLIO I -->
+<section class="folio" id="predio" aria-labelledby="h-predio">
+  <span class="num">Folio I</span>
+  <h2 id="h-predio">El predio, sala por sala</h2>
+  <div class="orla" aria-hidden="true"><svg><use href="#flor"/></svg></div>
+  <p class="sub capitular">Dentro del mismo predio hay cinco lugares distintos, y cada uno sirve para un momento del día. Podés empezar con un té, casarte al aire libre, brindar junto a la piscina y terminar bailando en el salón, sin que nadie se suba a un auto.</p>
+  <div class="espacios">
+    <article class="esp">
+      <div class="ph"><img loading="lazy" src="https://static.wixstatic.com/media/c4716c_c16f2ab806b34533b4ecccbb952a5597~mv2_d_2048_1366_s_2.jpg" alt="El salón de fiestas de El Castillo, lleno de invitados"><span class="alt">El salón de fiestas, lleno de invitados</span></div>
+      <div><span class="tag">Hasta 500 personas</span></div>
+      <h3>Salón de fiestas y eventos</h3>
+      <p>Para la cena, el baile y los eventos grandes: casamientos, 15, aniversarios y corporativos.</p>
+    </article>
+    <article class="esp">
+      <div class="ph"><img loading="lazy" src="https://elcastillo.ar/wp-content/uploads/2026/02/WhatsApp-Image-2026-02-14-at-2.32.59-PM-2.jpeg" alt="La casa principal del castillo"><span class="alt">La casona, casa principal del castillo</span></div>
+      <h3>La casona</h3>
+      <p>La casa principal, el corazón del castillo. Ideal para prepararse y para las fotos.</p>
+    </article>
+    <article class="esp">
+      <div class="ph"><img loading="lazy" src="https://elcastillo.ar/wp-content/uploads/2026/02/WhatsApp-Image-2026-02-14-at-8.06.31-PM-8.jpeg" alt="Casa de Té de El Castillo"><span class="alt">La Casa de Té</span></div>
+      <h3>Casa de Té</h3>
+      <p>Para recibir a los invitados, una merienda o un encuentro chico. También funciona el restó y bar del predio.</p>
+    </article>
+    <article class="esp">
+      <div class="ph"><img loading="lazy" src="https://static.wixstatic.com/media/c4716c_95b33b29005043589d26cf0d9fa1ce5a~mv2_d_2048_1366_s_2.jpg" alt="Fiesta de día al aire libre en el parque"><span class="alt">Espacios al aire libre, fiesta de día</span></div>
+      <h3>Espacios al aire libre para la ceremonia</h3>
+      <p>Parque con las sierras de fondo para el sí, una bendición o una ceremonia civil.</p>
+    </article>
+    <article class="esp">
+      <div class="ph"><img loading="lazy" src="https://static.wixstatic.com/media/c4716c_5e9c5851e93045509582643e27db41f7~mv2.jpg" alt="Vista a la piscina del castillo"><span class="alt">Vista a la piscina</span></div>
+      <h3>Piscina</h3>
+      <p>El rincón para el cóctel de verano, la recepción o la sesión de fotos al atardecer.</p>
+    </article>
+  </div>
+</section>
+
+<!-- FOLIO II -->
+<section class="folio" id="eventos" aria-labelledby="h-eventos">
+  <span class="num">Folio II</span>
+  <h2 id="h-eventos">Qué se celebra en el castillo</h2>
+  <div class="orla" aria-hidden="true"><svg><use href="#flor"/></svg></div>
+  <div class="dos">
+    <div>
+      <ul class="lista-h">
+        <li><svg aria-hidden="true"><use href="#escudito"/></svg><div><b>Casamientos</b><span>Ceremonia al aire libre, recepción y fiesta en el mismo lugar.</span></div></li>
+        <li><svg aria-hidden="true"><use href="#escudito"/></svg><div><b>Fiestas de 15</b><span>Una entrada de castillo de verdad, con salón para toda la familia.</span></div></li>
+        <li><svg aria-hidden="true"><use href="#escudito"/></svg><div><b>Cumpleaños y aniversarios</b><span>Incluidas las bodas de plata y de oro.</span></div></li>
+        <li><svg aria-hidden="true"><use href="#escudito"/></svg><div><b>Eventos corporativos</b><span>Jornadas, fiestas de fin de año y encuentros de empresa, cerca del aeropuerto.</span></div></li>
+        <li><svg aria-hidden="true"><use href="#escudito"/></svg><div><b>Turismo y experiencias</b><span>Visitas y propuestas para conocer el castillo y la Casa de Té.</span></div></li>
+      </ul>
+    </div>
+    <div>
+      <ul class="lista-h">
+        <li><svg aria-hidden="true"><use href="#flor"/></svg><div><b>Catering</b><span>La comida y la bebida del evento, resueltas por el castillo.</span></div></li>
+        <li><svg aria-hidden="true"><use href="#flor"/></svg><div><b>Wedding planning</b><span>Acompañamiento para organizar el casamiento de punta a punta.</span></div></li>
+        <li><svg aria-hidden="true"><use href="#flor"/></svg><div><b>Coordinación de proveedores</b><span>Flores, torta, cotillón: un solo interlocutor para todos.</span></div></li>
+        <li><svg aria-hidden="true"><use href="#flor"/></svg><div><b>Presupuesto personalizado</b><span>Cada evento se cotiza según lo que necesitás.</span></div></li>
+      </ul>
+      <div class="cecilia"><p>Cecilia Villanueva creó El Castillo hace más de 30 años y es quien atiende las consultas. Las visitas se coordinan directo con ella por WhatsApp.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOLIO III: Del té a la fiesta -->
+<section class="folio" id="dia" aria-labelledby="h-dia">
+  <span class="num">Folio III</span>
+  <h2 id="h-dia">Del té a la fiesta</h2>
+  <div class="orla" aria-hidden="true"><svg><use href="#flor"/></svg></div>
+  <p class="sub capitular">Armá el recorrido de tu día por el predio. Prendé o apagá cada parada: el presupuesto de abajo se actualiza solo con lo que elijas. Los horarios son una sugerencia de ejemplo.</p>
+  <div class="plan">
+    <ol class="camino" id="camino"></ol>
+    <aside class="hoja" aria-live="polite">
+      <h3>Tu día en el castillo</h3>
+      <ol id="planLista"></ol>
+      <p class="suma">Las paradas suman al presupuesto (ejemplo)<b id="planSuma">$0</b></p>
+      <a class="btn btn-g" href="#cotizar" style="width:100%">Ver el presupuesto completo</a>
+    </aside>
+  </div>
+</section>
+
+<!-- FOLIO IV: Cotizador + calendario -->
+<section class="folio" id="cotizar" aria-labelledby="h-cot">
+  <span class="num">Folio IV</span>
+  <h2 id="h-cot">Sábados libres y presupuesto al instante</h2>
+  <div class="orla" aria-hidden="true"><svg><use href="#flor"/></svg></div>
+  <p class="sub">Elegí un sábado, contanos qué festejás y cuántos van a ser. Te mostramos un rango de ejemplo y le mandás todo armado a Cecilia.</p>
+  <div class="cot">
+    <div>
+      <fieldset class="campo">
+        <legend>Tipo de evento</legend>
+        <div class="chips" id="tipos"></div>
+      </fieldset>
+      <div class="campo">
+        <div class="inv-row"><label class="lbl" for="inv">Invitados</label><output id="invOut" for="inv">150</output></div>
+        <input type="range" id="inv" min="30" max="500" step="10" value="150" aria-describedby="invNota">
+        <p class="nota-ej" id="invNota">El salón recibe hasta 500 personas.</p>
+      </div>
+      <fieldset class="campo">
+        <legend>Menú</legend>
+        <div class="menus" id="menus"></div>
+        <p class="nota-ej">Menús con nombres de ejemplo: el castillo arma el catering a medida.</p>
+      </fieldset>
+      <fieldset class="campo">
+        <legend>Servicios extra</legend>
+        <div class="checks" id="extras"></div>
+      </fieldset>
+    </div>
+    <div>
+      <div class="campo">
+        <div class="cal-head">
+          <b id="calMes">mes</b>
+          <div class="cal-nav"><button type="button" id="calPrev" aria-label="Mes anterior">&#8249;</button><button type="button" id="calNext" aria-label="Mes siguiente">&#8250;</button></div>
+        </div>
+        <div class="cal" id="cal" role="grid" aria-label="Calendario de sábados"></div>
+        <div class="leyenda"><span><i style="background:#E5EFE6;border:1.5px solid #B9D0BE"></i>Sábado libre</span><span><i style="background:repeating-linear-gradient(135deg,#ECE4D5 0 3px,#D9CDB8 3px 6px)"></i>Ocupado</span><span><i style="background:var(--gules)"></i>Tu fecha</span></div>
+        <p class="nota-ej">Disponibilidad de ejemplo: la real la confirma Cecilia.</p>
+      </div>
+      <div class="presu" aria-live="polite">
+        <div class="fila"><span>Fecha</span><span id="pFecha">Elegí un sábado</span></div>
+        <div class="fila"><span>Evento</span><span id="pTipo"></span></div>
+        <div class="fila"><span>Menú</span><span id="pMenu"></span></div>
+        <div class="fila"><span>Recorrido</span><span id="pPlan"></span></div>
+        <p class="total">Total estimado (ejemplo)</p>
+        <div class="monto" id="pTotal">$0</div>
+        <p class="pp" id="pPP">por persona</p>
+        <a class="btn btn-wa" id="waCot" href="#" target="_blank" rel="noopener">Mandarle el pedido a Cecilia por WhatsApp</a>
+        <small>Precios de ejemplo en pesos, solo para mostrar cómo funcionaría. El castillo arma un presupuesto personalizado.</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOLIO V: Agendá la visita -->
+<section class="folio" id="visita" aria-labelledby="h-vis">
+  <span class="num">Folio V</span>
+  <h2 id="h-vis">Agendá la visita al castillo</h2>
+  <div class="orla" aria-hidden="true"><svg><use href="#flor"/></svg></div>
+  <p class="sub capitular">Nada reemplaza caminar el predio. Elegí una mañana, de lunes a sábado, y le pedís el turno a Cecilia en un mensaje ya escrito.</p>
+  <div class="visita">
+    <div>
+      <p class="nota-ej" style="margin:0 0 8px">Próximos días (turnos de ejemplo)</p>
+      <div class="dias" id="dias" role="group" aria-label="Días para la visita"></div>
+      <div class="slots" id="slots" role="group" aria-label="Horarios"></div>
+      <div class="form2">
+        <label>Tu nombre<input id="vNombre" autocomplete="name" placeholder="Ej.: Sofía"></label>
+        <label>Qué querés festejar
+          <select id="vTipo">
+            <option>Casamiento</option><option>Fiesta de 15</option><option>Cumpleaños / aniversario</option><option>Evento corporativo</option><option>Turismo / experiencia</option>
+          </select>
+        </label>
+      </div>
+    </div>
+    <aside class="ticket" aria-live="polite">
+      <h3>Tu turno</h3>
+      <p class="que">Así le llega el mensaje a Cecilia:</p>
+      <div class="resumen" id="vResumen">Elegí un día y un horario.</div>
+      <a class="btn btn-wa" id="waVis" href="#" target="_blank" rel="noopener">Pedir la visita por WhatsApp</a>
+      <a class="alt-link" href="mailto:elcastillointl@gmail.com?subject=Visita%20a%20El%20Castillo">o escribí a elcastillointl@gmail.com</a>
+    </aside>
+  </div>
+</section>
+
+<!-- FOLIO VI: galería -->
+<section class="folio" id="galeria" aria-labelledby="h-gal">
+  <span class="num">Folio VI</span>
+  <h2 id="h-gal">Láminas del castillo</h2>
+  <div class="orla" aria-hidden="true"><svg><use href="#flor"/></svg></div>
+  <div class="galeria">
+    <div class="ph"><img loading="lazy" src="https://elcastillo.ar/wp-content/uploads/2026/02/casmesa.jpg" alt="Mesa de casamiento armada"><span class="alt">Mesa de casamiento</span></div>
+    <div class="ph"><img loading="lazy" src="https://elcastillo.ar/wp-content/uploads/2026/02/WhatsApp-Image-2026-02-14-at-2.44.13-PM.jpeg" alt="El predio y el salón"><span class="alt">El predio y el salón</span></div>
+    <div class="ph"><img loading="lazy" src="https://elcastillo.ar/wp-content/uploads/2026/02/WhatsApp-Image-2026-02-21-at-6.56.31-PM.jpeg" alt="Evento en El Castillo"><span class="alt">Un evento en el castillo</span></div>
+    <div class="ph"><img loading="lazy" src="https://static.wixstatic.com/media/c4716c_5e9c5851e93045509582643e27db41f7~mv2.jpg" alt="La piscina con vista a las sierras"><span class="alt">La piscina</span></div>
+    <div class="ph"><img loading="lazy" src="https://static.wixstatic.com/media/c4716c_95b33b29005043589d26cf0d9fa1ce5a~mv2_d_2048_1366_s_2.jpg" alt="Fiesta de día"><span class="alt">Fiesta de día</span></div>
+  </div>
+</section>
+
+<!-- FOLIO VII: cómo llegar -->
+<section class="folio" id="llegar" aria-labelledby="h-lle">
+  <span class="num">Folio VII</span>
+  <h2 id="h-lle">Cómo llegar</h2>
+  <div class="orla" aria-hidden="true"><svg><use href="#flor"/></svg></div>
+  <div class="llegar">
+    <svg class="mapa" viewBox="0 0 520 360" role="img" aria-label="Esquema del camino desde el aeropuerto de Córdoba por la Ruta E53 hasta El Castillo, en Salsipuedes">
+      <rect width="520" height="360" fill="#F2EDE0"/>
+      <path d="M0 40 C60 70 90 30 150 60 C200 84 220 40 270 50 L270 0 H0z" fill="#C9D4C8"/>
+      <path d="M0 0 H120 C110 60 90 120 70 180 C50 240 30 300 0 340z" fill="#A9BCAD"/>
+      <path d="M0 0 H70 C64 70 46 150 20 230 C12 260 6 290 0 310z" fill="#8FA898"/>
+      <text x="16" y="200" font-family="Alata,sans-serif" font-size="13" fill="#2E4238" transform="rotate(-72 16 200)">Sierras Chicas</text>
+      <path d="M300 340 C320 300 300 260 330 230" fill="none" stroke="#E7DCC4" stroke-width="40" stroke-linecap="round"/>
+      <circle cx="360" cy="300" r="46" fill="#E3D8C0"/>
+      <text x="360" y="304" text-anchor="middle" font-family="Alata,sans-serif" font-size="14" fill="#5A4A40">Córdoba</text>
+      <!-- ruta -->
+      <path id="ruta" d="M330 232 C300 200 260 190 240 160 C220 130 210 100 190 72" fill="none" stroke="#B08433" stroke-width="7" stroke-linecap="round"/>
+      <path d="M330 232 C300 200 260 190 240 160 C220 130 210 100 190 72" fill="none" stroke="#FBF7EE" stroke-width="1.6" stroke-dasharray="6 7"/>
+      <rect x="244" y="150" width="56" height="22" rx="4" fill="#7C1E2A"/>
+      <text x="272" y="166" text-anchor="middle" font-family="Alata,sans-serif" font-size="13" fill="#fff">E53</text>
+      <!-- aeropuerto -->
+      <circle cx="330" cy="232" r="10" fill="#3E5A74"/>
+      <path d="M325 232 h10 M330 226 v12 M326 236 l4 -2 4 2" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      <text x="346" y="226" font-family="Alata,sans-serif" font-size="13" fill="#2B221E">Aeropuerto</text>
+      <text x="346" y="242" font-family="Alata,sans-serif" font-size="12" fill="#5A4A40">de Córdoba</text>
+      <!-- castillo -->
+      <g transform="translate(166 30)">
+        <svg width="44" height="52" viewBox="0 0 120 144"><use href="#blason"/></svg>
+      </g>
+      <text x="218" y="56" font-family="Alata,sans-serif" font-size="14" fill="#2B221E">El Castillo</text>
+      <text x="218" y="73" font-family="Alata,sans-serif" font-size="12" fill="#5A4A40">km 21 · Salsipuedes</text>
+      <text x="282" y="118" font-family="Alata,sans-serif" font-size="13" fill="#7C1E2A">~15 min</text>
+      <text x="500" y="348" text-anchor="end" font-family="Alata,sans-serif" font-size="11" fill="#8C7D6A">Esquema ilustrativo, no a escala</text>
+    </svg>
+    <div>
+      <p class="dir">Ruta E53 km 21, Salsipuedes, Córdoba</p>
+      <ol class="pasos">
+        <li>Desde el aeropuerto de Córdoba tomá la Ruta E53 hacia las Sierras Chicas.</li>
+        <li>Seguí hasta el km 21, en Salsipuedes: son unos 15 minutos.</li>
+        <li>El castillo está sobre la ruta, con vista a las sierras.</li>
+      </ol>
+      <a class="btn btn-g" href="https://www.google.com/maps/search/?api=1&query=El%20Castillo%20Internacional%2C%20Ruta%20E53%20km%2021%2C%20Salsipuedes%2C%20C%C3%B3rdoba" target="_blank" rel="noopener">Abrir en Google Maps</a>
+    </div>
+  </div>
+</section>
+
+</div>
+</main>
+
+<footer class="colofon">
+  <div class="wrap">
+    <svg viewBox="0 0 120 144" aria-hidden="true"><use href="#blason"/></svg>
+    <div>
+      <h4>El Castillo Internacional</h4>
+      <p>Ruta E53 km 21, Salsipuedes, Córdoba</p>
+      <p>Predio de 6 ha con vista a las Sierras Chicas</p>
+    </div>
+    <div>
+      <h4>Contacto</h4>
+      <p>Cecilia Villanueva · <a href="https://wa.me/5493543587298" target="_blank" rel="noopener">WhatsApp +54 9 3543 58-7298</a></p>
+      <p><a href="mailto:elcastillointl@gmail.com">elcastillointl@gmail.com</a> · <a href="https://elcastillo.ar" target="_blank" rel="noopener">elcastillo.ar</a></p>
+    </div>
+    <p class="fine">Prototipo de demostración preparado para El Castillo Internacional. Precios, menús, horarios y disponibilidad son de ejemplo. El blasón es una ilustración hecha para este prototipo.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var WA = "5493543587298";
+  var fmt = new Intl.NumberFormat("es-AR",{maximumFractionDigits:0});
+  var $ = function(id){return document.getElementById(id);};
+  function money(n){var q = n < 100000 ? 100 : 1000; return "$" + fmt.format(Math.round(n/q)*q);}
+
+  /* --- fallback de imágenes --- */
+  document.querySelectorAll(".ph img").forEach(function(img){
+    var box = img.parentNode;
+    function fail(){box.classList.add("fail");}
+    img.addEventListener("error", fail);
+    img.addEventListener("load", function(){ if(!img.naturalWidth) fail(); });
+    if(img.complete && !img.naturalWidth) fail();
+  });
+
+  /* --- datos de ejemplo --- */
+  var TIPOS = [
+    {id:"casamiento", n:"Casamiento", k:1.0},
+    {id:"quince", n:"Fiesta de 15", k:.92},
+    {id:"aniv", n:"Cumpleaños / aniversario", k:.85},
+    {id:"corpo", n:"Corporativo", k:.88},
+    {id:"turismo", n:"Turismo / experiencia", k:.6}
+  ];
+  var MENUS = [
+    {id:"torre", n:"Menú Torre", d:"Recepción, plato principal, postre y bebida sin alcohol", min:42000, max:50000},
+    {id:"almena", n:"Menú Almena", d:"Recepción completa, entrada, principal, postre, barra de tragos", min:54000, max:63000},
+    {id:"blason", n:"Menú Blasón", d:"Cóctel largo, entrada, principal, mesa dulce, barra libre y fin de fiesta", min:68000, max:79000}
+  ];
+  var EXTRAS = [
+    {id:"wp", n:"Wedding planning", d:"organización integral", fijo:650000},
+    {id:"prov", n:"Coordinación de proveedores", d:"flores, torta, cotillón", fijo:280000},
+    {id:"flores", n:"Ambientación floral", d:"centros de mesa y ceremonia", pp:3500},
+    {id:"cotillon", n:"Cotillón y fin de fiesta", d:"para la pista", pp:2500}
+  ];
+  var PARADAS = [
+    {id:"te", hora:"16:30", n:"Recibimiento en la Casa de Té", d:"Té, café y algo dulce mientras llegan los invitados.", pp:5500, icon:"taza"},
+    {id:"casona", hora:"17:30", n:"Fotos en la casona", d:"Los novios o la quinceañera en la casa principal.", fijo:220000, icon:"casa"},
+    {id:"ceremonia", hora:"18:30", n:"Ceremonia al aire libre", d:"El sí con las Sierras Chicas de fondo: sillas, alfombra y arco.", fijo:480000, icon:"arco"},
+    {id:"piscina", hora:"19:30", n:"Cóctel junto a la piscina", d:"Recepción al atardecer al lado del agua.", pp:4500, icon:"agua"},
+    {id:"salon", hora:"21:00", n:"Fiesta en el salón", d:"Cena y baile en el salón para hasta 500 personas.", incl:true, icon:"torre"}
+  ];
+  var ICONOS = {
+    taza:'<path d="M4 9h12v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5zM16 10h2a2.5 2.5 0 0 1 0 5h-2M7 3c0 2 2 2 2 4M11 3c0 2 2 2 2 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>',
+    casa:'<path d="M3 11 12 4l9 7M5 10v10h14V10M10 20v-5h4v5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>',
+    arco:'<path d="M5 21V11a7 7 0 0 1 14 0v10M3 21h18M12 4v-1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="9" r="1.6" fill="currentColor"/>',
+    agua:'<path d="M2 15c2.5 0 2.5-2 5-2s2.5 2 5 2 2.5-2 5-2 2.5 2 5 2M2 19c2.5 0 2.5-2 5-2s2.5 2 5 2 2.5-2 5-2 2.5 2 5 2M7 11V5a2 2 0 0 1 4 0M13 11V5a2 2 0 0 1 4 0M7 8h10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>',
+    torre:'<path d="M6 21V8h2.5v2.5H11V8h2v2.5h2.5V8H18v13zM10.5 21v-4a1.5 1.5 0 0 1 3 0v4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>'
+  };
+
+  var st = {tipo:"casamiento", inv:150, menu:"almena", extras:{prov:true}, plan:{te:true, ceremonia:true, piscina:true, salon:true}, fecha:null};
+
+  /* --- recorrido del día --- */
+  var camino = $("camino");
+  PARADAS.forEach(function(p){
+    var li = document.createElement("li");
+    li.className = "parada" + (p.incl ? " fijo" : "");
+    li.dataset.id = p.id;
+    var costo = p.incl ? "incluido" : (p.pp ? "+ " + money(p.pp) + " p/p" : "+ " + money(p.fijo));
+    li.innerHTML = '<span class="hito" aria-hidden="true"><svg viewBox="0 0 24 24">' + ICONOS[p.icon] + '</svg></span>' +
+      '<div style="min-width:0"><input type="checkbox" id="pl-' + p.id + '"' + (p.incl ? ' checked disabled' : '') + '>' +
+      '<label for="pl-' + p.id + '"><span class="hora">' + p.hora + ' h</span><span class="t"><b>' + p.n + '</b><i>' + costo + '</i></span><p>' + p.d + '</p></label></div>';
+    camino.appendChild(li);
+    var cb = li.querySelector("input");
+    cb.checked = !!st.plan[p.id];
+    cb.addEventListener("change", function(){ st.plan[p.id] = cb.checked; render(); });
+  });
+
+  /* --- controles del cotizador --- */
+  var tiposBox = $("tipos");
+  TIPOS.forEach(function(t){
+    var b = document.createElement("button");
+    b.type="button"; b.className="chip"; b.textContent=t.n; b.dataset.id=t.id;
+    b.addEventListener("click", function(){ st.tipo=t.id; render(); });
+    tiposBox.appendChild(b);
+  });
+  var menusBox = $("menus");
+  MENUS.forEach(function(m){
+    var b = document.createElement("button");
+    b.type="button"; b.className="menu"; b.dataset.id=m.id;
+    b.innerHTML = "<b>" + m.n + "</b><i>" + money(m.min) + " – " + money(m.max) + " p/p</i><span>" + m.d + "</span>";
+    b.addEventListener("click", function(){ st.menu=m.id; render(); });
+    menusBox.appendChild(b);
+  });
+  var extBox = $("extras");
+  EXTRAS.forEach(function(e){
+    var l = document.createElement("label");
+    l.className="chk";
+    var precio = e.pp ? "+ " + money(e.pp) + " p/p" : "+ " + money(e.fijo);
+    l.innerHTML = '<input type="checkbox" data-id="' + e.id + '"><span>' + e.n + '<small>' + e.d + ' · ' + precio + '</small></span>';
+    var cb = l.querySelector("input");
+    cb.checked = !!st.extras[e.id];
+    cb.addEventListener("change", function(){ st.extras[e.id]=cb.checked; render(); });
+    extBox.appendChild(l);
+  });
+  var inv = $("inv");
+  inv.addEventListener("input", function(){ st.inv = +inv.value; render(); });
+
+  /* --- calendario de sábados --- */
+  var hoy = new Date(); hoy.setHours(0,0,0,0);
+  var mesBase = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
+  var mesOff = 0, MAXMES = 5;
+  function hash(s){var h=2166136261;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return (h>>>0)/4294967295;}
+  function ocupado(d){ return hash("castillo-" + d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate()) < 0.42; }
+  function fechaTxt(d){ return d.toLocaleDateString("es-AR",{weekday:"long", day:"numeric", month:"long", year:"numeric"}); }
+  function drawCal(){
+    var cal = $("cal"); cal.innerHTML="";
+    var m = new Date(mesBase.getFullYear(), mesBase.getMonth()+mesOff, 1);
+    var mt = m.toLocaleDateString("es-AR",{month:"long", year:"numeric"}); $("calMes").textContent = mt.charAt(0).toUpperCase() + mt.slice(1);
+    $("calPrev").disabled = mesOff===0; $("calNext").disabled = mesOff>=MAXMES;
+    ["lu","ma","mi","ju","vi","sá","do"].forEach(function(x){var s=document.createElement("div");s.className="dow";s.textContent=x;s.setAttribute("aria-hidden","true");cal.appendChild(s);});
+    var lead = (m.getDay()+6)%7;
+    for(var i=0;i<lead;i++){cal.appendChild(document.createElement("div"));}
+    var dias = new Date(m.getFullYear(), m.getMonth()+1, 0).getDate();
+    for(var d=1; d<=dias; d++){
+      var f = new Date(m.getFullYear(), m.getMonth(), d);
+      var b = document.createElement("button"); b.type="button"; b.className="d"; b.textContent=d;
+      var esSab = f.getDay()===6, pasado = f < hoy;
+      if(!esSab || pasado){ b.disabled=true; if(pasado) b.classList.add("past"); b.setAttribute("aria-hidden","true"); b.tabIndex=-1; }
+      else if(ocupado(f)){ b.classList.add("ocu"); b.disabled=true; b.setAttribute("aria-label", fechaTxt(f) + ", ocupado"); }
+      else {
+        b.classList.add("sab"); b.setAttribute("aria-label", fechaTxt(f) + ", libre");
+        if(st.fecha && +st.fecha===+f){ b.classList.add("sel"); b.setAttribute("aria-pressed","true"); }
+        (function(ff){ b.addEventListener("click", function(){ st.fecha=ff; drawCal(); render(); }); })(f);
+      }
+      cal.appendChild(b);
+    }
+  }
+  $("calPrev").addEventListener("click", function(){ if(mesOff>0){mesOff--; drawCal();} });
+  $("calNext").addEventListener("click", function(){ if(mesOff<MAXMES){mesOff++; drawCal();} });
+
+  /* --- cálculo --- */
+  function calc(){
+    var t = TIPOS.find(function(x){return x.id===st.tipo;});
+    var m = MENUS.find(function(x){return x.id===st.menu;});
+    var n = st.inv, ppMin = m.min*t.k, ppMax = m.max*t.k, fijo = 0, planTot = 0;
+    PARADAS.forEach(function(p){ if(st.plan[p.id] && !p.incl){ var v = p.pp ? p.pp*n : p.fijo; planTot += v; } });
+    EXTRAS.forEach(function(e){ if(st.extras[e.id]){ if(e.pp){ppMin+=e.pp; ppMax+=e.pp;} else fijo+=e.fijo; } });
+    var alquiler = 900000 + n*1800; // uso del salón y predio (ejemplo)
+    var min = ppMin*n + fijo + planTot + alquiler, max = ppMax*n + fijo + planTot*1.1 + alquiler*1.1;
+    return {t:t, m:m, min:min, max:max, planTot:planTot};
+  }
+
+  function planNombres(){ return PARADAS.filter(function(p){return st.plan[p.id];}).map(function(p){return p.hora + " " + p.n;}); }
+
+  function render(){
+    tiposBox.querySelectorAll(".chip").forEach(function(b){ b.setAttribute("aria-pressed", b.dataset.id===st.tipo ? "true":"false"); });
+    menusBox.querySelectorAll(".menu").forEach(function(b){ b.setAttribute("aria-pressed", b.dataset.id===st.menu ? "true":"false"); });
+    $("invOut").textContent = st.inv;
+    camino.querySelectorAll(".parada").forEach(function(li){ li.classList.toggle("on", !!st.plan[li.dataset.id]); });
+    var c = calc();
+    var lista = planNombres();
+    $("planLista").innerHTML = lista.map(function(x){return "<li>"+x+"</li>";}).join("");
+    $("planSuma").textContent = c.planTot ? "+ " + money(c.planTot) + " para " + st.inv + " invitados" : "Solo la fiesta en el salón";
+    $("pFecha").textContent = st.fecha ? fechaTxt(st.fecha) : "Elegí un sábado";
+    $("pTipo").textContent = c.t.n + " · " + st.inv + " invitados";
+    $("pMenu").textContent = c.m.n;
+    $("pPlan").textContent = lista.length + (lista.length===1 ? " parada" : " paradas");
+    $("pTotal").textContent = money(c.min) + " – " + money(c.max);
+    $("pPP").textContent = "≈ " + money(c.min/st.inv) + " a " + money(c.max/st.inv) + " por persona";
+    var ex = EXTRAS.filter(function(e){return st.extras[e.id];}).map(function(e){return e.n;});
+    var txt = "Hola Cecilia, vi el castillo en la web y quiero pedir presupuesto.\n" +
+      "• Evento: " + c.t.n + "\n" +
+      "• Fecha: " + (st.fecha ? fechaTxt(st.fecha) : "a definir (un sábado)") + "\n" +
+      "• Invitados: " + st.inv + "\n" +
+      "• Menú: " + c.m.n + " (nombre de ejemplo)\n" +
+      "• Recorrido del día: " + lista.join(" / ") + "\n" +
+      "• Extras: " + (ex.length ? ex.join(", ") : "ninguno") + "\n" +
+      "• Estimado de la web (ejemplo): " + money(c.min) + " a " + money(c.max) + "\n" +
+      "¿Me pasás un presupuesto personalizado? Gracias.";
+    $("waCot").href = "https://wa.me/" + WA + "?text=" + encodeURIComponent(txt);
+  }
+
+  /* --- visita: próximos días de lunes a sábado --- */
+  var vs = {dia:null, hora:null};
+  var diasBox = $("dias"), slotsBox = $("slots");
+  var proximos = [];
+  for(var i=1; proximos.length<12 && i<30; i++){
+    var f = new Date(hoy); f.setDate(hoy.getDate()+i);
+    if(f.getDay()!==0) proximos.push(f);
+  }
+  function horarios(f){ return f.getDay()===6 ? ["9:30","10:30","11:30"] : ["9:00","10:00","11:00","12:00"]; }
+  function tomado(f,h){ return hash("visita-" + f.toDateString() + h) < 0.38; }
+  proximos.forEach(function(f){
+    var libres = horarios(f).filter(function(h){return !tomado(f,h);}).length;
+    var b = document.createElement("button"); b.type="button"; b.className="dia";
+    b.innerHTML = "<small>" + f.toLocaleDateString("es-AR",{weekday:"short"}).replace(".","") + "</small><b>" + f.getDate() + "</b><em>" + (libres ? libres + (libres===1?" turno":" turnos") : "completo") + "</em>";
+    b.setAttribute("aria-label", fechaTxt(f) + ", " + (libres ? libres + " turnos libres" : "sin turnos"));
+    if(!libres) b.disabled = true;
+    b.addEventListener("click", function(){ vs.dia=f; vs.hora=null; drawVis(); });
+    b._f = f;
+    diasBox.appendChild(b);
+  });
+  function drawVis(){
+    diasBox.querySelectorAll(".dia").forEach(function(b){ b.setAttribute("aria-pressed", vs.dia && +b._f===+vs.dia ? "true":"false"); });
+    slotsBox.innerHTML = "";
+    if(!vs.dia){ slotsBox.innerHTML = '<p class="nota-ej" style="grid-column:1/-1;margin:0">Elegí un día para ver los horarios de la mañana.</p>'; }
+    else horarios(vs.dia).forEach(function(h){
+      var s = document.createElement("button"); s.type="button"; s.className="slot"; s.textContent = h + " h";
+      if(tomado(vs.dia,h)){ s.disabled=true; s.setAttribute("aria-label", h + " ocupado"); }
+      s.setAttribute("aria-pressed", vs.hora===h ? "true":"false");
+      s.addEventListener("click", function(){ vs.hora=h; drawVis(); });
+      slotsBox.appendChild(s);
+    });
+    var nombre = $("vNombre").value.trim();
+    var tipo = $("vTipo").value;
+    var cuando = vs.dia ? fechaTxt(vs.dia) + (vs.hora ? " a las " + vs.hora + " h" : " (horario a elegir)") : "a coordinar";
+    var msg = "Hola Cecilia" + (nombre ? ", soy " + nombre : "") + ". Quiero visitar El Castillo para ver el predio.\n" +
+      "Día y hora: " + cuando + "\nEstoy pensando en: " + tipo + "\n¿Me confirmás si te queda bien? Gracias.";
+    $("vResumen").textContent = msg;
+    $("waVis").href = "https://wa.me/" + WA + "?text=" + encodeURIComponent(msg);
+  }
+  $("vNombre").addEventListener("input", drawVis);
+  $("vTipo").addEventListener("change", drawVis);
+
+  drawCal(); render(); drawVis();
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="El Castillo Internacional"></script>
+</body>
+</html>
