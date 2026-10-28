@@ -1,0 +1,878 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Finca Martinez · Coquimbito, Maipú</title>
+<meta name="description" content="Prototipo de demostración para Finca Martinez: salones, planificador de islas o mesa servida, sábados libres y cotizador.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@300;400;500;600;700&family=Rosarivo:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --papel:#f5efdc;
+  --papel-2:#ede4c8;
+  --hoja:#fbf7ea;
+  --linea:#d9cfae;
+  --margen:#c98a6b;
+  --tinta:#2b2a20;
+  --tinta-2:#55513f;
+  --oliva:#4f5e27;
+  --oliva-osc:#333d17;
+  --oliva-cl:#8a9a52;
+  --oliva-velo:#e3e6c8;
+  --arcilla:#a24f2a;
+  --arcilla-osc:#7f3a1c;
+  --arcilla-velo:#f0d8c6;
+  --cinta:rgba(232,214,160,.82);
+  --sombra:0 1px 0 rgba(60,50,20,.08),0 10px 28px -14px rgba(60,45,15,.35);
+  --display:"Rosarivo",Georgia,"Times New Roman",serif;
+  --texto:"Lexend Deca",system-ui,sans-serif;
+  --renglon:32px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--papel-2);color:var(--tinta);font-family:var(--texto);font-weight:300;font-size:16px;line-height:1.6;overflow-x:hidden}
+body{background-image:radial-gradient(rgba(120,100,50,.06) 1px,transparent 1px);background-size:6px 6px}
+img{max-width:100%;display:block}
+a{color:var(--arcilla-osc)}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--arcilla);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+.aviso{background:var(--oliva-osc);color:#f3efd9;font-size:13px;text-align:center;padding:7px 16px;letter-spacing:.01em}
+.aviso b{font-weight:600}
+
+/* ====== libro ====== */
+.libro{max-width:1200px;margin:0 auto;padding:28px 24px 60px;display:grid;grid-template-columns:minmax(0,1fr) 168px;gap:0;align-items:start}
+.hojas{grid-column:1;grid-row:1;min-width:0;display:flex;flex-direction:column;gap:28px}
+.hoja{position:relative;background-color:var(--hoja);
+  background-image:
+   linear-gradient(to right,transparent 75px,var(--margen) 75px,var(--margen) 76px,transparent 76px,transparent 79px,var(--margen) 79px,var(--margen) 80px,transparent 80px),
+   repeating-linear-gradient(to bottom,transparent 0,transparent calc(var(--renglon) - 1px),var(--linea) calc(var(--renglon) - 1px),var(--linea) var(--renglon));
+  background-position:0 0,0 86px;
+  border-radius:4px 10px 10px 4px;box-shadow:var(--sombra);padding:44px 48px 48px 112px;min-width:0;scroll-margin-top:16px}
+.hoja::before{content:"";position:absolute;left:22px;top:20px;bottom:20px;width:18px;
+  background:radial-gradient(circle at 9px 9px,var(--papel-2) 6px,rgba(0,0,0,.12) 6.5px,transparent 7.5px) 0 0/18px 56px repeat-y}
+.encabezado{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 16px;margin:0 0 18px;border-bottom:2px solid var(--oliva);padding-bottom:10px}
+.receta-n{font-family:var(--display);font-style:italic;color:var(--arcilla);font-size:18px}
+h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.15;margin:0;color:var(--oliva-osc)}
+h2{font-size:clamp(28px,3.6vw,42px)}
+h3{font-size:22px}
+.bajada{color:var(--tinta-2);max-width:62ch;margin:6px 0 22px}
+.nota-margen{font-family:var(--display);font-style:italic;color:var(--arcilla-osc);font-size:15px}
+
+/* pestañas */
+.pestanas{grid-column:2;grid-row:1;position:sticky;top:24px;display:flex;flex-direction:column;gap:6px;padding-top:60px;margin-left:-6px}
+.pestanas a{display:block;text-decoration:none;color:var(--tinta);background:var(--p,#e9dcb5);padding:10px 14px 10px 20px;border-radius:0 10px 10px 0;font-size:14px;font-weight:500;box-shadow:inset 6px 0 6px -6px rgba(0,0,0,.35),2px 2px 0 rgba(60,45,15,.08);transition:transform .15s}
+.pestanas a:hover,.pestanas a[aria-current="true"]{transform:translateX(6px)}
+.pestanas a[aria-current="true"]{font-weight:700}
+.pestanas a small{display:block;font-family:var(--display);font-style:italic;font-weight:400;font-size:12px;color:var(--tinta-2)}
+.p1{--p:#e8d9ae}.p2{--p:#d6dcae}.p3{--p:#efcdb5}.p4{--p:#c9d3a0}.p5{--p:#ead2a6}.p6{--p:#e4c2ad}.p7{--p:#d9d6b8}
+
+/* ====== portada ====== */
+.portada{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:40px;align-items:start}
+.portada>*{min-width:0}
+.marca{font-family:var(--display);font-size:clamp(46px,6.6vw,86px);line-height:.95;color:var(--oliva-osc);letter-spacing:-.01em;margin:0}
+.marca span{display:block;font-style:italic;color:var(--arcilla);font-size:.5em;letter-spacing:0;margin-top:8px}
+.lugar{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--tinta-2);margin:14px 0 26px;font-weight:500}
+.portada h1{font-size:clamp(25px,2.8vw,34px);color:var(--tinta);max-width:22ch}
+.portada h1 em{color:var(--arcilla-osc)}
+.portada p.lead{max-width:52ch;margin:16px 0 26px;color:var(--tinta-2)}
+.botones{display:flex;flex-wrap:wrap;gap:10px}
+.btn{display:inline-flex;align-items:center;gap:8px;border:2px solid var(--oliva-osc);background:var(--oliva-osc);color:#f7f2de;padding:11px 18px;border-radius:999px;font-weight:500;font-size:15px;text-decoration:none;cursor:pointer}
+.btn:hover{background:var(--oliva)}
+.btn.sec{background:transparent;color:var(--oliva-osc)}
+.btn.sec:hover{background:var(--oliva-velo)}
+.btn.arcilla{background:var(--arcilla-osc);border-color:var(--arcilla-osc)}
+.btn.arcilla:hover{background:var(--arcilla)}
+
+.ficha{position:relative;background:#fffdf4;border:1px solid #e3d8b6;padding:26px 24px 22px;box-shadow:var(--sombra);transform:rotate(1.2deg);margin-top:8px}
+.ficha::before,.cinta::before{content:"";position:absolute;top:-12px;left:50%;width:110px;height:26px;margin-left:-55px;background:var(--cinta);transform:rotate(-3deg);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.ficha h3{font-size:24px}
+.ficha .rinde{font-family:var(--display);font-style:italic;color:var(--arcilla-osc);margin:2px 0 14px}
+.ficha h4{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--oliva);margin:14px 0 6px;font-weight:600}
+.ingred{list-style:none;padding:0;margin:0}
+.ingred li{display:flex;gap:10px;justify-content:space-between;border-bottom:1px dotted #cbbf98;padding:5px 0;font-size:14.5px}
+.ingred li b{font-weight:500;text-align:right}
+.ficha ol{margin:0;padding-left:20px;font-size:14.5px}
+.ficha ol li{margin:2px 0}
+
+/* ====== finca ====== */
+.espacios{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:36px;align-items:start}
+.espacios>*{min-width:0}
+.indice{list-style:none;margin:0;padding:0}
+.indice li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 14px;padding:12px 0;border-bottom:1px solid var(--linea)}
+.indice li strong{font-family:var(--display);font-weight:400;font-size:21px;color:var(--oliva-osc)}
+.indice li .m2{font-family:var(--display);font-size:22px;color:var(--arcilla-osc);white-space:nowrap}
+.indice li p{grid-column:1/-1;margin:0;font-size:14.5px;color:var(--tinta-2)}
+.capac{margin-top:18px;background:var(--oliva-velo);border-left:4px solid var(--oliva);padding:12px 16px;font-size:14.5px}
+
+.foto{position:relative;margin:0;background:#fffdf4;padding:10px 10px 34px;box-shadow:var(--sombra);min-width:0}
+.foto .lamina{position:relative;aspect-ratio:4/3;overflow:hidden;background:
+  radial-gradient(circle at 78% 24%,rgba(255,255,255,.35) 0 14%,transparent 15%),
+  repeating-linear-gradient(135deg,rgba(255,255,255,.08) 0 8px,transparent 8px 16px),
+  linear-gradient(160deg,var(--fa,#7c8a45),var(--fb,#3f4b1c));display:flex;align-items:flex-end}
+.foto .lamina svg{position:absolute;left:14px;top:14px;width:34%;height:auto;opacity:.55}
+.foto .lamina .alt{position:relative;color:#fbf6e3;font-family:var(--display);font-style:italic;font-size:17px;line-height:1.25;padding:14px 16px;max-width:80%}
+.foto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s}
+.foto img.ok{opacity:1}
+.foto figcaption{position:absolute;left:12px;right:12px;bottom:7px;font-family:var(--display);font-style:italic;font-size:14px;color:var(--tinta-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.foto.giro-a{transform:rotate(-1.6deg)}.foto.giro-b{transform:rotate(1.3deg)}.foto.giro-c{transform:rotate(-.6deg)}
+.cinta{position:relative}
+.cinta::before{z-index:2;width:80px;margin-left:-40px}
+
+.eventos{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px;margin-top:30px}
+.eventos .foto .lamina{aspect-ratio:1/1}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 0;padding:0;list-style:none}
+.chips li{border:1px solid var(--oliva-cl);border-radius:999px;padding:3px 12px;font-size:13.5px;background:#fffdf4}
+.servicios{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 28px;margin-top:30px}
+.servicios>div{min-width:0;border-top:2px solid var(--arcilla);padding-top:10px}
+.servicios h3{font-size:19px}
+.servicios p{margin:4px 0 0;font-size:14.5px;color:var(--tinta-2)}
+
+/* ====== firma: islas ====== */
+.planner{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:30px;align-items:start}
+.planner>*{min-width:0}
+.campo{margin:0 0 20px;border:0;padding:0;min-width:0}
+.campo legend,.campo>label:not(.chk),.etq{display:block;font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:var(--oliva);font-weight:600;margin-bottom:8px;padding:0}
+.num-grande{font-family:var(--display);font-size:40px;color:var(--arcilla-osc);line-height:1}
+.num-grande small{font-size:15px;font-family:var(--texto);color:var(--tinta-2)}
+input[type=range]{width:100%;accent-color:var(--oliva);margin:8px 0 0}
+.estilos{display:grid;gap:8px}
+.op{position:relative;display:block;cursor:pointer}
+.op input{position:absolute;opacity:0;pointer-events:none}
+.op span{display:block;border:1.5px solid #cfc39c;background:#fffdf4;border-radius:8px;padding:10px 12px;font-size:14px;line-height:1.35}
+.op span b{display:block;font-family:var(--display);font-weight:400;font-size:18px;color:var(--oliva-osc)}
+.op input:checked+span{border-color:var(--oliva);background:var(--oliva-velo);box-shadow:inset 4px 0 0 var(--oliva)}
+.op input:focus-visible+span{outline:3px solid var(--arcilla);outline-offset:2px}
+.regla{font-size:13px;color:var(--tinta-2);background:#fffdf4;border:1px dashed var(--margen);padding:10px 12px;border-radius:6px}
+.regla b{font-weight:600;color:var(--arcilla-osc)}
+.plano{background:#fffdf4;border:1px solid #e0d5b1;padding:14px;box-shadow:var(--sombra)}
+.plano svg{width:100%;height:auto;display:block}
+.veredicto{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:16px}
+.veredicto>div{min-width:0;border-left:3px solid var(--arcilla);padding:2px 0 2px 12px}
+.veredicto .k{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--tinta-2);font-weight:500}
+.veredicto .v{font-family:var(--display);font-size:22px;color:var(--oliva-osc);line-height:1.2}
+.leyenda{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;margin:10px 0 0;color:var(--tinta-2)}
+.leyenda i{display:inline-block;width:12px;height:12px;border-radius:50%;vertical-align:-1px;margin-right:5px}
+.salon-texto{font-family:var(--display);font-style:italic;font-size:19px;color:var(--arcilla-osc);margin:14px 0 4px}
+
+/* ====== calendario ====== */
+.cal-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.meses{display:flex;gap:6px;flex-wrap:wrap}
+.meses button{border:1.5px solid #cfc39c;background:#fffdf4;border-radius:999px;padding:6px 14px;font-size:14px;cursor:pointer;text-transform:capitalize}
+.meses button[aria-pressed="true"]{background:var(--oliva-osc);color:#f7f2de;border-color:var(--oliva-osc)}
+.cal-wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,260px);gap:28px;align-items:start}
+.cal-wrap>*{min-width:0}
+.grilla{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;background:#fffdf4;padding:12px;border:1px solid #e0d5b1;box-shadow:var(--sombra)}
+.grilla .dow{font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;text-align:center;color:var(--tinta-2);font-weight:500;padding:4px 0}
+.grilla .dow.sab{color:var(--arcilla-osc);font-weight:700}
+.dia{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;font-size:14px;color:#9a9378;border-radius:6px;min-width:0}
+.dia.vacio{visibility:hidden}
+.sabado{border:1.5px solid var(--oliva);background:var(--oliva-velo);color:var(--oliva-osc);font-weight:600;cursor:pointer;flex-direction:column;line-height:1.05;padding:0}
+.sabado small{font-size:9.5px;font-weight:500;letter-spacing:.04em;text-transform:uppercase}
+.sabado:hover{background:#d3daa9}
+.sabado.ocupado{background:repeating-linear-gradient(135deg,#efe6cc 0 5px,#e6dbbb 5px 10px);border-color:#cbbf98;color:#8b8468;cursor:not-allowed;text-decoration:line-through}
+.sabado.ocupado small{text-decoration:none}
+.sabado.pasado{opacity:.45;cursor:not-allowed}
+.sabado[aria-pressed="true"]{background:var(--arcilla-osc);border-color:var(--arcilla-osc);color:#fff8ee}
+.cal-lado p{margin:0 0 10px;font-size:14.5px}
+.elegida{font-family:var(--display);font-size:24px;color:var(--arcilla-osc);margin:2px 0 12px;line-height:1.2}
+.ref{display:flex;flex-direction:column;gap:6px;font-size:13.5px;margin:14px 0}
+.ref span{display:flex;align-items:center;gap:8px}
+.ref i{width:18px;height:18px;border-radius:4px;display:inline-block;border:1.5px solid var(--oliva);background:var(--oliva-velo)}
+.ref i.o{background:repeating-linear-gradient(135deg,#efe6cc 0 4px,#e6dbbb 4px 8px);border-color:#cbbf98}
+.ref i.e{background:var(--arcilla-osc);border-color:var(--arcilla-osc)}
+
+/* ====== cotizador ====== */
+.cotiza{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,340px);gap:32px;align-items:start}
+.cotiza>*{min-width:0}
+.fila2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px}
+.fila2>*{min-width:0}
+select,.campo-txt{width:100%;border:1.5px solid #cfc39c;background:#fffdf4;border-radius:8px;padding:10px 12px;font-size:15px}
+.tipos{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.tipos .op span{text-align:center;padding:10px 6px}
+.extras{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
+.chk{display:flex;gap:10px;align-items:flex-start;border:1.5px solid #cfc39c;background:#fffdf4;border-radius:8px;padding:9px 12px;cursor:pointer;font-size:14px;line-height:1.35;min-width:0}
+.chk input{accent-color:var(--oliva);margin-top:3px;flex:none}
+.chk small{display:block;color:var(--tinta-2);font-size:12.5px}
+.ticket{position:sticky;top:20px;background:#fffdf4;border:1px solid #e0d5b1;padding:24px 22px 22px;box-shadow:var(--sombra);
+  background-image:repeating-linear-gradient(to bottom,transparent 0 27px,#ece3c6 27px 28px)}
+.ticket h3{font-size:22px;margin-bottom:6px}
+.ticket .pp{font-family:var(--display);font-size:20px;color:var(--tinta)}
+.ticket .total{font-family:var(--display);font-size:clamp(28px,3vw,34px);color:var(--arcilla-osc);line-height:1.15;margin:4px 0 10px;word-break:break-word}
+.ticket ul{list-style:none;padding:0;margin:10px 0 16px;font-size:13.5px}
+.ticket ul li{display:flex;justify-content:space-between;gap:10px;border-bottom:1px dotted #cbbf98;padding:3px 0}
+.ticket ul li span:last-child{text-align:right;font-weight:500}
+.ticket .btn{width:100%;justify-content:center}
+.ticket .chica{font-size:12px;color:var(--tinta-2);margin:10px 0 0}
+.plan-cargado{font-size:13px;background:var(--oliva-velo);padding:8px 10px;border-radius:6px;margin:0 0 10px}
+
+/* ====== llegar ====== */
+.llegar{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:32px;align-items:start}
+.llegar>*{min-width:0}
+.mapa{background:#fffdf4;border:1px solid #e0d5b1;padding:10px;box-shadow:var(--sombra)}
+.mapa svg{width:100%;height:auto;display:block}
+.dir{font-family:var(--display);font-size:26px;color:var(--oliva-osc);line-height:1.2;margin:0 0 6px}
+.contacto{list-style:none;padding:0;margin:18px 0}
+.contacto li{padding:8px 0;border-bottom:1px solid var(--linea);display:flex;gap:12px;justify-content:space-between;flex-wrap:wrap}
+.contacto li span:first-child{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--oliva);font-weight:600}
+
+.pie{text-align:center;font-size:13px;color:var(--tinta-2);padding:10px 16px 40px}
+.pie b{font-family:var(--display);font-weight:400;font-size:18px;color:var(--oliva-osc)}
+
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%) translateY(120px);background:var(--oliva-osc);color:#f7f2de;padding:10px 18px;border-radius:999px;font-size:14px;z-index:50;transition:transform .25s;max-width:calc(100vw - 32px);text-align:center}
+.toast.ver{transform:translateX(-50%) translateY(0)}
+
+/* ====== responsive ====== */
+@media (max-width:1020px){
+  .libro{grid-template-columns:minmax(0,1fr);padding:0 0 40px}
+  .pestanas{grid-column:1;grid-row:1;position:sticky;top:0;z-index:20;flex-direction:row;gap:4px;padding:8px 16px 0;margin:0;overflow-x:auto;background:var(--papel-2);scrollbar-width:none;order:-1;border-bottom:1px solid #d6c99f}
+  .pestanas::-webkit-scrollbar{display:none}
+  .pestanas a{flex:none;border-radius:10px 10px 0 0;padding:8px 14px;box-shadow:inset 0 -6px 6px -6px rgba(0,0,0,.25)}
+  .pestanas a small{display:none}
+  .pestanas a:hover,.pestanas a[aria-current="true"]{transform:translateY(0)}
+  .pestanas a[aria-current="true"]{box-shadow:none}
+  .hojas{grid-row:2;padding:20px 16px 0;gap:22px}
+  .hoja{scroll-margin-top:60px}
+  .portada,.espacios,.planner,.cal-wrap,.cotiza,.llegar{grid-template-columns:minmax(0,1fr)}
+  .eventos{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .ticket{position:static}
+}
+@media (max-width:640px){
+  .hoja{padding:28px 16px 30px 44px;background-image:
+   linear-gradient(to right,transparent 33px,var(--margen) 33px,var(--margen) 34px,transparent 34px),
+   repeating-linear-gradient(to bottom,transparent 0,transparent calc(var(--renglon) - 1px),var(--linea) calc(var(--renglon) - 1px),var(--linea) var(--renglon))}
+  .hoja::before{left:8px;width:14px;background-size:14px 44px;background-image:radial-gradient(circle at 7px 7px,var(--papel-2) 4.5px,rgba(0,0,0,.12) 5px,transparent 6px)}
+  .servicios{grid-template-columns:minmax(0,1fr)}
+  .eventos{gap:14px}
+  .tipos{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .extras,.fila2{grid-template-columns:minmax(0,1fr)}
+  .veredicto{grid-template-columns:minmax(0,1fr)}
+  .ficha{transform:none}
+  .foto .lamina .alt{font-size:15px;max-width:100%}
+  .indice li .m2{font-size:18px}
+}
+</style>
+</head>
+<body>
+<div class="aviso">Prototipo de demostración preparado para <b>Finca Martinez</b> · precios, menús y fechas de ejemplo</div>
+
+<div class="libro">
+  <nav class="pestanas" aria-label="Secciones de la libreta">
+    <a class="p1" href="#portada">Portada<small>la receta</small></a>
+    <a class="p2" href="#finca">La finca<small>salones y jardín</small></a>
+    <a class="p3" href="#fiestas">Fiestas<small>qué se festeja</small></a>
+    <a class="p4" href="#islas">Islas o mesa<small>armá la comida</small></a>
+    <a class="p5" href="#fechas">Sábados<small>libres y ocupados</small></a>
+    <a class="p6" href="#cotiza">Cotizá<small>en un minuto</small></a>
+    <a class="p7" href="#llegar">Cómo llegar<small>Coquimbito</small></a>
+  </nav>
+
+  <main class="hojas">
+    <!-- PORTADA -->
+    <section class="hoja" id="portada" aria-labelledby="t-portada">
+      <div class="portada">
+        <div>
+          <p class="marca" aria-label="Finca Martinez">Finca Martinez<span>salón de eventos de familia</span></p>
+          <p class="lugar">Castro Barros 1747 · Coquimbito · Maipú · Mendoza</p>
+          <h1 id="t-portada">Don Juan Ruiz empezó la receta en 2015. Hoy la siguen <em>su hijo y sus nietos</em>.</h1>
+          <p class="lead">Una finca familiar entre olivos donde la comida no se terceriza: catering y pastelería de autor propios, menú criollo o menú en islas, dos salones y jardín para la ceremonia. De 100 a 400 invitados.</p>
+          <div class="botones">
+            <a class="btn" href="#islas">Planificá la comida</a>
+            <a class="btn sec" href="#fechas">Ver sábados libres</a>
+          </div>
+        </div>
+        <aside class="ficha" aria-label="Ficha de la finca">
+          <h3>Fiesta en la finca</h3>
+          <p class="rinde">Rinde de 100 a 400 invitados</p>
+          <h4>Ingredientes</h4>
+          <ul class="ingred">
+            <li><span>Salón Principal cubierto</span><b>200 m²</b></li>
+            <li><span>Salón exterior lateral climatizado</span><b>400 m²</b></li>
+            <li><span>Jardines con olivos</span><b>✓</b></li>
+            <li><span>Sector para ceremonia</span><b>civil o religiosa</b></li>
+            <li><span>Catering y pastelería</span><b>de autor</b></li>
+            <li><span>Barra</span><b>primeras marcas</b></li>
+            <li><span>Estacionamiento</span><b>privado</b></li>
+          </ul>
+          <h4>Preparación</h4>
+          <ol>
+            <li>Elegís sábado y tipo de fiesta.</li>
+            <li>Decidís: islas o mesa servida.</li>
+            <li>La familia coordina antes y durante el evento.</li>
+          </ol>
+        </aside>
+      </div>
+    </section>
+
+    <!-- LA FINCA -->
+    <section class="hoja" id="finca" aria-labelledby="t-finca">
+      <div class="encabezado"><span class="receta-n">Receta n.º 2</span><h2 id="t-finca">Dónde se sirve</h2></div>
+      <div class="espacios">
+        <div>
+          <ul class="indice">
+            <li><strong>Salón Principal cubierto</strong><span class="m2">200 m²</span><p>WiFi, pantalla, escenario y galería exterior.</p></li>
+            <li><strong>Salón exterior lateral climatizado</strong><span class="m2">400 m²</span><p>Techo alto y salida directa al jardín.</p></li>
+            <li><strong>Jardines con olivos</strong><span class="m2">aire libre</span><p>Para la recepción, las fotos o la sobremesa afuera.</p></li>
+            <li><strong>Sector de ceremonia</strong><span class="m2">civil o religiosa</span><p>El sí, y después a comer, sin moverse de la finca.</p></li>
+            <li><strong>Estacionamiento privado</strong><span class="m2">propio</span><p>Para que los invitados lleguen y se olviden del auto.</p></li>
+          </ul>
+          <p class="capac">Capacidad total de la finca: <b>de 100 a 400 invitados</b>. Cuánta gente entra en cada salón depende de cómo se sirva la comida: eso lo ves en la pestaña <a href="#islas">Islas o mesa</a>.</p>
+        </div>
+        <div>
+          <figure class="foto giro-b cinta" style="--fa:#8a6b3d;--fb:#4a3a1c">
+            <div class="lamina">
+              <svg viewBox="0 0 120 80" aria-hidden="true"><path d="M5 75h110M15 75V35l45-25 45 25v40M35 75V50h20v25M70 50h20v12H70z" fill="none" stroke="#fff" stroke-width="3"/></svg>
+              <span class="alt">Salón de Finca Martinez armado para una fiesta</span>
+              <img src="https://cdn.salonesdefiestas.ar/2f2751d9a280429ac0666e7bf2ac03a895b1b8864fcabf1a9db12c31650946b8/w960_q80_s1.webp" alt="Salón de Finca Martinez armado para una fiesta" loading="lazy">
+            </div>
+            <figcaption>El salón, listo para la noche</figcaption>
+          </figure>
+          <p class="nota-margen" style="margin-top:22px">Nota al margen: la galería del Principal y la salida al jardín del lateral hacen que la recepción pueda empezar afuera y la cena seguir adentro.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FIESTAS -->
+    <section class="hoja" id="fiestas" aria-labelledby="t-fiestas">
+      <div class="encabezado"><span class="receta-n">Receta n.º 3</span><h2 id="t-fiestas">Lo que se festeja acá</h2></div>
+      <p class="bajada">Bodas, quince, sociales de todo tipo y eventos de empresa. Cada uno con la misma cocina de la casa.</p>
+      <div class="eventos">
+        <figure class="foto giro-a" style="--fa:#7c8a45;--fb:#3f4b1c">
+          <div class="lamina"><svg viewBox="0 0 120 80" aria-hidden="true"><circle cx="48" cy="45" r="20" fill="none" stroke="#fff" stroke-width="3"/><circle cx="72" cy="45" r="20" fill="none" stroke="#fff" stroke-width="3"/></svg><span class="alt">Boda en Finca Martinez</span>
+          <img src="https://fincamartinez.com.ar/wp/wp-content/uploads/elementor/thumbs/bodas-1-rmym002bpe6l8zge07v2dqzk9i3roar73ednutfedk.jpg" alt="Boda en Finca Martinez" loading="lazy"></div>
+          <figcaption>Bodas</figcaption>
+        </figure>
+        <figure class="foto giro-b" style="--fa:#b0694a;--fb:#6e321a">
+          <div class="lamina"><svg viewBox="0 0 120 80" aria-hidden="true"><path d="M60 10l8 18 20 2-15 13 5 20-18-11-18 11 5-20-15-13 20-2z" fill="none" stroke="#fff" stroke-width="3"/></svg><span class="alt">Fiesta de 15 años</span>
+          <img src="https://fincamartinez.com.ar/wp/wp-content/uploads/elementor/thumbs/imagen-30-rmyn1pd9u5smxwotuikce8h61w9sf8flm0esudiwso.webp" alt="Fiesta de 15 años" loading="lazy"></div>
+          <figcaption>Quince años</figcaption>
+        </figure>
+        <figure class="foto giro-c" style="--fa:#a08a4c;--fb:#5a4a1e">
+          <div class="lamina"><svg viewBox="0 0 120 80" aria-hidden="true"><path d="M20 70h80M30 70V40h60v30M45 40V25h30v15" fill="none" stroke="#fff" stroke-width="3"/></svg><span class="alt">Mesa con el menú criollo</span>
+          <img src="https://fincamartinez.com.ar/wp/wp-content/uploads/2026/05/menu-criollo-70-scaled.jpg" alt="Mesa con el menú criollo" loading="lazy"></div>
+          <figcaption>Menú criollo</figcaption>
+        </figure>
+        <figure class="foto giro-a" style="--fa:#56603a;--fb:#262d12">
+          <div class="lamina"><svg viewBox="0 0 120 80" aria-hidden="true"><rect x="25" y="20" width="70" height="42" fill="none" stroke="#fff" stroke-width="3"/><path d="M60 62v12M42 74h36" stroke="#fff" stroke-width="3"/></svg><span class="alt">Evento corporativo</span>
+          <img src="https://fincamartinez.com.ar/wp/wp-content/uploads/elementor/thumbs/LOREAL-34-scaled-rnaycu5ig0n8az5ppxsjs050lvqjfn31sdvfc2rcso.jpg" alt="Evento corporativo" loading="lazy"></div>
+          <figcaption>Corporativos</figcaption>
+        </figure>
+      </div>
+      <ul class="chips" style="margin-top:22px" aria-label="Tipos de evento">
+        <li>Bodas</li><li>15 años</li><li>Cumpleaños</li><li>Cambios de década</li><li>Aniversarios</li><li>Corporativos</li><li>Ceremonias civiles o religiosas</li>
+      </ul>
+      <div class="servicios">
+        <div><h3>Catering y pastelería de autor</h3><p>Menú criollo, menú en islas y la mesa dulce, hechos por la casa.</p></div>
+        <div><h3>Barra de primeras marcas</h3><p>Tragos y bebidas durante toda la fiesta.</p></div>
+        <div><h3>Sonido, iluminación y DJ</h3><p>Escenario y pantalla en el Salón Principal.</p></div>
+        <div><h3>Coordinación previa</h3><p>Se arma el plan con tiempo: horarios, menú, armado de salones.</p></div>
+        <div><h3>Coordinación durante</h3><p>Alguien de la finca a cargo, para que vos estés en la fiesta.</p></div>
+        <div><h3>Ceremonia en la finca</h3><p>Sector propio para civil o religiosa, entre olivos.</p></div>
+      </div>
+    </section>
+
+    <!-- FIRMA: ISLAS -->
+    <section class="hoja" id="islas" aria-labelledby="t-islas">
+      <div class="encabezado"><span class="receta-n">Receta n.º 4 · la de la casa</span><h2 id="t-islas">¿Islas o mesa servida?</h2></div>
+      <p class="bajada">La finca trabaja con dos formas de servir: el <b>menú criollo</b> a la mesa y el <b>menú islas</b>, con estaciones donde cada uno se sirve. Contanos cuántos son y cómo quieren comer, y te dibujamos cuántas islas hacen falta y en qué salón conviene armarlas.</p>
+      <div class="planner">
+        <div>
+          <div class="campo">
+            <label class="etq" for="pl-inv">Invitados</label>
+            <div class="num-grande"><span id="pl-inv-v">180</span> <small>personas</small></div>
+            <input type="range" id="pl-inv" min="100" max="400" step="10" value="180" aria-describedby="pl-inv-v">
+          </div>
+          <fieldset class="campo">
+            <legend>Cómo se sirve</legend>
+            <div class="estilos">
+              <label class="op"><input type="radio" name="estilo" value="islas" checked><span><b>Menú islas</b>Estaciones toda la noche, la gente circula.</span></label>
+              <label class="op"><input type="radio" name="estilo" value="mixto"><span><b>Recepción en islas + plato servido</b>Islas para arrancar y principal a la mesa. <i>(nombre de ejemplo)</i></span></label>
+              <label class="op"><input type="radio" name="estilo" value="mesa"><span><b>Menú criollo a la mesa</b>Todos sentados, servicio a la mesa.</span></label>
+            </div>
+          </fieldset>
+          <div class="campo">
+            <label class="chk"><input type="checkbox" id="pl-dulce" checked><span>Isla de pastelería de autor<small>mesa dulce aparte, al final de la noche</small></span></label>
+          </div>
+          <p class="regla" id="pl-regla"></p>
+        </div>
+        <div>
+          <div class="plano">
+            <svg id="plano" viewBox="0 0 620 400" role="img" aria-labelledby="plano-t">
+              <title id="plano-t">Esquema de los dos salones con las islas de comida ubicadas</title>
+            </svg>
+            <div class="leyenda" aria-hidden="true">
+              <span><i style="background:#4f5e27"></i>Isla salada</span>
+              <span><i style="background:#a24f2a"></i>Pastelería de autor</span>
+              <span><i style="background:#2b2a20"></i>Barra</span>
+              <span><i style="background:#e3e6c8;border:1px solid #8a9a52"></i>Zona de mesas / pista</span>
+            </div>
+          </div>
+          <p class="salon-texto" id="pl-salon" aria-live="polite"></p>
+          <div class="veredicto">
+            <div><div class="k">Islas saladas</div><div class="v" id="pl-n-islas">0</div></div>
+            <div><div class="k">Superficie estimada</div><div class="v" id="pl-m2">0 m²</div></div>
+            <div><div class="k">Salón</div><div class="v" id="pl-donde">—</div></div>
+          </div>
+          <div class="botones" style="margin-top:20px">
+            <button class="btn arcilla" type="button" id="pl-llevar">Llevar este plan al cotizador</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SÁBADOS -->
+    <section class="hoja" id="fechas" aria-labelledby="t-fechas">
+      <div class="encabezado"><span class="receta-n">Receta n.º 5</span><h2 id="t-fechas">Sábados de la temporada</h2></div>
+      <div class="cal-top">
+        <p class="bajada" style="margin:0">Tocá un sábado libre y queda anotado en el cotizador.</p>
+        <div class="meses" id="meses" role="group" aria-label="Elegir mes"></div>
+      </div>
+      <div class="cal-wrap">
+        <div class="grilla" id="grilla" aria-live="polite"></div>
+        <div class="cal-lado">
+          <p class="etq">Fecha anotada</p>
+          <p class="elegida" id="cal-elegida">Todavía ninguna</p>
+          <div class="ref">
+            <span><i></i>Sábado libre</span>
+            <span><i class="o"></i>Sábado ocupado</span>
+            <span><i class="e"></i>Tu fecha</span>
+          </div>
+          <p class="nota-margen">La disponibilidad es de ejemplo: la real la confirma la familia por WhatsApp.</p>
+          <a class="btn sec" href="#cotiza">Seguir al cotizador</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- COTIZÁ -->
+    <section class="hoja" id="cotiza" aria-labelledby="t-cotiza">
+      <div class="encabezado"><span class="receta-n">Receta n.º 6</span><h2 id="t-cotiza">La cuenta, antes de la fiesta</h2></div>
+      <p class="bajada">Un rango por persona y un total aproximado. Los valores son de ejemplo; la finca te pasa el número real.</p>
+      <div class="cotiza">
+        <form id="form-cot" onsubmit="return false">
+          <fieldset class="campo">
+            <legend>Qué festejás</legend>
+            <div class="tipos">
+              <label class="op"><input type="radio" name="tipo" value="Boda" checked><span>Boda</span></label>
+              <label class="op"><input type="radio" name="tipo" value="15 años"><span>15 años</span></label>
+              <label class="op"><input type="radio" name="tipo" value="Social"><span>Social</span></label>
+              <label class="op"><input type="radio" name="tipo" value="Corporativo"><span>Corporativo</span></label>
+            </div>
+          </fieldset>
+          <div class="fila2">
+            <div class="campo">
+              <label for="c-fecha">Sábado</label>
+              <select id="c-fecha"></select>
+            </div>
+            <div class="campo">
+              <label for="c-menu">Menú</label>
+              <select id="c-menu">
+                <option value="islas">Menú islas</option>
+                <option value="criollo">Menú criollo (a la mesa)</option>
+                <option value="mixto">Islas + plato servido (ejemplo)</option>
+              </select>
+            </div>
+          </div>
+          <div class="campo">
+            <label for="c-inv">Invitados</label>
+            <div class="num-grande"><span id="c-inv-v">180</span> <small>personas</small></div>
+            <input type="range" id="c-inv" min="100" max="400" step="10" value="180">
+          </div>
+          <fieldset class="campo">
+            <legend>Extras</legend>
+            <div class="extras">
+              <label class="chk"><input type="checkbox" name="extra" value="dulce" checked><span>Mesa dulce de pastelería de autor<small>por persona</small></span></label>
+              <label class="chk"><input type="checkbox" name="extra" value="barra"><span>Barra de primeras marcas, libre<small>por persona</small></span></label>
+              <label class="chk"><input type="checkbox" name="extra" value="dj" checked><span>DJ, sonido e iluminación<small>precio fijo</small></span></label>
+              <label class="chk"><input type="checkbox" name="extra" value="ceremonia"><span>Ceremonia en el jardín<small>precio fijo</small></span></label>
+              <label class="chk"><input type="checkbox" name="extra" value="pantalla"><span>Pantalla y escenario para video o show<small>precio fijo</small></span></label>
+              <label class="chk"><input type="checkbox" name="extra" value="trasnoche"><span>Fin de fiesta salado<small>por persona</small></span></label>
+            </div>
+          </fieldset>
+        </form>
+        <aside class="ticket" aria-live="polite">
+          <h3>Tu pedido</h3>
+          <p class="plan-cargado" id="t-plan" hidden></p>
+          <div class="pp" id="t-pp">—</div>
+          <div class="total" id="t-total">—</div>
+          <ul id="t-detalle"></ul>
+          <a class="btn" id="t-wa" href="#" target="_blank" rel="noopener">Mandar el pedido por WhatsApp</a>
+          <p class="chica">Precios de ejemplo en pesos, sin impuestos. Se abre WhatsApp con todo el pedido escrito.</p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- LLEGAR -->
+    <section class="hoja" id="llegar" aria-labelledby="t-llegar">
+      <div class="encabezado"><span class="receta-n">Receta n.º 7</span><h2 id="t-llegar">Cómo llegar a la finca</h2></div>
+      <div class="llegar">
+        <div>
+          <p class="dir">Castro Barros 1747<br>Coquimbito, Maipú, Mendoza</p>
+          <p class="nota-margen">Con estacionamiento privado dentro del predio.</p>
+          <ul class="contacto">
+            <li><span>WhatsApp</span><a href="https://wa.me/5492614681060" target="_blank" rel="noopener">+54 9 261 468-1060</a></li>
+            <li><span>Instagram</span><a href="https://instagram.com/salonfincamartinez" target="_blank" rel="noopener">@salonfincamartinez</a></li>
+          </ul>
+          <div class="botones">
+            <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Castro%20Barros%201747%2C%20Coquimbito%2C%20Maip%C3%BA%2C%20Mendoza" target="_blank" rel="noopener">Abrir en Google Maps</a>
+          </div>
+        </div>
+        <div class="mapa">
+          <svg viewBox="0 0 520 320" role="img" aria-labelledby="mapa-t">
+            <title id="mapa-t">Esquema ilustrativo: Finca Martinez sobre calle Castro Barros, en Coquimbito, Maipú</title>
+            <rect width="520" height="320" fill="#f3ecd2"/>
+            <g fill="#dfe3bf" stroke="#c9cf9f">
+              <rect x="20" y="20" width="150" height="110" rx="4"/><rect x="200" y="20" width="130" height="110" rx="4"/><rect x="360" y="20" width="140" height="110" rx="4"/>
+              <rect x="20" y="190" width="150" height="110" rx="4"/><rect x="360" y="190" width="140" height="110" rx="4"/>
+            </g>
+            <g stroke="#a7b170" stroke-width="1.2" opacity=".8">
+              <path d="M30 40h130M30 60h130M30 80h130M30 100h130M30 120h130M370 210h120M370 230h120M370 250h120M370 270h120M370 290h120"/>
+            </g>
+            <path d="M0 160H520" stroke="#fffdf4" stroke-width="26"/>
+            <path d="M0 160H520" stroke="#cbbf98" stroke-width="1.5" stroke-dasharray="10 8"/>
+            <path d="M185 0V320M345 0V320" stroke="#fffdf4" stroke-width="16"/>
+            <text x="18" y="152" font-family="Lexend Deca,sans-serif" font-size="12" fill="#55513f" letter-spacing="1">CASTRO BARROS</text>
+            <g transform="translate(265,240)">
+              <rect x="-62" y="-50" width="124" height="96" rx="6" fill="#fffdf4" stroke="#4f5e27" stroke-width="2"/>
+              <g fill="#8a9a52"><circle cx="-40" cy="30" r="7"/><circle cx="-20" cy="34" r="6"/><circle cx="40" cy="30" r="7"/><circle cx="22" cy="34" r="6"/></g>
+              <path d="M0 -94c-14 0-24 10-24 23 0 17 24 37 24 37s24-20 24-37c0-13-10-23-24-23z" fill="#a24f2a"/>
+              <circle cx="0" cy="-71" r="8" fill="#fffdf4"/>
+              <text x="0" y="-12" text-anchor="middle" font-family="Rosarivo,serif" font-size="17" fill="#333d17">Finca Martinez</text>
+              <text x="0" y="8" text-anchor="middle" font-family="Lexend Deca,sans-serif" font-size="11" fill="#55513f">n.º 1747</text>
+            </g>
+            <text x="500" y="312" text-anchor="end" font-family="Lexend Deca,sans-serif" font-size="10" fill="#7c765c">esquema ilustrativo, no a escala</text>
+            <text x="30" y="214" font-family="Rosarivo,serif" font-style="italic" font-size="14" fill="#55513f">Coquimbito, Maipú</text>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <footer class="pie">
+      <b>Finca Martinez</b><br>
+      Castro Barros 1747, Coquimbito, Maipú, Mendoza · Salón de eventos familiar desde 2015<br>
+      Prototipo de demostración preparado para Finca Martinez · precios, menús y fechas de ejemplo
+    </footer>
+  </main>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function(){
+  "use strict";
+  var WA = "5492614681060";
+  var $ = function(s,c){return (c||document).querySelector(s)};
+  var $$ = function(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s))};
+  var fmt = function(n){return "$\u00a0" + Math.round(n).toLocaleString("es-AR")};
+  var redondear = function(n,m){return Math.round(n/m)*m};
+
+  /* fotos con lámina de respaldo */
+  $$(".foto img").forEach(function(img){
+    function ok(){ if(img.naturalWidth>0) img.classList.add("ok"); else img.remove(); }
+    img.addEventListener("load", ok);
+    img.addEventListener("error", function(){ img.remove(); });
+    if(img.complete){ if(img.naturalWidth>0) img.classList.add("ok"); }
+  });
+
+  var toastT;
+  function toast(t){ var el=$("#toast"); el.textContent=t; el.classList.add("ver"); clearTimeout(toastT); toastT=setTimeout(function(){el.classList.remove("ver")},2600); }
+
+  /* pestaña activa */
+  var links = $$(".pestanas a");
+  if("IntersectionObserver" in window){
+    var io = new IntersectionObserver(function(ents){
+      ents.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.setAttribute("aria-current", a.getAttribute("href")==="#"+e.target.id ? "true":"false"); });
+        }
+      });
+    },{rootMargin:"-40% 0px -55% 0px"});
+    $$(".hoja").forEach(function(s){io.observe(s)});
+  }
+
+  /* ================= PLANIFICADOR DE ISLAS ================= */
+  var REGLAS = {
+    islas:{m2:1.1, cada:60, txt:"Menú islas: <b>1 isla salada cada 60 invitados</b>, 1,1 m² por persona (mesas altas y algunas bajas)."},
+    mixto:{m2:1.2, cada:80, txt:"Recepción en islas: <b>1 isla cada 80 invitados</b> para el arranque; después plato servido, 1,2 m² por persona."},
+    mesa:{m2:1.3, cada:0, txt:"Menú criollo a la mesa: <b>sin islas saladas</b>, 1,3 m² por persona sentada."}
+  };
+  var plan = {inv:180, estilo:"islas", dulce:true};
+  var NS = "http://www.w3.org/2000/svg";
+  function el(tag, attrs, txt){ var e=document.createElementNS(NS,tag); for(var k in attrs) e.setAttribute(k,attrs[k]); if(txt!=null) e.textContent=txt; return e; }
+
+  // geometría del esquema (proporcional: 200 m² vs 400 m²)
+  var SP = {x:30, y:40, w:220, h:225, nombre:"Salón Principal", m2:200};
+  var SE = {x:280, y:20, w:270, h:320, nombre:"Salón exterior lateral", m2:400};
+
+  function calcular(){
+    var r = REGLAS[plan.estilo];
+    var saladas = r.cada ? Math.ceil(plan.inv / r.cada) : 0;
+    var dulces = plan.dulce ? Math.ceil(plan.inv / 150) : 0;
+    var barras = plan.inv > 250 ? 2 : 1;
+    var m2 = (plan.inv * r.m2 + (saladas + dulces + barras) * 8 + 40) * 1.05;
+    m2 = Math.round(m2/5)*5;
+    var donde, codigo;
+    if(m2 <= 200){ donde="Salón Principal"; codigo="P"; }
+    else if(m2 <= 400){ donde="Salón exterior lateral"; codigo="E"; }
+    else { donde="Los dos salones"; codigo="PE"; }
+    return {saladas:saladas, dulces:dulces, barras:barras, m2:m2, donde:donde, codigo:codigo};
+  }
+
+  function puntosPerimetro(s, n, inset){
+    // reparte n puntos sobre el contorno interior del salón
+    var pts=[]; if(n<=0) return pts;
+    var x0=s.x+inset, y0=s.y+inset, w=s.w-inset*2, h=s.h-inset*2, per=2*(w+h);
+    for(var i=0;i<n;i++){
+      var d = (i+0.5)*per/n;
+      if(d<w) pts.push([x0+d,y0]);
+      else if(d<w+h) pts.push([x0+w,y0+(d-w)]);
+      else if(d<2*w+h) pts.push([x0+w-(d-w-h),y0+h]);
+      else pts.push([x0,y0+h-(d-2*w-h)]);
+    }
+    return pts;
+  }
+
+  function dibujar(res){
+    var svg=$("#plano"); var t=svg.querySelector("title");
+    while(svg.lastChild && svg.lastChild!==t) svg.removeChild(svg.lastChild);
+    var cw = svg.getBoundingClientRect().width || 620;
+    var k = Math.max(1, Math.min(1.8, 560/cw));
+    var F = "Lexend Deca,sans-serif";
+    function tx(x,y,s,txt,o){ var a={x:x,y:y,"font-size":(s*k).toFixed(1),"font-family":F,fill:"#55513f"}; for(var q in o) a[q]=o[q]; return el("text",a,txt); }
+    var g=el("g",{});
+    // jardín
+    g.appendChild(el("rect",{x:560,y:0,width:60,height:400,fill:"#e7ebcb"}));
+    g.appendChild(el("rect",{x:0,y:345,width:560,height:55,fill:"#e7ebcb"}));
+    [[588,40],[592,95],[80,368],[200,366],[330,368],[460,366]].forEach(function(p){
+      g.appendChild(el("circle",{cx:p[0],cy:p[1],r:11,fill:"#9aa860",opacity:.7}));
+      g.appendChild(el("circle",{cx:p[0]-4,cy:p[1]-3,r:6,fill:"#b9c482",opacity:.8}));
+    });
+    g.appendChild(tx(30,394,10,"jardines con olivos",{fill:"#4f5e27"}));
+    // galería del principal
+    g.appendChild(el("rect",{x:SP.x,y:SP.y+SP.h,width:SP.w,height:28*Math.min(k,1.3),fill:"#efe6cc",stroke:"#cbbf98","stroke-dasharray":"4 4"}));
+    g.appendChild(tx(SP.x+SP.w/2,SP.y+SP.h+10+7*k,10,"galería exterior",{"text-anchor":"middle"}));
+
+    var usaP = res.codigo.indexOf("P")>-1, usaE = res.codigo.indexOf("E")>-1;
+    [[SP,usaP],[SE,usaE]].forEach(function(a){
+      var s=a[0], on=a[1];
+      g.appendChild(el("rect",{x:s.x,y:s.y,width:s.w,height:s.h,rx:4,fill:on?"#fffdf4":"#f1ead3",stroke:on?"#333d17":"#b8ad88","stroke-width":on?3:1.5,"stroke-dasharray":on?"":"6 5"}));
+      var nom = (k>1.3 && s===SE) ? "Salón exterior" : s.nombre;
+      g.appendChild(tx(s.x+10,s.y+8+13*k,14,nom,{"font-family":"Rosarivo,serif",fill:on?"#333d17":"#8b8468"}));
+      g.appendChild(tx(s.x+10,s.y+12+26*k,10,(k>1.3&&s===SE?"lateral · ":"")+s.m2+" m²"+(on?"":" · sin usar"),{fill:on?"#55513f":"#7d7760"}));
+    });
+    // escenario del principal
+    g.appendChild(el("rect",{x:SP.x+SP.w-10-44*k,y:SP.y+SP.h-10-16*k,width:44*k,height:16*k,fill:usaP?"#d9cfae":"#e6dcbf"}));
+    g.appendChild(tx(SP.x+SP.w-10-22*k,SP.y+SP.h-14-4*k,8.5,"escenario",{"text-anchor":"middle"}));
+    // salida al jardín del exterior
+    g.appendChild(el("rect",{x:SE.x+SE.w-4,y:SE.y+120,width:8,height:80,fill:"#e7ebcb"}));
+    g.appendChild(el("path",{d:"M"+(SE.x+SE.w-2)+" "+(SE.y+160)+"h22m-7 -6l7 6-7 6",stroke:"#4f5e27","stroke-width":2.5,fill:"none"}));
+    g.appendChild(tx(0,0,10,"salida al jardín",{fill:"#333d17","text-anchor":"middle",transform:"translate("+(SE.x+SE.w+38)+","+(SE.y+250)+") rotate(-90)"}));
+
+    // dónde van las mesas y dónde las islas
+    var zonaIslas = usaE ? SE : SP;
+    var zm = (usaP && usaE) ? SP : zonaIslas;
+    var r = 13*Math.min(k,1.6);
+    var cab = 18+30*k;
+    var top, alto, izq, ancho;
+    if(zm===zonaIslas && zm===SE){ var pad=2*r+18; top=zm.y+cab+pad; alto=zm.y+zm.h-pad-top; izq=zm.x+pad; ancho=zm.w-2*pad; }
+    else if(zm===zonaIslas){ top=zm.y+cab+2*r+12; alto=zm.y+zm.h-18-16*k-top; izq=zm.x+18; ancho=zm.w-36; }
+    else { top=zm.y+cab+10; alto=zm.y+zm.h-18-16*k-top; izq=zm.x+18; ancho=zm.w-36; }
+    var l1 = plan.estilo==="islas" ? "mesas altas" : "mesas servidas";
+    if(alto>20){
+      g.appendChild(el("rect",{x:izq,y:top,width:ancho,height:alto,rx:10,fill:"#e3e6c8",stroke:"#8a9a52","stroke-dasharray":"3 4"}));
+      if(k>1.3 || alto<30*k){ g.appendChild(tx(izq+ancho/2,top+alto/2+4*k,10.5,"mesas y pista",{"text-anchor":"middle",fill:"#333d17"})); }
+      else {
+        g.appendChild(tx(izq+ancho/2,top+alto/2-2,11,l1,{"text-anchor":"middle",fill:"#333d17"}));
+        g.appendChild(tx(izq+ancho/2,top+alto/2+13*k,11,"y pista",{"text-anchor":"middle",fill:"#333d17"}));
+      }
+    }
+    if(usaP && usaE){ g.appendChild(tx(SE.x+SE.w/2,SE.y+SE.h/2+20,10.5,"islas y circulación",{"text-anchor":"middle",fill:"#4f5e27","font-style":"italic"})); }
+
+    var items=[];
+    for(var i=0;i<res.saladas;i++) items.push({c:"#4f5e27",t:"S"+(i+1)});
+    for(var j=0;j<res.dulces;j++) items.push({c:"#a24f2a",t:"P"+(res.dulces>1?j+1:"")});
+    for(var b=0;b<res.barras;b++) items.push({c:"#2b2a20",t:"B"+(res.barras>1?b+1:"")});
+    var pts;
+    if(zonaIslas===SP){
+      pts=[]; var yy=SP.y+cab+r+2, paso=(SP.w-20)/items.length;
+      for(var q=0;q<items.length;q++) pts.push([SP.x+10+paso*(q+.5), yy]);
+    } else pts = puntosPerimetro({x:SE.x,y:SE.y+cab,w:SE.w,h:SE.h-cab}, items.length, r+6);
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    items.forEach(function(it,n){
+      var p=pts[n];
+      var gi=el("g",{transform:"translate("+p[0].toFixed(1)+","+p[1].toFixed(1)+")"});
+      gi.appendChild(el("circle",{r:r.toFixed(1),fill:it.c,stroke:"#fffdf4","stroke-width":2}));
+      gi.appendChild(tx(0,(3.5*k).toFixed(1),10,it.t,{"text-anchor":"middle","font-weight":600,fill:"#fffdf4"}));
+      if(!reduce){ gi.style.opacity=0; gi.style.transition="opacity .3s "+(n*40)+"ms"; requestAnimationFrame(function(){requestAnimationFrame(function(){gi.style.opacity=1})}); }
+      g.appendChild(gi);
+    });
+    svg.appendChild(g);
+  }
+  var rzT; window.addEventListener("resize", function(){ clearTimeout(rzT); rzT=setTimeout(function(){ if(ultimoPlan) dibujar(ultimoPlan); },150); });
+
+  var ultimoPlan = null;
+  function actualizarPlan(){
+    var res = calcular();
+    ultimoPlan = res;
+    $("#pl-inv-v").textContent = plan.inv;
+    $("#pl-n-islas").textContent = res.saladas ? res.saladas : "ninguna";
+    $("#pl-m2").textContent = res.m2 + " m²";
+    $("#pl-donde").textContent = res.donde;
+    var extra = (res.dulces? res.dulces+" de pastelería de autor y ":"") + res.barras + (res.barras>1?" barras":" barra");
+    var t;
+    if(res.codigo==="P") t = "Con "+res.m2+" m² entra en el Salón Principal, y el lateral queda libre.";
+    else if(res.codigo==="E") t = "Hacen falta "+res.m2+" m²: conviene el salón exterior lateral, con las islas cerca de la salida al jardín.";
+    else t = "Son "+res.m2+" m²: se usan los dos. Islas en el lateral, junto al jardín; mesas y escenario en el Principal.";
+    $("#pl-salon").textContent = t + " Además: " + extra + ".";
+    $("#pl-regla").innerHTML = "Regla de ejemplo · " + REGLAS[plan.estilo].txt + " Pastelería: 1 isla cada 150. Cada isla ocupa unos 8 m², más 40 m² de pista y 5% de circulación. La finca confirma los números reales.";
+    dibujar(res);
+  }
+  $("#pl-inv").addEventListener("input", function(e){ plan.inv = +e.target.value; actualizarPlan(); });
+  $$('input[name="estilo"]').forEach(function(r){ r.addEventListener("change", function(){ plan.estilo=r.value; actualizarPlan(); }); });
+  $("#pl-dulce").addEventListener("change", function(e){ plan.dulce=e.target.checked; actualizarPlan(); });
+  var planCargado = null;
+  $("#pl-llevar").addEventListener("click", function(){
+    var res = ultimoPlan;
+    planCargado = {txt: (res.saladas? res.saladas+" islas saladas, ":"sin islas saladas, ") + (res.dulces? res.dulces+" de pastelería, ":"") + res.barras+(res.barras>1?" barras":" barra")+" · "+res.donde+" (~"+res.m2+" m²)"};
+    $("#c-inv").value = plan.inv;
+    $("#c-menu").value = plan.estilo==="mesa" ? "criollo" : plan.estilo;
+    var dul = $('input[name="extra"][value="dulce"]'); dul.checked = plan.dulce;
+    cotizar();
+    document.getElementById("cotiza").scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
+    toast("Plan cargado en el cotizador");
+  });
+
+  /* ================= CALENDARIO ================= */
+  var MESES=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+  var hoy = new Date(); hoy.setHours(0,0,0,0);
+  function hash(s){ var x=2166136261; for(var i=0;i<s.length;i++){ x^=s.charCodeAt(i); x=Math.imul(x,16777619); } return (x>>>0)/4294967296; }
+  function iso(d){ return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+  function ocupado(d){ return hash("fm-"+iso(d)) < 0.42; }
+  function largo(d){ return "sábado " + d.getDate() + " de " + MESES[d.getMonth()] + " de " + d.getFullYear(); }
+  var meses=[]; for(var m=0;m<5;m++){ meses.push(new Date(hoy.getFullYear(), hoy.getMonth()+m, 1)); }
+  var mesActivo = 0, fechaElegida = null;
+
+  var sabadosLibres=[];
+  meses.forEach(function(md){
+    var d=new Date(md);
+    while(d.getMonth()===md.getMonth()){ if(d.getDay()===6 && d>=hoy && !ocupado(d)) sabadosLibres.push(new Date(d)); d.setDate(d.getDate()+1); }
+  });
+  var sel=$("#c-fecha");
+  sel.appendChild(new Option("A definir",""));
+  sabadosLibres.forEach(function(d){ sel.appendChild(new Option(largo(d).replace("sábado ","Sáb ").replace(/ de (\d{4})$/," $1"), iso(d))); });
+
+  var mb=$("#meses");
+  meses.forEach(function(md,i){
+    var b=document.createElement("button"); b.type="button"; b.textContent=MESES[md.getMonth()]+(md.getFullYear()!==hoy.getFullYear()?" "+String(md.getFullYear()).slice(2):"");
+    b.setAttribute("aria-pressed", i===0?"true":"false");
+    b.addEventListener("click", function(){ mesActivo=i; $$("button",mb).forEach(function(x,j){x.setAttribute("aria-pressed", j===i?"true":"false")}); pintarMes(); });
+    mb.appendChild(b);
+  });
+
+  function pintarMes(){
+    var g=$("#grilla"); g.innerHTML="";
+    ["lu","ma","mi","ju","vi","sá","do"].forEach(function(n,i){ var h=document.createElement("div"); h.className="dow"+(i===5?" sab":""); h.textContent=n; g.appendChild(h); });
+    var md=meses[mesActivo];
+    var off=(md.getDay()+6)%7;
+    for(var i=0;i<off;i++){ var v=document.createElement("div"); v.className="dia vacio"; g.appendChild(v); }
+    var d=new Date(md);
+    while(d.getMonth()===md.getMonth()){
+      var dd=new Date(d);
+      if(dd.getDay()===6){
+        var b=document.createElement("button"); b.type="button"; b.className="dia sabado";
+        var pas = dd<hoy, oc = !pas && ocupado(dd);
+        if(pas) b.classList.add("pasado");
+        if(oc) b.classList.add("ocupado");
+        b.innerHTML = dd.getDate() + "<small>"+(pas?"pasó":oc?"ocupado":"libre")+"</small>";
+        b.setAttribute("aria-label", largo(dd) + (pas?", ya pasó":oc?", ocupado":", libre"));
+        b.dataset.fecha = iso(dd);
+        if(pas||oc){ b.disabled = true; }
+        b.setAttribute("aria-pressed", fechaElegida===iso(dd)?"true":"false");
+        b.addEventListener("click", (function(x){ return function(){ elegirFecha(x); }; })(dd));
+        g.appendChild(b);
+      } else {
+        var c=document.createElement("div"); c.className="dia"; c.textContent=dd.getDate(); g.appendChild(c);
+      }
+      d.setDate(d.getDate()+1);
+    }
+  }
+  function elegirFecha(d){
+    fechaElegida = iso(d);
+    $("#cal-elegida").textContent = largo(d).replace(/^s/,"S");
+    sel.value = fechaElegida;
+    $$(".sabado").forEach(function(b){ b.setAttribute("aria-pressed", b.dataset.fecha===fechaElegida?"true":"false"); });
+    cotizar();
+    toast("Anotamos el " + largo(d));
+  }
+  sel.addEventListener("change", function(){
+    fechaElegida = sel.value || null;
+    if(fechaElegida){
+      var p=fechaElegida.split("-"); var d=new Date(+p[0],+p[1]-1,+p[2]);
+      $("#cal-elegida").textContent = largo(d).replace(/^s/,"S");
+      meses.forEach(function(md,i){ if(md.getMonth()===d.getMonth() && md.getFullYear()===d.getFullYear()){ mesActivo=i; } });
+      $$("button",mb).forEach(function(x,j){x.setAttribute("aria-pressed", j===mesActivo?"true":"false")});
+    } else $("#cal-elegida").textContent="Todavía ninguna";
+    pintarMes(); cotizar();
+  });
+
+  /* ================= COTIZADOR ================= */
+  var MENU = {
+    islas:{n:"Menú islas", min:46000, max:55000},
+    criollo:{n:"Menú criollo", min:41000, max:49000},
+    mixto:{n:"Islas + plato servido", min:50000, max:60000}
+  };
+  var TIPO = {"Boda":1.08, "15 años":1.05, "Social":1, "Corporativo":0.97};
+  var EXTRA = {
+    dulce:{n:"Mesa dulce de autor", pp:7500},
+    barra:{n:"Barra libre primeras marcas", pp:12000},
+    dj:{n:"DJ, sonido e iluminación", fijo:950000},
+    ceremonia:{n:"Ceremonia en el jardín", fijo:420000},
+    pantalla:{n:"Pantalla y escenario", fijo:280000},
+    trasnoche:{n:"Fin de fiesta salado", pp:5200}
+  };
+  function cotizar(){
+    var tipo = $('input[name="tipo"]:checked').value;
+    var inv = +$("#c-inv").value;
+    $("#c-inv-v").textContent = inv;
+    var menu = MENU[$("#c-menu").value];
+    var k = TIPO[tipo];
+    var ppMin = menu.min*k, ppMax = menu.max*k, fijo = 0, det=[], extrasTxt=[];
+    // menos invitados, un poco más por persona (ejemplo)
+    var esc = inv<150 ? 1.06 : inv>300 ? 0.95 : 1;
+    ppMin*=esc; ppMax*=esc;
+    $$('input[name="extra"]:checked').forEach(function(c){
+      var e=EXTRA[c.value]; extrasTxt.push(e.n);
+      if(e.pp){ ppMin+=e.pp; ppMax+=e.pp*1.12; det.push([e.n, fmt(e.pp)+" p/p"]); }
+      else { fijo+=e.fijo; det.push([e.n, fmt(e.fijo)]); }
+    });
+    ppMin=redondear(ppMin,500); ppMax=redondear(ppMax,500);
+    var tMin=redondear(ppMin*inv+fijo,10000), tMax=redondear(ppMax*inv+fijo,10000);
+    var fechaTxt = fechaElegida ? (function(){var p=fechaElegida.split("-");return largo(new Date(+p[0],+p[1]-1,+p[2]));})() : "a definir";
+    $("#t-pp").textContent = fmt(ppMin)+" a "+fmt(ppMax)+" por persona";
+    $("#t-total").textContent = fmt(tMin)+" a "+fmt(tMax);
+    var ul=$("#t-detalle"); ul.innerHTML="";
+    [["Evento",tipo],["Fecha",fechaTxt],["Invitados",inv],["Menú",menu.n]].concat(det).forEach(function(r){
+      var li=document.createElement("li"); var a=document.createElement("span"); a.textContent=r[0]; var b=document.createElement("span"); b.textContent=r[1]; li.appendChild(a); li.appendChild(b); ul.appendChild(li);
+    });
+    var pc=$("#t-plan");
+    if(planCargado){ pc.hidden=false; pc.textContent="Plan de comida: "+planCargado.txt; } else pc.hidden=true;
+    var msg = "Hola Finca Martinez! Quiero consultar por un evento:\n" +
+      "• Tipo: "+tipo+"\n• Fecha: "+fechaTxt+"\n• Invitados: "+inv+"\n• Menú: "+menu.n+"\n" +
+      "• Extras: "+(extrasTxt.length?extrasTxt.join(", "):"ninguno")+"\n" +
+      (planCargado ? "• Plan de comida: "+planCargado.txt+"\n" : "") +
+      "Estimado web (de ejemplo): "+fmt(tMin)+" a "+fmt(tMax)+".\n¿Me confirman disponibilidad y precio?";
+    $("#t-wa").href = "https://wa.me/"+WA+"?text="+encodeURIComponent(msg);
+  }
+  $$('#form-cot input, #form-cot select').forEach(function(x){ if(x.id!=="c-fecha") x.addEventListener(x.type==="range"?"input":"change", cotizar); });
+
+  actualizarPlan();
+  pintarMes();
+  cotizar();
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Finca Martinez"></script>
+</body>
+</html>
