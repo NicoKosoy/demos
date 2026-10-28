@@ -1,0 +1,912 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Patagonia Propiedades · Comodoro por líneas</title>
+<meta name="description" content="Prototipo de catálogo de Patagonia Propiedades: propiedades en venta y alquiler en Comodoro Rivadavia y Rada Tilly, ordenadas por línea y estación.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anek+Latin:wght@400;500;600;700&family=Tomorrow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#121A24; --ink-2:#1A2531; --ink-3:#24313F;
+  --north:#0F7C86; --north-hi:#16A3AF; --north-soft:#DCEEEF;
+  --south:#E0892B; --south-hi:#F0A04A; --south-soft:#F8E8D4;
+  --paper:#F4F2EC; --paper-2:#EAE7DE; --wind:#9AA6B2; --wind-d:#5E6B78;
+  --white:#fff; --line:#D9D5CA;
+  --wa:#1F9D55;
+  --f-display:"Tomorrow","Bahnschrift","DIN Alternate","Segoe UI",system-ui,sans-serif;
+  --f-body:"Anek Latin","Segoe UI",system-ui,-apple-system,"Helvetica Neue",sans-serif;
+  --r:14px; --ease:cubic-bezier(.2,.7,.2,1);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.5;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--south);outline-offset:3px;border-radius:6px}
+.num{font-family:var(--f-display);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.wrap{max-width:1200px;margin:0 auto;padding:0 32px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.kicker{font-family:var(--f-display);font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:600}
+
+/* notice + header */
+.notice{background:var(--south);color:var(--ink);font-size:14px;text-align:center;padding:7px 16px;font-weight:600}
+.hdr{background:var(--ink);color:var(--white)}
+.hdr .wrap{display:flex;align-items:center;gap:24px;height:72px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;min-width:0}
+.brand img{height:40px;width:auto}
+.brand .wordmark{font-family:var(--f-display);font-weight:600;font-size:19px;letter-spacing:.02em;line-height:1.05}
+.brand .wordmark small{display:block;font-size:11px;letter-spacing:.18em;color:var(--wind);font-weight:500;text-transform:uppercase}
+.nav{display:flex;gap:4px;margin-left:auto}
+.nav a{font-family:var(--f-display);font-size:14px;text-decoration:none;padding:8px 12px;border-radius:8px;color:#D5DCE3;transition:background .2s,color .2s}
+.nav a:hover{background:var(--ink-3);color:#fff}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;cursor:pointer;text-decoration:none;font-family:var(--f-display);font-weight:600;font-size:15px;border-radius:999px;padding:11px 20px;transition:transform .2s var(--ease),background .2s,box-shadow .2s,color .2s;white-space:nowrap}
+.btn:active{transform:translateY(1px)}
+.btn-wa{background:var(--wa);color:#fff}
+.btn-wa:hover{background:#178246;box-shadow:0 6px 18px -6px rgba(31,157,85,.6)}
+.btn-ink{background:var(--ink);color:#fff}
+.btn-ink:hover{background:var(--ink-3)}
+.btn-ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
+.btn-ghost:hover{background:var(--ink);color:#fff}
+.btn-light{background:#fff;color:var(--ink)}
+.btn-light:hover{background:var(--paper)}
+.btn svg{width:18px;height:18px;flex:none}
+.hdr .btn-wa{padding:9px 16px;font-size:14px}
+
+/* hero */
+.hero{background:var(--ink);color:#fff;position:relative;overflow:hidden;padding:56px 0 64px}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(800px 500px at 85% 40%,rgba(15,124,134,.22),transparent 60%),radial-gradient(600px 420px at 70% 100%,rgba(224,137,43,.16),transparent 60%);pointer-events:none}
+.hero .wrap{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center}
+.hero .kicker{color:var(--south-hi)}
+.hero h1{font-family:var(--f-display);font-weight:600;font-size:clamp(38px,5.4vw,66px);line-height:1.02;letter-spacing:-.025em;margin:18px 0 22px}
+.hero h1 em{font-style:normal;color:var(--south-hi)}
+.hero h1 .n{color:var(--north-hi)}
+.hero .lead{font-size:20px;color:#C9D2DA;max-width:34ch;margin:0 0 30px}
+.stats{display:flex;gap:0;margin:0 0 34px;padding:0;list-style:none;border-top:1px solid var(--ink-3);border-bottom:1px solid var(--ink-3)}
+.stats li{flex:1;padding:16px 16px 14px 0}
+.stats li+li{padding-left:16px;border-left:1px solid var(--ink-3)}
+.stats b{display:block;font-family:var(--f-display);font-size:34px;font-weight:600;line-height:1;font-variant-numeric:tabular-nums}
+.stats span{font-size:14px;color:var(--wind)}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap}
+.hero-cta .btn-ghost{color:#fff;box-shadow:inset 0 0 0 1.5px #fff}
+.hero-cta .btn-ghost:hover{background:#fff;color:var(--ink)}
+.src-mini{margin-top:22px;font-size:13px;color:var(--wind)}
+
+/* diagram */
+.diagram{position:relative}
+.diagram svg{width:100%;height:auto;max-height:720px;display:block}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:center;margin-top:8px;font-family:var(--f-display);font-size:13px;color:#C9D2DA}
+.legend span{display:inline-flex;align-items:center;gap:8px}
+.legend i{width:26px;height:6px;border-radius:3px;display:inline-block}
+.stn{cursor:pointer;outline:none}
+.stn .hit{fill:transparent}
+.stn .dot{transition:r .25s var(--ease),stroke-width .25s}
+.stn .lbl{font-family:var(--f-display);font-weight:600;font-size:21px;fill:#fff;transition:fill .2s}
+.stn .cnt{font-family:var(--f-display);font-size:14px;fill:var(--wind);font-variant-numeric:tabular-nums}
+.stn .sub{font-family:var(--f-body);font-size:13px;fill:#8794A1}
+.stn:hover .lbl,.stn:focus-visible .lbl,.stn.on .lbl{fill:var(--south-hi)}
+.stn.n:hover .lbl,.stn.n:focus-visible .lbl,.stn.n.on .lbl{fill:var(--north-hi)}
+.stn:hover .dot,.stn:focus-visible .dot,.stn.on .dot{stroke-width:7}
+.stn .ring{fill:none;stroke:#fff;stroke-width:2;opacity:0;transition:opacity .2s}
+.stn:focus-visible .ring,.stn.on .ring{opacity:.9}
+.diag-hint{text-align:center;font-size:14px;color:var(--wind);margin-top:4px}
+
+/* catalogue */
+.cat{padding:72px 0 40px}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:26px}
+.sec-head h2{font-family:var(--f-display);font-weight:600;font-size:clamp(30px,3.6vw,44px);line-height:1.05;letter-spacing:-.02em;margin:8px 0 0}
+.sec-head p{margin:0;max-width:44ch;color:var(--wind-d)}
+.kicker.t{color:var(--north)}
+.kicker.o{color:#B4661A}
+
+.filters{position:sticky;top:0;z-index:20;background:rgba(244,242,236,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px 0;margin-bottom:12px}
+.frow{display:flex;flex-wrap:wrap;gap:12px 16px;align-items:flex-end}
+.fgroup{display:flex;flex-direction:column;gap:5px;min-width:0}
+.fgroup>label,.fgroup>.flabel{font-family:var(--f-display);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--wind-d);font-weight:600}
+.seg{display:inline-flex;background:var(--paper-2);border-radius:999px;padding:3px}
+.seg button{border:0;background:transparent;padding:7px 14px;border-radius:999px;cursor:pointer;font-family:var(--f-display);font-size:14px;font-weight:500;color:var(--wind-d);transition:background .2s,color .2s}
+.seg button:hover{color:var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.sel{appearance:none;-webkit-appearance:none;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23121A24' stroke-width='2'/%3E%3C/svg%3E") no-repeat right 12px center;border:1.5px solid var(--line);border-radius:10px;padding:8px 34px 8px 12px;font-size:15px;min-width:132px;cursor:pointer;transition:border-color .2s}
+.sel:hover{border-color:var(--wind)}
+.fcount{margin-left:auto;display:flex;align-items:center;gap:12px;font-size:15px;color:var(--wind-d)}
+.fcount b{font-family:var(--f-display);color:var(--ink);font-size:20px}
+.linkbtn{background:none;border:0;padding:4px 2px;cursor:pointer;text-decoration:underline;text-underline-offset:3px;color:var(--wind-d);font-size:14px}
+.linkbtn:hover{color:var(--ink)}
+.frow2{display:flex;gap:10px 16px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-top:10px}
+.chiprow{display:flex;gap:8px;flex-wrap:wrap;min-height:28px;align-items:center}
+.chip{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:#fff;border:0;border-radius:999px;padding:5px 8px 5px 12px;font-family:var(--f-display);font-size:13px;cursor:pointer}
+.chip span{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,.18);font-size:12px}
+.chip:hover span{background:var(--south)}
+
+/* timetable */
+.tt{margin-top:18px}
+.grp{--c:var(--south);position:relative}
+.grp.n{--c:var(--north)}
+.grp.x{--c:var(--ink)}
+.grp-h{display:grid;grid-template-columns:64px 1fr auto;align-items:center;gap:0 18px;padding:26px 0 14px}
+.grp-h .mk{position:relative;height:100%;min-height:56px}
+.grp-h .mk::before{content:"";position:absolute;left:26px;top:50%;bottom:-14px;width:10px;background:var(--c)}
+.grp.x .grp-h .mk::before{background:linear-gradient(90deg,var(--north) 50%,var(--south) 50%)}
+.grp-h .mk i{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;background:#fff;border:7px solid var(--c);box-sizing:border-box}
+.grp.x .grp-h .mk i{width:44px;height:44px;left:9px;border-radius:14px;border:6px solid var(--ink)}
+.grp-h h3{font-family:var(--f-display);font-weight:600;font-size:30px;margin:0;line-height:1.05;letter-spacing:-.01em}
+.grp-h .line{font-family:var(--f-display);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--c);font-weight:600}
+.grp.x .grp-h .line{color:var(--wind-d)}
+.grp-h .cnt{font-family:var(--f-display);font-size:14px;color:var(--wind-d);text-align:right;font-variant-numeric:tabular-nums}
+.row{display:grid;grid-template-columns:64px 210px 1fr 230px;gap:0 22px;align-items:stretch;position:relative}
+.row .rail{position:relative}
+.row .rail::before{content:"";position:absolute;left:26px;top:0;bottom:0;width:10px;background:var(--c)}
+.grp.x .row .rail::before{background:linear-gradient(90deg,var(--north) 50%,var(--south) 50%)}
+.row .rail::after{content:"";position:absolute;left:36px;top:50%;width:18px;height:3px;background:var(--c);transform:translateY(-50%)}
+.grp.x .row .rail::after{background:var(--ink)}
+.row:last-child .rail::before{bottom:auto;height:calc(50% + 6px)}
+.row-in{grid-column:2 / 5;display:grid;grid-template-columns:210px 1fr 230px;gap:22px;background:#fff;border-radius:var(--r);padding:14px;margin:7px 0;box-shadow:0 1px 0 var(--line);transition:box-shadow .25s var(--ease),transform .25s var(--ease)}
+.row-in:hover{box-shadow:0 14px 34px -18px rgba(18,26,36,.35),0 1px 0 var(--line);transform:translateY(-2px)}
+.ph{position:relative;border-radius:10px;overflow:hidden;aspect-ratio:3/2;background:var(--paper-2);cursor:pointer;border:0;padding:0}
+.ph img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--ease)}
+.row-in:hover .ph img{transform:scale(1.04)}
+.ph .nimg{position:absolute;right:8px;bottom:8px;background:rgba(18,26,36,.78);color:#fff;font-family:var(--f-display);font-size:12px;border-radius:6px;padding:2px 7px}
+.info{min-width:0;display:flex;flex-direction:column;justify-content:center}
+.meta{font-family:var(--f-display);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--wind-d);font-weight:600;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.op{display:inline-block;border-radius:5px;padding:2px 7px;font-size:11px;letter-spacing:.1em}
+.op.venta{background:var(--ink);color:#fff}
+.op.alquiler{background:var(--north-soft);color:var(--north)}
+.info h4{font-family:var(--f-body);font-weight:600;font-size:22px;line-height:1.2;margin:6px 0 4px}
+.info h4 button{all:unset;cursor:pointer}
+.info h4 button:hover{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:2px}
+.info h4 button:focus-visible{outline:3px solid var(--south);outline-offset:3px;border-radius:4px}
+.barrio{color:var(--wind-d);font-size:15px;margin:0 0 10px}
+.specs{display:flex;flex-wrap:wrap;gap:6px 16px;margin:0;padding:0;list-style:none;font-size:15px}
+.specs li{display:inline-flex;align-items:center;gap:6px}
+.specs svg{width:18px;height:18px;color:var(--wind-d)}
+.pricecol{display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:10px;text-align:right;border-left:1px dashed var(--line);padding-left:20px}
+.price{font-family:var(--f-display);font-variant-numeric:tabular-nums;font-size:26px;font-weight:600;line-height:1;letter-spacing:-.01em;white-space:nowrap}
+.price small{display:block;font-size:12px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--wind-d);margin-bottom:6px}
+.acts{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.acts .btn{padding:8px 14px;font-size:14px}
+.addbtn{background:var(--paper);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+.addbtn:hover{box-shadow:inset 0 0 0 1.5px var(--ink)}
+.addbtn[aria-pressed="true"]{background:var(--south-soft);box-shadow:inset 0 0 0 1.5px var(--south);color:#8A4C10}
+.empty{background:#fff;border-radius:var(--r);padding:40px;text-align:center;margin-top:24px}
+.empty h3{font-family:var(--f-display);margin:0 0 6px}
+
+/* tasá */
+.tasa{padding:80px 0;background:var(--paper-2)}
+.tasa .wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:start}
+.tasa h2{font-family:var(--f-display);font-weight:600;font-size:clamp(32px,3.8vw,48px);line-height:1.04;letter-spacing:-.02em;margin:10px 0 16px}
+.tasa p{color:var(--wind-d);max-width:40ch}
+.steps{list-style:none;padding:0;margin:28px 0 0;position:relative}
+.steps li{position:relative;padding:0 0 22px 44px;font-size:16px}
+.steps li::before{content:"";position:absolute;left:12px;top:22px;bottom:0;width:4px;background:var(--south)}
+.steps li:last-child::before{display:none}
+.steps b{position:absolute;left:0;top:0;width:28px;height:28px;border-radius:50%;background:#fff;border:4px solid var(--south);display:grid;place-items:center;font-family:var(--f-display);font-size:12px}
+.form{background:#fff;border-radius:20px;padding:30px;display:grid;grid-template-columns:1fr 1fr;gap:16px;box-shadow:0 24px 50px -30px rgba(18,26,36,.35)}
+.form .full{grid-column:1/-1}
+.fld{display:flex;flex-direction:column;gap:6px}
+.fld label{font-family:var(--f-display);font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--wind-d)}
+.fld input,.fld select{border:1.5px solid var(--line);border-radius:10px;padding:11px 12px;font-size:16px;background:#fff;width:100%;transition:border-color .2s,box-shadow .2s}
+.fld select{appearance:none;-webkit-appearance:none;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23121A24' stroke-width='2'/%3E%3C/svg%3E") no-repeat right 12px center}
+.fld input:focus,.fld select:focus{outline:none;border-color:var(--north);box-shadow:0 0 0 3px rgba(15,124,134,.18)}
+.fld input[aria-invalid="true"]{border-color:#C2410C}
+.form .note{font-size:13px;color:var(--wind-d);margin:0}
+.form .err{color:#B42318;font-size:14px;margin:0;min-height:1em}
+
+/* contact / footer */
+.contact{background:var(--ink);color:#fff;padding:72px 0 36px}
+.contact .grid{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:40px}
+.contact h2{font-family:var(--f-display);font-weight:600;font-size:clamp(28px,3.2vw,40px);line-height:1.05;margin:10px 0 16px;letter-spacing:-.02em}
+.contact .kicker{color:var(--south-hi)}
+.cl{list-style:none;padding:0;margin:0;display:grid;gap:14px}
+.cl dt,.cl .t{font-family:var(--f-display);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--wind)}
+.cl a{text-decoration:none;font-size:18px}
+.cl a:hover{color:var(--south-hi)}
+.foot{margin-top:56px;padding-top:22px;border-top:1px solid var(--ink-3);display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between;font-size:13px;color:var(--wind)}
+
+/* overlay + panel */
+.scrim{position:fixed;inset:0;background:rgba(18,26,36,.55);opacity:0;pointer-events:none;transition:opacity .3s;z-index:60}
+.scrim.on{opacity:1;pointer-events:auto}
+.panel{position:fixed;top:0;right:0;bottom:0;width:min(580px,100%);background:var(--paper);z-index:70;transform:translateX(102%);transition:transform .4s var(--ease);display:flex;flex-direction:column;box-shadow:-30px 0 60px -30px rgba(0,0,0,.5)}
+.panel.on{transform:none}
+.panel{visibility:hidden;transition:transform .4s var(--ease),visibility 0s linear .4s}
+.panel.on{visibility:visible;transition-delay:0s}
+.p-top{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line);background:var(--paper)}
+.p-top .where{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-size:14px;font-weight:600;min-width:0}
+.p-top .where i{width:14px;height:14px;border-radius:50%;border:4px solid var(--c,var(--south));background:#fff;flex:none}
+.xbtn{margin-left:auto;width:40px;height:40px;border-radius:50%;border:0;background:var(--paper-2);cursor:pointer;display:grid;place-items:center;transition:background .2s;flex:none}
+.xbtn:hover{background:var(--line)}
+.p-body{overflow:auto;padding:0 0 110px;flex:1;overscroll-behavior:contain}
+.gal{position:relative;background:var(--ink)}
+.gal .main{aspect-ratio:3/2;width:100%;overflow:hidden}
+.gal .main img{width:100%;height:100%;object-fit:cover}
+.gnav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.92);cursor:pointer;display:grid;place-items:center;transition:background .2s,transform .2s}
+.gnav:hover{background:#fff;transform:translateY(-50%) scale(1.06)}
+.gnav.prev{left:12px}.gnav.next{right:12px}
+.gcount{position:absolute;left:12px;bottom:12px;background:rgba(18,26,36,.8);color:#fff;font-family:var(--f-display);font-size:13px;padding:3px 9px;border-radius:6px}
+.thumbs{display:flex;gap:8px;padding:10px 18px;overflow-x:auto;background:var(--ink)}
+.thumbs button{flex:none;width:76px;aspect-ratio:3/2;border-radius:6px;overflow:hidden;border:2px solid transparent;padding:0;cursor:pointer;opacity:.6;transition:opacity .2s,border-color .2s;background:var(--ink-3)}
+.thumbs button img{width:100%;height:100%;object-fit:cover}
+.thumbs button[aria-current="true"],.thumbs button:hover{opacity:1;border-color:var(--south)}
+.p-sec{padding:22px 22px 0}
+.p-sec h2{font-family:var(--f-display);font-weight:600;font-size:28px;line-height:1.1;margin:8px 0 4px;letter-spacing:-.01em}
+.p-price{font-family:var(--f-display);font-variant-numeric:tabular-nums;font-size:30px;font-weight:600;margin:12px 0 0}
+.dl{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border-radius:12px;overflow:hidden;margin:18px 0 0;padding:0}
+.dl div{background:#fff;padding:12px 14px}
+.dl dt{font-family:var(--f-display);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--wind-d)}
+.dl dd{margin:2px 0 0;font-weight:600;font-size:16px}
+.p-desc{font-size:17px;margin:18px 0 0}
+.mapbox{margin-top:10px;border-radius:12px;overflow:hidden;position:relative;aspect-ratio:16/10;background:repeating-linear-gradient(45deg,var(--paper-2) 0 10px,var(--paper) 10px 20px)}
+.mapbox iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.mapcap{font-size:13px;color:var(--wind-d);margin:8px 0 0}
+.h5{font-family:var(--f-display);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--wind-d);margin:26px 0 0;font-weight:600}
+.p-foot{position:absolute;left:0;right:0;bottom:0;display:flex;gap:10px;padding:14px 18px;background:rgba(244,242,236,.96);border-top:1px solid var(--line);backdrop-filter:blur(8px)}
+.p-foot .btn{flex:1 1 0;min-width:0;padding:13px 14px;white-space:normal;text-align:center;line-height:1.15}
+
+/* route tray */
+.tray-pill{position:fixed;left:50%;bottom:18px;transform:translate(-50%,140%);z-index:50;display:flex;align-items:center;gap:14px;background:var(--ink);color:#fff;border-radius:999px;padding:8px 8px 8px 18px;box-shadow:0 18px 40px -14px rgba(0,0,0,.55);transition:transform .4s var(--ease),visibility 0s linear .4s;max-width:calc(100% - 32px)}
+.tray-pill,.tray{visibility:hidden}
+.tray-pill.on{transform:translate(-50%,0)}
+.tray-pill.on,.tray.on{visibility:visible}
+.tray-pill .mini{display:flex;align-items:center}
+.tray-pill .mini i{width:12px;height:12px;border-radius:50%;background:#fff;border:3px solid var(--c);box-sizing:content-box}
+.tray-pill .mini i+i{margin-left:-2px}
+.tray-pill .mini b{display:block;width:14px;height:4px;background:var(--c)}
+.tray-pill .lbl{font-family:var(--f-display);font-size:14px;white-space:nowrap}
+.tray-pill .btn{padding:9px 16px;font-size:14px}
+.tray{position:fixed;right:18px;bottom:18px;width:min(440px,calc(100% - 36px));max-height:calc(100vh - 36px);z-index:80;background:var(--paper);border-radius:20px;box-shadow:0 30px 70px -20px rgba(0,0,0,.55);display:flex;flex-direction:column;transform:translateY(calc(100% + 40px));transition:transform .4s var(--ease),visibility 0s linear .4s;overflow:hidden}
+.tray.on,.tray-pill.on{transition-delay:0s}
+.tray.on{transform:none}
+.tray-h{background:var(--ink);color:#fff;padding:18px 20px 16px;position:relative}
+.tray-h h2{font-family:var(--f-display);font-size:22px;margin:4px 0 2px;font-weight:600}
+.tray-h p{margin:0;font-size:14px;color:#B8C2CC}
+.tray-h .kicker{color:var(--south-hi);font-size:11px}
+.tray-h .xbtn{position:absolute;right:14px;top:14px;background:var(--ink-3);color:#fff}
+.tray-h .xbtn:hover{background:#34445A}
+.tray-b{overflow:auto;padding:16px 20px 4px;flex:1}
+.route{list-style:none;margin:0;padding:0}
+.route li{display:grid;grid-template-columns:34px 1fr auto;gap:12px;align-items:center;position:relative;padding:8px 0}
+.route li .st{position:relative;height:100%;min-height:52px}
+.route li .st::before{content:"";position:absolute;left:13px;width:8px;top:-8px;bottom:-8px;background:var(--c)}
+.route li.sepli{position:relative}
+.route li.sepli::before{content:"";position:absolute;left:13px;top:0;bottom:0;width:8px;background:repeating-linear-gradient(180deg,#9AA6B2 0 5px,transparent 5px 10px)}
+.route li:first-child .st::before{top:50%}
+.route li:last-child .st::before{bottom:50%}
+.route li:only-child .st::before{display:none}
+.route li .st b{position:absolute;left:0;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;background:#fff;border:5px solid var(--c);display:grid;place-items:center;font-family:var(--f-display);font-size:13px;box-sizing:border-box;z-index:1}
+.route li.back .st::before{background:repeating-linear-gradient(180deg,var(--c) 0 6px,transparent 6px 11px)}
+.route .t1{font-weight:600;font-size:15px;line-height:1.2}
+.route .t2{font-size:13px;color:var(--wind-d);font-family:var(--f-display)}
+.route .rm{border:0;background:transparent;cursor:pointer;width:32px;height:32px;border-radius:50%;color:var(--wind-d);display:grid;place-items:center}
+.route .rm:hover{background:var(--paper-2);color:var(--ink)}
+.route .sep{display:block;font-size:12px;font-family:var(--f-display);color:var(--wind-d);letter-spacing:.08em;text-transform:uppercase;padding:6px 0 6px 46px}
+.days{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0 6px}
+.days button{border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:8px 6px;cursor:pointer;text-align:center;transition:border-color .2s,background .2s;font-family:var(--f-display)}
+.days button b{display:block;font-size:15px}
+.days button span{font-size:11px;color:var(--wind-d)}
+.days button:hover{border-color:var(--wind)}
+.days button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.days button[aria-pressed="true"] span{color:#C9D2DA}
+.hrs{font-size:13px;color:var(--wind-d);margin:4px 0 10px}
+.tray-f{padding:12px 20px 18px;display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line)}
+.tray-f .btn{width:100%;padding:13px}
+.tray-empty{padding:12px 0 16px;color:var(--wind-d)}
+
+@media (max-width:1020px){
+  .hero .wrap{grid-template-columns:1fr}
+  .diagram{max-width:520px;margin:0 auto;width:100%}
+  .row{grid-template-columns:48px 1fr}
+  .row-in{grid-column:2/3;grid-template-columns:180px 1fr;gap:16px}
+  .pricecol{grid-column:1/-1;flex-direction:row;justify-content:space-between;align-items:center;border-left:0;border-top:1px dashed var(--line);padding:12px 0 0;text-align:left}
+  .pricecol .price small{margin-bottom:4px}
+  .grp-h{grid-template-columns:48px 1fr auto}
+  .grp-h .mk::before,.row .rail::before{left:19px;width:8px}
+  .grp-h .mk i{left:7px;width:32px;height:32px;border-width:6px}
+  .grp.x .grp-h .mk i{left:4px;width:40px;height:40px}
+  .row .rail::after{left:27px;width:14px}
+  .tasa .wrap{grid-template-columns:1fr;gap:32px}
+  .contact .grid{grid-template-columns:1fr 1fr}
+  .contact .grid>div:first-child{grid-column:1/-1}
+  .nav{display:none}
+  .hdr .btn-wa{margin-left:auto}
+  .filters{position:static}
+}
+@media (max-width:640px){
+  body{font-size:16px}
+  .wrap{padding:0 16px}
+  .notice{font-size:12.5px}
+  .hdr .wrap{height:64px;gap:12px}
+  .brand img{height:32px}
+  .brand .wordmark{font-size:16px}
+  .hdr .btn-wa .t{display:none}
+  .hdr .btn-wa{padding:10px}
+  .hero{padding:36px 0 40px}
+  .hero .lead{font-size:18px}
+  .stats b{font-size:28px}
+  .stats li{padding-right:10px}
+  .stats li+li{padding-left:10px}
+  .stats span{font-size:13px;line-height:1.25;display:block}
+  .hero-cta .btn{flex:1}
+  .cat{padding-top:48px}
+  .frow{gap:10px}
+  .fgroup{flex:1 1 140px}
+  .fgroup.fop,.fgroup.dorm{flex-basis:100%}
+  .seg{width:100%}
+  .seg button{flex:1;padding:8px 6px}
+  .sel{min-width:0;width:100%}
+  .fcount{margin-left:0;width:100%;justify-content:space-between}
+  .row{grid-template-columns:30px 1fr}
+  .row-in{grid-template-columns:112px 1fr;padding:10px;gap:10px 12px}
+  .ph{aspect-ratio:1/1;align-self:start}
+  .ph .nimg{right:5px;bottom:5px;font-size:11px}
+  .meta{font-size:10.5px;gap:6px}
+  .specs{font-size:14px;gap:4px 12px}
+  .barrio{font-size:14px;margin-bottom:6px}
+  .grp-h{grid-template-columns:30px 1fr;gap:0 12px;padding:22px 0 8px}
+  .grp-h .cnt{grid-column:2;text-align:left;margin-top:2px}
+  .grp-h h3{font-size:25px}
+  .grp-h .mk::before,.row .rail::before{left:11px;width:7px}
+  .grp-h .mk i{left:1px;width:27px;height:27px;border-width:5px}
+  .grp.x .grp-h .mk i{left:-1px;width:31px;height:31px;border-radius:10px;border-width:5px}
+  .row .rail::after{left:18px;width:10px}
+  .row .rail::after{top:30%}
+  .info h4{font-size:18px;margin:4px 0 2px}
+  .pricecol{flex-direction:column;align-items:stretch;gap:10px}
+  .acts{justify-content:stretch}
+  .acts .btn{flex:1}
+  .price{font-size:24px}
+  .form{grid-template-columns:1fr;padding:20px}
+  .contact .grid{grid-template-columns:1fr;gap:28px}
+  .panel{top:auto;height:92vh;width:100%;border-radius:20px 20px 0 0;transform:translateY(104%)}
+  .panel.on{transform:none}
+  .p-top::before{content:"";position:absolute;left:50%;top:6px;width:40px;height:4px;border-radius:2px;background:var(--line);transform:translateX(-50%)}
+  .p-top{position:relative;border-radius:20px 20px 0 0;padding-top:18px}
+  .dl{grid-template-columns:repeat(2,1fr)}
+  .tray{right:0;left:0;bottom:0;width:100%;border-radius:20px 20px 0 0;max-height:90vh}
+  .tray-pill{bottom:12px;padding-left:14px;gap:10px}
+  .tray-pill .mini{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
+<body>
+<div class="notice" role="note">Prototipo de demostración preparado para Patagonia Propiedades</div>
+
+<header class="hdr">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Patagonia Propiedades, inicio">
+      <img src="https://patagoniapropiedades.net/wp-content/uploads/2024/11/logo-white.png" alt="Patagonia Propiedades" onerror="this.remove();document.getElementById('wm').hidden=false">
+      <span class="wordmark" id="wm" hidden>Patagonia<br>Propiedades<small>Comodoro Rivadavia</small></span>
+    </a>
+    <nav class="nav" aria-label="Secciones">
+      <a href="#lineas">Líneas</a>
+      <a href="#catalogo">Catálogo</a>
+      <a href="#tasa">Tasá tu propiedad</a>
+      <a href="#contacto">Contacto</a>
+      <a href="#" id="navRoute">Mi recorrido</a>
+    </nav>
+    <a class="btn btn-wa" id="hdrWa" href="https://wa.me/5492975261144" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp al 297 526-1144">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.4.8 3.2.6.5-.1 1.5-.6 1.7-1.2s.2-1.1.2-1.2-.2-.2-.5-.3z"/></svg>
+      <span class="t">297 526-1144</span>
+    </a>
+  </div>
+</header>
+
+<main id="top">
+<section class="hero" id="lineas" aria-labelledby="h1">
+  <div class="wrap">
+    <div>
+      <div class="kicker">Comodoro Rivadavia · Golfo San Jorge</div>
+      <h1 id="h1"><span class="num">115</span> publicaciones, de <span class="n">Mitre 674</span> a <em>Rada Tilly</em>.</h1>
+      <p class="lead">La cartera va del Centro hacia el norte, por Km 3 y Km 12, y hacia el sur, por Pueyrredón y Juan XXIII hasta Rada Tilly. Tocá una estación y te mostramos lo que hay ahí.</p>
+      <ul class="stats">
+        <li><b>75</b><span>en venta</span></li>
+        <li><b>40</b><span>en alquiler</span></li>
+        <li><b id="statN">16</b><span>fichas en este prototipo</span></li>
+      </ul>
+      <div class="hero-cta">
+        <a class="btn btn-light" href="#catalogo">Ver el catálogo</a>
+        <a class="btn btn-ghost" href="#tasa">Tasá tu propiedad</a>
+      </div>
+      <p class="src-mini">Publicaciones contadas en el portal de la Cámara Inmobiliaria de Comodoro Rivadavia (oct. 2026).</p>
+    </div>
+    <div class="diagram">
+      <svg id="map" viewBox="0 0 540 740" role="group" aria-label="Diagrama de líneas: Centro, Línea Norte hasta Km 12 y Línea Sur hasta Rada Tilly">
+        <defs>
+          <linearGradient id="seaG" x1="0" x2="1">
+            <stop offset="0" stop-color="#0F7C86" stop-opacity=".28"/>
+            <stop offset="1" stop-color="#0F7C86" stop-opacity=".06"/>
+          </linearGradient>
+          <pattern id="waves" width="28" height="14" patternUnits="userSpaceOnUse">
+            <path d="M0 10 q7 -6 14 0 t14 0" fill="none" stroke="#9AA6B2" stroke-opacity=".18" stroke-width="1.2"/>
+          </pattern>
+        </defs>
+        <!-- sea -->
+        <path d="M430 0 C410 70 452 130 438 200 S404 300 414 360 S452 450 428 520 S350 560 330 610 S360 690 372 740 L540 740 L540 0 Z" fill="url(#seaG)"/>
+        <path d="M430 0 C410 70 452 130 438 200 S404 300 414 360 S452 450 428 520 S350 560 330 610 S360 690 372 740 L540 740 L540 0 Z" fill="url(#waves)"/>
+        <path d="M430 0 C410 70 452 130 438 200 S404 300 414 360 S452 450 428 520 S350 560 330 610 S360 690 372 740" fill="none" stroke="#9AA6B2" stroke-width="2" stroke-dasharray="1 0" opacity=".7"/>
+        <text x="490" y="360" transform="rotate(90 490 360)" text-anchor="middle" font-family="Tomorrow, Bahnschrift, sans-serif" font-size="15" letter-spacing="6" fill="#9AA6B2" opacity=".9">GOLFO SAN JORGE</text>
+        <!-- compass -->
+        <g transform="translate(46 54)" fill="none" stroke="#9AA6B2" stroke-width="2">
+          <path d="M0 22 L10 -10 L20 22 L10 14 Z" fill="#9AA6B2" fill-opacity=".25"/>
+          <text x="10" y="-18" text-anchor="middle" stroke="none" fill="#9AA6B2" font-family="Tomorrow, Bahnschrift, sans-serif" font-size="14" font-weight="600">N</text>
+        </g>
+        <!-- lines -->
+        <path id="ln" d="M290 380 V300 L360 230 V78" fill="none" stroke="#0F7C86" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+        <path id="ls" d="M290 380 V468 L210 548 V662" fill="none" stroke="#E0892B" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+                <g id="stations"></g>
+      </svg>
+      <div class="legend" aria-hidden="true">
+        <span><i style="background:#0F7C86"></i>Línea Norte · Centro → Km 12</span>
+        <span><i style="background:#E0892B"></i>Línea Sur · Centro → Rada Tilly</span>
+      </div>
+      <p class="diag-hint">El número de cada estación es lo publicado en este catálogo.</p>
+    </div>
+  </div>
+</section>
+
+<section class="cat" id="catalogo" aria-labelledby="cath">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="kicker t">Horario de salidas</div>
+        <h2 id="cath">Catálogo, estación por estación</h2>
+      </div>
+      <p>Las ventas están en dólares y los alquileres en pesos, como los publica la inmobiliaria. Sumá las que te interesen a tu recorrido y pedí las visitas juntas.</p>
+    </div>
+  </div>
+  <div class="filters" id="filters">
+    <div class="wrap">
+      <div class="frow">
+        <div class="fgroup fop">
+          <span class="flabel" id="opL">Operación</span>
+          <div class="seg" role="group" aria-labelledby="opL" id="fOp">
+            <button type="button" data-v="" aria-pressed="true">Todas</button>
+            <button type="button" data-v="venta" aria-pressed="false">Venta</button>
+            <button type="button" data-v="alquiler" aria-pressed="false">Alquiler</button>
+          </div>
+        </div>
+        <div class="fgroup"><label for="fType">Tipo</label><select class="sel" id="fType"><option value="">Todos</option></select></div>
+        <div class="fgroup"><label for="fZone">Estación</label><select class="sel" id="fZone"><option value="">Todas</option></select></div>
+        <div class="fgroup" id="gUsd"><label for="fUsd">Venta hasta</label>
+          <select class="sel" id="fUsd"><option value="">Sin tope (USD)</option><option value="50000">USD 50.000</option><option value="100000">USD 100.000</option><option value="150000">USD 150.000</option><option value="250000">USD 250.000</option></select></div>
+        <div class="fgroup" id="gArs"><label for="fArs">Alquiler hasta</label>
+          <select class="sel" id="fArs"><option value="">Sin tope ($)</option><option value="600000">$ 600.000</option><option value="900000">$ 900.000</option><option value="1500000">$ 1.500.000</option></select></div>
+        <div class="fgroup dorm">
+          <span class="flabel" id="dL">Dormitorios</span>
+          <div class="seg" role="group" aria-labelledby="dL" id="fBeds">
+            <button type="button" data-v="0" aria-pressed="true">Todos</button>
+            <button type="button" data-v="1" aria-pressed="false">1+</button>
+            <button type="button" data-v="2" aria-pressed="false">2+</button>
+            <button type="button" data-v="3" aria-pressed="false">3+</button>
+          </div>
+        </div>
+      </div>
+      <div class="frow2"><div class="chiprow" id="chips"></div>
+        <div class="fcount" aria-live="polite"><span><b id="cnt">16</b> <span id="cntL">propiedades</span></span><button class="linkbtn" type="button" id="fClear">Limpiar filtros</button></div>
+      </div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="tt" id="tt"></div>
+  </div>
+</section>
+
+<section class="tasa" id="tasa" aria-labelledby="tasah">
+  <div class="wrap">
+    <div>
+      <div class="kicker o">Para propietarios</div>
+      <h2 id="tasah">Tasá tu propiedad</h2>
+      <p>Contanos qué tenés y dónde. Armamos el mensaje y lo mandás por WhatsApp a la oficina de Mitre 674 para coordinar.</p>
+      <ol class="steps">
+        <li><b>1</b>Completás la dirección, el barrio y lo que sepas de la propiedad.</li>
+        <li><b>2</b>Se abre WhatsApp con el mensaje listo para enviar.</li>
+        <li><b>3</b>Te responden para coordinar la visita.</li>
+      </ol>
+    </div>
+    <form class="form" id="tForm" novalidate>
+      <div class="fld full"><label for="tDir">Dirección</label><input id="tDir" name="dir" autocomplete="street-address" placeholder="Ej.: Belgrano 1200" required></div>
+      <div class="fld"><label for="tBarrio">Barrio</label><select id="tBarrio" name="barrio"></select></div>
+      <div class="fld"><label for="tTipo">Tipo</label><select id="tTipo" name="tipo"><option>Casa</option><option>Departamento</option><option>Dúplex</option><option>Lote</option><option>Local / oficina</option><option>Otro</option></select></div>
+      <div class="fld"><label for="tM2">m² aprox.</label><input id="tM2" name="m2" inputmode="numeric" placeholder="Ej.: 90"></div>
+      <div class="fld"><label for="tNom">Nombre</label><input id="tNom" name="nombre" autocomplete="name" required></div>
+      <div class="fld full"><label for="tTel">Teléfono</label><input id="tTel" name="tel" type="tel" autocomplete="tel" inputmode="tel" placeholder="Ej.: 297 4xx-xxxx" required></div>
+      <p class="err full" id="tErr" role="alert"></p>
+      <div class="full"><button class="btn btn-wa" type="submit" style="width:100%;padding:14px">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2z"/></svg>
+        Enviar por WhatsApp</button></div>
+      <p class="note full">No se guarda nada en esta página: el mensaje sale desde tu WhatsApp.</p>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer class="contact" id="contacto">
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <div class="kicker">Estación central</div>
+        <h2>Mitre 674,<br>Comodoro Rivadavia</h2>
+        <p style="color:#C9D2DA;margin:0">Lunes a viernes de 10 a 18 · sábados de 10 a 14</p>
+      </div>
+      <dl class="cl">
+        <div><dt>WhatsApp</dt><dd style="margin:2px 0 0"><a href="https://wa.me/5492975261144" target="_blank" rel="noopener">297 526-1144</a></dd></div>
+        <div><dt>Teléfono</dt><dd style="margin:2px 0 0"><a href="tel:+542974444862">(297) 444-4862</a></dd></div>
+      </dl>
+      <dl class="cl">
+        <div><dt>Email</dt><dd style="margin:2px 0 0"><a href="mailto:info@patagoniapropiedades.net">info@patagoniapropiedades.net</a></dd></div>
+        <div><dt>Instagram</dt><dd style="margin:2px 0 0"><a href="https://www.instagram.com/patagonia.propiedades/" target="_blank" rel="noopener">@patagonia.propiedades</a></dd></div>
+      </dl>
+    </div>
+    <div class="foot">
+      <span>Propiedades, precios y fotos tomados de patagoniapropiedades.net y del portal de la Cámara Inmobiliaria de Comodoro Rivadavia (oct. 2026).</span>
+      <span>Prototipo de demostración preparado para Patagonia Propiedades.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- detail panel -->
+<div class="scrim" id="scrim"></div>
+<aside class="panel" id="panel" role="dialog" aria-modal="true" aria-labelledby="pTitle" aria-hidden="true">
+  <div class="p-top"><div class="where" id="pWhere"></div>
+    <button class="xbtn" type="button" id="pClose" aria-label="Cerrar ficha"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+  <div class="p-body" id="pBody"></div>
+  <div class="p-foot">
+    <button class="btn addbtn" type="button" id="pAdd" aria-pressed="false">+ Sumar al recorrido</button>
+    <a class="btn btn-wa" id="pWa" href="#" target="_blank" rel="noopener">Consultar por WhatsApp</a>
+  </div>
+</aside>
+
+<!-- route -->
+<div class="tray-pill" id="pill" aria-live="polite">
+  <span class="mini" id="pillMini" aria-hidden="true"></span>
+  <span class="lbl" id="pillL">Tu recorrido</span>
+  <button class="btn btn-light" type="button" id="pillOpen">Ver recorrido</button>
+</div>
+<aside class="tray" id="tray" role="dialog" aria-modal="false" aria-labelledby="trayH" aria-hidden="true">
+  <div class="tray-h">
+    <div class="kicker">Armá tu recorrido de visitas</div>
+    <h2 id="trayH">Tu recorrido</h2>
+    <p>Ordenado por la línea: Centro, después al norte y después al sur.</p>
+    <button class="xbtn" type="button" id="trayClose" aria-label="Cerrar recorrido"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+  <div class="tray-b">
+    <ol class="route" id="route"></ol>
+    <div id="dayBox">
+      <div class="h5" style="margin-top:14px">¿Qué día?</div>
+      <div class="days" id="days" role="group" aria-label="Día de las visitas"></div>
+      <p class="hrs" id="hrs"></p>
+    </div>
+  </div>
+  <div class="tray-f">
+    <a class="btn btn-wa" id="routeWa" href="#" target="_blank" rel="noopener">Pedir estas visitas por WhatsApp</a>
+    <button class="linkbtn" type="button" id="routeClear">Vaciar recorrido</button>
+  </div>
+</aside>
+
+<script>
+(function(){
+"use strict";
+var WA="5492975261144";
+var P=[
+{id:"altos-villa",op:"venta",type:"Casa + 2 deptos",title:"Altos de la Villa",zone:"Rada Tilly",barrio:"Altos de la Villa",price:"USD 320.000",priceNum:320000,cur:"USD",beds:3,baths:1,m2:null,desc:"Casa de 3 dormitorios, cocina comedor, living y patio con entrada de vehículo, más dos departamentos para renta: uno de 2 dormitorios con patio y otro de 1 dormitorio en primer piso.",imgs:["https://patagoniapropiedades.net/wp-content/uploads/2026/04/WhatsApp-Image-2026-04-02-at-6.07.21-PM.jpeg","https://patagoniapropiedades.net/wp-content/uploads/2026/04/WhatsApp-Image-2026-04-02-at-6.07.21-PM-1.jpeg","https://patagoniapropiedades.net/wp-content/uploads/2026/04/WhatsApp-Image-2026-04-02-at-6.07.22-PM-1.jpeg","https://patagoniapropiedades.net/wp-content/uploads/2026/04/WhatsApp-Image-2026-04-02-at-6.07.22-PM-2.jpeg"]},
+{id:"terrazas-mar",op:"venta",type:"Dúplex",title:"Terrazas del Mar",zone:"Rada Tilly",barrio:"Terrazas del Mar",price:"USD 240.000",priceNum:240000,cur:"USD",beds:2,baths:1,m2:120,desc:"Dúplex de 120 m² cubiertos con 2 dormitorios, living comedor amplio, cocina, lavadero, baño con antebaño y terraza con parrilla. Cochera incluida.",imgs:["https://patagoniapropiedades.net/wp-content/uploads/2026/07/WhatsApp-Image-2026-07-09-at-9.17.21-PM-156464.jpeg","https://patagoniapropiedades.net/wp-content/uploads/2026/07/WhatsApp-Image-2026-07-14-at-1.25.32-PM.jpeg","https://patagoniapropiedades.net/wp-content/uploads/2026/07/LIVING.png","https://patagoniapropiedades.net/wp-content/uploads/2026/07/WhatsApp-Image-2026-07-09-at-9.17.21-PM-2.jpeg"]},
+{id:"lote-solares",op:"venta",type:"Lote",title:"Lote en Solares",zone:"Rada Tilly",barrio:"Solares del Marqués",price:"USD 150.000",priceNum:150000,cur:"USD",beds:null,baths:null,m2:652,desc:"Terreno de 652 m² en el barrio Solares de Rada Tilly.",imgs:["https://patagoniapropiedades.net/wp-content/uploads/2026/06/WhatsApp-Image-2026-06-11-at-9.29.17-AM.jpeg","https://patagoniapropiedades.net/wp-content/uploads/2026/06/yes.jpeg"]},
+{id:"rada-tilly-2d",op:"venta",type:"Departamento",title:"Rada Tilly, 2 dormitorios",zone:"Rada Tilly",barrio:"Rada Tilly",price:"USD 135.000",priceNum:135000,cur:"USD",beds:2,baths:1,m2:null,desc:"Departamento de 2 dormitorios con baño completo y toilette.",imgs:["https://patagoniapropiedades.net/wp-content/uploads/2026/05/WhatsApp-Image-2026-05-22-at-12.59.19-PM-525x328.jpeg"]},
+{id:"chiriguanos",op:"venta",type:"Departamento",title:"Chiriguanos 363",zone:"Rada Tilly",barrio:"Rada Tilly",price:"USD 100.000",priceNum:100000,cur:"USD",beds:1,baths:1,m2:null,desc:"Departamento de 1 dormitorio con baño, cocina comedor y cochera.",imgs:["https://patagoniapropiedades.net/wp-content/uploads/2026/03/WhatsApp-Image-2026-03-10-at-11.37.13-AMFHFG.jpeg","https://patagoniapropiedades.net/wp-content/uploads/2026/03/WhatsApp-Image-2026-03-10-at-11.37.14-AMJK.jpeg","https://patagoniapropiedades.net/wp-content/uploads/2026/03/WhatsApp-Image-2026-03-10-at-11.37.10-AM.jpeg"]},
+{id:"17-agosto",op:"venta",type:"Lote",title:"17 de Agosto 915",zone:"Rada Tilly",barrio:"Rada Tilly",price:"USD 100.000",priceNum:100000,cur:"USD",beds:null,baths:null,m2:375,desc:"Lote de 12,5 x 30 m (375 m²) en Rada Tilly.",imgs:["https://patagoniapropiedades.net/wp-content/uploads/2026/03/WhatsApp-Image-2026-03-24-at-7.06.30-PM-1-525x328.jpeg"]},
+{id:"la-razon",op:"venta",type:"Dúplex",title:"La Razón 844",zone:"Pueyrredón",barrio:"Barrio Pueyrredón",price:"USD 100.000",priceNum:100000,cur:"USD",beds:2,baths:2,m2:null,desc:"Dúplex con living comedor y cocina integrada y toilette en planta baja; arriba baño completo, 2 dormitorios y un espacio para escritorio o tercer dormitorio. Entrada de autos y patio grande con parrilla y chulengo.",imgs:["https://patagoniapropiedades.net/wp-content/uploads/2026/04/WhatsApp-Image-2026-03-30-at-8.29.51-AM-2.jpeg","https://patagoniapropiedades.net/wp-content/uploads/2026/04/WhatsApp-Image-2026-03-30-at-8.29.56-AM-2.jpeg","https://patagoniapropiedades.net/wp-content/uploads/2026/04/WhatsApp-Image-2026-03-30-at-8.29.55-AM.jpeg"]},
+{id:"torres-costanera",op:"venta",type:"Departamento",title:"Complejo Torres Costanera, Torre VI",zone:"Centro",barrio:"Centro",price:"USD 45.000",priceNum:45000,cur:"USD",beds:2,baths:1,m2:null,desc:"Departamento de 2 dormitorios con living comedor, baño completo y cocina, en la Torre VI del Complejo Torres Costanera.",imgs:["https://patagoniapropiedades.net/wp-content/uploads/2026/08/PORTADA-1-copia.png","https://patagoniapropiedades.net/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-25-at-3.56.31-PM-1.jpeg","https://patagoniapropiedades.net/wp-content/uploads/2026/08/WhatsApp-Image-2026-08-25-at-3.56.30-PM-1.jpeg"]},
+{id:"juan-xxiii",op:"venta",type:"Casa",title:"Casa en Barrio Juan XXIII",zone:"Juan XXIII",barrio:"Juan XXIII",price:"USD 110.000",priceNum:110000,cur:"USD",beds:3,baths:1,m2:150,desc:"Casa de 3 dormitorios con cocina, living comedor, baño y garage, en terreno de 32 x 10,70 m con patio trasero y espacio para ampliar.",imgs:[]},
+{id:"km12",op:"venta",type:"Casa",title:"Casa en Barrio Km 12",zone:"Km 12",barrio:"Km 12",price:"USD 72.000",priceNum:72000,cur:"USD",beds:2,baths:1,m2:125,desc:"Casa de 2 dormitorios de 20 m² cada uno, ambiente integrado de 36 m² (cocina, comedor y living), baño completo y garage de 16 m².",imgs:["https://www.camara-inmobiliaria.com.ar/fotos_nuevas/media_169323962901jpg.jpeg"]},
+{id:"chacabuco-788",op:"alquiler",type:"Departamento",title:"Chacabuco 788",zone:"Centro",barrio:"Centro",price:"$ 850.000",priceNum:850000,cur:"ARS",beds:2,baths:2,m2:null,desc:"Departamento de 2 dormitorios y 2 baños con cocina, living comedor, lavadero, escritorio, terraza y balcón. Facilidades de ingreso.",imgs:["https://patagoniapropiedades.net/wp-content/uploads/2026/10/IMG-20251105-WA0024.jpg","https://patagoniapropiedades.net/wp-content/uploads/2026/10/CHACABUCO-2.jpg","https://patagoniapropiedades.net/wp-content/uploads/2026/10/CHACABUCO-1.jpg"]},
+{id:"km3-casa",op:"alquiler",type:"Casa",title:"Casa en Barrio Km 3",zone:"Km 3",barrio:"General Mosconi (Km 3)",price:"$ 1.399.975",priceNum:1399975,cur:"ARS",beds:3,baths:2,m2:null,desc:"Casa de 3 dormitorios y 2 baños completos, cocina comedor, living, patio, lavadero y quincho con baño propio. Facilidades de ingreso.",imgs:["https://patagoniapropiedades.net/wp-content/uploads/2026/09/WhatsApp-Image-2026-09-04-at-3.28.39-PM.jpeg","https://patagoniapropiedades.net/wp-content/uploads/2026/09/WhatsApp-Image-2026-09-04-at-3.28.40-PM-3.jpeg","https://patagoniapropiedades.net/wp-content/uploads/2026/09/WhatsApp-Image-2026-09-04-at-3.28.40-PM-2.jpeg"]},
+{id:"typac",op:"alquiler",type:"Departamento",title:"Edificio Typac",zone:"Centro",barrio:"Centro",price:"$ 650.000",priceNum:650000,cur:"ARS",beds:2,baths:1,m2:null,desc:"Departamento de 2 dormitorios con baño completo, cocina, lavadero y living comedor. Servicios aparte. Facilidades de ingreso.",imgs:["https://patagoniapropiedades.net/wp-content/uploads/2026/08/portadaaaa.jpeg","https://patagoniapropiedades.net/wp-content/uploads/2026/08/WhatsApp-Image-2026-07-30-at-11.09.57-AM.jpeg"]},
+{id:"maipu-1654",op:"alquiler",type:"Departamento",title:"Maipú 1654",zone:"Centro",barrio:"Centro",price:"$ 550.000",priceNum:550000,cur:"ARS",beds:2,baths:1,m2:null,desc:"Departamento de 2 dormitorios con baño, cocina, living comedor, entrada de vehículo y patio compartido.",imgs:["https://patagoniapropiedades.net/wp-content/uploads/2026/10/COCINA.jpg","https://patagoniapropiedades.net/wp-content/uploads/2026/10/HABITACION-1.jpg","https://patagoniapropiedades.net/wp-content/uploads/2026/10/LIVING-COMEDOR.jpg"]},
+{id:"mitre-672",op:"alquiler",type:"Departamento",title:"Mitre 672",zone:"Centro",barrio:"Centro",price:"$ 580.000",priceNum:580000,cur:"ARS",beds:1,baths:1,m2:null,desc:"Departamento de 1 dormitorio con cocina, living comedor y baño, al lado de la oficina de Mitre 674.",imgs:["https://patagoniapropiedades.net/wp-content/uploads/2026/10/COCINA-LIVING-COMEDOR-2-525x328.jpg"]},
+{id:"ameghino-524",op:"alquiler",type:"Departamento",title:"Ameghino 524",zone:"Centro",barrio:"Centro",price:"$ 600.000",priceNum:600000,cur:"ARS",beds:2,baths:1,m2:null,desc:"Departamento de 2 dormitorios con baño.",imgs:["https://patagoniapropiedades.net/wp-content/uploads/2026/10/PORTADA-525x328.jpg"]}
+];
+var ZONES={"Centro":[-45.8645,-67.48],"Km 3":[-45.825,-67.465],"Km 12":[-45.756,-67.429],"Pueyrredón":[-45.87,-67.505],"Juan XXIII":[-45.88,-67.5],"Rada Tilly":[-45.925,-67.555]};
+/* stations in line order, with diagram positions */
+var ST=[
+ {z:"Centro",line:"x",x:290,y:380,lineName:"Combinación · oficina Mitre 674"},
+ {z:"Km 3",line:"n",x:360,y:192,lineName:"Línea Norte · 1ª estación"},
+ {z:"Km 12",line:"n",x:360,y:78,lineName:"Línea Norte · terminal"},
+ {z:"Pueyrredón",line:"s",x:290,y:452,lineName:"Línea Sur · 1ª estación"},
+ {z:"Juan XXIII",line:"s",x:210,y:572,lineName:"Línea Sur · 2ª estación"},
+ {z:"Rada Tilly",line:"s",x:210,y:662,lineName:"Línea Sur · terminal",sub:"Altos de la Villa · Solares",sub2:"Terrazas del Mar"}
+];
+var ORDER={};ST.forEach(function(s,i){ORDER[s.z]=i});
+var STBY={};ST.forEach(function(s){STBY[s.z]=s});
+var COL={n:"#0F7C86",s:"#E0892B",x:"#121A24"};
+var BYID={};P.forEach(function(p){BYID[p.id]=p});
+var $=function(id){return document.getElementById(id)};
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function plural(n,a,b){return n===1?a:b}
+function counts(z){var v=0,a=0;P.forEach(function(p){if(p.zone===z){if(p.op==="venta")v++;else a++}});return {v:v,a:a}}
+function countText(c){var t=[];if(c.v)t.push(c.v+" en venta");if(c.a)t.push(c.a+" en alquiler");return t.join(" · ")}
+function waUrl(text){return "https://wa.me/"+WA+"?text="+encodeURIComponent(text)}
+
+/* ---------- placeholder art ---------- */
+var ICONS={
+ casa:'<path d="M-46 8 L0 -34 L46 8 M-34 -2 V40 H34 V-2" /><rect x="-10" y="14" width="20" height="26"/>',
+ depto:'<rect x="-30" y="-42" width="60" height="84"/><path d="M-18 -28h10M8 -28h10M-18 -10h10M8 -10h10M-18 8h10M8 8h10"/><rect x="-8" y="24" width="16" height="18"/>',
+ duplex:'<path d="M-52 4 L-24 -26 L4 4 M-44 -4 V40 H-4 V-4 M-4 4 L24 -26 L52 4 M4 -4 V40 H44 V-4"/>',
+ lote:'<rect x="-44" y="-26" width="88" height="62" stroke-dasharray="8 7"/><path d="M-8 18 V-40 L20 -30 L-8 -20"/>'
+};
+function iconFor(t){t=t.toLowerCase();if(t.indexOf("lote")>-1)return "lote";if(t.indexOf("dúplex")>-1||t.indexOf("+")>-1)return "duplex";if(t.indexOf("depart")>-1)return "depto";return "casa"}
+var phCache={};
+function ph(p,label){
+ var key=p.id+"|"+(label||"");if(phCache[key])return phCache[key];
+ var s=STBY[p.zone],c1=s.line==="n"?"#0F7C86":s.line==="s"?"#E0892B":"#0F7C86",c2=s.line==="x"?"#E0892B":"#121A24";
+ var svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="'+c1+'"/><stop offset="1" stop-color="'+c2+'"/></linearGradient>'+
+ '<pattern id="p" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#fff" stroke-opacity=".08"/></pattern></defs>'+
+ '<rect width="600" height="400" fill="url(#g)"/><rect width="600" height="400" fill="url(#p)"/>'+
+ '<path d="M0 330 H600" stroke="#fff" stroke-opacity=".35" stroke-width="10"/><circle cx="64" cy="330" r="16" fill="#fff" stroke="#121A24" stroke-opacity=".5" stroke-width="6"/>'+
+ '<g transform="translate(300 170) scale(1.5)" fill="none" stroke="#fff" stroke-width="4" stroke-linejoin="round" stroke-linecap="round">'+ICONS[iconFor(p.type)]+'</g>'+
+ '<text x="96" y="318" font-family="Tomorrow,Bahnschrift,Segoe UI,sans-serif" font-size="30" font-weight="600" fill="#fff">'+esc(p.zone)+'</text>'+
+ '<text x="96" y="364" font-family="Anek Latin,Segoe UI,sans-serif" font-size="20" fill="#fff" fill-opacity=".85">'+esc(label||p.type)+'</text></svg>';
+ return phCache[key]="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg);
+}
+function imgTag(p,src,alt,lbl){
+ var fallback=ph(p,lbl);
+ if(!src) return '<img src="'+fallback+'" alt="'+esc(alt)+'">';
+ return '<img src="'+esc(src)+'" alt="'+esc(alt)+'" loading="lazy" data-fb="'+fallback+'" style="background:url(&quot;'+fallback+'&quot;) center/cover">';
+}
+document.addEventListener("error",function(e){var t=e.target;if(t&&t.tagName==="IMG"&&t.dataset&&t.dataset.fb&&t.src!==t.dataset.fb){t.src=t.dataset.fb;t.removeAttribute("data-fb")}},true);
+
+/* ---------- storage ---------- */
+var mem={};
+var store={get:function(k){try{var v=localStorage.getItem(k);return v===null?(k in mem?mem[k]:null):v}catch(e){return k in mem?mem[k]:null}},
+ set:function(k,v){mem[k]=v;try{localStorage.setItem(k,v)}catch(e){}}};
+var route=[];
+try{route=JSON.parse(store.get("pp-recorrido")||"[]").filter(function(id){return BYID[id]})}catch(e){route=[]}
+function saveRoute(){store.set("pp-recorrido",JSON.stringify(route))}
+function sortedRoute(){return route.slice().sort(function(a,b){var pa=BYID[a],pb=BYID[b];return ORDER[pa.zone]-ORDER[pb.zone]||(pa.op<pb.op?1:pa.op>pb.op?-1:0)})}
+function inRoute(id){return route.indexOf(id)>-1}
+function toggleRoute(id){var i=route.indexOf(id);if(i>-1)route.splice(i,1);else route.push(id);saveRoute();syncRoute()}
+
+/* ---------- diagram ---------- */
+function drawStations(){
+ var g=$("stations"),h="";
+ ST.forEach(function(s){
+  var c=counts(s.z),ct=countText(c),col=COL[s.line],cls="stn "+s.line;
+  var total=c.v+c.a,aria=s.z+": "+(ct||"sin publicaciones")+". Ver en el catálogo";
+  h+='<g class="'+cls+'" data-zone="'+esc(s.z)+'" tabindex="0" role="button" aria-label="'+esc(aria)+'">';
+  if(s.line==="x"){
+   h+='<rect class="hit" x="'+(s.x-260)+'" y="'+(s.y-46)+'" width="300" height="92"/>';
+   h+='<rect class="ring" x="'+(s.x-30)+'" y="'+(s.y-36)+'" width="60" height="72" rx="22"/>';
+   h+='<rect class="dot" x="'+(s.x-22)+'" y="'+(s.y-28)+'" width="44" height="56" rx="16" fill="#fff" stroke="#121A24" stroke-width="5"/>';
+   h+='<text x="'+s.x+'" y="'+(s.y+7)+'" text-anchor="middle" font-family="Tomorrow,Bahnschrift,sans-serif" font-weight="700" font-size="20" fill="#121A24">'+total+'</text>';
+   h+='<text class="lbl" x="'+(s.x-42)+'" y="'+(s.y-12)+'" text-anchor="end" style="font-size:26px">Centro</text>';
+   h+='<text class="sub" x="'+(s.x-42)+'" y="'+(s.y+8)+'" text-anchor="end" style="fill:#C9D2DA">Oficina · Mitre 674</text>';
+   h+='<text class="cnt" x="'+(s.x-42)+'" y="'+(s.y+28)+'" text-anchor="end">'+esc(ct)+'</text>';
+  }else{
+   var lx=s.x-30;
+   h+='<rect class="hit" x="'+(s.x-230)+'" y="'+(s.y-34)+'" width="260" height="'+(s.sub?100:68)+'"/>';
+   h+='<circle class="ring" cx="'+s.x+'" cy="'+s.y+'" r="24"/>';
+   h+='<circle class="dot" cx="'+s.x+'" cy="'+s.y+'" r="15" fill="#fff" stroke="'+col+'" stroke-width="6"/>';
+   h+='<text x="'+s.x+'" y="'+(s.y+5)+'" text-anchor="middle" font-family="Tomorrow,Bahnschrift,sans-serif" font-weight="700" font-size="14" fill="#121A24">'+total+'</text>';
+   h+='<text class="lbl" x="'+lx+'" y="'+(s.y-2)+'" text-anchor="end">'+esc(s.z)+'</text>';
+   h+='<text class="cnt" x="'+lx+'" y="'+(s.y+18)+'" text-anchor="end">'+esc(ct)+'</text>';
+   if(s.sub)h+='<text class="sub" x="'+lx+'" y="'+(s.y+37)+'" text-anchor="end">'+esc(s.sub)+'</text>';
+   if(s.sub2)h+='<text class="sub" x="'+lx+'" y="'+(s.y+54)+'" text-anchor="end">'+esc(s.sub2)+'</text>';
+  }
+  h+='</g>';
+ });
+ g.innerHTML=h;
+ Array.prototype.forEach.call(g.querySelectorAll(".stn"),function(el){
+  function go(){var z=el.getAttribute("data-zone");state.zone=(state.zone===z?"":z);$("fZone").value=state.zone;render();if(state.zone)document.getElementById("catalogo").scrollIntoView({behavior:reduce()?"auto":"smooth",block:"start"})}
+  el.addEventListener("click",go);
+  el.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();go()}});
+ });
+}
+function reduce(){try{return window.matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){return false}}
+
+/* ---------- filters ---------- */
+var state={op:"",type:"",zone:"",usd:"",ars:"",beds:0};
+(function initFilters(){
+ var types=[];P.forEach(function(p){if(types.indexOf(p.type)<0)types.push(p.type)});
+ $("fType").innerHTML+=types.map(function(t){return '<option>'+esc(t)+'</option>'}).join("");
+ $("fZone").innerHTML+=ST.map(function(s){return '<option>'+esc(s.z)+'</option>'}).join("");
+ $("tBarrio").innerHTML=ST.map(function(s){return '<option>'+esc(s.z)+'</option>'}).join("")+'<option>Otro</option>';
+ function seg(id,key,num){Array.prototype.forEach.call($(id).querySelectorAll("button"),function(b){b.addEventListener("click",function(){state[key]=num?+b.dataset.v:b.dataset.v;render()})})}
+ seg("fOp","op");seg("fBeds","beds",true);
+ $("fType").addEventListener("change",function(){state.type=this.value;render()});
+ $("fZone").addEventListener("change",function(){state.zone=this.value;render()});
+ $("fUsd").addEventListener("change",function(){state.usd=this.value;render()});
+ $("fArs").addEventListener("change",function(){state.ars=this.value;render()});
+ $("fClear").addEventListener("click",clearF);
+})();
+function clearF(){state={op:"",type:"",zone:"",usd:"",ars:"",beds:0};["fType","fZone","fUsd","fArs"].forEach(function(i){$(i).value=""});render()}
+function match(p){
+ if(state.op&&p.op!==state.op)return false;
+ if(state.type&&p.type!==state.type)return false;
+ if(state.zone&&p.zone!==state.zone)return false;
+ if(state.beds&&!(p.beds&&p.beds>=state.beds))return false;
+ if(state.usd&&p.cur==="USD"&&p.priceNum>+state.usd)return false;
+ if(state.ars&&p.cur==="ARS"&&p.priceNum>+state.ars)return false;
+ return true;
+}
+
+/* ---------- catalogue render ---------- */
+var IC={
+ bed:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 18V7M3 14h18v4M21 14v-2a3 3 0 0 0-3-3h-7v5"/><circle cx="7" cy="11" r="1.6"/></svg>',
+ bath:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 12h16v2a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5v-2zM6 12V6a2 2 0 0 1 4 0M7 19l-1 2M17 19l1 2"/></svg>',
+ m2:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="1"/><path d="M4 9h3M4 14h3M9 4v3M14 4v3"/></svg>'
+};
+function specList(p){
+ var s=[];
+ if(p.beds)s.push('<li>'+IC.bed+p.beds+' '+plural(p.beds,"dormitorio","dormitorios")+'</li>');
+ if(p.baths)s.push('<li>'+IC.bath+p.baths+' '+plural(p.baths,"baño","baños")+'</li>');
+ if(p.m2)s.push('<li>'+IC.m2+'<span class="num">'+p.m2+'</span> m²</li>');
+ return s.join("");
+}
+function addLabel(id){return inRoute(id)?"✓ En el recorrido":"+ Recorrido"}
+function render(){
+ // seg states
+ Array.prototype.forEach.call($("fOp").querySelectorAll("button"),function(b){b.setAttribute("aria-pressed",String(b.dataset.v===state.op))});
+ Array.prototype.forEach.call($("fBeds").querySelectorAll("button"),function(b){b.setAttribute("aria-pressed",String(+b.dataset.v===state.beds))});
+ $("gUsd").hidden=state.op==="alquiler";$("gArs").hidden=state.op==="venta";
+ $("fZone").value=state.zone;
+ // stations highlight
+ Array.prototype.forEach.call(document.querySelectorAll(".stn"),function(el){el.classList.toggle("on",el.getAttribute("data-zone")===state.zone)});
+ var list=P.filter(match);
+ $("cnt").textContent=list.length;$("cntL").textContent=plural(list.length,"propiedad","propiedades");
+ // chips
+ var ch=[];
+ if(state.zone)ch.push(["zone","Estación: "+state.zone]);
+ if(state.op)ch.push(["op",state.op==="venta"?"Venta":"Alquiler"]);
+ if(state.type)ch.push(["type",state.type]);
+ if(state.usd)ch.push(["usd","Hasta USD "+(+state.usd).toLocaleString("es-AR")]);
+ if(state.ars)ch.push(["ars","Hasta $ "+(+state.ars).toLocaleString("es-AR")]);
+ if(state.beds)ch.push(["beds",state.beds+"+ dormitorios"]);
+ $("chips").innerHTML=ch.map(function(c){return '<button class="chip" type="button" data-k="'+c[0]+'">'+esc(c[1])+'<span aria-hidden="true">✕</span><span class="sr">Quitar filtro</span></button>'}).join("");
+ Array.prototype.forEach.call($("chips").querySelectorAll(".chip"),function(b){b.addEventListener("click",function(){var k=b.dataset.k;state[k]=k==="beds"?0:"";var m={type:"fType",zone:"fZone",usd:"fUsd",ars:"fArs"};if(m[k])$(m[k]).value="";render()})});
+ // groups
+ var h="";
+ ST.forEach(function(s){
+  var items=list.filter(function(p){return p.zone===s.z}).sort(function(a,b){return a.op===b.op?b.priceNum-a.priceNum:(a.op==="venta"?-1:1)});
+  if(!items.length)return;
+  var c=counts(s.z);
+  h+='<section class="grp '+s.line+'" aria-label="'+esc(s.z)+'"><div class="grp-h"><div class="mk"><i></i></div><div><div class="line">'+esc(s.lineName)+'</div><h3>'+esc(s.z)+'</h3></div><div class="cnt">'+items.length+' de '+(c.v+c.a)+' '+plural(c.v+c.a,"publicación","publicaciones")+'</div></div>';
+  items.forEach(function(p){
+   var n=p.imgs.length;
+   h+='<article class="row" data-id="'+p.id+'"><div class="rail" aria-hidden="true"></div><div class="row-in">'+
+    '<button class="ph" type="button" data-open="'+p.id+'" aria-label="Ver fotos de '+esc(p.title)+'">'+imgTag(p,p.imgs[0],p.title,n?p.type:"Sin fotos publicadas")+(n>1?'<span class="nimg">'+n+' fotos</span>':'')+'</button>'+
+    '<div class="info"><div class="meta"><span class="op '+p.op+'">'+p.op+'</span><span>'+esc(p.type)+'</span></div>'+
+    '<h4><button type="button" data-open="'+p.id+'">'+esc(p.title)+'</button></h4><p class="barrio">'+esc(p.barrio===p.zone?p.zone:p.barrio+" · "+p.zone)+'</p><ul class="specs">'+specList(p)+'</ul></div>'+
+    '<div class="pricecol"><div class="price"><small>'+(p.op==="venta"?"Venta":"Alquiler")+'</small>'+esc(p.price)+'</div><div class="acts">'+
+    '<button class="btn addbtn" type="button" data-add="'+p.id+'" aria-pressed="'+inRoute(p.id)+'">'+addLabel(p.id)+'</button>'+
+    '<button class="btn btn-ink" type="button" data-open="'+p.id+'">Ver ficha</button></div></div></div></article>';
+  });
+  h+='</section>';
+ });
+ if(!h)h='<div class="empty"><h3>No hay propiedades con esos filtros</h3><p>Probá con otra estación o sacá algún filtro.</p><button class="btn btn-ink" type="button" id="emptyClear">Limpiar filtros</button></div>';
+ $("tt").innerHTML=h;
+ var ec=$("emptyClear");if(ec)ec.addEventListener("click",clearF);
+}
+$("tt").addEventListener("click",function(e){
+ var o=e.target.closest("[data-open]"),a=e.target.closest("[data-add]");
+ if(a){toggleRoute(a.dataset.add);return}
+ if(o){openPanel(o.dataset.open,o)}
+});
+
+/* ---------- detail panel ---------- */
+var cur=null,gi=0,lastFocus=null;
+function bbox(z){var c=ZONES[z];var dLat=z==="Centro"?.008:.012,dLon=z==="Centro"?.014:.02;return [c[1]-dLon,c[0]-dLat,c[1]+dLon,c[0]+dLat].map(function(n){return n.toFixed(4)}).join(",")}
+function propMsg(p){return "Hola, vi en la web de Patagonia Propiedades la propiedad \""+p.title+"\" ("+(p.op==="venta"?"venta":"alquiler")+", "+p.type+", "+(p.barrio===p.zone?p.zone:p.barrio+", "+p.zone)+", "+p.price+"). ¿Me pasan más información?"}
+function openPanel(id,from){
+ var p=BYID[id];if(!p)return;cur=p;gi=0;lastFocus=from||document.activeElement;
+ var s=STBY[p.zone];
+ $("panel").style.setProperty("--c",COL[s.line]==="#121A24"?"#121A24":COL[s.line]);
+ $("pWhere").innerHTML='<i style="--c:'+COL[s.line]+'"></i><span>'+esc(s.z)+' · '+esc(s.lineName)+'</span>';
+ var imgs=p.imgs,n=imgs.length;
+ var g='<div class="gal"><div class="main" id="gMain">'+imgTag(p,imgs[0],p.title+", foto 1",n?p.type:"Sin fotos publicadas")+'</div>';
+ if(n>1)g+='<button class="gnav prev" type="button" id="gPrev" aria-label="Foto anterior"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button><button class="gnav next" type="button" id="gNext" aria-label="Foto siguiente"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></button>';
+ g+='<span class="gcount num" id="gCount">'+(n?("1 / "+n):"Sin fotos publicadas")+'</span></div>';
+ if(n>1)g+='<div class="thumbs" id="thumbs">'+imgs.map(function(src,i){return '<button type="button" data-i="'+i+'" aria-label="Foto '+(i+1)+'"'+(i===0?' aria-current="true"':'')+'>'+imgTag(p,src,"",p.type)+'</button>'}).join("")+'</div>';
+ var dl=[["Operación",p.op==="venta"?"Venta":"Alquiler"],["Tipo",p.type],["Barrio",p.barrio]];
+ if(p.beds)dl.push(["Dormitorios",p.beds]);if(p.baths)dl.push(["Baños",p.baths]);if(p.m2)dl.push(["Superficie",p.m2+" m²"]);
+ var body=g+'<div class="p-sec"><div class="meta"><span class="op '+p.op+'">'+p.op+'</span><span>'+esc(p.type)+'</span></div><h2 id="pTitle">'+esc(p.title)+'</h2>'+
+  '<div class="p-price">'+esc(p.price)+'</div>'+
+  '<dl class="dl">'+dl.map(function(d){return '<div><dt>'+d[0]+'</dt><dd>'+esc(d[1])+'</dd></div>'}).join("")+'</dl>'+
+  '<p class="p-desc">'+esc(p.desc)+'</p>'+
+  '<div class="h5">Zona aproximada</div><div class="mapbox"><iframe title="Mapa de la zona aproximada: '+esc(p.zone)+'" loading="lazy" referrerpolicy="no-referrer" src="https://www.openstreetmap.org/export/embed.html?bbox='+bbox(p.zone)+'&amp;layer=mapnik"></iframe></div>'+
+  '<p class="mapcap">Zona aproximada de '+esc(p.zone)+'. No es la ubicación exacta de la propiedad: la dirección se confirma con la inmobiliaria.</p></div>';
+ $("pBody").innerHTML=body;$("pBody").scrollTop=0;
+ $("pWa").href=waUrl(propMsg(p));
+ syncPanelAdd();
+ if(n>1){$("gPrev").onclick=function(){gal(-1)};$("gNext").onclick=function(){gal(1)};
+  Array.prototype.forEach.call($("thumbs").querySelectorAll("button"),function(b){b.onclick=function(){setG(+b.dataset.i)}});}
+ $("panel").classList.add("on");$("scrim").classList.add("on");$("panel").setAttribute("aria-hidden","false");
+ document.body.style.overflow="hidden";
+ setTimeout(function(){$("pClose").focus()},50);
+}
+function setG(i){var p=cur,n=p.imgs.length;gi=(i+n)%n;$("gMain").innerHTML=imgTag(p,p.imgs[gi],p.title+", foto "+(gi+1),p.type);$("gCount").textContent=(gi+1)+" / "+n;
+ Array.prototype.forEach.call($("thumbs").querySelectorAll("button"),function(b){if(+b.dataset.i===gi)b.setAttribute("aria-current","true");else b.removeAttribute("aria-current")})}
+function gal(d){setG(gi+d)}
+function closePanel(){$("panel").classList.remove("on");$("panel").setAttribute("aria-hidden","true");if(!$("tray").classList.contains("on"))$("scrim").classList.remove("on");document.body.style.overflow="";cur=null;if(lastFocus&&lastFocus.focus)try{lastFocus.focus({preventScroll:true})}catch(e){}}
+function syncPanelAdd(){if(!cur)return;var on=inRoute(cur.id);$("pAdd").setAttribute("aria-pressed",String(on));$("pAdd").textContent=on?"✓ En el recorrido":"+ Sumar al recorrido"}
+$("pClose").addEventListener("click",closePanel);
+$("pAdd").addEventListener("click",function(){if(cur)toggleRoute(cur.id)});
+$("scrim").addEventListener("click",function(){if(cur)closePanel();if($("tray").classList.contains("on"))closeTray()});
+document.addEventListener("keydown",function(e){
+ if(e.key==="Escape"){if(cur)closePanel();else if($("tray").classList.contains("on"))closeTray()}
+ if(cur&&cur.imgs.length>1&&(e.key==="ArrowLeft"||e.key==="ArrowRight")&&!/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName)){gal(e.key==="ArrowLeft"?-1:1)}
+});
+
+/* ---------- route tray ---------- */
+var DN=["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"],DL=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"],MN=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+var days=[];(function(){var d=new Date();d.setHours(12,0,0,0);while(days.length<6){d.setDate(d.getDate()+1);if(d.getDay()!==0)days.push(new Date(d))}})();
+var dayI=0;
+$("days").innerHTML=days.map(function(d,i){return '<button type="button" data-i="'+i+'" aria-pressed="'+(i===0)+'"><b>'+DN[d.getDay()]+' '+d.getDate()+'</b><span>'+MN[d.getMonth()]+'</span></button>'}).join("");
+Array.prototype.forEach.call($("days").querySelectorAll("button"),function(b){b.addEventListener("click",function(){dayI=+b.dataset.i;Array.prototype.forEach.call($("days").querySelectorAll("button"),function(x){x.setAttribute("aria-pressed",String(x===b))});syncRoute()})});
+function hoursFor(d){return d.getDay()===6?"de 10 a 14 h":"de 10 a 18 h"}
+function dayLabel(d){return DL[d.getDay()]+" "+d.getDate()+" de "+["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"][d.getMonth()]}
+function routeMsg(){
+ var r=sortedRoute(),d=days[dayI];
+ var lines=r.map(function(id,i){var p=BYID[id];return (i+1)+". "+p.title+" ("+p.zone+", "+(p.op==="venta"?"venta":"alquiler")+", "+p.price+")"});
+ return "Hola, armé un recorrido en la web y quiero pedir estas visitas para el "+dayLabel(d)+" (horario de oficina "+hoursFor(d)+"):\n"+lines.join("\n")+"\n¿Me confirman horarios?";
+}
+function syncRoute(){
+ var r=sortedRoute(),n=r.length;
+ // rows
+ Array.prototype.forEach.call(document.querySelectorAll("[data-add]"),function(b){var on=inRoute(b.dataset.add);b.setAttribute("aria-pressed",String(on));b.textContent=addLabel(b.dataset.add)});
+ syncPanelAdd();
+ // pill
+ $("pill").classList.toggle("on",n>0&&!$("tray").classList.contains("on"));
+ $("pillL").textContent=n+" "+plural(n,"parada","paradas")+" en tu recorrido";
+ $("pillMini").innerHTML=r.slice(0,6).map(function(id,i){var c=COL[STBY[BYID[id].zone].line];return (i?'<b style="--c:'+c+'"></b>':'')+'<i style="--c:'+c+'"></i>'}).join("");
+ // tray list
+ var h="",prevLine=null;
+ r.forEach(function(id,i){
+  var p=BYID[id],s=STBY[p.zone],c=COL[s.line];
+  if(prevLine==="n"&&s.line==="s")h+='<li class="sepli" aria-hidden="true" style="display:block;padding:0"><span class="sep">↩ Vuelta por el Centro hacia la Línea Sur</span></li>';
+  h+='<li style="--c:'+c+'"><span class="st"><b>'+(i+1)+'</b></span><span><span class="t1">'+esc(p.title)+'</span><br><span class="t2">'+esc(p.zone)+' · '+esc(p.price)+'</span></span><button class="rm" type="button" data-rm="'+id+'" aria-label="Quitar '+esc(p.title)+' del recorrido"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></li>';
+  prevLine=s.line;
+ });
+ $("route").innerHTML=h||'<li class="tray-empty" style="display:block">Todavía no sumaste propiedades. Usá “+ Recorrido” en el catálogo.</li>';
+ $("dayBox").hidden=!n;
+ $("hrs").textContent="Visitas en horario de oficina: "+(days[dayI].getDay()===6?"el sábado es de 10 a 14 h.":"lunes a viernes de 10 a 18 h.");
+ $("routeWa").href=n?waUrl(routeMsg()):"#";
+ $("routeWa").setAttribute("aria-disabled",String(!n));$("routeWa").style.opacity=n?"":"0.45";$("routeWa").style.pointerEvents=n?"":"none";
+ $("routeClear").hidden=!n;
+}
+$("route").addEventListener("click",function(e){var b=e.target.closest("[data-rm]");if(b)toggleRoute(b.dataset.rm)});
+function openTray(){closePanelSoft();$("tray").classList.add("on");$("tray").setAttribute("aria-hidden","false");$("pill").classList.remove("on");if(window.innerWidth<=640){$("scrim").classList.add("on")}setTimeout(function(){$("trayClose").focus()},50)}
+function closePanelSoft(){if(cur)closePanel()}
+function closeTray(){$("tray").classList.remove("on");$("tray").setAttribute("aria-hidden","true");if(!cur)$("scrim").classList.remove("on");syncRoute()}
+$("pillOpen").addEventListener("click",openTray);
+$("trayClose").addEventListener("click",closeTray);
+$("navRoute").addEventListener("click",function(e){e.preventDefault();openTray()});
+$("routeClear").addEventListener("click",function(){route=[];saveRoute();syncRoute()});
+
+/* ---------- tasá form ---------- */
+$("tForm").addEventListener("submit",function(e){
+ e.preventDefault();
+ var f=this,req=[["tDir","la dirección"],["tNom","tu nombre"],["tTel","un teléfono"]],miss=[];
+ req.forEach(function(r){var el=$(r[0]),bad=!el.value.trim();el.setAttribute("aria-invalid",String(bad));if(bad)miss.push(r[1])});
+ if(miss.length){$("tErr").textContent="Falta completar "+miss.join(", ")+".";$(req.filter(function(r){return !$(r[0]).value.trim()})[0][0]).focus();return}
+ $("tErr").textContent="";
+ var m2=$("tM2").value.trim();
+ var msg="Hola, quiero tasar mi propiedad.\nDirección: "+$("tDir").value.trim()+"\nBarrio: "+$("tBarrio").value+"\nTipo: "+$("tTipo").value+(m2?"\nSuperficie aprox.: "+m2+" m²":"")+"\nNombre: "+$("tNom").value.trim()+"\nTeléfono: "+$("tTel").value.trim();
+ var url=waUrl(msg);f.dataset.lastUrl=url;
+ var w=null;try{w=window.open(url,"_blank");if(w)w.opener=null}catch(err){}
+ if(!w){try{location.href=url}catch(err){}}
+});
+
+/* ---------- init ---------- */
+$("statN").textContent=P.length;
+drawStations();render();syncRoute();
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Patagonia Propiedades"></script>
+</body>
+</html>
