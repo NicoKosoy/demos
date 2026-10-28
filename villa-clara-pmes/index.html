@@ -1,0 +1,726 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Villa Clara · Río Ceballos</title>
+<meta name="description" content="Prototipo de demostración para Villa Clara: salón climatizado y parque de 8 hectáreas en el Km 9,5 de la Ruta E53, Río Ceballos.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Federo&family=Sarala:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cielo:#f5f9f0;      /* fondo luminoso */
+  --papel:#fffef8;
+  --niebla:#e6efdc;
+  --prado:#cfe2b4;
+  --pasto:#a7c983;
+  --monte:#5e8b4f;
+  --hoja:#2f5b37;
+  --sierra:#1f3d2a;
+  --tinta:#1b2a20;
+  --gris:#55645a;
+  --sol:#f1bf4b;
+  --sol-claro:#fbe9b8;
+  --tierra:#c98f5a;
+  --ruta:#8e8a7c;
+  --linea:#d5e2c8;
+  --ok:#2f7a45;
+  --ocupado:#b6625a;
+  --radio:18px;
+  --sombra:0 10px 30px -14px rgba(31,61,42,.35);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--cielo);color:var(--tinta);font-family:"Sarala",Georgia,serif;font-size:17px;line-height:1.55;overflow-x:hidden}
+h1,h2,h3,.fed{font-family:"Federo","Sarala",serif;font-weight:400;letter-spacing:.01em}
+a{color:var(--hoja)}
+img{max-width:100%;display:block}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--sol);outline-offset:2px}
+.wrap{max-width:1200px;margin:0 auto;padding:0 16px}
+
+/* aviso */
+.aviso{background:var(--sierra);color:#eef5e6;font-size:14px;text-align:center;padding:7px 16px}
+.aviso b{color:var(--sol-claro);font-weight:700}
+
+/* cabecera */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0}
+.marca{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--sierra)}
+.marca svg{flex:none}
+.marca span{font-family:"Federo",serif;font-size:26px;line-height:1}
+.marca small{display:block;font-family:"Sarala",serif;font-size:12px;color:var(--gris);letter-spacing:.08em;text-transform:uppercase;margin-top:3px}
+.top nav{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.top nav a{font-size:14px;text-decoration:none;color:var(--hoja);padding:6px 10px;border-radius:99px}
+.top nav a:hover{background:var(--niebla)}
+@media (max-width:760px){.top nav{display:none}}
+
+/* portada: mapa */
+.portada{display:grid;grid-template-columns:minmax(0,1fr) 350px;gap:20px;align-items:start;padding-bottom:12px}
+.mapa-card{background:var(--papel);border-radius:24px;box-shadow:var(--sombra);padding:12px;min-width:0;position:relative;border:1px solid var(--linea);display:flex;flex-direction:column;gap:6px}
+.mapa-card .recorrido{margin:4px 4px 2px}
+.mapa-card svg{width:100%;height:auto;display:block;border-radius:16px}
+.mapa-pie{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;justify-content:space-between;padding:10px 6px 2px;font-size:13px;color:var(--gris)}
+.panel{background:var(--papel);border-radius:24px;box-shadow:var(--sombra);padding:24px 22px;min-width:0;border:1px solid var(--linea);display:flex;flex-direction:column;gap:14px}
+.eyebrow{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--monte);font-weight:700;margin:0}
+.panel h1{font-size:31px;line-height:1.14;margin:0;color:var(--sierra)}
+.panel p{margin:0}
+.lead{color:var(--gris);font-size:16px}
+.contador{background:var(--niebla);border-radius:16px;padding:14px 14px 12px}
+.contador label{font-weight:700;font-size:15px;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.big{font-family:"Federo",serif;font-size:40px;line-height:1;color:var(--sierra)}
+input[type=range]{width:100%;accent-color:var(--hoja);margin:10px 0 2px;height:28px}
+.escala{display:flex;justify-content:space-between;font-size:12px;color:var(--gris)}
+.estado{font-size:15px;margin-top:8px;min-height:3em}
+.estado b{color:var(--hoja)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;padding:0;margin:0;list-style:none}
+.chips li{background:var(--sol-claro);color:#5a4210;border-radius:99px;padding:4px 10px;font-size:13px;font-weight:700}
+.chips li.v{background:#e1eed4;color:var(--hoja)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--hoja);color:#fff;border:0;border-radius:99px;padding:12px 20px;font-weight:700;text-decoration:none;font-size:16px;text-align:center}
+.btn:hover{background:var(--sierra)}
+.btn.sec{background:transparent;color:var(--hoja);border:2px solid var(--hoja)}
+.rating{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--gris)}
+.rating .stars{color:#d79a1c;letter-spacing:1px;font-size:16px}
+.rating b{color:var(--tinta)}
+
+.recorrido{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 0;padding:0;list-style:none}
+.recorrido a{display:flex;align-items:center;gap:8px;background:var(--papel);border:1px solid var(--linea);border-radius:99px;padding:6px 14px 6px 6px;text-decoration:none;color:var(--sierra);font-size:15px}
+.recorrido a:hover{border-color:var(--monte)}
+.num{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--sol);color:var(--sierra);font-weight:700;font-size:14px;flex:none}
+.num.g{background:var(--hoja);color:#fff}
+
+/* svg map styles */
+.m-lbl{font-family:"Federo",serif;fill:var(--sierra)}
+.m-sub{font-family:"Sarala",serif;fill:var(--gris)}
+.pin circle{fill:var(--sol);stroke:var(--papel);stroke-width:4}
+.pin text{font-family:"Sarala",serif;font-weight:700;fill:var(--sierra);font-size:24px;text-anchor:middle;dominant-baseline:central}
+.pin:hover circle,.pin:focus circle{fill:#ffd66e}
+.tent{opacity:0;transform:translateY(14px) scale(.8);transform-box:fill-box;transform-origin:50% 100%;transition:opacity .45s ease,transform .45s ease}
+.tent.on{opacity:1;transform:none}
+@media (max-width:620px){.m-sec{display:none}.pin circle{r:32px}.pin text{font-size:34px}}
+
+/* secciones colgadas del mapa */
+section.parada{padding:56px 0 8px;scroll-margin-top:10px}
+.colgado{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.colgado .hilo{flex:1;height:2px;background:repeating-linear-gradient(90deg,var(--pasto) 0 8px,transparent 8px 14px)}
+.colgado a{font-size:13px;color:var(--gris);white-space:nowrap}
+.parada h2{font-size:34px;line-height:1.15;margin:0 0 10px;color:var(--sierra)}
+.parada .intro{max-width:720px;color:var(--gris);margin:0 0 22px}
+
+.dos{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:22px;align-items:start}
+.dos > *{min-width:0}
+.ficha{background:var(--papel);border:1px solid var(--linea);border-radius:var(--radio);padding:20px}
+.ficha h3{margin:0 0 8px;font-size:22px;color:var(--hoja)}
+.datos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:0;padding:0;list-style:none}
+.datos li{background:var(--niebla);border-radius:14px;padding:12px}
+.datos b{display:block;font-family:"Federo",serif;font-weight:400;font-size:26px;color:var(--sierra);line-height:1.1}
+.datos span{font-size:14px;color:var(--gris)}
+.lista{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.lista li{display:flex;gap:10px;align-items:flex-start}
+.lista li::before{content:"";flex:none;width:10px;height:10px;border-radius:50%;background:var(--pasto);margin-top:.5em;box-shadow:0 0 0 3px #e7f1db}
+
+/* fotos con lámina de respaldo */
+.foto{position:relative;margin:0;border-radius:var(--radio);overflow:hidden;background:
+  radial-gradient(circle at 20% 115%,var(--monte) 0 32%,transparent 33%),
+  radial-gradient(circle at 75% 120%,var(--hoja) 0 38%,transparent 39%),
+  radial-gradient(circle at 80% 22%,var(--sol-claro) 0 9%,transparent 10%),
+  linear-gradient(180deg,#e9f2df,#cfe2b4);min-height:200px}
+.foto img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.foto .alt{position:absolute;left:12px;right:12px;bottom:12px;color:#fff;font-size:14px;font-weight:700;text-shadow:0 1px 3px rgba(0,0,0,.4);display:none}
+.foto.fail img{display:none}
+.foto.fail .alt{display:block}
+.foto figcaption{position:absolute;left:0;right:0;bottom:0;padding:22px 12px 8px;font-size:13px;color:#fff;background:linear-gradient(transparent,rgba(20,40,28,.7))}
+.foto.fail figcaption{display:none}
+.foto.alto{min-height:340px}
+
+/* tipos y servicios */
+.tipos{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px;padding:0;list-style:none}
+.tipos li{border:1.5px solid var(--monte);color:var(--hoja);border-radius:99px;padding:6px 14px;font-weight:700;font-size:15px;background:var(--papel)}
+
+/* cocina */
+.menus{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.menu{background:var(--papel);border:1px solid var(--linea);border-radius:var(--radio);padding:18px;min-width:0;position:relative;overflow:hidden}
+.menu::after{content:"";position:absolute;right:-30px;top:-30px;width:90px;height:90px;border-radius:50%;background:var(--niebla)}
+.menu h3{margin:0 0 4px;font-size:22px;color:var(--sierra);position:relative;z-index:1}
+.menu p{margin:0;color:var(--gris);font-size:15px;position:relative;z-index:1}
+.menu .pp{margin-top:10px;font-weight:700;color:var(--hoja)}
+.nota{font-size:13.5px;color:var(--gris);margin-top:10px}
+
+/* fecha y presupuesto */
+.cotiza{display:grid;grid-template-columns:minmax(0,400px) minmax(0,1fr);gap:22px;align-items:start}
+.cotiza > *{min-width:0}
+.cal{background:var(--papel);border:1px solid var(--linea);border-radius:var(--radio);padding:16px}
+.cal-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.cal-head h3{margin:0;font-size:22px;color:var(--sierra)}
+.cal-head button{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--linea);background:var(--cielo);color:var(--hoja);font-size:18px}
+.cal-head button:disabled{opacity:.35;cursor:default}
+.grid7{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;text-align:center}
+.grid7 .dn{font-size:12px;color:var(--gris);font-weight:700;padding-bottom:4px}
+.dia{aspect-ratio:1;display:grid;place-items:center;font-size:14px;color:#8d978f;border-radius:10px}
+.dia.sab{font-weight:700}
+button.dia{border:2px solid transparent;background:#e3f1de;color:var(--ok)}
+button.dia:hover{border-color:var(--ok)}
+button.dia.sel{background:var(--hoja);color:#fff}
+.dia.ocu{background:#f4e1dd;color:var(--ocupado);text-decoration:line-through}
+.dia.pas{opacity:.45}
+.leyenda{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--gris);margin-top:12px}
+.leyenda i{display:inline-block;width:12px;height:12px;border-radius:4px;vertical-align:-1px;margin-right:5px}
+.proximos{margin-top:12px;font-size:14px;color:var(--gris)}
+
+.form{background:var(--papel);border:1px solid var(--linea);border-radius:var(--radio);padding:18px;display:grid;gap:16px}
+fieldset{border:0;margin:0;padding:0;min-width:0}
+legend{font-weight:700;font-size:15px;margin-bottom:8px;padding:0}
+.opts{display:flex;flex-wrap:wrap;gap:6px}
+.opt{position:relative}
+.opt input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.opt span{display:block;border:1.5px solid var(--linea);border-radius:99px;padding:6px 13px;font-size:15px;background:var(--cielo)}
+.opt input:checked + span{background:var(--hoja);border-color:var(--hoja);color:#fff}
+.opt input:focus-visible + span{outline:3px solid var(--sol);outline-offset:2px}
+.opt.card span{border-radius:14px;padding:10px 12px}
+.opt.card small{display:block;font-size:13px;opacity:.85}
+.checks{display:grid;gap:8px}
+.checks label{display:flex;gap:10px;align-items:flex-start;font-size:15px}
+.checks input{width:20px;height:20px;accent-color:var(--hoja);flex:none;margin-top:2px}
+.fecha-elegida{background:var(--niebla);border-radius:12px;padding:10px 12px;font-size:15px}
+.carpas-aviso{background:var(--sol-claro);border-radius:12px;padding:10px 12px;font-size:14.5px;color:#4d3a0d}
+.total{background:var(--sierra);color:#eef5e6;border-radius:var(--radio);padding:20px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px 28px;align-items:start}
+.total > div{display:grid;gap:10px;min-width:0}
+@media (max-width:760px){.total{grid-template-columns:minmax(0,1fr)}}
+.total .pp{font-size:15px}
+.total .tt{font-family:"Federo",serif;font-size:34px;line-height:1.1;color:#fff}
+.total small{color:#c7d8bf;font-size:13px}
+.total ul{margin:0;padding-left:18px;font-size:14px;color:#d9e7d2}
+.total .incl{display:flex;flex-wrap:wrap;gap:6px}
+.total .incl span{background:rgba(241,191,75,.18);color:var(--sol-claro);border-radius:99px;padding:3px 10px;font-size:13px;font-weight:700}
+.pedido{width:100%;min-height:150px;border-radius:12px;border:1px solid #476a51;background:#24442f;color:#eef5e6;font:14px/1.45 "Sarala",serif;padding:10px;resize:vertical}
+.total .btn{background:var(--sol);color:var(--sierra)}
+.total .btn:hover{background:#ffd66e}
+.toast{position:fixed;left:50%;bottom:20px;transform:translate(-50%,30px);background:var(--sierra);color:#fff;padding:12px 18px;border-radius:12px;box-shadow:var(--sombra);opacity:0;pointer-events:none;transition:.3s;max-width:calc(100% - 32px);font-size:15px;z-index:9}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* galeria */
+.galeria{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:190px;gap:10px}
+.galeria .foto{min-height:0}
+.galeria .g1{grid-column:span 2;grid-row:span 2}
+
+/* llegar */
+.llegar svg{width:100%;height:auto;display:block;border-radius:var(--radio);background:var(--niebla)}
+
+footer{margin-top:60px;background:var(--sierra);color:#dce9d4;padding:34px 0;font-size:15px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:18px;justify-content:space-between}
+footer a{color:var(--sol-claro)}
+footer .fed{font-size:26px;color:#fff}
+
+@media (max-width:1020px){
+  .portada{grid-template-columns:minmax(0,1fr)}
+  .cotiza{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:760px){
+  .dos{grid-template-columns:minmax(0,1fr)}
+  .menus{grid-template-columns:minmax(0,1fr)}
+  .galeria{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:150px}
+  .panel h1{font-size:27px}
+  .parada h2{font-size:28px}
+  .mapa-card{padding:8px;border-radius:18px}
+  .panel{padding:20px 16px}
+}
+</style>
+</head>
+<body>
+<div class="aviso"><b>Prototipo de demostración preparado para Villa Clara</b> · precios, menús y fechas de ejemplo</div>
+
+<div class="wrap">
+  <header class="top">
+    <a class="marca" href="#inicio" aria-label="Villa Clara, inicio">
+      <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="#2f5b37"/><path d="M5 28 L14 17 L19 22 L26 12 L35 28 Z" fill="#a7c983"/><circle cx="29" cy="11" r="4" fill="#f1bf4b"/></svg>
+      <span>Villa Clara<small>Río Ceballos · Córdoba</small></span>
+    </a>
+    <nav aria-label="Secciones">
+      <a href="#salon">Salón</a><a href="#parque">Parque y carpas</a><a href="#cocina">Cocina</a><a href="#presupuesto">Fecha y presupuesto</a><a href="#llegar">Cómo llegar</a>
+    </nav>
+  </header>
+
+  <main id="inicio">
+    <div class="portada">
+      <div class="mapa-card">
+        <svg id="mapa" viewBox="0 0 1000 640" role="img" aria-labelledby="mapaT mapaD">
+          <title id="mapaT">Mapa ilustrado del parque de Villa Clara</title>
+          <desc id="mapaD">Parque de 8 hectáreas junto a la Ruta E53, con el salón principal climatizado, la cocina, el sector para carpas y la zona de ceremonia. Las carpas aparecen según la cantidad de invitados.</desc>
+          <defs>
+            <pattern id="pasto" width="26" height="26" patternUnits="userSpaceOnUse"><path d="M4 20 l3 -6 M12 10 l2 -5 M20 22 l2 -5" stroke="#b6d394" stroke-width="2" stroke-linecap="round"/></pattern>
+            <linearGradient id="cielo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6fbef"/><stop offset="1" stop-color="#e5f0d6"/></linearGradient>
+          </defs>
+          <rect width="1000" height="640" fill="url(#cielo)"/>
+          <!-- sierras -->
+          <path d="M0 150 C90 70 170 60 250 110 C320 40 420 30 500 95 C580 35 700 20 790 90 C860 50 940 60 1000 100 L1000 0 L0 0Z" fill="#eef5e3"/>
+          <path d="M0 175 C110 95 190 95 270 140 C350 75 450 70 540 125 C630 70 740 60 830 120 C900 90 960 95 1000 120 L1000 230 L0 230Z" fill="#9fbf86"/>
+          <path d="M0 200 C120 140 220 145 300 175 C390 125 500 125 590 165 C690 120 790 120 880 160 C930 145 970 145 1000 155 L1000 250 L0 250Z" fill="#7fa868"/>
+          <g fill="none" stroke="#6e9a5a" stroke-width="1.5" opacity=".6">
+            <path d="M40 190 C130 140 210 140 290 172"/><path d="M330 160 C410 120 500 118 580 152"/><path d="M630 150 C710 112 790 112 870 148"/>
+          </g>
+          <text class="m-lbl m-sec" x="500" y="62" font-size="22" text-anchor="middle" fill="#5e8b4f" style="fill:#5e8b4f;letter-spacing:.25em">SIERRAS CHICAS</text>
+          <!-- predio -->
+          <path id="predio" d="M60 250 C200 225 420 232 560 228 C720 224 880 236 960 258 L948 520 C820 536 640 530 470 528 C300 526 160 530 52 516 Z" fill="#cfe2b4"/>
+          <path d="M60 250 C200 225 420 232 560 228 C720 224 880 236 960 258 L948 520 C820 536 640 530 470 528 C300 526 160 530 52 516 Z" fill="url(#pasto)" stroke="#5e8b4f" stroke-width="3" stroke-dasharray="10 8"/>
+          <text class="m-lbl" x="80" y="282" font-size="26">Parque · 8 ha</text>
+          <g id="arboles"></g>
+          <!-- ruta -->
+          <path d="M-10 600 C250 570 520 590 760 575 C860 569 940 560 1010 548" fill="none" stroke="#b9b3a0" stroke-width="40" stroke-linecap="round"/>
+          <path d="M-10 600 C250 570 520 590 760 575 C860 569 940 560 1010 548" fill="none" stroke="#fffef8" stroke-width="3" stroke-dasharray="18 14"/>
+          <text class="m-lbl" x="70" y="632" font-size="22" fill="#55645a" style="fill:#55645a">Ruta E53</text>
+          <!-- camino de ingreso -->
+          <path d="M300 580 C300 545 330 520 360 490 C390 460 395 420 400 372" fill="none" stroke="#e7cfa6" stroke-width="16" stroke-linecap="round"/>
+          <path d="M300 580 C300 545 330 520 360 490 C390 460 395 420 400 372" fill="none" stroke="#c98f5a" stroke-width="2" stroke-dasharray="4 8"/>
+          <g transform="translate(300 575)">
+            <rect x="-44" y="-15" width="88" height="30" rx="15" fill="#1f3d2a"/>
+            <text x="0" y="1" font-size="17" text-anchor="middle" dominant-baseline="central" fill="#fbe9b8" font-family="Sarala" font-weight="700">Km 9,5</text>
+          </g>
+          <text class="m-sub m-sec" x="356" y="545" font-size="18">Ingreso</text>
+          <!-- zona ceremonia -->
+          <g transform="translate(170 420)">
+            <ellipse cx="0" cy="22" rx="70" ry="22" fill="#e1eed4" stroke="#a7c983" stroke-width="2"/>
+            <path d="M-26 22 V-12 A26 26 0 0 1 26 -12 V22" fill="none" stroke="#c98f5a" stroke-width="6" stroke-linecap="round"/>
+            <g fill="#fffef8" stroke="#a7c983"><rect x="-50" y="30" width="16" height="6" rx="3"/><rect x="-28" y="30" width="16" height="6" rx="3"/><rect x="12" y="30" width="16" height="6" rx="3"/><rect x="34" y="30" width="16" height="6" rx="3"/></g>
+            <text class="m-lbl m-sec" x="0" y="76" font-size="19" text-anchor="middle">Ceremonia</text>
+            <text class="m-sub m-sec" x="0" y="96" font-size="14" text-anchor="middle">ubicación de ejemplo</text>
+          </g>
+          <!-- salón principal -->
+          <g id="salonG">
+            <rect x="282" y="262" width="236" height="110" rx="10" fill="#fffef8" stroke="#1f3d2a" stroke-width="4"/>
+            <path d="M272 268 L400 228 L528 268" fill="#f1bf4b" stroke="#1f3d2a" stroke-width="4" stroke-linejoin="round"/>
+            <rect x="300" y="330" width="200" height="22" rx="11" fill="#e6efdc"/>
+            <rect id="salonFill" x="300" y="330" width="100" height="22" rx="11" fill="#5e8b4f"/>
+            <text class="m-lbl" x="400" y="296" font-size="22" text-anchor="middle">Salón principal</text>
+            <text id="salonTxt" class="m-sub" x="400" y="318" font-size="15" text-anchor="middle">climatizado · 100 a 600</text>
+          </g>
+          <!-- cocina -->
+          <g>
+            <rect x="524" y="292" width="66" height="70" rx="8" fill="#e6efdc" stroke="#1f3d2a" stroke-width="3"/>
+            <path d="M541 316 h32 M541 330 h32 M541 344 h22" stroke="#5e8b4f" stroke-width="4" stroke-linecap="round"/>
+            <text class="m-sub m-sec" x="557" y="384" font-size="15" text-anchor="middle">Cocina</text>
+          </g>
+          <!-- zona carpas -->
+          <rect x="626" y="276" width="300" height="220" rx="40" fill="none" stroke="#2f5b37" stroke-width="2.5" stroke-dasharray="6 8"/>
+          <text class="m-lbl" x="776" y="268" font-size="20" text-anchor="middle">Parque para carpas</text>
+          <g id="carpas"></g>
+          <text id="carpasVacio" class="m-sub m-sec" x="776" y="394" font-size="16" text-anchor="middle">Con hasta 600 invitados</text>
+          <text id="carpasVacio2" class="m-sub m-sec" x="776" y="414" font-size="16" text-anchor="middle">el parque queda libre</text>
+          <!-- pines -->
+          <a class="pin" href="#salon" aria-label="1: Salón principal"><circle cx="282" cy="250" r="22"/><text x="282" y="251">1</text></a>
+          <a class="pin" href="#parque" aria-label="2: Parque y carpas"><circle cx="930" cy="282" r="22"/><text x="930" y="283">2</text></a>
+          <a class="pin" href="#cocina" aria-label="3: Cocina"><circle cx="598" cy="292" r="22"/><text x="598" y="293">3</text></a>
+          <a class="pin" href="#llegar" aria-label="6: Cómo llegar"><circle cx="356" cy="586" r="22"/><text x="356" y="587">6</text></a>
+        </svg>
+        <div class="mapa-pie">
+          <span>Mapa ilustrativo: la ubicación de cada sector y el armado de carpas son de ejemplo y se confirman con Villa Clara.</span>
+        </div>
+    <ol class="recorrido" aria-label="Recorrido por el mapa">
+        <li><a href="#salon"><span class="num">1</span>Salón principal</a></li>
+        <li><a href="#parque"><span class="num">2</span>Parque y carpas</a></li>
+        <li><a href="#cocina"><span class="num">3</span>Cocina</a></li>
+        <li><a href="#presupuesto"><span class="num g">4</span>Fecha y presupuesto</a></li>
+        <li><a href="#fotos"><span class="num g">5</span>Fotos</a></li>
+        <li><a href="#llegar"><span class="num">6</span>Cómo llegar</a></li>
+      </ol>
+      </div>
+
+      <aside class="panel" aria-labelledby="titulo">
+        <p class="eyebrow">Km 9,5 · Ruta E53 · Río Ceballos</p>
+        <h1 id="titulo">Hasta 600 en el salón climatizado. Hasta 1.500 sumando carpas en el parque.</h1>
+        <p class="lead">Ocho hectáreas de parque en las sierras, cocina propia de catering y barra libre sin límite horario.</p>
+        <div class="contador">
+          <label for="invHero">¿Cuántos invitados? <output id="invHeroOut" class="big" for="invHero">350</output></label>
+          <input id="invHero" type="range" min="100" max="1500" step="10" value="350" aria-describedby="estadoHero">
+          <div class="escala"><span>100</span><span>600 · tope del salón</span><span>1.500</span></div>
+          <p id="estadoHero" class="estado" aria-live="polite"></p>
+        </div>
+        <ul class="chips" aria-label="Incluido según la ficha del salón">
+          <li>Barra libre sin límite horario</li>
+          <li>Torta de bodas incluida</li>
+          <li class="v">Menú vegetariano y celíaco</li>
+        </ul>
+        <a class="btn" id="irCotizar" href="#presupuesto">Ver fecha y presupuesto para 350</a>
+        <div class="rating"><span class="stars" aria-hidden="true">★★★★☆</span><span><b>4,3</b> en Google · 701 reseñas</span></div>
+      </aside>
+    </div>
+
+
+
+    <!-- 1 salón -->
+    <section class="parada" id="salon" aria-labelledby="h-salon">
+      <div class="colgado"><span class="num">1</span><span class="hilo"></span><a href="#inicio">volver al mapa</a></div>
+      <h2 id="h-salon">El salón principal: climatizado, de 100 a 600 invitados</h2>
+      <p class="intro">El centro del predio. Para la mayoría de las fiestas alcanza con el salón; cuando la lista pasa de 600, el parque suma carpas alrededor.</p>
+      <div class="dos">
+        <figure class="foto alto"><img src="https://cdn.salonesdefiestas.ar/venues/019cb624-ab5a-751e-86a1-0e517e8cd0a8/gallery/019cba4b-1f9a-78bb-9844-828bfd13c5ba.webp" alt="Villa Clara, vista del espacio" loading="lazy"><span class="alt">Villa Clara, vista del espacio</span><figcaption>Villa Clara</figcaption></figure>
+        <div class="ficha">
+          <ul class="datos">
+            <li><b>100–600</b><span>invitados en el salón principal climatizado</span></li>
+            <li><b>1.500</b><span>invitados como máximo, con carpas en el parque</span></li>
+            <li><b>8 ha</b><span>de parque alrededor del salón</span></li>
+            <li><b>Propia</b><span>cocina profesional de catering</span></li>
+          </ul>
+          <h3 style="margin-top:18px">Servicios del salón</h3>
+          <ul class="lista">
+            <li>Catering propio</li>
+            <li>Ceremonia en el lugar</li>
+            <li>Ambientación</li>
+            <li>Música y sonido</li>
+            <li>Coordinación general</li>
+            <li>Acceso para silla de ruedas</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2 parque -->
+    <section class="parada" id="parque" aria-labelledby="h-parque">
+      <div class="colgado"><span class="num">2</span><span class="hilo"></span><a href="#inicio">volver al mapa</a></div>
+      <h2 id="h-parque">El parque: donde entran las carpas cuando la lista crece</h2>
+      <p class="intro">Arriba de 600 invitados el salón no alcanza solo: Villa Clara suma carpas adicionales en el parque. Mové el contador del mapa y vas a ver cómo se arman. El tamaño y la cantidad de carpas de este prototipo son un ejemplo: la capacidad real de cada carpa se confirma con Villa Clara.</p>
+      <ul class="tipos" aria-label="Tipos de evento">
+        <li>Casamientos</li><li>15 años</li><li>Egresos</li><li>Cumpleaños</li><li>Aniversarios</li><li>Corporativos</li><li>Religiosos</li>
+      </ul>
+      <div class="dos">
+        <div class="ficha">
+          <h3>Qué pasa según la cantidad</h3>
+          <ul class="lista">
+            <li><span><b>De 100 a 600:</b> todo en el salón principal climatizado.</span></li>
+            <li><span><b>De 600 a 1.500:</b> salón principal más carpas en el parque; el presupuesto suma el armado de carpas.</span></li>
+            <li><span><b>Ceremonia:</b> se puede hacer en el lugar, antes de la fiesta.</span></li>
+          </ul>
+          <p class="nota">Las cifras de carpas de este prototipo (invitados por carpa y costo) son de ejemplo.</p>
+        </div>
+        <figure class="foto alto"><img src="https://cdn.salonesdefiestas.ar/f7a1febb0db7687bf07a5fece50927116878cce4386c60390cad360394623123/w480_q80_s1.webp" alt="Villa Clara, el parque" loading="lazy"><span class="alt">Villa Clara, el parque</span><figcaption>Villa Clara</figcaption></figure>
+      </div>
+    </section>
+
+    <!-- 3 cocina -->
+    <section class="parada" id="cocina" aria-labelledby="h-cocina">
+      <div class="colgado"><span class="num">3</span><span class="hilo"></span><a href="#inicio">volver al mapa</a></div>
+      <h2 id="h-cocina">Cocina propia: tradicional, regional y de autor</h2>
+      <p class="intro">El catering sale de la cocina profesional del predio. Hay menú vegetariano y celíaco, y la torta de bodas viene incluida.</p>
+      <div class="menus" id="menuCards"></div>
+      <p class="nota">Nombres de menús (nombres de ejemplo) armados a partir de los tres estilos de cocina de Villa Clara. Precios por persona de ejemplo.</p>
+    </section>
+
+    <!-- 4 fecha y presupuesto -->
+    <section class="parada" id="presupuesto" aria-labelledby="h-pres">
+      <div class="colgado"><span class="num g">4</span><span class="hilo"></span><a href="#inicio">volver al mapa</a></div>
+      <h2 id="h-pres">Elegí un sábado y armá el presupuesto</h2>
+      <p class="intro">Disponibilidad y precios de ejemplo. Al final te dejamos el pedido escrito para mandarlo por Instagram.</p>
+      <div class="cotiza">
+        <div class="cal" id="calendario">
+          <div class="cal-head">
+            <button type="button" id="calPrev" aria-label="Mes anterior">‹</button>
+            <h3 id="calMes" aria-live="polite"></h3>
+            <button type="button" id="calNext" aria-label="Mes siguiente">›</button>
+          </div>
+          <div class="grid7" id="calGrid"></div>
+          <div class="leyenda"><span><i style="background:#e3f1de;border:1px solid #2f7a45"></i>Sábado libre</span><span><i style="background:#f4e1dd"></i>Ocupado</span><span><i style="background:#2f5b37"></i>Elegido</span></div>
+          <p class="proximos" id="proximos"></p>
+        </div>
+
+        <form class="form" id="form" onsubmit="return false">
+          <div class="fecha-elegida" id="fechaTxt">Todavía no elegiste fecha: tocá un sábado libre en el calendario.</div>
+          <fieldset>
+            <legend>Tipo de evento</legend>
+            <div class="opts" id="tipos"></div>
+          </fieldset>
+          <div>
+            <label for="inv" style="font-weight:700;font-size:15px;display:flex;justify-content:space-between;gap:8px">Invitados <output id="invOut" for="inv">350</output></label>
+            <input id="inv" type="range" min="100" max="1500" step="10" value="350">
+            <div class="escala"><span>100</span><span>600</span><span>1.500</span></div>
+          </div>
+          <div class="carpas-aviso" id="carpasAviso" hidden></div>
+          <fieldset>
+            <legend>Menú <span style="font-weight:400;color:var(--gris)">(nombres de ejemplo)</span></legend>
+            <div class="opts" id="menus"></div>
+          </fieldset>
+          <fieldset>
+            <legend>Extras <span style="font-weight:400;color:var(--gris)">(de ejemplo)</span></legend>
+            <div class="checks" id="extras"></div>
+          </fieldset>
+        </form>
+
+        <div class="total" id="total" style="grid-column:1/-1">
+          <div><div class="pp" id="ppTxt"></div>
+          <div class="tt" id="totalTxt" aria-live="polite"></div>
+          <small>Rango de ejemplo para el prototipo. El precio real lo pasa Villa Clara.</small>
+          <ul id="desglose"></ul>
+          <div class="incl" id="incluye"></div></div><div>
+          <label for="pedido" style="font-weight:700;font-size:15px">Tu pedido, listo para mandar</label>
+          <textarea id="pedido" class="pedido" readonly></textarea>
+          <a class="btn" id="enviar" href="https://ig.me/m/villaclaraeventos" target="_blank" rel="noopener">Mandar el pedido por Instagram</a>
+          <small>Copiamos el pedido al portapapeles y se abre el chat de @villaclaraeventos: pegalo en el mensaje.</small></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5 fotos -->
+    <section class="parada" id="fotos" aria-labelledby="h-fotos">
+      <div class="colgado"><span class="num g">5</span><span class="hilo"></span><a href="#inicio">volver al mapa</a></div>
+      <h2 id="h-fotos">Fotos</h2>
+      <div class="galeria">
+        <figure class="foto g1"><img src="https://cdn.salonesdefiestas.ar/venues/019cb624-ab5a-751e-86a1-0e517e8cd0a8/gallery/019cba4b-1f9a-78bb-9844-828bfd13c5ba.webp" alt="Villa Clara, imagen 1" loading="lazy"><span class="alt">Villa Clara, imagen 1</span><figcaption>Villa Clara</figcaption></figure>
+        <figure class="foto"><img src="https://cdn.salonesdefiestas.ar/f7a1febb0db7687bf07a5fece50927116878cce4386c60390cad360394623123/w480_q80_s1.webp" alt="Villa Clara, imagen 2" loading="lazy"><span class="alt">Villa Clara, imagen 2</span><figcaption>Villa Clara</figcaption></figure>
+        <figure class="foto"><img src="https://cdn.salonesdefiestas.ar/946e3716d046ca5208a09adf4099875728c4120d88b0307db28714e3f3ba6feb/w480_q80_s1.webp" alt="Villa Clara, imagen 3" loading="lazy"><span class="alt">Villa Clara, imagen 3</span><figcaption>Villa Clara</figcaption></figure>
+        <figure class="foto"><img src="https://cdn.salonesdefiestas.ar/8eea5157886205e637a4d5b8e2be50eee64689e793600ce3ae5cdc91fc27b2cc/w480_q80_s1.webp" alt="Villa Clara, imagen 4" loading="lazy"><span class="alt">Villa Clara, imagen 4</span><figcaption>Villa Clara</figcaption></figure>
+        <figure class="foto"><img src="https://cdn.salonesdefiestas.ar/a8a81c0208cd88dc1a0a64adb6110de6e5b8ede18a2d2c381bcf69cf324f7896/w480_q80_s1.webp" alt="Villa Clara, imagen 5" loading="lazy"><span class="alt">Villa Clara, imagen 5</span><figcaption>Villa Clara</figcaption></figure>
+      </div>
+    </section>
+
+    <!-- 6 llegar -->
+    <section class="parada llegar" id="llegar" aria-labelledby="h-llegar">
+      <div class="colgado"><span class="num">6</span><span class="hilo"></span><a href="#inicio">volver al mapa</a></div>
+      <h2 id="h-llegar">Cómo llegar: Km 9,5 de la Ruta E53</h2>
+      <div class="dos">
+        <svg viewBox="0 0 600 340" role="img" aria-label="Esquema de la Ruta E53 con Villa Clara en el kilómetro 9,5, Río Ceballos">
+          <path d="M0 70 C120 20 220 40 300 80 C380 30 480 20 600 60 L600 0 L0 0Z" fill="#cfe2b4"/>
+          <path d="M40 320 C140 260 200 250 280 200 C360 150 420 120 560 40" fill="none" stroke="#b9b3a0" stroke-width="26" stroke-linecap="round"/>
+          <path d="M40 320 C140 260 200 250 280 200 C360 150 420 120 560 40" fill="none" stroke="#fffef8" stroke-width="2.5" stroke-dasharray="12 10"/>
+          <text x="190" y="300" font-family="Federo" font-size="20" fill="#55645a">Ruta E53</text>
+          <text x="24" y="236" font-family="Sarala" font-size="15" fill="#55645a">↙ hacia Córdoba capital</text>
+          <g transform="translate(330 172)">
+            <circle r="34" fill="#f1bf4b" opacity=".35"/>
+            <circle r="14" fill="#2f5b37" stroke="#fffef8" stroke-width="4"/>
+          </g>
+          <rect x="350" y="190" width="200" height="62" rx="14" fill="#fffef8" stroke="#d5e2c8"/>
+          <text x="366" y="216" font-family="Federo" font-size="21" fill="#1f3d2a">Villa Clara</text>
+          <text x="366" y="238" font-family="Sarala" font-size="15" fill="#55645a">Km 9,5 · Río Ceballos</text>
+          <text x="580" y="330" font-family="Sarala" font-size="12" fill="#55645a" text-anchor="end">Esquema, no a escala</text>
+        </svg>
+        <div class="ficha">
+          <h3>Dirección</h3>
+          <p style="margin:0 0 12px">Km 9,5, Ruta E53<br>Río Ceballos, Córdoba</p>
+          <p style="margin:0 0 16px;color:var(--gris);font-size:15px">Predio con acceso para silla de ruedas.</p>
+          <a class="btn" href="https://www.google.com/maps/search/?api=1&amp;query=Villa+Clara+Km+9%2C5+Ruta+E53+R%C3%ADo+Ceballos+C%C3%B3rdoba" target="_blank" rel="noopener">Abrir en Google Maps</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div><div class="fed">Villa Clara</div>Villa Clara Eventos S.A.<br>Km 9,5 Ruta E53, Río Ceballos, Córdoba</div>
+    <div>Instagram: <a href="https://www.instagram.com/villaclaraeventos/" target="_blank" rel="noopener">@villaclaraeventos</a><br>4,3 en Google · 701 reseñas</div>
+    <div style="max-width:340px;font-size:13.5px;color:#b9cdb0">Prototipo de demostración preparado para Villa Clara. Precios, menús, disponibilidad y armado de carpas son de ejemplo.</div>
+  </div>
+</footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  "use strict";
+  var $ = function(id){return document.getElementById(id)};
+  var ARS = new Intl.NumberFormat('es-AR',{style:'currency',currency:'ARS',maximumFractionDigits:0});
+  var NUM = new Intl.NumberFormat('es-AR');
+  var SVGNS = 'http://www.w3.org/2000/svg';
+
+  /* ---------- fotos con respaldo ---------- */
+  document.querySelectorAll('.foto img').forEach(function(img){
+    var fail = function(){img.parentNode.classList.add('fail')};
+    img.addEventListener('error', fail);
+    img.addEventListener('load', function(){ if(!img.naturalWidth) fail(); });
+    if(img.complete && !img.naturalWidth) fail();
+  });
+
+  /* ---------- datos ---------- */
+  var SALON_MAX = 600, POR_CARPA = 150; // POR_CARPA: ejemplo
+  var COSTO_CARPA = 2400000; // ejemplo
+  var TIPOS = [
+    ['casamiento','Casamiento',1],['quince','15 años',1],['egresos','Egresos',.9],['cumple','Cumpleaños',.93],
+    ['aniversario','Aniversario',.95],['corporativo','Corporativo',.96],['religioso','Religioso',.93]
+  ];
+  var MENUS = [
+    ['trad','Menú Tradicional','Entrada, plato principal y postre de cocina tradicional',42000],
+    ['reg','Menú Regional','Sabores cordobeses y del interior, en pasos',47000],
+    ['autor','Menú de Autor','Pasos de cocina de autor',58000]
+  ];
+  var EXTRAS = [
+    ['cere','Ceremonia en el lugar, con armado','fijo',650000],
+    ['amb','Ambientación ampliada','pp',4500],
+    ['son','Música y sonido ampliados','fijo',900000],
+    ['esp','Necesitamos platos vegetarianos o celíacos','cero',0]
+  ];
+
+  /* ---------- mapa: árboles y carpas ---------- */
+  var arb = $('arboles');
+  function rnd(seed){return function(){seed=(seed*1664525+1013904223)>>>0;return seed/4294967296}}
+  var r = rnd(53);
+  var libres = function(x,y){
+    if(x>262&&x<610&&y>215&&y<400) return false; // salón + cocina
+    if(x>610&&x<940&&y>250&&y<510) return false; // carpas
+    if(x>85&&x<255&&y>380&&y<525) return false; // ceremonia
+    if(x>280&&x<420&&y>370&&y<540) return false; // camino
+    if(x<300&&y<300) return false; // título
+    return true;
+  };
+  var n=0, tries=0;
+  while(n<46 && tries<800){
+    tries++;
+    var x=70+r()*870, y=260+r()*250;
+    if(!libres(x,y)) continue;
+    var s=9+r()*9;
+    var g=document.createElementNS(SVGNS,'g');
+    g.innerHTML='<circle cx="'+(x+3)+'" cy="'+(y+4)+'" r="'+s+'" fill="#8fb373" opacity=".5"/><circle cx="'+x+'" cy="'+y+'" r="'+s+'" fill="'+(r()>.5?'#5e8b4f':'#6f9c5b')+'"/>';
+    arb.appendChild(g); n++;
+  }
+  var slots=[[690,350],[776,350],[862,350],[690,450],[776,450],[862,450]];
+  var carpasG=$('carpas');
+  slots.forEach(function(p,i){
+    var g=document.createElementNS(SVGNS,'g');
+    g.setAttribute('class','tent');
+    g.innerHTML='<ellipse cx="'+p[0]+'" cy="'+(p[1]+8)+'" rx="40" ry="8" fill="#2f5b37" opacity=".18"/>'+
+      '<path d="M'+(p[0]-38)+' '+p[1]+' L'+(p[0]-38)+' '+(p[1]-26)+' L'+p[0]+' '+(p[1]-52)+' L'+(p[0]+38)+' '+(p[1]-26)+' L'+(p[0]+38)+' '+p[1]+' Z" fill="#fffef8" stroke="#1f3d2a" stroke-width="3" stroke-linejoin="round"/>'+
+      '<path d="M'+p[0]+' '+(p[1]-52)+' V'+p[1]+'" stroke="#d5e2c8" stroke-width="2"/>'+
+      '<circle cx="'+p[0]+'" cy="'+(p[1]-56)+'" r="4" fill="#f1bf4b"/>';
+    carpasG.appendChild(g);
+  });
+
+  /* ---------- estado ---------- */
+  var st = {inv:350, tipo:'casamiento', menu:'reg', extras:{}, fecha:null};
+
+  function carpasDe(n){return n>SALON_MAX ? Math.ceil((n-SALON_MAX)/POR_CARPA) : 0}
+
+  function pintarMapa(){
+    var n=st.inv, c=carpasDe(n);
+    $('salonFill').setAttribute('width', Math.max(22, 200*Math.min(n,SALON_MAX)/SALON_MAX));
+    $('salonTxt').textContent = n>=SALON_MAX ? 'climatizado · completo (600)' : 'climatizado · '+NUM.format(n)+' de 600';
+    carpasG.querySelectorAll('.tent').forEach(function(t,i){t.classList.toggle('on', i<c)});
+    $('carpasVacio').style.display = c?'none':''; $('carpasVacio2').style.display = c?'none':'';
+    var e;
+    if(!c) e='Entran todos en el <b>salón principal climatizado</b> ('+NUM.format(n)+' de 600 lugares).';
+    else e='<b>Salón lleno (600)</b> + '+NUM.format(n-SALON_MAX)+' invitados en el parque: <b>'+c+' carpa'+(c>1?'s':'')+'</b> en este armado de ejemplo, a confirmar con Villa Clara.';
+    $('estadoHero').innerHTML=e;
+    $('invHeroOut').textContent=NUM.format(n);
+    $('irCotizar').textContent='Ver fecha y presupuesto para '+NUM.format(n);
+  }
+
+  /* ---------- menús (sección cocina) ---------- */
+  $('menuCards').innerHTML = MENUS.map(function(m){
+    return '<article class="menu"><h3>'+m[1]+'</h3><p>'+m[2]+'.</p><p class="pp">desde '+ARS.format(m[3])+' por persona</p></article>';
+  }).join('');
+
+  /* ---------- formulario ---------- */
+  $('tipos').innerHTML = TIPOS.map(function(t){
+    return '<label class="opt"><input type="radio" name="tipo" value="'+t[0]+'"'+(t[0]===st.tipo?' checked':'')+'><span>'+t[1]+'</span></label>';
+  }).join('');
+  $('menus').innerHTML = MENUS.map(function(m){
+    return '<label class="opt card"><input type="radio" name="menu" value="'+m[0]+'"'+(m[0]===st.menu?' checked':'')+'><span>'+m[1].replace('Menú ','')+'<small>desde '+ARS.format(m[3])+' p/p</small></span></label>';
+  }).join('');
+  $('extras').innerHTML = EXTRAS.map(function(x){
+    var p = x[2]==='fijo' ? ' · '+ARS.format(x[3]) : x[2]==='pp' ? ' · '+ARS.format(x[3])+' p/p' : ' · sin costo extra';
+    return '<label><input type="checkbox" value="'+x[0]+'"><span>'+x[1]+'<span style="color:var(--gris)">'+p+'</span></span></label>';
+  }).join('');
+
+  document.querySelectorAll('input[name=tipo]').forEach(function(i){i.addEventListener('change',function(){st.tipo=i.value;calc()})});
+  document.querySelectorAll('input[name=menu]').forEach(function(i){i.addEventListener('change',function(){st.menu=i.value;calc()})});
+  document.querySelectorAll('#extras input').forEach(function(i){i.addEventListener('change',function(){st.extras[i.value]=i.checked;calc()})});
+  function setInv(v){st.inv=+v; $('inv').value=st.inv; $('invHero').value=st.inv; pintarMapa(); calc();}
+  $('inv').addEventListener('input',function(){setInv(this.value)});
+  $('invHero').addEventListener('input',function(){setInv(this.value)});
+
+  function find(arr,k){for(var i=0;i<arr.length;i++) if(arr[i][0]===k) return arr[i]}
+
+  function fechaLarga(d){return d.toLocaleDateString('es-AR',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}
+
+  function calc(){
+    var n=st.inv, t=find(TIPOS,st.tipo), m=find(MENUS,st.menu), c=carpasDe(n);
+    var pp=m[3]*t[2], items=[], fijo=0, ppx=0, nombres=[];
+    items.push(NUM.format(n)+' × '+m[1]+' ('+ARS.format(pp)+' p/p)');
+    EXTRAS.forEach(function(x){
+      if(!st.extras[x[0]]) return;
+      nombres.push(x[1]);
+      if(x[2]==='fijo'){fijo+=x[3]; items.push(x[1]+': '+ARS.format(x[3]))}
+      else if(x[2]==='pp'){ppx+=x[3]; items.push(x[1]+': '+ARS.format(x[3])+' p/p')}
+    });
+    var carpasCosto=c*COSTO_CARPA;
+    if(c) items.push(c+' carpa'+(c>1?'s':'')+' en el parque (ejemplo): '+ARS.format(carpasCosto));
+    var base=n*(pp+ppx)+fijo+carpasCosto;
+    var lo=Math.round(base*0.92/10000)*10000, hi=Math.round(base*1.08/10000)*10000;
+    var ppl=Math.round(lo/n/100)*100, pph=Math.round(hi/n/100)*100;
+    $('invOut').textContent=NUM.format(n);
+    $('ppTxt').textContent='Por persona: '+ARS.format(ppl)+' a '+ARS.format(pph);
+    $('totalTxt').textContent=ARS.format(lo)+' – '+ARS.format(hi);
+    $('desglose').innerHTML=items.map(function(i){return '<li>'+i+'</li>'}).join('');
+    var inc=['Barra libre sin límite horario', st.tipo==='casamiento'?'Torta de bodas incluida':'Catering propio', 'Coordinación general'];
+    $('incluye').innerHTML=inc.map(function(i){return '<span>'+i+'</span>'}).join('');
+    var av=$('carpasAviso');
+    if(c){av.hidden=false; av.innerHTML='<b>Salón + carpas:</b> 600 en el salón principal y '+NUM.format(n-SALON_MAX)+' en el parque. En este ejemplo son '+c+' carpa'+(c>1?'s':'')+' y se suman al presupuesto; la capacidad real de cada carpa la confirma Villa Clara.';}
+    else av.hidden=true;
+    var lugar = c ? 'salón principal + carpas en el parque' : 'salón principal';
+    var txt='¡Hola, Villa Clara! Quiero consultar por un evento:\n'+
+      '• Tipo: '+t[1]+'\n'+
+      '• Fecha: '+(st.fecha?fechaLarga(st.fecha):'a definir (sábado)')+'\n'+
+      '• Invitados: '+NUM.format(n)+' ('+lugar+')\n'+
+      '• '+m[1]+'\n'+
+      (nombres.length?'• Extras: '+nombres.join(', ')+'\n':'')+
+      '• Presupuesto orientativo que vi: '+ARS.format(lo)+' a '+ARS.format(hi)+'\n'+
+      '¿Me pasan disponibilidad y precio real? ¡Gracias!';
+    $('pedido').value=txt;
+    $('enviar').setAttribute('data-pedido', txt);
+  }
+
+  /* ---------- envío por Instagram ---------- */
+  function toast(msg){var t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(function(){t.classList.remove('show')},4200)}
+  function copiar(txt){
+    try{ if(navigator.clipboard && window.isSecureContext){ return navigator.clipboard.writeText(txt).then(function(){return true},function(){return viejo(txt)}) } }catch(e){}
+    return Promise.resolve(viejo(txt));
+  }
+  function viejo(txt){
+    try{var ta=$('pedido'); ta.removeAttribute('readonly'); ta.select(); var ok=document.execCommand('copy'); ta.setAttribute('readonly',''); return ok}catch(e){return false}
+  }
+  $('enviar').addEventListener('click',function(){
+    var txt=$('pedido').value;
+    copiar(txt).then(function(ok){
+      toast(ok?'Copiamos tu pedido, pegalo en el mensaje.':'Copiá el texto del pedido y pegalo en el mensaje.');
+    });
+  });
+
+  /* ---------- calendario ---------- */
+  var hoy=new Date(); hoy.setHours(0,0,0,0);
+  var meses=[]; for(var i=0;i<6;i++) meses.push(new Date(hoy.getFullYear(),hoy.getMonth()+i,1));
+  var mi=0;
+  function hash(s){var h=2166136261;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
+  function iso(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+  function ocupado(d){return (hash('villaclara'+iso(d))%100)<46}
+  function pintarCal(){
+    var m=meses[mi], y=m.getFullYear(), mo=m.getMonth();
+    var mt=m.toLocaleDateString('es-AR',{month:'long',year:'numeric'}); $('calMes').textContent=mt.charAt(0).toUpperCase()+mt.slice(1);
+    $('calPrev').disabled=mi===0; $('calNext').disabled=mi===meses.length-1;
+    var h=['Lu','Ma','Mi','Ju','Vi','Sá','Do'].map(function(d){return '<div class="dn">'+d+'</div>'}).join('');
+    var off=(new Date(y,mo,1).getDay()+6)%7;
+    for(var i=0;i<off;i++) h+='<div></div>';
+    var dias=new Date(y,mo+1,0).getDate(), libresMes=0;
+    for(var d=1;d<=dias;d++){
+      var f=new Date(y,mo,d), sab=f.getDay()===6;
+      if(sab && f>=hoy){
+        if(ocupado(f)) h+='<div class="dia sab ocu" aria-label="'+fechaLarga(f)+', ocupado">'+d+'</div>';
+        else { libresMes++; var sel=st.fecha&&iso(st.fecha)===iso(f);
+          h+='<button type="button" class="dia sab'+(sel?' sel':'')+'" data-f="'+iso(f)+'" aria-pressed="'+sel+'" aria-label="'+fechaLarga(f)+', libre">'+d+'</button>'; }
+      } else h+='<div class="dia'+(sab?' sab':'')+(f<hoy?' pas':'')+'">'+d+'</div>';
+    }
+    $('calGrid').innerHTML=h;
+    $('proximos').textContent = libresMes ? libresMes+' sábado'+(libresMes>1?'s':'')+' libre'+(libresMes>1?'s':'')+' este mes (disponibilidad de ejemplo).' : 'Este mes no quedan sábados libres en el ejemplo: probá el siguiente.';
+    $('calGrid').querySelectorAll('button.dia').forEach(function(b){
+      b.addEventListener('click',function(){
+        var p=b.getAttribute('data-f').split('-'); st.fecha=new Date(+p[0],+p[1]-1,+p[2]);
+        $('fechaTxt').innerHTML='Fecha elegida: <b>'+fechaLarga(st.fecha)+'</b> · libre en el ejemplo';
+        pintarCal(); calc();
+      });
+    });
+  }
+  $('calPrev').addEventListener('click',function(){if(mi>0){mi--;pintarCal()}});
+  $('calNext').addEventListener('click',function(){if(mi<meses.length-1){mi++;pintarCal()}});
+
+  pintarMapa(); calc(); pintarCal();
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Villa Clara"></script>
+</body>
+</html>
