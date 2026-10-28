@@ -1,0 +1,1022 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Shamballa Cabañas · Ruta 68, km 2 · Cafayate</title>
+<meta name="description" content="Prototipo de web de reservas para Shamballa Cabañas en Cafayate: Ruta 68 km 2, camino a la Quebrada de las Conchas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Brygada+1918:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --arena:#F4EADB;
+  --arena-2:#EBDCC6;
+  --papel:#FBF6EE;
+  --roca:#B4532A;
+  --roca-osc:#7E3219;
+  --tierra:#D98A5B;
+  --vina:#55652B;
+  --vina-cl:#C9D3A3;
+  --cielo:#2D6A9F;
+  --cielo-cl:#D6E6F2;
+  --asfalto:#2B2724;
+  --asfalto-2:#3A3531;
+  --tinta:#2A1B14;
+  --tinta-2:#5C4638;
+  --linea:#E9B949;
+  --senal:#1F5C99;
+  --ok:#3F6B2A;
+  --ocupado:#B4532A;
+  --display:"Barlow Condensed", "Arial Narrow", sans-serif;
+  --texto:"Brygada 1918", Georgia, serif;
+  --r:14px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:120px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--arena);color:var(--tinta);font-family:var(--texto);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:var(--roca-osc)}
+:focus-visible{outline:3px solid var(--cielo);outline-offset:3px;border-radius:4px}
+h1,h2,h3,h4{font-family:var(--display);font-weight:700;line-height:1.02;margin:0;letter-spacing:.005em}
+.wrap{max-width:1160px;margin:0 auto;padding:0 24px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.eyebrow{font-family:var(--display);text-transform:uppercase;letter-spacing:.16em;font-weight:600;font-size:14px;color:var(--roca-osc)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--display);font-weight:700;font-size:18px;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;border:0;border-radius:999px;padding:13px 24px;cursor:pointer;transition:transform .15s ease, background .15s ease}
+.btn:hover{transform:translateY(-1px)}
+.btn-roca{background:var(--roca);color:#fff}
+.btn-roca:hover{background:var(--roca-osc)}
+.btn-wa{background:var(--vina);color:#fff}
+.btn-wa:hover{background:#43511f}
+.btn-ghost{background:transparent;color:var(--tinta);box-shadow:inset 0 0 0 2px var(--tinta)}
+
+/* Aviso de prototipo */
+.proto{background:var(--tinta);color:#F4EADB;font-family:var(--display);font-size:14px;letter-spacing:.08em;text-transform:uppercase;text-align:center;padding:7px 16px}
+.proto strong{color:var(--linea);font-weight:700}
+
+/* Cinta de ruta (navegación) */
+.ruta{position:sticky;top:0;z-index:50;background:var(--asfalto);color:#fff;box-shadow:0 2px 0 rgba(0,0,0,.15)}
+.ruta-in{max-width:1160px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:18px;height:68px}
+.marca{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff;flex-shrink:0}
+.marca-logo{width:38px;height:38px;border-radius:50%;background:var(--roca);display:grid;place-items:center;overflow:hidden;position:relative}
+.marca-logo img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#fff}
+.marca-logo span{font-family:var(--display);font-weight:800;font-size:20px}
+.marca b{font-family:var(--display);font-size:20px;letter-spacing:.04em;font-weight:700;line-height:1}
+.marca small{display:block;font-family:var(--display);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#cfc3b6;font-weight:500}
+.cinta{position:relative;flex:1;height:68px;min-width:0}
+.cinta::before{content:"";position:absolute;left:0;right:0;top:50%;height:0;border-top:3px dashed var(--linea);opacity:.9;transform:translateY(-1px)}
+.cinta ol{list-style:none;margin:0;padding:0;position:absolute;inset:0;display:flex;justify-content:space-between;align-items:center}
+.cinta li{position:relative;z-index:2}
+.hito{display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;color:#fff;font-family:var(--display);padding:4px 6px;border-radius:8px}
+.hito .pin{width:30px;height:22px;border-radius:5px 5px 3px 3px;background:#fff;color:var(--tinta);font-weight:800;font-size:13px;display:grid;place-items:center;border-top:6px solid var(--roca);line-height:1}
+.hito .nm{font-size:13px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;white-space:nowrap;background:var(--asfalto);padding:0 4px}
+.hito.on .pin{background:var(--linea)}
+.hito.on .nm{color:var(--linea)}
+.auto{position:absolute;top:50%;left:0;width:26px;height:14px;margin:-7px 0 0 -13px;z-index:1;transition:left .25s linear}
+.ruta-cta{flex-shrink:0}
+.ruta-cta .btn{padding:10px 18px;font-size:16px}
+
+/* Riel vertical */
+main{position:relative}
+.riel{position:absolute;top:0;bottom:0;left:calc(max(0px, (100% - 1160px) / 2) + 24px);width:40px;background:var(--asfalto-2);border-radius:0 0 20px 20px;z-index:1;pointer-events:none}
+.riel::after{content:"";position:absolute;left:50%;top:0;bottom:0;border-left:3px dashed var(--linea);opacity:.7;transform:translateX(-1.5px)}
+.riel-fill{position:absolute;left:0;right:0;top:0;height:0;background:linear-gradient(var(--roca),var(--roca-osc));opacity:.55;border-radius:0 0 20px 20px}
+.tramo{position:relative;padding:96px 0 96px}
+.tramo .wrap{padding-left:96px}
+.mojon{display:inline-flex;flex-direction:column;align-items:center;width:64px;background:#fff;border-radius:10px 10px 4px 4px;border-top:12px solid var(--roca);box-shadow:0 2px 0 rgba(0,0,0,.12);padding:4px 0 6px;font-family:var(--display);line-height:1;color:var(--tinta)}
+.mojon small{font-size:11px;letter-spacing:.14em;font-weight:600}
+.mojon b{font-size:28px;font-weight:800}
+.tramo-head{display:flex;gap:20px;align-items:flex-start;margin-bottom:36px;position:relative}
+.tramo-head .mojon{position:absolute;left:-84px;top:0;z-index:3}
+.tramo-head h2{font-size:clamp(38px,5.4vw,64px);text-transform:uppercase}
+.tramo-head p{margin:12px 0 0;max-width:640px;color:var(--tinta-2)}
+
+/* Portada */
+.portada{position:relative;padding:56px 0 40px;overflow:hidden}
+.portada .wrap{padding-left:96px;display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center}
+.portada h1{font-size:clamp(42px,5.6vw,78px);text-transform:uppercase;font-weight:800;line-height:.92;letter-spacing:-.005em}
+.portada h1 em{font-style:normal;color:var(--roca)}
+.portada .lead{font-size:19px;max-width:520px;margin:22px 0 0}
+.portada blockquote{margin:22px 0 0;padding-left:16px;border-left:4px solid var(--vina);font-style:italic;color:var(--tinta-2)}
+.portada blockquote cite{display:block;font-style:normal;font-family:var(--display);font-size:13px;letter-spacing:.12em;text-transform:uppercase;margin-top:4px}
+.portada .acciones{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.ventana{position:relative;aspect-ratio:4/5;border-radius:220px 220px var(--r) var(--r);overflow:hidden;background:var(--cielo-cl)}
+.ventana svg.fondo,.foto svg.fondo{position:absolute;inset:0;width:100%;height:100%}
+.ventana img,.foto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ventana .cartel{position:absolute;left:18px;bottom:18px;background:var(--senal);color:#fff;border:3px solid #fff;border-radius:8px;padding:8px 14px;font-family:var(--display);line-height:1.05;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+.ventana .cartel b{font-size:26px;display:block;font-weight:800}
+.ventana .cartel span{font-size:13px;letter-spacing:.12em;text-transform:uppercase}
+.odometro{margin-top:44px;display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:2px solid var(--tinta);border-bottom:2px solid var(--tinta);grid-column:1/-1}
+.odometro div{padding:14px 16px;border-right:1px solid rgba(42,27,20,.2)}
+.odometro div:last-child{border-right:0}
+.odometro b{font-family:var(--display);font-size:40px;font-weight:800;line-height:1;display:block}
+.odometro span{font-family:var(--display);text-transform:uppercase;letter-spacing:.1em;font-size:13px;color:var(--tinta-2)}
+
+/* Fotos */
+.fotos{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:150px;gap:10px}
+.foto{position:relative;border-radius:var(--r);overflow:hidden;background:var(--arena-2);margin:0}
+.foto figcaption{position:absolute;left:10px;bottom:10px;z-index:2;background:rgba(42,27,20,.82);color:#fff;font-family:var(--display);text-transform:uppercase;letter-spacing:.1em;font-size:12px;padding:3px 9px;border-radius:999px}
+.f1{grid-column:span 3;grid-row:span 2}.f2{grid-column:span 3}.f3{grid-column:span 2;grid-row:span 1}.f4{grid-column:span 1}
+.f5{grid-column:span 2}.f6{grid-column:span 2}.f7{grid-column:span 2}
+
+/* Señales de servicio */
+.senales{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;margin-top:40px}
+.senal{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:16px 10px;background:var(--papel);border-radius:var(--r)}
+.senal .ico{width:64px;height:64px;background:var(--senal);border-radius:9px;border:3px solid #fff;box-shadow:0 0 0 2px var(--senal);display:grid;place-items:center}
+.senal .ico svg{width:38px;height:38px;stroke:#fff;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.senal span{font-family:var(--display);font-weight:600;font-size:17px;letter-spacing:.03em;line-height:1.15}
+.senal small{display:block;font-family:var(--texto);font-weight:400;font-size:13px;color:var(--tinta-2);letter-spacing:0}
+
+/* Elegí por grupo */
+.grupo{margin-top:64px;background:var(--papel);border-radius:24px;padding:34px;display:grid;grid-template-columns:.9fr 1.1fr;gap:34px;align-items:center}
+.grupo h3{font-size:40px;text-transform:uppercase}
+.chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.chip{font-family:var(--display);font-weight:700;font-size:22px;border:2px solid var(--tinta);background:transparent;color:var(--tinta);border-radius:12px;padding:10px 0;width:88px;cursor:pointer;line-height:1}
+.chip small{display:block;font-size:12px;letter-spacing:.1em;font-weight:600;text-transform:uppercase;margin-top:2px}
+.chip[aria-pressed="true"]{background:var(--tinta);color:var(--arena)}
+.cabana{display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:center}
+.siluetas{display:flex;gap:4px;flex-wrap:wrap;max-width:150px}
+.siluetas svg{width:30px;height:44px;fill:var(--roca)}
+.cabana h4{font-size:32px;text-transform:uppercase}
+.cabana p{margin:6px 0 12px;color:var(--tinta-2)}
+.cabana .precio{font-family:var(--display);font-size:20px}
+.cabana .precio b{font-size:30px;color:var(--roca-osc)}
+
+/* Tarifas */
+.tabla-wrap{overflow-x:auto;background:var(--papel);border-radius:var(--r);-webkit-overflow-scrolling:touch}
+table.tarifas{width:100%;border-collapse:collapse;min-width:640px}
+.tarifas th,.tarifas td{padding:13px 14px;text-align:right;border-bottom:1px solid rgba(42,27,20,.12);font-variant-numeric:tabular-nums}
+.tarifas th:first-child,.tarifas td:first-child{text-align:left}
+.tarifas thead th{font-family:var(--display);text-transform:uppercase;letter-spacing:.08em;font-size:15px;background:var(--asfalto);color:#fff}
+.tarifas thead th:first-child{border-radius:var(--r) 0 0 0}.tarifas thead th:last-child{border-radius:0 var(--r) 0 0}
+.tarifas td:first-child b{font-family:var(--display);font-size:19px;letter-spacing:.02em;display:block;line-height:1.1}
+.tarifas td:first-child small{color:var(--tinta-2);font-size:14px}
+.tag{display:inline-block;font-family:var(--display);font-size:12px;letter-spacing:.1em;text-transform:uppercase;background:var(--linea);color:var(--tinta);border-radius:999px;padding:1px 8px;margin-left:6px;vertical-align:2px}
+.nota{font-size:14px;color:var(--tinta-2);margin-top:12px}
+.ejemplo{display:inline-block;font-family:var(--display);text-transform:uppercase;letter-spacing:.1em;font-size:13px;font-weight:700;color:var(--roca-osc);border:2px dashed var(--roca);border-radius:8px;padding:3px 10px;margin-bottom:14px}
+
+/* Calendario + simulador */
+.reservar{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;align-items:start}
+.panel{background:var(--papel);border-radius:22px;padding:26px}
+.panel h3{font-size:30px;text-transform:uppercase;margin-bottom:6px}
+.cal-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:14px 0 10px}
+.cal-top b{font-family:var(--display);font-size:22px;text-transform:uppercase;letter-spacing:.05em}
+.cal-nav{width:40px;height:40px;border-radius:50%;border:2px solid var(--tinta);background:transparent;font-size:18px;cursor:pointer;color:var(--tinta)}
+.cal-nav:disabled{opacity:.3;cursor:default}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal .dow{font-family:var(--display);font-size:13px;text-align:center;letter-spacing:.1em;color:var(--tinta-2);padding-bottom:2px}
+.dia{aspect-ratio:1;border-radius:9px;display:grid;place-items:center;font-family:var(--display);font-size:17px;font-weight:600;background:#fff;border:0;color:var(--tinta);cursor:pointer;position:relative}
+.dia.ocu{background:repeating-linear-gradient(135deg,#ecd3c4 0 5px,#f4e2d7 5px 10px);color:#9a5a40;cursor:not-allowed;text-decoration:line-through}
+.dia.pas{opacity:.35;cursor:default}
+.dia.sel{background:var(--roca);color:#fff}
+.dia.ran{background:#f0c8b0}
+.dia.vac{background:transparent;cursor:default}
+.leyenda{display:flex;gap:16px;flex-wrap:wrap;font-size:14px;margin-top:12px;color:var(--tinta-2)}
+.leyenda i{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-2px;margin-right:6px;background:#fff;border:1px solid rgba(0,0,0,.1)}
+.leyenda i.o{background:repeating-linear-gradient(135deg,#ecd3c4 0 3px,#f4e2d7 3px 6px)}
+.leyenda i.s{background:var(--roca)}
+.sync{display:flex;gap:10px;align-items:center;margin-top:16px;padding:12px 14px;border-radius:12px;background:var(--cielo-cl);font-size:15px}
+.sync svg{flex-shrink:0;width:26px;height:26px;stroke:var(--cielo);fill:none;stroke-width:2.2}
+.campos{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.campo{display:flex;flex-direction:column;gap:4px}
+.campo.full{grid-column:1/-1}
+.campo label{font-family:var(--display);text-transform:uppercase;letter-spacing:.1em;font-size:13px;font-weight:600}
+.campo input,.campo select{font:inherit;font-size:16px;padding:11px 12px;border-radius:10px;border:2px solid rgba(42,27,20,.25);background:#fff;color:var(--tinta);width:100%;min-width:0}
+.campo input:focus,.campo select:focus{border-color:var(--cielo);outline:none}
+.ticket{margin-top:18px;background:var(--asfalto);color:#fff;border-radius:16px;padding:18px 20px;position:relative}
+.ticket .fila{display:flex;justify-content:space-between;gap:12px;padding:5px 0;border-bottom:1px dashed rgba(255,255,255,.18);font-size:15px}
+.ticket .fila:last-of-type{border-bottom:0}
+.ticket .fila b{white-space:nowrap;font-family:var(--display);font-size:20px;letter-spacing:.03em;font-variant-numeric:tabular-nums}
+.ticket .total b{font-size:30px;color:var(--linea)}
+.ticket .desglose{font-size:13px;color:#cfc3b6;margin:6px 0 0}
+.aviso{margin-top:12px;font-size:15px;padding:10px 14px;border-radius:10px;background:#fbe4d6;color:var(--roca-osc);display:none}
+.aviso.show{display:block}
+.aviso.ok{background:#e3ecd2;color:#2f4f1d}
+.acc-sim{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+
+/* Reseñas */
+.libro{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.nota-ruta{background:var(--papel);border-radius:6px 22px 22px 22px;padding:30px;position:relative;margin:0}
+.nota-ruta::before{content:"“";position:absolute;top:-28px;left:18px;font-family:var(--texto);font-size:110px;color:var(--roca);line-height:1}
+.nota-ruta p{font-size:24px;font-style:italic;line-height:1.35;margin:10px 0 18px}
+.nota-ruta footer{font-family:var(--display);text-transform:uppercase;letter-spacing:.1em;font-size:14px;color:var(--tinta-2)}
+
+/* Hacia la Quebrada */
+.tramo.quebrada{background:linear-gradient(180deg,var(--arena) 0,#EFD2B9 30%,#E7B898 100%)}
+.recorrido{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.direccion{background:rgba(251,246,238,.82);border-radius:20px;padding:22px}
+.direccion h3{font-size:26px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.direccion h3 .rn{font-size:14px;background:#fff;border:2px solid var(--tinta);border-radius:6px 6px 14px 14px;padding:2px 8px;letter-spacing:.06em;white-space:nowrap}
+.direccion ul{list-style:none;padding:0;margin:14px 0 0}
+.direccion li{padding:12px 0;border-top:1px solid rgba(42,27,20,.14)}
+.direccion li b{font-family:var(--display);font-size:20px;display:block;line-height:1.1;letter-spacing:.02em}
+.direccion li span{font-size:15px;color:var(--tinta-2)}
+
+/* Planificador */
+.planif{margin-top:48px;display:grid;grid-template-columns:1fr 1.1fr;gap:0;border-radius:26px;overflow:hidden;background:var(--asfalto);color:#fff}
+.planif-form{padding:32px}
+.planif-form h3{font-size:40px;text-transform:uppercase;color:#fff}
+.planif-form p{color:#d9cdbf;margin:10px 0 0}
+.planif-form .campo label{color:#e6d9ca}
+.planif-form .campo input,.planif-form .campo select{background:#3a3531;color:#fff;border-color:#5a524b}
+.check{display:flex;gap:10px;align-items:flex-start;margin-top:14px;font-size:15px;color:#e6d9ca}
+.check input{width:20px;height:20px;margin-top:3px;accent-color:var(--linea)}
+.planif-res{position:relative;padding:32px;min-height:360px;display:flex;flex-direction:column;justify-content:flex-end}
+.planif-res svg.cielo{position:absolute;inset:0;width:100%;height:100%}
+.planif-res .dato{position:relative;z-index:1}
+.salida{font-family:var(--display);font-size:clamp(64px,9vw,112px);font-weight:800;line-height:.9;color:#fff;text-shadow:0 2px 20px rgba(80,20,0,.35)}
+.planif-res .dato .et{font-family:var(--display);text-transform:uppercase;letter-spacing:.14em;font-size:15px;color:#fff}
+.itin{list-style:none;padding:0;margin:16px 0 0;display:grid;gap:6px;font-size:15px}
+.itin li{display:flex;gap:12px;background:rgba(42,39,36,.62);border-radius:10px;padding:7px 12px}
+.itin li b{font-family:var(--display);font-size:18px;min-width:52px}
+.aprox{position:relative;z-index:1;font-size:13px;color:#fff;opacity:.92;margin-top:12px}
+
+/* Mapa */
+.llegar{display:grid;grid-template-columns:1.25fr .75fr;gap:28px;align-items:start}
+.mapa{background:var(--papel);border-radius:22px;padding:14px}
+.mapa svg{width:100%;height:auto;display:block}
+.dist{list-style:none;margin:0;padding:0}
+.dist li{display:flex;justify-content:space-between;align-items:baseline;padding:12px 0;border-bottom:1px solid rgba(42,27,20,.15)}
+.dist li b{font-family:var(--display);font-size:30px;font-weight:800}
+.dist li span{font-family:var(--display);text-transform:uppercase;letter-spacing:.08em}
+
+/* FAQ */
+.faq{display:grid;gap:10px;max-width:860px}
+.faq details{background:var(--papel);border-radius:14px;padding:0 20px}
+.faq summary{cursor:pointer;list-style:none;padding:18px 0;font-family:var(--display);font-size:22px;font-weight:600;letter-spacing:.02em;display:flex;justify-content:space-between;gap:12px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-size:28px;line-height:1;color:var(--roca)}
+.faq details[open] summary::after{content:"–"}
+.faq details p{margin:0 0 18px;color:var(--tinta-2)}
+.faq .conf{font-family:var(--display);font-size:13px;letter-spacing:.08em;text-transform:uppercase;background:var(--arena-2);border-radius:999px;padding:1px 8px;color:var(--tinta)}
+
+/* Contacto */
+.fin{background:var(--asfalto);color:#fff;position:relative;z-index:1;padding:80px 0 120px}
+.fin .wrap{padding-left:96px;display:grid;grid-template-columns:1.1fr .9fr;gap:40px}
+.fin h2{font-size:clamp(40px,6vw,80px);text-transform:uppercase;color:#fff}
+.fin h2 em{font-style:normal;color:var(--linea)}
+.fin p{color:#d9cdbf}
+.contactos{list-style:none;padding:0;margin:0;display:grid;gap:12px;align-content:start}
+.contactos a{display:flex;gap:14px;align-items:center;background:var(--asfalto-2);border-radius:14px;padding:16px 18px;color:#fff;text-decoration:none}
+.contactos a:hover{background:#47403a}
+.contactos small{display:block;font-family:var(--display);text-transform:uppercase;letter-spacing:.12em;font-size:12px;color:#cfc3b6}
+.contactos b{font-family:var(--display);font-size:21px;letter-spacing:.02em;font-weight:600;word-break:break-word}
+.pie{margin-top:48px;padding-top:20px;border-top:1px solid #4a433d;font-size:14px;color:#b8ab9c;grid-column:1/-1}
+
+/* Barra móvil */
+.barra-movil{display:none}
+
+/* Toast */
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:var(--tinta);color:#fff;padding:14px 20px;border-radius:14px;max-width:min(92vw,520px);font-size:15px;opacity:0;pointer-events:none;transition:.25s;z-index:80;box-shadow:0 10px 30px rgba(0,0,0,.3)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease, transform .6s ease}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}}
+
+@media (max-width:980px){
+  .portada .wrap{grid-template-columns:1fr}
+  .ventana{max-width:420px;aspect-ratio:4/4.4}
+  .grupo,.reservar,.planif,.llegar,.fin .wrap,.portada .wrap{grid-template-columns:minmax(0,1fr)}
+  .recorrido{grid-template-columns:minmax(0,1fr)}
+  .libro{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:760px){
+  body{font-size:16px}
+  .wrap{padding:0 16px}
+  .ruta-in{padding:0 12px;gap:10px;height:60px}
+  .marca div{display:none}
+  .ruta-cta{display:none}
+  .cinta{height:60px}
+  .ruta{overflow-x:clip}
+  .ruta-in{gap:8px}
+  .marca-logo{width:32px;height:32px}
+  .cinta ol{left:2px;right:2px}
+  .hito{padding:4px 0}
+  .hito .nm{font-size:10.5px;letter-spacing:.01em;padding:0 2px}
+  .hito .pin{width:26px;height:20px;font-size:12px}
+  .riel{left:6px;width:22px}
+  .riel::after{border-left-width:2px}
+  .tramo{padding:64px 0}
+  .tramo .wrap,.portada .wrap,.fin .wrap{padding-left:42px;padding-right:16px}
+  .tramo-head{flex-direction:column;gap:12px;margin-bottom:26px}
+  .tramo-head .mojon{position:static;width:54px}
+  .riel{left:6px}
+  .mojon b{font-size:22px}
+  .portada{padding:32px 0 24px}
+  .odometro{grid-template-columns:1fr 1fr}
+  .odometro div:nth-child(2){border-right:0}
+  .odometro div:nth-child(-n+2){border-bottom:1px solid rgba(42,27,20,.2)}
+  .odometro b{font-size:32px}
+  .fotos{grid-template-columns:1fr 1fr;grid-auto-rows:130px}
+  .f1{grid-column:span 2;grid-row:span 2}.f2,.f3,.f4,.f5,.f6,.f7{grid-column:span 1;grid-row:span 1}
+  .f7{grid-column:span 1}
+  .senales{grid-template-columns:1fr 1fr;gap:10px}
+  .grupo{padding:22px;margin-top:44px}
+  .grupo h3{font-size:32px}
+  .chip{width:calc(25% - 8px);font-size:20px}
+  .cabana{grid-template-columns:1fr}
+  .siluetas{max-width:none}
+  .panel{padding:18px}
+  .campos{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .nota-ruta p{font-size:20px}
+  .planif-form,.planif-res{padding:22px}
+  .planif-form h3{font-size:32px}
+  .fin{padding:64px 0 120px}
+  .barra-movil{display:grid;grid-template-columns:1fr 1fr;gap:8px;position:fixed;left:0;right:0;bottom:0;z-index:60;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:rgba(43,39,36,.96);backdrop-filter:blur(6px)}
+  .barra-movil .btn{padding:12px 10px;font-size:16px}
+  .toast{bottom:84px}
+}
+</style>
+</head>
+<body>
+
+<div class="proto" role="note">Prototipo de demostración preparado para <strong>Shamballa Cabañas</strong> · datos de ejemplo donde se indica</div>
+
+<header class="ruta" aria-label="Recorrido por la Ruta 68">
+  <div class="ruta-in">
+    <a class="marca" href="#plaza" aria-label="Shamballa Cabañas, inicio">
+      <span class="marca-logo"><span aria-hidden="true">S</span><img src="https://shamballacafayate.com.ar/img/logo.png" alt="" onerror="this.remove()"></span>
+      <div><b>Shamballa</b><small>Cabañas · Cafayate</small></div>
+    </a>
+    <nav class="cinta" aria-label="Secciones como hitos de la ruta">
+      <svg class="auto" id="auto" viewBox="0 0 26 14" aria-hidden="true"><rect x="1" y="2" width="24" height="9" rx="4" fill="#E9B949"/><rect x="7" y="0" width="11" height="6" rx="2" fill="#E9B949"/><circle cx="7" cy="12" r="2" fill="#111"/><circle cx="19" cy="12" r="2" fill="#111"/></svg>
+      <ol>
+        <li><a class="hito" href="#plaza" data-sec="plaza"><span class="pin">0</span><span class="nm">Plaza</span></a></li>
+        <li><a class="hito" href="#parada" data-sec="parada"><span class="pin">2</span><span class="nm">Shamballa</span></a></li>
+        <li><a class="hito" href="#reservar" data-sec="reservar"><span class="pin">$</span><span class="nm">Reservar</span></a></li>
+        <li><a class="hito" href="#quebrada" data-sec="quebrada"><span class="pin">↑</span><span class="nm">Quebrada</span></a></li>
+        <li><a class="hito" href="#llegar" data-sec="llegar"><span class="pin">i</span><span class="nm">Llegar</span></a></li>
+      </ol>
+    </nav>
+    <div class="ruta-cta"><a class="btn btn-roca" href="#reservar">Reservar</a></div>
+  </div>
+</header>
+
+<main id="main">
+  <div class="riel" aria-hidden="true"><div class="riel-fill" id="rielFill"></div></div>
+
+  <!-- PORTADA / KM 0 -->
+  <section class="portada" id="plaza" aria-labelledby="t-portada">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Ruta Nacional 68 · km 2 · Cafayate, Salta</p>
+        <h1 id="t-portada">Dos kilómetros<br>después de la plaza,<br><em>la ruta a la Quebrada hace una parada.</em></h1>
+        <p class="lead">Shamballa Cabañas en Cafayate: cabañas luminosas, cálidas y rústicas, con grandes ventanales al paisaje, para 2, 4, 5 y 6 personas. Amplio predio con jardines, pileta y solárium.</p>
+        <blockquote>«El contacto con la naturaleza es nuestra propuesta.»<cite>De la web de Shamballa</cite></blockquote>
+        <div class="acciones">
+          <a class="btn btn-roca" href="#reservar">Ver fechas y precios</a>
+          <a class="btn btn-wa" href="https://wa.me/5493874470075?text=Hola%20Claudia%2C%20consulta%20por%20Shamballa%20Caba%C3%B1as" target="_blank" rel="noopener">WhatsApp</a>
+        </div>
+      </div>
+      <div class="ventana">
+        <svg class="fondo" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <defs><linearGradient id="gc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9CC3E2"/><stop offset=".55" stop-color="#E8D3B8"/><stop offset="1" stop-color="#E7B898"/></linearGradient></defs>
+          <rect width="400" height="500" fill="url(#gc)"/>
+          <circle cx="292" cy="160" r="34" fill="#F7E2B5"/>
+          <path d="M0 300 L60 230 L110 262 L170 190 L230 250 L290 205 L340 240 L400 200 L400 500 L0 500Z" fill="#C46A3E"/>
+          <path d="M0 340 L80 290 L150 320 L220 270 L300 315 L400 280 L400 500 L0 500Z" fill="#9C4526"/>
+          <path d="M0 400 Q200 360 400 395 L400 500 L0 500Z" fill="#6E7B37"/>
+          <g stroke="#55652B" stroke-width="3" opacity=".8"><path d="M20 440 L380 425"/><path d="M10 465 L390 452"/><path d="M0 490 L400 480"/></g>
+          <path d="M190 500 L215 380 L225 380 L260 500Z" fill="#3A3531"/>
+          <path d="M219 390 L221 420 M222 440 L224 470 M226 488 L227 500" stroke="#E9B949" stroke-width="3"/>
+        </svg>
+        <img src="https://shamballacafayate.com.ar/img/about-img.jpg" alt="Shamballa Cabañas en Cafayate" onerror="this.remove()">
+        <div class="cartel"><b>Shamballa</b><span>RN 68 · km 2 →</span></div>
+      </div>
+      <div class="odometro" aria-label="Distancias publicadas por el complejo">
+        <div><b>2 km</b><span>al centro de Cafayate</span></div>
+        <div><b>15 km</b><span>a Animaná</span></div>
+        <div><b>24 km</b><span>a San Carlos</span></div>
+        <div><b>196 km</b><span>a Salta</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KM 2: LA PARADA -->
+  <section class="tramo" id="parada" aria-labelledby="t-parada">
+    <div class="wrap">
+      <div class="tramo-head reveal">
+        <span class="mojon" aria-hidden="true"><small>KM</small><b>2</b></span>
+        <div>
+          <p class="eyebrow">La parada</p>
+          <h2 id="t-parada">Ventanales al paisaje,<br>jardín y pileta</h2>
+          <p>Habitaciones, cocina, estar y exteriores: así muestra el complejo sus cabañas. Todo a 2 km de la plaza, del lado de la ruta que sale a la Quebrada de las Conchas.</p>
+        </div>
+      </div>
+
+      <div class="fotos reveal" id="fotos"></div>
+
+      <div class="senales reveal" role="list" aria-label="Servicios del complejo">
+        <div class="senal" role="listitem"><span class="ico"><svg viewBox="0 0 40 40"><path d="M4 28c4 0 4 3 8 3s4-3 8-3 4 3 8 3 4-3 8-3"/><path d="M4 34c4 0 4 3 8 3s4-3 8-3 4 3 8 3 4-3 8-3"/><path d="M12 24V8a4 4 0 0 1 8 0M24 24V8a4 4 0 0 1 8 0M12 14h12M12 20h12"/></svg></span><span>Pileta y solárium</span></div>
+        <div class="senal" role="listitem"><span class="ico"><svg viewBox="0 0 40 40"><path d="M20 34V18"/><path d="M20 18c-8 0-12-6-12-12 6 0 12 4 12 12zM20 22c6 0 10-4 10-10-5 0-10 3-10 10z"/><path d="M8 34h24"/></svg></span><span>Predio con jardines</span></div>
+        <div class="senal" role="listitem"><span class="ico"><svg viewBox="0 0 40 40"><rect x="6" y="8" width="28" height="22" rx="3"/><path d="M14 30v4M26 30v4M15 20a7 4 0 0 1 10 0M11 16a12 7 0 0 1 18 0"/><circle cx="20" cy="23" r="1.6"/></svg></span><span>Wi-Fi</span></div>
+        <div class="senal" role="listitem"><span class="ico"><svg viewBox="0 0 40 40"><path d="M12 32V8h10a7 7 0 0 1 0 14H12"/></svg></span><span>Estacionamiento propio</span></div>
+        <div class="senal" role="listitem"><span class="ico"><svg viewBox="0 0 40 40"><path d="M6 18h28a14 10 0 0 1-28 0z"/><path d="M12 28l-4 8M28 28l4 8M14 12c0-3 3-3 3-6M20 12c0-3 3-3 3-6M26 12c0-3 3-3 3-6"/></svg></span><span>Parrilla</span></div>
+        <div class="senal" role="listitem"><span class="ico"><svg viewBox="0 0 40 40"><path d="M8 10v22M14 10v22M20 10v22M26 10v22M32 10v22"/><path d="M6 10h28M6 32h28"/></svg></span><span>Calefacción central</span></div>
+        <div class="senal" role="listitem"><span class="ico"><svg viewBox="0 0 40 40"><path d="M8 34l4-20h16l4 20z"/><path d="M15 14V9a5 5 0 0 1 10 0v5"/><path d="M14 24h12"/></svg></span><span>Mucama</span></div>
+        <div class="senal" role="listitem"><span class="ico"><svg viewBox="0 0 40 40"><circle cx="11" cy="15" r="3"/><circle cx="18" cy="9" r="3"/><circle cx="26" cy="10" r="3"/><circle cx="31" cy="17" r="3"/><path d="M14 30c0-6 4-10 7-10s8 4 8 9c0 3-3 4-6 3s-4-1-6 0-3-0-3-2z"/></svg></span><span>Mascotas<small>Condiciones a confirmar</small></span></div>
+      </div>
+
+      <!-- Elegí por grupo -->
+      <div class="grupo reveal" id="grupo">
+        <div>
+          <p class="eyebrow">Elegí tu cabaña por grupo</p>
+          <h3>¿Cuántos viajan?</h3>
+          <p>Hay cabañas para 2, 4, 5 y 6 personas. Tocá el tamaño del grupo y te llevamos la cabaña al simulador.</p>
+          <div class="chips" role="group" aria-label="Tamaño del grupo">
+            <button class="chip" type="button" data-cap="2" aria-pressed="true">2<small>pers.</small></button>
+            <button class="chip" type="button" data-cap="4" aria-pressed="false">4<small>pers.</small></button>
+            <button class="chip" type="button" data-cap="5" aria-pressed="false">5<small>pers.</small></button>
+            <button class="chip" type="button" data-cap="6" aria-pressed="false">6<small>pers.</small></button>
+          </div>
+        </div>
+        <div class="cabana" aria-live="polite">
+          <div class="siluetas" id="siluetas" aria-hidden="true"></div>
+          <div>
+            <h4 id="cabNombre">Cabaña para 2</h4>
+            <p id="cabTexto"></p>
+            <div class="precio">desde <b id="cabPrecio">$ 0</b> / noche <span class="tag">ejemplo</span></div>
+            <a class="btn btn-roca" href="#reservar" id="cabIr" style="margin-top:14px">Simular estadía</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TARIFAS -->
+  <section class="tramo" id="tarifas" aria-labelledby="t-tarifas" style="padding-top:20px">
+    <div class="wrap">
+      <div class="tramo-head reveal">
+        <span class="mojon" aria-hidden="true"><small>KM</small><b>2</b></span>
+        <div>
+          <p class="eyebrow">Tarifas por temporada · 2026–2027</p>
+          <h2 id="t-tarifas">Lo que sale cada noche</h2>
+          <p>Precio por cabaña y por noche. Los valores de esta tabla son <strong>precios de ejemplo: los carga el dueño</strong> desde su panel y se actualizan solos en el simulador.</p>
+        </div>
+      </div>
+      <span class="ejemplo">Precios de ejemplo · los carga el dueño</span>
+      <div class="tabla-wrap reveal">
+        <table class="tarifas" id="tablaTarifas">
+          <caption class="sr">Tarifas de ejemplo por temporada y tipo de cabaña</caption>
+          <thead><tr><th scope="col">Temporada</th><th scope="col">Para 2</th><th scope="col">Para 4</th><th scope="col">Para 5</th><th scope="col">Para 6</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="nota">Valores en pesos argentinos, por cabaña y por noche. Fechas de Serenata y de vacaciones de invierno 2027 a confirmar según calendario oficial; fines de semana largos según feriados nacionales.</p>
+    </div>
+  </section>
+
+  <!-- RESERVAR -->
+  <section class="tramo" id="reservar" aria-labelledby="t-reservar" style="padding-top:20px">
+    <div class="wrap">
+      <div class="tramo-head reveal">
+        <span class="mojon" aria-hidden="true"><small>KM</small><b>2</b></span>
+        <div>
+          <p class="eyebrow">Reserva directa · sin comisiones de intermediarios</p>
+          <h2 id="t-reservar">Elegí fechas y dejá la seña</h2>
+          <p>Mirá qué noches están libres, calculá el total y reservá con una seña del 30%. Hoy esto se hace todo por WhatsApp; acá queda armado en un minuto.</p>
+        </div>
+      </div>
+
+      <div class="reservar">
+        <div class="panel reveal">
+          <span class="ejemplo">Disponibilidad de ejemplo</span>
+          <h3>Calendario</h3>
+          <div class="campo"><label for="calUnidad">Cabaña</label><select id="calUnidad"></select></div>
+          <div class="cal-top">
+            <button class="cal-nav" id="calPrev" type="button" aria-label="Mes anterior">‹</button>
+            <b id="calMes" aria-live="polite">—</b>
+            <button class="cal-nav" id="calNext" type="button" aria-label="Mes siguiente">›</button>
+          </div>
+          <div class="cal" id="cal" role="grid" aria-label="Días del mes"></div>
+          <div class="leyenda"><span><i></i>Libre</span><span><i class="o"></i>Ocupado (ejemplo)</span><span><i class="s"></i>Tu selección</span></div>
+          <p class="nota" style="margin-top:8px">Tocá un día de llegada y otro de salida para cargarlos en el simulador.</p>
+          <div class="sync"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3L20 9M20 4v5h-5M20 12a8 8 0 0 1-14 5.3L4 15M4 20v-5h5"/></svg><span><strong>Se sincroniza con Booking y Airbnb: sin dobles reservas.</strong></span></div>
+        </div>
+
+        <div class="panel reveal" id="simulador">
+          <h3>Simulador</h3>
+          <form id="formSim" novalidate>
+            <div class="campos">
+              <div class="campo"><label for="llegada">Llegada</label><input type="date" id="llegada" required></div>
+              <div class="campo"><label for="salida">Salida</label><input type="date" id="salida" required></div>
+              <div class="campo"><label for="personas">Personas</label><select id="personas"></select></div>
+              <div class="campo"><label for="unidad">Cabaña</label><select id="unidad"></select></div>
+              <div class="campo full"><label for="nombre">Tu nombre (opcional)</label><input type="text" id="nombre" autocomplete="name" placeholder="Para armar el mensaje"></div>
+            </div>
+          </form>
+          <div class="ticket" aria-live="polite">
+            <div class="fila"><span>Noches</span><b id="rNoches">0</b></div>
+            <div class="fila total"><span>Total estadía</span><b id="rTotal">$ 0</b></div>
+            <div class="fila"><span>Seña 30% · Mercado Pago (demo)</span><b id="rSena">$ 0</b></div>
+            <div class="fila"><span>Saldo al llegar</span><b id="rSaldo">$ 0</b></div>
+            <p class="desglose" id="rDesglose">Elegí fechas para ver el detalle por temporada.</p>
+          </div>
+          <div class="aviso" id="aviso" role="status"></div>
+          <div class="acc-sim">
+            <button class="btn btn-roca" type="button" id="btnSena">Pagar seña (demo)</button>
+            <a class="btn btn-wa" id="btnWa" href="https://wa.me/5493874470075" target="_blank" rel="noopener">Pedir por WhatsApp</a>
+          </div>
+          <p class="nota">Precios de ejemplo. En la demo el botón de seña no cobra ni envía nada.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESEÑAS -->
+  <section class="tramo" id="resenas" aria-labelledby="t-resenas" style="padding-top:20px">
+    <div class="wrap">
+      <div class="tramo-head reveal">
+        <span class="mojon" aria-hidden="true"><small>KM</small><b>2</b></span>
+        <div>
+          <p class="eyebrow">Libro de ruta</p>
+          <h2 id="t-resenas">Lo que anotaron los que pararon</h2>
+        </div>
+      </div>
+      <div class="libro">
+        <figure class="nota-ruta reveal"><p>Hermoso lugar, las cabañas limpias y bien equipadas.</p><footer>Eva, de Salta · WelcomeArgentina, febrero 2026</footer></figure>
+        <figure class="nota-ruta reveal"><p>Complejo de cabañas muy bien ubicado con amplio predio y pileta.</p><footer>Gonzalo C. · WelcomeArgentina, enero 2026</footer></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- HACIA LA QUEBRADA -->
+  <section class="tramo quebrada" id="quebrada" aria-labelledby="t-quebrada">
+    <div class="wrap">
+      <div class="tramo-head reveal">
+        <span class="mojon" aria-hidden="true"><small>RN</small><b>68</b></span>
+        <div>
+          <p class="eyebrow">Siguiendo la ruta</p>
+          <h2 id="t-quebrada">De la cabaña a la Quebrada, sin volver al centro</h2>
+          <p>Cafayate está a 1.683 m s.n.m. La RN 68 que pasa por el complejo es la misma que atraviesa la Quebrada de las Conchas camino a Salta. El resto del valle queda a mano por la RN 40.</p>
+        </div>
+      </div>
+
+      <div class="recorrido">
+        <div class="direccion reveal">
+          <h3><span class="rn">RN 68</span>Hacia la Quebrada</h3>
+          <ul>
+            <li><b>Los Médanos</b><span>Dunas de arena junto a la ruta, a pocos kilómetros saliendo de Cafayate.</span></li>
+            <li><b>Quebrada de las Conchas</b><span>Areniscas rojizas y formaciones a lo largo de la ruta a Salta.</span></li>
+            <li><b>Garganta del Diablo</b><span>Una de las paradas clásicas de la Quebrada, para caminar entre paredes de roca.</span></li>
+            <li><b>Anfiteatro</b><span>Cavidad natural de acústica famosa, junto a la Garganta.</span></li>
+          </ul>
+        </div>
+        <div class="direccion reveal">
+          <h3><span class="rn">2 km</span>En el pueblo</h3>
+          <ul>
+            <li><b>Plaza y Catedral</b><span>El centro de Cafayate, a 2 km del complejo.</span></li>
+            <li><b>Museo de la Vid y el Vino</b><span>Para entender la vitivinicultura de altura del valle.</span></li>
+            <li><b>Bodegas y Ruta del Vino</b><span>Viñedos de altura y el Torrontés como cepa emblema.</span></li>
+            <li><b>Cascadas del Río Colorado</b><span>Caminata hacia las cascadas, en las afueras del pueblo.</span></li>
+          </ul>
+        </div>
+        <div class="direccion reveal">
+          <h3><span class="rn">RN 40</span>El valle</h3>
+          <ul>
+            <li><b>Animaná</b><span>15 km, pueblo vitivinícola de los Valles Calchaquíes.</span></li>
+            <li><b>San Carlos</b><span>24 km, uno de los pueblos más antiguos del valle.</span></li>
+            <li><b>Ruinas de Quilmes</b><span>Unos 50 km, ciudad sagrada de los quilmes, ya en Tucumán.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Planificador -->
+      <div class="planif reveal" id="planificador">
+        <div class="planif-form">
+          <p class="eyebrow" style="color:var(--linea)">Planificador · salida a la Quebrada</p>
+          <h3>¿A qué hora salgo para ver el atardecer?</h3>
+          <p>Elegí el día y te decimos a qué hora arrancar desde la cabaña para llegar al Anfiteatro con la última luz sobre las areniscas.</p>
+          <div class="campos" style="grid-template-columns:1fr">
+            <div class="campo"><label for="pFecha">Día de la excursión</label><input type="date" id="pFecha"></div>
+          </div>
+          <label class="check"><input type="checkbox" id="pParadas" checked> Parar en Los Médanos y en la Garganta del Diablo en el camino</label>
+          <label class="check"><input type="checkbox" id="pFotos"> Quiero llegar con margen para fotos (30 min extra)</label>
+        </div>
+        <div class="planif-res" aria-live="polite">
+          <svg class="cielo" viewBox="0 0 600 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <defs><linearGradient id="gs" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3C4E7A"/><stop offset=".45" stop-color="#C4673C"/><stop offset=".75" stop-color="#F0B26A"/></linearGradient></defs>
+            <rect width="600" height="400" fill="url(#gs)"/>
+            <circle id="solSvg" cx="300" cy="230" r="40" fill="#FCE3A6" opacity=".95"/>
+            <path d="M0 260 L70 200 L120 230 L190 150 L250 220 L320 170 L390 230 L450 180 L520 230 L600 190 L600 400 L0 400Z" fill="#8F3A1E"/>
+            <path d="M0 310 L90 260 L170 300 L260 250 L360 300 L460 260 L600 300 L600 400 L0 400Z" fill="#5E2312"/>
+            <path d="M0 360 Q300 330 600 360 L600 400 L0 400Z" fill="#2B2724"/>
+          </svg>
+          <div class="dato">
+            <span class="et">Salí de Shamballa a las</span>
+            <div class="salida" id="pSalida">--:--</div>
+            <ul class="itin" id="pItin"></ul>
+          </div>
+          <p class="aprox" id="pAprox">Puesta de sol aproximada para Cafayate (lat. −26,07). Cálculo astronómico estimado: puede variar unos minutos, y dentro de la Quebrada los cerros tapan el sol antes. Tiempos de manejo aproximados.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CÓMO LLEGAR -->
+  <section class="tramo" id="llegar" aria-labelledby="t-llegar">
+    <div class="wrap">
+      <div class="tramo-head reveal">
+        <span class="mojon" aria-hidden="true"><small>KM</small><b>2</b></span>
+        <div>
+          <p class="eyebrow">Cómo llegar</p>
+          <h2 id="t-llegar">Ruta 68, km 2</h2>
+          <p>Desde la plaza de Cafayate, tomá la RN 68 en dirección a Salta y la Quebrada de las Conchas: el complejo está a unos 2 km del centro.</p>
+        </div>
+      </div>
+      <div class="llegar">
+        <div class="mapa reveal">
+          <svg viewBox="0 0 640 420" role="img" aria-labelledby="mapaT">
+            <title id="mapaT">Esquema: Cafayate, la RN 68 hacia la Quebrada y Salta con Shamballa en el km 2, y la RN 40 hacia Animaná, San Carlos y Quilmes</title>
+            <rect width="640" height="420" rx="14" fill="#F4EADB"/>
+            <g fill="#55652B" opacity=".18">
+              <rect x="150" y="250" width="80" height="50" rx="6"/><rect x="250" y="300" width="70" height="40" rx="6"/><rect x="120" y="320" width="60" height="45" rx="6"/>
+            </g>
+            <path d="M40 120 Q160 160 240 100 T420 60" fill="none" stroke="#2D6A9F" stroke-width="3" opacity=".35"/>
+            <!-- RN40 -->
+            <path d="M80 30 L170 150 L220 270 L230 410" fill="none" stroke="#7d746b" stroke-width="10" stroke-linecap="round"/>
+            <path d="M80 30 L170 150 L220 270 L230 410" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="8 8"/>
+            <!-- RN68 -->
+            <path d="M220 270 L300 230 L380 200 L470 130 L600 40" fill="none" stroke="#2B2724" stroke-width="12" stroke-linecap="round"/>
+            <path d="M220 270 L300 230 L380 200 L470 130 L600 40" fill="none" stroke="#E9B949" stroke-width="2.5" stroke-dasharray="9 7"/>
+            <circle cx="220" cy="270" r="11" fill="#fff" stroke="#2B2724" stroke-width="3"/>
+            <text x="200" y="300" font-family="Barlow Condensed, sans-serif" font-weight="700" font-size="20" fill="#2A1B14" text-anchor="end">CAFAYATE · PLAZA</text>
+            <text x="200" y="318" font-family="Barlow Condensed, sans-serif" font-size="15" fill="#5C4638" text-anchor="end">km 0</text>
+            <g transform="translate(300 230)">
+              <circle r="15" fill="#B4532A" stroke="#fff" stroke-width="4"/>
+              <text y="5" font-family="Barlow Condensed, sans-serif" font-weight="800" font-size="16" fill="#fff" text-anchor="middle">S</text>
+            </g>
+            <g font-family="Barlow Condensed, sans-serif">
+              <rect x="268" y="252" width="128" height="44" rx="7" fill="#1F5C99" stroke="#fff" stroke-width="2"/>
+              <text x="332" y="272" font-weight="800" font-size="18" fill="#fff" text-anchor="middle">SHAMBALLA</text>
+              <text x="332" y="289" font-size="14" fill="#fff" text-anchor="middle">RN 68 · km 2</text>
+            </g>
+            <circle cx="400" cy="185" r="5" fill="#B4532A"/>
+            <text x="410" y="200" font-family="Barlow Condensed, sans-serif" font-size="16" fill="#2A1B14">Los Médanos</text>
+            <path d="M470 130 L600 40" stroke="#B4532A" stroke-width="22" opacity=".18" stroke-linecap="round"/>
+            <text x="452" y="184" font-family="Barlow Condensed, sans-serif" font-weight="700" font-size="13" letter-spacing="1" fill="#7E3219" transform="rotate(-34 452 184)">QUEBRADA DE LAS CONCHAS</text>
+            <circle cx="545" cy="78" r="5" fill="#B4532A"/>
+            <text x="535" y="68" font-family="Barlow Condensed, sans-serif" font-size="15" fill="#2A1B14" text-anchor="end">Garganta del Diablo · Anfiteatro</text>
+            <text x="612" y="30" font-family="Barlow Condensed, sans-serif" font-weight="700" font-size="16" fill="#2A1B14" text-anchor="end">→ SALTA 196 km</text>
+            <text x="96" y="28" font-family="Barlow Condensed, sans-serif" font-weight="700" font-size="16" fill="#2A1B14">San Carlos 24 km ↑</text>
+            <circle cx="170" cy="150" r="5" fill="#55652B"/>
+            <text x="180" y="146" font-family="Barlow Condensed, sans-serif" font-size="16" fill="#2A1B14">Animaná 15 km</text>
+            <text x="244" y="404" font-family="Barlow Condensed, sans-serif" font-size="16" fill="#2A1B14">↓ RN 40 · Quilmes ~50 km</text>
+            <g transform="translate(590 380)" font-family="Barlow Condensed, sans-serif"><path d="M0 -22 L7 0 L-7 0Z" fill="#2A1B14"/><text y="16" text-anchor="middle" font-size="14" fill="#2A1B14">N</text></g>
+            <text x="20" y="404" font-family="Barlow Condensed, sans-serif" font-size="13" fill="#5C4638">Esquema sin escala</text>
+          </svg>
+        </div>
+        <div class="reveal">
+          <ul class="dist">
+            <li><span>Centro de Cafayate</span><b>2 km</b></li>
+            <li><span>Animaná</span><b>15 km</b></li>
+            <li><span>San Carlos</span><b>24 km</b></li>
+            <li><span>Salta capital</span><b>196 km</b></li>
+          </ul>
+          <p class="nota">Distancias publicadas por el complejo.</p>
+          <a class="btn btn-ghost" style="margin-top:12px" href="https://www.google.com/maps/search/?api=1&query=Shamballa+Caba%C3%B1as+Ruta+68+km+2+Cafayate+Salta" target="_blank" rel="noopener">Abrir en Google Maps</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="tramo" id="faq" aria-labelledby="t-faq" style="padding-top:20px">
+    <div class="wrap">
+      <div class="tramo-head reveal">
+        <span class="mojon" aria-hidden="true"><small>KM</small><b>2</b></span>
+        <div>
+          <p class="eyebrow">Antes de salir</p>
+          <h2 id="t-faq">Preguntas frecuentes</h2>
+        </div>
+      </div>
+      <div class="faq">
+        <details><summary>¿Aceptan mascotas?</summary><p>Sí, el complejo acepta mascotas. Las condiciones (tamaño, cantidad, cargo extra) <span class="conf">a confirmar por el complejo</span>.</p></details>
+        <details><summary>¿Hay pileta?</summary><p>Sí: el predio tiene pileta y solárium, rodeados de jardines. Temporada y horarios de uso <span class="conf">a confirmar por el complejo</span>.</p></details>
+        <details><summary>¿Tienen cochera o estacionamiento?</summary><p>Sí, estacionamiento propio dentro del complejo.</p></details>
+        <details><summary>¿Incluye ropa blanca y limpieza?</summary><p>El complejo ofrece servicio de mucama. Si la ropa blanca (sábanas y toallas) está incluida <span class="conf">a confirmar por el complejo</span>.</p></details>
+        <details><summary>¿A qué hora es el check-in y el check-out?</summary><p>Los horarios de ingreso y salida <span class="conf">a confirmar por el complejo</span>. Si llegás tarde o te vas temprano a la Quebrada, avisalo al reservar.</p></details>
+        <details><summary>¿Incluye desayuno?</summary><p><span class="conf">A confirmar por el complejo</span>. Las cabañas cuentan con cocina, y hay parrilla para usar en el predio.</p></details>
+        <details><summary>¿Hace frío en invierno?</summary><p>Las noches en el valle son frescas; las cabañas tienen calefacción central.</p></details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="fin" id="contacto" aria-labelledby="t-fin">
+  <div class="wrap">
+    <div>
+      <p class="eyebrow" style="color:var(--linea)">Fin del tramo</p>
+      <h2 id="t-fin">La próxima parada<br><em>es la tuya.</em></h2>
+      <p>Escribile a Claudia y armá tu estadía en Shamballa: Ruta 68, km 2, Cafayate, Salta.</p>
+    </div>
+    <ul class="contactos">
+      <li><a href="https://wa.me/5493874470075?text=Hola%2C%20consulta%20web%20por%20Shamballa%20Caba%C3%B1as" target="_blank" rel="noopener"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E9B949" stroke-width="2" aria-hidden="true"><path d="M4 20l1.3-3.8A8 8 0 1 1 8 19z"/></svg><span><small>WhatsApp</small><b>+54 9 387 447-0075</b></span></a></li>
+      <li><a href="tel:+5493874470075"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E9B949" stroke-width="2" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg><span><small>Teléfono</small><b>Llamar al 387 447-0075</b></span></a></li>
+      <li><a href="mailto:shamballacafayate@gmail.com"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E9B949" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg><span><small>Mail</small><b>shamballacafayate@gmail.com</b></span></a></li>
+    </ul>
+    <p class="pie">Prototipo de demostración preparado para Shamballa Cabañas por Resolviendo Kos. Fotos de la web pública del complejo. Precios, disponibilidad y pago son de ejemplo.</p>
+  </div>
+</footer>
+
+<div class="barra-movil" role="navigation" aria-label="Acciones rápidas">
+  <a class="btn btn-roca" href="#reservar">Reservar</a>
+  <a class="btn btn-wa" href="https://wa.me/5493874470075?text=Hola%2C%20consulta%20web%20por%20Shamballa%20Caba%C3%B1as" target="_blank" rel="noopener">WhatsApp</a>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  "use strict";
+  var WA = "5493874470075";
+  var HOY = new Date(2026, 9, 28); // 28/10/2026
+  var real = new Date(); real.setHours(0,0,0,0);
+  if (real > HOY) HOY = real;
+
+  /* ---------- Unidades (tipologías reales) ---------- */
+  var UNIDADES = [
+    {id:"c2", cap:2, nombre:"Cabaña para 2", base:70000, txt:"Para parejas o viajeros solos: luz de ventanal, estar y cocina propios."},
+    {id:"c4", cap:4, nombre:"Cabaña para 4", base:105000, txt:"Para una familia o dos parejas, con cocina y estar."},
+    {id:"c5", cap:5, nombre:"Cabaña para 5", base:120000, txt:"Para familias con chicos o grupos de cinco."},
+    {id:"c6", cap:6, nombre:"Cabaña para 6", base:135000, txt:"La más grande, para grupos de hasta seis personas."}
+  ];
+
+  /* ---------- Temporadas (precios de ejemplo) ---------- */
+  function d(y,m,dd){return new Date(y,m-1,dd);}
+  var TEMPORADAS = [
+    {id:"ss", nombre:"Semana Santa", fechas:"25 – 28 mar 2027", mult:1.45, rangos:[[d(2027,3,25),d(2027,3,28)]]},
+    {id:"ser", nombre:"Serenata a Cafayate", fechas:"fin de febrero 2027 · fecha a confirmar", mult:1.5, rangos:[], tag:"a confirmar"},
+    {id:"alta", nombre:"Temporada alta de verano", fechas:"2 ene – 28 feb 2027", mult:1.35, rangos:[[d(2027,1,2),d(2027,2,28)]]},
+    {id:"inv", nombre:"Vacaciones de invierno", fechas:"julio 2027 · según calendario escolar", mult:1.3, rangos:[[d(2027,7,1),d(2027,7,31)]]},
+    {id:"fsl", nombre:"Fines de semana largos", fechas:"ej.: 5 – 8 dic 2026 · según feriados", mult:1.25, rangos:[[d(2026,12,5),d(2026,12,8)]]},
+    {id:"media", nombre:"Temporada media / baja", fechas:"resto del año", mult:1, rangos:[]}
+  ];
+  function precioNoche(u, t){ return Math.round(u.base * t.mult / 1000) * 1000; }
+  function temporadaDe(fecha){
+    for (var i=0;i<TEMPORADAS.length;i++){
+      var t=TEMPORADAS[i];
+      for (var j=0;j<t.rangos.length;j++){
+        if (fecha>=t.rangos[j][0] && fecha<=t.rangos[j][1]) return t;
+      }
+    }
+    return TEMPORADAS[TEMPORADAS.length-1];
+  }
+  var fmt = new Intl.NumberFormat("es-AR");
+  function pesos(n){ return "$ " + fmt.format(Math.round(n)); }
+
+  // Tabla
+  var tb = document.querySelector("#tablaTarifas tbody");
+  TEMPORADAS.forEach(function(t){
+    var tr = document.createElement("tr");
+    var h = '<td><b>'+t.nombre+(t.tag?'<span class="tag">'+t.tag+'</span>':'')+'</b><small>'+t.fechas+'</small></td>';
+    UNIDADES.forEach(function(u){ h += '<td>'+pesos(precioNoche(u,t))+'</td>'; });
+    tr.innerHTML = h; tb.appendChild(tr);
+  });
+
+  /* ---------- Fotos con fallback ilustrado ---------- */
+  var FOTOS = [
+    ["about-img.jpg","El complejo"],["portfolio/app1.jpg","Habitaciones"],["portfolio/app2.jpg","Cocina"],
+    ["portfolio/app3.jpg","Estar"],["portfolio/app4.jpg","Exteriores"],["portfolio/app5.jpg","Jardín"],["portfolio/app6.jpg","Pileta"]
+  ];
+  var PAL = [["#E7B898","#B4532A","#7E3219"],["#D6E6F2","#C46A3E","#55652B"],["#EBDCC6","#D98A5B","#9C4526"],["#C9D3A3","#55652B","#B4532A"],["#9CC3E2","#C46A3E","#6E7B37"],["#E8D3B8","#9C4526","#55652B"],["#D6E6F2","#2D6A9F","#B4532A"]];
+  var fotosEl = document.getElementById("fotos");
+  FOTOS.forEach(function(f,i){
+    var p = PAL[i%PAL.length];
+    var fig = document.createElement("figure");
+    fig.className = "foto f"+(i+1);
+    fig.innerHTML = '<svg class="fondo" viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="300" height="200" fill="'+p[0]+'"/><path d="M0 '+(120+i*4)+' L'+(50+i*9)+' '+(70+i*3)+' L'+(120+i*5)+' 110 L'+(190-i*4)+' 60 L300 105 L300 200 L0 200Z" fill="'+p[1]+'"/><path d="M0 170 Q150 140 300 165 L300 200 L0 200Z" fill="'+p[2]+'"/></svg>'+
+      '<img loading="lazy" src="https://shamballacafayate.com.ar/img/'+f[0]+'" alt="Shamballa Cabañas: '+f[1].toLowerCase()+'" onerror="this.remove()">'+
+      '<figcaption>'+f[1]+'</figcaption>';
+    fotosEl.appendChild(fig);
+  });
+
+  /* ---------- Selects ---------- */
+  var selUnidad = document.getElementById("unidad"), selCal = document.getElementById("calUnidad"), selPers = document.getElementById("personas");
+  UNIDADES.forEach(function(u){
+    [selUnidad, selCal].forEach(function(s){ var o=document.createElement("option"); o.value=u.id; o.textContent=u.nombre+" (hasta "+u.cap+")"; s.appendChild(o); });
+  });
+  for (var k=1;k<=6;k++){ var o=document.createElement("option"); o.value=k; o.textContent=k+(k===1?" persona":" personas"); selPers.appendChild(o); }
+  selPers.value = "2";
+  function uById(id){ for(var i=0;i<UNIDADES.length;i++) if(UNIDADES[i].id===id) return UNIDADES[i]; return UNIDADES[0]; }
+  function uParaGrupo(n){ for(var i=0;i<UNIDADES.length;i++) if(UNIDADES[i].cap>=n) return UNIDADES[i]; return UNIDADES[UNIDADES.length-1]; }
+
+  /* ---------- Elegí por grupo ---------- */
+  var chips = document.querySelectorAll(".chip");
+  var persona = '<svg viewBox="0 0 30 44"><circle cx="15" cy="8" r="7"/><path d="M3 44V26a12 12 0 0 1 24 0v18z"/></svg>';
+  function pintarGrupo(cap, sync){
+    var u = uParaGrupo(cap);
+    chips.forEach(function(c){ c.setAttribute("aria-pressed", String(+c.dataset.cap===cap)); });
+    document.getElementById("siluetas").innerHTML = new Array(cap+1).join(persona);
+    document.getElementById("cabNombre").textContent = u.nombre;
+    document.getElementById("cabTexto").textContent = u.txt;
+    document.getElementById("cabPrecio").textContent = pesos(precioNoche(u, TEMPORADAS[TEMPORADAS.length-1]));
+    if (sync){ selUnidad.value=u.id; selCal.value=u.id; selPers.value=String(cap); renderCal(); calcular(); }
+  }
+  chips.forEach(function(c){ c.addEventListener("click", function(){ pintarGrupo(+c.dataset.cap, true); }); });
+
+  /* ---------- Calendario de ejemplo ---------- */
+  function iso(dt){ return dt.getFullYear()+"-"+String(dt.getMonth()+1).padStart(2,"0")+"-"+String(dt.getDate()).padStart(2,"0"); }
+  function parse(s){ if(!s) return null; var p=s.split("-"); return new Date(+p[0],+p[1]-1,+p[2]); }
+  function hash(s){ var h=2166136261; for(var i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,16777619);} return (h>>>0); }
+  var ocupCache = {};
+  function ocupado(uid, dt){
+    // datos ficticios deterministas: bloques de 2-4 noches
+    var key = uid+iso(dt);
+    if (key in ocupCache) return ocupCache[key];
+    var week = Math.floor((dt - d(2026,1,5))/(864e5*7));
+    var h = hash(uid+"w"+week);
+    var start = h % 7, len = 2 + (h>>3)%3, dow = (dt.getDay()+6)%7;
+    var r = ((h>>6)%10) < 6 && dow>=start && dow<start+len;
+    var t = temporadaDe(dt); if (t.id!=="media" && ((h>>9)%3)===0) r = r || dow>=4;
+    ocupCache[key] = r; return r;
+  }
+  var MESES = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+  var calMes = new Date(HOY.getFullYear(), HOY.getMonth(), 1);
+  var minMes = new Date(HOY.getFullYear(), HOY.getMonth(), 1);
+  var maxMes = new Date(2027, 6, 1);
+  var calEl = document.getElementById("cal");
+  var inLleg = document.getElementById("llegada"), inSal = document.getElementById("salida");
+  function renderCal(){
+    var uid = selCal.value, y=calMes.getFullYear(), m=calMes.getMonth();
+    document.getElementById("calMes").textContent = MESES[m]+" "+y;
+    document.getElementById("calPrev").disabled = calMes<=minMes;
+    document.getElementById("calNext").disabled = calMes>=maxMes;
+    var html = ["L","M","M","J","V","S","D"].map(function(x){return '<span class="dow" aria-hidden="true">'+x+'</span>';}).join("");
+    var first = new Date(y,m,1), off=(first.getDay()+6)%7, n=new Date(y,m+1,0).getDate();
+    for (var i=0;i<off;i++) html += '<span class="dia vac" aria-hidden="true"></span>';
+    var a = parse(inLleg.value), b = parse(inSal.value);
+    for (var dd=1; dd<=n; dd++){
+      var dt=new Date(y,m,dd), cls="dia", dis=false, lab=dd+" de "+MESES[m];
+      if (dt<HOY){cls+=" pas";dis=true;lab+=", pasado";}
+      else if (ocupado(uid,dt)){cls+=" ocu";dis=true;lab+=", ocupado (ejemplo)";}
+      if (a && +dt===+a) cls+=" sel"; else if (b && +dt===+b) cls+=" sel"; else if (a&&b&&dt>a&&dt<b) cls+=" ran";
+      html += '<button type="button" class="'+cls+'" data-f="'+iso(dt)+'" aria-label="'+lab+'"'+(dis?' disabled':'')+'>'+dd+'</button>';
+    }
+    calEl.innerHTML = html;
+  }
+  var pickStep = 0;
+  calEl.addEventListener("click", function(e){
+    var bt = e.target.closest("button.dia"); if(!bt||bt.disabled) return;
+    var f = bt.dataset.f;
+    if (pickStep===0 || (inLleg.value && f<=inLleg.value)){ inLleg.value=f; inSal.value=""; pickStep=1; }
+    else { inSal.value=f; pickStep=0; }
+    selUnidad.value = selCal.value;
+    renderCal(); calcular();
+  });
+  document.getElementById("calPrev").addEventListener("click",function(){ calMes=new Date(calMes.getFullYear(),calMes.getMonth()-1,1); renderCal(); });
+  document.getElementById("calNext").addEventListener("click",function(){ calMes=new Date(calMes.getFullYear(),calMes.getMonth()+1,1); renderCal(); });
+  selCal.addEventListener("change", function(){ selUnidad.value=selCal.value; renderCal(); calcular(); });
+
+  /* ---------- Simulador ---------- */
+  inLleg.min = iso(HOY); inSal.min = iso(new Date(HOY.getTime()+864e5));
+  var aviso = document.getElementById("aviso");
+  var estado = null;
+  function setAviso(msg, ok){ aviso.textContent=msg||""; aviso.className="aviso"+(msg?" show":"")+(ok?" ok":""); }
+  function calcular(){
+    var a=parse(inLleg.value), b=parse(inSal.value), u=uById(selUnidad.value), p=+selPers.value;
+    estado=null;
+    var out = {n:0,total:0};
+    setAviso("");
+    if (p>u.cap){ setAviso("La "+u.nombre.toLowerCase()+" es para hasta "+u.cap+" personas. Para "+p+", elegí la "+uParaGrupo(p).nombre.toLowerCase()+"."); }
+    if (a && b && b>a){
+      var noches=0,total=0,porT={},choque=false;
+      for (var dt=new Date(a); dt<b; dt.setDate(dt.getDate()+1)){
+        var t=temporadaDe(dt), pr=precioNoche(u,t);
+        noches++; total+=pr; porT[t.nombre]=(porT[t.nombre]||0)+1;
+        if (ocupado(u.id,dt)) choque=true;
+      }
+      out={n:noches,total:total};
+      document.getElementById("rDesglose").textContent = Object.keys(porT).map(function(k){return porT[k]+" noche"+(porT[k]>1?"s":"")+" en "+k.toLowerCase();}).join(" · ")+" · "+u.nombre;
+      if (choque && p<=u.cap) setAviso("Alguna de esas noches figura ocupada en el calendario de ejemplo. Probá otras fechas u otra cabaña.");
+      estado={a:a,b:b,u:u,p:p,noches:noches,total:total,sena:Math.round(total*.3),ok:!choque&&p<=u.cap};
+    } else if (a && b) {
+      setAviso("La salida tiene que ser posterior a la llegada.");
+      document.getElementById("rDesglose").textContent="Elegí fechas para ver el detalle por temporada.";
+    } else {
+      document.getElementById("rDesglose").textContent="Elegí fechas para ver el detalle por temporada.";
+    }
+    var sena=Math.round(out.total*.3);
+    document.getElementById("rNoches").textContent=out.n;
+    document.getElementById("rTotal").textContent=pesos(out.total);
+    document.getElementById("rSena").textContent=pesos(sena);
+    document.getElementById("rSaldo").textContent=pesos(out.total-sena);
+    // WhatsApp
+    var nom=document.getElementById("nombre").value.trim();
+    var txt="Hola Claudia! Consulta web por Shamballa Cabañas."+(nom?" Soy "+nom+".":"");
+    if (estado) txt+=" Quiero la "+u.nombre.toLowerCase()+", somos "+p+" persona"+(p>1?"s":"")+", del "+fechaTxt(a)+" al "+fechaTxt(b)+" ("+estado.noches+" noche"+(estado.noches>1?"s":"")+"). Total simulado "+pesos(estado.total)+", seña 30% "+pesos(estado.sena)+". ¿Está disponible?";
+    document.getElementById("btnWa").href="https://wa.me/"+WA+"?text="+encodeURIComponent(txt);
+    return estado;
+  }
+  function fechaTxt(dt){ return dt.getDate()+"/"+(dt.getMonth()+1)+"/"+dt.getFullYear(); }
+  [inLleg,inSal,selPers,selUnidad].forEach(function(el){ el.addEventListener("change",function(){
+    if (el===inLleg && inLleg.value){ var a=parse(inLleg.value); inSal.min=iso(new Date(a.getTime()+864e5)); var m=new Date(a.getFullYear(),a.getMonth(),1); if(m>=minMes&&m<=maxMes) calMes=m; }
+    if (el===selPers){ var need=uParaGrupo(+selPers.value); if (uById(selUnidad.value).cap < +selPers.value) selUnidad.value=need.id; }
+    if (el===selUnidad || el===selPers) selCal.value=selUnidad.value;
+    renderCal(); calcular();
+  }); });
+  document.getElementById("nombre").addEventListener("input", calcular);
+  document.getElementById("btnSena").addEventListener("click", function(){
+    var s=calcular();
+    if(!s){ setAviso("Elegí llegada y salida para calcular la seña."); return; }
+    if(!s.ok){ return; }
+    setAviso("Demo: acá se abriría Mercado Pago para pagar la seña de "+pesos(s.sena)+". No se cobró ni se envió nada.", true);
+    toast("Seña de "+pesos(s.sena)+" · Mercado Pago (demo). No se envió nada.");
+  });
+  document.getElementById("cabIr").addEventListener("click", function(){ /* el chip ya sincronizó */ });
+
+  var tt;
+  function toast(m){ var t=document.getElementById("toast"); t.textContent=m; t.classList.add("show"); clearTimeout(tt); tt=setTimeout(function(){t.classList.remove("show");},3800); }
+
+  // Precarga de ejemplo: primer hueco libre de 3 noches desde mediados de noviembre
+  (function precarga(){
+    var u=UNIDADES[0], start=new Date(2026,10,16); if(start<HOY) start=new Date(HOY.getTime()+7*864e5);
+    for (var i=0;i<90;i++){
+      var a=new Date(start.getTime()+i*864e5), ok=true;
+      for (var j=0;j<3;j++){ if(ocupado(u.id,new Date(a.getTime()+j*864e5))){ok=false;break;} }
+      if(ok){ inLleg.value=iso(a); inSal.value=iso(new Date(a.getTime()+3*864e5)); calMes=new Date(a.getFullYear(),a.getMonth(),1); break; }
+    }
+  })();
+  pintarGrupo(2,false);
+  renderCal(); calcular();
+
+  /* ---------- Planificador de atardecer (NOAA simplificado) ---------- */
+  var LAT=-26.07, LON=-65.98, TZ=-3;
+  function puestaSol(dt){
+    var start=new Date(dt.getFullYear(),0,0), doy=Math.round((dt-start)/864e5);
+    var g=2*Math.PI/365*(doy-1);
+    var eq=229.18*(0.000075+0.001868*Math.cos(g)-0.032077*Math.sin(g)-0.014615*Math.cos(2*g)-0.040849*Math.sin(2*g));
+    var dec=0.006918-0.399912*Math.cos(g)+0.070257*Math.sin(g)-0.006758*Math.cos(2*g)+0.000907*Math.sin(2*g)-0.002697*Math.cos(3*g)+0.00148*Math.sin(3*g);
+    var la=LAT*Math.PI/180;
+    var ha=Math.acos(Math.cos(90.833*Math.PI/180)/(Math.cos(la)*Math.cos(dec))-Math.tan(la)*Math.tan(dec))*180/Math.PI;
+    var utc=720-4*(LON-ha)-eq; // minutos UTC
+    var loc=utc+TZ*60; loc=((loc%1440)+1440)%1440;
+    return Math.round(loc);
+  }
+  function hhmm(min){ min=((Math.round(min)%1440)+1440)%1440; var h=Math.floor(min/60), m=min%60; return String(h).padStart(2,"0")+":"+String(m).padStart(2,"0"); }
+  function redondeo5(min){ return Math.floor(min/5)*5; }
+  var pF=document.getElementById("pFecha");
+  pF.value = iso(HOY); pF.min = iso(HOY);
+  function planificar(){
+    var dt=parse(pF.value)||HOY;
+    var ps=puestaSol(dt);
+    var paradas=document.getElementById("pParadas").checked, fotos=document.getElementById("pFotos").checked;
+    var manejo=60; // aprox. cabaña -> Anfiteatro
+    var tParadas = paradas ? 70 : 0; // Médanos ~20 + Garganta ~50
+    var luz = 60 + (fotos?30:0); // llegar ~1 h antes de la puesta
+    var salida = redondeo5(ps - luz - manejo - tParadas);
+    document.getElementById("pSalida").textContent = hhmm(salida);
+    var it=[];
+    it.push([hhmm(salida),"Salida desde Shamballa, RN 68 km 2, rumbo norte."]);
+    if (paradas){
+      it.push([hhmm(salida+10),"Los Médanos: parada de unos 20 min."]);
+      it.push([hhmm(salida+75),"Garganta del Diablo: caminata de unos 50 min."]);
+    }
+    var llegada = salida + manejo + tParadas;
+    it.push([hhmm(llegada),"Anfiteatro: última luz sobre las areniscas."]);
+    it.push([hhmm(ps),"Puesta de sol aproximada en Cafayate."]);
+    document.getElementById("pItin").innerHTML = it.map(function(r){return "<li><b>"+r[0]+"</b><span>"+r[1]+"</span></li>";}).join("");
+    var mes = MESES[dt.getMonth()];
+    document.getElementById("pAprox").textContent = "Puesta de sol aproximada para Cafayate (lat. −26,07) el "+dt.getDate()+" de "+mes+": "+hhmm(ps)+" h. Es un cálculo astronómico estimado: puede variar unos minutos, y dentro de la Quebrada los cerros tapan el sol antes. Tiempos de manejo y de paradas aproximados; volvé de noche con precaución.";
+    var sol=document.getElementById("solSvg"); var f=Math.min(1,Math.max(0,(ps-1140)/120)); sol.setAttribute("cy", String(250 - f*70));
+  }
+  ["change","input"].forEach(function(ev){ pF.addEventListener(ev,planificar); });
+  document.getElementById("pParadas").addEventListener("change",planificar);
+  document.getElementById("pFotos").addEventListener("change",planificar);
+  planificar();
+  window.__shamballa = {puestaSol:puestaSol, calcular:calcular};
+
+  /* ---------- Cinta de ruta: auto y hitos ---------- */
+  var auto=document.getElementById("auto"), cinta=document.querySelector(".cinta"), fill=document.getElementById("rielFill"), mainEl=document.getElementById("main");
+  var hitos=[].slice.call(document.querySelectorAll(".hito"));
+  var secs=hitos.map(function(h){return document.getElementById(h.dataset.sec);});
+  function onScroll(){
+    var y=window.scrollY+window.innerHeight*0.35, act=0;
+    secs.forEach(function(s,i){ if(s && s.offsetTop<=y) act=i; });
+    hitos.forEach(function(h,i){ h.classList.toggle("on",i===act); if(i===act) h.setAttribute("aria-current","true"); else h.removeAttribute("aria-current"); });
+    var max=document.documentElement.scrollHeight-window.innerHeight, p=max>0?window.scrollY/max:0;
+    var first=hitos[0].getBoundingClientRect(), last=hitos[hitos.length-1].getBoundingClientRect(), cr=cinta.getBoundingClientRect();
+    var x0=first.left+first.width/2-cr.left, x1=last.left+last.width/2-cr.left;
+    // posición por tramo
+    var a=secs[act].offsetTop, b= act<secs.length-1 ? secs[act+1].offsetTop : document.documentElement.scrollHeight;
+    var frac=Math.min(1,Math.max(0,(y-a)/Math.max(1,b-a)));
+    var ha=hitos[act].getBoundingClientRect(), hb=hitos[Math.min(act+1,hitos.length-1)].getBoundingClientRect();
+    var xa=ha.left+ha.width/2-cr.left, xb=hb.left+hb.width/2-cr.left;
+    auto.style.left=(xa+(xb-xa)*frac)+"px";
+    var mh=mainEl.offsetHeight; fill.style.height=Math.min(mh, Math.max(0, window.scrollY+window.innerHeight*.5-mainEl.offsetTop))+"px";
+  }
+  window.addEventListener("scroll",onScroll,{passive:true}); window.addEventListener("resize",onScroll); onScroll();
+
+  /* ---------- Reveal ---------- */
+  var rv=document.querySelectorAll(".reveal");
+  if ("IntersectionObserver" in window){
+    var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target);} }); },{rootMargin:"0px 0px -8% 0px"});
+    rv.forEach(function(el){io.observe(el);});
+  } else rv.forEach(function(el){el.classList.add("in");});
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Shamballa Cabañas"></script>
+</body>
+</html>
