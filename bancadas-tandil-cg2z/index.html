@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Bancadas Tandil · Configurador de rastras</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Titillium+Web:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--steel:#2E3A44;--steel2:#3B4955;--bg:#E8ECEE;--w:#FFFFFF;--ink:#121A20;--blue:#1C6FD1;--blue2:#DCE9F8;--orange:#F07B14;--mut:#5E6B75;--rule:#CBD3D8;--ok:#21844A;--h:#B46B00;--p:#7B8790}
+*{box-sizing:border-box;margin:0}[hidden]{display:none!important}
+body{font-family:'Titillium Web',system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:15.5px;line-height:1.5}
+button,input,select,textarea{font:inherit;color:inherit}button{cursor:pointer}
+:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.demo{background:var(--steel);color:#C8D3DA;font-size:12.5px;padding:7px 16px;text-align:center}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:12px 28px;background:var(--w);border-bottom:1px solid var(--rule);flex-wrap:wrap}
+.nav .id{display:flex;gap:12px;align-items:center}
+.nav img{height:44px;width:auto;display:block}
+.nav b{font-family:'Chakra Petch';font-weight:700;font-size:22px;letter-spacing:.3px}
+.nav a{color:var(--ink);font-weight:600;font-size:14px}
+.steps{display:flex;gap:0;background:var(--steel);overflow-x:auto;scrollbar-width:none}
+.steps button{flex:1;min-width:160px;background:none;border:0;border-right:1px solid #4A5966;color:#9FB0BC;padding:14px 18px;text-align:left;display:grid;gap:2px}
+.steps button b{font-family:'Chakra Petch';font-weight:600;font-size:13px;color:var(--orange)}
+.steps button span{font-weight:600;color:#E3EAEE}
+.steps button[aria-current=step]{background:var(--steel2);box-shadow:inset 0 -4px 0 var(--orange)}
+.main{max-width:1260px;margin:0 auto;padding:26px 28px;display:grid;grid-template-columns:1.25fr 1fr;gap:24px;align-items:start}
+.blue{background:var(--steel);color:#E3EAEE;border-radius:6px;padding:20px;position:sticky;top:12px;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:22px 22px}
+.blue h2{font-family:'Chakra Petch';font-weight:600;font-size:15px;color:#9FB0BC;letter-spacing:.4px}
+.blue svg{width:100%;height:auto;display:block;margin-top:8px}
+.blue .spec{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.blue .spec div{background:rgba(255,255,255,.06);border-radius:4px;padding:8px 10px}
+.blue .spec small{display:block;font-size:11.5px;color:#9FB0BC}
+.blue .spec b{font-family:'Chakra Petch';font-weight:700;font-size:20px;color:#fff}
+.cfg{display:grid;gap:18px}
+.q h3{font-family:'Chakra Petch';font-weight:700;font-size:22px;line-height:1.1;margin-bottom:8px}
+.q p{font-size:14px;color:var(--mut);margin-top:-4px;margin-bottom:8px}
+.opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.opts button{background:var(--w);border:2px solid var(--rule);border-radius:6px;padding:10px 12px;text-align:left;display:grid;gap:2px}
+.opts button b{font-family:'Chakra Petch';font-weight:700;font-size:18px}
+.opts button small{font-size:12.5px;color:var(--mut)}
+.opts button[aria-pressed=true]{border-color:var(--blue);background:var(--blue2)}
+.qtyrow{display:flex;align-items:center;gap:12px}
+.qtyrow input{width:90px;border:2px solid var(--rule);border-radius:6px;padding:8px 10px;font-family:'Chakra Petch';font-weight:700;font-size:20px;background:var(--w)}
+.qtyrow button{width:40px;height:40px;border:2px solid var(--rule);background:var(--w);border-radius:6px;font-weight:700;font-size:18px}
+.bom{background:var(--w);border:1px solid var(--rule);border-radius:6px}
+.bom header{display:flex;justify-content:space-between;align-items:baseline;padding:14px 16px;border-bottom:2px solid var(--ink);gap:10px;flex-wrap:wrap}
+.bom h3{font-family:'Chakra Petch';font-weight:700;font-size:22px}
+.bom header span{font-size:13px;color:var(--mut)}
+.bl{display:grid;grid-template-columns:48px 1fr auto auto;gap:12px;align-items:center;padding:10px 16px;border-bottom:1px solid #E4E9EC}
+.pz{width:44px;height:44px;color:var(--blue)}
+.pz .ax{stroke-dasharray:3 4;opacity:.45}.pz .th{stroke-width:1.2}
+.bl b{font-weight:600;line-height:1.2;display:block}
+.bl small{color:var(--mut);font-size:12.5px}
+.bl .x{font-family:'Chakra Petch';font-weight:700;font-size:17px;white-space:nowrap}
+.bl .pr{font-family:'Chakra Petch';font-weight:700;font-size:17px;text-align:right;white-space:nowrap}
+.dp{font-weight:700}.dp.m{color:var(--ok)}.dp.h{color:var(--h)}.dp.p{color:var(--p)}
+.bom .ft{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 16px;flex-wrap:wrap}
+.bom .ft b{font-family:'Chakra Petch';font-weight:700;font-size:28px}
+.addall{background:var(--orange);color:#fff;border:0;border-radius:6px;padding:12px 18px;font-weight:700}
+.addall.done{background:var(--ok)}
+.sep{max-width:1260px;margin:10px auto 0;padding:0 28px}
+.sep h2{font-family:'Chakra Petch';font-weight:700;font-size:30px;margin-bottom:4px}
+.sep p{color:var(--mut)}
+.loose{max-width:1260px;margin:0 auto;padding:14px 28px 10px;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.pc{background:var(--w);border:1px solid var(--rule);border-radius:6px;overflow:hidden;display:grid;grid-template-rows:150px auto 1fr auto}
+.pc .ph{background:#DDE3E7 center/cover no-repeat;display:grid;place-items:center;color:var(--blue)}
+.pc .ph .pz{width:80px;height:80px}
+.pc h4{font-weight:700;font-size:16px;padding:10px 12px 0;line-height:1.2}
+.pc .d{padding:2px 12px;font-size:12.5px;color:var(--mut)}
+.pc .f2{display:flex;justify-content:space-between;align-items:center;padding:10px 12px 12px}
+.pc .pr{font-family:'Chakra Petch';font-weight:700;font-size:20px}
+.add{background:var(--ink);color:#fff;border:0;border-radius:6px;padding:7px 12px;font-weight:700;font-size:13px}
+.add.done{background:var(--ok)}
+.order{max-width:1260px;margin:30px auto;padding:0 28px;display:grid;grid-template-columns:1.1fr 1fr;gap:20px}
+.box{background:var(--w);border:1px solid var(--rule);border-radius:6px;padding:20px}
+.box h2{font-family:'Chakra Petch';font-weight:700;font-size:26px;margin-bottom:8px}
+.ln{display:grid;grid-template-columns:1fr auto;gap:10px;padding:8px 0;border-bottom:1px solid #E4E9EC;font-size:14.5px}
+.ln small{display:block;color:var(--mut);font-size:12px}
+.ln-empty{color:var(--mut)}
+.qty{display:flex;gap:4px;align-items:center}
+.qty button{width:28px;height:28px;border:1px solid var(--rule);background:var(--w);border-radius:4px}
+.tot{display:flex;justify-content:space-between;align-items:baseline;padding-top:10px}
+.tot b{font-family:'Chakra Petch';font-weight:700;font-size:30px}
+.urg{margin-top:12px;width:100%;display:flex;gap:12px;align-items:center;text-align:left;border:2px solid var(--orange);background:none;color:#B35400;border-radius:6px;padding:12px;font-weight:700}
+.urg i{width:20px;height:20px;border:2px solid currentColor;border-radius:3px;flex:none;display:grid;place-items:center;font-style:normal}
+.urg[aria-pressed=true]{background:var(--orange);color:#fff}
+.urg[aria-pressed=true] i::after{content:'✓'}
+.urg small{display:block;font-weight:400;font-size:12.5px}
+.ff{display:grid;gap:4px;margin-bottom:10px}
+.ff label{font-size:12.5px;color:var(--mut)}
+.ff input{border:1px solid var(--rule);border-radius:6px;padding:10px 12px;background:var(--bg);width:100%}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.seg button{border:2px solid var(--rule);background:var(--w);border-radius:6px;padding:9px;font-size:14px}
+.seg button[aria-pressed=true]{border-color:var(--ink);background:var(--ink);color:#fff}
+.geo{display:flex;gap:10px;align-items:center;font-size:12.5px;color:var(--mut);margin-bottom:12px}
+.geo button{border:1px solid var(--rule);background:var(--w);border-radius:6px;padding:8px 12px;white-space:nowrap}
+.send{display:block;text-align:center;background:#1F9D55;color:#fff;font-weight:700;text-decoration:none;padding:14px;border-radius:6px}
+.send.off{opacity:.35;pointer-events:none}
+.fab{max-width:1260px;margin:0 auto 40px;padding:0 28px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.fab figure{background:var(--steel);color:#E3EAEE;border-radius:6px;overflow:hidden;display:grid;grid-template-rows:180px auto}
+.fab .im{background:#3B4955 center/cover no-repeat;display:grid;place-items:center;color:#7D93A3}
+.fab .im .pz{width:90px;height:90px;color:#7D93A3}
+.fab figcaption{padding:12px 14px;font-size:14px}
+.fab figcaption b{font-family:'Chakra Petch';display:block;font-size:17px}
+footer{background:var(--steel);color:#9FB0BC;text-align:center;padding:20px 16px;font-size:13px}
+.mcart{display:none}
+@media (max-width:980px){.main{grid-template-columns:1fr}.blue{position:relative;top:0}.order{grid-template-columns:1fr}.fab{grid-template-columns:1fr}}
+@media (max-width:560px){.nav,.main,.sep,.loose,.order,.fab{padding-left:16px;padding-right:16px}.blue .spec{grid-template-columns:1fr 1fr}.bl{grid-template-columns:40px 1fr auto;padding:10px 12px}.bl .pr{grid-column:2/4;text-align:left}.pz{width:36px;height:36px}.steps button{min-width:130px;padding:10px 12px}
+ .mcart{display:flex;position:fixed;left:16px;right:16px;bottom:12px;z-index:20;background:var(--orange);color:#fff;border-radius:6px;justify-content:space-between;padding:13px 16px;text-decoration:none;font-weight:700;box-shadow:0 6px 18px rgba(0,0,0,.3)}}
+</style>
+</head>
+<body>
+<div class="demo">Prototipo de demostración preparado para Bancadas Tandil · Precios y disponibilidad de ejemplo</div>
+<div class="nav">
+  <div class="id"><img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_150/u_https://assets.cdn.filesafe.space/Le8OSN6E28VYbFRFZNaM/media/2da20589-10f4-461b-8587-7c5d82e397a1.png" alt="" onerror="this.remove()"><b>Bancadas Tandil</b></div>
+  <div style="display:flex;gap:16px;flex-wrap:wrap"><span style="font-size:14px;color:var(--mut)">Fábrica de repuestos para rastras · Tandil</span><a href="https://wa.me/5492494266687">WhatsApp 2494 26-6687</a></div>
+</div>
+<nav class="steps" aria-label="Pasos">
+  <button type="button" data-go="c1" aria-current="step"><b>Paso 1</b><span>Eje de la rastra</span></button>
+  <button type="button" data-go="c2"><b>Paso 2</b><span>Rodamiento</span></button>
+  <button type="button" data-go="c3"><b>Paso 3</b><span>Cuántas bancadas</span></button>
+  <button type="button" data-go="bom"><b>Paso 4</b><span>Lista de materiales</span></button>
+</nav>
+<section class="main">
+  <div class="blue" aria-live="polite">
+    <h2>Bancada armada · vista en corte</h2>
+    <svg id="bp" viewBox="0 0 560 300" aria-hidden="true"></svg>
+    <div class="spec" id="spec"></div>
+  </div>
+  <div class="cfg">
+    <div class="q" id="c1"><h3>¿Qué eje tiene la rastra?</h3><p>Medilo entre caras planas del eje cuadrado.</p><div class="opts" id="o1"></div></div>
+    <div class="q" id="c2"><h3>¿Qué rodamiento querés?</h3><div class="opts" id="o2"></div></div>
+    <div class="q" id="c3"><h3>¿Cuántas bancadas?</h3><p>Una rastra de 28 discos lleva 4. Una excéntrica de 40, 6.</p>
+      <div class="qtyrow"><button type="button" id="mn" aria-label="Menos">−</button><input id="n" type="number" min="1" max="20" value="4" aria-label="Cantidad"><button type="button" id="pl" aria-label="Más">+</button></div>
+      <div class="opts" style="margin-top:10px" id="o3"></div></div>
+    <div class="bom" id="bom">
+      <header><h3>Lista de materiales</h3><span id="bomS"></span></header>
+      <div id="bl"></div>
+      <div class="ft"><div><span style="font-size:13px;color:var(--mut)">Total de referencia</span><br><b id="bt"></b></div><button type="button" class="addall" id="addall">Agregar todo al pedido</button></div>
+    </div>
+  </div>
+</section>
+<div class="sep"><h2>Piezas sueltas</h2><p>Para el que ya tiene la bancada y solo cambia una parte.</p></div>
+<section class="loose" id="loose"></section>
+<section class="order" id="pedido">
+  <div class="box">
+    <h2>Pedido</h2>
+    <div id="lines"></div>
+    <div class="tot"><span>Total de referencia</span><b data-total>$ 0</b></div>
+    <button type="button" class="urg" data-urg aria-pressed="false"><i></i><span>Rastra parada en plena labor<small>Sale marcado como urgente.</small></span></button>
+  </div>
+  <div class="box">
+    <div class="ff"><label for="nom">Nombre</label><input id="nom" data-f="nom" placeholder="Ej.: Contratista Echeverría"></div>
+    <div class="ff"><label for="maq">Rastra</label><input id="maq" data-f="maq" placeholder="Ej.: rastra doble acción 28 discos"></div>
+    <div class="ff"><div class="seg"><button type="button" data-env="retiro" aria-pressed="true">Retiro en fábrica</button><button type="button" data-env="expreso" aria-pressed="false">Envío por expreso</button></div></div>
+    <div class="ff" data-loc-wrap hidden><label for="loc">Localidad</label><input id="loc" data-f="loc" placeholder="Ej.: Balcarce"></div>
+    <div class="ff"><label for="campo">Campo</label><input id="campo" data-f="campo" placeholder="Ej.: ruta 226, km 155"></div>
+    <div class="geo"><button type="button" data-geo>Usar mi ubicación</button><span data-geo-t>Se suma el link de Maps.</span></div>
+    <a class="send off" data-wa target="_blank" rel="noopener" href="#"><span data-wa-label="Enviar pedido por WhatsApp" data-urg-label="Enviar pedido URGENTE por WhatsApp">Enviar pedido por WhatsApp</span></a>
+  </div>
+</section>
+<section class="fab" aria-label="Fábrica">
+  <figure><div class="im" data-src="https://images.leadconnectorhq.com/image/f_webp/q_60/r_800/u_https://storage.googleapis.com/msgsndr/grul9nfnpJA4bWE0G5xj/media/696ea1fdacaab0bfaf9cad36.jpg" data-t="maza"></div><figcaption><b>Mazas mecanizadas</b>Fabricación propia en Tandil.</figcaption></figure>
+  <figure><div class="im" data-src="https://images.leadconnectorhq.com/image/f_webp/q_60/r_800/u_https://storage.googleapis.com/msgsndr/grul9nfnpJA4bWE0G5xj/media/696ea8339b21f067b04cb619.jpg" data-t="engranaje"></div><figcaption><b>Proceso metalúrgico</b>Torno, soldadura y control de medidas.</figcaption></figure>
+  <figure><div class="im" data-src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_640/u_https://storage.googleapis.com/msgsndr/grul9nfnpJA4bWE0G5xj/media/696ea1b7156e0a7a3be9214a.jpg" data-t="buje"></div><figcaption><b>Bancadas listas</b>Para rastras de disco de todas las marcas.</figcaption></figure>
+</section>
+<footer>Prototipo preparado para Bancadas Tandil por Resolviendo Kos · resolviendokos.com · No es la web oficial</footer>
+<a class="mcart" href="#pedido"><span>Ver pedido</span><span><span data-count>0</span> · <span data-total>$ 0</span></span></a>
+<script>
+/* motor de catálogo de repuestos: búsqueda por máquina / código / medida, carrito y pedido por WhatsApp */
+const R=(()=>{
+  const ars=n=>'$ '+Math.round(n).toLocaleString('es-AR');
+  const norm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+  const flat=s=>norm(s).replace(/[^a-z0-9]/g,'');
+  const DISP={m:{t:'En mostrador',k:'m',ord:0},h:{t:'En 24 h',k:'h',ord:1},p:{t:'A pedido',k:'p',ord:2}};
+  /* filas compactas: [cod, nombre, tipo, marcaPieza, precio, disp, maquinas 'Marca|Modelo|Sistema;...', medida {}, equivalencias 'a,b'] */
+  function load(rows){
+    return rows.map((r,i)=>{
+      const [cod,n,tipo,mp,p,disp,maq,med,eq]=r;
+      return {id:'i'+i,cod,n,tipo,mp,p,disp:DISP[disp]||DISP.m,
+        maq:(maq||'').split(';').filter(Boolean).map(x=>{const [marca,modelo,sistema]=x.split('|');return{marca,modelo,sistema}}),
+        med:med||null,eq:(eq||'').split(',').map(s=>s.trim()).filter(Boolean)};
+    });
+  }
+  function tree(items){
+    const t={};
+    items.forEach(it=>it.maq.forEach(m=>{
+      t[m.marca]=t[m.marca]||{};t[m.marca][m.modelo]=t[m.marca][m.modelo]||new Set();t[m.marca][m.modelo].add(m.sistema)}));
+    return t;
+  }
+  const marcas=items=>Object.keys(tree(items)).sort();
+  const modelos=(items,marca)=>Object.keys(tree(items)[marca]||{}).sort();
+  const sistemas=(items,marca,modelo)=>[...((tree(items)[marca]||{})[modelo]||[])].sort();
+  function byMachine(items,marca,modelo,sistema){
+    return items.filter(it=>it.maq.some(m=>(!marca||m.marca===marca)&&(!modelo||m.modelo===modelo)&&(!sistema||m.sistema===sistema)));
+  }
+  function byCode(items,q){
+    const f=flat(q);if(f.length<2)return[];
+    const words=norm(q).split(/\s+/).filter(w=>w.length>1);
+    const sc=it=>{
+      if(flat(it.cod)===f)return 100;
+      if(it.eq.some(e=>flat(e)===f))return 90;
+      if(flat(it.cod).includes(f))return 70;
+      if(it.eq.some(e=>flat(e).includes(f)))return 60;
+      const hay=norm([it.n,it.mp,it.cod,it.eq.join(' '),it.maq.map(m=>m.marca+' '+m.modelo+' '+m.sistema).join(' ')].join(' '));
+      return words.length&&words.every(w=>hay.includes(w))?40:0;
+    };
+    return items.map(it=>[sc(it),it]).filter(x=>x[0]).sort((a,b)=>b[0]-a[0]).map(x=>x[1]);
+  }
+  /* medida: rodamiento {d,D,B} mm · correa {sec,L} · otras {k:v} numéricas; tolerancia en mm */
+  function byMeasure(items,tipo,want,tol=0){
+    return items.filter(it=>it.med&&(!tipo||it.tipo===tipo)).map(it=>{
+      let dist=0,ok=true;
+      for(const k in want){const w=want[k];if(w===''||w==null)continue;const v=it.med[k];
+        if(v==null){ok=false;break}
+        if(typeof w==='string'&&isNaN(+w)){if(norm(v)!==norm(w)){ok=false;break}}
+        else{const dd=Math.abs(+v-(+w));if(dd>tol){ok=false;break}dist+=dd}}
+      return ok?[dist,it]:null}).filter(Boolean).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
+  }
+  function medTxt(it){
+    const m=it.med;if(!m)return'';
+    if(m.d!=null)return m.d+'×'+m.D+'×'+m.B+' mm';
+    if(m.sec)return'Sección '+m.sec+(m.L?' · '+m.L+' mm':'');
+    return Object.entries(m).map(([k,v])=>k+' '+v).join(' · ');
+  }
+  /* carrito */
+  function Cart(onchange,key){
+    const c={lines:new Map()};
+    const save=()=>{try{key&&localStorage.setItem(key,JSON.stringify([...c.lines].map(([id,l])=>[id,l.q])))}catch(e){}};
+    c.add=(it,q=1)=>{const l=c.lines.get(it.id);c.lines.set(it.id,{it,q:(l?l.q:0)+q});save();onchange&&onchange(c)};
+    c.set=(it,q)=>{if(q<=0)c.lines.delete(it.id);else c.lines.set(it.id,{it,q});save();onchange&&onchange(c)};
+    c.del=it=>{c.lines.delete(it.id);save();onchange&&onchange(c)};
+    c.clear=()=>{c.lines.clear();save();onchange&&onchange(c)};
+    c.count=()=>[...c.lines.values()].reduce((a,l)=>a+l.q,0);
+    c.total=()=>[...c.lines.values()].reduce((a,l)=>a+l.q*l.it.p,0);
+    c.list=()=>[...c.lines.values()];
+    c.worst=()=>c.list().reduce((a,l)=>Math.max(a,l.it.disp.ord),0);
+    c.restore=items=>{try{const s=JSON.parse(localStorage.getItem(key)||'[]');s.forEach(([id,q])=>{const it=items.find(x=>x.id===id);if(it)c.lines.set(id,{it,q})})}catch(e){}onchange&&onchange(c)};
+    return c;
+  }
+  function waText(o){
+    const L=[];
+    if(o.urgencia)L.push('*URGENTE – MÁQUINA PARADA EN COSECHA*');
+    L.push('Hola '+o.negocio+', les hago este pedido desde el catálogo web:');
+    L.push('');
+    o.cart.list().forEach(l=>L.push('• '+l.q+' × '+l.it.n+' (cód. '+l.it.cod+(l.it.mp?' · '+l.it.mp:'')+') – '+l.it.disp.t+' – '+ars(l.q*l.it.p)));
+    L.push('');
+    L.push('Total de referencia: '+ars(o.cart.total()));
+    if(o.maquina)L.push('Máquina: '+o.maquina);
+    if(o.nombre)L.push('A nombre de: '+o.nombre);
+    L.push('Entrega: '+(o.envio==='retiro'?'Retiro en mostrador':'Envío por expreso'+(o.localidad?' a '+o.localidad:'')));
+    if(o.campo)L.push('Campo / establecimiento: '+o.campo);
+    if(o.geo)L.push('Ubicación del campo: https://maps.google.com/?q='+o.geo);
+    if(o.nota)L.push('Nota: '+o.nota);
+    L.push('');
+    L.push('¿Me confirman stock y precio final?');
+    return L.join('\n');
+  }
+  const waLink=(num,o)=>'https://wa.me/'+num+'?text='+encodeURIComponent(waText(o));
+  function geo(cb){
+    try{if(!navigator.geolocation)return cb(null,'Este navegador no comparte ubicación.');
+      navigator.geolocation.getCurrentPosition(p=>cb(p.coords.latitude.toFixed(5)+','+p.coords.longitude.toFixed(5)),()=>cb(null,'No pudimos leer la ubicación. Escribila a mano o pegá el link de Maps.'),{timeout:8000})}
+    catch(e){cb(null,'No pudimos leer la ubicación.')}
+  }
+  /* dibujos técnicos: trazos en currentColor, viewBox 120×120 */
+  const D={
+    rodamiento:()=>{let b='';for(let i=0;i<10;i++){const a=i*Math.PI/5,x=60+31*Math.cos(a),y=60+31*Math.sin(a);b+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="6.4"/>`}
+      return `<circle cx="60" cy="60" r="44"/><circle cx="60" cy="60" r="38"/><circle cx="60" cy="60" r="24"/><circle cx="60" cy="60" r="18"/>${b}<path d="M60 8v-4M60 116v-4M8 60H4M116 60h-4" class="ax"/>`},
+    correa:()=>`<path d="M22 60a26 26 0 0 1 26-26h44a20 20 0 0 1 0 40H48a26 26 0 0 1-26-26z"/><path d="M30 60a18 18 0 0 1 18-18h44a12 12 0 0 1 0 24H48a18 18 0 0 1-18-18z"/><circle cx="48" cy="60" r="10" class="ax"/><circle cx="92" cy="54" r="6" class="ax"/><path d="M40 96h40l-8 14H48z"/><path d="M44 99h32" class="ax"/>`,
+    cuchilla:()=>`<path d="M20 86L60 22l40 64z"/><path d="M24 80l4 6 4-6 4 6 4-6 4 6 4-6 4 6 4-6 4 6 4-6 4 6 4-6 4 6 4-6 4 6 4-6 4 6" class="th"/><circle cx="48" cy="74" r="4"/><circle cx="72" cy="74" r="4"/><path d="M60 22v58" class="ax"/>`,
+    disco:()=>`<circle cx="60" cy="60" r="46"/><circle cx="60" cy="60" r="14"/><circle cx="60" cy="60" r="5"/>${[0,1,2,3].map(i=>{const a=i*Math.PI/2+.78;return`<circle cx="${(60+22*Math.cos(a)).toFixed(1)}" cy="${(60+22*Math.sin(a)).toFixed(1)}" r="3"/>`}).join('')}<path d="M14 60a46 46 0 0 1 92 0" class="ax"/>`,
+    cadena:()=>{let s='';for(let i=0;i<4;i++){const x=10+i*26;s+=`<rect x="${x}" y="46" width="34" height="28" rx="14"/><circle cx="${x+14}" cy="60" r="5"/>`}return s+`<path d="M6 60h108" class="ax"/>`},
+    manguera:()=>`<path d="M18 40h12v40H18zM90 40h12v40H90z"/><path d="M30 46c20-10 40 18 60 0M30 74c20-10 40 18 60 0"/><path d="M8 52h10v16H8zM102 52h10v16h-10z"/><path d="M4 60h112" class="ax"/>`,
+    pua:()=>`<path d="M30 104V58"/><path d="M90 104V58"/><path d="M30 58c0-8 12-8 12-16s-12-8-12-16 12-8 12-16"/><path d="M90 58c0-8-12-8-12-16s12-8 12-16-12-8-12-16"/><path d="M42 10h36"/><path d="M60 4v18" class="ax"/>`,
+    filtro:()=>`<ellipse cx="60" cy="24" rx="30" ry="9"/><path d="M30 24v70a30 9 0 0 0 60 0V24"/><ellipse cx="60" cy="24" rx="10" ry="3"/>${[38,50,62,74,86].map(y=>`<path d="M30 ${y}a30 9 0 0 0 60 0" class="th"/>`).join('')}`,
+    buje:()=>`<ellipse cx="40" cy="60" rx="14" ry="30"/><ellipse cx="40" cy="60" rx="7" ry="16"/><path d="M40 30h46M40 90h46"/><path d="M86 30a14 30 0 0 1 0 60"/><path d="M20 60h86" class="ax"/>`,
+    maza:()=>`<circle cx="60" cy="60" r="44"/><circle cx="60" cy="60" r="20"/><circle cx="60" cy="60" r="9"/>${[0,1,2,3,4,5].map(i=>{const a=i*Math.PI/3;return`<circle cx="${(60+32*Math.cos(a)).toFixed(1)}" cy="${(60+32*Math.sin(a)).toFixed(1)}" r="4.5"/>`}).join('')}`,
+    reten:()=>`<circle cx="60" cy="60" r="42"/><circle cx="60" cy="60" r="34"/><circle cx="60" cy="60" r="22"/><path d="M60 18v-8M60 110v-8" class="ax"/><path d="M96 92l14 14M96 92h8M96 92v8" class="th"/>`,
+    engranaje:()=>{let p='';const n=16;for(let i=0;i<n;i++){const a=i*2*Math.PI/n,b=a+Math.PI/n*.5,c=a+Math.PI/n,e=a+Math.PI/n*1.5;
+      const P=(r,t)=>(60+r*Math.cos(t)).toFixed(1)+' '+(60+r*Math.sin(t)).toFixed(1);p+=(i?'L':'M')+P(40,a)+'L'+P(48,b)+'L'+P(48,c)+'L'+P(40,e)}
+      return `<path d="${p}Z"/><circle cx="60" cy="60" r="12"/><path d="M56 48h8v6h-8z"/>`},
+    placa:()=>`<circle cx="60" cy="60" r="46"/><circle cx="60" cy="60" r="8"/>${Array.from({length:24},(_,i)=>{const a=i*Math.PI/12;return`<circle cx="${(60+38*Math.cos(a)).toFixed(1)}" cy="${(60+38*Math.sin(a)).toFixed(1)}" r="2.8"/>`}).join('')}<circle cx="60" cy="60" r="28" class="ax"/>`,
+    patin:()=>`<path d="M14 70h70l22-22v-8H86L66 60H14z"/><circle cx="34" cy="65" r="3"/><circle cx="54" cy="65" r="3"/><path d="M14 82h92" class="ax"/>`,
+    bomba:()=>`<rect x="26" y="36" width="56" height="48" rx="6"/><circle cx="54" cy="60" r="14"/><path d="M82 52h16v16H82M10 54h16v12H10"/><path d="M40 84v12h28V84"/>`,
+    lampara:()=>`<rect x="22" y="40" width="76" height="40" rx="8"/><path d="M30 48h60v24H30z" class="th"/><path d="M40 80v14M80 80v14M34 94h52"/>`,
+    tornillo:()=>`<path d="M42 16h36v18H42z"/><path d="M52 34v66l8 8 8-8V34"/>${[42,52,62,72,82,92].map(y=>`<path d="M52 ${y}l16 4" class="th"/>`).join('')}`,
+  };
+  function svg(tipo,cls){return `<svg viewBox="0 0 120 120" class="${cls||'pz'}" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">${(D[tipo]||D.tornillo)()}</svg>`}
+  const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  return {ars,norm,load,tree,marcas,modelos,sistemas,byMachine,byCode,byMeasure,medTxt,Cart,waText,waLink,geo,svg,esc,DISP};
+})();
+
+/* checkout genérico: lee [data-f=...], [data-env], [data-urg], [data-geo]; escribe [data-wa] (href), [data-total], [data-count], [data-geo-t] */
+R.checkout=function(o){
+  const q=s=>[...document.querySelectorAll(s)];
+  const st={env:'retiro',geo:'',urg:false};
+  const val=k=>{const e=document.querySelector('[data-f="'+k+'"]');return e?e.value.trim():''};
+  function refresh(){
+    const c=o.cart;
+    q('[data-total]').forEach(e=>e.textContent=R.ars(c.total()));
+    q('[data-count]').forEach(e=>e.textContent=c.count());
+    const urgEl=document.querySelector('[data-urg]');
+    st.urg=urgEl?(urgEl.type==='checkbox'?urgEl.checked:urgEl.getAttribute('aria-pressed')==='true'):false;
+    document.documentElement.classList.toggle('is-urg',st.urg);
+    const d={negocio:o.negocio,cart:c,urgencia:st.urg,nombre:val('nom'),maquina:val('maq')||(o.maquina?o.maquina():''),envio:st.env,localidad:val('loc'),campo:val('campo'),geo:st.geo,nota:val('nota')};
+    q('[data-wa]').forEach(a=>{
+      if(o.wa){a.href=R.waLink(o.wa,d)}
+      else if(o.mail){a.href='mailto:'+o.mail+'?subject='+encodeURIComponent((st.urg?'URGENTE – ':'')+'Pedido desde el catálogo web')+'&body='+encodeURIComponent(R.waText(d))}
+      a.classList.toggle('off',!c.count());a.setAttribute('aria-disabled',!c.count());
+    });
+    q('[data-wa-label]').forEach(e=>e.textContent=st.urg?e.dataset.urgLabel||e.dataset.waLabel:e.dataset.waLabel);
+    q('[data-loc-wrap]').forEach(e=>e.hidden=st.env!=='expreso');
+    o.after&&o.after(st);
+  }
+  q('[data-f]').forEach(e=>e.addEventListener('input',refresh));
+  q('[data-env]').forEach(b=>b.addEventListener('click',()=>{st.env=b.dataset.env;q('[data-env]').forEach(x=>x.setAttribute('aria-pressed',x.dataset.env===st.env));refresh()}));
+  q('[data-urg]').forEach(b=>b.addEventListener(b.type==='checkbox'?'change':'click',()=>{if(b.type!=='checkbox')b.setAttribute('aria-pressed',b.getAttribute('aria-pressed')!=='true');refresh()}));
+  q('[data-geo]').forEach(b=>b.addEventListener('click',()=>{q('[data-geo-t]').forEach(t=>t.textContent='Buscando ubicación…');R.geo((g,err)=>{st.geo=g||'';q('[data-geo-t]').forEach(t=>t.textContent=g?'Ubicación agregada: '+g:err);refresh()})}));
+  return {refresh,st};
+};
+/* lista de líneas del carrito estándar dentro de un contenedor */
+R.lines=function(el,cart,empty){
+  el.innerHTML=cart.list().length?cart.list().map(l=>`<div class="ln"><div class="ln-n">${R.esc(l.it.n)}<small>Cód. ${R.esc(l.it.cod)} · ${l.it.disp.t} · ${R.ars(l.it.p)} c/u</small></div><div class="qty"><button type="button" data-q="-" data-id="${l.it.id}" aria-label="Quitar uno">−</button><span>${l.q}</span><button type="button" data-q="+" data-id="${l.it.id}" aria-label="Sumar uno">+</button></div></div>`).join(''):`<p class="ln-empty">${empty||'Todavía no agregaste piezas.'}</p>`;
+  el.querySelectorAll('[data-q]').forEach(b=>b.onclick=()=>{const l=cart.lines.get(b.dataset.id);cart.set(l.it,l.q+(b.dataset.q==='+'?1:-1))});
+};
+R.bindAdd=function(root,items,cart,label){
+  root.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>{const it=items.find(i=>i.id===b.dataset.add);cart.add(it);const t=b.textContent;b.textContent=label||'Agregado';b.classList.add('done');setTimeout(()=>{b.textContent=t;b.classList.remove('done')},1100)});
+};
+
+const NEG='Bancadas Tandil',WA='5492494266687';
+const EJES=[['1 1/8"',28.6,'Rastras livianas y medianas'],['1 1/4"',31.8,'Doble acción hasta 32 discos'],['1 1/2"',38.1,'Excéntricas pesadas']];
+const RODS=[['GW211PPB',' Timken','Agrícola de eje cuadrado, triple labio',1],['DS211TTR',' Nacional','Equivalente de línea',0.72],['W211PPB + reten extra',' Timken','Para barro y rastrojo pesado',1.22]];
+const TIPOS=[['Doble acción',4],['Excéntrica 28',4],['Excéntrica 40',6],['Rome / pesada',8]];
+const C={eje:0,rod:0,n:4,t:0};
+const BASE={caja:98000,rod:54000,ret:9800,buje:18500,tapa:12500,bul:6400};
+const ROWS=[
+['BT-MAZA','Maza de rueda agrícola 6 agujeros','maza','Bancadas Tandil',86000,'m','Rastra|Todas|Mazas',null,''],
+['BT-PUNTA','Punta de eje agrícola','buje','Bancadas Tandil',64000,'m','Rastra|Todas|Ejes',null,''],
+['BT-EJE','Eje cuadrado 1 1/8" (metro)','tornillo','Bancadas Tandil',58000,'h','Rastra|Todas|Ejes',null,''],
+['BT-BUJ','Buje porta rodamiento','buje','Bancadas Tandil',18500,'m','Rastra|Todas|Bancada',null,''],
+['BT-RET','Retén de bancada triple labio','reten','Nacional',9800,'m','Rastra|Todas|Bancada',{d:45,D:72,B:10},''],
+['GW211PPB2','Rodamiento agrícola 1 1/8"','rodamiento','Timken',54000,'m','Rastra|Todas|Bancada',{d:28.6,D:100,B:33.3},'DS211TTR2'],
+['BT-SEP','Separador de discos (carretel)','buje','Bancadas Tandil',14500,'m','Rastra|Todas|Discos',null,''],
+['DD-24','Disco dentado 24"','disco','Ingersoll',78000,'h','Rastra|Todas|Discos',null,'']
+];
+const items=R.load(ROWS);
+const $=s=>document.querySelector(s);
+const cart=R.Cart(onCart,'bancadas-cart');let co;
+function onCart(){R.lines($('#lines'),cart,'Configurá una bancada o agregá piezas sueltas.');co&&co.refresh()}
+function opts(el,list,cur,lab,on){el.innerHTML=list.map((x,i)=>`<button type="button" aria-pressed="${i===cur}" data-i="${i}">${lab(x)}</button>`).join('');el.querySelectorAll('button').forEach(b=>b.onclick=()=>on(+b.dataset.i))}
+function bom(){
+  const e=EJES[C.eje],r=RODS[C.rod],n=Math.max(1,Math.min(20,C.n|0));
+  const rp=Math.round(BASE.rod*r[3]*(1+C.eje*.12));const cp=Math.round(BASE.caja*(1+C.eje*.15));
+  return [
+    {id:'b-caja-'+C.eje,cod:'BT-CAJ-'+e[0].replace(/\W/g,''),n:'Caja de bancada para eje '+e[0],tipo:'maza',mp:'Bancadas Tandil',p:cp,q:n,disp:R.DISP.m},
+    {id:'b-rod-'+C.eje+'-'+C.rod,cod:r[0]+(C.eje+2),n:'Rodamiento '+r[0].trim()+' para eje '+e[0],tipo:'rodamiento',mp:r[1].trim(),p:rp,q:n,disp:C.rod===2?R.DISP.h:R.DISP.m},
+    {id:'b-ret-'+C.eje,cod:'BT-RET-'+(45+C.eje*5),n:'Retén triple labio',tipo:'reten',mp:'Nacional',p:BASE.ret,q:n*2,disp:R.DISP.m},
+    {id:'b-buje-'+C.eje,cod:'BT-BUJ-'+(C.eje+1),n:'Buje porta rodamiento',tipo:'buje',mp:'Bancadas Tandil',p:BASE.buje,q:n,disp:R.DISP.m},
+    {id:'b-tapa',cod:'BT-TAPA',n:'Tapa con grasera',tipo:'disco',mp:'Bancadas Tandil',p:BASE.tapa,q:n,disp:R.DISP.m},
+    {id:'b-bul',cod:'BUL-5/8',n:'Juego de bulones 5/8" grado 8',tipo:'tornillo',mp:'Nacional',p:BASE.bul,q:n,disp:R.DISP.m}];
+}
+function blueprint(){
+  const e=EJES[C.eje],sz=18+C.eje*5;const O='#F07B14',L='#E3EAEE',D='#7D93A3';
+  const box=(x)=>`<rect x="${x-46}" y="80" width="92" height="140" rx="6" fill="none" stroke="${L}" stroke-width="2"/><circle cx="${x}" cy="150" r="40" fill="none" stroke="${L}" stroke-width="2"/><circle cx="${x}" cy="150" r="30" fill="none" stroke="${D}" stroke-width="1.5" stroke-dasharray="3 3"/><rect x="${x-sz/2}" y="${150-sz/2}" width="${sz}" height="${sz}" fill="none" stroke="${O}" stroke-width="2.4"/><circle cx="${x-34}" cy="96" r="5" fill="none" stroke="${L}"/><circle cx="${x+34}" cy="96" r="5" fill="none" stroke="${L}"/><circle cx="${x-34}" cy="204" r="5" fill="none" stroke="${L}"/><circle cx="${x+34}" cy="204" r="5" fill="none" stroke="${L}"/>`;
+  const n=Math.max(1,Math.min(20,C.n|0)),k=Math.min(n,4);
+  let g=`<path d="M20 150H540" stroke="${O}" stroke-width="${sz/3}" opacity=".25"/><path d="M20 150H540" stroke="${D}" stroke-dasharray="10 6"/>`;
+  for(let i=0;i<k;i++){g+=box(k===1?280:90+i*380/(k-1))}
+  g+=`<text x="280" y="275" fill="${L}" font-family="Chakra Petch" font-weight="700" font-size="22" text-anchor="middle">${n} bancada${n>1?'s':''}${n>4?' (se muestran 4)':''}</text>`;
+  g+=`<text x="90" y="56" fill="${O}" font-family="Chakra Petch" font-weight="700" font-size="24" text-anchor="middle">□ ${e[0]}</text><path d="M90 62V${150-sz/2-4}" stroke="${O}" stroke-width="1"/>`;
+  $('#bp').innerHTML=g;
+  $('#spec').innerHTML=[['Eje',e[0]],['Rodamiento',RODS[C.rod][0].split(' ')[0]],['Bancadas',n],['Retenes',n*2]].map(([a,b])=>`<div><small>${a}</small><b>${b}</b></div>`).join('');
+}
+function draw(){
+  opts($('#o1'),EJES,C.eje,x=>`<b>${x[0]}</b><small>${x[2]}</small>`,i=>{C.eje=i;draw()});
+  opts($('#o2'),RODS,C.rod,x=>`<b>${x[0]}</b><small>${x[1].trim()} · ${x[2]}</small>`,i=>{C.rod=i;draw()});
+  $('#o3').innerHTML=TIPOS.map(t=>`<button type="button" aria-pressed="${C.t===TIPOS.indexOf(t)}" data-n="${t[1]}" data-t="${TIPOS.indexOf(t)}"><b>${t[1]}</b><small>${t[0]}</small></button>`).join('');
+  $('#o3').querySelectorAll('button').forEach(b=>b.onclick=()=>{C.n=+b.dataset.n;C.t=+b.dataset.t;$('#n').value=C.n;draw()});
+  const L=bom();
+  $('#bl').innerHTML=L.map(x=>`<div class="bl">${R.svg(x.tipo)}<div><b>${R.esc(x.n)}</b><small>Cód. ${R.esc(x.cod)} · ${R.esc(x.mp)} · <span class="dp ${x.disp.k}">${x.disp.t}</span></small></div><span class="x">× ${x.q}</span><span class="pr">${R.ars(x.p*x.q)}</span></div>`).join('');
+  $('#bt').textContent=R.ars(L.reduce((a,x)=>a+x.p*x.q,0));
+  $('#bomS').textContent='Eje '+EJES[C.eje][0]+' · '+C.n+' bancadas';
+  blueprint();
+}
+$('#n').oninput=()=>{C.t=-1;C.n=Math.max(1,Math.min(20,+$('#n').value||1));draw()};
+$('#mn').onclick=()=>{C.t=-1;C.n=Math.max(1,C.n-1);$('#n').value=C.n;draw()};
+$('#pl').onclick=()=>{C.t=-1;C.n=Math.min(20,C.n+1);$('#n').value=C.n;draw()};
+$('#addall').onclick=()=>{bom().forEach(x=>{const it={id:x.id,cod:x.cod,n:x.n,tipo:x.tipo,mp:x.mp,p:x.p,disp:x.disp,maq:[],eq:[],med:null};const l=cart.lines.get(x.id);cart.set(it,(l?l.q:0)+x.q)});const b=$('#addall');b.textContent='Agregado al pedido';b.classList.add('done');setTimeout(()=>{b.textContent='Agregar todo al pedido';b.classList.remove('done')},1300)};
+document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-go]').forEach(x=>x.removeAttribute('aria-current'));b.setAttribute('aria-current','step');document.getElementById(b.dataset.go).scrollIntoView({behavior:'smooth',block:'center'})});
+$('#loose').innerHTML=items.map(it=>`<article class="pc"><div class="ph">${R.svg(it.tipo)}</div><h4>${R.esc(it.n)}</h4><div class="d">Cód. ${R.esc(it.cod)} · ${R.esc(it.mp)} · <span class="dp ${it.disp.k}">${it.disp.t}</span></div><div class="f2"><span class="pr">${R.ars(it.p)}</span><button class="add" data-add="${it.id}">Agregar</button></div></article>`).join('');
+R.bindAdd($('#loose'),items,cart);
+document.querySelectorAll('.fab .im').forEach(el=>{const i=new Image();i.onload=()=>{el.style.backgroundImage='url("'+i.src+'")'};i.onerror=()=>{el.innerHTML=R.svg(el.dataset.t)};i.src=el.dataset.src});
+co=R.checkout({cart,negocio:NEG,wa:WA,maquina:()=>'Rastra con eje '+EJES[C.eje][0]});
+draw();cart.restore(items);onCart();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Bancadas Tandil"></script>
+</body>
+</html>
