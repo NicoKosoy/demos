@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Santamarina · Tarifario Cariló</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--papel:#FFFFFF;--hueso:#F5F3EE;--tinta:#0F2340;--tinta2:#2B3F5C;--acacia:#6E7F24;--acacia2:#E9EED6;--ladrillo:#B0432F;--gris:#66707C;--linea:#DFDCD3}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow-x:clip}
+body{font-family:"Public Sans",system-ui,sans-serif;background:var(--papel);color:var(--tinta);line-height:1.5;font-size:15px}
+img{display:block;max-width:100%}
+button,select,input{font:inherit;color:inherit}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--ladrillo);outline-offset:2px}
+.cs{font-family:"Libre Caslon Display",Georgia,serif;font-weight:400}
+.aviso{background:var(--tinta);color:#D9E0EA;font-size:13px;padding:7px 16px;text-align:center}
+.cab{display:grid;grid-template-columns:1fr auto;align-items:end;gap:20px;padding:28px 36px 22px;border-bottom:3px double var(--tinta)}
+.cab h1{font-size:clamp(34px,5vw,68px);line-height:1;letter-spacing:-.01em}
+.cab .bajo{color:var(--gris);margin-top:10px;max-width:70ch}
+.cab .der{text-align:right;font-size:14px;color:var(--gris)}
+.cab .der b{display:block;font-family:"Libre Caslon Display";font-weight:400;font-size:26px;color:var(--tinta)}
+.cab .der a{display:inline-block;margin-top:8px;background:var(--acacia);color:#fff;text-decoration:none;padding:9px 16px;font-weight:600;border-radius:2px}
+
+.filtros{display:flex;flex-wrap:wrap;align-items:center;gap:10px 26px;padding:14px 36px;background:var(--hueso);border-bottom:1px solid var(--linea);font-size:14px}
+.filtros label{display:flex;align-items:center;gap:8px;color:var(--gris)}
+.filtros select{border:1px solid var(--linea);background:#fff;padding:6px 8px;border-radius:2px;color:var(--tinta)}
+.filtros .chk{display:flex;gap:6px;align-items:center;color:var(--tinta);cursor:pointer}
+.filtros .chk input{accent-color:var(--acacia);width:16px;height:16px}
+.filtros .ley{margin-left:auto;display:flex;gap:14px;flex-wrap:wrap;color:var(--gris);font-size:13px}
+.sw{display:inline-block;width:14px;height:14px;vertical-align:-2px;margin-right:5px;border:1px solid var(--linea)}
+
+.tabla-w{overflow-x:auto;border-bottom:1px solid var(--linea)}
+table.t{border-collapse:separate;border-spacing:0;width:100%;min-width:1080px}
+.t th,.t td{border-bottom:1px solid var(--linea);padding:0}
+.t thead th{position:sticky;top:0;background:var(--papel);z-index:3;font-weight:600;font-size:12.5px;text-align:center;padding:10px 6px;color:var(--tinta2);border-bottom:2px solid var(--tinta)}
+.t thead th small{display:block;font-weight:400;color:var(--gris);font-size:11.5px}
+.t thead th.mes-ene,.t thead th.mes-feb{background:#FBF7EC}
+.t .casa{position:sticky;left:0;background:var(--papel);z-index:2;text-align:left;min-width:300px;max-width:300px;border-right:1px solid var(--linea)}
+.t thead .casa{z-index:4;text-align:left;padding-left:36px}
+.fila .casa .in{display:grid;grid-template-columns:64px 1fr;gap:12px;align-items:center;padding:10px 12px 10px 36px}
+.mini{width:64px;height:48px;position:relative;overflow:hidden;background:var(--hueso)}
+.mini img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.mini svg{position:absolute;inset:0;width:100%;height:100%}
+.fila .nom{font-family:"Libre Caslon Display";font-size:20px;line-height:1.1}
+.fila .dat{font-size:12.5px;color:var(--gris)}
+.fila .dat i{font-style:normal;color:var(--acacia);font-weight:600}
+.celda{width:100%;height:68px;border:0;background:transparent;cursor:pointer;font-size:13.5px;font-variant-numeric:tabular-nums;font-weight:500;color:var(--tinta);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border-left:1px solid #EFECE5}
+.celda small{font-size:11px;font-weight:400;color:var(--gris)}
+.celda:hover{background:var(--acacia2)}
+.celda.real{color:var(--tinta)}
+.celda.real small{color:var(--acacia);font-weight:600}
+.celda.ocu{background:repeating-linear-gradient(135deg,#F7E9E5 0 6px,#FFF 6px 12px);color:var(--ladrillo);cursor:not-allowed}
+.celda.ocu small{color:var(--ladrillo)}
+.celda.sel{background:var(--tinta);color:#fff}
+.celda.sel small{color:#C9D3E0}
+.vacio{padding:40px 36px;color:var(--gris)}
+.pie-t{padding:10px 36px;font-size:13px;color:var(--gris)}
+
+/* panel inferior */
+.panel{visibility:hidden;position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--tinta);color:#E6EBF2;transform:translateY(105%);transition:transform .3s cubic-bezier(.2,.8,.2,1);box-shadow:0 -20px 40px rgba(15,35,64,.25)}
+.panel.on{transform:none;visibility:visible}
+.panel .in{display:grid;grid-template-columns:260px minmax(0,1fr) 330px;gap:28px;padding:22px 36px;max-width:1400px;margin:0 auto;align-items:center}
+.pfoto{aspect-ratio:4/3;position:relative;overflow:hidden;background:var(--tinta2)}
+.pfoto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.pfoto svg{position:absolute;inset:0;width:100%;height:100%}
+.panel h3{font-size:34px;line-height:1;color:#fff}
+.panel .q{color:#AFC0D4;margin:6px 0 10px;font-size:14px}
+.panel ul{list-style:none;font-size:14px;display:grid;gap:3px;color:#CFD9E4}
+.cuenta{background:#fff;color:var(--tinta);padding:16px 18px}
+.cuenta .r{display:flex;justify-content:space-between;gap:12px;padding:4px 0;font-size:14px}
+.cuenta .r span:last-child{white-space:nowrap;font-variant-numeric:tabular-nums}
+.cuenta .r.tt{font-size:20px;font-weight:700;border-top:1px solid var(--linea);margin-top:4px;padding-top:8px}
+.cuenta .nota{font-size:12px;color:var(--gris);margin-top:6px}
+.cuenta a{display:block;text-align:center;background:var(--acacia);color:#fff;text-decoration:none;font-weight:600;padding:12px;margin-top:10px}
+.cerrar{position:absolute;top:10px;right:14px;background:none;border:0;color:#fff;font-size:26px;cursor:pointer}
+
+.arg{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:56px;padding:60px 36px 120px;align-items:start}
+.arg h2{font-size:clamp(30px,3.6vw,48px);line-height:1.05}
+.arg p{color:var(--gris);margin-top:14px;max-width:60ch}
+.cmp{border:2px solid var(--tinta)}
+.cmp .h{display:grid;grid-template-columns:1fr 1fr 1fr;background:var(--tinta);color:#fff;font-size:13px;font-weight:600}
+.cmp .h div,.cmp .rw div{padding:10px 12px}
+.cmp .rw{display:grid;grid-template-columns:1fr 1fr 1fr;border-top:1px solid var(--linea);font-size:14px;font-variant-numeric:tabular-nums}
+.cmp .rw div:nth-child(3){color:var(--ladrillo);font-weight:600}
+.cmp .tot{background:var(--acacia2);font-weight:700}
+footer{border-top:3px double var(--tinta);padding:30px 36px 110px;font-size:14px;color:var(--gris)}
+footer .fx{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px}
+footer b{font-family:"Libre Caslon Display";font-weight:400;font-size:24px;color:var(--tinta);display:block}
+footer .legal{margin-top:16px;font-size:13px}
+@media (max-width:900px){
+ .cab{grid-template-columns:1fr;padding:22px 16px 18px}
+ .cab .der{text-align:left}
+ .filtros{padding:12px 16px}
+ .filtros .ley{margin-left:0}
+ .t .casa{min-width:190px;max-width:190px}
+ .t thead .casa{padding-left:12px}
+ .fila .casa .in{grid-template-columns:1fr;padding:10px 12px}
+ .mini{display:none}
+ .fila .nom{font-size:17px}
+ table.t{min-width:860px}
+ .pie-t{padding:10px 16px}
+ .panel .in{grid-template-columns:1fr;gap:12px;padding:18px 16px;max-height:86vh;overflow:auto}
+ .pfoto{display:none}
+ .panel h3{font-size:28px}
+ .arg{grid-template-columns:1fr;gap:28px;padding:44px 16px 110px}
+ footer{padding:26px 16px 110px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="aviso">Prototipo de demostración preparado para Santamarina Propiedades · Precios y disponibilidad de ejemplo</div>
+<header class="cab">
+ <div><h1 class="cs">Tarifario de temporada, Cariló&nbsp;2026/27</h1><p class="bajo">Todas las casas en una sola grilla: cada casillero es una quincena con su precio. Tocá uno libre para ver el total, la seña y mandar la reserva.</p></div>
+ <div class="der"><b>Desde 1976</b>Divisadero y Avellano, Local 4<br><a href="https://wa.me/5491159003988" target="_blank" rel="noopener">WhatsApp</a></div>
+</header>
+<div class="filtros">
+ <label>Plazas <select id="fPl"><option value="0">todas</option><option value="4">4 o más</option><option value="6" selected>6 o más</option><option value="8">8 o más</option><option value="10">10 o más</option></select></label>
+ <label>Ordenar <select id="fOrd"><option value="real">tarifas publicadas primero</option><option value="cod">por código</option><option value="pr">por precio de 2ª de enero</option><option value="mar">más cerca del mar</option></select></label>
+ <label class="chk"><input type="checkbox" id="fPil"> Con pileta</label>
+ <label class="chk"><input type="checkbox" id="fLib"> Solo libres en enero</label>
+ <div class="ley"><span><span class="sw" style="background:#fff"></span>Libre</span><span><span class="sw" style="background:repeating-linear-gradient(135deg,#F7E9E5 0 3px,#fff 3px 6px)"></span>Tomada (Booking, Airbnb u oficina)</span><span><span class="sw" style="background:var(--acacia2)"></span>Tarifa de su web</span></div>
+</div>
+<div class="tabla-w" id="tw"><table class="t" id="tabla"></table></div>
+<p class="pie-t" id="pie"></p>
+
+<section class="arg">
+ <div>
+  <h2 class="cs">192 casas en alquiler y ninguna se puede reservar sin llamar.</h2>
+  <p>Hoy cada ficha tiene su tabla de tarifas y la frase "consultanos para conocer disponibilidad". Con el tarifario en una grilla, el inquilino compara casas por quincena, ve lo que ya está tomado y manda la seña del 30% con todo armado. Si la misma casa está en Booking, la comisión ronda el 15% del alquiler.</p>
+ </div>
+ <div class="cmp">
+  <div class="h"><div>Casa y período</div><div>Alquiler</div><div>Comisión Booking 15%</div></div>
+  <div class="rw"><div>1502 · 2ª enero</div><div>USD 19.500</div><div>USD 2.925</div></div>
+  <div class="rw"><div>1390 · 2ª enero</div><div>USD 17.000</div><div>USD 2.550</div></div>
+  <div class="rw"><div>1547 · 2ª enero</div><div>USD 9.300</div><div>USD 1.395</div></div>
+  <div class="rw tot"><div>Tres reservas</div><div>USD 45.800</div><div>USD 6.870</div></div>
+ </div>
+</section>
+
+<footer><div class="fx"><div><b>Santamarina Propiedades</b>Jorge Miguel Santamarina, martillero y corredor público · Divisadero y Avellano, Centro Comercial, Local 4, Cariló</div><div>WhatsApp +54 9 11 5900-3988 · (02254) 571055<br>info@santamarinapropiedades.com · @santamarinapropiedades</div></div>
+<p class="legal">Prototipo preparado para Santamarina Propiedades por Resolviendo Kos · resolviendokos.com · No es la web oficial</p></footer>
+
+<aside class="panel" id="panel" aria-live="polite"><button class="cerrar" id="cerrar" aria-label="Cerrar">×</button><div class="in" id="pin"></div></aside>
+
+<script>
+/* motor de reservas de ejemplo: temporadas, ocupación sincronizada (simulada), cotización y WhatsApp */
+const E=(()=>{
+  const MES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  const DIA=['lu','ma','mi','ju','vi','sá','do'];
+  const pad=n=>String(n).padStart(2,'0');
+  const d=s=>{const [y,m,dd]=s.split('-').map(Number);return new Date(y,m-1,dd)};
+  const iso=x=>x.getFullYear()+'-'+pad(x.getMonth()+1)+'-'+pad(x.getDate());
+  const add=(x,n)=>{const y=new Date(x);y.setDate(y.getDate()+n);return y};
+  const nights=(a,b)=>(a&&b)?Math.round((d(b)-d(a))/864e5):0;
+  const ars=n=>'$ '+Math.round(n).toLocaleString('es-AR');
+  const usd=n=>'USD '+Math.round(n).toLocaleString('es-AR');
+  const corta=s=>{if(!s)return'';const x=d(s);return x.getDate()+' '+MES[x.getMonth()].slice(0,3)};
+  const larga=s=>{if(!s)return'';const x=d(s);return x.getDate()+' de '+MES[x.getMonth()]};
+  function rnd(str){let h=2166136261;for(const c of String(str)){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return()=>{h^=h<<13;h^=h>>>17;h^=h<<5;return((h>>>0)%100000)/100000}}
+  const SRC=['Booking','Airbnb','Directo'];
+  /* ocupación de ejemplo: devuelve Map fecha -> canal */
+  function ocupacion(id,desde='2026-11-01',dias=330){
+    const r=rnd(id),m=new Map(),base=d(desde);let i=Math.floor(r()*5);
+    while(i<dias){const largo=2+Math.floor(r()*6),canal=SRC[Math.floor(r()*3)];
+      for(let k=0;k<largo;k++)m.set(iso(add(base,i+k)),canal);
+      i+=largo+6+Math.floor(r()*16)}
+    return m}
+  function temporada(T,f){for(const t of T)if(f>=t.desde&&f<=t.hasta)return t;return T.find(t=>t.base)||{nombre:'Base',mult:1}}
+  /* cotiza noche por noche */
+  function cotizar(p,T,a,b){
+    const n=nights(a,b);if(n<=0)return null;let total=0;const det={};let choque=null;const occ=p._occ||(p._occ=ocupacion(p.id));
+    for(let k=0;k<n;k++){const f=iso(add(d(a),k));const t=temporada(T,f);const v=p.noche*t.mult;total+=v;
+      det[t.nombre]=(det[t.nombre]||{n:0,v:0});det[t.nombre].n++;det[t.nombre].v+=v;if(occ.has(f)&&!choque)choque=f}
+    const minimo=Math.max(...Object.keys(det).map(k=>(T.find(t=>t.nombre===k)||{}).min||1));
+    return{noches:n,total,det,choque,minimo}}
+  function libre(p,a,b){const occ=p._occ||(p._occ=ocupacion(p.id));const n=nights(a,b);for(let k=0;k<n;k++)if(occ.has(iso(add(d(a),k))))return false;return true}
+  const wa=(num,txt)=>'https://wa.me/'+num+'?text='+encodeURIComponent(txt);
+  /* grilla de un mes: celdas con data-f, clases: x (ocupado, data-c canal), s (seleccionado), r (rango), p (pasado/fuera) */
+  function mes(y,m,occ,a,b,opt={}){
+    const first=new Date(y,m,1),off=(first.getDay()+6)%7,len=new Date(y,m+1,0).getDate();
+    let h='<div class="'+(opt.cls||'cal')+'"><div class="cal-t">'+MES[m]+' '+y+'</div><div class="cal-g">'+DIA.map(x=>'<i>'+x+'</i>').join('');
+    for(let k=0;k<off;k++)h+='<span></span>';
+    for(let k=1;k<=len;k++){const f=y+'-'+pad(m+1)+'-'+pad(k);let c='';const o=occ&&occ.get(f);
+      if(o)c+=' x c-'+o.toLowerCase();if(f===a||f===b)c+=' s';else if(a&&b&&f>a&&f<b)c+=' r';if(opt.min&&f<opt.min)c+=' p';
+      h+='<button type="button" data-f="'+f+'" class="'+c.trim()+'"'+(o?' title="Ocupado · '+o+'" aria-label="'+k+' ocupado por '+o+'"':' aria-label="'+k+' de '+MES[m]+'"')+'>'+k+'</button>'}
+    return h+'</div></div>'}
+  return{MES,DIA,d,iso,add,nights,ars,usd,corta,larga,ocupacion,temporada,cotizar,libre,wa,mes,rnd}
+})();
+
+const WA='5491159003988';const IM='https://santamarinapropiedades.com/usr/images/';
+const TH=f=>'https://santamarinapropiedades.com/usr/timthumb.php?src='+encodeURIComponent(IM+f)+'&w=760&h=420&zc=1';
+const Q=[
+ {id:'d1',n:'1ª diciembre',f:'26/11 al 10/12',a:'2026-11-26',b:'2026-12-10',k:.32,m:'dic'},
+ {id:'d2',n:'2ª diciembre',f:'12/12 al 27/12',a:'2026-12-12',b:'2026-12-27',k:.42,m:'dic'},
+ {id:'e1',n:'1ª enero',f:'31/12 al 14/01',a:'2026-12-31',b:'2027-01-14',k:1.05,m:'ene'},
+ {id:'e2',n:'2ª enero',f:'15/01 al 30/01',a:'2027-01-15',b:'2027-01-30',k:1,m:'ene'},
+ {id:'f1',n:'1ª febrero',f:'01/02 al 15/02',a:'2027-02-01',b:'2027-02-15',k:.85,m:'feb'},
+ {id:'f2',n:'2ª febrero',f:'17/02 al 03/03',a:'2027-02-17',b:'2027-03-03',k:.66,m:'feb'},
+ {id:'m1',n:'1ª marzo',f:'05/03 al 20/03',a:'2027-03-05',b:'2027-03-20',k:.5,m:'mar'},
+ {id:'m2',n:'2ª marzo',f:'21/03 al 05/04',a:'2027-03-21',b:'2027-04-05',k:.42,m:'mar'}];
+/* casas con ficha completa: tarifas tomadas de su web */
+const FULL=[
+ {cod:1547,pl:8,dor:5,ban:6,pil:'Piscina climatizada',mar:9,cen:2,dir:'Ñandú esq. Cerezo',f:TH('31631_62_202509281353194.jpg'),t:{e2:9300,f2:6000},extra:'Estilo mediterráneo, cinco suites, playroom, galería y parrilla'},
+ {cod:1502,pl:17,dor:8,ban:7,pil:'Piscina grande + climatizada',mar:2,cen:12,dir:'Roble esq. Avutarda',f:TH('32905_62_202601031039070.jpg'),t:{e2:19500,f1:16500,f2:16500},extra:'Ocho dormitorios, ideal para dos familias'},
+ {cod:1390,pl:9,dor:5,ban:6,pil:'Piscina climatizada',mar:12,cen:9,dir:'Pirincho y Sombra de Toro, Barrio Constancia',f:IM+'27968_62_202409251623020.jpg',t:{d1:8000,e2:17000,f1:13000,f2:13000,m1:10000,m2:8000},extra:'460 m² sobre lote de 1359 m²'},
+ {cod:1544,pl:9,dor:5,ban:5,pil:'Piscina con borde infinito',mar:14,cen:9,dir:'Rey del Bosque y Sombra de Toro, Barrio Constancia',f:TH('26484_62_202403010939210.jpg'),t:{d1:5800,f2:9800,m1:6800,m2:5800},extra:'Solarium, lote de 1599 m²'},
+ {cod:1006,pl:9,dor:5,ban:5,pil:'Piscina sin climatizar',mar:13,cen:8,dir:'Palmera y Oriol',f:TH('31771_62_202510081555501.jpg'),t:{d1:2500,d2:3500,f1:4200,f2:4000},extra:'Tres suites, playroom y jardín cercado'},
+ {cod:600,pl:11,dor:5,ban:5,pil:'',mar:4,cen:4,dir:'Álamo entre Boyero y Benteveo',f:TH('20063_600_fachada.jpg'),t:{f1:5400,f2:5400},extra:'A cuatro cuadras del mar y del centro'}];
+const LIST=[[8,7,4,3,'25884_62_202312031053070.jpg'],[10,7,3,2,'28288_62_202410241041021.jpg'],[22,8,3,2,'27525_62_202408151052090.jpg'],[34,6,3,2,'24492_62_202307121630180.jpg'],[38,7,3,2,'28016_62_202410031109130.jpg'],[42,8,3,2,'25509_62_202310201255511.jpg'],[50,8,3,2,'25261_62_202309221651492.jpg'],[53,10,4,3,'24057_1_casa_en_venta_carilo_cerca_del_mar.jpg'],[60,9,4,2,'18189_60_fachada.jpg'],[74,8,4,4,'30916_62_202509031845242.jpg'],[93,6,2,2,'25808_62_202311301655340.jpg'],[96,7,3,3,'30222_1908_202505091758000.jpg'],[99,6,3,2,'18129_99_fachada1.jpg'],[104,4,2,2,'18330_104_fachada.jpg'],[134,8,4,3,'31658_62_202510011256500.jpg'],[136,4,2,1,'25449_62_202310111117330.jpg'],[143,11,5,3,'18748_143_fachada.jpg'],[157,6,3,2,'31837_62_202510101216540.jpg'],[173,11,5,3,'24889_62_202308161854040.jpg'],[174,7,2,2,'28651_62_202411151243020.jpg'],[177,8,4,3,'33949_1919_202605131205530.jpg'],[184,10,3,2,'22589_1_fachada.jpg'],[186,6,3,2,'23447_fachada.jpg']]
+ .map(([cod,pl,dor,ban,f])=>{const r=E.rnd('c'+cod);return{cod,pl,dor,ban,pil:r()<.6?'Piscina':'',mar:null,cen:null,dir:'',f:TH(f),t:{},extra:''}});
+const CASAS=[...FULL,...LIST].map(c=>{c.id='c'+c.cod;c.base=Math.round((c.pl*820+c.dor*600)/100)*100;return c});
+function precio(c,q){return c.t[q.id]?{v:c.t[q.id],real:true}:{v:Math.round(c.base*q.k*(c.mar&&c.mar<=4?1.25:1)/100)*100,real:false}}
+function ocupada(c,q){if(c.t[q.id]&&q.id!=='e1')return E.rnd(c.id+q.id)()<.18?['Booking','Airbnb','Oficina'][Math.floor(E.rnd(q.id+c.id)()*3)]:null;const r=E.rnd(c.id+q.id)();return r<(q.m==='ene'?.42:q.m==='feb'?.3:.12)?['Booking','Airbnb','Oficina'][Math.floor(r*100)%3]:null}
+function plano(c){const n=c.dor;let rooms='';const w=Math.floor(100/Math.min(n,4));for(let i=0;i<n;i++){const row=i<4?0:1;const col=i%4;rooms+=`<rect x="${10+col*(180/Math.min(n,4))}" y="${row?92:14}" width="${180/Math.min(n,4)-6}" height="${row?44:40}" fill="none" stroke="#0F2340" stroke-width="2"/>`}
+ return`<svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="200" height="150" fill="#F5F3EE"/>${rooms}<rect x="10" y="${n>4?60:60}" width="${c.pil?110:180}" height="28" fill="none" stroke="#0F2340" stroke-width="2"/>${c.pil?'<rect x="128" y="60" width="62" height="28" fill="#A8C7D6" stroke="#0F2340" stroke-width="2"/>':''}<text x="12" y="${n>4?146:130}" font-family="Libre Caslon Display,serif" font-size="22" fill="#0F2340">${c.cod}</text></svg>`}
+const $=i=>document.getElementById(i);const st={sel:null};
+function render(){const pl=+$('fPl').value,pil=$('fPil').checked,lib=$('fLib').checked,ord=$('fOrd').value;
+ let L=CASAS.filter(c=>c.pl>=pl&&(!pil||c.pil)&&(!lib||Q.filter(q=>q.m==='ene').some(q=>!ocupada(c,q))));
+ if(ord==='real')L.sort((a,b)=>Object.keys(b.t).length-Object.keys(a.t).length||a.cod-b.cod);else if(ord==='cod')L.sort((a,b)=>a.cod-b.cod);else if(ord==='pr')L.sort((a,b)=>precio(a,Q[3]).v-precio(b,Q[3]).v);else L.sort((a,b)=>(a.mar??99)-(b.mar??99));
+ $('tabla').innerHTML=`<thead><tr><th class="casa">Casa</th>${Q.map(q=>`<th class="mes-${q.m}">${q.n}<small>${q.f}</small></th>`).join('')}</tr></thead><tbody>`+
+ L.map(c=>`<tr class="fila"><th class="casa" scope="row"><div class="in"><div class="mini">${plano(c)}<img src="${c.f}" alt="" loading="lazy" onerror="this.remove()"></div><div><div class="nom">Casa ${c.cod}</div><div class="dat">${c.pl} plazas · ${c.dor} dorm. · ${c.ban} baños${c.pil?' · <i>pileta</i>':''}${c.mar?` · ${c.mar} cdras. al mar`:''}</div></div></div></th>`+
+  Q.map(q=>{const p=precio(c,q),o=ocupada(c,q);const sel=st.sel&&st.sel.c===c&&st.sel.q===q;return`<td><button class="celda${p.real?' real':''}${o?' ocu':''}${sel?' sel':''}" data-c="${c.id}" data-q="${q.id}" ${o?'aria-disabled="true"':''} aria-label="Casa ${c.cod}, ${q.n}, ${o?'tomada':'USD '+p.v}">${o?'Tomada<small>'+o+'</small>':'USD '+p.v.toLocaleString('es-AR')+(p.real?'<small>su tarifa</small>':'<small>ejemplo</small>')}</button></td>`}).join('')+'</tr>').join('')+'</tbody>';
+ if(!L.length)$('tabla').innerHTML='<tbody><tr><td class="vacio">Ninguna casa cumple esos filtros. Bajá la cantidad de plazas o destildá la pileta.</td></tr></tbody>';
+ $('pie').textContent=`${L.length} casas en pantalla de las 192 que tienen en alquiler. Deslizá la grilla para ver todas las quincenas.`}
+['fPl','fPil','fLib','fOrd'].forEach(i=>$(i).onchange=render);
+$('tabla').onclick=e=>{const b=e.target.closest('.celda');if(!b||b.classList.contains('ocu'))return;const c=CASAS.find(x=>x.id===b.dataset.c),q=Q.find(x=>x.id===b.dataset.q);st.sel={c,q};render();panel()};
+function panel(){const{c,q}=st.sel;const p=precio(c,q);const res=p.v*.3,gar=p.v*.2;
+ const txt=`Hola Santamarina! Me interesa la Casa ${c.cod} (${c.pl} plazas) para la ${q.n} (${q.f}).\nTarifa que vi: USD ${p.v.toLocaleString('es-AR')}.\nReserva 30%: USD ${res.toLocaleString('es-AR')}. Garantía 20%: USD ${gar.toLocaleString('es-AR')}.\n¿Está disponible para firmar?`;
+ $('pin').innerHTML=`<div class="pfoto">${plano(c)}<img src="${c.f}" alt="Casa ${c.cod}" onerror="this.remove()"></div>
+ <div><h3 class="cs">Casa ${c.cod} · ${q.n}</h3><p class="q">${q.f} · ${c.pl} plazas · ${c.dor} dormitorios · ${c.ban} baños${c.dir?' · '+c.dir:''}</p>
+ <ul>${c.pil?`<li>${c.pil}</li>`:''}${c.mar?`<li>${c.mar} cuadras al mar · ${c.cen} al centro</li>`:''}${c.extra?`<li>${c.extra}</li>`:''}<li>Incluye limpieza de salida y luz y gas con tope. No se aceptan mascotas.</li></ul></div>
+ <div class="cuenta"><div class="r"><span>Alquiler ${q.n}</span><span>USD ${p.v.toLocaleString('es-AR')}</span></div><div class="r"><span>Reserva (30%)</span><span>USD ${res.toLocaleString('es-AR')}</span></div><div class="r"><span>Garantía (20%, se devuelve)</span><span>USD ${gar.toLocaleString('es-AR')}</span></div><div class="r tt"><span>Para reservar hoy</span><span>USD ${res.toLocaleString('es-AR')}</span></div>
+ <p class="nota">${p.real?'Tarifa publicada en su ficha.':'Tarifa de ejemplo.'} Disponibilidad de ejemplo.</p><a href="${E.wa(WA,txt)}" target="_blank" rel="noopener">Reservar por WhatsApp</a></div>`;
+ $('panel').classList.add('on')}
+$('cerrar').onclick=()=>{$('panel').classList.remove('on');st.sel=null;render()};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')$('cerrar').click()});
+render();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Santamarina Propiedades"></script>
+</body>
+</html>
