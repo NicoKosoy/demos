@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Biguá Pádel · Turnos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@500;700;900&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0d1b22;--panel:#13262f;--panel2:#1a323d;--led:#ffb238;--aqua:#4fd1c5;--txt:#e6eef0;--mute:#8aa3ab;--busy:#22363f;--line:#24414c}
+*{box-sizing:border-box;margin:0}
+body{font-family:'Source Sans 3',system-ui,sans-serif;background:var(--bg);color:var(--txt);line-height:1.5}
+.R{font-family:'Red Hat Display',sans-serif;letter-spacing:-.01em;line-height:1.05}
+.demo{background:var(--led);color:#1b1306;font-size:13px;text-align:center;padding:7px 16px;font-weight:600}
+.wrap{max-width:1240px;margin:0 auto;padding:22px 24px}
+.head{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+.head .id{display:flex;align-items:center;gap:12px}
+.head svg{width:42px;height:42px}
+.head b{font-family:'Red Hat Display';font-weight:900;font-size:22px;display:block}
+.head small{color:var(--mute)}
+.clock{font-family:'Red Hat Display';font-weight:700;color:var(--led);font-size:15px;border:1px solid var(--line);border-radius:6px;padding:6px 12px;font-variant-numeric:tabular-nums}
+.board{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.bh{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;padding:16px 18px;border-bottom:1px solid var(--line)}
+.bh h1{font-size:clamp(24px,3vw,36px);font-weight:900}
+.dsel{display:flex;gap:4px;overflow-x:auto}
+.dsel button{background:none;border:1px solid var(--line);color:var(--mute);border-radius:6px;padding:6px 10px;font:600 14px 'Source Sans 3';cursor:pointer;white-space:nowrap}
+.dsel button[aria-pressed=true]{background:var(--led);color:#1b1306;border-color:var(--led)}
+.score{overflow-x:auto}
+.sc{display:grid;min-width:820px}
+.sc .rw{display:grid;grid-template-columns:150px repeat(var(--n),1fr);border-bottom:1px solid var(--line)}
+.sc .hd div{font:700 12px 'Red Hat Display';color:var(--mute);padding:8px 0;text-align:center}
+.sc .cn{padding:12px 14px;font:700 15px 'Red Hat Display';border-right:1px solid var(--line);position:sticky;left:0;background:var(--panel);z-index:1}
+.sc .cn small{display:block;font:400 12px 'Source Sans 3';color:var(--mute)}
+.sc button{border:0;border-left:1px solid #183039;background:transparent;cursor:pointer;height:52px;position:relative}
+.sc button::after{content:"";position:absolute;inset:16px 30%;border-radius:50%;background:var(--aqua);opacity:.85;box-shadow:0 0 10px var(--aqua)}
+.sc button.pk::after{background:var(--led);box-shadow:0 0 10px var(--led)}
+.sc button.b{cursor:not-allowed;background:var(--busy)}
+.sc button.b::after{background:#2e4752;box-shadow:none;opacity:1}
+.sc button.sel{background:rgba(255,178,56,.18)}
+.sc button.sel::after{inset:12px 18%;border-radius:4px;background:#fff;box-shadow:0 0 14px #fff}
+.sc button:focus-visible{outline:2px solid var(--led);outline-offset:-2px}
+.bf{display:flex;gap:18px;flex-wrap:wrap;align-items:center;padding:12px 18px;font-size:13px;color:var(--mute)}
+.bf i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
+.durs{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden;margin-left:auto}
+.durs button{background:none;border:0;color:var(--txt);padding:7px 12px;font:700 13px 'Red Hat Display';cursor:pointer}
+.durs button[aria-pressed=true]{background:var(--aqua);color:#08201d}
+.row2{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:16px}
+.p{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:20px;min-width:0}
+.p h2{font-size:24px;font-weight:900;margin-bottom:10px}
+.tk .t1{font:900 46px 'Red Hat Display';color:var(--led);font-variant-numeric:tabular-nums}
+.kv{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed var(--line);font-size:15px}
+.kv span{color:var(--mute)}
+.p input[type=text]{width:100%;padding:10px;border-radius:6px;border:1px solid var(--line);background:var(--panel2);color:#fff;font:inherit;margin-top:12px}
+.p label{display:flex;gap:8px;align-items:center;font-size:14px;margin-top:8px;color:var(--mute)}
+.btn{display:flex;width:100%;justify-content:center;border:0;border-radius:6px;padding:12px;font:700 15px 'Red Hat Display';cursor:pointer;margin-top:8px;text-decoration:none}
+.btn.a{background:var(--led);color:#1b1306}.btn.b2{background:none;border:1px solid var(--aqua);color:var(--aqua)}.btn.w{background:#25d366;color:#05351a}
+.calc .big{font:900 40px 'Red Hat Display';color:var(--aqua)}
+.calc input[type=range]{width:100%;accent-color:var(--led);margin:6px 0 2px}
+.calc .lbl{display:flex;justify-content:space-between;font-size:14px;color:var(--mute)}
+.calc .lbl b{color:var(--txt)}
+.calc small{color:var(--mute);display:block;margin-top:10px;font-size:13px}
+.fl .it{display:grid;grid-template-columns:62px 1fr auto;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line)}
+.fl .it b{font:900 20px 'Red Hat Display';color:var(--led)}
+.fl .it small{display:block;color:var(--mute)}
+.fl .it button{border:1px solid var(--aqua);background:none;color:var(--aqua);border-radius:6px;padding:6px 10px;font:700 13px 'Red Hat Display';cursor:pointer}
+.row3{display:grid;grid-template-columns:1.2fr 1fr;gap:16px;margin-top:16px}
+.ev form{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ev select,.ev input{padding:10px;border-radius:6px;border:1px solid var(--line);background:var(--panel2);color:#fff;font:inherit;width:100%;min-width:0}
+.ev .btn{grid-column:1/-1;margin:0}
+footer{color:var(--mute);font-size:14px;text-align:center;padding:36px 20px 90px}
+.fab{position:fixed;right:16px;bottom:16px;background:#25d366;color:#05351a;border-radius:8px;padding:12px 18px;font-weight:700;text-decoration:none;z-index:20}
+dialog{border:0;border-radius:12px;padding:0;max-width:390px;width:calc(100% - 32px);background:#fff;color:#13262f}
+dialog::backdrop{background:rgba(5,12,16,.7)}
+.mp{padding:24px}.mp header{display:flex;justify-content:space-between;align-items:center}.mp .logo{background:#009ee3;color:#fff;border-radius:6px;padding:4px 8px;font-size:13px;font-weight:700}.mp .x{border:0;background:none;font-size:24px;cursor:pointer}.mp .amt{font:900 40px 'Red Hat Display';margin:10px 0}.mp .btn.mpb{background:#009ee3;color:#fff}
+@media (max-width:960px){.row2,.row3{grid-template-columns:1fr}.wrap{padding:16px}.durs{margin-left:0}}
+</style>
+</head>
+<body>
+<div class="demo">Prototipo de demostración preparado para Biguá Pádel Club · Precios y disponibilidad de ejemplo</div>
+<div class="wrap">
+  <div class="head">
+    <div class="id"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="23" fill="#1a323d"/><path d="M10 30c6-1 10-6 14-12 2-3 5-5 8-4-2 1-3 3-3 5 0 6-6 11-14 12z" fill="#4fd1c5"/><circle cx="32" cy="15" r="1.4" fill="#0d1b22"/><path d="M35 15l6 1-6 1z" fill="#ffb238"/></svg><div><b>Biguá Pádel Club</b><small>Pueyrredón 375 · Neuquén capital</small></div></div>
+    <span class="clock" id="clock"></span>
+  </div>
+  <div class="board">
+    <div class="bh"><h1 class="R">Turnos del día</h1><div class="dsel" id="ds"></div></div>
+    <div class="score"><div class="sc" id="sc"></div></div>
+    <div class="bf"><span><i style="background:var(--aqua)"></i>Libre</span><span><i style="background:var(--led)"></i>Libre pico (18 a 24)</span><span><i style="background:#2e4752"></i>Ocupado</span><div class="durs" id="durs"><button data-d="60">60'</button><button data-d="90" aria-pressed="true">90'</button><button data-d="120">120'</button></div></div>
+  </div>
+  <div class="row2">
+    <div class="p tk" id="tk" aria-live="polite"></div>
+    <div class="p fl"><h2 class="R">Falta 1</h2><div id="fl"></div></div>
+    <div class="p calc"><h2 class="R">Lo que queda en casa</h2>
+      <div class="lbl"><span>Reservas online por mes</span><b id="rv"></b></div><input type="range" id="rr" min="50" max="900" step="10" value="320" aria-label="Reservas por mes">
+      <div class="lbl"><span>Cargo de la app por reserva</span><b id="cv"></b></div><input type="range" id="cr" min="0" max="3000" step="100" value="1200" aria-label="Cargo por reserva">
+      <div class="big" id="sv"></div><span style="color:var(--mute)">por mes que dejan de pagarle a una plataforma</span>
+      <small>Cuenta de ejemplo: movés los valores según lo que les cobra hoy su sistema de reservas.</small>
+    </div>
+  </div>
+  <div class="row3">
+    <div class="p fl"><h2 class="R">Clases y torneos</h2><div id="cl"></div></div>
+    <div class="p ev"><h2 class="R">Cumples y eventos</h2><p style="color:var(--mute);margin-bottom:10px">Canchas por bloque para grupos y empresas.</p><form id="evf"><select name="t" aria-label="Tipo"><option>Cumpleaños</option><option>Evento de empresa</option><option>Torneo de amigos</option></select><input name="p" type="number" min="4" value="12" aria-label="Personas"><input name="f" type="text" placeholder="Fecha" aria-label="Fecha"><select name="c" aria-label="Canchas"><option>1 cancha</option><option>2 canchas</option><option>Todas</option></select><button class="btn w" type="submit">Pedir presupuesto por WhatsApp</button></form></div>
+  </div>
+</div>
+<footer>Biguá Pádel Club · Pueyrredón 375, Neuquén · 4,5 en Google (97 reseñas)<br>Prototipo preparado para Biguá Pádel Club por Resolviendo Kos · resolviendokos.com · No es la web oficial</footer>
+<a class="fab" id="fab" href="#">WhatsApp</a>
+<dialog id="kpay"><div class="mp"><header><span class="logo">Mercado Pago · demo</span><button class="x" data-k="close" aria-label="Cerrar">×</button></header>
+<div data-k="step1"><p data-k="summary" style="margin-top:12px"></p><div class="amt" data-k="amount"></div><p style="font-size:13px;color:#5b6f76">Simulación, no se cobra nada.</p><button class="btn mpb" data-k="pay">Pagar seña</button></div>
+<div data-k="step2" hidden><h3 class="R" style="font-size:26px;margin:8px 0">Seña acreditada (demo)</h3><p>Confirmale el turno al club.</p><a class="btn w" data-k="wa" target="_blank" rel="noopener">Enviar confirmación</a></div></div></dialog>
+<script>
+window.KCFG={negocio:'Biguá Pádel Club',wa:'5492996745443',peak:18,sena:.3,hours:{def:[8,24]},price:{valle:24000,pico:32000},
+courts:[{id:'1',name:'Cancha 1',type:'de ejemplo'},{id:'2',name:'Cancha 2',type:'de ejemplo'},{id:'3',name:'Cancha 3',type:'de ejemplo'}]};
+</script>
+<script>
+const K=(()=>{
+const C=window.KCFG;
+const pad=n=>String(n).padStart(2,'0');
+const DOW=['dom','lun','mar','mié','jue','vie','sáb'];
+const DOWL=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+const MES=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+function days(n){const out=[];const t=new Date();t.setHours(0,0,0,0);for(let i=0;i<n;i++){const d=new Date(t);d.setDate(t.getDate()+i);out.push(d)}return out}
+function hours(d){const h=C.hours||{};const v=h[d.getDay()];return v===undefined?(h.def||[8,24]):v}
+function slots(d){const h=hours(d);if(!h)return[];const o=[];for(let m=h[0]*60;m<h[1]*60;m+=30)o.push(m);return o}
+function hourSlots(d){return slots(d).filter(m=>m%60===0)}
+function t(m){return pad(Math.floor(m/60)%24)+':'+pad(m%60)}
+function seed(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return(h>>>0)/4294967295}
+function past(d,m){const n=new Date();return d.toDateString()===n.toDateString()&&m<n.getHours()*60+n.getMinutes()}
+function busy(c,d,m){if(past(d,m))return true;const r=seed(c+'|'+d.toDateString()+'|'+Math.floor(m/90)+C.negocio);const peak=m>=C.peak*60;const wk=(d.getDay()===0||d.getDay()===6)?.08:0;return r<(peak?.36:.18)+wk}
+function free(c,d,m,dur){const s=slots(d);for(let x=m;x<m+dur;x+=30){if(s.indexOf(x)<0||busy(c,d,x))return false}return true}
+function court(id){return C.courts.find(c=>c.id===id)}
+function rate(cid,m){const c=court(cid)||{};let b=m>=C.peak*60?C.price.pico:C.price.valle;if(C.price.manana&&m<(C.price.mananaHasta||12)*60)b=C.price.manana;return b+(c.extra||0)}
+function price(cid,m,dur){let s=0;for(let x=m;x<m+dur;x+=30)s+=rate(cid,x)/2;return Math.round(s/100)*100}
+function sena(total){return Math.round(total*(C.sena||.3)/100)*100}
+function money(n){return '$ '+Math.round(n).toLocaleString('es-AR')}
+function dlabel(d,long){const n=new Date();n.setHours(0,0,0,0);const diff=Math.round((d-n)/864e5);if(!long){if(diff===0)return'hoy';if(diff===1)return'mañana'}return (long?DOWL:DOW)[d.getDay()]+' '+d.getDate()+'/'+(d.getMonth()+1)}
+function dshort(d){return {dow:DOW[d.getDay()],n:d.getDate(),mes:MES[d.getMonth()]}}
+function freeCount(d){let n=0;C.courts.forEach(c=>slots(d).forEach(m=>{if(m%60===0&&free(c.id,d,m,60))n++}));return n}
+function nextFree(){const ds=days(3);for(const d of ds)for(const m of slots(d))for(const c of C.courts)if(free(c.id,d,m,90))return{d,m,c};return null}
+function msg(s,paid){const c=court(s.court);const tot=price(s.court,s.m,s.dur);let x='Hola! Quiero reservar cancha en '+C.negocio+':\n';x+='• Cancha: '+c.name+(c.type?' ('+c.type+')':'')+'\n';x+='• Día: '+dlabel(s.d,true)+'\n';x+='• Horario: '+t(s.m)+' a '+t(s.m+s.dur)+' ('+s.dur+' min)\n';x+='• Total: '+money(tot)+'\n';if(paid)x+='• Seña de '+money(sena(tot))+' pagada por Mercado Pago (demo)\n';if(s.name)x+='A nombre de: '+s.name+'\n';if(s.falta)x+='Nos falta 1 jugador: ¿lo pueden publicar en el grupo?\n';return x}
+function wa(text){return 'https://wa.me/'+C.wa+'?text='+encodeURIComponent(text)}
+function go(text){window.open(wa(text),'_blank','noopener')}
+function matches(n){const out=[];const lv=['8va','7ma','6ta','5ta','4ta'];const g=['mixto','caballeros','damas','caballeros'];days(3).forEach(d=>{C.courts.forEach(c=>{slots(d).forEach(m=>{if(m%90===0&&m>=17*60&&busy(c.id,d,m)&&!past(d,m)){const r=seed('f'+c.id+d.toDateString()+m);if(r<.5)out.push({d,m,c,nivel:lv[Math.floor(r*16)%5],g:g[Math.floor(r*40)%4]})}})})});return out.slice(0,n||6)}
+function joinMsg(x){return 'Hola! Vi en la web de '+C.negocio+' que falta 1 para el partido del '+dlabel(x.d,true)+' a las '+t(x.m)+' en '+x.c.name+' ('+x.nivel+', '+x.g+'). Me sumo, ¿sigue libre el lugar?'}
+function pay(s,opts){const dlg=document.getElementById('kpay');if(!dlg)return;const tot=price(s.court,s.m,s.dur),se=sena(tot),c=court(s.court);const q=k=>dlg.querySelector('[data-k='+k+']');q('summary').innerHTML='<b>'+c.name+'</b> · '+dlabel(s.d,true)+' · '+t(s.m)+'–'+t(s.m+s.dur)+'<br>Total '+money(tot)+' · Seña '+money(se);q('amount').textContent=money(se);q('step1').hidden=false;q('step2').hidden=true;const b=q('pay');b.disabled=false;b.textContent=b.dataset.label||b.textContent;b.dataset.label=b.textContent;b.onclick=()=>{b.disabled=true;b.textContent='Procesando…';setTimeout(()=>{q('step1').hidden=true;q('step2').hidden=false;q('wa').href=wa(msg(s,true));},900)};q('close').onclick=()=>dlg.close();dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});if(dlg.showModal)dlg.showModal();else dlg.setAttribute('open','')}
+return{C,days,slots,hourSlots,t,busy,free,price,sena,money,dlabel,dshort,freeCount,nextFree,msg,wa,go,matches,joinMsg,pay,court,rate,seed,past,DOWL}
+})();
+
+</script>
+<script>
+(()=>{const $=s=>document.querySelector(s);const D=K.days(8).filter((d,i)=>i>0||K.freeCount(d)>0).slice(0,7);const st={d:D[0],court:null,m:null,dur:90};
+function clock(){const n=new Date();$('#clock').textContent=K.dlabel(n,true)+' · '+String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0')}
+function ds(){$('#ds').innerHTML=D.map((d,i)=>`<button data-i="${i}" aria-pressed="${d===st.d}">${K.dlabel(d)}</button>`).join('');$('#ds').querySelectorAll('button').forEach(b=>b.onclick=()=>{st.d=D[b.dataset.i];st.m=null;all()})}
+function sc(){const sl=K.slots(st.d);const s=$('#sc');s.style.setProperty('--n',sl.length);
+s.innerHTML='<div class="rw hd"><div></div>'+sl.map(m=>`<div>${m%60?'':K.t(m).slice(0,2)}</div>`).join('')+'</div>'+K.C.courts.map(c=>`<div class="rw"><div class="cn">${c.name}<small>${K.hourSlots(st.d).filter(m=>K.free(c.id,st.d,m,60)).length} h libres</small></div>`+sl.map(m=>{const b=K.busy(c.id,st.d,m);const sel=st.court===c.id&&st.m!==null&&m>=st.m&&m<st.m+st.dur;return `<button class="${b?'b':''} ${m>=K.C.peak*60?'pk':''} ${sel?'sel':''}" data-c="${c.id}" data-m="${m}" aria-label="${c.name} ${K.t(m)} ${b?'ocupado':'libre'}"></button>`}).join('')+'</div>').join('');
+s.querySelectorAll('button').forEach(b=>b.onclick=()=>{if(b.classList.contains('b'))return;st.court=b.dataset.c;st.m=+b.dataset.m;if(!K.free(st.court,st.d,st.m,st.dur))st.dur=[90,60].find(x=>K.free(st.court,st.d,st.m,x))||60;all()})}
+function tk(){const t=$('#tk');if(st.m===null){t.innerHTML='<h2 class="R">Tu turno</h2><p style="color:var(--mute)">Tocá un punto encendido del tablero. Cada punto son 30 minutos.</p>';return}
+const tot=K.price(st.court,st.m,st.dur),ok=K.free(st.court,st.d,st.m,st.dur);
+t.innerHTML=`<span style="color:var(--mute)">${K.court(st.court).name} · ${K.dlabel(st.d,true)}</span><div class="t1">${K.t(st.m)}–${K.t(st.m+st.dur)}</div><div class="kv"><span>Total (ejemplo)</span><b>${K.money(tot)}</b></div><div class="kv"><span>Seña 30%</span><b>${K.money(K.sena(tot))}</b></div>${ok?'':'<p style="color:var(--led);font-size:14px">Se pisa con otro turno, bajá la duración.</p>'}<input type="text" id="nm" placeholder="Nombre" value="${st.name||''}" aria-label="Nombre"><label><input type="checkbox" id="f1" ${st.falta?'checked':''}>Nos falta 1, publiquen el partido</label><button class="btn a" id="pb" ${ok?'':'disabled'}>Pagar seña con Mercado Pago</button><button class="btn b2" id="wb" ${ok?'':'disabled'}>Reservar por WhatsApp</button>`;
+$('#nm').oninput=e=>st.name=e.target.value;$('#f1').onchange=e=>st.falta=e.target.checked;$('#pb').onclick=()=>K.pay(st);$('#wb').onclick=()=>K.go(K.msg(st,false))}
+function calc(){const r=+$('#rr').value,c=+$('#cr').value;$('#rv').textContent=r;$('#cv').textContent=K.money(c);$('#sv').textContent=K.money(r*c)}
+$('#rr').oninput=calc;$('#cr').oninput=calc;
+function lists(){const ms=K.matches(4);$('#fl').innerHTML=ms.map((x,i)=>`<div class="it"><b>${K.t(x.m)}</b><span>${K.dlabel(x.d,true)}<small>${x.c.name} · ${x.nivel} · ${x.g}</small></span><button data-i="${i}">Me sumo</button></div>`).join('');$('#fl').querySelectorAll('button').forEach(b=>b.onclick=()=>K.go(K.joinMsg(ms[b.dataset.i])));
+const cl=[['Clase grupal','Mar y jue 19 h · ejemplo'],['Clase particular','A convenir'],['Americano','Viernes de ejemplo · 21 h'],['Torneo por categoría','Fecha de ejemplo']];
+$('#cl').innerHTML=cl.map((c,i)=>`<div class="it"><b style="font-size:14px;color:var(--aqua)">${i<2?'Clase':'Torneo'}</b><span>${c[0]}<small>${c[1]}</small></span><button data-i="${i}">Anotarme</button></div>`).join('');$('#cl').querySelectorAll('button').forEach(b=>b.onclick=()=>{const c=cl[b.dataset.i];K.go('Hola Biguá! Quiero anotarme en "'+c[0]+'" ('+c[1]+'). ¿Hay lugar?')})}
+document.querySelectorAll('#durs button').forEach(b=>b.onclick=()=>{st.dur=+b.dataset.d;all()});
+$('#evf').onsubmit=e=>{e.preventDefault();const f=new FormData(e.target);K.go('Hola Biguá! Quiero presupuesto para un evento:\n• '+f.get('t')+'\n• '+f.get('p')+' personas\n• Fecha: '+(f.get('f')||'a definir')+'\n• '+f.get('c'))};
+$('#fab').href=K.wa('Hola Biguá! Quiero consultar por un turno.');
+function all(){ds();document.querySelectorAll('#durs button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.d===st.dur));sc();tk()}
+clock();setInterval(clock,30000);all();lists();calc();
+window.__test=()=>{document.querySelector('#sc button:not(.b)').click();return K.msg(st,true).replace(/\n/g,' | ').slice(0,170)}
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Biguá Pádel Club"></script>
+</body>
+</html>
