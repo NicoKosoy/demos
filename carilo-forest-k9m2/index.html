@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Cariló Forest · Reservas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--fondo:#EEF0E8;--sup:#FFFFFF;--prim:#24452F;--prim2:#3B6B49;--acento:#C9A15A;--tinta:#1A221C;--gris:#5F6A61;--linea:#D3D9CF}
+body.beach{--fondo:#F3EFE6;--prim:#1F4E6B;--prim2:#2F7194;--acento:#D98E5A;--linea:#DCD5C6;--gris:#66665E}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow-x:clip}
+body{font-family:Manrope,system-ui,sans-serif;background:var(--fondo);color:var(--tinta);line-height:1.55;transition:background .4s}
+img{display:block;max-width:100%}
+button,input{font:inherit;color:inherit}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--acento);outline-offset:3px}
+.cg{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600}
+.aviso{background:var(--tinta);color:#E2E7E1;font-size:13px;padding:7px 16px;text-align:center}
+
+/* split selector */
+.split{display:grid;grid-template-columns:1fr 1fr;height:62vh;min-height:420px;position:relative}
+.lado{position:relative;overflow:hidden;border:0;padding:0;cursor:pointer;text-align:left;color:#fff;background:#24452F}
+.lado.b{background:#1F4E6B}
+.lado img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .8s,filter .4s}
+.lado:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05) 30%,rgba(0,0,0,.65))}
+.lado[aria-pressed=false] img{filter:grayscale(.7) brightness(.8)}
+.lado[aria-pressed=true] img{transform:scale(1.03)}
+.lado .t{position:absolute;left:36px;bottom:76px;z-index:2;max-width:440px}
+.lado h2{font-family:"Cormorant Garamond";font-weight:500;font-size:clamp(48px,6.4vw,92px);line-height:.9;font-style:italic}
+.lado p{font-size:15px;margin-top:10px;color:#EDEFEA}
+.lado .ok{display:inline-block;margin-top:14px;font-size:13px;font-weight:700;border:1px solid rgba(255,255,255,.6);border-radius:30px;padding:5px 12px}
+.lado[aria-pressed=true] .ok{background:#fff;color:var(--tinta)}
+.marca{position:absolute;left:50%;top:24px;transform:translateX(-50%);z-index:3;color:#fff;text-align:center;font-family:"Cormorant Garamond";font-size:30px;letter-spacing:.2em;font-weight:600;pointer-events:none}
+.marca small{display:block;font-family:Manrope;font-size:11px;letter-spacing:.06em;font-weight:500;opacity:.85}
+
+/* asistente */
+.wiz{max-width:1120px;margin:-48px auto 0;position:relative;z-index:4;background:var(--sup);border-radius:6px;box-shadow:0 30px 60px rgba(26,34,28,.18);padding:0 0 30px}
+.pasos{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--linea)}
+.pasos button{border:0;background:none;padding:18px 20px;text-align:left;cursor:pointer;border-bottom:3px solid transparent;color:var(--gris)}
+.pasos button b{display:block;font-size:12px;font-weight:700;color:var(--acento)}
+.pasos button span{font-size:15px;font-weight:600}
+.pasos button[aria-current=step]{border-bottom-color:var(--prim);color:var(--tinta)}
+.pasos button:disabled{opacity:.45;cursor:not-allowed}
+.panel{padding:26px 30px 0;display:none}
+.panel.on{display:block}
+.panel h3{font-size:34px;line-height:1.1;color:var(--prim)}
+.panel .sub{color:var(--gris);margin:4px 0 20px}
+.unis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.uni{border:1px solid var(--linea);border-radius:6px;overflow:hidden;background:var(--sup);text-align:left;padding:0;cursor:pointer;display:flex;flex-direction:column}
+.uni .ft{aspect-ratio:16/10;position:relative;background:var(--fondo)}
+.uni .ft img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.uni .ft svg{position:absolute;inset:0;width:100%;height:100%}
+.uni .bd{padding:14px 16px 16px}
+.uni h4{font-family:"Cormorant Garamond";font-size:24px;font-weight:600;line-height:1.1}
+.uni .m{font-size:13px;color:var(--gris);margin:4px 0 8px}
+.uni .eq{font-size:13.5px}
+.uni .pr{margin-top:10px;font-size:14px;color:var(--gris)}
+.uni .pr b{color:var(--tinta);font-size:17px}
+.uni[aria-pressed=true]{border-color:var(--prim);box-shadow:0 0 0 2px var(--prim)}
+.uni.chico{opacity:.45}
+.fechas{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:28px;align-items:start}
+.cal2{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.navc{display:flex;justify-content:space-between;margin-bottom:6px}
+.navc button{width:34px;height:34px;border-radius:50%;border:1px solid var(--linea);background:none;cursor:pointer}
+.cal-t{font-family:"Cormorant Garamond";font-size:22px;font-weight:600;text-transform:capitalize;margin-bottom:6px}
+.cal-g{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cal-g i{font-style:normal;font-size:11px;color:var(--gris);text-align:center}
+.cal-g button{aspect-ratio:1;border:0;background:var(--fondo);border-radius:4px;cursor:pointer;font-size:13.5px}
+.cal-g button.x{background:transparent;color:#B7BDB6;text-decoration:line-through;cursor:not-allowed}
+.cal-g button.r{background:color-mix(in srgb,var(--prim) 18%,#fff)}
+.cal-g button.s{background:var(--prim);color:#fff}
+.cal-g button.p{opacity:.3;pointer-events:none}
+.lado-d{background:var(--fondo);border-radius:6px;padding:18px}
+.lado-d h4{font-family:"Cormorant Garamond";font-size:24px;font-weight:600}
+.pax{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--linea);font-size:14px}
+.pax div{display:flex;gap:10px;align-items:center}
+.pax button{width:30px;height:30px;border-radius:50%;border:1px solid var(--tinta);background:none;cursor:pointer}
+.temp{font-size:13px;color:var(--gris);margin-top:12px}
+.sig{display:flex;justify-content:flex-end;gap:10px;padding:22px 30px 0}
+.sig button{border:0;background:var(--prim);color:#fff;padding:13px 22px;border-radius:40px;font-weight:700;cursor:pointer}
+.sig button.sec{background:none;color:var(--tinta);border:1px solid var(--linea)}
+.sig button:disabled{background:#B9C0B8;cursor:not-allowed}
+.extras{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.ex{border:1px solid var(--linea);border-radius:6px;padding:14px;display:flex;gap:10px;align-items:flex-start;cursor:pointer;background:var(--sup)}
+.ex input{accent-color:var(--prim);width:18px;height:18px;margin-top:2px}
+.ex b{display:block;font-size:15px}
+.ex small{font-size:13px;color:var(--gris)}
+.conf{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px}
+.conf .ln{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid var(--linea);font-size:15px}
+.conf .ln span:last-child{white-space:nowrap}
+.conf .ln.t{font-weight:700;font-size:20px;border:0}
+.conf .sena{background:var(--fondo);border-left:3px solid var(--acento);padding:12px;font-size:14px;margin-top:10px}
+.conf a.wa{display:block;text-align:center;background:#1F7A4A;color:#fff;text-decoration:none;font-weight:700;padding:14px;border-radius:40px;margin-top:14px}
+.conf pre{white-space:pre-wrap;font-family:inherit;font-size:13px;color:var(--gris);background:var(--fondo);border-radius:6px;padding:12px}
+.err{color:#9A3B28;font-size:14px;margin-top:10px}
+
+.servicios{max-width:1120px;margin:56px auto;padding:0 30px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:40px;align-items:start}
+.servicios h2{font-size:clamp(32px,4vw,50px);line-height:1.02;color:var(--prim)}
+.servicios p{color:var(--gris);margin-top:12px}
+.servicios ul{list-style:none;columns:2;gap:24px}
+.servicios li{break-inside:avoid;padding:10px 0;border-top:1px solid var(--linea);font-size:15px}
+.servicios li b{display:block;font-family:"Cormorant Garamond";font-size:21px;font-weight:600}
+.galeria{display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:200px 200px;gap:6px;max-width:1120px;margin:0 auto 56px;padding:0 30px}
+.galeria div{position:relative;overflow:hidden;background:var(--linea);border-radius:4px}
+.galeria div:first-child{grid-row:span 2}
+.galeria img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+footer{background:var(--prim);color:#E6ECE6;padding:32px 30px;font-size:14px;transition:background .4s}
+footer .in{max-width:1120px;margin:0 auto;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer b{font-family:"Cormorant Garamond";font-size:26px;letter-spacing:.1em;display:block}
+footer .legal{max-width:1120px;margin:16px auto 0;font-size:13px;opacity:.75}
+@media (max-width:900px){
+ .split{grid-template-columns:1fr;height:auto;min-height:0}
+ .lado{height:250px}
+ .lado .t{left:18px;bottom:20px}.lado:last-child .t{bottom:40px}
+ .marca{font-size:22px;top:14px}
+ .wiz{margin:-20px 12px 0;}
+ .pasos{grid-template-columns:repeat(4,1fr)}
+ .pasos button{padding:12px 8px}.pasos button span{font-size:12.5px}
+ .panel{padding:20px 16px 0}
+ .panel h3{font-size:28px}
+ .unis,.extras{grid-template-columns:1fr}
+ .fechas{grid-template-columns:1fr}
+ .cal2{grid-template-columns:1fr}.cal2>div:nth-child(2){display:none}
+ .conf{grid-template-columns:1fr}
+ .sig{padding:18px 16px 0}
+ .servicios{grid-template-columns:1fr;padding:0 16px;gap:20px}
+ .servicios ul{columns:1}
+ .galeria{grid-template-columns:1fr 1fr;grid-template-rows:180px 120px 120px;padding:0 16px}
+ .galeria div:first-child{grid-column:span 2;grid-row:auto}
+ footer{padding:28px 16px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="aviso">Prototipo de demostración preparado para Cariló Forest · Precios y disponibilidad de ejemplo</div>
+<section class="split" aria-label="Elegí sede">
+ <div class="marca">CARILÓ FOREST<small>Avutarda y Avellano · Cariló</small></div>
+ <button class="lado" id="lF" type="button" aria-pressed="true" data-s="forest"><img src="https://cariloforest.com.ar/newsite/wp-content/uploads/2026/08/forest-dto-1-01.jpg" alt="Cariló Forest" onerror="this.remove()"><div class="t"><h2>Forest</h2><p>Departamentos y casas de 2 y 3 plantas entre los pinos, con hogar a leña y terraza con parrilla.</p><span class="ok">Bosque</span></div></button>
+ <button class="lado b" id="lB" type="button" aria-pressed="false" data-s="beach"><img src="https://cariloforest.com.ar/newsite/wp-content/uploads/2026/08/beach-dup-2a.jpg" alt="Cariló Beach" onerror="this.remove()"><div class="t"><h2>Beach</h2><p>Dúplex y departamentos a pasos de la playa, algunos con vista al mar y quincho.</p><span class="ok">Playa</span></div></button>
+</section>
+
+<section class="wiz" aria-label="Reserva">
+ <nav class="pasos" id="pasos">
+  <button type="button" data-p="0" aria-current="step"><b>Paso 1</b><span>Unidad</span></button>
+  <button type="button" data-p="1" disabled><b>Paso 2</b><span>Fechas</span></button>
+  <button type="button" data-p="2" disabled><b>Paso 3</b><span>Extras</span></button>
+  <button type="button" data-p="3" disabled><b>Paso 4</b><span>Confirmar</span></button>
+ </nav>
+ <div class="panel on" id="p0"><h3 class="cg" id="p0t"></h3><p class="sub">Desayuno, limpieza diaria, tres piscinas climatizadas y spa incluidos en todas.</p><div class="unis" id="unis"></div></div>
+ <div class="panel" id="p1"><h3 class="cg">¿Cuándo vienen?</h3><p class="sub">Las noches tachadas ya están reservadas (Booking, Airbnb u oficina, en un solo calendario).</p>
+  <div class="fechas"><div><div class="navc"><button type="button" id="cp" aria-label="Meses anteriores">‹</button><button type="button" id="cn" aria-label="Meses siguientes">›</button></div><div class="cal2" id="cal"></div></div>
+  <div class="lado-d"><h4>Huéspedes</h4><div class="pax"><span>Adultos</span><div><button type="button" data-k="ad" data-d="-1" aria-label="Menos adultos">−</button><b id="ad">2</b><button type="button" data-k="ad" data-d="1" aria-label="Más adultos">+</button></div></div><div class="pax"><span>Menores</span><div><button type="button" data-k="me" data-d="-1" aria-label="Menos menores">−</button><b id="me">1</b><button type="button" data-k="me" data-d="1" aria-label="Más menores">+</button></div></div><p class="temp" id="temp"></p></div></div></div>
+ <div class="panel" id="p2"><h3 class="cg">¿Algo más?</h3><p class="sub">Lo que suele pedirse por teléfono, ya en la reserva.</p><div class="extras" id="extras"></div></div>
+ <div class="panel" id="p3"><h3 class="cg">Revisá y mandá</h3><p class="sub">La reserva llega armada al WhatsApp de reservas.</p><div class="conf" id="conf"></div></div>
+ <div class="sig"><button type="button" class="sec" id="atras">Atrás</button><button type="button" id="seguir">Seguir</button></div>
+</section>
+
+<section class="servicios">
+ <div><h2 class="cg">Hotel de servicios, comodidad de casa.</h2><p>Cada reserva por Booking o por agencia paga comisión. Las que entran por la propia web, no. Con más de una decena de tipologías entre Forest y Beach y temporada llena en enero, cada reserva directa ahorra alrededor del 15%.</p></div>
+ <ul><li><b>Tres piscinas climatizadas</b>Dos cubiertas y una descubierta</li><li><b>Spa</b>Sauna seco y jacuzzi</li><li><b>Desayuno y limpieza</b>Incluidos todos los días</li><li><b>Servicio de playa</b>Propio, en temporada de verano</li><li><b>Gimnasio y sala de juegos</b>Con actividades para chicos y grandes</li><li><b>Cochera</b>Doble cubierta en las casas</li></ul>
+</section>
+<section class="galeria" aria-label="Fotos">
+ <div><img src="https://cariloforest.com.ar/newsite/wp-content/uploads/2026/07/IMG_3408-scaled.jpg" alt="Cariló Forest" loading="lazy" onerror="this.remove()"></div>
+ <div><img src="https://cariloforest.com.ar/newsite/wp-content/uploads/2026/08/galeria-32.jpg" alt="" loading="lazy" onerror="this.remove()"></div>
+ <div><img src="https://cariloforest.com.ar/newsite/wp-content/uploads/2026/07/MAR0169-scaled.jpg" alt="" loading="lazy" onerror="this.remove()"></div>
+ <div><img src="https://cariloforest.com.ar/newsite/wp-content/uploads/2026/08/galeria-13.jpg" alt="" loading="lazy" onerror="this.remove()"></div>
+ <div><img src="https://cariloforest.com.ar/newsite/wp-content/uploads/2026/07/Forest-Carilo-0010.jpg" alt="" loading="lazy" onerror="this.remove()"></div>
+</section>
+<footer><div class="in"><div><b>CARILÓ FOREST</b>Avutarda y Avellano, Cariló · info@cariloforest.com.ar · @cariloforest</div><div>Reservas Buenos Aires: WhatsApp 11 2613-3155 · (011) 4733-0509<br>Cariló: (02254) 579091 · 572995</div></div>
+<p class="legal">Prototipo preparado para Cariló Forest por Resolviendo Kos · resolviendokos.com · No es la web oficial</p></footer>
+
+<script>
+/* motor de reservas de ejemplo: temporadas, ocupación sincronizada (simulada), cotización y WhatsApp */
+const E=(()=>{
+  const MES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  const DIA=['lu','ma','mi','ju','vi','sá','do'];
+  const pad=n=>String(n).padStart(2,'0');
+  const d=s=>{const [y,m,dd]=s.split('-').map(Number);return new Date(y,m-1,dd)};
+  const iso=x=>x.getFullYear()+'-'+pad(x.getMonth()+1)+'-'+pad(x.getDate());
+  const add=(x,n)=>{const y=new Date(x);y.setDate(y.getDate()+n);return y};
+  const nights=(a,b)=>(a&&b)?Math.round((d(b)-d(a))/864e5):0;
+  const ars=n=>'$ '+Math.round(n).toLocaleString('es-AR');
+  const usd=n=>'USD '+Math.round(n).toLocaleString('es-AR');
+  const corta=s=>{if(!s)return'';const x=d(s);return x.getDate()+' '+MES[x.getMonth()].slice(0,3)};
+  const larga=s=>{if(!s)return'';const x=d(s);return x.getDate()+' de '+MES[x.getMonth()]};
+  function rnd(str){let h=2166136261;for(const c of String(str)){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return()=>{h^=h<<13;h^=h>>>17;h^=h<<5;return((h>>>0)%100000)/100000}}
+  const SRC=['Booking','Airbnb','Directo'];
+  /* ocupación de ejemplo: devuelve Map fecha -> canal */
+  function ocupacion(id,desde='2026-11-01',dias=330){
+    const r=rnd(id),m=new Map(),base=d(desde);let i=Math.floor(r()*5);
+    while(i<dias){const largo=2+Math.floor(r()*6),canal=SRC[Math.floor(r()*3)];
+      for(let k=0;k<largo;k++)m.set(iso(add(base,i+k)),canal);
+      i+=largo+6+Math.floor(r()*16)}
+    return m}
+  function temporada(T,f){for(const t of T)if(f>=t.desde&&f<=t.hasta)return t;return T.find(t=>t.base)||{nombre:'Base',mult:1}}
+  /* cotiza noche por noche */
+  function cotizar(p,T,a,b){
+    const n=nights(a,b);if(n<=0)return null;let total=0;const det={};let choque=null;const occ=p._occ||(p._occ=ocupacion(p.id));
+    for(let k=0;k<n;k++){const f=iso(add(d(a),k));const t=temporada(T,f);const v=p.noche*t.mult;total+=v;
+      det[t.nombre]=(det[t.nombre]||{n:0,v:0});det[t.nombre].n++;det[t.nombre].v+=v;if(occ.has(f)&&!choque)choque=f}
+    const minimo=Math.max(...Object.keys(det).map(k=>(T.find(t=>t.nombre===k)||{}).min||1));
+    return{noches:n,total,det,choque,minimo}}
+  function libre(p,a,b){const occ=p._occ||(p._occ=ocupacion(p.id));const n=nights(a,b);for(let k=0;k<n;k++)if(occ.has(iso(add(d(a),k))))return false;return true}
+  const wa=(num,txt)=>'https://wa.me/'+num+'?text='+encodeURIComponent(txt);
+  /* grilla de un mes: celdas con data-f, clases: x (ocupado, data-c canal), s (seleccionado), r (rango), p (pasado/fuera) */
+  function mes(y,m,occ,a,b,opt={}){
+    const first=new Date(y,m,1),off=(first.getDay()+6)%7,len=new Date(y,m+1,0).getDate();
+    let h='<div class="'+(opt.cls||'cal')+'"><div class="cal-t">'+MES[m]+' '+y+'</div><div class="cal-g">'+DIA.map(x=>'<i>'+x+'</i>').join('');
+    for(let k=0;k<off;k++)h+='<span></span>';
+    for(let k=1;k<=len;k++){const f=y+'-'+pad(m+1)+'-'+pad(k);let c='';const o=occ&&occ.get(f);
+      if(o)c+=' x c-'+o.toLowerCase();if(f===a||f===b)c+=' s';else if(a&&b&&f>a&&f<b)c+=' r';if(opt.min&&f<opt.min)c+=' p';
+      h+='<button type="button" data-f="'+f+'" class="'+c.trim()+'"'+(o?' title="Ocupado · '+o+'" aria-label="'+k+' ocupado por '+o+'"':' aria-label="'+k+' de '+MES[m]+'"')+'>'+k+'</button>'}
+    return h+'</div></div>'}
+  return{MES,DIA,d,iso,add,nights,ars,usd,corta,larga,ocupacion,temporada,cotizar,libre,wa,mes,rnd}
+})();
+
+const WA='5491126133155';const IMG='https://cariloforest.com.ar/newsite/wp-content/uploads/';
+const U=[
+ {id:'f1',s:'forest',n:'Depto 1 dormitorio',m2:45,ad:2,me:2,pax:4,eq:'Diván cama, cocina completa, parrilla, cochera descubierta',f:IMG+'2026/08/forest-dto-1-01.jpg',noche:160000},
+ {id:'f3',s:'forest',n:'Casa 3 dormitorios',m2:160,ad:6,me:0,pax:6,eq:'3 plantas, 3 baños, hogar a leña, terraza con parrilla, cochera doble',f:IMG+'2026/08/galeria-31.jpg',noche:330000},
+ {id:'f4',s:'forest',n:'Casa 4 dormitorios',m2:180,ad:8,me:0,pax:8,eq:'3 plantas, 3 baños, hogar a leña, playroom, cochera doble',f:IMG+'2026/08/galeria-40-1.jpg',noche:390000},
+ {id:'b2',s:'beach',n:'Dúplex 2 ambientes',m2:50,ad:2,me:2,pax:4,eq:'Balcón, diván cama, aire acondicionado',f:IMG+'2026/08/beach-dup-2a.jpg',noche:175000},
+ {id:'b22',s:'beach',n:'Depto 2 ambientes, 2 baños',m2:60,ad:2,me:2,pax:4,eq:'Dos balcones, dos divanes cama',f:IMG+'2026/08/galeria-15.jpg',noche:190000},
+ {id:'b3v',s:'beach',n:'Dúplex 3 ambientes vista al mar',m2:100,ad:6,me:0,pax:6,eq:'Suite king, 3 baños, terraza con parrilla',f:IMG+'2026/08/galeria-11.jpg',noche:340000},
+ {id:'b3l',s:'beach',n:'Depto 3 ambientes lateral, vista al mar',m2:120,ad:6,me:0,pax:6,eq:'Suite king, 2 baños, quincho con parrilla',f:IMG+'2026/08/galeria-30.jpg',noche:350000},
+ {id:'b3p',s:'beach',n:'Depto 3 ambientes planta baja',m2:65,ad:5,me:0,pax:5,eq:'Suite king, 2 baños, sillón cama',f:IMG+'2026/08/galeria-10.jpg',noche:255000},
+ {id:'b3g',s:'beach',n:'Depto 3 ambientes planta baja con parrilla',m2:90,ad:6,me:0,pax:6,eq:'Suite king, 2 baños, parrilla',f:IMG+'2026/08/galeria-33.jpg',noche:290000}];
+const T=[
+ {nombre:'Finde largo',desde:'2026-11-20',hasta:'2026-11-23',mult:1.25,min:3},
+ {nombre:'Finde largo',desde:'2026-12-05',hasta:'2026-12-08',mult:1.25,min:3},
+ {nombre:'Fiestas',desde:'2026-12-26',hasta:'2027-01-02',mult:1.7,min:5},
+ {nombre:'Enero',desde:'2027-01-03',hasta:'2027-01-31',mult:1.6,min:7},
+ {nombre:'Carnaval',desde:'2027-02-05',hasta:'2027-02-10',mult:1.6,min:4},
+ {nombre:'Febrero',desde:'2027-02-01',hasta:'2027-02-28',mult:1.4,min:5},
+ {nombre:'Semana Santa',desde:'2027-03-24',hasta:'2027-03-28',mult:1.3,min:3},
+ {nombre:'Vacaciones de invierno',desde:'2027-07-17',hasta:'2027-07-31',mult:1.15,min:3},
+ {nombre:'Temporada baja',base:true,mult:1,min:2}];
+const EX=[{id:'cuna',n:'Cuna',d:'Sin cargo',p:0},{id:'cuatri',n:'Guarda de cuatriciclo',d:'En cochera de las casas',p:0,s:'forest'},{id:'late',n:'Late check-out',d:'Hasta las 16 h',p:60000},{id:'masaje',n:'Masajes en el spa',d:'Sesión para dos',p:85000},{id:'playa',n:'Carpa de playa',d:'Servicio propio en verano',p:0},{id:'mascota',n:'Consulta por mascota',d:'Sujeto a la unidad',p:0}];
+const $=i=>document.getElementById(i);
+const st={s:'forest',u:null,a:null,b:null,cm:[2027,0],ad:2,me:1,ex:[],paso:0};
+function sede(s){st.s=s;document.body.classList.toggle('beach',s==='beach');$('lF').setAttribute('aria-pressed',s==='forest');$('lB').setAttribute('aria-pressed',s==='beach');if(st.u&&st.u.s!==s)st.u=null;st.a=st.b=null;unis();ir(0)}
+$('lF').onclick=()=>sede('forest');$('lB').onclick=()=>sede('beach');
+function arte(u){const c=u.s==='forest'?'#24452F':'#1F4E6B';return`<svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="${u.s==='forest'?'#DCE3D6':'#E9E2D2'}"/>${u.s==='forest'?[0,1,2,3,4,5].map(i=>`<path d="M${20+i*55} 170 L${45+i*55} ${60+(i%3)*14} L${70+i*55} 170Z" fill="${c}" opacity="${.5+(i%2)*.4}"/>`).join(''):`<rect y="130" width="320" height="70" fill="#2F7194"/><circle cx="250" cy="60" r="24" fill="#D98E5A"/>`}<text x="16" y="190" font-family="Cormorant Garamond" font-size="26" font-weight="600" fill="${u.s==='forest'?'#fff':'#1A221C'}">${u.m2} m²</text></svg>`}
+function unis(){const L=U.filter(u=>u.s===st.s);$('p0t').textContent=st.s==='forest'?'Unidades Forest, entre el bosque':'Unidades Beach, a pasos del mar';
+ $('unis').innerHTML=L.map(u=>`<button type="button" class="uni" data-id="${u.id}" aria-pressed="${st.u===u}"><div class="ft">${arte(u)}<img src="${u.f}" alt="${u.n}" loading="lazy" onerror="this.remove()"></div><div class="bd"><h4>${u.n}</h4><p class="m">${u.m2} m² · ${u.me?u.ad+' adultos + '+u.me+' menores':'hasta '+u.pax+' huéspedes'}</p><p class="eq">${u.eq}</p><p class="pr">Desde <b>${E.ars(u.noche)}</b> la noche</p></div></button>`).join('')}
+$('unis').onclick=e=>{const b=e.target.closest('.uni');if(!b)return;st.u=U.find(u=>u.id===b.dataset.id);st.a=st.b=null;unis();habil()};
+function cal(){const u=st.u;if(!u)return;const o=u._o||(u._o=E.ocupacion(u.id));const[y,m]=st.cm;let y2=y,m2=m+1;if(m2>11){m2=0;y2++}
+ $('cal').innerHTML=E.mes(y,m,o,st.a,st.b,{min:'2026-10-29'})+E.mes(y2,m2,o,st.a,st.b,{min:'2026-10-29'});
+ $('ad').textContent=st.ad;$('me').textContent=st.me;
+ const q=st.a&&st.b?E.cotizar(u,T,st.a,st.b):null;
+ $('temp').innerHTML=q?`${q.noches} noches · ${Object.keys(q.det).join(', ')}. ${q.noches<q.minimo?'<b style="color:#9A3B28">Mínimo '+q.minimo+' noches en esa fecha.</b>':''}`:(st.a?'Ahora elegí la salida.':'Enero: mínimo 7 noches. Fiestas: 5. Findes largos: 3.')}
+$('cp').onclick=()=>{let[y,m]=st.cm;m--;if(m<0){m=11;y--}st.cm=[y,m];cal()};$('cn').onclick=()=>{let[y,m]=st.cm;m++;if(m>11){m=0;y++}st.cm=[y,m];cal()};
+$('cal').onclick=e=>{const b=e.target.closest('button');if(!b||b.classList.contains('p'))return;const f=b.dataset.f;if(b.classList.contains('x')&&!(st.a&&!st.b&&f>st.a))return;if(!st.a||st.b){st.a=f;st.b=null}else if(f<=st.a)st.a=f;else st.b=f;cal();habil()};
+document.querySelector('.lado-d').addEventListener('click',e=>{const b=e.target.closest('[data-k]');if(!b)return;const k=b.dataset.k;st[k]=Math.max(k==='ad'?1:0,Math.min(8,st[k]+(+b.dataset.d)));cal();habil()});
+function extras(){$('extras').innerHTML=EX.filter(x=>!x.s||x.s===st.s).map(x=>`<label class="ex"><input type="checkbox" value="${x.id}" ${st.ex.includes(x.id)?'checked':''}><span><b>${x.n}</b><small>${x.d}${x.p?' · '+E.ars(x.p):''}</small></span></label>`).join('')}
+$('extras').onchange=()=>{st.ex=[...document.querySelectorAll('#extras input:checked')].map(i=>i.value)};
+function valido(p){if(p>=1&&!st.u)return false;if(p>=2){if(!(st.a&&st.b))return false;const q=E.cotizar(st.u,T,st.a,st.b);if(!E.libre(st.u,st.a,st.b)||q.noches<q.minimo)return false;if(st.ad+st.me>st.u.pax||st.ad>st.u.ad)return false}return true}
+function habil(){[...$('pasos').children].forEach((b,i)=>{b.disabled=!valido(i)});$('seguir').disabled=!valido(st.paso+1)&&st.paso<3;$('atras').style.visibility=st.paso?'visible':'hidden';$('seguir').style.display=st.paso===3?'none':''}
+function ir(p){if(!valido(p))return;st.paso=p;[0,1,2,3].forEach(i=>$('p'+i).classList.toggle('on',i===p));[...$('pasos').children].forEach((b,i)=>b.toggleAttribute('aria-current',i===p)||b.setAttribute('aria-current',i===p?'step':'false'));
+ [...$('pasos').children].forEach((b,i)=>b.setAttribute('aria-current',i===p?'step':'false'));
+ if(p===1){if(!st.a)st.cm=[2027,0];cal()}if(p===2)extras();if(p===3)conf();habil()}
+$('pasos').onclick=e=>{const b=e.target.closest('button');if(b&&!b.disabled)ir(+b.dataset.p)};
+$('seguir').onclick=()=>ir(st.paso+1);$('atras').onclick=()=>ir(Math.max(0,st.paso-1));
+function conf(){const u=st.u;const q=E.cotizar(u,T,st.a,st.b);const ex=EX.filter(x=>st.ex.includes(x.id));const exT=ex.reduce((s,x)=>s+x.p,0);const tot=q.total+exT;const sena=tot*.3;
+ const txt=`Hola Cariló Forest! Quiero reservar en ${u.s==='forest'?'Forest':'Beach'}: ${u.n} (${u.m2} m²).\nIngreso ${E.larga(st.a)} · egreso ${E.larga(st.b)} (${q.noches} noches).\n${st.ad} adultos${st.me?' y '+st.me+(st.me>1?' menores':' menor'):''}.${ex.length?'\nExtras: '+ex.map(x=>x.n).join(', ')+'.':''}\nTotal: ${E.ars(tot)} con desayuno y limpieza. Seña 30%: ${E.ars(sena)}.\n¿Me confirman?`;
+ $('conf').innerHTML=`<div>${Object.entries(q.det).map(([k,v])=>`<div class="ln"><span>${v.n} noche${v.n>1?'s':''} · ${k}</span><span>${E.ars(v.v)}</span></div>`).join('')}${ex.filter(x=>x.p).map(x=>`<div class="ln"><span>${x.n}</span><span>${E.ars(x.p)}</span></div>`).join('')}
+ <div class="ln"><span>Desayuno, limpieza, piscinas y spa</span><span>incluido</span></div><div class="ln t"><span>Total</span><span>${E.ars(tot)}</span></div>
+ <div class="sena">Seña del 30% para confirmar: <b>${E.ars(sena)}</b>. Valores de ejemplo.</div></div>
+ <div><pre>${txt.replace(/</g,'&lt;')}</pre><a class="wa" href="${E.wa(WA,txt)}" target="_blank" rel="noopener">Enviar reserva por WhatsApp</a></div>`}
+unis();habil();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Cariló Forest"></script>
+</body>
+</html>
