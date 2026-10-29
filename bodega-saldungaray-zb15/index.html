@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Bodega Saldungaray · Sierra de la Ventana</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,300;6..72,500;6..72,700&family=Sora:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--sky:#c9d6df;--sky2:#9fb3c2;--sierra:#3e4a5a;--wheat:#d9b45a;--berry:#7a2242;--chalk:#f5f6f3;--ink:#1e242c;
+--rk-line:#b9c5cf;--rk-accent:#3e4a5a;--rk-accent-ink:#7a2242;--rk-card:#fff;--rk-sel:#eef2f5;--rk-r:0 0 14px 0;--rk-r-sm:0}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--chalk);color:var(--ink);font-family:Sora,system-ui,sans-serif;font-size:15px;line-height:1.6;overflow-x:hidden}
+/* componentes del motor de reserva; cada página define --rk-* */
+.rk-exps{display:grid;gap:var(--rk-gap,10px)}
+.rk-exp{all:unset;box-sizing:border-box;cursor:pointer;display:grid;gap:4px;padding:14px 16px;border:1px solid var(--rk-line);border-radius:var(--rk-r,6px);background:var(--rk-card,transparent);color:inherit;transition:border-color .15s,background .15s}
+.rk-exp:hover{border-color:var(--rk-accent)}
+.rk-exp[aria-pressed="true"]{border-color:var(--rk-accent);background:var(--rk-sel,rgba(0,0,0,.04));box-shadow:inset 3px 0 0 var(--rk-accent)}
+.rk-exp__n{font-weight:600;font-size:1.02em}
+.rk-exp__d{font-size:.88em;opacity:.78;line-height:1.45}
+.rk-exp__m{display:flex;justify-content:space-between;gap:8px;font-size:.85em;margin-top:2px}
+.rk-exp__p{font-weight:600;color:var(--rk-accent-ink,var(--rk-accent))}
+.rk-cal{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+.rk-cal--grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));overflow:visible}
+.rk-cal__h{text-align:center;font-size:.72em;opacity:.6;padding:2px 0}
+.rk-day{all:unset;box-sizing:border-box;cursor:pointer;flex:0 0 58px;display:grid;justify-items:center;gap:1px;padding:8px 2px;border:1px solid var(--rk-line);border-radius:var(--rk-r-sm,4px);background:var(--rk-card,transparent);min-width:0}
+.rk-day__w{font-size:.7em;opacity:.7}.rk-day__n{font-size:1.15em;font-weight:600;line-height:1.1}.rk-day__m{font-size:.62em;opacity:.65}
+.rk-day:disabled{opacity:.35;cursor:not-allowed;text-decoration:line-through}
+.rk-day:not(:disabled):hover{border-color:var(--rk-accent)}
+.rk-day[aria-pressed="true"]{background:var(--rk-accent);border-color:var(--rk-accent);color:var(--rk-on-accent,#fff)}
+.rk-times,.rk-langs{display:flex;flex-wrap:wrap;gap:8px}
+.rk-time,.rk-lang{all:unset;box-sizing:border-box;cursor:pointer;padding:9px 14px;border:1px solid var(--rk-line);border-radius:var(--rk-r-sm,4px);background:var(--rk-card,transparent);display:grid;gap:1px;text-align:center}
+.rk-time__t{font-weight:600}.rk-time__c{font-size:.72em;opacity:.7}
+.rk-time:disabled{opacity:.35;cursor:not-allowed}
+.rk-time[aria-pressed="true"],.rk-lang[aria-pressed="true"]{background:var(--rk-accent);border-color:var(--rk-accent);color:var(--rk-on-accent,#fff)}
+.rk-step{display:inline-flex;align-items:center;border:1px solid var(--rk-line);border-radius:var(--rk-r-sm,4px);overflow:hidden;background:var(--rk-card,transparent)}
+.rk-step__b{all:unset;cursor:pointer;width:40px;height:40px;display:grid;place-items:center;font-size:1.2em}
+.rk-step__b:disabled{opacity:.3;cursor:not-allowed}
+.rk-step__b:not(:disabled):hover{background:var(--rk-sel,rgba(0,0,0,.05))}
+.rk-step__v{min-width:96px;text-align:center;font-weight:600;font-size:.92em}
+.rk-step--sm .rk-step__b{width:34px;height:34px}.rk-step--sm .rk-step__v{min-width:74px;font-size:.85em}
+.rk-sum{display:grid;gap:6px}
+.rk-sum__row{display:flex;justify-content:space-between;gap:12px;font-size:.92em}
+.rk-sum__row span:last-child{text-align:right;white-space:nowrap}
+.rk-sum__tot{font-weight:700;font-size:1.08em;padding-top:8px;border-top:1px solid var(--rk-line)}
+.rk-sum__sena,.rk-sum__dto{font-size:.84em;opacity:.8}
+.rk-hint{margin:0;font-size:.88em;opacity:.7}
+.rk-book{display:inline-flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;cursor:pointer}
+.rk-book.is-off{opacity:.55;cursor:not-allowed}
+.rk-shop{display:grid;gap:0}
+.rk-wine{display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--rk-line)}
+.rk-wine__img{width:44px;height:64px;object-fit:contain;grid-column:1;grid-row:1}
+.rk-wine__i{grid-column:2;grid-row:1}.rk-wine__p{grid-column:3;grid-row:1}.rk-wine>.rk-step{grid-column:4;grid-row:1}
+.rk-wine__i{display:grid;gap:1px;min-width:0}
+.rk-wine__l{font-size:.72em;opacity:.65}.rk-wine__n{font-weight:600}.rk-wine__v{font-size:.82em;opacity:.75}
+.rk-wine__p{display:grid;text-align:right;font-size:.82em}.rk-wine__b{font-weight:600}.rk-wine__c{opacity:.65}
+.rk-wine.is-in .rk-wine__n{color:var(--rk-accent-ink,var(--rk-accent))}
+.rk-club{display:grid;gap:10px}
+.rk-plan{all:unset;box-sizing:border-box;cursor:pointer;display:grid;gap:3px;padding:16px;border:1px solid var(--rk-line);border-radius:var(--rk-r,6px);background:var(--rk-card,transparent)}
+.rk-plan__n{font-weight:700;font-size:1.05em}.rk-plan__b{font-size:.85em;opacity:.8}.rk-plan__d{font-size:.82em;opacity:.7;line-height:1.4}
+.rk-plan__p{font-weight:700;margin-top:6px;font-size:1.15em}.rk-plan__p small{font-weight:400;font-size:.65em;opacity:.7}
+.rk-plan:hover{border-color:var(--rk-accent)}
+.rk-plan[aria-pressed="true"]{border-color:var(--rk-accent);box-shadow:inset 0 0 0 1px var(--rk-accent);background:var(--rk-sel,rgba(0,0,0,.04))}
+.rk-exp:focus-visible,.rk-day:focus-visible,.rk-time:focus-visible,.rk-lang:focus-visible,.rk-step__b:focus-visible,.rk-plan:focus-visible,.rk-book:focus-visible{outline:2px solid var(--rk-accent);outline-offset:2px}
+.rk-pulse{animation:rkp .7s}
+@keyframes rkp{0%,100%{transform:none}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.rk-banner{font-size:12.5px;line-height:1.35;text-align:center;padding:7px 16px}
+@media (max-width:560px){.rk-wine{grid-template-columns:auto 1fr auto;row-gap:10px;column-gap:12px}.rk-wine__img{grid-row:1/3}.rk-wine__p{grid-column:3}.rk-wine>.rk-step{grid-column:2/4;grid-row:2;justify-self:start}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+.rk-banner{background:var(--sierra);color:#e6ebef}
+h1,h2,h3{font-family:Newsreader,serif;font-weight:500;margin:0;line-height:1.05}
+a{color:inherit}
+.app{display:grid;grid-template-columns:minmax(0,1fr) 400px;min-height:100vh}
+.left{padding:34px 44px 50px}
+.right{background:var(--sierra);color:#eef1f4;padding:34px 34px 40px;position:relative;--rk-line:rgba(255,255,255,.22);--rk-accent:#d9b45a;--rk-on-accent:#1e242c}
+.right .sticky{position:sticky;top:24px}
+.idrow{display:flex;justify-content:space-between;align-items:baseline;gap:16px;border-bottom:2px solid var(--ink);padding-bottom:12px;margin-bottom:26px;flex-wrap:wrap}
+.idrow h1{font-size:30px;font-weight:700}
+.idrow span{font-size:13px;color:#4f5966}
+.q{font-family:Newsreader;font-size:clamp(30px,3.6vw,46px);font-weight:300;margin:0 0 20px;max-width:18em}
+.q b{font-weight:700;color:var(--berry)}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:34px}
+.lb{font-size:12.5px;font-weight:600;color:var(--berry);margin:0 0 10px}
+.blk{margin-bottom:24px}
+.right h2{font-size:34px;color:var(--wheat);margin-bottom:14px}
+.right input{width:100%;padding:12px;border:0;font:inherit;margin-top:14px}
+.go{display:flex;justify-content:center;background:var(--wheat);color:var(--ink);text-decoration:none;padding:15px;font-weight:600;margin-top:12px;border-radius:0 0 14px 0}
+.go--dark{background:var(--sierra);color:#fff}
+.rk-need{font-size:12px;opacity:.75;margin:10px 0 0}
+.sierras{display:block;width:100%;height:120px;margin:20px 0 0}
+.terroir{margin-top:22px;font-size:13.5px;border-top:1px solid rgba(255,255,255,.2);padding-top:16px;display:grid;gap:6px}
+.band{background:var(--sky);padding:70px 44px}
+.band .inner{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:46px}
+.band h2{font-size:clamp(38px,4.6vw,62px)}
+.band p{max-width:40ch}
+.band .rk-wine{border-color:var(--sky2)}
+.cartline{background:#fff;padding:18px;margin-top:18px;border-radius:0 0 14px 0}
+.jams{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.jams span{background:var(--berry);color:#fff;padding:6px 12px;font-size:13px;border-radius:0 0 10px 0}
+.clubz{padding:70px 44px;max-width:1268px;margin:0 auto}
+.clubz .rk-club{grid-template-columns:repeat(3,minmax(0,1fr))}
+.clubz h2{font-size:clamp(36px,4vw,54px)}
+.firsts{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:2px solid var(--ink);margin-top:40px}
+.firsts div{padding:18px 16px 0 0}
+.firsts b{font-family:Newsreader;font-size:34px;font-weight:300;display:block;color:var(--berry)}
+.contact{padding:0 44px 60px;max-width:1268px;margin:0 auto;display:flex;gap:40px;flex-wrap:wrap;font-size:14px}
+.contact b{display:block;font-size:12px;color:var(--berry)}
+footer{background:var(--ink);color:#c2c9d1;text-align:center;padding:26px 16px;font-size:12.5px}
+@media (max-width:1000px){.app{grid-template-columns:minmax(0,1fr)}.right .sticky{position:static}.band .inner{grid-template-columns:minmax(0,1fr)}.clubz .rk-club{grid-template-columns:1fr}.firsts{grid-template-columns:1fr 1fr}}
+@media (max-width:640px){.left,.right{padding:24px 16px}.grid2{grid-template-columns:minmax(0,1fr);gap:0}.band,.clubz{padding:50px 16px}.contact{padding:0 16px 50px}}
+</style>
+</head>
+<body>
+<div class="rk-banner">Prototipo de demostración preparado para Bodega Saldungaray · Precios y disponibilidad de ejemplo</div>
+<div class="app" id="visita" data-rk-scope>
+ <div class="left">
+  <div class="idrow"><h1>Bodega Saldungaray</h1><span>Ruta 72 · Saldungaray · a 8 km de Sierra de la Ventana</span></div>
+  <p class="q">¿Qué día venís a la <b>bodega de la sierra</b>?</p>
+  <div class="grid2">
+   <div><div class="blk"><div class="lb">Experiencia</div><div class="rk-exps" data-rk="exps"></div></div></div>
+   <div>
+    <div class="blk"><div class="lb">Día</div><div data-rk="cal" data-mode="grid"></div></div>
+    <div class="blk"><div class="lb">Horario</div><div class="rk-times" data-rk="times"></div></div>
+    <div class="blk"><div class="lb">Personas</div><div data-rk="pax"></div></div>
+    <div class="blk" style="display:none"><div class="rk-langs" data-rk="langs"></div></div>
+   </div>
+  </div>
+ </div>
+ <aside class="right"><div class="sticky">
+  <h2>Tu visita</h2>
+  <div class="rk-sum" data-rk="sum"></div>
+  <input data-rk="nombre" placeholder="Tu nombre (opcional)" aria-label="Tu nombre">
+  <a class="go rk-book" data-rk="book" target="_blank" rel="noopener"><span class="rk-book__l">Elegí día y horario</span></a>
+  <p class="rk-need">Lunes a sábado 10:30 a 18:30 · Domingos 10 a 19.</p>
+  <svg class="sierras" viewBox="0 0 400 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 120 L0 80 L50 50 L90 72 L150 20 L200 58 L250 38 L310 70 L360 46 L400 66 L400 120Z" fill="#2d3644"/><g stroke="#d9b45a" stroke-width="1.5" opacity=".7"><path d="M0 100 H400"/><path d="M0 108 H400"/><path d="M0 116 H400"/></g></svg>
+  <div class="terroir"><span>20 ha de viñedo entre las sierras de la Ventana y Pillahuincó.</span><span>Primera vendimia en 2007. Primera champañera de la provincia en 2011.</span></div>
+ </div></aside>
+</div>
+
+<section class="band" id="vinos" data-rk-scope>
+ <div class="inner">
+  <div><h2>Un vino de Buenos Aires</h2><p>La línea Ventania en cuatro versiones y el espumoso Extra Brut de Pinot Noir, por método tradicional. Llevate la caja y sumá dulces hechos con la fruta del campo.</p>
+   <div class="jams" aria-label="Productos del campo"><span>Arándano</span><span>Frambuesa</span><span>Mora</span><span>Pera</span><span>Ciruela</span></div></div>
+  <div><div class="rk-shop" data-rk="shop"></div>
+   <div class="cartline"><div class="rk-sum" data-rk="cart"></div>
+    <a class="go go--dark rk-book" data-rk="shopbtn" target="_blank" rel="noopener"><span class="rk-book__l">Sumá al menos una caja</span></a>
+    <p class="rk-need">Retiro en la bodega o envío a Bahía Blanca y CABA a coordinar.</p></div></div>
+ </div>
+</section>
+
+<section class="clubz" id="club" data-rk-scope>
+ <h2>Club Ventania</h2>
+ <p style="max-width:52ch">Los vinos de la sierra llegan a tu casa una vez por mes. Ideal para los que vienen cada verano y en invierno extrañan el viñedo.</p>
+ <div class="rk-club" data-rk="club"></div>
+ <div style="max-width:340px"><a class="go go--dark rk-book" data-rk="clubbtn" target="_blank" rel="noopener"><span class="rk-book__l">Elegí un plan</span></a></div>
+ <div class="firsts"><div><b>2000</b>La familia Parra compra el campo</div><div><b>2003</b>Primeras vides</div><div><b>2007</b>Primera vendimia</div><div><b>2011</b>Primera champañera bonaerense</div></div>
+</section>
+<div class="contact">
+ <div><b>Teléfono / WhatsApp</b><a href="#" data-wa="Hola Bodega Saldungaray! Tengo una consulta.">+54 9 291 412-5261</a></div>
+ <div><b>Mail</b><a href="mailto:info@saldungaray.com.ar">info@saldungaray.com.ar</a></div>
+ <div><b>Instagram</b><a href="https://www.instagram.com/bodegasaldungaray/" target="_blank" rel="noopener">@bodegasaldungaray</a></div>
+ <div><b>Dónde</b>Saldungaray, partido de Tornquist, sobre Ruta 72</div>
+</div>
+<footer>Prototipo preparado para Bodega Saldungaray por Resolviendo Kos · resolviendokos.com · No es la web oficial</footer>
+<script>(function(){
+"use strict";
+var C={}, S={exp:null,date:null,time:null,lang:null,pax:2,cart:{},plan:null};
+function $(s,r){return (r||document).querySelector(s);}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));}
+function money(n){return "$ "+Math.round(n).toLocaleString("es-AR");}
+function h(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e;}
+function hash(s){var x=2166136261;for(var i=0;i<s.length;i++){x^=s.charCodeAt(i);x=Math.imul(x,16777619);}return (x>>>0);}
+var DIAS=["dom","lun","mar","mié","jue","vie","sáb"],DIASL=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"],MES=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+function key(d){return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();}
+function fmtDate(d){return DIASL[d.getDay()]+" "+d.getDate()+"/"+(d.getMonth()+1);}
+function exp(){for(var i=0;i<C.exps.length;i++)if(C.exps[i].id===S.exp)return C.exps[i];return C.exps[0];}
+function cupos(d,t){var e=exp();var cap=e.cap||C.cap||12;var r=hash(key(d)+t+e.id+C.negocio)%100;if(r<14)return 0;return Math.max(1,Math.round(cap*(r/100)));}
+function open(d){var e=exp();var days=e.days||C.days||[1,2,3,4,5,6];return days.indexOf(d.getDay())>-1;}
+function times(){return exp().times||C.times||["10:00","12:00","16:00"];}
+function wa(text,num){if(!(num||C.wa)&&C.mail)return "mailto:"+C.mail+"?subject="+encodeURIComponent("Consulta desde la web - "+C.negocio)+"&body="+encodeURIComponent(text);return "https://wa.me/"+(num||C.wa)+"?text="+encodeURIComponent(text);}
+function each(sel,fn){$$('[data-rk="'+sel+'"]').forEach(fn);}
+
+function renderExps(){each("exps",function(box){box.innerHTML="";C.exps.forEach(function(e){
+  var b=h("button","rk-exp");b.type="button";b.setAttribute("aria-pressed",String(S.exp===e.id));
+  b.innerHTML='<span class="rk-exp__n">'+e.n+'</span>'+(e.d?'<span class="rk-exp__d">'+e.d+'</span>':'')+'<span class="rk-exp__m"><span class="rk-exp__dur">'+(e.dur||"")+'</span><span class="rk-exp__p">'+(e.p?money(e.p)+(e.pp===false?"":" p/p"):"Sin cargo")+'</span></span>';
+  b.addEventListener("click",function(){S.exp=e.id;S.time=null;if(S.date&&!open(S.date))S.date=null;renderAll();});
+  box.appendChild(b);});});}
+
+function renderCal(){each("cal",function(box){box.innerHTML="";var mode=box.getAttribute("data-mode")||C.calMode||"strip";
+  var start=new Date();start.setHours(0,0,0,0);start.setDate(start.getDate()+1);var n=C.horizon||21;
+  var wrap=h("div","rk-cal rk-cal--"+mode);
+  if(mode==="grid"){["L","M","M","J","V","S","D"].forEach(function(x){wrap.appendChild(h("span","rk-cal__h",x));});
+    var off=(start.getDay()+6)%7;for(var k=0;k<off;k++)wrap.appendChild(h("span","rk-cal__pad"));}
+  for(var i=0;i<n;i++){(function(i){var d=new Date(start);d.setDate(start.getDate()+i);
+    var b=h("button","rk-day");b.type="button";var ok=open(d);
+    var free=0;if(ok)times().forEach(function(t){free+=cupos(d,t);});
+    if(!ok||free===0){b.disabled=true;}
+    b.setAttribute("aria-pressed",String(S.date&&key(S.date)===key(d)));
+    b.setAttribute("aria-label",fmtDate(d)+(ok?(free?"":" completo"):" cerrado"));
+    b.innerHTML='<span class="rk-day__w">'+DIAS[d.getDay()]+'</span><span class="rk-day__n">'+d.getDate()+'</span><span class="rk-day__m">'+(!ok?"cerrado":free===0?"completo":MES[d.getMonth()])+'</span>';
+    b.addEventListener("click",function(){S.date=d;S.time=null;renderAll();});wrap.appendChild(b);})(i);}
+  box.appendChild(wrap);});}
+
+function renderTimes(){each("times",function(box){box.innerHTML="";
+  if(!S.date){box.appendChild(h("p","rk-hint","Elegí un día para ver los horarios y cupos."));return;}
+  times().forEach(function(t){var c=cupos(S.date,t);var b=h("button","rk-time");b.type="button";b.disabled=c===0||c<1;
+    b.setAttribute("aria-pressed",String(S.time===t));
+    b.innerHTML='<span class="rk-time__t">'+t+'</span><span class="rk-time__c">'+(c?("quedan "+c):"completo")+'</span>';
+    b.addEventListener("click",function(){S.time=t;if(S.pax>c)S.pax=c;renderAll();});box.appendChild(b);});});}
+
+function renderLangs(){each("langs",function(box){box.innerHTML="";var L=exp().langs||C.langs||["Español"];if(L.indexOf(S.lang)<0)S.lang=L[0];
+  L.forEach(function(l){var b=h("button","rk-lang",l);b.type="button";b.setAttribute("aria-pressed",String(S.lang===l));
+    b.addEventListener("click",function(){S.lang=l;renderAll();});box.appendChild(b);});});}
+
+function maxPax(){return S.date&&S.time?cupos(S.date,S.time):(exp().cap||C.cap||12);}
+function renderPax(){each("pax",function(box){box.innerHTML="";var w=h("div","rk-step");
+  var m=h("button","rk-step__b","&minus;");m.type="button";m.setAttribute("aria-label","Una persona menos");
+  var o=h("output","rk-step__v",S.pax+(S.pax===1?" persona":" personas"));
+  var p=h("button","rk-step__b","+");p.type="button";p.setAttribute("aria-label","Una persona más");
+  m.disabled=S.pax<=1;p.disabled=S.pax>=maxPax();
+  m.onclick=function(){S.pax=Math.max(1,S.pax-1);renderAll();};p.onclick=function(){S.pax=Math.min(maxPax(),S.pax+1);renderAll();};
+  w.appendChild(m);w.appendChild(o);w.appendChild(p);box.appendChild(w);});}
+
+function bookText(){var e=exp();var tot=(e.p||0)*(e.pp===false?1:S.pax);var sena=tot*(C.sena||0.3);
+  return "Hola "+C.negocio+"! Quiero reservar una visita:\n"+
+  "• Experiencia: "+e.n+"\n• Fecha: "+(S.date?fmtDate(S.date):"-")+"\n• Horario: "+(S.time||"-")+"\n• Idioma: "+S.lang+"\n• Personas: "+S.pax+"\n"+
+  "• Total: "+money(tot)+(tot?" (seña "+Math.round((C.sena||0.3)*100)+"%: "+money(sena)+")":"")+"\n"+(nombre()?"Mi nombre: "+nombre()+"\n":"")+"¿Me confirman disponibilidad?";}
+function nombre(){var i=$('[data-rk="nombre"]');return i&&i.value.trim()?i.value.trim():"";}
+function renderSum(){var e=exp();var tot=(e.p||0)*(e.pp===false?1:S.pax);var sena=tot*(C.sena||0.3);var ready=S.date&&S.time;
+  each("sum",function(box){box.innerHTML='<div class="rk-sum__row"><span>'+e.n+'</span><span>'+(e.p?money(e.p)+(e.pp===false?"":" × "+S.pax):"sin cargo")+'</span></div>'+
+   '<div class="rk-sum__row"><span>'+(S.date?fmtDate(S.date):"Día a elegir")+'</span><span>'+(S.time||"--:--")+' · '+S.lang+'</span></div>'+
+   '<div class="rk-sum__row rk-sum__tot"><span>Total de ejemplo</span><span>'+money(tot)+'</span></div>'+
+   (tot?'<div class="rk-sum__row rk-sum__sena"><span>Seña para confirmar ('+Math.round((C.sena||0.3)*100)+'%)</span><span>'+money(sena)+'</span></div>':'');});
+  each("book",function(a){a.href=ready?wa(bookText()):"#";a.setAttribute("aria-disabled",String(!ready));a.classList.toggle("is-off",!ready);
+    var lbl=a.querySelector(".rk-book__l");if(lbl)lbl.textContent=ready?(a.getAttribute("data-on")||"Reservar por WhatsApp"):(a.getAttribute("data-off")||"Elegí día y horario");});}
+
+function renderShop(){each("shop",function(box){if(box.getAttribute("data-built")){syncShop();return;}box.setAttribute("data-built","1");box.innerHTML="";
+  C.wines.forEach(function(w){var bx=w.box||C.box||6;var r=h("div","rk-wine");r.setAttribute("data-w",w.id);
+    r.innerHTML=(w.img?'<img class="rk-wine__img" src="'+w.img+'" alt="'+w.n+'" loading="lazy" onerror="this.remove()">':'')+
+    '<div class="rk-wine__i"><span class="rk-wine__l">'+(w.line||"")+'</span><span class="rk-wine__n">'+w.n+'</span>'+(w.v?'<span class="rk-wine__v">'+w.v+'</span>':'')+'</div>'+
+    '<div class="rk-wine__p"><span class="rk-wine__b">'+money(w.p)+' la botella</span><span class="rk-wine__c">'+money(w.p*bx)+' la caja de '+bx+'</span></div>';
+    var st=h("div","rk-step rk-step--sm");var m=h("button","rk-step__b","&minus;");m.type="button";m.setAttribute("aria-label","Quitar caja de "+w.n);
+    var o=h("output","rk-step__v","0 cajas");var p=h("button","rk-step__b","+");p.type="button";p.setAttribute("aria-label","Sumar caja de "+w.n);
+    m.onclick=function(){S.cart[w.id]=Math.max(0,(S.cart[w.id]||0)-1);syncShop();};p.onclick=function(){S.cart[w.id]=Math.min(20,(S.cart[w.id]||0)+1);syncShop();};
+    st.appendChild(m);st.appendChild(o);st.appendChild(p);r.appendChild(st);box.appendChild(r);});});syncShop();}
+function cartInfo(){var cj=0,bt=0,tot=0,lines=[];C.wines.forEach(function(w){var q=S.cart[w.id]||0;if(!q)return;var bx=w.box||C.box||6;cj+=q;bt+=q*bx;tot+=q*bx*w.p;lines.push("• "+q+(q>1?" cajas":" caja")+" de "+w.n+(w.v&&w.n.indexOf(w.v)<0?" ("+w.v+")":"")+" — "+money(q*bx*w.p));});
+  var dto=cj>=(C.dtoCajas||3)?(C.dto||0.1):0;return {cj:cj,bt:bt,tot:tot,dto:dto,fin:tot*(1-dto),lines:lines};}
+function syncShop(){$$(".rk-wine").forEach(function(r){var q=S.cart[r.getAttribute("data-w")]||0;var o=r.querySelector(".rk-step__v");if(o)o.textContent=q+(q===1?" caja":" cajas");r.classList.toggle("is-in",q>0);var m=r.querySelector(".rk-step__b");if(m)m.disabled=q===0;});
+  var c=cartInfo();each("cart",function(box){box.innerHTML=c.cj?('<div class="rk-sum__row"><span>'+c.cj+(c.cj>1?" cajas":" caja")+' · '+c.bt+' botellas</span><span>'+money(c.tot)+'</span></div>'+
+    (c.dto?'<div class="rk-sum__row rk-sum__dto"><span>'+Math.round(c.dto*100)+'% por llevar '+(C.dtoCajas||3)+' cajas o más</span><span>− '+money(c.tot*c.dto)+'</span></div>':'<div class="rk-sum__row rk-sum__dto"><span>Desde '+(C.dtoCajas||3)+' cajas: '+Math.round((C.dto||0.1)*100)+'% menos</span><span></span></div>')+
+    '<div class="rk-sum__row rk-sum__tot"><span>Total de ejemplo</span><span>'+money(c.fin)+'</span></div>'):'<p class="rk-hint">Sumá cajas para armar el pedido. '+(C.envio||"Retiro en la bodega o envío a coordinar.")+'</p>';});
+  each("shopbtn",function(a){var ok=c.cj>0;a.href=ok?wa("Hola "+C.negocio+"! Quiero hacer este pedido de vinos:\n"+c.lines.join("\n")+"\nTotal: "+money(c.fin)+(c.dto?" (con "+Math.round(c.dto*100)+"% off)":"")+"\n"+(nombre()?"Nombre: "+nombre()+"\n":"")+"¿Cómo coordinamos pago y entrega?"):"#";
+    a.setAttribute("aria-disabled",String(!ok));a.classList.toggle("is-off",!ok);var l=a.querySelector(".rk-book__l");if(l)l.textContent=ok?"Pedir "+c.cj+(c.cj>1?" cajas":" caja")+" por WhatsApp":"Sumá al menos una caja";});}
+
+function renderClub(){each("club",function(box){box.innerHTML="";C.club.forEach(function(p){var b=h("button","rk-plan");b.type="button";b.setAttribute("aria-pressed",String(S.plan===p.id));
+  b.innerHTML='<span class="rk-plan__n">'+p.n+'</span><span class="rk-plan__b">'+p.b+' botellas por mes</span>'+(p.d?'<span class="rk-plan__d">'+p.d+'</span>':'')+'<span class="rk-plan__p">'+money(p.p)+'<small> /mes</small></span>';
+  b.onclick=function(){S.plan=p.id;renderClub();};box.appendChild(b);});});
+  var plan=null;C.club.forEach(function(p){if(p.id===S.plan)plan=p;});
+  each("clubbtn",function(a){a.href=plan?wa("Hola "+C.negocio+"! Me quiero sumar al club del vino:\n• Plan: "+plan.n+" ("+plan.b+" botellas por mes)\n• Cuota de ejemplo: "+money(plan.p)+" por mes\n"+(nombre()?"Nombre: "+nombre()+"\n":"")+"¿Cómo sigo?"):"#";
+    a.setAttribute("aria-disabled",String(!plan));a.classList.toggle("is-off",!plan);var l=a.querySelector(".rk-book__l");if(l)l.textContent=plan?"Sumarme al plan "+plan.n:"Elegí un plan";});}
+
+function renderAll(){renderExps();renderCal();renderTimes();renderLangs();renderPax();renderSum();}
+document.addEventListener("click",function(ev){var a=ev.target.closest&&ev.target.closest('a[aria-disabled="true"]');if(a){ev.preventDefault();var t=a.closest("[data-rk-scope]");var hint=t&&t.querySelector(".rk-need");if(hint){hint.classList.remove("rk-pulse");void hint.offsetWidth;hint.classList.add("rk-pulse");}}});
+window.RK={init:function(cfg){C=cfg;S.exp=(cfg.exps[0]||{}).id;S.lang=(cfg.langs||["Español"])[0];if(cfg.club&&cfg.club[1])S.plan=null;
+  renderAll();if(cfg.wines)renderShop();if(cfg.club)renderClub();
+  $$('[data-rk="nombre"]').forEach(function(i){i.addEventListener("input",function(){renderSum();syncShop();renderClub();});});
+  $$("[data-wa]").forEach(function(a){a.href=wa(a.getAttribute("data-wa")||("Hola "+C.negocio+"! Quería hacer una consulta."));});},
+  state:S,pick:function(id){S.exp=id;S.time=null;renderAll();}};
+})();
+</script>
+<script>
+RK.init({negocio:"Bodega Saldungaray",wa:"5492914125261",sena:0.3,horizon:28,langs:["Español"],days:[0,1,2,3,4,5,6],
+exps:[
+{id:"vin",n:"Recorrido por el viñedo",d:"Viñedo, bodega y champañera, con degustación de la línea Ventania.",dur:"1 h",p:14000,cap:20,times:["11:00","15:00","17:00"]},
+{id:"esp",n:"Degustación de espumosos",d:"Método tradicional explicado en la champañera y Extra Brut de Pinot Noir.",dur:"45 min",p:16000,cap:12,times:["12:00","16:00"]},
+{id:"silo",n:"Almuerzo en el silo",d:"Restaurante en un antiguo silo reciclado, con vista al viñedo y las sierras.",dur:"2 h",p:32000,cap:40,times:["12:30","13:30"]},
+{id:"vino",n:"Vinoterapia",d:"Tratamientos faciales y corporales con uva, vino y frutos rojos. Con turno.",dur:"1 h",p:35000,cap:4,days:[2,3,4,5,6],times:["11:00","14:00","16:30"]}],
+wines:[
+{id:"mal",line:"Ventania",n:"Ventania Malbec",v:"Malbec",p:11000},
+{id:"cf",line:"Ventania",n:"Ventania Cabernet Franc",v:"Cabernet Franc",p:12000},
+{id:"bl",line:"Ventania",n:"Ventania Blend",v:"Blend tinto",p:12500},
+{id:"sb",line:"Ventania",n:"Ventania Sauvignon Blanc · Chardonnay",v:"Blanco",p:10500},
+{id:"esp",line:"Ventania Espumoso",n:"Extra Brut de Pinot Noir",v:"Método tradicional",p:16000}],
+club:[{id:"sierra",n:"Sierra",b:2,d:"Un tinto y un blanco Ventania.",p:21000},{id:"valle",n:"Valle",b:4,d:"La línea completa del mes.",p:44000},{id:"burbuja",n:"Burbuja",b:6,d:"Ventania y Extra Brut, con un frasco de dulce del campo.",p:72000}]});
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Bodega Saldungaray"></script>
+</body>
+</html>
