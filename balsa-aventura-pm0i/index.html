@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Balsa Aventura · Puerto Iguazú</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* estructura base del motor (cada página la viste a su manera) */
+.bk-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.bk-dow{font-size:.72rem;text-align:center;opacity:.6;padding:4px 0}
+.bk-day{appearance:none;border:0;background:transparent;color:inherit;font:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:52px;padding:4px 2px;line-height:1.1}
+.bk-day b{font-size:1rem}.bk-day i{font-style:normal;font-size:.62rem;opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.bk-day small{font-size:.66rem;opacity:.7}.bk-day em{font-style:normal;font-size:.6rem;font-weight:700}
+.bk-day:disabled{cursor:not-allowed}.bk-day.is-off{opacity:.3}.bk-day.is-full{opacity:.45;text-decoration:line-through}
+.bk-cal-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;text-transform:capitalize}
+.bk-nav{appearance:none;border:0;background:transparent;color:inherit;font:inherit;font-size:1.4rem;cursor:pointer;width:40px;height:40px}
+.bk-strip{display:flex;gap:6px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;-webkit-overflow-scrolling:touch}
+.bk-strip .bk-day{flex:0 0 64px;scroll-snap-align:start}
+.bk-list{display:flex;flex-direction:column;gap:6px}
+.bk-row{display:grid;grid-template-columns:76px 1fr;gap:10px;align-items:center}
+.bk-row-d b{display:block;font-size:1.5rem;line-height:1}.bk-row-d span{font-size:.75rem;opacity:.7}
+.bk-row-h{display:flex;flex-wrap:wrap;gap:6px}
+.bk-slot,.bk-hora,.bk-lang{appearance:none;font:inherit;color:inherit;cursor:pointer;display:inline-flex;flex-direction:column;align-items:flex-start;padding:8px 12px;line-height:1.15}
+.bk-slot i,.bk-hora i{font-style:normal;font-size:.7rem;opacity:.75}
+.bk-slot:disabled,.bk-hora:disabled{opacity:.4;cursor:not-allowed;text-decoration:line-through}
+#horas,.bk-horas,[data-bk=horas],[data-bk=idioma]{display:flex;flex-wrap:wrap;gap:8px}
+.bk-pax-r{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 0}
+.bk-pax-r small{display:block;opacity:.7;font-size:.78rem}
+.bk-step{display:flex;align-items:center;gap:4px;flex:none}
+.bk-step button{appearance:none;font:inherit;color:inherit;cursor:pointer;width:38px;height:38px;font-size:1.2rem;line-height:1}
+.bk-step output{min-width:28px;text-align:center;font-weight:700}
+.bk-extra{display:flex;gap:10px;align-items:baseline;padding:6px 0;cursor:pointer}
+.bk-extra small{margin-left:auto;opacity:.75;white-space:nowrap}
+.bk-res-l{display:flex;justify-content:space-between;gap:12px;padding:5px 0}
+.bk-res-l b{text-align:right}
+.bk-ahorro,.bk-falta,.bk-ok{font-size:.82rem;margin:.6em 0 0}
+.bk-dl{margin:0;display:grid;gap:8px}.bk-dl div{display:grid;grid-template-columns:130px 1fr;gap:10px}.bk-dl dt{opacity:.7}.bk-dl dd{margin:0}
+.bk-inc{margin:.3em 0 0;padding-left:1.1em}.bk-inc-t{margin:1em 0 0;font-weight:700}
+.bk-tour{appearance:none;font:inherit;color:inherit;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:2px}
+.bk-tour-m,.bk-tour-p{font-size:.8rem;opacity:.8}
+.bk-modal{position:fixed;inset:0;background:rgba(10,20,30,.55);display:flex;align-items:center;justify-content:center;z-index:9999;padding:16px}
+.bk-mp{background:#fff;color:#2d3277;width:min(380px,100%);border-radius:10px;padding:20px;font-family:system-ui,-apple-system,sans-serif;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.bk-mp-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.bk-mp-logo{font-weight:800;color:#00a1e4;letter-spacing:-.02em;font-size:1.1rem}
+.bk-mp-demo{font-size:.66rem;background:#fff4cc;color:#6b5400;padding:3px 6px;border-radius:4px}
+.bk-mp-to{margin:0;color:#555;font-size:.85rem}.bk-mp-amt{font-size:2rem;font-weight:700;margin:4px 0;color:#222}.bk-mp-d{margin:0 0 12px;font-size:.8rem;color:#666}
+.bk-mp-opts{display:grid;gap:6px;margin-bottom:14px;font-size:.88rem;color:#333}
+.bk-mp-opts label{display:flex;gap:8px;padding:9px;border:1px solid #e3e3e3;border-radius:6px}
+.bk-mp-pay{width:100%;border:0;background:#009ee3;color:#fff;font-weight:700;padding:13px;border-radius:6px;font-size:1rem;cursor:pointer}
+.bk-mp-x{width:100%;border:0;background:transparent;color:#009ee3;padding:10px;cursor:pointer;font-size:.9rem}
+[data-bk=wa]{text-decoration:none}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid currentColor;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+[hidden]{display:none!important}
+.bk-sel{display:flex;flex-direction:column;gap:4px}.bk-sel select{font:inherit;padding:10px;max-width:100%}
+
+:root{--tierra:#b5432a;--selva:#1f5b3a;--parana:#7d5a3c;--iguazu:#3d6b5c;--hoja:#cfe3b6;--crema:#fbf7ef;--tinta:#16201b}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--crema);color:var(--tinta);font-family:Figtree,system-ui,sans-serif;font-size:16.5px;line-height:1.55;overflow-x:hidden}
+h1,h2,h3,.sg{font-family:"Space Grotesk",sans-serif;font-weight:700;line-height:1;margin:0;letter-spacing:-.035em}
+a{color:inherit}
+.demo{background:var(--tierra);color:#fff;text-align:center;font-size:.8rem;padding:7px 16px}
+.wrap{max-width:1160px;margin:0 auto;padding:0 28px}
+.hdr{display:flex;justify-content:space-between;align-items:center;padding:20px 0;gap:12px;flex-wrap:wrap}
+.hdr .sg{font-size:1.25rem}
+.hdr .sg span{color:var(--tierra)}
+.hdr a{font-family:"Space Grotesk";font-weight:700;text-decoration:none;color:var(--selva)}
+.head{padding:30px 0 50px;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:40px;align-items:end;border-bottom:2px solid var(--tinta)}
+.head h1{font-size:clamp(3rem,7vw,6.2rem)}
+.head h1 em{font-style:normal;background:linear-gradient(transparent 62%,var(--hoja) 62%)}
+.head .facts{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.head .facts div{border-top:2px solid var(--tinta);padding-top:8px}
+.head .facts b{display:block;font-family:"Space Grotesk";font-size:1.8rem}
+/* recorrido */
+.route{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:50px;padding:60px 0}
+.route h2{font-size:clamp(2rem,4vw,3.2rem);position:sticky;top:20px}
+.route h2 + p{position:sticky;top:110px}
+.tl{list-style:none;margin:0;padding:0;position:relative}
+.tl::before{content:"";position:absolute;left:19px;top:10px;bottom:10px;width:6px;border-radius:3px;background:linear-gradient(180deg,var(--parana),var(--parana) 30%,var(--iguazu) 55%,var(--iguazu))}
+.tl li{position:relative;padding:0 0 34px 64px}
+.tl li::before{content:"";position:absolute;left:8px;top:2px;width:28px;height:28px;border-radius:50%;background:var(--crema);border:6px solid var(--tinta)}
+.tl li:last-child::before{background:var(--tierra);border-color:var(--tierra)}
+.tl .min{font-family:"Space Grotesk";font-weight:700;color:var(--tierra);font-size:.9rem}
+.tl h3{font-size:1.45rem;margin:2px 0 6px}
+.tl p{margin:0}
+.flags{display:flex;gap:6px;margin-top:8px}
+.flags span{font-size:.78rem;border:1.5px solid var(--tinta);padding:2px 8px;border-radius:20px}
+/* boarding pass */
+.board{background:var(--selva);padding:60px 0;color:#eef3e8}
+.board h2{font-size:clamp(2rem,4vw,3.2rem)}
+.board .sub{opacity:.85;max-width:600px}
+.bp{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);margin-top:26px;background:var(--crema);color:var(--tinta);border-radius:20px;overflow:hidden;position:relative}
+.bp::after{content:"";position:absolute;top:0;bottom:0;left:61.5%;border-left:3px dashed #cfc6b2}
+.bp .l{padding:24px 28px}
+.bp .r{padding:24px 26px;background:#f3ecdc}
+.fld{padding:14px 0;border-bottom:1px solid #e6dcc6}
+.fld:last-child{border-bottom:0}
+.fld h4{margin:0 0 8px;font-family:"Space Grotesk";font-size:.8rem;font-weight:700;color:#6c7a70}
+[data-bk=tours]{display:flex;gap:8px;flex-wrap:wrap}
+.bk-tour{border:2px solid var(--tinta);background:transparent;border-radius:10px;padding:10px 12px;font-family:"Space Grotesk"}
+.bk-tour-n{font-weight:700}
+.bk-tour.is-on{background:var(--tinta);color:#fff}
+.bk-day{background:#fff;border-radius:10px;font-family:"Space Grotesk"}
+.bk-day.is-on{background:var(--tierra);color:#fff}
+.bk-day.is-few i{color:var(--tierra);font-weight:700}
+.bk-hora,.bk-lang{border:2px solid #d9cfb9;background:#fff;border-radius:10px;font-family:"Space Grotesk"}
+.bk-hora.is-on,.bk-lang.is-on{border-color:var(--tinta);background:var(--tinta);color:#fff}
+.bk-step button{border:2px solid #d9cfb9;background:#fff;border-radius:10px}
+.bk-hint{color:#6c7a70;margin:0}
+.bk-res-t{font-family:"Space Grotesk";font-weight:700;font-size:1.4rem;margin-bottom:10px}
+.bk-res-l{border-bottom:1px solid #e1d6bf;font-size:.95rem}
+.bk-res-tot b{font-family:"Space Grotesk";font-size:1.6rem}
+.bk-res-sena b{color:var(--tierra)}
+.bk-ahorro{background:var(--hoja);border-radius:10px;padding:10px;color:var(--selva)}
+.bk-falta{color:var(--tierra);font-weight:600}.bk-ok{color:var(--selva);font-weight:600}
+.r input{width:100%;padding:11px;border:2px solid #d9cfb9;border-radius:10px;font:inherit;margin:12px 0 6px;background:#fff}
+.rb{display:block;width:100%;text-align:center;padding:13px;border:0;border-radius:10px;font-family:"Space Grotesk";font-weight:700;font-size:1rem;margin-top:6px;cursor:pointer;text-decoration:none}
+.rb.mp{background:#009ee3;color:#fff}.rb.mp:disabled{opacity:.45;cursor:not-allowed}
+.rb.wa{background:var(--tierra);color:#fff}
+.barcode{height:44px;margin-top:14px;background:repeating-linear-gradient(90deg,var(--tinta) 0 2px,transparent 2px 5px,var(--tinta) 5px 6px,transparent 6px 9px,var(--tinta) 9px 12px,transparent 12px 14px);opacity:.85}
+.extra{padding:56px 0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
+.extra h3{font-size:1.2rem;margin-bottom:6px}
+.extra p{margin:0}
+footer{border-top:2px solid var(--tinta);padding:26px 0 34px;font-size:.9rem}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.pie{width:100%;font-size:.8rem;color:#5d6a61}
+@media (max-width:880px){
+ .head,.route,.bp,.extra{grid-template-columns:minmax(0,1fr)}
+ .bp::after{display:none}
+ .bp .r{border-top:3px dashed #cfc6b2}
+ .route h2,.route h2 + p{position:static}
+ .wrap{padding:0 18px}
+ .bp .l,.bp .r{padding:20px 18px}
+}
+</style>
+</head>
+<body>
+<div class="demo">Prototipo de demostración preparado para Balsa Aventura · Precios y disponibilidad de ejemplo</div>
+<div class="wrap">
+  <div class="hdr"><span class="sg">Balsa <span>Aventura</span></span><a href="#reservar">Reservar paseo</a></div>
+  <header class="head">
+    <h1>Una hora por <em>la Triple Frontera</em>, desde el agua</h1>
+    <div class="facts">
+      <div><b>1 h</b>de navegación guiada</div>
+      <div><b>3 países</b>Argentina, Brasil y Paraguay</div>
+      <div><b>2 ríos</b>Iguazú y Paraná</div>
+      <div><b>Zona puerto</b>Av. Eduardo Arrabal s/n</div>
+    </div>
+  </header>
+
+  <section class="route">
+    <div><h2>El recorrido, minuto a minuto</h2><p>Un paseo tranquilo para hacer en familia, con el guía contando la historia de la frontera mientras la selva pasa a los costados.</p></div>
+    <ol class="tl">
+      <li><span class="min">Minuto 0</span><h3>Terminal de Balsa Aventura</h3><p>Embarque en la zona puerto, justo donde se juntan el Iguazú y el Paraná.</p><div class="flags"><span>AR</span></div></li>
+      <li><span class="min">Minuto 10</span><h3>Hito de las Tres Fronteras</h3><p>Desde el agua se ven los tres hitos pintados con los colores de cada país.</p><div class="flags"><span>AR</span><span>BR</span><span>PY</span></div></li>
+      <li><span class="min">Minuto 25</span><h3>Puente Tancredo Neves</h3><p>Pasamos por debajo del puente que une Puerto Iguazú con Foz do Iguaçu.</p><div class="flags"><span>AR</span><span>BR</span></div></li>
+      <li><span class="min">Minuto 35</span><h3>Cascada Tamandúa</h3><p>Sobre la costa brasileña, entre la selva. Parada para fotos antes de volver.</p><div class="flags"><span>BR</span></div></li>
+      <li><span class="min">Minuto 60</span><h3>Regreso a la terminal</h3><p>Desembarque en el mismo punto de partida.</p></li>
+    </ol>
+    <p style="font-size:.85rem;color:#5d6a61;margin:0 0 0 64px">Tiempos aproximados: dependen del río y del tráfico en el puerto.</p>
+  </section>
+</div>
+
+<section class="board" id="reservar">
+  <div class="wrap">
+    <h2>Tu pase de abordaje</h2>
+    <p class="sub">Elegí el paseo, el día y la salida. Con la seña del 30% por Mercado Pago tu lugar en la balsa queda confirmado.</p>
+    <div class="bp" data-bk-root>
+      <div class="l">
+        <div class="fld"><h4>Paseo</h4><div data-bk="tours"></div></div>
+        <div class="fld"><h4>Fecha</h4><div data-bk="cal"></div></div>
+        <div class="fld"><h4>Salida</h4><div data-bk="horas"></div></div>
+        <div class="fld"><h4>Pasajeros</h4><div data-bk="pax"></div></div>
+        <div class="fld"><h4>Guía en</h4><div data-bk="idioma"></div></div>
+        <div class="fld" data-exw><h4>Agregar</h4><div data-bk="extras"></div></div>
+      </div>
+      <div class="r">
+        <div data-bk="resumen"></div>
+        <input data-bk="nombre" placeholder="Nombre del pasajero titular" aria-label="Nombre del pasajero titular">
+        <button type="button" class="rb mp" data-bk="pagar">Pagar seña</button>
+        <a class="rb wa" data-bk="wa" href="#">Enviar por WhatsApp</a>
+        <div class="barcode" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <section class="extra">
+    <div><h3>Para toda la familia</h3><p>Navegación tranquila, sin oleaje ni mojarse. Chalecos para grandes y chicos.</p></div>
+    <div><h3>Después de Cataratas</h3><p>La salida del atardecer es ideal para el día que volvés del Parque Nacional.</p></div>
+    <div><h3>Grupos y contingentes</h3><p>Si vienen en grupo, consultá salidas exclusivas con horario a elección.</p></div>
+  </section>
+</div>
+<footer><div class="wrap">
+  <div><strong>Balsa Aventura</strong><br>Av. Eduardo Arrabal s/n, Zona Puerto · Puerto Iguazú, Misiones</div>
+  <div>WhatsApp <a href="https://wa.me/5493757546640">+54 9 3757 54-6640</a></div>
+  <div class="pie">Prototipo preparado para Balsa Aventura por Resolviendo Kos · <a href="https://resolviendokos.com">resolviendokos.com</a> · No es la web oficial</div>
+</div></footer>
+<script>
+window.BK={negocio:'Balsa Aventura',wa:'5493757546640',sena:.3,calMode:'strip',idiomas:['Español','English','Português'],scrollTo:'#reservar',
+tours:[
+ {id:'triple',nombre:'Paseo Triple Frontera',dur:'1 hora',dif:'Para todos',punto:'Terminal zona puerto, Av. Eduardo Arrabal s/n',temporada:'Todo el año',edad:'Sin mínimo',precioRes:30000,precioExt:40000,horarios:['10:00','11:30','15:00','16:30'],cupo:40,maxGrupo:20,incluye:['Navegación guiada','Chalecos salvavidas']},
+ {id:'atardecer',nombre:'Salida del atardecer',dur:'1 hora',dif:'Para todos',punto:'Terminal zona puerto, Av. Eduardo Arrabal s/n',temporada:'Todo el año',edad:'Sin mínimo',precioRes:36000,precioExt:48000,horarios:['18:00'],cupo:40,maxGrupo:20,incluye:['Navegación guiada al atardecer','Chalecos salvavidas'],extras:[{id:'brindis',nombre:'Brindis a bordo',precio:8000,porPersona:true}]}
+]};
+/* Motor de reserva demo · Resolviendo Kos */
+(function(){
+  var C = window.BK; if(!C) return;
+  var root = document.querySelector('[data-bk-root]') || document;
+  var $ = function(k){ return root.querySelector('[data-bk="'+k+'"]'); };
+  var fmt = function(n){ return '$' + Math.round(n).toLocaleString('es-AR'); };
+  var DIAS = ['dom','lun','mar','mié','jue','vie','sáb'];
+  var DIASL = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+  var MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  var hoy = new Date(); hoy.setHours(0,0,0,0);
+  var S = { tour: C.tours[0].id, fecha: null, hora: null, res: C.paxIni != null ? C.paxIni : 2, ext: 0, men: 0, idioma: (C.idiomas||['Español'])[0], extras: {}, pagado: false, mes: null };
+  var T = function(){ for(var i=0;i<C.tours.length;i++){ if(C.tours[i].id===S.tour) return C.tours[i]; } return C.tours[0]; };
+  function hash(s){ var h=2166136261; for(var i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,16777619);} return (h>>>0); }
+  function key(d){ return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
+  function enTemporada(t,d){ return !t.meses || t.meses.indexOf(d.getMonth())>=0; }
+  function opera(t,d){ if(t.dias && t.dias.indexOf(d.getDay())<0) return false; return enTemporada(t,d) && d>=hoy; }
+  function cupos(t,d,h){ var cap=t.cupo||10; var x=hash(t.id+key(d)+(h||'')) % 100; if(d.getTime()===hoy.getTime()) x=x%40; if(x<10) return 0; if(x<28) return Math.max(1,(x%3)+1); return Math.max(2, Math.round(cap*(x/100))); }
+  function cuposDia(t,d){ var hs=t.horarios||['—']; var tot=0; hs.forEach(function(h){ tot+=cupos(t,d,h); }); return tot; }
+  function pax(){ return S.res+S.ext+S.men; }
+  function extrasTotal(){ var t=T(), s=0; (t.extras||[]).forEach(function(e){ if(S.extras[e.id]) s += e.porPersona ? e.precio*pax() : e.precio; }); return s; }
+  function total(){ var t=T(); return S.res*t.precioRes + S.ext*t.precioExt + S.men*Math.round(t.precioRes*(t.menorFactor||0.5)) + extrasTotal(); }
+  function ddmm(d){ return DIASL[d.getDay()]+' '+d.getDate()+' de '+MESES[d.getMonth()]; }
+  function fire(){ document.dispatchEvent(new CustomEvent('bk:change',{detail:{S:S,tour:T(),total:total()}})); }
+
+  /* --- tours --- */
+  function renderTours(){
+    var el=$('tours'); if(!el) return;
+    if(el.tagName==='SELECT'){ el.innerHTML=C.tours.map(function(t){return '<option value="'+t.id+'">'+t.nombre+'</option>';}).join(''); el.value=S.tour; el.onchange=function(){ setTour(el.value); }; return; }
+    el.innerHTML = C.tours.map(function(t){
+      return '<button type="button" class="bk-tour'+(t.id===S.tour?' is-on':'')+'" data-id="'+t.id+'" aria-pressed="'+(t.id===S.tour)+'"><span class="bk-tour-n">'+t.nombre+'</span><span class="bk-tour-m">'+(t.dur||'')+(t.dif?' · '+t.dif:'')+'</span><span class="bk-tour-p">desde '+fmt(t.precioRes)+'</span></button>';
+    }).join('');
+    el.querySelectorAll('.bk-tour').forEach(function(b){ b.onclick=function(){ setTour(b.getAttribute('data-id')); }; });
+  }
+  function setTour(id, scroll){
+    S.tour=id; S.hora=null; S.extras={};
+    if(S.fecha && !opera(T(),S.fecha)) S.fecha=null;
+    renderAll();
+    if(scroll){ var tgt=document.querySelector(C.scrollTo||'[data-bk-root]'); if(tgt) tgt.scrollIntoView({behavior:'smooth',block:'start'}); }
+  }
+  document.querySelectorAll('[data-pick-tour]').forEach(function(b){ b.addEventListener('click',function(e){ e.preventDefault(); setTour(b.getAttribute('data-pick-tour'), true); }); });
+
+  /* --- ficha --- */
+  function renderFicha(){
+    var el=$('ficha'); if(!el) return; var t=T();
+    var rows=[['Duración',t.dur],['Dificultad',t.dif],['Punto de encuentro',t.punto],['Temporada',t.temporada],['Edad mínima',t.edad]].filter(function(r){return r[1];});
+    el.innerHTML='<dl class="bk-dl">'+rows.map(function(r){return '<div><dt>'+r[0]+'</dt><dd>'+r[1]+'</dd></div>';}).join('')+'</dl>'+
+      (t.incluye?'<p class="bk-inc-t">Incluye</p><ul class="bk-inc">'+t.incluye.map(function(i){return '<li>'+i+'</li>';}).join('')+'</ul>':'');
+  }
+
+  /* --- calendario --- */
+  function firstOpen(t){ var d=new Date(hoy); for(var i=0;i<370;i++){ if(opera(t,d)) return new Date(d); d.setDate(d.getDate()+1);} return new Date(hoy); }
+  function renderCal(){
+    var el=$('cal'); if(!el) return; var t=T(); var mode=C.calMode||'grid';
+    var days=[]; var start;
+    if(mode==='grid'){
+      if(!S.mes){ var f=firstOpen(t); S.mes=new Date(f.getFullYear(), f.getMonth(), 1); }
+      var m=S.mes; var first=new Date(m.getFullYear(), m.getMonth(), 1); var lead=(first.getDay()+6)%7;
+      var dim=new Date(m.getFullYear(), m.getMonth()+1, 0).getDate();
+      var html='<div class="bk-cal-h"><button type="button" class="bk-nav" data-n="-1" aria-label="Mes anterior">‹</button><strong>'+MESES[m.getMonth()]+' '+m.getFullYear()+'</strong><button type="button" class="bk-nav" data-n="1" aria-label="Mes siguiente">›</button></div>';
+      html+='<div class="bk-grid">'+['lu','ma','mi','ju','vi','sá','do'].map(function(x){return '<span class="bk-dow">'+x+'</span>';}).join('');
+      for(var i=0;i<lead;i++) html+='<span></span>';
+      for(var dd=1; dd<=dim; dd++){ var d=new Date(m.getFullYear(), m.getMonth(), dd); html+=dayBtn(t,d,dd,''); }
+      el.innerHTML=html+'</div>';
+      el.querySelectorAll('.bk-nav').forEach(function(b){ b.onclick=function(){ var n=+b.getAttribute('data-n'); var nm=new Date(S.mes.getFullYear(), S.mes.getMonth()+n, 1); var lim=new Date(hoy.getFullYear(), hoy.getMonth(),1); if(nm<lim) return; S.mes=nm; renderCal(); }; });
+    } else {
+      var n = mode==='list' ? 10 : 21; start=firstOpen(t); var d=new Date(start); var html2='';
+      var c=0, guard=0;
+      while(c<n && guard<400){ guard++; if(mode==='strip' || opera(t,d)){ html2+= mode==='list' ? listRow(t,new Date(d)) : dayBtn(t,new Date(d), d.getDate(), '<small>'+DIAS[d.getDay()]+'</small>', true); c++; } d.setDate(d.getDate()+1); }
+      el.innerHTML='<div class="bk-'+mode+'">'+html2+'</div>';
+    }
+    el.querySelectorAll('[data-d]').forEach(function(b){ b.onclick=function(){ var p=b.getAttribute('data-d').split('-'); S.fecha=new Date(+p[0],+p[1]-1,+p[2]); S.hora=null; var hs=T().horarios||[]; if(hs.length===1) S.hora=hs[0]; if(b.getAttribute('data-h')) S.hora=b.getAttribute('data-h'); renderAll(); }; });
+  }
+  function dayBtn(t,d,label,pre,showMonth){
+    var ok=opera(t,d); var q=ok?cuposDia(t,d):0; var sel=S.fecha&&d.getTime()===S.fecha.getTime();
+    var cls='bk-day'+(ok?(q===0?' is-full':(q<=3?' is-few':'')):' is-off')+(sel?' is-on':'');
+    var lab=ok?(q===0?'completo':(q<=3?'últimos '+q:q+' lugares')):(enTemporada(t,d)||d<hoy?'':'fuera de temp.');
+    var mm = showMonth && d.getDate()===1 ? '<em>'+MESES[d.getMonth()].slice(0,3)+'</em>' : '';
+    return '<button type="button" class="'+cls+'" '+((ok&&q>0)?'data-d="'+key(d)+'"':'disabled')+' aria-label="'+ddmm(d)+' '+lab+'">'+(pre||'')+mm+'<b>'+label+'</b><i>'+lab+'</i></button>';
+  }
+  function listRow(t,d){
+    var hs=t.horarios||['—'];
+    return '<div class="bk-row"><div class="bk-row-d"><b>'+d.getDate()+'</b><span>'+DIAS[d.getDay()]+' · '+MESES[d.getMonth()].slice(0,3)+'</span></div><div class="bk-row-h">'+hs.map(function(h){ var q=cupos(t,d,h); var sel=S.fecha&&d.getTime()===S.fecha.getTime()&&S.hora===h; return '<button type="button" class="bk-slot'+(q===0?' is-full':(q<=3?' is-few':''))+(sel?' is-on':'')+'" '+(q>0?'data-d="'+key(d)+'" data-h="'+h+'"':'disabled')+'><b>'+h+'</b><i>'+(q===0?'completo':(q<=3?'quedan '+q:q+' lugares'))+'</i></button>'; }).join('')+'</div></div>';
+  }
+  function renderHoras(){
+    var el=$('horas'); if(!el) return; var t=T(); var hs=t.horarios||[];
+    if(!S.fecha){ el.innerHTML='<p class="bk-hint">Elegí una fecha para ver los horarios.</p>'; return; }
+    el.innerHTML=hs.map(function(h){ var q=cupos(t,S.fecha,h); return '<button type="button" class="bk-hora'+(S.hora===h?' is-on':'')+(q===0?' is-full':'')+'" '+(q>0?'data-h="'+h+'"':'disabled')+'><b>'+h+'</b><i>'+(q===0?'completo':q+' lugares')+'</i></button>'; }).join('');
+    el.querySelectorAll('[data-h]').forEach(function(b){ b.onclick=function(){ S.hora=b.getAttribute('data-h'); renderAll(); }; });
+  }
+
+  /* --- pasajeros --- */
+  function renderPax(){
+    var el=$('pax'); if(!el) return; var t=T();
+    var filas=[['res','Residentes argentinos',t.precioRes],['ext','Extranjeros',t.precioExt]];
+    if(t.menores!==false) filas.push(['men','Menores'+(t.edadMenor?' ('+t.edadMenor+')':''),Math.round(t.precioRes*(t.menorFactor||0.5))]);
+    el.innerHTML=filas.map(function(f){ return '<div class="bk-pax-r"><div><span>'+f[1]+'</span><small>'+fmt(f[2])+' c/u</small></div><div class="bk-step"><button type="button" data-k="'+f[0]+'" data-v="-1" aria-label="Restar '+f[1]+'">−</button><output>'+S[f[0]]+'</output><button type="button" data-k="'+f[0]+'" data-v="1" aria-label="Sumar '+f[1]+'">+</button></div></div>'; }).join('');
+    el.querySelectorAll('button').forEach(function(b){ b.onclick=function(){ var k=b.getAttribute('data-k'); var v=S[k]+(+b.getAttribute('data-v')); var max=t.maxGrupo||12; if(v<0) return; if(pax()-S[k]+v>max) return; if(pax()-S[k]+v<1) return; S[k]=v; renderAll(); }; });
+  }
+  function renderIdioma(){
+    var el=$('idioma'); if(!el) return; var ids=C.idiomas||['Español','English','Português'];
+    el.innerHTML=ids.map(function(i){ return '<button type="button" class="bk-lang'+(S.idioma===i?' is-on':'')+'" aria-pressed="'+(S.idioma===i)+'">'+i+'</button>'; }).join('');
+    el.querySelectorAll('button').forEach(function(b){ b.onclick=function(){ S.idioma=b.textContent; renderAll(); }; });
+  }
+  function renderExtras(){
+    var el=$('extras'); if(!el) return; var t=T(); var ex=t.extras||[];
+    var w=document.querySelectorAll('[data-exw]'); w.forEach(function(x){x.hidden=!ex.length;}); if(!ex.length){ el.innerHTML=''; el.hidden=true; return; } el.hidden=false;
+    el.innerHTML=ex.map(function(e){ return '<label class="bk-extra"><input type="checkbox" data-e="'+e.id+'"'+(S.extras[e.id]?' checked':'')+'><span>'+e.nombre+'</span><small>+'+fmt(e.precio)+(e.porPersona?' p/p':'')+'</small></label>'; }).join('');
+    el.querySelectorAll('input').forEach(function(i){ i.onchange=function(){ S.extras[i.getAttribute('data-e')]=i.checked; renderAll(); }; });
+  }
+
+  /* --- selects custom --- */
+  S.sel={}; (C.selects||[]).forEach(function(x){ S.sel[x.id]=x.opciones[0]; });
+  function renderSelects(){
+    var el=$('selects'); if(!el||!C.selects) return;
+    if(!el.dataset.done){ el.innerHTML=C.selects.map(function(x){ S.sel[x.id]=S.sel[x.id]||x.opciones[0]; return '<label class="bk-sel"><span>'+x.label+'</span><select data-s="'+x.id+'">'+x.opciones.map(function(o){return '<option>'+o+'</option>';}).join('')+'</select></label>'; }).join(''); el.dataset.done=1;
+      el.querySelectorAll('select').forEach(function(s){ s.onchange=function(){ S.sel[s.getAttribute('data-s')]=s.value; renderResumen(); }; }); }
+  }
+  /* --- resumen --- */
+  function listo(){ return S.fecha && (S.hora || !(T().horarios||[]).length); }
+  function renderResumen(){
+    var el=$('resumen'); if(!el) return; var t=T(); var tot=total(); var sena=tot*(C.sena||0.3);
+    var falta = !S.fecha ? 'Falta elegir la fecha' : (!listo() ? 'Falta elegir el horario' : '');
+    el.innerHTML='<div class="bk-res-t">'+t.nombre+'</div>'+
+      '<div class="bk-res-l"><span>Fecha</span><b>'+(S.fecha?ddmm(S.fecha)+(S.hora?' · '+S.hora:''):'—')+'</b></div>'+
+      '<div class="bk-res-l"><span>Grupo</span><b>'+paxTxt()+'</b></div>'+
+      '<div class="bk-res-l"><span>Guía en</span><b>'+S.idioma+'</b></div>'+
+      '<div class="bk-res-l bk-res-tot"><span>Total</span><b>'+fmt(tot)+'</b></div>'+
+      '<div class="bk-res-l bk-res-sena"><span>Seña 30% para confirmar</span><b>'+fmt(sena)+'</b></div>'+
+      '<div class="bk-res-l bk-res-rest"><span>Saldo el día de la salida</span><b>'+fmt(tot-sena)+'</b></div>'+
+      '<p class="bk-ahorro">Por una plataforma con ~25% de comisión, de esta reserva te quedarían '+fmt(tot*0.75)+'. Directo, te quedan los '+fmt(tot)+'.</p>'+
+      (falta?'<p class="bk-falta">'+falta+'</p>':'')+
+      (S.pagado?'<p class="bk-ok">Seña abonada (demo). Mandá el pedido por WhatsApp para cerrar.</p>':'');
+    var p=$('pagar'); if(p){ p.disabled=!listo(); p.textContent = S.pagado ? 'Seña abonada ✓ (demo)' : (C.txtPagar||'Pagar seña de '+fmt(sena)+' con Mercado Pago'); }
+    var w=$('wa'); if(w){ w.href='https://wa.me/'+C.wa+'?text='+encodeURIComponent(msg()); w.setAttribute('target','_blank'); w.setAttribute('rel','noopener'); }
+    var pv=$('preview'); if(pv){ pv.textContent=msg(); }
+  }
+  function paxTxt(){ var a=[]; if(S.res) a.push(S.res+' residente'+(S.res>1?'s':'')); if(S.ext) a.push(S.ext+' extranjero'+(S.ext>1?'s':'')); if(S.men) a.push(S.men+' menor'+(S.men>1?'es':'')); return a.join(', '); }
+  function msg(){
+    var t=T(); var tot=total(); var nm=$('nombre'); var nombre=nm&&nm.value.trim();
+    var ex=(t.extras||[]).filter(function(e){return S.extras[e.id];}).map(function(e){return e.nombre;});
+    var L=['Hola '+C.negocio+'! Quiero reservar desde la web:','','• Salida: '+t.nombre,'• Fecha: '+(S.fecha?ddmm(S.fecha):'(a definir)')+(S.hora?' · '+S.hora+' hs':''),'• Grupo: '+paxTxt()+' ('+pax()+' en total)','• Idioma del guía: '+S.idioma];
+    if(ex.length) L.push('• Extras: '+ex.join(', '));
+    (C.selects||[]).forEach(function(x){ L.push('• '+x.label+': '+S.sel[x.id]); });
+    L.push('• Total: '+fmt(tot),'• Seña 30%: '+fmt(tot*(C.sena||0.3))+(S.pagado?' (abonada por Mercado Pago)':' (pago por Mercado Pago)'));
+    if(nombre) L.push('• A nombre de: '+nombre);
+    L.push('','¿Me confirman el lugar?');
+    return L.join('\n');
+  }
+
+  /* --- pago demo --- */
+  function modal(){
+    var tot=total(); var sena=tot*(C.sena||0.3);
+    var m=document.createElement('div'); m.className='bk-modal'; m.setAttribute('role','dialog'); m.setAttribute('aria-modal','true'); m.setAttribute('aria-label','Pago de seña (demo)');
+    m.innerHTML='<div class="bk-mp"><div class="bk-mp-top"><span class="bk-mp-logo">mercado pago</span><span class="bk-mp-demo">DEMO · no se cobra nada</span></div><p class="bk-mp-to">Pagás a <b>'+C.negocio+'</b></p><p class="bk-mp-amt">'+fmt(sena)+'</p><p class="bk-mp-d">Seña 30% · '+T().nombre+(S.fecha?' · '+ddmm(S.fecha):'')+'</p><div class="bk-mp-opts"><label><input type="radio" name="mpo" checked> Dinero en cuenta</label><label><input type="radio" name="mpo"> Tarjeta de débito</label><label><input type="radio" name="mpo"> Tarjeta de crédito · hasta 3 cuotas</label></div><button type="button" class="bk-mp-pay">Pagar '+fmt(sena)+'</button><button type="button" class="bk-mp-x">Cancelar</button></div>';
+    document.body.appendChild(m);
+    var close=function(){ m.remove(); document.removeEventListener('keydown',esc); };
+    var esc=function(e){ if(e.key==='Escape') close(); };
+    document.addEventListener('keydown',esc);
+    m.querySelector('.bk-mp-x').onclick=close; m.onclick=function(e){ if(e.target===m) close(); };
+    m.querySelector('.bk-mp-pay').onclick=function(){ var b=this; b.disabled=true; b.textContent='Procesando…'; setTimeout(function(){ S.pagado=true; close(); renderAll(); var w=$('wa'); if(w) w.focus(); },700); };
+    m.querySelector('.bk-mp-pay').focus();
+  }
+  var pb=$('pagar'); if(pb) pb.addEventListener('click',function(){ if(listo()) modal(); });
+  var nm=$('nombre'); if(nm) nm.addEventListener('input',renderResumen);
+
+  function renderAll(){ renderTours(); renderFicha(); renderCal(); renderHoras(); renderPax(); renderIdioma(); renderExtras(); renderSelects(); renderResumen(); fire(); }
+  window.BKAPI={ setTour:setTour, state:S, total:total, fmt:fmt, tour:T, render:renderAll };
+  renderAll();
+})();
+
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Balsa Aventura"></script>
+</body>
+</html>
