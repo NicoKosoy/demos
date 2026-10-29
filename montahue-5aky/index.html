@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Montahue · Cabalgatas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Krona+One&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap" rel="stylesheet">
+<style>
+/* estructura base del motor (cada página la viste a su manera) */
+.bk-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.bk-dow{font-size:.72rem;text-align:center;opacity:.6;padding:4px 0}
+.bk-day{appearance:none;border:0;background:transparent;color:inherit;font:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:52px;padding:4px 2px;line-height:1.1}
+.bk-day b{font-size:1rem}.bk-day i{font-style:normal;font-size:.62rem;opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.bk-day small{font-size:.66rem;opacity:.7}.bk-day em{font-style:normal;font-size:.6rem;font-weight:700}
+.bk-day:disabled{cursor:not-allowed}.bk-day.is-off{opacity:.3}.bk-day.is-full{opacity:.45;text-decoration:line-through}
+.bk-cal-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;text-transform:capitalize}
+.bk-nav{appearance:none;border:0;background:transparent;color:inherit;font:inherit;font-size:1.4rem;cursor:pointer;width:40px;height:40px}
+.bk-strip{display:flex;gap:6px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;-webkit-overflow-scrolling:touch}
+.bk-strip .bk-day{flex:0 0 64px;scroll-snap-align:start}
+.bk-list{display:flex;flex-direction:column;gap:6px}
+.bk-row{display:grid;grid-template-columns:76px 1fr;gap:10px;align-items:center}
+.bk-row-d b{display:block;font-size:1.5rem;line-height:1}.bk-row-d span{font-size:.75rem;opacity:.7}
+.bk-row-h{display:flex;flex-wrap:wrap;gap:6px}
+.bk-slot,.bk-hora,.bk-lang{appearance:none;font:inherit;color:inherit;cursor:pointer;display:inline-flex;flex-direction:column;align-items:flex-start;padding:8px 12px;line-height:1.15}
+.bk-slot i,.bk-hora i{font-style:normal;font-size:.7rem;opacity:.75}
+.bk-slot:disabled,.bk-hora:disabled{opacity:.4;cursor:not-allowed;text-decoration:line-through}
+#horas,.bk-horas,[data-bk=horas],[data-bk=idioma]{display:flex;flex-wrap:wrap;gap:8px}
+.bk-pax-r{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 0}
+.bk-pax-r small{display:block;opacity:.7;font-size:.78rem}
+.bk-step{display:flex;align-items:center;gap:4px;flex:none}
+.bk-step button{appearance:none;font:inherit;color:inherit;cursor:pointer;width:38px;height:38px;font-size:1.2rem;line-height:1}
+.bk-step output{min-width:28px;text-align:center;font-weight:700}
+.bk-extra{display:flex;gap:10px;align-items:baseline;padding:6px 0;cursor:pointer}
+.bk-extra small{margin-left:auto;opacity:.75;white-space:nowrap}
+.bk-res-l{display:flex;justify-content:space-between;gap:12px;padding:5px 0}
+.bk-res-l b{text-align:right}
+.bk-ahorro,.bk-falta,.bk-ok{font-size:.82rem;margin:.6em 0 0}
+.bk-dl{margin:0;display:grid;gap:8px}.bk-dl div{display:grid;grid-template-columns:130px 1fr;gap:10px}.bk-dl dt{opacity:.7}.bk-dl dd{margin:0}
+.bk-inc{margin:.3em 0 0;padding-left:1.1em}.bk-inc-t{margin:1em 0 0;font-weight:700}
+.bk-tour{appearance:none;font:inherit;color:inherit;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:2px}
+.bk-tour-m,.bk-tour-p{font-size:.8rem;opacity:.8}
+.bk-modal{position:fixed;inset:0;background:rgba(10,20,30,.55);display:flex;align-items:center;justify-content:center;z-index:9999;padding:16px}
+.bk-mp{background:#fff;color:#2d3277;width:min(380px,100%);border-radius:10px;padding:20px;font-family:system-ui,-apple-system,sans-serif;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.bk-mp-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.bk-mp-logo{font-weight:800;color:#00a1e4;letter-spacing:-.02em;font-size:1.1rem}
+.bk-mp-demo{font-size:.66rem;background:#fff4cc;color:#6b5400;padding:3px 6px;border-radius:4px}
+.bk-mp-to{margin:0;color:#555;font-size:.85rem}.bk-mp-amt{font-size:2rem;font-weight:700;margin:4px 0;color:#222}.bk-mp-d{margin:0 0 12px;font-size:.8rem;color:#666}
+.bk-mp-opts{display:grid;gap:6px;margin-bottom:14px;font-size:.88rem;color:#333}
+.bk-mp-opts label{display:flex;gap:8px;padding:9px;border:1px solid #e3e3e3;border-radius:6px}
+.bk-mp-pay{width:100%;border:0;background:#009ee3;color:#fff;font-weight:700;padding:13px;border-radius:6px;font-size:1rem;cursor:pointer}
+.bk-mp-x{width:100%;border:0;background:transparent;color:#009ee3;padding:10px;cursor:pointer;font-size:.9rem}
+[data-bk=wa]{text-decoration:none}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid currentColor;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+[hidden]{display:none!important}
+.bk-sel{display:flex;flex-direction:column;gap:4px}.bk-sel select{font:inherit;padding:10px;max-width:100%}
+
+:root{--coihue:#1e3b2c;--musgo:#4f7a4a;--arrayan:#c46a3b;--nahuel:#3f7fa0;--liquen:#e8eadf;--hueso:#fbfaf4;--tierra:#5a3a26}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--liquen);color:var(--coihue);font-family:Literata,Georgia,serif;font-size:17px;line-height:1.6;overflow-x:hidden}
+h1,h2,h3,.kr{font-family:"Krona One",sans-serif;font-weight:400;line-height:1.1;margin:0;letter-spacing:-.01em}
+a{color:inherit}
+.demo{background:var(--arrayan);color:#fff;text-align:center;font-size:.8rem;padding:7px 16px;font-family:system-ui,sans-serif}
+/* mapa + tarjeta flotante */
+.stage{position:relative;min-height:max(calc(100vh - 32px),940px);overflow:hidden;background:#d6dccb}
+.map{position:absolute;inset:0;width:100%;height:100%}
+.map .rt{fill:none;stroke-width:5;stroke-linecap:round;stroke-dasharray:1 12;transition:stroke .2s}
+.map .rt.on{stroke-dasharray:none;stroke-width:6}
+.map text{font-family:"Krona One",sans-serif;font-size:13px;fill:var(--coihue)}
+.map .sm{font-family:Literata,serif;font-size:13px;fill:#3d5a46}
+.brand{position:absolute;top:22px;left:24px;z-index:3}
+.brand .kr{font-size:1.5rem;color:var(--coihue)}
+.brand small{display:block;font-size:.85rem}
+.float{position:absolute;right:28px;top:28px;bottom:28px;width:min(440px,calc(100% - 56px));background:var(--hueso);border-radius:6px;box-shadow:0 30px 60px -20px rgba(30,59,44,.45);z-index:4;display:flex;flex-direction:column;overflow:hidden}
+.float .scroll{overflow-y:auto;padding:24px 24px 0;flex:1}
+.float h1{font-size:1.5rem}
+.float .intro{margin:10px 0 16px;font-size:.98rem}
+.blk{padding:14px 0;border-top:1px solid #e1e3d6}
+.blk h4{margin:0 0 10px;font-family:"Krona One";font-weight:400;font-size:.78rem;color:var(--musgo)}
+[data-bk=tours]{display:flex;flex-direction:column;gap:8px}
+.bk-tour{border:1.5px solid #cfd5c3;background:#fff;border-radius:6px;padding:12px 14px;display:grid;grid-template-columns:14px 1fr auto;column-gap:10px;align-items:center}
+.bk-tour::before{content:"";width:12px;height:12px;border-radius:50%;background:var(--c,#999);grid-row:span 2}
+.bk-tour-n{font-weight:600}
+.bk-tour-m{grid-column:2}
+.bk-tour-p{grid-column:3;grid-row:1/span 2;align-self:center}
+.bk-tour.is-on{border-color:var(--coihue);box-shadow:inset 0 0 0 1px var(--coihue)}
+.bk-strip .bk-day{background:#fff;border:1.5px solid #cfd5c3;border-radius:6px}
+.bk-day.is-on{background:var(--coihue);color:#fff;border-color:var(--coihue)}
+.bk-day.is-few i{color:var(--arrayan);font-weight:600}
+.bk-hora,.bk-lang{border:1.5px solid #cfd5c3;background:#fff;border-radius:6px}
+.bk-hora.is-on,.bk-lang.is-on{background:var(--coihue);color:#fff;border-color:var(--coihue)}
+.bk-step button{border:1.5px solid #cfd5c3;background:#fff;border-radius:6px}
+.bk-hint{color:#6b7f70;margin:0;font-size:.92rem}
+.float .foot{padding:16px 24px 20px;border-top:1px solid #e1e3d6;background:#fff}
+.bk-res-t{display:none}
+.bk-res-l{font-size:.88rem;padding:2px 0}.foot .bk-ahorro{margin-top:.3em}
+.bk-res-tot b{font-family:"Krona One";font-size:1.15rem}
+.bk-res-sena b{color:var(--arrayan)}
+.bk-ahorro{font-size:.78rem;color:#4d6455}
+.bk-falta{color:var(--arrayan);font-weight:600}.bk-ok{color:var(--musgo);font-weight:600}
+.foot input{width:100%;padding:10px;border:1.5px solid #cfd5c3;border-radius:6px;font:inherit;margin:10px 0 6px}
+.fbtn{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fb{display:flex;align-items:center;justify-content:center;text-align:center;padding:12px 8px;border:0;border-radius:6px;font:inherit;font-weight:600;cursor:pointer;text-decoration:none;font-size:.92rem;line-height:1.2}
+.fb.mp{background:#009ee3;color:#fff}.fb.mp:disabled{opacity:.45;cursor:not-allowed}
+.fb.wa{background:var(--coihue);color:#fff}
+.rating{position:absolute;left:24px;bottom:24px;z-index:3;background:var(--coihue);color:var(--hueso);padding:14px 18px;border-radius:6px;max-width:300px}
+.rating b{font-family:"Krona One";font-size:1.9rem;font-weight:400;display:block}
+/* abajo */
+.story{max-width:1100px;margin:0 auto;padding:70px 24px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:34px}
+.story h2{grid-column:1/-1;font-size:clamp(1.6rem,3vw,2.4rem)}
+.story h3{font-size:.95rem;margin-bottom:6px;color:var(--arrayan)}
+.story p{margin:0}
+.pulperia{background:var(--tierra);color:#f4e8dc;padding:60px 24px}
+.pulperia .in{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1.2fr;gap:40px;align-items:center}
+.pulperia h2{font-size:clamp(1.6rem,3vw,2.4rem)}
+.menu{border:1.5px solid #8b6a52;padding:20px;border-radius:6px}
+.menu div{display:flex;justify-content:space-between;border-bottom:1px dotted #8b6a52;padding:8px 0;gap:12px}
+footer{max-width:1100px;margin:0 auto;padding:30px 24px;font-size:.9rem;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.pie{width:100%;border-top:1px solid #c9cdbd;padding-top:12px;font-size:.8rem}
+@media (max-width:860px){
+ .stage{min-height:0;overflow:visible;background:none}
+ .map{position:relative;height:340px;display:block;background:#d6dccb}
+ .float{position:relative;inset:auto;width:auto;margin:0 14px;bottom:auto;top:auto;right:auto}
+ .float .scroll{overflow:visible}
+ .rating{position:relative;left:auto;bottom:auto;margin:14px;max-width:none}
+ .brand{background:rgba(251,250,244,.85);padding:6px 10px;border-radius:6px;top:12px;left:12px}
+ .story,.pulperia .in{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="demo">Prototipo de demostración preparado para Cabalgatas Montahue · Precios y disponibilidad de ejemplo</div>
+<div class="stage">
+  <svg class="map" viewBox="0 0 1280 820" preserveAspectRatio="xMinYMid slice" role="img" aria-label="Mapa ilustrativo de las rutas de cabalgata de Montahue en Villa La Angostura">
+    <rect width="1280" height="820" fill="#d6dccb"/>
+    <path d="M0 640 C200 610 380 700 600 660 S900 600 1280 640 V820 H0Z" fill="#3f7fa0"/>
+    <text x="80" y="760" style="fill:#e8eadf">Lago Nahuel Huapi</text>
+    <g transform="translate(-60 0)"><g fill="#bfcab0"><path d="M160 300 C220 240 300 260 340 200 S460 160 520 220 C560 260 520 330 440 350 S260 380 160 300Z"/><path d="M560 140 C640 90 720 120 760 80 S880 60 900 140 C920 210 820 240 740 230 S600 210 560 140Z"/></g>
+    <g stroke="#a9b59a" fill="none" stroke-width="1.2"><path d="M200 300 C260 260 320 280 360 230 S460 200 500 240"/><path d="M230 310 C280 280 330 300 370 255 S450 230 480 260"/><path d="M600 150 C660 120 720 140 750 110 S860 100 870 150"/><path d="M620 165 C670 140 720 160 750 135 S840 130 850 165"/></g>
+    <path id="r-belv" class="rt" d="M330 600 C360 540 300 470 340 420 S420 330 400 260" stroke="#c46a3b"/>
+    <path id="r-4h" class="rt" d="M330 600 C420 560 480 520 540 470 S620 330 640 200" stroke="#1e3b2c"/>
+    <path id="r-corta" class="rt" d="M330 600 C380 590 420 560 470 560 S540 590 520 610" stroke="#4f7a4a"/>
+    <circle cx="330" cy="600" r="11" fill="#1e3b2c"/><text x="190" y="590">Montahue</text><text class="sm" x="190" y="608">Av. Siete Lagos 402</text>
+    <circle cx="350" cy="420" r="7" fill="#3f7fa0"/><text x="364" y="425">Cascada Inacayal</text>
+    <circle cx="400" cy="260" r="8" fill="#c46a3b"/><text x="414" y="265">Mirador Belvedere</text>
+    <circle cx="640" cy="200" r="8" fill="#1e3b2c"/><text x="656" y="205">Filo del cerro</text>
+    </g><text class="sm" x="560" y="800" style="font-size:12px;fill:#e8eadf">Mapa ilustrativo, sin escala</text>
+  </svg>
+  <div class="brand"><span class="kr">Montahue</span><small>Cabalgatas · Villa La Angostura</small></div>
+  <div class="rating"><b>4,9</b>en Google con más de 700 reseñas. Caballos mansos, guías que ajustan el paso al grupo.</div>
+  <div class="float" data-bk-root id="reservar">
+    <div class="scroll">
+      <h1>Elegí la ruta en el mapa y reservá</h1>
+      <p class="intro">Bosque, arroyos y miradores del Parque Nacional Nahuel Huapi a caballo. Para quien nunca montó y para quien quiere galopar.</p>
+      <div class="blk"><h4>Ruta</h4><div data-bk="tours"></div></div>
+      <div class="blk"><h4>Día</h4><div data-bk="cal"></div></div>
+      <div class="blk"><h4>Horario</h4><div data-bk="horas"></div></div>
+      <div class="blk"><h4>Jinetes</h4><div data-bk="pax"></div></div>
+      <div class="blk"><h4>Guía en</h4><div data-bk="idioma"></div></div>
+      <div class="blk" data-exw><h4>Después de cabalgar</h4><div data-bk="extras"></div></div>
+    </div>
+    <div class="foot">
+      <div data-bk="resumen"></div>
+      <input data-bk="nombre" placeholder="Nombre para la reserva" aria-label="Nombre para la reserva">
+      <div class="fbtn"><button type="button" class="fb mp" data-bk="pagar">Pagar seña</button><a class="fb wa" data-bk="wa" href="#">Enviar por WhatsApp</a></div>
+    </div>
+  </div>
+</div>
+
+<section class="story">
+  <h2>Cómo es salir con Montahue</h2>
+  <div><h3>Un caballo para cada uno</h3><p>Antes de montar, el guía elige el caballo según tu experiencia. Los nuestros son tranquilos y conocen las huellas de memoria.</p></div>
+  <div><h3>El paso lo pone el grupo</h3><p>Si van chicos o principiantes, se va al tranco. Si el grupo sabe, en los tramos abiertos se puede galopar.</p></div>
+  <div><h3>Todo el año</h3><p>Abrimos todos los días de 9 a 19. En invierno, el bosque nevado se recorre igual: abrigate y nosotros ponemos el resto.</p></div>
+</section>
+<section class="pulperia">
+  <div class="in">
+    <div><h2>La pulpería, al volver</h2><p>Después de la cabalgata, almuerzo casero en la pulpería de la base: carne, verduras y postre. Se suma al reservar.</p></div>
+    <div class="menu"><div><span>Cabalgata Belvedere</span><span>3 h</span></div><div><span>Cabalgata larga al filo</span><span>4 h</span></div><div><span>Paseo corto para chicos</span><span>1 h</span></div><div><span>Almuerzo en la pulpería</span><span>opcional</span></div></div>
+  </div>
+</section>
+<footer>
+  <div><strong>Cabalgatas Montahue</strong><br>Av. Siete Lagos 402 · Villa La Angostura, Neuquén</div>
+  <div>WhatsApp <a href="https://wa.me/5492944511345">+54 9 294 451-1345</a><br>Todos los días de 9 a 19</div>
+  <div class="pie">Prototipo preparado para Cabalgatas Montahue por Resolviendo Kos · <a href="https://resolviendokos.com">resolviendokos.com</a> · No es la web oficial</div>
+</footer>
+<script>
+window.BK={negocio:'Cabalgatas Montahue',wa:'5492944511345',sena:.3,calMode:'strip',idiomas:['Español','English','Português'],
+tours:[
+ {id:'belv',nombre:'Belvedere y Cascada Inacayal',dur:'3 horas',dif:'Fácil',color:'#c46a3b',punto:'Base Montahue, Av. Siete Lagos 402',temporada:'Todo el año',edad:'7 años',precioRes:60000,precioExt:78000,horarios:['09:30','13:00','16:00'],cupo:12,incluye:['Caballo y equipo','Guía baqueano','Parada en la Cascada Inacayal'],extras:[{id:'alm',nombre:'Almuerzo en la pulpería',precio:22000,porPersona:true}]},
+ {id:'larga',nombre:'Cabalgata larga al filo',dur:'4 horas',dif:'Media',color:'#1e3b2c',punto:'Base Montahue, Av. Siete Lagos 402',temporada:'Todo el año',edad:'12 años',precioRes:78000,precioExt:100000,horarios:['09:30','14:00'],cupo:10,incluye:['Caballo y equipo','Guía baqueano','Tramos de galope si el grupo puede'],extras:[{id:'alm',nombre:'Almuerzo en la pulpería',precio:22000,porPersona:true}]},
+ {id:'corta',nombre:'Paseo corto para chicos',dur:'1 hora',dif:'Muy fácil',color:'#4f7a4a',punto:'Base Montahue',temporada:'Todo el año',edad:'4 años',precioRes:28000,precioExt:36000,horarios:['10:00','11:30','15:00','17:00'],cupo:8,incluye:['Caballo manso de tiro','Guía a pie al lado']}
+]};
+
+/* Motor de reserva demo · Resolviendo Kos */
+(function(){
+  var C = window.BK; if(!C) return;
+  var root = document.querySelector('[data-bk-root]') || document;
+  var $ = function(k){ return root.querySelector('[data-bk="'+k+'"]'); };
+  var fmt = function(n){ return '$' + Math.round(n).toLocaleString('es-AR'); };
+  var DIAS = ['dom','lun','mar','mié','jue','vie','sáb'];
+  var DIASL = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+  var MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  var hoy = new Date(); hoy.setHours(0,0,0,0);
+  var S = { tour: C.tours[0].id, fecha: null, hora: null, res: C.paxIni != null ? C.paxIni : 2, ext: 0, men: 0, idioma: (C.idiomas||['Español'])[0], extras: {}, pagado: false, mes: null };
+  var T = function(){ for(var i=0;i<C.tours.length;i++){ if(C.tours[i].id===S.tour) return C.tours[i]; } return C.tours[0]; };
+  function hash(s){ var h=2166136261; for(var i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,16777619);} return (h>>>0); }
+  function key(d){ return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
+  function enTemporada(t,d){ return !t.meses || t.meses.indexOf(d.getMonth())>=0; }
+  function opera(t,d){ if(t.dias && t.dias.indexOf(d.getDay())<0) return false; return enTemporada(t,d) && d>=hoy; }
+  function cupos(t,d,h){ var cap=t.cupo||10; var x=hash(t.id+key(d)+(h||'')) % 100; if(d.getTime()===hoy.getTime()) x=x%40; if(x<10) return 0; if(x<28) return Math.max(1,(x%3)+1); return Math.max(2, Math.round(cap*(x/100))); }
+  function cuposDia(t,d){ var hs=t.horarios||['—']; var tot=0; hs.forEach(function(h){ tot+=cupos(t,d,h); }); return tot; }
+  function pax(){ return S.res+S.ext+S.men; }
+  function extrasTotal(){ var t=T(), s=0; (t.extras||[]).forEach(function(e){ if(S.extras[e.id]) s += e.porPersona ? e.precio*pax() : e.precio; }); return s; }
+  function total(){ var t=T(); return S.res*t.precioRes + S.ext*t.precioExt + S.men*Math.round(t.precioRes*(t.menorFactor||0.5)) + extrasTotal(); }
+  function ddmm(d){ return DIASL[d.getDay()]+' '+d.getDate()+' de '+MESES[d.getMonth()]; }
+  function fire(){ document.dispatchEvent(new CustomEvent('bk:change',{detail:{S:S,tour:T(),total:total()}})); }
+
+  /* --- tours --- */
+  function renderTours(){
+    var el=$('tours'); if(!el) return;
+    if(el.tagName==='SELECT'){ el.innerHTML=C.tours.map(function(t){return '<option value="'+t.id+'">'+t.nombre+'</option>';}).join(''); el.value=S.tour; el.onchange=function(){ setTour(el.value); }; return; }
+    el.innerHTML = C.tours.map(function(t){
+      return '<button type="button" class="bk-tour'+(t.id===S.tour?' is-on':'')+'" data-id="'+t.id+'" aria-pressed="'+(t.id===S.tour)+'"><span class="bk-tour-n">'+t.nombre+'</span><span class="bk-tour-m">'+(t.dur||'')+(t.dif?' · '+t.dif:'')+'</span><span class="bk-tour-p">desde '+fmt(t.precioRes)+'</span></button>';
+    }).join('');
+    el.querySelectorAll('.bk-tour').forEach(function(b){ b.onclick=function(){ setTour(b.getAttribute('data-id')); }; });
+  }
+  function setTour(id, scroll){
+    S.tour=id; S.hora=null; S.extras={};
+    if(S.fecha && !opera(T(),S.fecha)) S.fecha=null;
+    renderAll();
+    if(scroll){ var tgt=document.querySelector(C.scrollTo||'[data-bk-root]'); if(tgt) tgt.scrollIntoView({behavior:'smooth',block:'start'}); }
+  }
+  document.querySelectorAll('[data-pick-tour]').forEach(function(b){ b.addEventListener('click',function(e){ e.preventDefault(); setTour(b.getAttribute('data-pick-tour'), true); }); });
+
+  /* --- ficha --- */
+  function renderFicha(){
+    var el=$('ficha'); if(!el) return; var t=T();
+    var rows=[['Duración',t.dur],['Dificultad',t.dif],['Punto de encuentro',t.punto],['Temporada',t.temporada],['Edad mínima',t.edad]].filter(function(r){return r[1];});
+    el.innerHTML='<dl class="bk-dl">'+rows.map(function(r){return '<div><dt>'+r[0]+'</dt><dd>'+r[1]+'</dd></div>';}).join('')+'</dl>'+
+      (t.incluye?'<p class="bk-inc-t">Incluye</p><ul class="bk-inc">'+t.incluye.map(function(i){return '<li>'+i+'</li>';}).join('')+'</ul>':'');
+  }
+
+  /* --- calendario --- */
+  function firstOpen(t){ var d=new Date(hoy); for(var i=0;i<370;i++){ if(opera(t,d)) return new Date(d); d.setDate(d.getDate()+1);} return new Date(hoy); }
+  function renderCal(){
+    var el=$('cal'); if(!el) return; var t=T(); var mode=C.calMode||'grid';
+    var days=[]; var start;
+    if(mode==='grid'){
+      if(!S.mes){ var f=firstOpen(t); S.mes=new Date(f.getFullYear(), f.getMonth(), 1); }
+      var m=S.mes; var first=new Date(m.getFullYear(), m.getMonth(), 1); var lead=(first.getDay()+6)%7;
+      var dim=new Date(m.getFullYear(), m.getMonth()+1, 0).getDate();
+      var html='<div class="bk-cal-h"><button type="button" class="bk-nav" data-n="-1" aria-label="Mes anterior">‹</button><strong>'+MESES[m.getMonth()]+' '+m.getFullYear()+'</strong><button type="button" class="bk-nav" data-n="1" aria-label="Mes siguiente">›</button></div>';
+      html+='<div class="bk-grid">'+['lu','ma','mi','ju','vi','sá','do'].map(function(x){return '<span class="bk-dow">'+x+'</span>';}).join('');
+      for(var i=0;i<lead;i++) html+='<span></span>';
+      for(var dd=1; dd<=dim; dd++){ var d=new Date(m.getFullYear(), m.getMonth(), dd); html+=dayBtn(t,d,dd,''); }
+      el.innerHTML=html+'</div>';
+      el.querySelectorAll('.bk-nav').forEach(function(b){ b.onclick=function(){ var n=+b.getAttribute('data-n'); var nm=new Date(S.mes.getFullYear(), S.mes.getMonth()+n, 1); var lim=new Date(hoy.getFullYear(), hoy.getMonth(),1); if(nm<lim) return; S.mes=nm; renderCal(); }; });
+    } else {
+      var n = mode==='list' ? 10 : 21; start=firstOpen(t); var d=new Date(start); var html2='';
+      var c=0, guard=0;
+      while(c<n && guard<400){ guard++; if(mode==='strip' || opera(t,d)){ html2+= mode==='list' ? listRow(t,new Date(d)) : dayBtn(t,new Date(d), d.getDate(), '<small>'+DIAS[d.getDay()]+'</small>', true); c++; } d.setDate(d.getDate()+1); }
+      el.innerHTML='<div class="bk-'+mode+'">'+html2+'</div>';
+    }
+    el.querySelectorAll('[data-d]').forEach(function(b){ b.onclick=function(){ var p=b.getAttribute('data-d').split('-'); S.fecha=new Date(+p[0],+p[1]-1,+p[2]); S.hora=null; var hs=T().horarios||[]; if(hs.length===1) S.hora=hs[0]; if(b.getAttribute('data-h')) S.hora=b.getAttribute('data-h'); renderAll(); }; });
+  }
+  function dayBtn(t,d,label,pre,showMonth){
+    var ok=opera(t,d); var q=ok?cuposDia(t,d):0; var sel=S.fecha&&d.getTime()===S.fecha.getTime();
+    var cls='bk-day'+(ok?(q===0?' is-full':(q<=3?' is-few':'')):' is-off')+(sel?' is-on':'');
+    var lab=ok?(q===0?'completo':(q<=3?'últimos '+q:q+' lugares')):(enTemporada(t,d)||d<hoy?'':'fuera de temp.');
+    var mm = showMonth && d.getDate()===1 ? '<em>'+MESES[d.getMonth()].slice(0,3)+'</em>' : '';
+    return '<button type="button" class="'+cls+'" '+((ok&&q>0)?'data-d="'+key(d)+'"':'disabled')+' aria-label="'+ddmm(d)+' '+lab+'">'+(pre||'')+mm+'<b>'+label+'</b><i>'+lab+'</i></button>';
+  }
+  function listRow(t,d){
+    var hs=t.horarios||['—'];
+    return '<div class="bk-row"><div class="bk-row-d"><b>'+d.getDate()+'</b><span>'+DIAS[d.getDay()]+' · '+MESES[d.getMonth()].slice(0,3)+'</span></div><div class="bk-row-h">'+hs.map(function(h){ var q=cupos(t,d,h); var sel=S.fecha&&d.getTime()===S.fecha.getTime()&&S.hora===h; return '<button type="button" class="bk-slot'+(q===0?' is-full':(q<=3?' is-few':''))+(sel?' is-on':'')+'" '+(q>0?'data-d="'+key(d)+'" data-h="'+h+'"':'disabled')+'><b>'+h+'</b><i>'+(q===0?'completo':(q<=3?'quedan '+q:q+' lugares'))+'</i></button>'; }).join('')+'</div></div>';
+  }
+  function renderHoras(){
+    var el=$('horas'); if(!el) return; var t=T(); var hs=t.horarios||[];
+    if(!S.fecha){ el.innerHTML='<p class="bk-hint">Elegí una fecha para ver los horarios.</p>'; return; }
+    el.innerHTML=hs.map(function(h){ var q=cupos(t,S.fecha,h); return '<button type="button" class="bk-hora'+(S.hora===h?' is-on':'')+(q===0?' is-full':'')+'" '+(q>0?'data-h="'+h+'"':'disabled')+'><b>'+h+'</b><i>'+(q===0?'completo':q+' lugares')+'</i></button>'; }).join('');
+    el.querySelectorAll('[data-h]').forEach(function(b){ b.onclick=function(){ S.hora=b.getAttribute('data-h'); renderAll(); }; });
+  }
+
+  /* --- pasajeros --- */
+  function renderPax(){
+    var el=$('pax'); if(!el) return; var t=T();
+    var filas=[['res','Residentes argentinos',t.precioRes],['ext','Extranjeros',t.precioExt]];
+    if(t.menores!==false) filas.push(['men','Menores'+(t.edadMenor?' ('+t.edadMenor+')':''),Math.round(t.precioRes*(t.menorFactor||0.5))]);
+    el.innerHTML=filas.map(function(f){ return '<div class="bk-pax-r"><div><span>'+f[1]+'</span><small>'+fmt(f[2])+' c/u</small></div><div class="bk-step"><button type="button" data-k="'+f[0]+'" data-v="-1" aria-label="Restar '+f[1]+'">−</button><output>'+S[f[0]]+'</output><button type="button" data-k="'+f[0]+'" data-v="1" aria-label="Sumar '+f[1]+'">+</button></div></div>'; }).join('');
+    el.querySelectorAll('button').forEach(function(b){ b.onclick=function(){ var k=b.getAttribute('data-k'); var v=S[k]+(+b.getAttribute('data-v')); var max=t.maxGrupo||12; if(v<0) return; if(pax()-S[k]+v>max) return; if(pax()-S[k]+v<1) return; S[k]=v; renderAll(); }; });
+  }
+  function renderIdioma(){
+    var el=$('idioma'); if(!el) return; var ids=C.idiomas||['Español','English','Português'];
+    el.innerHTML=ids.map(function(i){ return '<button type="button" class="bk-lang'+(S.idioma===i?' is-on':'')+'" aria-pressed="'+(S.idioma===i)+'">'+i+'</button>'; }).join('');
+    el.querySelectorAll('button').forEach(function(b){ b.onclick=function(){ S.idioma=b.textContent; renderAll(); }; });
+  }
+  function renderExtras(){
+    var el=$('extras'); if(!el) return; var t=T(); var ex=t.extras||[];
+    var w=document.querySelectorAll('[data-exw]'); w.forEach(function(x){x.hidden=!ex.length;}); if(!ex.length){ el.innerHTML=''; el.hidden=true; return; } el.hidden=false;
+    el.innerHTML=ex.map(function(e){ return '<label class="bk-extra"><input type="checkbox" data-e="'+e.id+'"'+(S.extras[e.id]?' checked':'')+'><span>'+e.nombre+'</span><small>+'+fmt(e.precio)+(e.porPersona?' p/p':'')+'</small></label>'; }).join('');
+    el.querySelectorAll('input').forEach(function(i){ i.onchange=function(){ S.extras[i.getAttribute('data-e')]=i.checked; renderAll(); }; });
+  }
+
+  /* --- selects custom --- */
+  S.sel={};
+  function renderSelects(){
+    var el=$('selects'); if(!el||!C.selects) return;
+    if(!el.dataset.done){ el.innerHTML=C.selects.map(function(x){ S.sel[x.id]=S.sel[x.id]||x.opciones[0]; return '<label class="bk-sel"><span>'+x.label+'</span><select data-s="'+x.id+'">'+x.opciones.map(function(o){return '<option>'+o+'</option>';}).join('')+'</select></label>'; }).join(''); el.dataset.done=1;
+      el.querySelectorAll('select').forEach(function(s){ s.onchange=function(){ S.sel[s.getAttribute('data-s')]=s.value; renderResumen(); }; }); }
+  }
+  /* --- resumen --- */
+  function listo(){ return S.fecha && (S.hora || !(T().horarios||[]).length); }
+  function renderResumen(){
+    var el=$('resumen'); if(!el) return; var t=T(); var tot=total(); var sena=tot*(C.sena||0.3);
+    var falta = !S.fecha ? 'Falta elegir la fecha' : (!listo() ? 'Falta elegir el horario' : '');
+    el.innerHTML='<div class="bk-res-t">'+t.nombre+'</div>'+
+      '<div class="bk-res-l"><span>Fecha</span><b>'+(S.fecha?ddmm(S.fecha)+(S.hora?' · '+S.hora:''):'—')+'</b></div>'+
+      '<div class="bk-res-l"><span>Grupo</span><b>'+paxTxt()+'</b></div>'+
+      '<div class="bk-res-l"><span>Guía en</span><b>'+S.idioma+'</b></div>'+
+      '<div class="bk-res-l bk-res-tot"><span>Total</span><b>'+fmt(tot)+'</b></div>'+
+      '<div class="bk-res-l bk-res-sena"><span>Seña 30% para confirmar</span><b>'+fmt(sena)+'</b></div>'+
+      '<div class="bk-res-l bk-res-rest"><span>Saldo el día de la salida</span><b>'+fmt(tot-sena)+'</b></div>'+
+      '<p class="bk-ahorro">Por una plataforma con ~25% de comisión, de esta reserva te quedarían '+fmt(tot*0.75)+'. Directo, te quedan los '+fmt(tot)+'.</p>'+
+      (falta?'<p class="bk-falta">'+falta+'</p>':'')+
+      (S.pagado?'<p class="bk-ok">Seña abonada (demo). Mandá el pedido por WhatsApp para cerrar.</p>':'');
+    var p=$('pagar'); if(p){ p.disabled=!listo(); p.textContent = S.pagado ? 'Seña abonada ✓ (demo)' : (C.txtPagar||'Pagar seña de '+fmt(sena)+' con Mercado Pago'); }
+    var w=$('wa'); if(w){ w.href='https://wa.me/'+C.wa+'?text='+encodeURIComponent(msg()); w.setAttribute('target','_blank'); w.setAttribute('rel','noopener'); }
+    var pv=$('preview'); if(pv){ pv.textContent=msg(); }
+  }
+  function paxTxt(){ var a=[]; if(S.res) a.push(S.res+' residente'+(S.res>1?'s':'')); if(S.ext) a.push(S.ext+' extranjero'+(S.ext>1?'s':'')); if(S.men) a.push(S.men+' menor'+(S.men>1?'es':'')); return a.join(', '); }
+  function msg(){
+    var t=T(); var tot=total(); var nm=$('nombre'); var nombre=nm&&nm.value.trim();
+    var ex=(t.extras||[]).filter(function(e){return S.extras[e.id];}).map(function(e){return e.nombre;});
+    var L=['Hola '+C.negocio+'! Quiero reservar desde la web:','','• Salida: '+t.nombre,'• Fecha: '+(S.fecha?ddmm(S.fecha):'(a definir)')+(S.hora?' · '+S.hora+' hs':''),'• Grupo: '+paxTxt()+' ('+pax()+' en total)','• Idioma del guía: '+S.idioma];
+    if(ex.length) L.push('• Extras: '+ex.join(', '));
+    (C.selects||[]).forEach(function(x){ L.push('• '+x.label+': '+S.sel[x.id]); });
+    L.push('• Total: '+fmt(tot),'• Seña 30%: '+fmt(tot*(C.sena||0.3))+(S.pagado?' (abonada por Mercado Pago)':' (pago por Mercado Pago)'));
+    if(nombre) L.push('• A nombre de: '+nombre);
+    L.push('','¿Me confirman el lugar?');
+    return L.join('\n');
+  }
+
+  /* --- pago demo --- */
+  function modal(){
+    var tot=total(); var sena=tot*(C.sena||0.3);
+    var m=document.createElement('div'); m.className='bk-modal'; m.setAttribute('role','dialog'); m.setAttribute('aria-modal','true'); m.setAttribute('aria-label','Pago de seña (demo)');
+    m.innerHTML='<div class="bk-mp"><div class="bk-mp-top"><span class="bk-mp-logo">mercado pago</span><span class="bk-mp-demo">DEMO · no se cobra nada</span></div><p class="bk-mp-to">Pagás a <b>'+C.negocio+'</b></p><p class="bk-mp-amt">'+fmt(sena)+'</p><p class="bk-mp-d">Seña 30% · '+T().nombre+(S.fecha?' · '+ddmm(S.fecha):'')+'</p><div class="bk-mp-opts"><label><input type="radio" name="mpo" checked> Dinero en cuenta</label><label><input type="radio" name="mpo"> Tarjeta de débito</label><label><input type="radio" name="mpo"> Tarjeta de crédito · hasta 3 cuotas</label></div><button type="button" class="bk-mp-pay">Pagar '+fmt(sena)+'</button><button type="button" class="bk-mp-x">Cancelar</button></div>';
+    document.body.appendChild(m);
+    var close=function(){ m.remove(); document.removeEventListener('keydown',esc); };
+    var esc=function(e){ if(e.key==='Escape') close(); };
+    document.addEventListener('keydown',esc);
+    m.querySelector('.bk-mp-x').onclick=close; m.onclick=function(e){ if(e.target===m) close(); };
+    m.querySelector('.bk-mp-pay').onclick=function(){ var b=this; b.disabled=true; b.textContent='Procesando…'; setTimeout(function(){ S.pagado=true; close(); renderAll(); var w=$('wa'); if(w) w.focus(); },700); };
+    m.querySelector('.bk-mp-pay').focus();
+  }
+  var pb=$('pagar'); if(pb) pb.addEventListener('click',function(){ if(listo()) modal(); });
+  var nm=$('nombre'); if(nm) nm.addEventListener('input',renderResumen);
+
+  function renderAll(){ renderTours(); renderFicha(); renderCal(); renderHoras(); renderPax(); renderIdioma(); renderExtras(); renderSelects(); renderResumen(); fire(); }
+  window.BKAPI={ setTour:setTour, state:S, total:total, fmt:fmt, tour:T, render:renderAll };
+  renderAll();
+})();
+
+(function(){
+ var map={belv:'r-belv',larga:'r-4h',corta:'r-corta'};
+ function sync(){var cur=BKAPI.state.tour;Object.keys(map).forEach(function(k){document.getElementById(map[k]).classList.toggle('on',k===cur);});
+  document.querySelectorAll('.bk-tour').forEach(function(b){var t=BK.tours.filter(function(x){return x.id===b.getAttribute('data-id');})[0];if(t)b.style.setProperty('--c',t.color);});}
+ Object.keys(map).forEach(function(k){var p=document.getElementById(map[k]);p.style.cursor='pointer';p.addEventListener('click',function(){BKAPI.setTour(k);});});
+ document.addEventListener('bk:change',sync);sync();
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Cabalgatas Montahue"></script>
+</body>
+</html>
