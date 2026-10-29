@@ -1,0 +1,634 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>La Araucaria · Ruta 30 km 476</title>
+<meta name="description" content="La Araucaria Eventos, Ruta 30 km 476, Chivilcoy. Salón para 300 personas con techo de esferas, parque y galería. Prototipo de demostración.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Linden+Hill:ital@0;1&family=Mada:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --crema:#f4ede1;
+  --crema-2:#ebe1d0;
+  --papel:#fbf7f0;
+  --tinta:#221c17;
+  --tinta-2:#5a4f45;
+  --tierra:#a65a39;      /* fachada en tonos tierra */
+  --tierra-osc:#7d3f25;
+  --oliva:#33432f;       /* verde del parque */
+  --oliva-2:#4f6447;
+  --plata:#cfcdc6;       /* esferas */
+  --violeta:#5d4277;     /* luces del salón de noche */
+  --linea:rgba(34,28,23,.14);
+  --ok:#3d6a3a;
+  --ocupado:#b9ad9c;
+  --radio:14px;
+  --serif:"Linden Hill", Georgia, serif;
+  --sans:"Mada", system-ui, sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:var(--crema);color:var(--tinta);font-family:var(--sans);font-size:17px;line-height:1.55;overflow-x:hidden}
+img{display:block;max-width:100%}
+button,input,select{font:inherit;color:inherit}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--tierra);outline-offset:3px}
+
+/* aviso */
+.aviso{background:var(--oliva);color:var(--crema);font-size:13px;letter-spacing:.02em;text-align:center;padding:8px 16px;position:relative;z-index:30}
+.aviso b{font-weight:600}
+
+/* ====== PANTALLA DIVIDIDA ====== */
+.split{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);min-height:100vh}
+.foto-fija{position:sticky;top:0;height:100vh;overflow:hidden;background:var(--oliva)}
+.foto-fija figure{position:absolute;inset:0;opacity:0;transition:opacity .9s ease, transform 6s ease;transform:scale(1.04)}
+.foto-fija figure.on{opacity:1;transform:scale(1)}
+.lamina{background:linear-gradient(160deg,var(--oliva-2),var(--oliva) 55%,#232e20)}
+.lamina.t{background:linear-gradient(160deg,#c07a57,var(--tierra) 50%,var(--tierra-osc))}
+.lamina.v{background:linear-gradient(160deg,#7b5e95,var(--violeta) 50%,#2e2140)}
+.foto-fija img,.foto-inline img{width:100%;height:100%;object-fit:cover}
+img.off{display:none}
+.foto-fija figcaption{position:absolute;left:24px;bottom:22px;right:24px;color:#fff;font-size:13px;letter-spacing:.04em;text-shadow:0 1px 8px rgba(0,0,0,.5);display:flex;justify-content:space-between;gap:12px;align-items:flex-end}
+.foto-fija figcaption span:last-child{font-family:var(--serif);font-size:20px;letter-spacing:0}
+.foto-fija::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.45),transparent 35%);pointer-events:none}
+.contador{position:absolute;top:22px;left:24px;z-index:3;color:#fff;font-size:12px;letter-spacing:.18em;text-transform:uppercase;display:flex;gap:10px;align-items:center;text-shadow:0 1px 6px rgba(0,0,0,.4)}
+.contador i{display:block;width:44px;height:1px;background:rgba(255,255,255,.7)}
+
+.texto{padding:0 clamp(20px,5vw,72px) 40px;min-width:0}
+.cap{min-height:92vh;padding:clamp(56px,10vh,110px) 0 56px;border-bottom:1px solid var(--linea);display:flex;flex-direction:column;justify-content:center}
+.cap:last-child{border-bottom:0}
+.num{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--tierra);font-weight:600;margin-bottom:18px;display:flex;align-items:center;gap:12px}
+.num::after{content:"";flex:0 0 48px;height:1px;background:currentColor;opacity:.5}
+h1,h2,h3{font-family:var(--serif);font-weight:400;line-height:1.02;letter-spacing:-.01em}
+h1{font-size:clamp(44px,6.2vw,92px)}
+h1 em,h2 em{font-style:italic;color:var(--tierra)}
+h2{font-size:clamp(34px,4.2vw,58px);margin-bottom:20px}
+h3{font-size:26px;margin-bottom:6px}
+.bajada{font-size:clamp(17px,1.4vw,20px);color:var(--tinta-2);max-width:34em;margin-top:22px}
+.marca{display:flex;align-items:baseline;gap:14px;margin-bottom:34px}
+.marca strong{font-family:var(--serif);font-weight:400;font-size:30px;letter-spacing:.01em}
+.marca span{font-size:13px;color:var(--tinta-2);letter-spacing:.06em}
+.datos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin-top:40px;border-top:1px solid var(--linea)}
+.datos div{padding:16px 12px 0 0}
+.datos b{display:block;font-family:var(--serif);font-weight:400;font-size:40px;line-height:1}
+.datos small{font-size:13px;color:var(--tinta-2);line-height:1.3;display:block;margin-top:6px}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:36px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:999px;padding:14px 24px;font-weight:600;font-size:15px;text-decoration:none;cursor:pointer;transition:transform .2s, background .2s, box-shadow .2s}
+.btn:hover{transform:translateY(-2px)}
+.btn-p{background:var(--tierra);color:#fff;box-shadow:0 8px 22px -10px var(--tierra-osc)}
+.btn-p:hover{background:var(--tierra-osc)}
+.btn-s{background:transparent;border:1px solid var(--tinta);color:var(--tinta)}
+.btn-wa{background:#1f7a4d;color:#fff;width:100%;padding:16px 22px;font-size:16px}
+.btn-wa:hover{background:#17623d}
+
+.foto-inline{display:none}
+
+/* espacios */
+.lista-esp{list-style:none;margin-top:8px}
+.lista-esp li{display:grid;grid-template-columns:52px 1fr;gap:14px;padding:18px 0;border-top:1px solid var(--linea);cursor:pointer;transition:background .2s,padding .2s}
+.lista-esp li:hover,.lista-esp li.act{background:linear-gradient(90deg,rgba(166,90,57,.07),transparent);padding-left:8px}
+.lista-esp .k{font-family:var(--serif);font-size:30px;color:var(--tierra);line-height:1}
+.lista-esp p{color:var(--tinta-2);font-size:15.5px}
+
+/* techo de esferas */
+.techo{background:var(--tinta);color:var(--crema);border-radius:var(--radio);padding:22px 18px 18px;margin-top:6px;position:relative;overflow:hidden}
+.techo svg{width:100%;height:auto;display:block}
+.momentos{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.momentos button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:10px 6px;cursor:pointer;font-size:14px;line-height:1.2;transition:.2s}
+.momentos button small{display:block;opacity:.7;font-size:12px;margin-top:2px}
+.momentos button[aria-pressed="true"]{background:var(--crema);color:var(--tinta);border-color:var(--crema)}
+.altura{display:flex;align-items:center;gap:12px;margin-top:14px;font-size:13px;opacity:.9}
+.altura input{flex:1;accent-color:var(--tierra)}
+.techo-lee{margin-top:12px;font-size:14px;color:var(--plata);min-height:2.6em}
+.nota{font-size:13px;color:var(--tinta-2);margin-top:12px}
+
+/* eventos */
+.eventos{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--linea);border:1px solid var(--linea);border-radius:var(--radio);overflow:hidden;margin-top:10px}
+.eventos article{background:var(--papel);padding:20px 18px 22px}
+.eventos article p{font-size:15px;color:var(--tinta-2)}
+.eventos .tag{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--oliva-2);font-weight:600}
+
+/* incluye */
+.dos-col{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:6px}
+.check{list-style:none}
+.check li{padding:8px 0 8px 26px;position:relative;border-bottom:1px dashed var(--linea);font-size:15.5px}
+.check li::before{content:"";position:absolute;left:2px;top:15px;width:12px;height:7px;border-left:2px solid var(--ok);border-bottom:2px solid var(--ok);transform:rotate(-45deg)}
+.aparte li::before{border:0;width:10px;height:10px;border-radius:50%;background:var(--tierra);transform:none;top:15px}
+.col-t{font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;margin-bottom:8px;color:var(--tinta-2)}
+
+/* cotizador */
+.cotiza{background:var(--papel);border:1px solid var(--linea);border-radius:18px;padding:22px 20px;box-shadow:0 30px 60px -40px rgba(34,28,23,.5)}
+.campo{margin-bottom:18px}
+.campo>label,.campo>.lab{display:block;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--tinta-2);margin-bottom:8px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips label{position:relative}
+.chips input{position:absolute;opacity:0;inset:0;cursor:pointer}
+.chips span{display:inline-block;padding:9px 14px;border:1px solid var(--linea);border-radius:999px;font-size:14.5px;background:#fff;transition:.15s;cursor:pointer}
+.chips input:checked+span{background:var(--tinta);color:var(--crema);border-color:var(--tinta)}
+.chips input:focus-visible+span{outline:2px solid var(--tierra);outline-offset:2px}
+.inv{display:flex;align-items:center;gap:14px}
+.inv input[type=range]{flex:1;accent-color:var(--tierra)}
+.inv output{font-family:var(--serif);font-size:38px;min-width:3ch;text-align:right;line-height:1}
+.campo.extras>label{text-transform:none;letter-spacing:0;font-weight:400;color:var(--tinta);margin:0;font-size:15px}
+.extras label{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--linea);font-size:15px;cursor:pointer}
+.extras label:last-child{border-bottom:1px solid var(--linea)}
+.extras input{accent-color:var(--tierra);width:18px;height:18px;flex:0 0 18px}
+.extras .p{color:var(--tinta-2);font-size:13px;white-space:nowrap}
+.extras .l{display:flex;gap:10px;align-items:center}
+
+/* calendario */
+.cal{border:1px solid var(--linea);border-radius:14px;padding:14px;background:#fff}
+.cal-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.cal-h strong{font-family:var(--serif);font-weight:400;font-size:24px;text-transform:capitalize}
+.cal-h button{width:36px;height:36px;border-radius:50%;border:1px solid var(--linea);background:transparent;cursor:pointer;font-size:18px;line-height:1}
+.cal-h button:disabled{opacity:.3;cursor:default}
+.sabados{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:8px}
+.sab{border:1px solid var(--linea);border-radius:10px;padding:8px 4px;text-align:center;background:var(--papel);cursor:pointer;transition:.15s}
+.sab b{display:block;font-family:var(--serif);font-weight:400;font-size:26px;line-height:1}
+.sab small{font-size:10px;letter-spacing:.02em;text-transform:uppercase}
+.sab.libre small{color:var(--ok);font-weight:600}
+.sab.ocupado{background:repeating-linear-gradient(45deg,#f1ebe1,#f1ebe1 5px,#e8e0d3 5px,#e8e0d3 10px);color:var(--ocupado);cursor:not-allowed}
+.sab.libre:hover{border-color:var(--tierra)}
+.sab.sel{background:var(--tierra);border-color:var(--tierra);color:#fff}
+.sab.sel small{color:#fff}
+.leyenda{display:flex;gap:16px;font-size:12px;color:var(--tinta-2);margin-top:10px}
+.leyenda i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+
+.ticket{margin-top:20px;background:var(--tinta);color:var(--crema);border-radius:16px;padding:20px;position:relative}
+.ticket::before,.ticket::after{content:"";position:absolute;top:62px;width:18px;height:18px;border-radius:50%;background:var(--papel)}
+.ticket::before{left:-9px}.ticket::after{right:-9px}
+.ticket .fila{display:flex;justify-content:space-between;gap:12px;font-size:14px;padding:4px 0;color:var(--plata)}
+.ticket .fila b{color:var(--crema);font-weight:500;text-align:right}
+.ticket .tot{border-top:1px dashed rgba(255,255,255,.25);margin-top:12px;padding-top:12px}
+.ticket .tot .big{font-family:var(--serif);font-size:38px;line-height:1.05;color:#fff}
+.ticket .pp{font-size:14px;color:var(--plata);margin:4px 0 14px}
+.ticket .ej{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#e7b598}
+.ticket .resumen-fecha{font-family:var(--serif);font-size:22px;color:#fff;margin-bottom:8px}
+
+/* galería */
+.tira{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.tira button{aspect-ratio:1;border:0;padding:0;border-radius:10px;overflow:hidden;cursor:pointer;position:relative;background:var(--oliva-2)}
+.tira button:nth-child(3n){background:var(--tierra)}
+.tira button:nth-child(4n){background:var(--violeta)}
+.tira img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.tira button:hover img{transform:scale(1.08)}
+.tira button.act{outline:2px solid var(--tierra);outline-offset:2px}
+
+/* mapa */
+.mapa{background:#fff;border:1px solid var(--linea);border-radius:var(--radio);padding:10px;margin:8px 0 18px}
+.mapa svg{width:100%;height:auto;display:block}
+.dir{font-family:var(--serif);font-size:28px;line-height:1.1}
+footer{padding:32px 0 10px;font-size:13px;color:var(--tinta-2);display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between}
+
+/* toast */
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%) translateY(120px);background:var(--tinta);color:var(--crema);padding:12px 18px;border-radius:12px;font-size:14px;transition:transform .35s;z-index:50;max-width:calc(100% - 32px)}
+.toast.on{transform:translateX(-50%) translateY(0)}
+
+.rev{opacity:0;transform:translateY(18px);transition:opacity .7s, transform .7s}
+.rev.in{opacity:1;transform:none}
+
+@media (max-width:900px){
+  body{font-size:16px}
+  .split{display:block}
+  .foto-fija{display:none}
+  .foto-inline{display:block;position:relative;margin:0 -16px 26px;height:62vw;max-height:420px;overflow:hidden;border-radius:0}
+  .foto-inline figcaption{position:absolute;left:16px;bottom:10px;color:#fff;font-size:12px;letter-spacing:.06em;text-shadow:0 1px 6px rgba(0,0,0,.6)}
+  .texto{padding:0 16px 30px}
+  .cap{min-height:0;padding:44px 0 44px}
+  .cap.portada{padding-top:0}
+  .cap.portada .foto-inline{height:96vw;max-height:520px;margin-bottom:28px}
+  .datos b{font-size:32px}
+  .eventos,.dos-col{grid-template-columns:1fr}
+  .dos-col{gap:22px}
+  .tira{grid-template-columns:repeat(4,1fr);gap:6px}
+  .cotiza{padding:18px 14px}
+  .sabados{grid-template-columns:repeat(4,1fr)}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<div class="aviso">Prototipo de demostración preparado para <b>La Araucaria Eventos</b> · precios y fechas de ejemplo</div>
+
+<div class="split">
+  <!-- Foto fija -->
+  <aside class="foto-fija" aria-hidden="true">
+    <div class="contador"><span id="cnum">01</span><i></i><span>Ruta 30 · km 476</span></div>
+    <figure data-k="portada" class="on lamina"><img src="https://laaraucariaeventos.com.ar/assets/photos/atardecer-araucaria-1600.webp" alt="" onerror="this.classList.add('off')"><figcaption><span>Recepción en la galería, vista desde el parque</span><span>La Araucaria</span></figcaption></figure>
+    <figure data-k="predio" class="lamina"><img src="https://laaraucariaeventos.com.ar/assets/photos/galeria-parque-1600.webp" alt="" onerror="this.classList.add('off')"><figcaption><span>Galería cubierta abierta al jardín</span><span>El predio</span></figcaption></figure>
+    <figure data-k="esferas" class="lamina v"><img src="https://laaraucariaeventos.com.ar/assets/photos/fiesta-esferas-1600.webp" alt="" onerror="this.classList.add('off')"><figcaption><span>Bajo el techo de esferas espejadas</span><span>La pista</span></figcaption></figure>
+    <figure data-k="eventos" class="lamina v"><img src="https://laaraucariaeventos.com.ar/assets/photos/quince-esferas-960.webp" alt="" onerror="this.classList.add('off')"><figcaption><span>Quinceañera en la pista</span><span>Eventos</span></figcaption></figure>
+    <figure data-k="incluye" class="lamina t"><img src="https://laaraucariaeventos.com.ar/assets/photos/mesas-noche-1600.webp" alt="" onerror="this.classList.add('off')"><figcaption><span>Mesas del salón para un evento nocturno</span><span>El alquiler</span></figcaption></figure>
+    <figure data-k="cotiza" class="lamina"><img src="https://laaraucariaeventos.com.ar/assets/photos/mesa-salon-960.webp" alt="" onerror="this.classList.add('off')"><figcaption><span>Mesa larga bajo las guirnaldas</span><span>Tu fecha</span></figcaption></figure>
+    <figure data-k="galeria" class="lamina t"><img id="galImg" src="https://laaraucariaeventos.com.ar/assets/photos/novios-fuente-960.webp" alt="" onerror="this.classList.add('off')"><figcaption><span id="galCap">Junto a la fuente del jardín</span><span>Galería</span></figcaption></figure>
+    <figure data-k="llegar" class="lamina"><img src="https://laaraucariaeventos.com.ar/assets/photos/frente-invitados-1600.webp" alt="" onerror="this.classList.add('off')"><figcaption><span>Invitados frente al salón y la fuente</span><span>Cómo llegar</span></figcaption></figure>
+  </aside>
+
+  <!-- Texto que corre -->
+  <main class="texto">
+
+    <section class="cap portada" data-k="portada" id="inicio">
+      <figure class="foto-inline lamina"><img src="https://laaraucariaeventos.com.ar/assets/photos/atardecer-araucaria-960.webp" alt="Recepción de casamiento en la galería iluminada, vista desde el parque" onerror="this.classList.add('off')"><figcaption>Recepción en la galería · La Araucaria</figcaption></figure>
+      <div class="marca"><strong>La Araucaria</strong><span>EVENTOS · CHIVILCOY</span></div>
+      <div class="num">Ruta 30 · km 476</div>
+      <h1>300 invitados bajo un techo de esferas <em>que sube y baja.</em></h1>
+      <p class="bajada">Salón, parque delantero y trasero, galería cubierta y fogón, en el campo de Chivilcoy. Casamientos, fiestas de 15, cumpleaños y eventos de empresa. Elegí fecha, invitados y formato, y mirá un estimado al instante.</p>
+      <div class="datos">
+        <div><b>300</b><small>personas en el salón</small></div>
+        <div><b>2</b><small>jardines: delantero y trasero</small></div>
+        <div><b>P</b><small>estacionamiento dentro del predio</small></div>
+      </div>
+      <div class="cta">
+        <a class="btn btn-p" href="#cotizar">Cotizar mi fecha</a>
+        <a class="btn btn-s" href="#esferas">Probar el techo de esferas</a>
+      </div>
+    </section>
+
+    <section class="cap" data-k="predio" id="predio">
+      <figure class="foto-inline lamina"><img src="https://laaraucariaeventos.com.ar/assets/photos/galeria-parque-960.webp" alt="Galería cubierta abierta al jardín con livings y mesas" onerror="this.classList.add('off')"><figcaption>Galería cubierta abierta al jardín</figcaption></figure>
+      <div class="num">01 · El predio</div>
+      <h2>Del parque a la pista <em>sin salir del campo.</em></h2>
+      <ul class="lista-esp" id="listaEsp">
+        <li data-img="https://laaraucariaeventos.com.ar/assets/photos/ceremonia-con-invitados-960.webp"><span class="k">I</span><div><h3>Jardines</h3><p>Delantero y trasero, para ceremonia, recepción, fotos y encuentros al aire libre. Se suman livings y mesas en el parque.</p></div></li>
+        <li data-img="https://laaraucariaeventos.com.ar/assets/photos/exterior-cubierto-960.webp"><span class="k">II</span><div><h3>Galería cubierta</h3><p>Sector exterior techado, abierto hacia el parque, con lugar para mesas y livings.</p></div></li>
+        <li data-img="https://laaraucariaeventos.com.ar/assets/photos/salon-eventos-sociales.jpg"><span class="k">III</span><div><h3>Salón</h3><p>Hasta 300 personas. Armado de mesas, ambientación y momentos a medida de cada evento.</p></div></li>
+        <li data-img="https://laaraucariaeventos.com.ar/assets/photos/pista-lola-luces-960.webp"><span class="k">IV</span><div><h3>Pista</h3><p>Iluminación, pantallas LED y el techo de esferas regulable en altura.</p></div></li>
+        <li data-img="https://laaraucariaeventos.com.ar/assets/photos/cocina-960.webp"><span class="k">V</span><div><h3>Cocina fría y caliente</h3><p>Para el catering que elijas, con baños equipados y grupo electrógeno de respaldo.</p></div></li>
+      </ul>
+    </section>
+
+    <section class="cap" data-k="esferas" id="esferas">
+      <figure class="foto-inline lamina v"><img src="https://laaraucariaeventos.com.ar/assets/photos/fiesta-esferas-960.webp" alt="Novios e invitados bajo el techo de esferas espejadas" onerror="this.classList.add('off')"><figcaption>Bajo el techo de esferas</figcaption></figure>
+      <div class="num">02 · Lo que tiene La Araucaria</div>
+      <h2>El techo de esferas, <em>a la altura de cada momento.</em></h2>
+      <p class="bajada" style="margin:0 0 20px">Las esferas del salón se suben y se bajan para cambiar la decoración aérea. Probá cómo queda en cada parte de la noche: lo que elijas viaja con tu consulta.</p>
+      <div class="techo">
+        <svg id="techoSvg" viewBox="0 0 360 200" role="img" aria-label="Simulación del techo de esferas del salón">
+          <defs>
+            <radialGradient id="esf" cx="35%" cy="30%" r="70%">
+              <stop offset="0" stop-color="#ffffff"/><stop offset=".35" stop-color="#d9d7d0"/><stop offset="1" stop-color="#6d6a66"/>
+            </radialGradient>
+            <linearGradient id="haz" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b48ad6" stop-opacity=".55"/><stop offset="1" stop-color="#b48ad6" stop-opacity="0"/></linearGradient>
+          </defs>
+          <rect x="0" y="0" width="360" height="8" fill="#3a332c"/>
+          <g id="haces" opacity=".0"><polygon points="70,8 20,200 120,200" fill="url(#haz)"/><polygon points="290,8 240,200 340,200" fill="url(#haz)"/><polygon points="180,8 140,200 220,200" fill="url(#haz)"/></g>
+          <g id="esferasG"></g>
+          <rect x="0" y="184" width="360" height="16" fill="#2f2924"/>
+          <g id="gente" fill="#4a423a"></g>
+        </svg>
+        <div class="momentos" role="group" aria-label="Momento de la noche">
+          <button type="button" data-m="recepcion" aria-pressed="false">Recepción<small>esferas arriba</small></button>
+          <button type="button" data-m="cena" aria-pressed="true">Cena<small>a media altura</small></button>
+          <button type="button" data-m="pista" aria-pressed="false">Pista<small>esferas bajas</small></button>
+        </div>
+        <div class="altura"><span>Alto</span><input type="range" id="alt" min="0" max="100" value="45" aria-label="Altura de las esferas"><span>Bajo</span></div>
+        <p class="techo-lee" id="techoLee"></p>
+      </div>
+      <p class="nota">Simulación ilustrativa: la altura real se define con el equipo de La Araucaria el día de la visita.</p>
+    </section>
+
+    <section class="cap" data-k="eventos" id="eventos">
+      <figure class="foto-inline lamina v"><img src="https://laaraucariaeventos.com.ar/assets/photos/quince-esferas-960.webp" alt="Quinceañera en la pista bajo las esferas" onerror="this.classList.add('off')"><figcaption>Fiesta de 15 en la pista</figcaption></figure>
+      <div class="num">03 · Qué se festeja</div>
+      <h2>Cuatro formas de usar <em>el mismo predio.</em></h2>
+      <div class="eventos">
+        <article><span class="tag">Casamientos</span><h3>Ceremonia en el jardín</h3><p>Ceremonia al aire libre, recepción en el parque y la galería, y fiesta en el salón.</p></article>
+        <article><span class="tag">Fiestas de 15</span><h3>Pista bajo las esferas</h3><p>Entrada, fotos en el parque y la fuente iluminada, y la pista con pantallas LED.</p></article>
+        <article><span class="tag">Sociales</span><h3>Cumpleaños y aniversarios</h3><p>Cenas y fiestas privadas con salón, jardines y pista.</p></article>
+        <article><span class="tag">Corporativos</span><h3>Encuentros de empresa</h3><p>Salón para hasta 300 personas, exteriores, pantallas LED y estacionamiento adentro.</p></article>
+      </div>
+    </section>
+
+    <section class="cap" data-k="incluye" id="incluye">
+      <figure class="foto-inline lamina t"><img src="https://laaraucariaeventos.com.ar/assets/photos/mesas-noche-960.webp" alt="Mesas del salón con copas y velas" onerror="this.classList.add('off')"><figcaption>Mesas del salón de noche</figcaption></figure>
+      <div class="num">04 · El alquiler</div>
+      <h2>Lo que ya está <em>y lo que elegís vos.</em></h2>
+      <div class="dos-col">
+        <div>
+          <p class="col-t">Viene con el predio</p>
+          <ul class="check">
+            <li>Seguridad y limpieza</li><li>Sillas y livings</li><li>Techo de esferas</li><li>Pantallas LED, pista e iluminación</li><li>Sector exterior cubierto y fogón</li><li>Grupo electrógeno de respaldo</li><li>Estacionamiento en el predio</li>
+          </ul>
+        </div>
+        <div>
+          <p class="col-t">Lo contratás aparte</p>
+          <ul class="check aparte">
+            <li>El catering: La Araucaria no tiene catering propio, vos elegís el tuyo</li>
+            <li>Te recomiendan proveedores que ya trabajaron en sus cocinas</li>
+          </ul>
+          <p class="nota">Por eso el cotizador separa el alquiler del catering: así sabés cuánto es de cada uno.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="cap" data-k="cotiza" id="cotizar">
+      <figure class="foto-inline lamina"><img src="https://laaraucariaeventos.com.ar/assets/photos/mesa-salon-960.webp" alt="Mesa larga de casamiento bajo las guirnaldas" onerror="this.classList.add('off')"><figcaption>Mesa larga bajo las guirnaldas</figcaption></figure>
+      <div class="num">05 · Cotizá</div>
+      <h2>Tu fecha, <em>con números.</em></h2>
+      <form class="cotiza" id="form" onsubmit="return false">
+        <div class="campo"><span class="lab">Tipo de evento</span>
+          <div class="chips" id="tipo">
+            <label><input type="radio" name="tipo" value="Casamiento" checked><span>Casamiento</span></label>
+            <label><input type="radio" name="tipo" value="Fiesta de 15"><span>Fiesta de 15</span></label>
+            <label><input type="radio" name="tipo" value="Cumpleaños / social"><span>Cumpleaños / social</span></label>
+            <label><input type="radio" name="tipo" value="Corporativo"><span>Corporativo</span></label>
+          </div>
+        </div>
+        <div class="campo"><span class="lab">Sábado (libres y ocupados de ejemplo)</span>
+          <div class="cal">
+            <div class="cal-h"><button type="button" id="prev" aria-label="Mes anterior">‹</button><strong id="mes"></strong><button type="button" id="next" aria-label="Mes siguiente">›</button></div>
+            <div class="sabados" id="sabados"></div>
+            <div class="leyenda"><span><i style="background:var(--papel);border:1px solid var(--ok)"></i>Libre</span><span><i style="background:#e8e0d3"></i>Ocupado</span><span><i style="background:var(--tierra)"></i>Tu fecha</span></div>
+          </div>
+        </div>
+        <div class="campo"><label for="inv">Invitados</label>
+          <div class="inv"><input type="range" id="inv" min="50" max="300" step="10" value="180"><output id="invOut">180</output></div>
+        </div>
+        <div class="campo"><span class="lab">Catering (formatos de ejemplo, lo contratás aparte)</span>
+          <div class="chips" id="menu">
+            <label><input type="radio" name="menu" value="coctel" checked><span>Cóctel largo</span></label>
+            <label><input type="radio" name="menu" value="cena"><span>Recepción + cena servida</span></label>
+            <label><input type="radio" name="menu" value="asado"><span>Asado de campo</span></label>
+            <label><input type="radio" name="menu" value="sin"><span>Solo alquiler</span></label>
+          </div>
+        </div>
+        <div class="campo extras" id="extras"><span class="lab">Extras (de ejemplo)</span>
+          <label><span class="l"><input type="checkbox" value="Ceremonia en el jardín" data-fijo="350000"> Ceremonia en el jardín</span><span class="p">+$350.000</span></label>
+          <label><span class="l"><input type="checkbox" value="Livings extra en el parque" data-fijo="280000"> Livings extra en el parque</span><span class="p">+$280.000</span></label>
+          <label><span class="l"><input type="checkbox" value="Barra de tragos" data-pp="9000"> Barra de tragos (proveedor)</span><span class="p">+$9.000 c/u</span></label>
+          <label><span class="l"><input type="checkbox" value="Fogón encendido en la recepción" data-fijo="0"> Fogón encendido en la recepción</span><span class="p">incluido</span></label>
+        </div>
+
+        <div class="ticket" aria-live="polite">
+          <div class="ej">Estimado de ejemplo</div>
+          <div class="resumen-fecha" id="tFecha">Elegí un sábado libre</div>
+          <div class="fila"><span>Alquiler del predio</span><b id="tAlq"></b></div>
+          <div class="fila"><span>Catering</span><b id="tCat"></b></div>
+          <div class="fila"><span>Extras</span><b id="tExt"></b></div>
+          <div class="fila"><span>Techo de esferas</span><b id="tTecho"></b></div>
+          <div class="tot">
+            <div class="big" id="tTot"></div>
+            <div class="pp" id="tPp"></div>
+            <a class="btn btn-wa" id="wa" href="#" target="_blank" rel="noopener">Consultar por WhatsApp con todo cargado</a>
+          </div>
+        </div>
+        <p class="nota">Precios de ejemplo para mostrar cómo funciona. La Araucaria los reemplaza por los suyos.</p>
+      </form>
+    </section>
+
+    <section class="cap" data-k="galeria" id="galeria">
+      <div class="num">06 · Galería</div>
+      <h2>Fiestas reales <em>en el predio.</em></h2>
+      <figure class="foto-inline lamina t"><img id="galImgM" src="https://laaraucariaeventos.com.ar/assets/photos/novios-fuente-960.webp" alt="Pareja junto a la fuente del jardín" onerror="this.classList.add('off')"><figcaption id="galCapM">Junto a la fuente del jardín</figcaption></figure>
+      <div class="tira" id="tira"></div>
+      <p class="nota">Tocá una foto para verla grande.</p>
+    </section>
+
+    <section class="cap" data-k="llegar" id="llegar">
+      <figure class="foto-inline lamina"><img src="https://laaraucariaeventos.com.ar/assets/photos/frente-invitados-960.webp" alt="Invitados frente al salón y la fuente" onerror="this.classList.add('off')"><figcaption>Frente al salón y la fuente</figcaption></figure>
+      <div class="num">07 · Cómo llegar</div>
+      <h2>Por la Ruta 30, <em>en el km 476.</em></h2>
+      <div class="mapa">
+        <svg viewBox="0 0 400 210" role="img" aria-label="Croquis: Ruta 30, kilómetro 476, Chivilcoy">
+          <rect width="400" height="210" fill="#f4efe4"/>
+          <g stroke="#e3d9c6" stroke-width="1">
+            <path d="M0 40h400M0 90h400M0 140h400M0 190h400M60 0v210M140 0v210M220 0v210M300 0v210M380 0v210"/>
+          </g>
+          <path d="M-10 168 C 90 150, 170 120, 250 96 S 360 60, 410 48" fill="none" stroke="#a65a39" stroke-width="9" stroke-linecap="round"/>
+          <path d="M-10 168 C 90 150, 170 120, 250 96 S 360 60, 410 48" fill="none" stroke="#fff" stroke-width="1.5" stroke-dasharray="8 8"/>
+          <rect x="38" y="140" width="40" height="18" rx="9" fill="#221c17"/><text x="58" y="153" font-size="10" text-anchor="middle" fill="#fff" font-family="Mada,sans-serif" font-weight="600">RP 30</text>
+          <circle cx="226" cy="104" r="22" fill="#33432f" opacity=".14"/>
+          <circle cx="226" cy="104" r="8" fill="#33432f"/>
+          <path d="M226 104 v-34" stroke="#33432f" stroke-width="2"/>
+          <rect x="182" y="46" width="88" height="26" rx="6" fill="#33432f"/><text x="226" y="63" font-size="12" text-anchor="middle" fill="#f4ede1" font-family="Mada,sans-serif" font-weight="600">La Araucaria</text>
+          <text x="226" y="132" font-size="11" text-anchor="middle" fill="#5a4f45" font-family="Mada,sans-serif">km 476</text>
+          <text x="20" y="28" font-size="11" fill="#5a4f45" font-family="Mada,sans-serif">Chivilcoy, Buenos Aires</text>
+          <text x="380" y="200" font-size="10" text-anchor="end" fill="#8b8075" font-family="Mada,sans-serif">croquis sin escala</text>
+        </svg>
+      </div>
+      <p class="dir">Ruta 30 km 476<br>B6620 Chivilcoy, Buenos Aires</p>
+      <p class="nota">Estacionamiento dentro del predio. La visita se coordina por WhatsApp.</p>
+      <div class="cta">
+        <a class="btn btn-p" href="https://maps.app.goo.gl/mo3o51qYsgeP2aT96" target="_blank" rel="noopener">Abrir en Google Maps</a>
+        <a class="btn btn-s" id="waVisita" href="#" target="_blank" rel="noopener">Coordinar una visita</a>
+      </div>
+      <footer>
+        <span>La Araucaria Eventos · Instagram <a href="https://www.instagram.com/araucaria.eventos/" target="_blank" rel="noopener">@araucaria.eventos</a></span>
+        <span>Prototipo de demostración preparado para La Araucaria Eventos · Resolviendo Kos</span>
+      </footer>
+    </section>
+  </main>
+</div>
+
+
+<script>
+(function(){
+  var WA = "5492346501072";
+  var $ = function(s,c){return (c||document).querySelector(s)};
+  var $$ = function(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s))};
+  var fmt = function(n){return "$" + Math.round(n).toLocaleString("es-AR")};
+  var redondea = function(n){return Math.round(n/10000)*10000};
+
+  /* ---------- foto fija que cambia con el texto ---------- */
+  var figs = $$(".foto-fija figure");
+  var caps = $$(".cap");
+  var cnum = $("#cnum");
+  function mostrar(k){
+    figs.forEach(function(f){f.classList.toggle("on", f.getAttribute("data-k")===k)});
+    var i = caps.findIndex(function(c){return c.getAttribute("data-k")===k});
+    if(cnum && i>=0) cnum.textContent = ("0"+(i+1)).slice(-2);
+  }
+  if("IntersectionObserver" in window){
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting) mostrar(e.target.getAttribute("data-k")); });
+    },{rootMargin:"-45% 0px -45% 0px"});
+    caps.forEach(function(c){io.observe(c)});
+    var io2 = new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io2.unobserve(e.target)}})},{threshold:.12});
+    $$(".cap > *:not(.foto-inline)").forEach(function(el){el.classList.add("rev");io2.observe(el)});
+  }
+
+  /* espacios: cambian la foto fija del predio */
+  var figPredio = $('.foto-fija figure[data-k="predio"] img');
+  $$("#listaEsp li").forEach(function(li){
+    function act(){
+      $$("#listaEsp li").forEach(function(x){x.classList.remove("act")});
+      li.classList.add("act");
+      if(figPredio){figPredio.classList.remove("off");figPredio.src = li.getAttribute("data-img");}
+    }
+    li.addEventListener("mouseenter", act); li.addEventListener("click", act);
+  });
+
+  /* ---------- techo de esferas ---------- */
+  var G = $("#esferasG"), gente = $("#gente"), haces = $("#haces");
+  var esf = [];
+  var cols = [30,62,94,126,158,190,222,254,286,318,346];
+  cols.forEach(function(x,i){
+    var largo = [0.9,0.6,1,0.75,0.95,0.55,0.95,0.75,1,0.6,0.85][i];
+    var r = [7,9,6,10,8,11,8,10,6,9,7][i];
+    var g = document.createElementNS("http://www.w3.org/2000/svg","g");
+    var l = document.createElementNS("http://www.w3.org/2000/svg","line");
+    l.setAttribute("x1",x);l.setAttribute("x2",x);l.setAttribute("y1",8);l.setAttribute("stroke","#8c877f");l.setAttribute("stroke-width","1");
+    var c = document.createElementNS("http://www.w3.org/2000/svg","circle");
+    c.setAttribute("cx",x);c.setAttribute("r",r);c.setAttribute("fill","url(#esf)");
+    g.appendChild(l);g.appendChild(c);G.appendChild(g);
+    esf.push({l:l,c:c,largo:largo,r:r});
+  });
+  for(var p=0;p<16;p++){
+    var x = 16+p*22 + (p%3)*4, h = 14 + (p*7%9);
+    var b = document.createElementNS("http://www.w3.org/2000/svg","rect");
+    b.setAttribute("x",x);b.setAttribute("y",184-h);b.setAttribute("width",9);b.setAttribute("height",h);b.setAttribute("rx",4);
+    gente.appendChild(b);
+    var hd = document.createElementNS("http://www.w3.org/2000/svg","circle");
+    hd.setAttribute("cx",x+4.5);hd.setAttribute("cy",184-h-5);hd.setAttribute("r",4.5);
+    gente.appendChild(hd);
+  }
+  var alt = $("#alt"), lee = $("#techoLee");
+  var textos = {
+    recepcion:"Recepción: esferas arriba, el salón se ve amplio y despejado mientras llegan los invitados.",
+    cena:"Cena: esferas a media altura, más cerca de las mesas, sin tapar la vista entre invitados.",
+    pista:"Pista: esferas bajas sobre la pista, con las luces y las pantallas LED a pleno."
+  };
+  var momento = "cena";
+  function etiquetaAltura(v){ return v<34 ? "alto" : (v<67 ? "a media altura" : "bajo"); }
+  function dibujaTecho(){
+    var v = +alt.value; // 0 = alto, 100 = bajo
+    esf.forEach(function(e,i){
+      var y = 22 + (v/100)*110*e.largo + 10*e.largo;
+      e.l.setAttribute("y2", y - e.r);
+      e.c.setAttribute("cy", y);
+    });
+    haces.setAttribute("opacity", (v/100*0.9).toFixed(2));
+    var ord = {recepcion:"Recepción",cena:"Cena",pista:"Pista"}[momento];
+    lee.textContent = textos[momento] + " Altura elegida: " + etiquetaAltura(v) + ".";
+    calcula();
+  }
+  $$(".momentos button").forEach(function(b){
+    b.addEventListener("click",function(){
+      momento = b.getAttribute("data-m");
+      $$(".momentos button").forEach(function(x){x.setAttribute("aria-pressed", x===b?"true":"false")});
+      var objetivo = {recepcion:8,cena:45,pista:92}[momento];
+      animaA(objetivo);
+    });
+  });
+  var anim;
+  function animaA(obj){
+    cancelAnimationFrame(anim);
+    var ini = +alt.value, t0 = null;
+    function paso(t){
+      if(!t0) t0=t; var k = Math.min(1,(t-t0)/600); var e = 1-Math.pow(1-k,3);
+      alt.value = Math.round(ini + (obj-ini)*e); dibujaTecho();
+      if(k<1) anim = requestAnimationFrame(paso);
+    }
+    anim = requestAnimationFrame(paso);
+  }
+  alt.addEventListener("input", dibujaTecho);
+
+  /* ---------- calendario de sábados ---------- */
+  var meses = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+  var hoy = new Date(); hoy.setHours(0,0,0,0);
+  var base = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
+  var offset = 0, MAXM = 11, fechaSel = null;
+  function ocupado(d){ var n = d.getFullYear()*372 + d.getMonth()*31 + d.getDate(); return ((n*7919) % 13) < 6; }
+  function pintaCal(){
+    var m = new Date(base.getFullYear(), base.getMonth()+offset, 1);
+    $("#mes").textContent = meses[m.getMonth()] + " " + m.getFullYear();
+    $("#prev").disabled = offset===0; $("#next").disabled = offset===MAXM;
+    var cont = $("#sabados"); cont.innerHTML = "";
+    var d = new Date(m); while(d.getDay()!==6) d.setDate(d.getDate()+1);
+    while(d.getMonth()===m.getMonth()){
+      var pasado = d < hoy;
+      var occ = pasado || ocupado(d);
+      var b = document.createElement("button");
+      b.type="button"; b.className = "sab " + (occ?"ocupado":"libre");
+      var iso = d.toISOString().slice(0,10);
+      if(fechaSel && fechaSel.iso===iso) b.classList.add("sel");
+      b.innerHTML = "<b>"+d.getDate()+"</b><small>"+(occ?"ocupado":"libre")+"</small>";
+      b.setAttribute("aria-label","Sábado "+d.getDate()+" de "+meses[d.getMonth()]+(occ?", ocupado":", libre"));
+      if(occ){ b.disabled = true; }
+      else {
+        (function(dd,iso){ b.addEventListener("click",function(){
+          fechaSel = {iso:iso, txt:"sábado "+dd.getDate()+" de "+meses[dd.getMonth()]+" de "+dd.getFullYear(), mes:dd.getMonth()};
+          pintaCal(); calcula();
+        }); })(new Date(d), iso);
+      }
+      cont.appendChild(b);
+      d.setDate(d.getDate()+7);
+    }
+  }
+  $("#prev").addEventListener("click",function(){if(offset>0){offset--;pintaCal();}});
+  $("#next").addEventListener("click",function(){if(offset<MAXM){offset++;pintaCal();}});
+
+  /* ---------- cotizador (precios de ejemplo) ---------- */
+  var ALQ = {"Casamiento":[4200000,5200000],"Fiesta de 15":[3900000,4800000],"Cumpleaños / social":[3000000,3800000],"Corporativo":[3200000,4000000]};
+  var CAT = {coctel:[38000,46000,"Cóctel largo"],cena:[48000,58000,"Recepción + cena servida"],asado:[42000,52000,"Asado de campo"],sin:[0,0,"Solo alquiler (catering a cargo del cliente)"]};
+  var inv = $("#inv"), invOut = $("#invOut");
+  function val(n){var x = $('input[name="'+n+'"]:checked'); return x?x.value:"";}
+  function temporada(){ if(!fechaSel) return 1; var m = fechaSel.mes; return (m>=8 && m<=11) ? 1.08 : (m<=2 ? 1.04 : 0.94); }
+  function calcula(){
+    var n = +inv.value; invOut.textContent = n;
+    var tipo = val("tipo"), menu = val("menu");
+    var t = temporada();
+    var aMin = ALQ[tipo][0]*t, aMax = ALQ[tipo][1]*t;
+    var c = CAT[menu]; var cMin = c[0]*n, cMax = c[1]*n;
+    var eF = 0, ePP = 0, extrasTxt = [];
+    $$("#extras input:checked").forEach(function(x){
+      eF += +(x.getAttribute("data-fijo")||0); ePP += +(x.getAttribute("data-pp")||0); extrasTxt.push(x.value);
+    });
+    var eTot = eF + ePP*n;
+    var tMin = redondea(aMin + cMin + eTot), tMax = redondea(aMax + cMax + eTot);
+    $("#tAlq").textContent = fmt(redondea(aMin)) + " – " + fmt(redondea(aMax));
+    $("#tCat").textContent = menu==="sin" ? "a cargo tuyo" : fmt(redondea(cMin)) + " – " + fmt(redondea(cMax));
+    $("#tExt").textContent = eTot ? fmt(eTot) : (extrasTxt.length ? "incluido" : "—");
+    var techoTxt = {recepcion:"recepción",cena:"cena",pista:"pista"}[momento] + ", " + etiquetaAltura(+alt.value);
+    $("#tTecho").textContent = techoTxt + " · incluido";
+    $("#tTot").textContent = fmt(tMin) + " – " + fmt(tMax);
+    $("#tPp").textContent = "Entre " + fmt(tMin/n) + " y " + fmt(tMax/n) + " por persona · " + n + " invitados";
+    $("#tFecha").textContent = fechaSel ? (fechaSel.txt.charAt(0).toUpperCase()+fechaSel.txt.slice(1)) : "Elegí un sábado libre";
+    var lineas = [
+      "Hola, La Araucaria. Quiero consultar por una fecha:",
+      "• Evento: " + tipo,
+      "• Fecha: " + (fechaSel ? fechaSel.txt : "a definir"),
+      "• Invitados: " + n,
+      "• Catering: " + c[2],
+      "• Extras: " + (extrasTxt.length ? extrasTxt.join(", ") : "ninguno"),
+      "• Techo de esferas: " + techoTxt,
+      "• Estimado de la web (de ejemplo): " + fmt(tMin) + " a " + fmt(tMax),
+      "¿Tienen la fecha libre? ¿Podemos coordinar una visita?"
+    ];
+    $("#wa").href = "https://wa.me/" + WA + "?text=" + encodeURIComponent(lineas.join("\n"));
+  }
+  $("#waVisita").href = "https://wa.me/" + WA + "?text=" + encodeURIComponent("Hola, La Araucaria. Quisiera coordinar una visita al predio de Ruta 30 km 476.");
+  $$("#form input").forEach(function(x){x.addEventListener("input",calcula);x.addEventListener("change",calcula)});
+
+  /* ---------- galería ---------- */
+  var fotos = [
+    ["novios-fuente","Junto a la fuente del jardín"],["quince-esferas","Quinceañera bajo las esferas"],["novios-parque","Novios junto a las palmeras"],["livings-bajo-arbol","Living bajo un árbol del parque"],
+    ["salon-more-flores","Ambientación floral suspendida"],["baile-casamiento","El baile de los novios"],["mesas-parque-flores","Mesas frente al césped"],["quince-exterior","Retrato junto a la fuente iluminada"]
+  ];
+  var tira = $("#tira"), galImg = $("#galImg"), galCap = $("#galCap"), galImgM = $("#galImgM"), galCapM = $("#galCapM");
+  fotos.forEach(function(f,i){
+    var b = document.createElement("button"); b.type="button"; if(i===0) b.className="act";
+    b.setAttribute("aria-label", f[1]);
+    var im = new Image(); im.alt=""; im.loading="lazy"; im.src="https://laaraucariaeventos.com.ar/assets/photos/"+f[0]+"-960.webp";
+    im.onerror=function(){this.classList.add("off")};
+    b.appendChild(im);
+    b.addEventListener("click",function(){
+      $$("#tira button").forEach(function(x){x.classList.remove("act")}); b.classList.add("act");
+      var src = "https://laaraucariaeventos.com.ar/assets/photos/"+f[0]+"-960.webp";
+      [galImg,galImgM].forEach(function(g){ if(g){ g.classList.remove("off"); g.src = src; } });
+      galCap.textContent = f[1]; galCapM.textContent = f[1];
+    });
+    tira.appendChild(b);
+  });
+
+  (function(){for(var o=0;o<3;o++){var m=new Date(base.getFullYear(),base.getMonth()+o,1);var d=new Date(m);while(d.getDay()!==6)d.setDate(d.getDate()+1);while(d.getMonth()===m.getMonth()){if(d>=hoy&&!ocupado(d)){offset=o;return;}d.setDate(d.getDate()+7);}}})();
+  pintaCal(); dibujaTecho(); calcula();
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="La Araucaria Eventos"></script>
+</body>
+</html>
