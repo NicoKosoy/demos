@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Cabalgatas del Glaciar · Lago Roca</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+<style>
+/* estructura base del motor (cada página la viste a su manera) */
+.bk-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.bk-dow{font-size:.72rem;text-align:center;opacity:.6;padding:4px 0}
+.bk-day{appearance:none;border:0;background:transparent;color:inherit;font:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:52px;padding:4px 2px;line-height:1.1}
+.bk-day b{font-size:1rem}.bk-day i{font-style:normal;font-size:.62rem;opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.bk-day small{font-size:.66rem;opacity:.7}.bk-day em{font-style:normal;font-size:.6rem;font-weight:700}
+.bk-day:disabled{cursor:not-allowed}.bk-day.is-off{opacity:.3}.bk-day.is-full{opacity:.45;text-decoration:line-through}
+.bk-cal-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;text-transform:capitalize}
+.bk-nav{appearance:none;border:0;background:transparent;color:inherit;font:inherit;font-size:1.4rem;cursor:pointer;width:40px;height:40px}
+.bk-strip{display:flex;gap:6px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;-webkit-overflow-scrolling:touch}
+.bk-strip .bk-day{flex:0 0 64px;scroll-snap-align:start}
+.bk-list{display:flex;flex-direction:column;gap:6px}
+.bk-row{display:grid;grid-template-columns:76px 1fr;gap:10px;align-items:center}
+.bk-row-d b{display:block;font-size:1.5rem;line-height:1}.bk-row-d span{font-size:.75rem;opacity:.7}
+.bk-row-h{display:flex;flex-wrap:wrap;gap:6px}
+.bk-slot,.bk-hora,.bk-lang{appearance:none;font:inherit;color:inherit;cursor:pointer;display:inline-flex;flex-direction:column;align-items:flex-start;padding:8px 12px;line-height:1.15}
+.bk-slot i,.bk-hora i{font-style:normal;font-size:.7rem;opacity:.75}
+.bk-slot:disabled,.bk-hora:disabled{opacity:.4;cursor:not-allowed;text-decoration:line-through}
+#horas,.bk-horas,[data-bk=horas],[data-bk=idioma]{display:flex;flex-wrap:wrap;gap:8px}
+.bk-pax-r{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 0}
+.bk-pax-r small{display:block;opacity:.7;font-size:.78rem}
+.bk-step{display:flex;align-items:center;gap:4px;flex:none}
+.bk-step button{appearance:none;font:inherit;color:inherit;cursor:pointer;width:38px;height:38px;font-size:1.2rem;line-height:1}
+.bk-step output{min-width:28px;text-align:center;font-weight:700}
+.bk-extra{display:flex;gap:10px;align-items:baseline;padding:6px 0;cursor:pointer}
+.bk-extra small{margin-left:auto;opacity:.75;white-space:nowrap}
+.bk-res-l{display:flex;justify-content:space-between;gap:12px;padding:5px 0}
+.bk-res-l b{text-align:right}
+.bk-ahorro,.bk-falta,.bk-ok{font-size:.82rem;margin:.6em 0 0}
+.bk-dl{margin:0;display:grid;gap:8px}.bk-dl div{display:grid;grid-template-columns:130px 1fr;gap:10px}.bk-dl dt{opacity:.7}.bk-dl dd{margin:0}
+.bk-inc{margin:.3em 0 0;padding-left:1.1em}.bk-inc-t{margin:1em 0 0;font-weight:700}
+.bk-tour{appearance:none;font:inherit;color:inherit;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:2px}
+.bk-tour-m,.bk-tour-p{font-size:.8rem;opacity:.8}
+.bk-modal{position:fixed;inset:0;background:rgba(10,20,30,.55);display:flex;align-items:center;justify-content:center;z-index:9999;padding:16px}
+.bk-mp{background:#fff;color:#2d3277;width:min(380px,100%);border-radius:10px;padding:20px;font-family:system-ui,-apple-system,sans-serif;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.bk-mp-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.bk-mp-logo{font-weight:800;color:#00a1e4;letter-spacing:-.02em;font-size:1.1rem}
+.bk-mp-demo{font-size:.66rem;background:#fff4cc;color:#6b5400;padding:3px 6px;border-radius:4px}
+.bk-mp-to{margin:0;color:#555;font-size:.85rem}.bk-mp-amt{font-size:2rem;font-weight:700;margin:4px 0;color:#222}.bk-mp-d{margin:0 0 12px;font-size:.8rem;color:#666}
+.bk-mp-opts{display:grid;gap:6px;margin-bottom:14px;font-size:.88rem;color:#333}
+.bk-mp-opts label{display:flex;gap:8px;padding:9px;border:1px solid #e3e3e3;border-radius:6px}
+.bk-mp-pay{width:100%;border:0;background:#009ee3;color:#fff;font-weight:700;padding:13px;border-radius:6px;font-size:1rem;cursor:pointer}
+.bk-mp-x{width:100%;border:0;background:transparent;color:#009ee3;padding:10px;cursor:pointer;font-size:.9rem}
+[data-bk=wa]{text-decoration:none}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid currentColor;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+[hidden]{display:none!important}
+.bk-sel{display:flex;flex-direction:column;gap:4px}.bk-sel select{font:inherit;padding:10px;max-width:100%}
+
+:root{--papel:#f3efe6;--tinta:#22201c;--roca:#7fb5b0;--nire:#a8452e;--cuero:#7a5534;--niebla:#d9d3c5;--hondo:#2d4b49}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--papel);color:var(--tinta);font-family:Newsreader,Georgia,serif;font-size:19px;line-height:1.62;overflow-x:hidden}
+h1,h2,h3,.fg{font-family:"Familjen Grotesk",sans-serif;font-weight:700;line-height:1;margin:0;letter-spacing:-.025em}
+a{color:inherit}
+.demo{background:var(--hondo);color:var(--papel);font-family:"Familjen Grotesk";font-size:.8rem;text-align:center;padding:7px 16px}
+.mast{max-width:1200px;margin:0 auto;padding:18px 28px 0;display:flex;justify-content:space-between;align-items:baseline;border-bottom:3px solid var(--tinta);gap:12px;flex-wrap:wrap}
+.mast .fg{font-size:1.5rem}
+.mast span{font-family:"Familjen Grotesk";font-size:.85rem}
+.page{max-width:1200px;margin:0 auto;padding:0 28px}
+.cover{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;padding:34px 0 40px;border-bottom:1px solid var(--tinta)}
+.cover h1{grid-column:1/8;font-size:clamp(3rem,7vw,6.4rem)}
+.cover .dek{grid-column:8/13;align-self:end;font-size:1.25rem;font-style:italic}
+.cover figure{grid-column:1/13;margin:10px 0 0;position:relative;background:var(--hondo)}
+.cover figure img{width:100%;height:56vh;min-height:320px;object-fit:cover;display:block}
+.cover figcaption{font-family:"Familjen Grotesk";font-size:.8rem;margin-top:8px}
+.cover figure.svg-only{background:none}
+.ilus{display:none}
+.svg-only .ilus{display:block;width:100%;height:auto}
+.body{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;padding:44px 0}
+.body .lede{grid-column:1/8;columns:2;column-gap:28px}
+.body .lede p{margin:0 0 1em}
+.body .lede p:first-child::first-letter{font-family:"Familjen Grotesk";font-weight:700;float:left;font-size:4.6rem;line-height:.85;padding:4px 8px 0 0;color:var(--nire)}
+.body aside{grid-column:9/13;border-left:1px solid var(--tinta);padding-left:22px}
+.body aside h3{font-size:1.05rem;margin-bottom:10px}
+.body aside dl{margin:0;font-family:"Familjen Grotesk";font-size:.92rem}
+.body aside dl div{display:flex;justify-content:space-between;border-bottom:1px dotted #9d968a;padding:6px 0;gap:10px}
+.body aside dd{margin:0;font-weight:700;text-align:right}
+.pull{grid-column:1/13;font-family:"Familjen Grotesk";font-weight:700;font-size:clamp(1.8rem,3.6vw,3rem);line-height:1.08;border-top:3px solid var(--tinta);border-bottom:1px solid var(--tinta);padding:22px 0;letter-spacing:-.02em}
+.pull em{font-style:normal;color:var(--nire)}
+/* índice de salidas */
+.indice{padding:10px 0 50px}
+.indice h2{font-size:clamp(2rem,4vw,3rem);margin-bottom:6px}
+.ix{display:grid;grid-template-columns:60px 1fr 140px 150px;gap:18px;align-items:baseline;border-top:1px solid var(--tinta);padding:18px 0}
+.ix:last-child{border-bottom:1px solid var(--tinta)}
+.ix .n{font-family:"Familjen Grotesk";font-weight:700;font-size:2.4rem;color:var(--nire);line-height:1}
+.ix h3{font-size:1.5rem}
+.ix p{margin:4px 0 0;font-size:1rem}
+.ix .d{font-family:"Familjen Grotesk";font-size:.9rem}
+.ix a{font-family:"Familjen Grotesk";font-weight:700;text-align:right;color:var(--hondo)}
+/* reserva: hoja de inscripción */
+.form{background:var(--hondo);color:var(--papel);padding:56px 0}
+.form .page{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:40px}
+.form h2{font-size:clamp(2rem,4vw,3.2rem);grid-column:1/-1}
+.form .sub{grid-column:1/-1;margin:-20px 0 0;font-style:italic;max-width:640px}
+.line{border-top:1px solid rgba(243,239,230,.35);padding:16px 0}
+.line h4{margin:0 0 10px;font-family:"Familjen Grotesk";font-size:.95rem;color:var(--roca)}
+[data-bk=tours]{display:flex;flex-direction:column;gap:6px}
+.bk-tour{border:0;background:transparent;border-bottom:1px solid rgba(243,239,230,.2);padding:8px 0 10px;flex-direction:row;justify-content:space-between;flex-wrap:wrap;gap:4px 16px;font-family:"Familjen Grotesk"}
+.bk-tour-n{font-size:1.15rem;font-weight:700}
+.bk-tour.is-on .bk-tour-n{color:var(--roca)}
+.bk-tour.is-on .bk-tour-n::before{content:"● ";color:var(--nire)}
+.bk-day{background:rgba(243,239,230,.07);font-family:"Familjen Grotesk"}
+.bk-day.is-on{background:var(--papel);color:var(--tinta)}
+.bk-day.is-few i{color:#f0a088}
+.bk-hora,.bk-lang{border:1px solid rgba(243,239,230,.5);background:transparent;font-family:"Familjen Grotesk"}
+.bk-hora.is-on,.bk-lang.is-on{background:var(--papel);color:var(--tinta)}
+.bk-step button{border:1px solid rgba(243,239,230,.5);background:transparent}
+.bk-pax-r,.bk-extra{font-family:"Familjen Grotesk"}
+.bk-hint{opacity:.75;margin:0}
+.recibo{background:var(--papel);color:var(--tinta);padding:24px;align-self:start;position:sticky;top:16px;font-family:"Familjen Grotesk"}
+.bk-res-t{font-size:1.6rem;font-weight:700;letter-spacing:-.02em;margin-bottom:8px}
+.bk-res-l{border-bottom:1px dotted #9d968a}
+.bk-res-tot b{font-size:1.5rem}
+.bk-res-sena b{color:var(--nire)}
+.bk-ahorro{font-family:Newsreader;font-style:italic;font-size:.95rem}
+.bk-falta{color:var(--nire);font-weight:700}.bk-ok{color:var(--hondo);font-weight:700}
+.recibo input{width:100%;padding:11px;border:1px solid var(--tinta);background:#fff;font:inherit;margin:12px 0 6px}
+.rb{display:block;width:100%;text-align:center;padding:13px;border:0;font:inherit;font-weight:700;margin-top:6px;cursor:pointer;text-decoration:none}
+.rb.mp{background:#009ee3;color:#fff}.rb.mp:disabled{opacity:.45;cursor:not-allowed}
+.rb.wa{background:var(--tinta);color:var(--papel)}
+.promo{font-size:.85rem;margin-top:12px}
+footer{max-width:1200px;margin:0 auto;padding:30px 28px;font-family:"Familjen Grotesk";font-size:.9rem;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;border-top:3px solid var(--tinta);margin-top:40px}
+.pie{width:100%;font-size:.8rem;color:#5d574d}
+@media (max-width:900px){
+ .cover h1,.cover .dek,.body .lede,.body aside,.pull{grid-column:1/-1}
+ .body .lede{columns:1}
+ .body aside{border-left:0;padding-left:0;border-top:1px solid var(--tinta);padding-top:16px}
+ .ix{grid-template-columns:44px 1fr;gap:6px 14px}
+ .ix .d,.ix a{grid-column:2;text-align:left}
+ .form .page{grid-template-columns:minmax(0,1fr)}
+ .recibo{position:static}
+ .page,.mast{padding-left:18px;padding-right:18px}
+ body{font-size:18px}
+}
+</style>
+</head>
+<body>
+<div class="demo">Prototipo de demostración preparado para Cabalgatas del Glaciar · Precios y disponibilidad de ejemplo</div>
+<div class="mast"><span class="fg">Cabalgatas del Glaciar</span><span>Lago Roca · Parque Nacional Los Glaciares · El Calafate</span></div>
+<div class="page">
+  <section class="cover">
+    <h1>A caballo hasta ver el Perito Moreno</h1>
+    <p class="dek">Desde la estancia sobre el Lago Roca, a 42 km de El Calafate: un día entero de cabalgata o trekking, asado al mediodía y el glaciar de frente.</p>
+    <figure id="cov"><img src="https://static.wixstatic.com/media/c40f0e_5c2b69caa5364b3c86b56f33d8348277~mv2.jpg/v1/crop/x_8,y_12,w_1267,h_719/fill/w_1267,h_719,al_c,q_85,usm_0.66_1.00_0.01/_MG_4557.jpg" alt="Cabalgata frente al Lago Roca" onerror="document.getElementById('cov').classList.add('svg-only');this.remove()">
+      <svg class="ilus" viewBox="0 0 1200 420" aria-hidden="true"><rect width="1200" height="420" fill="#d9d3c5"/><path d="M0 230 L160 120 L260 170 L420 70 L560 160 L720 90 L860 170 L1000 110 L1200 190 V420 H0Z" fill="#2d4b49"/><path d="M660 210 L1200 170 V250 L660 260Z" fill="#e8f2f1"/><path d="M0 250 C300 230 600 270 1200 245 V320 H0Z" fill="#7fb5b0"/><path d="M0 320 C300 300 700 340 1200 310 V420 H0Z" fill="#7a5534"/><path d="M120 380 C260 350 360 372 470 340 S640 300 760 286" fill="none" stroke="#f3efe6" stroke-width="3" stroke-dasharray="2 12" stroke-linecap="round"/><circle cx="760" cy="286" r="9" fill="#a8452e"/><text x="780" y="292" font-family="Familjen Grotesk,sans-serif" font-size="20" fill="#f3efe6">Mirador al Perito Moreno</text></svg>
+      <figcaption>Lago Roca, km 42 de la Ruta 15. Temporada desde octubre.</figcaption></figure>
+  </section>
+
+  <section class="body">
+    <div class="lede">
+      <p>La cabalgata arranca temprano: pasamos a buscarte a las 8:30 por El Calafate y en menos de una hora estamos en el Lago Roca, dentro del Parque Nacional. Ahí te espera el caballo elegido para vos y un baqueano que conoce cada huella del cerro.</p>
+      <p>La subida es exigente y vale cada metro: desde arriba se ven el lago, los bosques de lenga y ñire y, al fondo, la pared del Perito Moreno. Al mediodía, bife de chorizo a la parrilla con ajo, vino o jugo, y la vuelta tranquila hasta la estancia.</p>
+      <p>Para los que prefieren caminar, el mismo recorrido se hace como trekking, con bastones, polainas y piloto incluidos. Y para quien quiere más, hay travesías de dos a cuatro días hasta el límite con Chile.</p>
+    </div>
+    <aside>
+      <h3>La salida diaria</h3>
+      <dl>
+        <div><dt>Pickup</dt><dd>08:30 en El Calafate</dd></div>
+        <div><dt>Regreso</dt><dd>17:00 aprox.</dd></div>
+        <div><dt>Dificultad</dt><dd>Exigente</dd></div>
+        <div><dt>Almuerzo</dt><dd>Bife a la parrilla</dd></div>
+        <div><dt>Bebida</dt><dd>Vino, jugo o agua</dd></div>
+        <div><dt>Equipo</dt><dd>Polainas, piloto, bastones</dd></div>
+        <div><dt>Temporada</dt><dd>Desde octubre</dd></div>
+      </dl>
+    </aside>
+    <p class="pull">Reservando desde la web, <em>10% off</em>. Con seña por Mercado Pago, el lugar queda tuyo al instante.</p>
+  </section>
+
+  <section class="indice" id="salidas">
+    <h2>Índice de salidas</h2>
+    <div class="ix"><span class="n">1</span><div><h3>Cabalgata diaria</h3><p>Lago Roca y vista al Perito Moreno, con asado.</p></div><span class="d">1 día</span><a href="#reservar" data-pick-tour="diaria">Ver fechas</a></div>
+    <div class="ix"><span class="n">2</span><div><h3>Trekking Lago Roca</h3><p>El mismo circuito, a pie y con bastones.</p></div><span class="d">1 día</span><a href="#reservar" data-pick-tour="trekking">Ver fechas</a></div>
+    <div class="ix"><span class="n">3</span><div><h3>Cabalgata Los Ñires</h3><p>Noche en el campo y segundo día por el bosque de ñires.</p></div><span class="d">2 días</span><a href="#reservar" data-pick-tour="nires">Ver fechas</a></div>
+    <div class="ix"><span class="n">4</span><div><h3>Límite con Chile</h3><p>Travesía hasta la frontera por huellas de arrieros.</p></div><span class="d">2 días</span><a href="#reservar" data-pick-tour="chile">Ver fechas</a></div>
+    <div class="ix"><span class="n">5</span><div><h3>Travesía 3 y 4 días</h3><p>La cabalgata larga, con campamento y fogón.</p></div><span class="d">3 a 4 días</span><a href="#reservar" data-pick-tour="travesia">Ver fechas</a></div>
+  </section>
+</div>
+
+<section class="form" id="reservar">
+  <div class="page" data-bk-root>
+    <h2>Hoja de reserva</h2>
+    <p class="sub">Completala de arriba hacia abajo. A la derecha queda el recibo con el total, la seña y el mensaje listo para mandarnos.</p>
+    <div>
+      <div class="line"><h4>Salida</h4><div data-bk="tours"></div></div>
+      <div class="line"><h4>Fecha de inicio</h4><div data-bk="cal"></div></div>
+      <div class="line"><h4>Horario de pickup</h4><div data-bk="horas"></div></div>
+      <div class="line"><h4>Jinetes</h4><div data-bk="pax"></div></div>
+      <div class="line"><h4>Baqueano que hable</h4><div data-bk="idioma"></div></div>
+      <div class="line" data-exw><h4>Agregar</h4><div data-bk="extras"></div></div>
+    </div>
+    <div class="recibo">
+      <div data-bk="resumen"></div>
+      <input data-bk="nombre" placeholder="Nombre del titular" aria-label="Nombre del titular">
+      <button type="button" class="rb mp" data-bk="pagar">Pagar seña</button>
+      <a class="rb wa" data-bk="wa" href="#">Enviar reserva por WhatsApp</a>
+      <p class="promo">Los precios de esta hoja ya tienen aplicado el 10% de descuento web.</p>
+    </div>
+  </div>
+</section>
+<footer>
+  <div><strong>Cabalgatas del Glaciar</strong><br>Lago Roca, Ruta 15 km 42 · El Calafate, Santa Cruz</div>
+  <div>WhatsApp <a href="https://wa.me/5492966489003">+54 9 2966 48-9003</a> · Tel. (02902) 49-8447<br>info@cabalgatasdelglaciar.com · @cabalgatasdelglaciar</div>
+  <div class="pie">Prototipo preparado para Cabalgatas del Glaciar por Resolviendo Kos · <a href="https://resolviendokos.com">resolviendokos.com</a> · No es la web oficial</div>
+</footer>
+<script>
+window.BK={negocio:'Cabalgatas del Glaciar',wa:'5492966489003',sena:.3,calMode:'grid',idiomas:['Español','English','Français'],scrollTo:'#reservar',
+tours:[
+ {id:'diaria',nombre:'Cabalgata diaria Lago Roca',dur:'Día completo (08:30 a 17:00)',dif:'Exigente',punto:'Pickup en tu alojamiento de El Calafate',temporada:'Octubre a abril',edad:'10 años',precioRes:189000,precioExt:240000,horarios:['08:30'],meses:[9,10,11,0,1,2,3],cupo:14,incluye:['Traslado ida y vuelta','Caballo y baqueano','Almuerzo: bife de chorizo con ajo','Vino, jugo o agua','Polainas y piloto']},
+ {id:'trekking',nombre:'Trekking Lago Roca',dur:'Día completo',dif:'Exigente',punto:'Pickup en tu alojamiento de El Calafate',temporada:'Octubre a abril',edad:'12 años',precioRes:150000,precioExt:190000,horarios:['08:30'],meses:[9,10,11,0,1,2,3],cupo:16,incluye:['Traslado','Guía','Almuerzo a la parrilla','Polainas, piloto y bastones']},
+ {id:'nires',nombre:'Cabalgata Los Ñires',dur:'2 días',dif:'Exigente',punto:'Pickup en El Calafate',temporada:'Noviembre a marzo',edad:'14 años',precioRes:520000,precioExt:650000,horarios:['08:30'],meses:[10,11,0,1,2],dias:[1,3,5],cupo:8,menores:false,incluye:['Traslados','Caballo y baqueano','Pensión completa','Noche en el campo']},
+ {id:'chile',nombre:'Cabalgata Límite con Chile',dur:'2 días',dif:'Muy exigente',punto:'Pickup en El Calafate',temporada:'Diciembre a marzo',edad:'16 años',precioRes:560000,precioExt:700000,horarios:['08:30'],meses:[11,0,1,2],dias:[2,6],cupo:8,menores:false,incluye:['Traslados','Caballo y baqueano','Pensión completa','Campamento']},
+ {id:'travesia',nombre:'Travesía 3 y 4 días',dur:'3 a 4 días',dif:'Muy exigente',punto:'Pickup en El Calafate',temporada:'Diciembre a marzo',edad:'16 años',precioRes:820000,precioExt:1020000,horarios:['08:30'],meses:[11,0,1,2],dias:[1],cupo:6,menores:false,incluye:['Traslados','Caballo y baqueano','Pensión completa','Campamento y fogón']}
+]};
+/* Motor de reserva demo · Resolviendo Kos */
+(function(){
+  var C = window.BK; if(!C) return;
+  var root = document.querySelector('[data-bk-root]') || document;
+  var $ = function(k){ return root.querySelector('[data-bk="'+k+'"]'); };
+  var fmt = function(n){ return '$' + Math.round(n).toLocaleString('es-AR'); };
+  var DIAS = ['dom','lun','mar','mié','jue','vie','sáb'];
+  var DIASL = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+  var MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  var hoy = new Date(); hoy.setHours(0,0,0,0);
+  var S = { tour: C.tours[0].id, fecha: null, hora: null, res: C.paxIni != null ? C.paxIni : 2, ext: 0, men: 0, idioma: (C.idiomas||['Español'])[0], extras: {}, pagado: false, mes: null };
+  var T = function(){ for(var i=0;i<C.tours.length;i++){ if(C.tours[i].id===S.tour) return C.tours[i]; } return C.tours[0]; };
+  function hash(s){ var h=2166136261; for(var i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,16777619);} return (h>>>0); }
+  function key(d){ return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
+  function enTemporada(t,d){ return !t.meses || t.meses.indexOf(d.getMonth())>=0; }
+  function opera(t,d){ if(t.dias && t.dias.indexOf(d.getDay())<0) return false; return enTemporada(t,d) && d>=hoy; }
+  function cupos(t,d,h){ var cap=t.cupo||10; var x=hash(t.id+key(d)+(h||'')) % 100; if(d.getTime()===hoy.getTime()) x=x%40; if(x<10) return 0; if(x<28) return Math.max(1,(x%3)+1); return Math.max(2, Math.round(cap*(x/100))); }
+  function cuposDia(t,d){ var hs=t.horarios||['—']; var tot=0; hs.forEach(function(h){ tot+=cupos(t,d,h); }); return tot; }
+  function pax(){ return S.res+S.ext+S.men; }
+  function extrasTotal(){ var t=T(), s=0; (t.extras||[]).forEach(function(e){ if(S.extras[e.id]) s += e.porPersona ? e.precio*pax() : e.precio; }); return s; }
+  function total(){ var t=T(); return S.res*t.precioRes + S.ext*t.precioExt + S.men*Math.round(t.precioRes*(t.menorFactor||0.5)) + extrasTotal(); }
+  function ddmm(d){ return DIASL[d.getDay()]+' '+d.getDate()+' de '+MESES[d.getMonth()]; }
+  function fire(){ document.dispatchEvent(new CustomEvent('bk:change',{detail:{S:S,tour:T(),total:total()}})); }
+
+  /* --- tours --- */
+  function renderTours(){
+    var el=$('tours'); if(!el) return;
+    if(el.tagName==='SELECT'){ el.innerHTML=C.tours.map(function(t){return '<option value="'+t.id+'">'+t.nombre+'</option>';}).join(''); el.value=S.tour; el.onchange=function(){ setTour(el.value); }; return; }
+    el.innerHTML = C.tours.map(function(t){
+      return '<button type="button" class="bk-tour'+(t.id===S.tour?' is-on':'')+'" data-id="'+t.id+'" aria-pressed="'+(t.id===S.tour)+'"><span class="bk-tour-n">'+t.nombre+'</span><span class="bk-tour-m">'+(t.dur||'')+(t.dif?' · '+t.dif:'')+'</span><span class="bk-tour-p">desde '+fmt(t.precioRes)+'</span></button>';
+    }).join('');
+    el.querySelectorAll('.bk-tour').forEach(function(b){ b.onclick=function(){ setTour(b.getAttribute('data-id')); }; });
+  }
+  function setTour(id, scroll){
+    S.tour=id; S.hora=null; S.extras={};
+    if(S.fecha && !opera(T(),S.fecha)) S.fecha=null;
+    renderAll();
+    if(scroll){ var tgt=document.querySelector(C.scrollTo||'[data-bk-root]'); if(tgt) tgt.scrollIntoView({behavior:'smooth',block:'start'}); }
+  }
+  document.querySelectorAll('[data-pick-tour]').forEach(function(b){ b.addEventListener('click',function(e){ e.preventDefault(); setTour(b.getAttribute('data-pick-tour'), true); }); });
+
+  /* --- ficha --- */
+  function renderFicha(){
+    var el=$('ficha'); if(!el) return; var t=T();
+    var rows=[['Duración',t.dur],['Dificultad',t.dif],['Punto de encuentro',t.punto],['Temporada',t.temporada],['Edad mínima',t.edad]].filter(function(r){return r[1];});
+    el.innerHTML='<dl class="bk-dl">'+rows.map(function(r){return '<div><dt>'+r[0]+'</dt><dd>'+r[1]+'</dd></div>';}).join('')+'</dl>'+
+      (t.incluye?'<p class="bk-inc-t">Incluye</p><ul class="bk-inc">'+t.incluye.map(function(i){return '<li>'+i+'</li>';}).join('')+'</ul>':'');
+  }
+
+  /* --- calendario --- */
+  function firstOpen(t){ var d=new Date(hoy); for(var i=0;i<370;i++){ if(opera(t,d)) return new Date(d); d.setDate(d.getDate()+1);} return new Date(hoy); }
+  function renderCal(){
+    var el=$('cal'); if(!el) return; var t=T(); var mode=C.calMode||'grid';
+    var days=[]; var start;
+    if(mode==='grid'){
+      if(!S.mes){ var f=firstOpen(t); S.mes=new Date(f.getFullYear(), f.getMonth(), 1); }
+      var m=S.mes; var first=new Date(m.getFullYear(), m.getMonth(), 1); var lead=(first.getDay()+6)%7;
+      var dim=new Date(m.getFullYear(), m.getMonth()+1, 0).getDate();
+      var html='<div class="bk-cal-h"><button type="button" class="bk-nav" data-n="-1" aria-label="Mes anterior">‹</button><strong>'+MESES[m.getMonth()]+' '+m.getFullYear()+'</strong><button type="button" class="bk-nav" data-n="1" aria-label="Mes siguiente">›</button></div>';
+      html+='<div class="bk-grid">'+['lu','ma','mi','ju','vi','sá','do'].map(function(x){return '<span class="bk-dow">'+x+'</span>';}).join('');
+      for(var i=0;i<lead;i++) html+='<span></span>';
+      for(var dd=1; dd<=dim; dd++){ var d=new Date(m.getFullYear(), m.getMonth(), dd); html+=dayBtn(t,d,dd,''); }
+      el.innerHTML=html+'</div>';
+      el.querySelectorAll('.bk-nav').forEach(function(b){ b.onclick=function(){ var n=+b.getAttribute('data-n'); var nm=new Date(S.mes.getFullYear(), S.mes.getMonth()+n, 1); var lim=new Date(hoy.getFullYear(), hoy.getMonth(),1); if(nm<lim) return; S.mes=nm; renderCal(); }; });
+    } else {
+      var n = mode==='list' ? 10 : 21; start=firstOpen(t); var d=new Date(start); var html2='';
+      var c=0, guard=0;
+      while(c<n && guard<400){ guard++; if(mode==='strip' || opera(t,d)){ html2+= mode==='list' ? listRow(t,new Date(d)) : dayBtn(t,new Date(d), d.getDate(), '<small>'+DIAS[d.getDay()]+'</small>', true); c++; } d.setDate(d.getDate()+1); }
+      el.innerHTML='<div class="bk-'+mode+'">'+html2+'</div>';
+    }
+    el.querySelectorAll('[data-d]').forEach(function(b){ b.onclick=function(){ var p=b.getAttribute('data-d').split('-'); S.fecha=new Date(+p[0],+p[1]-1,+p[2]); S.hora=null; var hs=T().horarios||[]; if(hs.length===1) S.hora=hs[0]; if(b.getAttribute('data-h')) S.hora=b.getAttribute('data-h'); renderAll(); }; });
+  }
+  function dayBtn(t,d,label,pre,showMonth){
+    var ok=opera(t,d); var q=ok?cuposDia(t,d):0; var sel=S.fecha&&d.getTime()===S.fecha.getTime();
+    var cls='bk-day'+(ok?(q===0?' is-full':(q<=3?' is-few':'')):' is-off')+(sel?' is-on':'');
+    var lab=ok?(q===0?'completo':(q<=3?'últimos '+q:q+' lugares')):(enTemporada(t,d)||d<hoy?'':'fuera de temp.');
+    var mm = showMonth && d.getDate()===1 ? '<em>'+MESES[d.getMonth()].slice(0,3)+'</em>' : '';
+    return '<button type="button" class="'+cls+'" '+((ok&&q>0)?'data-d="'+key(d)+'"':'disabled')+' aria-label="'+ddmm(d)+' '+lab+'">'+(pre||'')+mm+'<b>'+label+'</b><i>'+lab+'</i></button>';
+  }
+  function listRow(t,d){
+    var hs=t.horarios||['—'];
+    return '<div class="bk-row"><div class="bk-row-d"><b>'+d.getDate()+'</b><span>'+DIAS[d.getDay()]+' · '+MESES[d.getMonth()].slice(0,3)+'</span></div><div class="bk-row-h">'+hs.map(function(h){ var q=cupos(t,d,h); var sel=S.fecha&&d.getTime()===S.fecha.getTime()&&S.hora===h; return '<button type="button" class="bk-slot'+(q===0?' is-full':(q<=3?' is-few':''))+(sel?' is-on':'')+'" '+(q>0?'data-d="'+key(d)+'" data-h="'+h+'"':'disabled')+'><b>'+h+'</b><i>'+(q===0?'completo':(q<=3?'quedan '+q:q+' lugares'))+'</i></button>'; }).join('')+'</div></div>';
+  }
+  function renderHoras(){
+    var el=$('horas'); if(!el) return; var t=T(); var hs=t.horarios||[];
+    if(!S.fecha){ el.innerHTML='<p class="bk-hint">Elegí una fecha para ver los horarios.</p>'; return; }
+    el.innerHTML=hs.map(function(h){ var q=cupos(t,S.fecha,h); return '<button type="button" class="bk-hora'+(S.hora===h?' is-on':'')+(q===0?' is-full':'')+'" '+(q>0?'data-h="'+h+'"':'disabled')+'><b>'+h+'</b><i>'+(q===0?'completo':q+' lugares')+'</i></button>'; }).join('');
+    el.querySelectorAll('[data-h]').forEach(function(b){ b.onclick=function(){ S.hora=b.getAttribute('data-h'); renderAll(); }; });
+  }
+
+  /* --- pasajeros --- */
+  function renderPax(){
+    var el=$('pax'); if(!el) return; var t=T();
+    var filas=[['res','Residentes argentinos',t.precioRes],['ext','Extranjeros',t.precioExt]];
+    if(t.menores!==false) filas.push(['men','Menores'+(t.edadMenor?' ('+t.edadMenor+')':''),Math.round(t.precioRes*(t.menorFactor||0.5))]);
+    el.innerHTML=filas.map(function(f){ return '<div class="bk-pax-r"><div><span>'+f[1]+'</span><small>'+fmt(f[2])+' c/u</small></div><div class="bk-step"><button type="button" data-k="'+f[0]+'" data-v="-1" aria-label="Restar '+f[1]+'">−</button><output>'+S[f[0]]+'</output><button type="button" data-k="'+f[0]+'" data-v="1" aria-label="Sumar '+f[1]+'">+</button></div></div>'; }).join('');
+    el.querySelectorAll('button').forEach(function(b){ b.onclick=function(){ var k=b.getAttribute('data-k'); var v=S[k]+(+b.getAttribute('data-v')); var max=t.maxGrupo||12; if(v<0) return; if(pax()-S[k]+v>max) return; if(pax()-S[k]+v<1) return; S[k]=v; renderAll(); }; });
+  }
+  function renderIdioma(){
+    var el=$('idioma'); if(!el) return; var ids=C.idiomas||['Español','English','Português'];
+    el.innerHTML=ids.map(function(i){ return '<button type="button" class="bk-lang'+(S.idioma===i?' is-on':'')+'" aria-pressed="'+(S.idioma===i)+'">'+i+'</button>'; }).join('');
+    el.querySelectorAll('button').forEach(function(b){ b.onclick=function(){ S.idioma=b.textContent; renderAll(); }; });
+  }
+  function renderExtras(){
+    var el=$('extras'); if(!el) return; var t=T(); var ex=t.extras||[];
+    var w=document.querySelectorAll('[data-exw]'); w.forEach(function(x){x.hidden=!ex.length;}); if(!ex.length){ el.innerHTML=''; el.hidden=true; return; } el.hidden=false;
+    el.innerHTML=ex.map(function(e){ return '<label class="bk-extra"><input type="checkbox" data-e="'+e.id+'"'+(S.extras[e.id]?' checked':'')+'><span>'+e.nombre+'</span><small>+'+fmt(e.precio)+(e.porPersona?' p/p':'')+'</small></label>'; }).join('');
+    el.querySelectorAll('input').forEach(function(i){ i.onchange=function(){ S.extras[i.getAttribute('data-e')]=i.checked; renderAll(); }; });
+  }
+
+  /* --- selects custom --- */
+  S.sel={};
+  function renderSelects(){
+    var el=$('selects'); if(!el||!C.selects) return;
+    if(!el.dataset.done){ el.innerHTML=C.selects.map(function(x){ S.sel[x.id]=S.sel[x.id]||x.opciones[0]; return '<label class="bk-sel"><span>'+x.label+'</span><select data-s="'+x.id+'">'+x.opciones.map(function(o){return '<option>'+o+'</option>';}).join('')+'</select></label>'; }).join(''); el.dataset.done=1;
+      el.querySelectorAll('select').forEach(function(s){ s.onchange=function(){ S.sel[s.getAttribute('data-s')]=s.value; renderResumen(); }; }); }
+  }
+  /* --- resumen --- */
+  function listo(){ return S.fecha && (S.hora || !(T().horarios||[]).length); }
+  function renderResumen(){
+    var el=$('resumen'); if(!el) return; var t=T(); var tot=total(); var sena=tot*(C.sena||0.3);
+    var falta = !S.fecha ? 'Falta elegir la fecha' : (!listo() ? 'Falta elegir el horario' : '');
+    el.innerHTML='<div class="bk-res-t">'+t.nombre+'</div>'+
+      '<div class="bk-res-l"><span>Fecha</span><b>'+(S.fecha?ddmm(S.fecha)+(S.hora?' · '+S.hora:''):'—')+'</b></div>'+
+      '<div class="bk-res-l"><span>Grupo</span><b>'+paxTxt()+'</b></div>'+
+      '<div class="bk-res-l"><span>Guía en</span><b>'+S.idioma+'</b></div>'+
+      '<div class="bk-res-l bk-res-tot"><span>Total</span><b>'+fmt(tot)+'</b></div>'+
+      '<div class="bk-res-l bk-res-sena"><span>Seña 30% para confirmar</span><b>'+fmt(sena)+'</b></div>'+
+      '<div class="bk-res-l bk-res-rest"><span>Saldo el día de la salida</span><b>'+fmt(tot-sena)+'</b></div>'+
+      '<p class="bk-ahorro">Por una plataforma con ~25% de comisión, de esta reserva te quedarían '+fmt(tot*0.75)+'. Directo, te quedan los '+fmt(tot)+'.</p>'+
+      (falta?'<p class="bk-falta">'+falta+'</p>':'')+
+      (S.pagado?'<p class="bk-ok">Seña abonada (demo). Mandá el pedido por WhatsApp para cerrar.</p>':'');
+    var p=$('pagar'); if(p){ p.disabled=!listo(); p.textContent = S.pagado ? 'Seña abonada ✓ (demo)' : (C.txtPagar||'Pagar seña de '+fmt(sena)+' con Mercado Pago'); }
+    var w=$('wa'); if(w){ w.href='https://wa.me/'+C.wa+'?text='+encodeURIComponent(msg()); w.setAttribute('target','_blank'); w.setAttribute('rel','noopener'); }
+    var pv=$('preview'); if(pv){ pv.textContent=msg(); }
+  }
+  function paxTxt(){ var a=[]; if(S.res) a.push(S.res+' residente'+(S.res>1?'s':'')); if(S.ext) a.push(S.ext+' extranjero'+(S.ext>1?'s':'')); if(S.men) a.push(S.men+' menor'+(S.men>1?'es':'')); return a.join(', '); }
+  function msg(){
+    var t=T(); var tot=total(); var nm=$('nombre'); var nombre=nm&&nm.value.trim();
+    var ex=(t.extras||[]).filter(function(e){return S.extras[e.id];}).map(function(e){return e.nombre;});
+    var L=['Hola '+C.negocio+'! Quiero reservar desde la web:','','• Salida: '+t.nombre,'• Fecha: '+(S.fecha?ddmm(S.fecha):'(a definir)')+(S.hora?' · '+S.hora+' hs':''),'• Grupo: '+paxTxt()+' ('+pax()+' en total)','• Idioma del guía: '+S.idioma];
+    if(ex.length) L.push('• Extras: '+ex.join(', '));
+    (C.selects||[]).forEach(function(x){ L.push('• '+x.label+': '+S.sel[x.id]); });
+    L.push('• Total: '+fmt(tot),'• Seña 30%: '+fmt(tot*(C.sena||0.3))+(S.pagado?' (abonada por Mercado Pago)':' (pago por Mercado Pago)'));
+    if(nombre) L.push('• A nombre de: '+nombre);
+    L.push('','¿Me confirman el lugar?');
+    return L.join('\n');
+  }
+
+  /* --- pago demo --- */
+  function modal(){
+    var tot=total(); var sena=tot*(C.sena||0.3);
+    var m=document.createElement('div'); m.className='bk-modal'; m.setAttribute('role','dialog'); m.setAttribute('aria-modal','true'); m.setAttribute('aria-label','Pago de seña (demo)');
+    m.innerHTML='<div class="bk-mp"><div class="bk-mp-top"><span class="bk-mp-logo">mercado pago</span><span class="bk-mp-demo">DEMO · no se cobra nada</span></div><p class="bk-mp-to">Pagás a <b>'+C.negocio+'</b></p><p class="bk-mp-amt">'+fmt(sena)+'</p><p class="bk-mp-d">Seña 30% · '+T().nombre+(S.fecha?' · '+ddmm(S.fecha):'')+'</p><div class="bk-mp-opts"><label><input type="radio" name="mpo" checked> Dinero en cuenta</label><label><input type="radio" name="mpo"> Tarjeta de débito</label><label><input type="radio" name="mpo"> Tarjeta de crédito · hasta 3 cuotas</label></div><button type="button" class="bk-mp-pay">Pagar '+fmt(sena)+'</button><button type="button" class="bk-mp-x">Cancelar</button></div>';
+    document.body.appendChild(m);
+    var close=function(){ m.remove(); document.removeEventListener('keydown',esc); };
+    var esc=function(e){ if(e.key==='Escape') close(); };
+    document.addEventListener('keydown',esc);
+    m.querySelector('.bk-mp-x').onclick=close; m.onclick=function(e){ if(e.target===m) close(); };
+    m.querySelector('.bk-mp-pay').onclick=function(){ var b=this; b.disabled=true; b.textContent='Procesando…'; setTimeout(function(){ S.pagado=true; close(); renderAll(); var w=$('wa'); if(w) w.focus(); },700); };
+    m.querySelector('.bk-mp-pay').focus();
+  }
+  var pb=$('pagar'); if(pb) pb.addEventListener('click',function(){ if(listo()) modal(); });
+  var nm=$('nombre'); if(nm) nm.addEventListener('input',renderResumen);
+
+  function renderAll(){ renderTours(); renderFicha(); renderCal(); renderHoras(); renderPax(); renderIdioma(); renderExtras(); renderSelects(); renderResumen(); fire(); }
+  window.BKAPI={ setTour:setTour, state:S, total:total, fmt:fmt, tour:T, render:renderAll };
+  renderAll();
+})();
+
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Cabalgatas del Glaciar"></script>
+</body>
+</html>
