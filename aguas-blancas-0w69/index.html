@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Aguas Blancas · Rafting Bariloche</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Righteous&family=Nunito+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+/* estructura base del motor (cada página la viste a su manera) */
+.bk-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.bk-dow{font-size:.72rem;text-align:center;opacity:.6;padding:4px 0}
+.bk-day{appearance:none;border:0;background:transparent;color:inherit;font:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:52px;padding:4px 2px;line-height:1.1}
+.bk-day b{font-size:1rem}.bk-day i{font-style:normal;font-size:.62rem;opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.bk-day small{font-size:.66rem;opacity:.7}.bk-day em{font-style:normal;font-size:.6rem;font-weight:700}
+.bk-day:disabled{cursor:not-allowed}.bk-day.is-off{opacity:.3}.bk-day.is-full{opacity:.45;text-decoration:line-through}
+.bk-cal-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;text-transform:capitalize}
+.bk-nav{appearance:none;border:0;background:transparent;color:inherit;font:inherit;font-size:1.4rem;cursor:pointer;width:40px;height:40px}
+.bk-strip{display:flex;gap:6px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;-webkit-overflow-scrolling:touch}
+.bk-strip .bk-day{flex:0 0 64px;scroll-snap-align:start}
+.bk-list{display:flex;flex-direction:column;gap:6px}
+.bk-row{display:grid;grid-template-columns:76px 1fr;gap:10px;align-items:center}
+.bk-row-d b{display:block;font-size:1.5rem;line-height:1}.bk-row-d span{font-size:.75rem;opacity:.7}
+.bk-row-h{display:flex;flex-wrap:wrap;gap:6px}
+.bk-slot,.bk-hora,.bk-lang{appearance:none;font:inherit;color:inherit;cursor:pointer;display:inline-flex;flex-direction:column;align-items:flex-start;padding:8px 12px;line-height:1.15}
+.bk-slot i,.bk-hora i{font-style:normal;font-size:.7rem;opacity:.75}
+.bk-slot:disabled,.bk-hora:disabled{opacity:.4;cursor:not-allowed;text-decoration:line-through}
+#horas,.bk-horas,[data-bk=horas],[data-bk=idioma]{display:flex;flex-wrap:wrap;gap:8px}
+.bk-pax-r{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 0}
+.bk-pax-r small{display:block;opacity:.7;font-size:.78rem}
+.bk-step{display:flex;align-items:center;gap:4px;flex:none}
+.bk-step button{appearance:none;font:inherit;color:inherit;cursor:pointer;width:38px;height:38px;font-size:1.2rem;line-height:1}
+.bk-step output{min-width:28px;text-align:center;font-weight:700}
+.bk-extra{display:flex;gap:10px;align-items:baseline;padding:6px 0;cursor:pointer}
+.bk-extra small{margin-left:auto;opacity:.75;white-space:nowrap}
+.bk-res-l{display:flex;justify-content:space-between;gap:12px;padding:5px 0}
+.bk-res-l b{text-align:right}
+.bk-ahorro,.bk-falta,.bk-ok{font-size:.82rem;margin:.6em 0 0}
+.bk-dl{margin:0;display:grid;gap:8px}.bk-dl div{display:grid;grid-template-columns:130px 1fr;gap:10px}.bk-dl dt{opacity:.7}.bk-dl dd{margin:0}
+.bk-inc{margin:.3em 0 0;padding-left:1.1em}.bk-inc-t{margin:1em 0 0;font-weight:700}
+.bk-tour{appearance:none;font:inherit;color:inherit;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:2px}
+.bk-tour-m,.bk-tour-p{font-size:.8rem;opacity:.8}
+.bk-modal{position:fixed;inset:0;background:rgba(10,20,30,.55);display:flex;align-items:center;justify-content:center;z-index:9999;padding:16px}
+.bk-mp{background:#fff;color:#2d3277;width:min(380px,100%);border-radius:10px;padding:20px;font-family:system-ui,-apple-system,sans-serif;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.bk-mp-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.bk-mp-logo{font-weight:800;color:#00a1e4;letter-spacing:-.02em;font-size:1.1rem}
+.bk-mp-demo{font-size:.66rem;background:#fff4cc;color:#6b5400;padding:3px 6px;border-radius:4px}
+.bk-mp-to{margin:0;color:#555;font-size:.85rem}.bk-mp-amt{font-size:2rem;font-weight:700;margin:4px 0;color:#222}.bk-mp-d{margin:0 0 12px;font-size:.8rem;color:#666}
+.bk-mp-opts{display:grid;gap:6px;margin-bottom:14px;font-size:.88rem;color:#333}
+.bk-mp-opts label{display:flex;gap:8px;padding:9px;border:1px solid #e3e3e3;border-radius:6px}
+.bk-mp-pay{width:100%;border:0;background:#009ee3;color:#fff;font-weight:700;padding:13px;border-radius:6px;font-size:1rem;cursor:pointer}
+.bk-mp-x{width:100%;border:0;background:transparent;color:#009ee3;padding:10px;cursor:pointer;font-size:.9rem}
+[data-bk=wa]{text-decoration:none}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid currentColor;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+[hidden]{display:none!important}
+.bk-sel{display:flex;flex-direction:column;gap:4px}.bk-sel select{font:inherit;padding:10px;max-width:100%}
+
+:root{--crema:#f6eedb;--bosque:#1f4d3a;--mostaza:#e6a72b;--tomate:#d2462f;--azulrio:#2f6f8f;--tinta:#1b231f}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--crema);color:var(--tinta);font-family:"Nunito Sans",system-ui,sans-serif;font-size:16.5px;line-height:1.55;overflow-x:hidden}
+h1,h2,h3,.rg{font-family:Righteous,sans-serif;font-weight:400;line-height:1;margin:0}
+a{color:inherit}
+.demo{background:var(--tinta);color:var(--crema);text-align:center;font-size:.8rem;padding:7px 16px}
+/* poster hero */
+.poster{background:var(--bosque);color:var(--crema);padding:26px 24px 0;position:relative;overflow:hidden}
+.poster .nav{display:flex;justify-content:space-between;align-items:center;max-width:1180px;margin:0 auto;gap:10px;flex-wrap:wrap}
+.poster .nav .rg{font-size:1.5rem;color:var(--mostaza)}
+.poster .nav a{color:var(--crema);font-weight:600;text-decoration:none;border:2px solid var(--crema);padding:6px 14px;border-radius:30px}
+.poster .in{max-width:1180px;margin:0 auto;padding:50px 0 0;display:grid;grid-template-columns:1.2fr 1fr;gap:30px;align-items:end}
+.poster h1{font-size:clamp(3.4rem,9vw,8rem);color:var(--crema);line-height:.92}
+.poster h1 em{font-style:normal;color:var(--mostaza)}
+.poster p{font-size:1.1rem;max-width:460px}
+.sun{position:relative;aspect-ratio:1;max-width:420px;justify-self:end;width:100%}
+.sun .disc{position:absolute;inset:0;border-radius:50%;background:repeating-linear-gradient(180deg,var(--mostaza) 0 22px,transparent 22px 30px);clip-path:circle(50%)}
+.sun img{position:absolute;inset:12%;width:76%;height:76%;object-fit:cover;border-radius:50%;border:8px solid var(--crema)}
+.waves{display:block;width:100%;height:80px;margin-top:20px}
+.permisos{max-width:1180px;margin:0 auto;padding:18px 24px;display:flex;gap:28px;flex-wrap:wrap;font-size:.88rem}
+.permisos b{font-family:Righteous;font-weight:400;font-size:1.15rem;color:var(--bosque);display:block}
+/* scroll horizontal de salidas */
+.rios{padding:50px 0 30px}
+.rios-h{max-width:1180px;margin:0 auto 18px;padding:0 24px;display:flex;justify-content:space-between;align-items:end;gap:16px}
+.rios h2{font-size:clamp(2.2rem,5vw,3.6rem);color:var(--bosque)}
+.rios-h p{margin:0;max-width:340px;font-size:.92rem}
+.track{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 24px 22px;scroll-padding:24px}
+.panel{flex:0 0 min(84vw,430px);scroll-snap-align:start;border-radius:28px;overflow:hidden;background:#fff;display:flex;flex-direction:column;border:3px solid var(--tinta)}
+.panel .ph{height:220px;background:var(--azulrio);position:relative}
+.panel .ph img{width:100%;height:100%;object-fit:cover;display:block}
+.panel .tag{position:absolute;left:14px;top:14px;background:var(--mostaza);color:var(--tinta);font-weight:800;font-size:.8rem;padding:5px 11px;border-radius:20px}
+.panel .bd{padding:20px;display:flex;flex-direction:column;gap:10px;flex:1}
+.panel h3{font-size:1.75rem;color:var(--bosque)}
+.panel p{margin:0}
+.panel .row{display:flex;gap:16px;flex-wrap:wrap;font-size:.88rem;font-weight:600}
+.panel .go{margin-top:auto;align-self:flex-start;background:var(--tomate);color:#fff;text-decoration:none;font-weight:800;padding:11px 18px;border-radius:30px}
+.panel.c2{background:var(--crema)}.panel.c2 .noph{background:repeating-linear-gradient(135deg,var(--bosque) 0 18px,#285e48 18px 36px)}.panel.c4 .ph.sin{background:repeating-linear-gradient(135deg,#c98e1c 0 18px,var(--mostaza) 18px 36px)}.panel.c3{background:#fff}.panel.c4{background:#fcefd0}
+.panel .ph.sin{background:repeating-linear-gradient(135deg,var(--azulrio) 0 18px,#3a7ea0 18px 36px);display:flex;align-items:center;justify-content:center}.panel .ph.sin::after{content:attr(data-l);font-family:Righteous;color:var(--crema);font-size:2.2rem}
+.panel .noph{height:220px;background:repeating-linear-gradient(135deg,var(--azulrio) 0 18px,#3a7ea0 18px 36px);display:flex;align-items:center;justify-content:center;font-family:Righteous;color:var(--crema);font-size:2.2rem}
+/* wizard */
+.wiz{background:var(--azulrio);color:#fff;padding:60px 24px}
+.wiz .in{max-width:880px;margin:0 auto}
+.wiz h2{font-size:clamp(2.2rem,5vw,3.6rem)}
+.steps{display:flex;gap:6px;margin:22px 0 16px;flex-wrap:wrap}
+.steps button{appearance:none;border:2px solid rgba(255,255,255,.5);background:transparent;color:#fff;font:inherit;font-weight:700;border-radius:30px;padding:7px 14px;cursor:pointer}
+.steps button.on{background:var(--mostaza);border-color:var(--mostaza);color:var(--tinta)}
+.steps button.ok:not(.on){border-color:var(--mostaza)}
+.card{background:var(--crema);color:var(--tinta);border-radius:28px;padding:24px;border:3px solid var(--tinta)}
+.step{display:none}.step.on{display:block}
+.step h3{font-size:1.6rem;color:var(--bosque);margin-bottom:14px}
+.nav2{display:flex;justify-content:space-between;margin-top:20px;gap:10px}
+.nav2 button{appearance:none;border:0;font:inherit;font-weight:800;padding:12px 20px;border-radius:30px;cursor:pointer}
+.nav2 .prev{background:transparent;border:2px solid var(--tinta);color:var(--tinta)}
+.nav2 .next{background:var(--bosque);color:#fff}
+[data-bk=tours]{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.bk-tour{border:2px solid var(--tinta);background:#fff;border-radius:18px;padding:14px}
+.bk-tour.is-on{background:var(--mostaza)}
+.bk-tour-n{font-family:Righteous;font-size:1.15rem}
+.bk-day{border-radius:14px;background:#fff}
+.bk-day.is-on{background:var(--tomate);color:#fff}
+.bk-day.is-few i{color:var(--tomate);font-weight:800}
+.bk-hora,.bk-lang{border:2px solid var(--tinta);background:#fff;border-radius:30px}
+.bk-hora.is-on,.bk-lang.is-on{background:var(--bosque);color:#fff;border-color:var(--bosque)}
+.bk-step button{border:2px solid var(--tinta);background:#fff;border-radius:50%}
+.bk-sel{margin-top:16px;font-weight:700}.bk-sel select{border:2px solid var(--tinta);border-radius:14px;background:#fff;font-weight:400}
+.bk-res-t{font-family:Righteous;font-size:1.6rem;color:var(--bosque);margin-bottom:8px}
+.bk-res-l{border-bottom:2px dotted #d9caa8}
+.bk-res-tot b{font-family:Righteous;font-size:1.6rem;font-weight:400}
+.bk-res-sena b{color:var(--tomate)}
+.bk-ahorro{background:#fcefd0;border-radius:14px;padding:10px}
+.bk-falta{color:var(--tomate);font-weight:800}.bk-ok{color:var(--bosque);font-weight:800}
+.fin{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.fin input{grid-column:1/-1;padding:12px;border-radius:14px;border:2px solid var(--tinta);font:inherit}
+.fb{display:flex;align-items:center;justify-content:center;text-align:center;padding:13px;border-radius:30px;border:0;font:inherit;font-weight:800;cursor:pointer;text-decoration:none}
+.fb.mp{background:#009ee3;color:#fff}.fb.mp:disabled{opacity:.45;cursor:not-allowed}
+.fb.wa{background:var(--tomate);color:#fff}
+.grupos{max-width:1180px;margin:0 auto;padding:56px 24px;display:grid;grid-template-columns:1fr 1fr;gap:30px}
+.grupos h2{font-size:2.2rem;color:var(--bosque)}
+footer{background:var(--tinta);color:#d8d2c2;padding:30px 24px;font-size:.9rem}
+footer .in{max-width:1180px;margin:0 auto;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.pie{width:100%;border-top:1px solid #3a433e;padding-top:12px;font-size:.8rem}
+@media (max-width:820px){
+ .poster .in,.grupos{grid-template-columns:1fr}
+ .sun{justify-self:center;max-width:280px}
+ [data-bk=tours],.fin{grid-template-columns:1fr}
+ .rios-h{flex-direction:column;align-items:flex-start}
+ .card{padding:18px}
+ .steps button{padding:6px 11px;font-size:.85rem}
+}
+</style>
+</head>
+<body>
+<div class="demo">Prototipo de demostración preparado para Aguas Blancas Rafting · Precios y disponibilidad de ejemplo</div>
+<header class="poster">
+  <div class="nav"><span class="rg">Aguas Blancas</span><a href="#reservar">Reservar</a></div>
+  <div class="in">
+    <div>
+      <h1>Rafting en el <em>Manso</em> y el <em>Limay</em></h1>
+      <p>Desde Morales 564, en el centro de Bariloche, salimos todos los días hacia el Paraje Villegas, la frontera con Chile y la estepa del Limay. Familias, aventureros y grupos de estudiantes.</p>
+    </div>
+    <div class="sun"><div class="disc"></div><img src="https://www.aguasblancas.com.ar/web/wp-content/uploads/2022/10/VILLEGAS-1.jpg" alt="Balsa de Aguas Blancas en el río Manso" onerror="this.remove()"></div>
+  </div>
+  <svg class="waves" viewBox="0 0 1200 80" preserveAspectRatio="none" aria-hidden="true"><path d="M0 40 C100 10 200 70 300 40 S500 10 600 40 S800 70 900 40 S1100 10 1200 40 V80 H0Z" fill="#2f6f8f"/><path d="M0 56 C100 30 200 82 300 56 S500 30 600 56 S800 82 900 56 S1100 30 1200 56 V80 H0Z" fill="#f6eedb"/></svg>
+</header>
+<div class="permisos">
+  <div><b>Reg. N° 033</b>Registro municipal de prestadores</div>
+  <div><b>APN</b>Autorización Parques Nacionales DI-2022-612</div>
+  <div><b>Prefectura</b>balsas y guías habilitados</div>
+  <div><b>09 a 21:30</b>atención todos los días</div>
+</div>
+
+<section class="rios">
+  <div class="rios-h"><h2>Cuatro bajadas</h2><p>Deslizá para comparar. Todas salen del centro con traslado incluido en un radio de 8 km.</p></div>
+  <div class="track">
+    <article class="panel"><div class="ph" data-l="II · III"><img src="https://www.aguasblancas.com.ar/web/wp-content/uploads/2022/10/VILLEGAS-3-scaled.jpg" alt="Río Manso desde Villegas" loading="lazy" onerror="this.parentNode.classList.add('sin');this.remove()"><span class="tag">Familiar · desde 5 años</span></div><div class="bd"><h3>Manso desde Villegas</h3><p>Unos 6 km de balsa con rápidos II y III. La puerta de entrada al rafting: segura, divertida y con playas para frenar.</p><div class="row"><span>Medio día</span><span>09:00 · 12:30</span></div><a class="go" href="#reservar" data-pick-tour="villegas">Reservar esta</a></div></article>
+    <article class="panel c2"><div class="noph">III · IV</div><div class="bd"><h3>Manso a la Frontera</h3><p>Día completo de aventura hasta el límite con Chile, con los rápidos más intensos del río.</p><div class="row"><span>Día completo</span><span>Aventura</span></div><a class="go" href="#reservar" data-pick-tour="frontera">Reservar esta</a></div></article>
+    <article class="panel c3"><div class="ph" data-l="Exclusivo"><img src="https://www.aguasblancas.com.ar/web/wp-content/uploads/2022/10/V18_0528-scaled.jpg" alt="Grupo de rafting en el Manso" loading="lazy" onerror="this.parentNode.classList.add('sin');this.remove()"><span class="tag">Exclusivo</span></div><div class="bd"><h3>Manso Clásico</h3><p>Día completo en salida exclusiva para tu grupo, al ritmo de la familia.</p><div class="row"><span>Día completo</span><span>Familiar</span></div><a class="go" href="#reservar" data-pick-tour="clasico">Reservar esta</a></div></article>
+    <article class="panel c4"><div class="ph" data-l="Limay"><img src="https://www.aguasblancas.com.ar/web/wp-content/uploads/2022/10/V18_0693-scaled.jpg" alt="Flotada en el Limay" loading="lazy" onerror="this.parentNode.classList.add('sin');this.remove()"><span class="tag">Flotada</span></div><div class="bd"><h3>Río Limay</h3><p>Medio día de flotada exclusiva entre bardas y estepa, a minutos de la ciudad.</p><div class="row"><span>Medio día</span><span>Tranquilo</span></div><a class="go" href="#reservar" data-pick-tour="limay">Reservar esta</a></div></article>
+  </div>
+</section>
+
+<section class="wiz" id="reservar">
+  <div class="in" data-bk-root>
+    <h2>Reservá en cinco pasos</h2>
+    <div class="steps" role="tablist" aria-label="Pasos de la reserva">
+      <button type="button" class="on" data-go="0">1 · Bajada</button><button type="button" data-go="1">2 · Fecha</button><button type="button" data-go="2">3 · Grupo</button><button type="button" data-go="3">4 · Pickup</button><button type="button" data-go="4">5 · Confirmar</button>
+    </div>
+    <div class="card">
+      <div class="step on"><h3>¿Qué bajada?</h3><div data-bk="tours"></div></div>
+      <div class="step"><h3>¿Qué día y a qué hora?</h3><div data-bk="cal"></div><div style="height:14px"></div><div data-bk="horas"></div></div>
+      <div class="step"><h3>¿Quiénes reman?</h3><div data-bk="pax"></div><h3 style="margin-top:18px">Guía en</h3><div data-bk="idioma"></div></div>
+      <div class="step"><h3>¿Dónde te buscamos?</h3><p style="margin:0">Traslado incluido en el centro y hasta el km 8 de Bustillo. Más lejos tiene un adicional.</p><div data-bk="selects"></div><div data-exw style="margin-top:16px"><h3>Opcionales</h3><div data-bk="extras"></div></div></div>
+      <div class="step"><div data-bk="resumen"></div><div class="fin"><input data-bk="nombre" placeholder="Nombre y apellido" aria-label="Nombre y apellido"><button type="button" class="fb mp" data-bk="pagar">Pagar seña</button><a class="fb wa" data-bk="wa" href="#">Enviar por WhatsApp</a></div></div>
+      <div class="nav2"><button type="button" class="prev">Atrás</button><button type="button" class="next">Siguiente</button></div>
+    </div>
+  </div>
+</section>
+
+<section class="grupos">
+  <div><h2>Grupos y estudiantes</h2><p>Viajes de egresados, empresas y contingentes: armamos salidas exclusivas con fecha cerrada. Escribinos con la cantidad de personas y los días que están en Bariloche.</p></div>
+  <div><h2>Qué llevar</h2><p>Malla o ropa térmica, toalla y una muda seca. Nosotros ponemos chaqueta y pantalón impermeable, chaleco, casco y el seguro. Al final, refrigerio en la costa.</p></div>
+</section>
+
+<footer><div class="in">
+  <div><strong>Aguas Blancas Rafting</strong><br>Morales 564, San Carlos de Bariloche · Tel. (0294) 443-2799</div>
+  <div>WhatsApp <a href="https://wa.me/5492944690426">+54 9 294 469-0426</a><br>info@aguasblancas.com.ar · @aguasblancas.rafting</div>
+  <div class="pie">Prototipo preparado para Aguas Blancas Rafting por Resolviendo Kos · <a href="https://resolviendokos.com">resolviendokos.com</a> · No es la web oficial</div>
+</div></footer>
+<script>
+window.BK={negocio:'Aguas Blancas',wa:'5492944690426',sena:.3,calMode:'strip',idiomas:['Español','English','Português'],scrollTo:'#reservar',
+selects:[{id:'pick',label:'Punto de pickup',opciones:['Oficina Aguas Blancas · Morales 564','Plaza Catedral','Aerolíneas Argentinas · Mitre y Villegas','Club Andino · Morales','Estación YPF ACA · 12 de Octubre 785','Mi alojamiento (hasta km 8)']}],
+tours:[
+ {id:'villegas',nombre:'Manso desde Villegas',dur:'Medio día · 6 km de balsa',dif:'Rápidos II y III',punto:'Pickup en el centro',temporada:'Octubre a abril',edad:'5 años',precioRes:80000,precioExt:105000,horarios:['09:00','12:30'],meses:[9,10,11,0,1,2,3],cupo:24,incluye:['Guías profesionales','Chaqueta y pantalón impermeable, chaleco y casco','Seguro','Refrigerio'],extras:[{id:'foto',nombre:'Fotógrafo en el río',precio:22000}]},
+ {id:'frontera',nombre:'Manso a la Frontera',dur:'Día completo',dif:'Rápidos III y IV',punto:'Pickup en el centro',temporada:'Noviembre a marzo',edad:'14 años',precioRes:150000,precioExt:195000,horarios:['08:30'],meses:[10,11,0,1,2],cupo:16,menores:false,incluye:['Guías profesionales','Equipo completo','Seguro','Almuerzo'],extras:[{id:'foto',nombre:'Fotógrafo en el río',precio:22000}]},
+ {id:'clasico',nombre:'Manso Clásico exclusivo',dur:'Día completo',dif:'Familiar',punto:'Pickup en el centro',temporada:'Noviembre a marzo',edad:'8 años',precioRes:135000,precioExt:175000,horarios:['09:00'],meses:[10,11,0,1,2],cupo:12,incluye:['Balsa exclusiva para tu grupo','Equipo completo','Seguro','Almuerzo']},
+ {id:'limay',nombre:'Río Limay · flotada',dur:'Medio día',dif:'Tranquilo',punto:'Pickup en el centro',temporada:'Todo el año',edad:'4 años',precioRes:62000,precioExt:80000,horarios:['10:00','15:00'],cupo:12,incluye:['Balsa exclusiva','Equipo','Refrigerio']}
+]};
+/* Motor de reserva demo · Resolviendo Kos */
+(function(){
+  var C = window.BK; if(!C) return;
+  var root = document.querySelector('[data-bk-root]') || document;
+  var $ = function(k){ return root.querySelector('[data-bk="'+k+'"]'); };
+  var fmt = function(n){ return '$' + Math.round(n).toLocaleString('es-AR'); };
+  var DIAS = ['dom','lun','mar','mié','jue','vie','sáb'];
+  var DIASL = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+  var MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  var hoy = new Date(); hoy.setHours(0,0,0,0);
+  var S = { tour: C.tours[0].id, fecha: null, hora: null, res: C.paxIni != null ? C.paxIni : 2, ext: 0, men: 0, idioma: (C.idiomas||['Español'])[0], extras: {}, pagado: false, mes: null };
+  var T = function(){ for(var i=0;i<C.tours.length;i++){ if(C.tours[i].id===S.tour) return C.tours[i]; } return C.tours[0]; };
+  function hash(s){ var h=2166136261; for(var i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,16777619);} return (h>>>0); }
+  function key(d){ return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
+  function enTemporada(t,d){ return !t.meses || t.meses.indexOf(d.getMonth())>=0; }
+  function opera(t,d){ if(t.dias && t.dias.indexOf(d.getDay())<0) return false; return enTemporada(t,d) && d>=hoy; }
+  function cupos(t,d,h){ var cap=t.cupo||10; var x=hash(t.id+key(d)+(h||'')) % 100; if(d.getTime()===hoy.getTime()) x=x%40; if(x<10) return 0; if(x<28) return Math.max(1,(x%3)+1); return Math.max(2, Math.round(cap*(x/100))); }
+  function cuposDia(t,d){ var hs=t.horarios||['—']; var tot=0; hs.forEach(function(h){ tot+=cupos(t,d,h); }); return tot; }
+  function pax(){ return S.res+S.ext+S.men; }
+  function extrasTotal(){ var t=T(), s=0; (t.extras||[]).forEach(function(e){ if(S.extras[e.id]) s += e.porPersona ? e.precio*pax() : e.precio; }); return s; }
+  function total(){ var t=T(); return S.res*t.precioRes + S.ext*t.precioExt + S.men*Math.round(t.precioRes*(t.menorFactor||0.5)) + extrasTotal(); }
+  function ddmm(d){ return DIASL[d.getDay()]+' '+d.getDate()+' de '+MESES[d.getMonth()]; }
+  function fire(){ document.dispatchEvent(new CustomEvent('bk:change',{detail:{S:S,tour:T(),total:total()}})); }
+
+  /* --- tours --- */
+  function renderTours(){
+    var el=$('tours'); if(!el) return;
+    if(el.tagName==='SELECT'){ el.innerHTML=C.tours.map(function(t){return '<option value="'+t.id+'">'+t.nombre+'</option>';}).join(''); el.value=S.tour; el.onchange=function(){ setTour(el.value); }; return; }
+    el.innerHTML = C.tours.map(function(t){
+      return '<button type="button" class="bk-tour'+(t.id===S.tour?' is-on':'')+'" data-id="'+t.id+'" aria-pressed="'+(t.id===S.tour)+'"><span class="bk-tour-n">'+t.nombre+'</span><span class="bk-tour-m">'+(t.dur||'')+(t.dif?' · '+t.dif:'')+'</span><span class="bk-tour-p">desde '+fmt(t.precioRes)+'</span></button>';
+    }).join('');
+    el.querySelectorAll('.bk-tour').forEach(function(b){ b.onclick=function(){ setTour(b.getAttribute('data-id')); }; });
+  }
+  function setTour(id, scroll){
+    S.tour=id; S.hora=null; S.extras={};
+    if(S.fecha && !opera(T(),S.fecha)) S.fecha=null;
+    renderAll();
+    if(scroll){ var tgt=document.querySelector(C.scrollTo||'[data-bk-root]'); if(tgt) tgt.scrollIntoView({behavior:'smooth',block:'start'}); }
+  }
+  document.querySelectorAll('[data-pick-tour]').forEach(function(b){ b.addEventListener('click',function(e){ e.preventDefault(); setTour(b.getAttribute('data-pick-tour'), true); }); });
+
+  /* --- ficha --- */
+  function renderFicha(){
+    var el=$('ficha'); if(!el) return; var t=T();
+    var rows=[['Duración',t.dur],['Dificultad',t.dif],['Punto de encuentro',t.punto],['Temporada',t.temporada],['Edad mínima',t.edad]].filter(function(r){return r[1];});
+    el.innerHTML='<dl class="bk-dl">'+rows.map(function(r){return '<div><dt>'+r[0]+'</dt><dd>'+r[1]+'</dd></div>';}).join('')+'</dl>'+
+      (t.incluye?'<p class="bk-inc-t">Incluye</p><ul class="bk-inc">'+t.incluye.map(function(i){return '<li>'+i+'</li>';}).join('')+'</ul>':'');
+  }
+
+  /* --- calendario --- */
+  function firstOpen(t){ var d=new Date(hoy); for(var i=0;i<370;i++){ if(opera(t,d)) return new Date(d); d.setDate(d.getDate()+1);} return new Date(hoy); }
+  function renderCal(){
+    var el=$('cal'); if(!el) return; var t=T(); var mode=C.calMode||'grid';
+    var days=[]; var start;
+    if(mode==='grid'){
+      if(!S.mes){ var f=firstOpen(t); S.mes=new Date(f.getFullYear(), f.getMonth(), 1); }
+      var m=S.mes; var first=new Date(m.getFullYear(), m.getMonth(), 1); var lead=(first.getDay()+6)%7;
+      var dim=new Date(m.getFullYear(), m.getMonth()+1, 0).getDate();
+      var html='<div class="bk-cal-h"><button type="button" class="bk-nav" data-n="-1" aria-label="Mes anterior">‹</button><strong>'+MESES[m.getMonth()]+' '+m.getFullYear()+'</strong><button type="button" class="bk-nav" data-n="1" aria-label="Mes siguiente">›</button></div>';
+      html+='<div class="bk-grid">'+['lu','ma','mi','ju','vi','sá','do'].map(function(x){return '<span class="bk-dow">'+x+'</span>';}).join('');
+      for(var i=0;i<lead;i++) html+='<span></span>';
+      for(var dd=1; dd<=dim; dd++){ var d=new Date(m.getFullYear(), m.getMonth(), dd); html+=dayBtn(t,d,dd,''); }
+      el.innerHTML=html+'</div>';
+      el.querySelectorAll('.bk-nav').forEach(function(b){ b.onclick=function(){ var n=+b.getAttribute('data-n'); var nm=new Date(S.mes.getFullYear(), S.mes.getMonth()+n, 1); var lim=new Date(hoy.getFullYear(), hoy.getMonth(),1); if(nm<lim) return; S.mes=nm; renderCal(); }; });
+    } else {
+      var n = mode==='list' ? 10 : 21; start=firstOpen(t); var d=new Date(start); var html2='';
+      var c=0, guard=0;
+      while(c<n && guard<400){ guard++; if(mode==='strip' || opera(t,d)){ html2+= mode==='list' ? listRow(t,new Date(d)) : dayBtn(t,new Date(d), d.getDate(), '<small>'+DIAS[d.getDay()]+'</small>', true); c++; } d.setDate(d.getDate()+1); }
+      el.innerHTML='<div class="bk-'+mode+'">'+html2+'</div>';
+    }
+    el.querySelectorAll('[data-d]').forEach(function(b){ b.onclick=function(){ var p=b.getAttribute('data-d').split('-'); S.fecha=new Date(+p[0],+p[1]-1,+p[2]); S.hora=null; var hs=T().horarios||[]; if(hs.length===1) S.hora=hs[0]; if(b.getAttribute('data-h')) S.hora=b.getAttribute('data-h'); renderAll(); }; });
+  }
+  function dayBtn(t,d,label,pre,showMonth){
+    var ok=opera(t,d); var q=ok?cuposDia(t,d):0; var sel=S.fecha&&d.getTime()===S.fecha.getTime();
+    var cls='bk-day'+(ok?(q===0?' is-full':(q<=3?' is-few':'')):' is-off')+(sel?' is-on':'');
+    var lab=ok?(q===0?'completo':(q<=3?'últimos '+q:q+' lugares')):(enTemporada(t,d)||d<hoy?'':'fuera de temp.');
+    var mm = showMonth && d.getDate()===1 ? '<em>'+MESES[d.getMonth()].slice(0,3)+'</em>' : '';
+    return '<button type="button" class="'+cls+'" '+((ok&&q>0)?'data-d="'+key(d)+'"':'disabled')+' aria-label="'+ddmm(d)+' '+lab+'">'+(pre||'')+mm+'<b>'+label+'</b><i>'+lab+'</i></button>';
+  }
+  function listRow(t,d){
+    var hs=t.horarios||['—'];
+    return '<div class="bk-row"><div class="bk-row-d"><b>'+d.getDate()+'</b><span>'+DIAS[d.getDay()]+' · '+MESES[d.getMonth()].slice(0,3)+'</span></div><div class="bk-row-h">'+hs.map(function(h){ var q=cupos(t,d,h); var sel=S.fecha&&d.getTime()===S.fecha.getTime()&&S.hora===h; return '<button type="button" class="bk-slot'+(q===0?' is-full':(q<=3?' is-few':''))+(sel?' is-on':'')+'" '+(q>0?'data-d="'+key(d)+'" data-h="'+h+'"':'disabled')+'><b>'+h+'</b><i>'+(q===0?'completo':(q<=3?'quedan '+q:q+' lugares'))+'</i></button>'; }).join('')+'</div></div>';
+  }
+  function renderHoras(){
+    var el=$('horas'); if(!el) return; var t=T(); var hs=t.horarios||[];
+    if(!S.fecha){ el.innerHTML='<p class="bk-hint">Elegí una fecha para ver los horarios.</p>'; return; }
+    el.innerHTML=hs.map(function(h){ var q=cupos(t,S.fecha,h); return '<button type="button" class="bk-hora'+(S.hora===h?' is-on':'')+(q===0?' is-full':'')+'" '+(q>0?'data-h="'+h+'"':'disabled')+'><b>'+h+'</b><i>'+(q===0?'completo':q+' lugares')+'</i></button>'; }).join('');
+    el.querySelectorAll('[data-h]').forEach(function(b){ b.onclick=function(){ S.hora=b.getAttribute('data-h'); renderAll(); }; });
+  }
+
+  /* --- pasajeros --- */
+  function renderPax(){
+    var el=$('pax'); if(!el) return; var t=T();
+    var filas=[['res','Residentes argentinos',t.precioRes],['ext','Extranjeros',t.precioExt]];
+    if(t.menores!==false) filas.push(['men','Menores'+(t.edadMenor?' ('+t.edadMenor+')':''),Math.round(t.precioRes*(t.menorFactor||0.5))]);
+    el.innerHTML=filas.map(function(f){ return '<div class="bk-pax-r"><div><span>'+f[1]+'</span><small>'+fmt(f[2])+' c/u</small></div><div class="bk-step"><button type="button" data-k="'+f[0]+'" data-v="-1" aria-label="Restar '+f[1]+'">−</button><output>'+S[f[0]]+'</output><button type="button" data-k="'+f[0]+'" data-v="1" aria-label="Sumar '+f[1]+'">+</button></div></div>'; }).join('');
+    el.querySelectorAll('button').forEach(function(b){ b.onclick=function(){ var k=b.getAttribute('data-k'); var v=S[k]+(+b.getAttribute('data-v')); var max=t.maxGrupo||12; if(v<0) return; if(pax()-S[k]+v>max) return; if(pax()-S[k]+v<1) return; S[k]=v; renderAll(); }; });
+  }
+  function renderIdioma(){
+    var el=$('idioma'); if(!el) return; var ids=C.idiomas||['Español','English','Português'];
+    el.innerHTML=ids.map(function(i){ return '<button type="button" class="bk-lang'+(S.idioma===i?' is-on':'')+'" aria-pressed="'+(S.idioma===i)+'">'+i+'</button>'; }).join('');
+    el.querySelectorAll('button').forEach(function(b){ b.onclick=function(){ S.idioma=b.textContent; renderAll(); }; });
+  }
+  function renderExtras(){
+    var el=$('extras'); if(!el) return; var t=T(); var ex=t.extras||[];
+    var w=document.querySelectorAll('[data-exw]'); w.forEach(function(x){x.hidden=!ex.length;}); if(!ex.length){ el.innerHTML=''; el.hidden=true; return; } el.hidden=false;
+    el.innerHTML=ex.map(function(e){ return '<label class="bk-extra"><input type="checkbox" data-e="'+e.id+'"'+(S.extras[e.id]?' checked':'')+'><span>'+e.nombre+'</span><small>+'+fmt(e.precio)+(e.porPersona?' p/p':'')+'</small></label>'; }).join('');
+    el.querySelectorAll('input').forEach(function(i){ i.onchange=function(){ S.extras[i.getAttribute('data-e')]=i.checked; renderAll(); }; });
+  }
+
+  /* --- selects custom --- */
+  S.sel={}; (C.selects||[]).forEach(function(x){ S.sel[x.id]=x.opciones[0]; });
+  function renderSelects(){
+    var el=$('selects'); if(!el||!C.selects) return;
+    if(!el.dataset.done){ el.innerHTML=C.selects.map(function(x){ S.sel[x.id]=S.sel[x.id]||x.opciones[0]; return '<label class="bk-sel"><span>'+x.label+'</span><select data-s="'+x.id+'">'+x.opciones.map(function(o){return '<option>'+o+'</option>';}).join('')+'</select></label>'; }).join(''); el.dataset.done=1;
+      el.querySelectorAll('select').forEach(function(s){ s.onchange=function(){ S.sel[s.getAttribute('data-s')]=s.value; renderResumen(); }; }); }
+  }
+  /* --- resumen --- */
+  function listo(){ return S.fecha && (S.hora || !(T().horarios||[]).length); }
+  function renderResumen(){
+    var el=$('resumen'); if(!el) return; var t=T(); var tot=total(); var sena=tot*(C.sena||0.3);
+    var falta = !S.fecha ? 'Falta elegir la fecha' : (!listo() ? 'Falta elegir el horario' : '');
+    el.innerHTML='<div class="bk-res-t">'+t.nombre+'</div>'+
+      '<div class="bk-res-l"><span>Fecha</span><b>'+(S.fecha?ddmm(S.fecha)+(S.hora?' · '+S.hora:''):'—')+'</b></div>'+
+      '<div class="bk-res-l"><span>Grupo</span><b>'+paxTxt()+'</b></div>'+
+      '<div class="bk-res-l"><span>Guía en</span><b>'+S.idioma+'</b></div>'+
+      '<div class="bk-res-l bk-res-tot"><span>Total</span><b>'+fmt(tot)+'</b></div>'+
+      '<div class="bk-res-l bk-res-sena"><span>Seña 30% para confirmar</span><b>'+fmt(sena)+'</b></div>'+
+      '<div class="bk-res-l bk-res-rest"><span>Saldo el día de la salida</span><b>'+fmt(tot-sena)+'</b></div>'+
+      '<p class="bk-ahorro">Por una plataforma con ~25% de comisión, de esta reserva te quedarían '+fmt(tot*0.75)+'. Directo, te quedan los '+fmt(tot)+'.</p>'+
+      (falta?'<p class="bk-falta">'+falta+'</p>':'')+
+      (S.pagado?'<p class="bk-ok">Seña abonada (demo). Mandá el pedido por WhatsApp para cerrar.</p>':'');
+    var p=$('pagar'); if(p){ p.disabled=!listo(); p.textContent = S.pagado ? 'Seña abonada ✓ (demo)' : (C.txtPagar||'Pagar seña de '+fmt(sena)+' con Mercado Pago'); }
+    var w=$('wa'); if(w){ w.href='https://wa.me/'+C.wa+'?text='+encodeURIComponent(msg()); w.setAttribute('target','_blank'); w.setAttribute('rel','noopener'); }
+    var pv=$('preview'); if(pv){ pv.textContent=msg(); }
+  }
+  function paxTxt(){ var a=[]; if(S.res) a.push(S.res+' residente'+(S.res>1?'s':'')); if(S.ext) a.push(S.ext+' extranjero'+(S.ext>1?'s':'')); if(S.men) a.push(S.men+' menor'+(S.men>1?'es':'')); return a.join(', '); }
+  function msg(){
+    var t=T(); var tot=total(); var nm=$('nombre'); var nombre=nm&&nm.value.trim();
+    var ex=(t.extras||[]).filter(function(e){return S.extras[e.id];}).map(function(e){return e.nombre;});
+    var L=['Hola '+C.negocio+'! Quiero reservar desde la web:','','• Salida: '+t.nombre,'• Fecha: '+(S.fecha?ddmm(S.fecha):'(a definir)')+(S.hora?' · '+S.hora+' hs':''),'• Grupo: '+paxTxt()+' ('+pax()+' en total)','• Idioma del guía: '+S.idioma];
+    if(ex.length) L.push('• Extras: '+ex.join(', '));
+    (C.selects||[]).forEach(function(x){ L.push('• '+x.label+': '+S.sel[x.id]); });
+    L.push('• Total: '+fmt(tot),'• Seña 30%: '+fmt(tot*(C.sena||0.3))+(S.pagado?' (abonada por Mercado Pago)':' (pago por Mercado Pago)'));
+    if(nombre) L.push('• A nombre de: '+nombre);
+    L.push('','¿Me confirman el lugar?');
+    return L.join('\n');
+  }
+
+  /* --- pago demo --- */
+  function modal(){
+    var tot=total(); var sena=tot*(C.sena||0.3);
+    var m=document.createElement('div'); m.className='bk-modal'; m.setAttribute('role','dialog'); m.setAttribute('aria-modal','true'); m.setAttribute('aria-label','Pago de seña (demo)');
+    m.innerHTML='<div class="bk-mp"><div class="bk-mp-top"><span class="bk-mp-logo">mercado pago</span><span class="bk-mp-demo">DEMO · no se cobra nada</span></div><p class="bk-mp-to">Pagás a <b>'+C.negocio+'</b></p><p class="bk-mp-amt">'+fmt(sena)+'</p><p class="bk-mp-d">Seña 30% · '+T().nombre+(S.fecha?' · '+ddmm(S.fecha):'')+'</p><div class="bk-mp-opts"><label><input type="radio" name="mpo" checked> Dinero en cuenta</label><label><input type="radio" name="mpo"> Tarjeta de débito</label><label><input type="radio" name="mpo"> Tarjeta de crédito · hasta 3 cuotas</label></div><button type="button" class="bk-mp-pay">Pagar '+fmt(sena)+'</button><button type="button" class="bk-mp-x">Cancelar</button></div>';
+    document.body.appendChild(m);
+    var close=function(){ m.remove(); document.removeEventListener('keydown',esc); };
+    var esc=function(e){ if(e.key==='Escape') close(); };
+    document.addEventListener('keydown',esc);
+    m.querySelector('.bk-mp-x').onclick=close; m.onclick=function(e){ if(e.target===m) close(); };
+    m.querySelector('.bk-mp-pay').onclick=function(){ var b=this; b.disabled=true; b.textContent='Procesando…'; setTimeout(function(){ S.pagado=true; close(); renderAll(); var w=$('wa'); if(w) w.focus(); },700); };
+    m.querySelector('.bk-mp-pay').focus();
+  }
+  var pb=$('pagar'); if(pb) pb.addEventListener('click',function(){ if(listo()) modal(); });
+  var nm=$('nombre'); if(nm) nm.addEventListener('input',renderResumen);
+
+  function renderAll(){ renderTours(); renderFicha(); renderCal(); renderHoras(); renderPax(); renderIdioma(); renderExtras(); renderSelects(); renderResumen(); fire(); }
+  window.BKAPI={ setTour:setTour, state:S, total:total, fmt:fmt, tour:T, render:renderAll };
+  renderAll();
+})();
+
+(function(){
+ var steps=document.querySelectorAll('.step'),tabs=document.querySelectorAll('.steps button'),i=0,prev=document.querySelector('.prev'),next=document.querySelector('.next');
+ function go(n){i=Math.max(0,Math.min(steps.length-1,n));steps.forEach(function(s,j){s.classList.toggle('on',j===i);});tabs.forEach(function(t,j){t.classList.toggle('on',j===i);t.classList.toggle('ok',j<i);t.setAttribute('aria-selected',j===i);});prev.style.visibility=i===0?'hidden':'visible';next.style.display=i===steps.length-1?'none':'';next.textContent=i===1&&!BKAPI.state.fecha?'Elegí una fecha':'Siguiente';next.disabled=i===1&&!BKAPI.state.fecha;}
+ tabs.forEach(function(t){t.onclick=function(){go(+t.getAttribute('data-go'));};});
+ prev.onclick=function(){go(i-1);};next.onclick=function(){go(i+1);};
+ document.addEventListener('bk:change',function(){go(i);});
+ document.querySelectorAll('[data-pick-tour]').forEach(function(b){b.addEventListener('click',function(){go(1);});});
+ go(0);
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Aguas Blancas Rafting"></script>
+</body>
+</html>
