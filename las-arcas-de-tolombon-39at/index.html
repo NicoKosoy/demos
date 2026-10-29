@@ -241,7 +241,7 @@ function renderSum(){var e=exp();var tot=(e.p||0)*(e.pp===false?1:S.pax);var sen
    '<div class="rk-sum__row rk-sum__tot"><span>Total de ejemplo</span><span>'+money(tot)+'</span></div>'+
    (tot?'<div class="rk-sum__row rk-sum__sena"><span>Seña para confirmar ('+Math.round((C.sena||0.3)*100)+'%)</span><span>'+money(sena)+'</span></div>':'');});
   each("book",function(a){a.href=ready?wa(bookText()):"#";a.setAttribute("aria-disabled",String(!ready));a.classList.toggle("is-off",!ready);
-    var lbl=a.querySelector(".rk-book__l");if(lbl)lbl.textContent=ready?(a.getAttribute("data-on")||"Reservar por WhatsApp"):(a.getAttribute("data-off")||"Elegí día y horario");});}
+    var lbl=a.querySelector(".rk-book__l");if(lbl)lbl.textContent=ready?(a.getAttribute("data-on")||(C.wa?"Reservar por WhatsApp":"Enviar reserva por mail")):(a.getAttribute("data-off")||"Elegí día y horario");});}
 
 function renderShop(){each("shop",function(box){if(box.getAttribute("data-built")){syncShop();return;}box.setAttribute("data-built","1");box.innerHTML="";
   C.wines.forEach(function(w){var bx=w.box||C.box||6;var r=h("div","rk-wine");r.setAttribute("data-w",w.id);
@@ -259,7 +259,7 @@ function syncShop(){$$(".rk-wine").forEach(function(r){var q=S.cart[r.getAttribu
     (c.dto?'<div class="rk-sum__row rk-sum__dto"><span>'+Math.round(c.dto*100)+'% por llevar '+(C.dtoCajas||3)+' cajas o más</span><span>− '+money(c.tot*c.dto)+'</span></div>':'<div class="rk-sum__row rk-sum__dto"><span>Desde '+(C.dtoCajas||3)+' cajas: '+Math.round((C.dto||0.1)*100)+'% menos</span><span></span></div>')+
     '<div class="rk-sum__row rk-sum__tot"><span>Total de ejemplo</span><span>'+money(c.fin)+'</span></div>'):'<p class="rk-hint">Sumá cajas para armar el pedido. '+(C.envio||"Retiro en la bodega o envío a coordinar.")+'</p>';});
   each("shopbtn",function(a){var ok=c.cj>0;a.href=ok?wa("Hola "+C.negocio+"! Quiero hacer este pedido de vinos:\n"+c.lines.join("\n")+"\nTotal: "+money(c.fin)+(c.dto?" (con "+Math.round(c.dto*100)+"% off)":"")+"\n"+(nombre()?"Nombre: "+nombre()+"\n":"")+"¿Cómo coordinamos pago y entrega?"):"#";
-    a.setAttribute("aria-disabled",String(!ok));a.classList.toggle("is-off",!ok);var l=a.querySelector(".rk-book__l");if(l)l.textContent=ok?"Pedir "+c.cj+(c.cj>1?" cajas":" caja")+" por WhatsApp":"Sumá al menos una caja";});}
+    a.setAttribute("aria-disabled",String(!ok));a.classList.toggle("is-off",!ok);var l=a.querySelector(".rk-book__l");if(l)l.textContent=ok?"Pedir "+c.cj+(c.cj>1?" cajas":" caja")+(C.wa?" por WhatsApp":" por mail"):"Sumá al menos una caja";});}
 
 function renderClub(){each("club",function(box){box.innerHTML="";C.club.forEach(function(p){var b=h("button","rk-plan");b.type="button";b.setAttribute("aria-pressed",String(S.plan===p.id));
   b.innerHTML='<span class="rk-plan__n">'+p.n+'</span><span class="rk-plan__b">'+p.b+' botellas por mes</span>'+(p.d?'<span class="rk-plan__d">'+p.d+'</span>':'')+'<span class="rk-plan__p">'+money(p.p)+'<small> /mes</small></span>';
