@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Vasija Secreta · Cafayate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,600;0,800;1,300&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--barro:#b0623e;--barro2:#7f3f24;--cal:#f4ece0;--cardon:#4a5d3f;--noche:#2a1d17;--ocre:#e0a34a;
+--rk-line:#dccab4;--rk-accent:#7f3f24;--rk-card:#fffaf3;--rk-sel:#f7e7da;--rk-r:999px 999px 14px 14px;--rk-r-sm:6px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;color:var(--noche);font-family:Jost,system-ui,sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden;
+background-color:var(--barro2);background-image:radial-gradient(circle at 25px 25px,rgba(224,163,74,.25) 3px,transparent 4px),linear-gradient(45deg,rgba(0,0,0,.08) 25%,transparent 25%,transparent 75%,rgba(0,0,0,.08) 75%),linear-gradient(45deg,rgba(0,0,0,.08) 25%,transparent 25%,transparent 75%,rgba(0,0,0,.08) 75%);background-size:50px 50px,50px 50px,50px 50px;background-position:0 0,0 0,25px 25px}
+/* componentes del motor de reserva; cada página define --rk-* */
+.rk-exps{display:grid;gap:var(--rk-gap,10px)}
+.rk-exp{all:unset;box-sizing:border-box;cursor:pointer;display:grid;gap:4px;padding:14px 16px;border:1px solid var(--rk-line);border-radius:var(--rk-r,6px);background:var(--rk-card,transparent);color:inherit;transition:border-color .15s,background .15s}
+.rk-exp:hover{border-color:var(--rk-accent)}
+.rk-exp[aria-pressed="true"]{border-color:var(--rk-accent);background:var(--rk-sel,rgba(0,0,0,.04));box-shadow:inset 3px 0 0 var(--rk-accent)}
+.rk-exp__n{font-weight:600;font-size:1.02em}
+.rk-exp__d{font-size:.88em;opacity:.78;line-height:1.45}
+.rk-exp__m{display:flex;justify-content:space-between;gap:8px;font-size:.85em;margin-top:2px}
+.rk-exp__p{font-weight:600;color:var(--rk-accent-ink,var(--rk-accent))}
+.rk-cal{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+.rk-cal--grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));overflow:visible}
+.rk-cal__h{text-align:center;font-size:.72em;opacity:.6;padding:2px 0}
+.rk-day{all:unset;box-sizing:border-box;cursor:pointer;flex:0 0 58px;display:grid;justify-items:center;gap:1px;padding:8px 2px;border:1px solid var(--rk-line);border-radius:var(--rk-r-sm,4px);background:var(--rk-card,transparent);min-width:0}
+.rk-day__w{font-size:.7em;opacity:.7}.rk-day__n{font-size:1.15em;font-weight:600;line-height:1.1}.rk-day__m{font-size:.62em;opacity:.65}
+.rk-day:disabled{opacity:.35;cursor:not-allowed;text-decoration:line-through}
+.rk-day:not(:disabled):hover{border-color:var(--rk-accent)}
+.rk-day[aria-pressed="true"]{background:var(--rk-accent);border-color:var(--rk-accent);color:var(--rk-on-accent,#fff)}
+.rk-times,.rk-langs{display:flex;flex-wrap:wrap;gap:8px}
+.rk-time,.rk-lang{all:unset;box-sizing:border-box;cursor:pointer;padding:9px 14px;border:1px solid var(--rk-line);border-radius:var(--rk-r-sm,4px);background:var(--rk-card,transparent);display:grid;gap:1px;text-align:center}
+.rk-time__t{font-weight:600}.rk-time__c{font-size:.72em;opacity:.7}
+.rk-time:disabled{opacity:.35;cursor:not-allowed}
+.rk-time[aria-pressed="true"],.rk-lang[aria-pressed="true"]{background:var(--rk-accent);border-color:var(--rk-accent);color:var(--rk-on-accent,#fff)}
+.rk-step{display:inline-flex;align-items:center;border:1px solid var(--rk-line);border-radius:var(--rk-r-sm,4px);overflow:hidden;background:var(--rk-card,transparent)}
+.rk-step__b{all:unset;cursor:pointer;width:40px;height:40px;display:grid;place-items:center;font-size:1.2em}
+.rk-step__b:disabled{opacity:.3;cursor:not-allowed}
+.rk-step__b:not(:disabled):hover{background:var(--rk-sel,rgba(0,0,0,.05))}
+.rk-step__v{min-width:96px;text-align:center;font-weight:600;font-size:.92em}
+.rk-step--sm .rk-step__b{width:34px;height:34px}.rk-step--sm .rk-step__v{min-width:74px;font-size:.85em}
+.rk-sum{display:grid;gap:6px}
+.rk-sum__row{display:flex;justify-content:space-between;gap:12px;font-size:.92em}
+.rk-sum__row span:last-child{text-align:right;white-space:nowrap}
+.rk-sum__tot{font-weight:700;font-size:1.08em;padding-top:8px;border-top:1px solid var(--rk-line)}
+.rk-sum__sena,.rk-sum__dto{font-size:.84em;opacity:.8}
+.rk-hint{margin:0;font-size:.88em;opacity:.7}
+.rk-book{display:inline-flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;cursor:pointer}
+.rk-book.is-off{opacity:.55;cursor:not-allowed}
+.rk-shop{display:grid;gap:0}
+.rk-wine{display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--rk-line)}
+.rk-wine__img{width:44px;height:64px;object-fit:contain;grid-column:1;grid-row:1}
+.rk-wine__i{grid-column:2;grid-row:1}.rk-wine__p{grid-column:3;grid-row:1}.rk-wine>.rk-step{grid-column:4;grid-row:1}
+.rk-wine__i{display:grid;gap:1px;min-width:0}
+.rk-wine__l{font-size:.72em;opacity:.65}.rk-wine__n{font-weight:600}.rk-wine__v{font-size:.82em;opacity:.75}
+.rk-wine__p{display:grid;text-align:right;font-size:.82em}.rk-wine__b{font-weight:600}.rk-wine__c{opacity:.65}
+.rk-wine.is-in .rk-wine__n{color:var(--rk-accent-ink,var(--rk-accent))}
+.rk-club{display:grid;gap:10px}
+.rk-plan{all:unset;box-sizing:border-box;cursor:pointer;display:grid;gap:3px;padding:16px;border:1px solid var(--rk-line);border-radius:var(--rk-r,6px);background:var(--rk-card,transparent)}
+.rk-plan__n{font-weight:700;font-size:1.05em}.rk-plan__b{font-size:.85em;opacity:.8}.rk-plan__d{font-size:.82em;opacity:.7;line-height:1.4}
+.rk-plan__p{font-weight:700;margin-top:6px;font-size:1.15em}.rk-plan__p small{font-weight:400;font-size:.65em;opacity:.7}
+.rk-plan:hover{border-color:var(--rk-accent)}
+.rk-plan[aria-pressed="true"]{border-color:var(--rk-accent);box-shadow:inset 0 0 0 1px var(--rk-accent);background:var(--rk-sel,rgba(0,0,0,.04))}
+.rk-exp:focus-visible,.rk-day:focus-visible,.rk-time:focus-visible,.rk-lang:focus-visible,.rk-step__b:focus-visible,.rk-plan:focus-visible,.rk-book:focus-visible{outline:2px solid var(--rk-accent);outline-offset:2px}
+.rk-pulse{animation:rkp .7s}
+@keyframes rkp{0%,100%{transform:none}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.rk-banner{font-size:12.5px;line-height:1.35;text-align:center;padding:7px 16px}
+@media (max-width:560px){.rk-wine{grid-template-columns:auto 1fr auto;row-gap:10px;column-gap:12px}.rk-wine__img{grid-row:1/3}.rk-wine__p{grid-column:3}.rk-wine>.rk-step{grid-column:2/4;grid-row:2;justify-self:start}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+.rk-banner{background:var(--noche);color:#f0e2d2}
+.rk-exp{border-radius:14px}
+h1,h2,h3{font-family:"Crimson Pro",serif;margin:0;line-height:1.02;font-weight:600}
+a{color:inherit}
+.carta{max-width:860px;margin:40px auto;background:var(--cal);border-radius:300px 300px 18px 18px;padding:90px 64px 50px;position:relative;box-shadow:0 0 0 10px var(--cal),0 0 0 12px var(--ocre)}
+.top{text-align:center}
+.vas{width:90px;height:110px;margin:0 auto 10px;display:block}
+.top h1{font-size:clamp(50px,8vw,92px);font-weight:800;color:var(--barro2)}
+.top .s{font-family:"Crimson Pro";font-style:italic;font-weight:300;font-size:24px;margin:6px 0 0}
+.top .m{font-size:13.5px;color:#6d5a4d;margin-top:14px}
+.free{margin:34px auto 0;max-width:560px;border:2px dashed var(--barro);border-radius:14px;padding:16px 20px;text-align:center}
+.free b{font-family:"Crimson Pro";font-size:26px;color:var(--barro2);display:block}
+hr.orn{border:0;height:20px;margin:44px 0;background:radial-gradient(circle,var(--barro) 3px,transparent 4px) center/22px 20px repeat-x}
+.carta h2{font-size:clamp(36px,5vw,52px);text-align:center;margin-bottom:6px}
+.carta .intro{text-align:center;max-width:46ch;margin:0 auto 24px;color:#5f4d40}
+.lb{font-size:13px;font-weight:600;color:var(--barro);margin:20px 0 8px;text-align:center}
+.center{display:flex;justify-content:center}
+.rk-times,.rk-langs{justify-content:center}
+.ticket{background:#fff;border-radius:14px;padding:22px;margin-top:22px;border:1px solid var(--rk-line)}
+.ticket input{width:100%;padding:12px 16px;border:1px solid var(--rk-line);border-radius:99px;font:inherit;margin-top:14px}
+.btn{display:flex;justify-content:center;background:var(--barro2);color:#fff;text-decoration:none;padding:15px;border-radius:99px;font-weight:600;margin-top:12px}
+.btn--c{background:var(--cardon)}
+.rk-need{font-size:12.5px;color:#6d5a4d;margin:8px 0 0;text-align:center}
+.rk-wine{border-bottom-style:dotted}
+.club .rk-club{grid-template-columns:repeat(3,minmax(0,1fr))}
+.club .rk-plan{border-radius:120px 120px 12px 12px;text-align:center;padding-top:30px}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;text-align:center;font-size:14.5px}
+.facts b{display:block;font-size:12.5px;color:var(--barro)}
+.save{text-align:center;font-family:"Crimson Pro";font-size:24px;font-style:italic;font-weight:300;max-width:30em;margin:0 auto}
+footer{text-align:center;color:#f0e2d2;padding:10px 16px 40px;font-size:12.5px}
+@media (max-width:700px){.carta{margin:24px 12px;padding:70px 18px 34px;border-radius:200px 200px 14px 14px}.club .rk-club,.facts{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="rk-banner">Prototipo de demostración preparado para Bodega Vasija Secreta · Precios y disponibilidad de ejemplo</div>
+<main class="carta">
+ <header class="top">
+  <svg class="vas" viewBox="0 0 90 110" aria-hidden="true"><path d="M30 6h30v8c0 4 4 6 4 10 0 6-10 8-10 14 14 6 26 20 26 38 0 18-14 30-35 30S10 94 10 76c0-18 12-32 26-38 0-6-10-8-10-14 0-4 4-6 4-10z" fill="#b0623e"/><path d="M14 66h62M16 80h58" stroke="#e0a34a" stroke-width="3"/><path d="M24 73l6-5 6 5 6-5 6 5 6-5 6 5 6-5" stroke="#2a1d17" stroke-width="2" fill="none"/></svg>
+  <h1>Vasija Secreta</h1>
+  <p class="s">La bodega más antigua de la región, sobre la Ruta 40</p>
+  <p class="m">Ruta Nacional 40 s/n · Cafayate · Salta</p>
+  <div class="free"><b>La degustación de Gata Flora es sin cargo</b>Reservá igual tu horario y evitá esperar cuando llegan las combis de excursión.</div>
+ </header>
+
+ <hr class="orn">
+ <section id="visita" data-rk-scope>
+  <h2>Visita y degustación</h2>
+  <p class="intro">El recorrido pasa por el museo y las salas de elaboración, de la uva a la copa. Después elegís cómo seguir.</p>
+  <div class="rk-exps" data-rk="exps"></div>
+  <div class="lb">Día</div><div data-rk="cal"></div>
+  <div class="lb">Horario</div><div class="rk-times" data-rk="times"></div>
+  <div class="lb">Idioma</div><div class="rk-langs" data-rk="langs"></div>
+  <div class="lb">Personas</div><div class="center"><div data-rk="pax"></div></div>
+  <div class="ticket"><div class="rk-sum" data-rk="sum"></div>
+   <input data-rk="nombre" placeholder="Tu nombre (opcional)" aria-label="Tu nombre">
+   <a class="btn rk-book" data-rk="book" target="_blank" rel="noopener"><span class="rk-book__l">Elegí día y horario</span></a>
+   <p class="rk-need">Las experiencias gratis no piden seña.</p></div>
+ </section>
+
+ <hr class="orn">
+ <section id="vinos" data-rk-scope>
+  <h2>La carta de vinos</h2>
+  <p class="intro">Para llevar o para que te llegue a casa, por caja de 6. Etiquetas y precios a confirmar con la bodega.</p>
+  <div class="rk-shop" data-rk="shop"></div>
+  <div class="ticket"><div class="rk-sum" data-rk="cart"></div>
+   <a class="btn btn--c rk-book" data-rk="shopbtn" target="_blank" rel="noopener"><span class="rk-book__l">Sumá al menos una caja</span></a></div>
+ </section>
+
+ <hr class="orn">
+ <section class="club" id="club" data-rk-scope>
+  <h2>El club de la vasija</h2>
+  <p class="intro">Cafayate en tu casa una vez por mes. Sin permanencia.</p>
+  <div class="rk-club" data-rk="club"></div>
+  <a class="btn rk-book" data-rk="clubbtn" target="_blank" rel="noopener"><span class="rk-book__l">Elegí un plan</span></a>
+ </section>
+
+ <hr class="orn">
+ <p class="save">Cada combi de excursión que para en la bodega deja 20-25% en la agencia. Cada caja que el visitante pide acá queda entera en Vasija Secreta.</p>
+ <hr class="orn">
+ <div class="facts">
+  <div><b>Dónde</b>Ruta Nacional 40 s/n, Cafayate</div>
+  <div><b>WhatsApp</b><a href="#" data-wa="Hola Vasija Secreta! Quería consultar por una visita.">+54 9 387 419-1938</a></div>
+  <div><b>Además</b>Resto Wine: cocina regional para maridar</div>
+ </div>
+</main>
+<footer>Prototipo preparado para Bodega Vasija Secreta por Resolviendo Kos · resolviendokos.com · No es la web oficial</footer>
+<script>(function(){
+"use strict";
+var C={}, S={exp:null,date:null,time:null,lang:null,pax:2,cart:{},plan:null};
+function $(s,r){return (r||document).querySelector(s);}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));}
+function money(n){return "$ "+Math.round(n).toLocaleString("es-AR");}
+function h(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e;}
+function hash(s){var x=2166136261;for(var i=0;i<s.length;i++){x^=s.charCodeAt(i);x=Math.imul(x,16777619);}return (x>>>0);}
+var DIAS=["dom","lun","mar","mié","jue","vie","sáb"],DIASL=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"],MES=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+function key(d){return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();}
+function fmtDate(d){return DIASL[d.getDay()]+" "+d.getDate()+"/"+(d.getMonth()+1);}
+function exp(){for(var i=0;i<C.exps.length;i++)if(C.exps[i].id===S.exp)return C.exps[i];return C.exps[0];}
+function cupos(d,t){var e=exp();var cap=e.cap||C.cap||12;var r=hash(key(d)+t+e.id+C.negocio)%100;if(r<14)return 0;return Math.max(1,Math.round(cap*(r/100)));}
+function open(d){var e=exp();var days=e.days||C.days||[1,2,3,4,5,6];return days.indexOf(d.getDay())>-1;}
+function times(){return exp().times||C.times||["10:00","12:00","16:00"];}
+function wa(text,num){if(!(num||C.wa)&&C.mail)return "mailto:"+C.mail+"?subject="+encodeURIComponent("Consulta desde la web - "+C.negocio)+"&body="+encodeURIComponent(text);return "https://wa.me/"+(num||C.wa)+"?text="+encodeURIComponent(text);}
+function each(sel,fn){$$('[data-rk="'+sel+'"]').forEach(fn);}
+
+function renderExps(){each("exps",function(box){box.innerHTML="";C.exps.forEach(function(e){
+  var b=h("button","rk-exp");b.type="button";b.setAttribute("aria-pressed",String(S.exp===e.id));
+  b.innerHTML='<span class="rk-exp__n">'+e.n+'</span>'+(e.d?'<span class="rk-exp__d">'+e.d+'</span>':'')+'<span class="rk-exp__m"><span class="rk-exp__dur">'+(e.dur||"")+'</span><span class="rk-exp__p">'+(e.p?money(e.p)+(e.pp===false?"":" p/p"):"Sin cargo")+'</span></span>';
+  b.addEventListener("click",function(){S.exp=e.id;S.time=null;if(S.date&&!open(S.date))S.date=null;renderAll();});
+  box.appendChild(b);});});}
+
+function renderCal(){each("cal",function(box){box.innerHTML="";var mode=box.getAttribute("data-mode")||C.calMode||"strip";
+  var start=new Date();start.setHours(0,0,0,0);start.setDate(start.getDate()+1);var n=C.horizon||21;
+  var wrap=h("div","rk-cal rk-cal--"+mode);
+  if(mode==="grid"){["L","M","M","J","V","S","D"].forEach(function(x){wrap.appendChild(h("span","rk-cal__h",x));});
+    var off=(start.getDay()+6)%7;for(var k=0;k<off;k++)wrap.appendChild(h("span","rk-cal__pad"));}
+  for(var i=0;i<n;i++){(function(i){var d=new Date(start);d.setDate(start.getDate()+i);
+    var b=h("button","rk-day");b.type="button";var ok=open(d);
+    var free=0;if(ok)times().forEach(function(t){free+=cupos(d,t);});
+    if(!ok||free===0){b.disabled=true;}
+    b.setAttribute("aria-pressed",String(S.date&&key(S.date)===key(d)));
+    b.setAttribute("aria-label",fmtDate(d)+(ok?(free?"":" completo"):" cerrado"));
+    b.innerHTML='<span class="rk-day__w">'+DIAS[d.getDay()]+'</span><span class="rk-day__n">'+d.getDate()+'</span><span class="rk-day__m">'+(!ok?"cerrado":free===0?"completo":MES[d.getMonth()])+'</span>';
+    b.addEventListener("click",function(){S.date=d;S.time=null;renderAll();});wrap.appendChild(b);})(i);}
+  box.appendChild(wrap);});}
+
+function renderTimes(){each("times",function(box){box.innerHTML="";
+  if(!S.date){box.appendChild(h("p","rk-hint","Elegí un día para ver los horarios y cupos."));return;}
+  times().forEach(function(t){var c=cupos(S.date,t);var b=h("button","rk-time");b.type="button";b.disabled=c===0||c<1;
+    b.setAttribute("aria-pressed",String(S.time===t));
+    b.innerHTML='<span class="rk-time__t">'+t+'</span><span class="rk-time__c">'+(c?("quedan "+c):"completo")+'</span>';
+    b.addEventListener("click",function(){S.time=t;if(S.pax>c)S.pax=c;renderAll();});box.appendChild(b);});});}
+
+function renderLangs(){each("langs",function(box){box.innerHTML="";var L=exp().langs||C.langs||["Español"];if(L.indexOf(S.lang)<0)S.lang=L[0];
+  L.forEach(function(l){var b=h("button","rk-lang",l);b.type="button";b.setAttribute("aria-pressed",String(S.lang===l));
+    b.addEventListener("click",function(){S.lang=l;renderAll();});box.appendChild(b);});});}
+
+function maxPax(){return S.date&&S.time?cupos(S.date,S.time):(exp().cap||C.cap||12);}
+function renderPax(){each("pax",function(box){box.innerHTML="";var w=h("div","rk-step");
+  var m=h("button","rk-step__b","&minus;");m.type="button";m.setAttribute("aria-label","Una persona menos");
+  var o=h("output","rk-step__v",S.pax+(S.pax===1?" persona":" personas"));
+  var p=h("button","rk-step__b","+");p.type="button";p.setAttribute("aria-label","Una persona más");
+  m.disabled=S.pax<=1;p.disabled=S.pax>=maxPax();
+  m.onclick=function(){S.pax=Math.max(1,S.pax-1);renderAll();};p.onclick=function(){S.pax=Math.min(maxPax(),S.pax+1);renderAll();};
+  w.appendChild(m);w.appendChild(o);w.appendChild(p);box.appendChild(w);});}
+
+function bookText(){var e=exp();var tot=(e.p||0)*(e.pp===false?1:S.pax);var sena=tot*(C.sena||0.3);
+  return "Hola "+C.negocio+"! Quiero reservar una visita:\n"+
+  "• Experiencia: "+e.n+"\n• Fecha: "+(S.date?fmtDate(S.date):"-")+"\n• Horario: "+(S.time||"-")+"\n• Idioma: "+S.lang+"\n• Personas: "+S.pax+"\n"+
+  "• Total: "+money(tot)+(tot?" (seña "+Math.round((C.sena||0.3)*100)+"%: "+money(sena)+")":"")+"\n"+(nombre()?"Mi nombre: "+nombre()+"\n":"")+"¿Me confirman disponibilidad?";}
+function nombre(){var i=$('[data-rk="nombre"]');return i&&i.value.trim()?i.value.trim():"";}
+function renderSum(){var e=exp();var tot=(e.p||0)*(e.pp===false?1:S.pax);var sena=tot*(C.sena||0.3);var ready=S.date&&S.time;
+  each("sum",function(box){box.innerHTML='<div class="rk-sum__row"><span>'+e.n+'</span><span>'+(e.p?money(e.p)+(e.pp===false?"":" × "+S.pax):"sin cargo")+'</span></div>'+
+   '<div class="rk-sum__row"><span>'+(S.date?fmtDate(S.date):"Día a elegir")+'</span><span>'+(S.time||"--:--")+' · '+S.lang+'</span></div>'+
+   '<div class="rk-sum__row rk-sum__tot"><span>Total de ejemplo</span><span>'+money(tot)+'</span></div>'+
+   (tot?'<div class="rk-sum__row rk-sum__sena"><span>Seña para confirmar ('+Math.round((C.sena||0.3)*100)+'%)</span><span>'+money(sena)+'</span></div>':'');});
+  each("book",function(a){a.href=ready?wa(bookText()):"#";a.setAttribute("aria-disabled",String(!ready));a.classList.toggle("is-off",!ready);
+    var lbl=a.querySelector(".rk-book__l");if(lbl)lbl.textContent=ready?(a.getAttribute("data-on")||(C.wa?"Reservar por WhatsApp":"Enviar reserva por mail")):(a.getAttribute("data-off")||"Elegí día y horario");});}
+
+function renderShop(){each("shop",function(box){if(box.getAttribute("data-built")){syncShop();return;}box.setAttribute("data-built","1");box.innerHTML="";
+  C.wines.forEach(function(w){var bx=w.box||C.box||6;var r=h("div","rk-wine");r.setAttribute("data-w",w.id);
+    r.innerHTML=(w.img?'<img class="rk-wine__img" src="'+w.img+'" alt="'+w.n+'" loading="lazy" onerror="this.remove()">':'')+
+    '<div class="rk-wine__i"><span class="rk-wine__l">'+(w.line||"")+'</span><span class="rk-wine__n">'+w.n+'</span>'+(w.v?'<span class="rk-wine__v">'+w.v+'</span>':'')+'</div>'+
+    '<div class="rk-wine__p"><span class="rk-wine__b">'+money(w.p)+' la botella</span><span class="rk-wine__c">'+money(w.p*bx)+' la caja de '+bx+'</span></div>';
+    var st=h("div","rk-step rk-step--sm");var m=h("button","rk-step__b","&minus;");m.type="button";m.setAttribute("aria-label","Quitar caja de "+w.n);
+    var o=h("output","rk-step__v","0 cajas");var p=h("button","rk-step__b","+");p.type="button";p.setAttribute("aria-label","Sumar caja de "+w.n);
+    m.onclick=function(){S.cart[w.id]=Math.max(0,(S.cart[w.id]||0)-1);syncShop();};p.onclick=function(){S.cart[w.id]=Math.min(20,(S.cart[w.id]||0)+1);syncShop();};
+    st.appendChild(m);st.appendChild(o);st.appendChild(p);r.appendChild(st);box.appendChild(r);});});syncShop();}
+function cartInfo(){var cj=0,bt=0,tot=0,lines=[];C.wines.forEach(function(w){var q=S.cart[w.id]||0;if(!q)return;var bx=w.box||C.box||6;cj+=q;bt+=q*bx;tot+=q*bx*w.p;lines.push("• "+q+(q>1?" cajas":" caja")+" de "+w.n+(w.v&&w.n.indexOf(w.v)<0?" ("+w.v+")":"")+" — "+money(q*bx*w.p));});
+  var dto=cj>=(C.dtoCajas||3)?(C.dto||0.1):0;return {cj:cj,bt:bt,tot:tot,dto:dto,fin:tot*(1-dto),lines:lines};}
+function syncShop(){$$(".rk-wine").forEach(function(r){var q=S.cart[r.getAttribute("data-w")]||0;var o=r.querySelector(".rk-step__v");if(o)o.textContent=q+(q===1?" caja":" cajas");r.classList.toggle("is-in",q>0);var m=r.querySelector(".rk-step__b");if(m)m.disabled=q===0;});
+  var c=cartInfo();each("cart",function(box){box.innerHTML=c.cj?('<div class="rk-sum__row"><span>'+c.cj+(c.cj>1?" cajas":" caja")+' · '+c.bt+' botellas</span><span>'+money(c.tot)+'</span></div>'+
+    (c.dto?'<div class="rk-sum__row rk-sum__dto"><span>'+Math.round(c.dto*100)+'% por llevar '+(C.dtoCajas||3)+' cajas o más</span><span>− '+money(c.tot*c.dto)+'</span></div>':'<div class="rk-sum__row rk-sum__dto"><span>Desde '+(C.dtoCajas||3)+' cajas: '+Math.round((C.dto||0.1)*100)+'% menos</span><span></span></div>')+
+    '<div class="rk-sum__row rk-sum__tot"><span>Total de ejemplo</span><span>'+money(c.fin)+'</span></div>'):'<p class="rk-hint">Sumá cajas para armar el pedido. '+(C.envio||"Retiro en la bodega o envío a coordinar.")+'</p>';});
+  each("shopbtn",function(a){var ok=c.cj>0;a.href=ok?wa("Hola "+C.negocio+"! Quiero hacer este pedido de vinos:\n"+c.lines.join("\n")+"\nTotal: "+money(c.fin)+(c.dto?" (con "+Math.round(c.dto*100)+"% off)":"")+"\n"+(nombre()?"Nombre: "+nombre()+"\n":"")+"¿Cómo coordinamos pago y entrega?"):"#";
+    a.setAttribute("aria-disabled",String(!ok));a.classList.toggle("is-off",!ok);var l=a.querySelector(".rk-book__l");if(l)l.textContent=ok?"Pedir "+c.cj+(c.cj>1?" cajas":" caja")+(C.wa?" por WhatsApp":" por mail"):"Sumá al menos una caja";});}
+
+function renderClub(){each("club",function(box){box.innerHTML="";C.club.forEach(function(p){var b=h("button","rk-plan");b.type="button";b.setAttribute("aria-pressed",String(S.plan===p.id));
+  b.innerHTML='<span class="rk-plan__n">'+p.n+'</span><span class="rk-plan__b">'+p.b+' botellas por mes</span>'+(p.d?'<span class="rk-plan__d">'+p.d+'</span>':'')+'<span class="rk-plan__p">'+money(p.p)+'<small> /mes</small></span>';
+  b.onclick=function(){S.plan=p.id;renderClub();};box.appendChild(b);});});
+  var plan=null;C.club.forEach(function(p){if(p.id===S.plan)plan=p;});
+  each("clubbtn",function(a){a.href=plan?wa("Hola "+C.negocio+"! Me quiero sumar al club del vino:\n• Plan: "+plan.n+" ("+plan.b+" botellas por mes)\n• Cuota de ejemplo: "+money(plan.p)+" por mes\n"+(nombre()?"Nombre: "+nombre()+"\n":"")+"¿Cómo sigo?"):"#";
+    a.setAttribute("aria-disabled",String(!plan));a.classList.toggle("is-off",!plan);var l=a.querySelector(".rk-book__l");if(l)l.textContent=plan?"Sumarme al plan "+plan.n:"Elegí un plan";});}
+
+function renderAll(){renderExps();renderCal();renderTimes();renderLangs();renderPax();renderSum();}
+document.addEventListener("click",function(ev){var a=ev.target.closest&&ev.target.closest('a[aria-disabled="true"]');if(a){ev.preventDefault();var t=a.closest("[data-rk-scope]");var hint=t&&t.querySelector(".rk-need");if(hint){hint.classList.remove("rk-pulse");void hint.offsetWidth;hint.classList.add("rk-pulse");}}});
+window.RK={init:function(cfg){C=cfg;S.exp=(cfg.exps[0]||{}).id;S.lang=(cfg.langs||["Español"])[0];if(cfg.club&&cfg.club[1])S.plan=null;
+  renderAll();if(cfg.wines)renderShop();if(cfg.club)renderClub();
+  $$('[data-rk="nombre"]').forEach(function(i){i.addEventListener("input",function(){renderSum();syncShop();renderClub();});});
+  $$("[data-wa]").forEach(function(a){a.href=wa(a.getAttribute("data-wa")||("Hola "+C.negocio+"! Quería hacer una consulta."));});},
+  state:S,pick:function(id){S.exp=id;S.time=null;renderAll();}};
+})();
+</script>
+<script>
+RK.init({negocio:"Bodega Vasija Secreta",wa:"5493874191938",sena:0.3,horizon:21,langs:["Español","English"],days:[0,1,2,3,4,5,6],
+times:["09:30","10:30","11:30","12:30","15:00","16:00","17:00"],
+exps:[
+{id:"gata",n:"Visita + degustación Gata Flora",d:"Museo, elaboración y degustación de la línea Gata Flora.",dur:"45 min",p:0,cap:25},
+{id:"secreto",n:"Degustación El Secreto",d:"Vinos de la bodega con quesos y frutos regionales.",dur:"1 h",p:12000,cap:15},
+{id:"antigua",n:"Degustación Antigua Vasija",d:"La selección más alta de la casa, guiada.",dur:"1 h 15",p:20000,cap:10,times:["11:00","16:30"]},
+{id:"resto",n:"Almuerzo en Resto Wine",d:"Cocina local e internacional pensada para maridar.",dur:"2 h",p:30000,cap:40,times:["12:30","13:30","14:30"]}],
+wines:[
+{id:"gft",line:"Gata Flora",n:"Gata Flora Torrontés",v:"Torrontés de Cafayate",p:7000},
+{id:"gfm",line:"Gata Flora",n:"Gata Flora Malbec",v:"Malbec",p:7500},
+{id:"vst",line:"Vasija Secreta",n:"Vasija Secreta Torrontés",v:"Torrontés",p:9500},
+{id:"vsm",line:"Vasija Secreta",n:"Vasija Secreta Malbec",v:"Malbec",p:10500},
+{id:"vsc",line:"Vasija Secreta",n:"Vasija Secreta Cabernet Sauvignon",v:"Cabernet Sauvignon",p:10500}],
+club:[{id:"gata",n:"Gata Flora",b:2,d:"Torrontés y Malbec del valle.",p:14000},{id:"secreto",n:"El Secreto",b:4,d:"Vasija Secreta, blancos y tintos.",p:38000},{id:"antigua",n:"Antigua Vasija",b:6,d:"Lo mejor de la casa.",p:62000}]});
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Bodega Vasija Secreta"></script>
+</body>
+</html>
