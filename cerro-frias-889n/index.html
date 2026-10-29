@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Cerro Frías · El Calafate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* estructura base del motor (cada página la viste a su manera) */
+.bk-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.bk-dow{font-size:.72rem;text-align:center;opacity:.6;padding:4px 0}
+.bk-day{appearance:none;border:0;background:transparent;color:inherit;font:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:52px;padding:4px 2px;line-height:1.1}
+.bk-day b{font-size:1rem}.bk-day i{font-style:normal;font-size:.62rem;opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.bk-day small{font-size:.66rem;opacity:.7}.bk-day em{font-style:normal;font-size:.6rem;font-weight:700}
+.bk-day:disabled{cursor:not-allowed}.bk-day.is-off{opacity:.3}.bk-day.is-full{opacity:.45;text-decoration:line-through}
+.bk-cal-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;text-transform:capitalize}
+.bk-nav{appearance:none;border:0;background:transparent;color:inherit;font:inherit;font-size:1.4rem;cursor:pointer;width:40px;height:40px}
+.bk-strip{display:flex;gap:6px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;-webkit-overflow-scrolling:touch}
+.bk-strip .bk-day{flex:0 0 64px;scroll-snap-align:start}
+.bk-list{display:flex;flex-direction:column;gap:6px}
+.bk-row{display:grid;grid-template-columns:76px 1fr;gap:10px;align-items:center}
+.bk-row-d b{display:block;font-size:1.5rem;line-height:1}.bk-row-d span{font-size:.75rem;opacity:.7}
+.bk-row-h{display:flex;flex-wrap:wrap;gap:6px}
+.bk-slot,.bk-hora,.bk-lang{appearance:none;font:inherit;color:inherit;cursor:pointer;display:inline-flex;flex-direction:column;align-items:flex-start;padding:8px 12px;line-height:1.15}
+.bk-slot i,.bk-hora i{font-style:normal;font-size:.7rem;opacity:.75}
+.bk-slot:disabled,.bk-hora:disabled{opacity:.4;cursor:not-allowed;text-decoration:line-through}
+#horas,.bk-horas,[data-bk=horas],[data-bk=idioma]{display:flex;flex-wrap:wrap;gap:8px}
+.bk-pax-r{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 0}
+.bk-pax-r small{display:block;opacity:.7;font-size:.78rem}
+.bk-step{display:flex;align-items:center;gap:4px;flex:none}
+.bk-step button{appearance:none;font:inherit;color:inherit;cursor:pointer;width:38px;height:38px;font-size:1.2rem;line-height:1}
+.bk-step output{min-width:28px;text-align:center;font-weight:700}
+.bk-extra{display:flex;gap:10px;align-items:baseline;padding:6px 0;cursor:pointer}
+.bk-extra small{margin-left:auto;opacity:.75;white-space:nowrap}
+.bk-res-l{display:flex;justify-content:space-between;gap:12px;padding:5px 0}
+.bk-res-l b{text-align:right}
+.bk-ahorro,.bk-falta,.bk-ok{font-size:.82rem;margin:.6em 0 0}
+.bk-dl{margin:0;display:grid;gap:8px}.bk-dl div{display:grid;grid-template-columns:130px 1fr;gap:10px}.bk-dl dt{opacity:.7}.bk-dl dd{margin:0}
+.bk-inc{margin:.3em 0 0;padding-left:1.1em}.bk-inc-t{margin:1em 0 0;font-weight:700}
+.bk-tour{appearance:none;font:inherit;color:inherit;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:2px}
+.bk-tour-m,.bk-tour-p{font-size:.8rem;opacity:.8}
+.bk-modal{position:fixed;inset:0;background:rgba(10,20,30,.55);display:flex;align-items:center;justify-content:center;z-index:9999;padding:16px}
+.bk-mp{background:#fff;color:#2d3277;width:min(380px,100%);border-radius:10px;padding:20px;font-family:system-ui,-apple-system,sans-serif;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.bk-mp-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.bk-mp-logo{font-weight:800;color:#00a1e4;letter-spacing:-.02em;font-size:1.1rem}
+.bk-mp-demo{font-size:.66rem;background:#fff4cc;color:#6b5400;padding:3px 6px;border-radius:4px}
+.bk-mp-to{margin:0;color:#555;font-size:.85rem}.bk-mp-amt{font-size:2rem;font-weight:700;margin:4px 0;color:#222}.bk-mp-d{margin:0 0 12px;font-size:.8rem;color:#666}
+.bk-mp-opts{display:grid;gap:6px;margin-bottom:14px;font-size:.88rem;color:#333}
+.bk-mp-opts label{display:flex;gap:8px;padding:9px;border:1px solid #e3e3e3;border-radius:6px}
+.bk-mp-pay{width:100%;border:0;background:#009ee3;color:#fff;font-weight:700;padding:13px;border-radius:6px;font-size:1rem;cursor:pointer}
+.bk-mp-x{width:100%;border:0;background:transparent;color:#009ee3;padding:10px;cursor:pointer;font-size:.9rem}
+[data-bk=wa]{text-decoration:none}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid currentColor;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+[hidden]{display:none!important}
+
+:root{--estepa:#e9dcc0;--coiron:#c9a764;--lago:#4fa3b8;--glaciar:#bfe3ea;--andes:#24303a;--fogon:#d9622b;--pasto:#6f7d3c;--blanco:#fffaf0}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--estepa);color:var(--andes);font-family:"Work Sans",system-ui,sans-serif;font-size:16px;line-height:1.5;overflow-x:hidden}
+h1,h2,h3,.an{font-family:Anton,Impact,sans-serif;font-weight:400;line-height:.95;margin:0;text-transform:uppercase;letter-spacing:.01em}
+a{color:inherit}
+.demo{background:var(--andes);color:var(--estepa);text-align:center;font-size:.8rem;padding:7px 16px}
+.shell{max-width:1240px;margin:0 auto;padding:16px}
+.bento{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));grid-auto-rows:minmax(120px,auto);gap:12px}
+.t{border-radius:22px;padding:22px;position:relative;overflow:hidden}
+.t-logo{grid-column:span 2;background:var(--andes);color:var(--estepa);display:flex;flex-direction:column;justify-content:space-between}
+.t-logo .an{font-size:2.6rem}
+.t-logo p{margin:0;font-size:.9rem;opacity:.8}
+.t-title{grid-column:span 4;grid-row:span 2;background:var(--blanco);display:flex;flex-direction:column;justify-content:flex-end}
+.t-title h1{font-size:clamp(3rem,7.4vw,7rem)}
+.t-title h1 span{color:var(--fogon)}
+.t-title p{max-width:560px;margin:14px 0 0;font-size:1.05rem}
+.t-photo{grid-column:span 2;grid-row:span 2;padding:0;background:var(--lago)}
+.t-photo img{width:100%;height:100%;object-fit:cover;display:block;min-height:260px}
+.t-photo svg{width:100%;height:100%;display:block}
+.t-rate{grid-column:span 2;background:var(--fogon);color:#fff}
+.t-rate b{font-family:Anton;font-size:3.6rem;line-height:1;display:block}
+.t-km{grid-column:span 2;background:var(--glaciar)}
+.t-km b{font-family:Anton;font-size:3rem;line-height:1;display:block}
+.t-tiro{grid-column:span 2;background:var(--pasto);color:var(--blanco)}
+.t-tiro b{font-family:Anton;font-size:2.6rem;line-height:1;display:block}
+/* matriz */
+.t-matrix{grid-column:span 6;background:var(--blanco);padding:26px}
+.t-matrix h2{font-size:clamp(2rem,4vw,3.2rem)}
+.t-matrix .sub{margin:6px 0 18px;max-width:640px}
+.mx{display:grid;grid-template-columns:150px repeat(3,minmax(0,1fr));gap:6px}
+.mx .h{font-family:Anton;text-transform:uppercase;font-size:1.05rem;padding:8px 10px;align-self:end}
+.mx .rh{font-family:Anton;text-transform:uppercase;font-size:1.3rem;display:flex;flex-direction:column;justify-content:center;padding:6px 10px}
+.mx .rh small{font-family:"Work Sans";text-transform:none;font-size:.78rem;font-weight:500;opacity:.7}
+.cell{appearance:none;border:2px solid #e2d6bd;background:var(--estepa);border-radius:14px;padding:12px;font:inherit;color:inherit;text-align:left;cursor:pointer;min-height:76px;display:flex;flex-direction:column;justify-content:space-between}
+.cell b{font-size:1rem}.cell span{font-size:.8rem;opacity:.75}
+.cell.is-on{background:var(--andes);color:var(--estepa);border-color:var(--andes)}
+.cell.na{opacity:.35;cursor:not-allowed;background:transparent;border-style:dashed}
+/* reserva tiles */
+.t-cal{grid-column:span 4;background:var(--blanco)}
+.t-sum{grid-column:span 2;grid-row:span 2;background:var(--andes);color:var(--estepa)}
+.t-pax{grid-column:span 2;background:var(--glaciar)}
+.t-lang{grid-column:span 2;background:var(--blanco)}
+.t h3{font-size:1.3rem;margin-bottom:12px}
+.bk-day{border-radius:12px;background:var(--estepa)}
+.bk-day.is-on{background:var(--fogon);color:#fff}
+.bk-day.is-few i{color:var(--fogon);font-weight:600}
+.bk-hora,.bk-lang{border:2px solid var(--andes);background:transparent;border-radius:12px}
+.bk-hora.is-on,.bk-lang.is-on{background:var(--andes);color:var(--estepa)}
+.bk-step button{border:2px solid var(--andes);background:transparent;border-radius:10px}
+.bk-res-t{font-family:Anton;text-transform:uppercase;font-size:1.7rem;color:#fff;margin-bottom:10px;line-height:1}
+.bk-res-l{border-bottom:1px solid rgba(233,220,192,.15)}
+.bk-res-tot b{font-family:Anton;font-size:1.8rem;color:#fff;font-weight:400}
+.bk-res-sena b{color:var(--coiron)}
+.bk-ahorro{background:rgba(233,220,192,.08);border-radius:10px;padding:10px}
+.bk-falta{color:#ffb08a}.bk-ok{color:#c5e8a0}
+.t-sum input{width:100%;padding:12px;border-radius:12px;border:0;margin:14px 0 4px;font:inherit}
+.cb{display:block;width:100%;text-align:center;border:0;border-radius:14px;padding:14px;font:inherit;font-weight:600;margin-top:8px;cursor:pointer;text-decoration:none}
+.cb.mp{background:#009ee3;color:#fff}.cb.mp:disabled{opacity:.4;cursor:not-allowed}
+.cb.wa{background:var(--fogon);color:#fff}
+.t-info{grid-column:span 3;background:var(--blanco)}
+.t-wide{grid-column:span 4}
+.t-info2{grid-column:span 3;background:var(--coiron)}
+.t-info p,.t-info2 p{margin:0}
+.t-foot{grid-column:span 6;background:var(--andes);color:var(--estepa);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:.9rem}
+.t-foot .pie{width:100%;border-top:1px solid #3a4854;padding-top:12px;font-size:.8rem;opacity:.85}
+.wa-f{position:fixed;right:16px;bottom:16px;z-index:40;background:#25d366;color:#05301a;font-weight:700;border-radius:30px;padding:11px 16px;text-decoration:none;font-size:.9rem;box-shadow:0 6px 18px rgba(0,0,0,.2)}
+@media (max-width:960px){
+ .bento{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .t-logo,.t-title,.t-matrix,.t-cal,.t-sum,.t-info,.t-info2,.t-foot{grid-column:span 2}
+ .t-photo{grid-column:span 2;grid-row:auto;height:260px}
+ .t-rate,.t-km,.t-tiro,.t-pax,.t-lang{grid-column:span 1}
+ .t-tiro{grid-column:span 2}.t-wide{grid-column:span 2}
+ .t-sum{order:2}.t-pax,.t-lang{order:1}.t-info2,.t-info:not(.t-wide),.t-foot{order:3}
+ .t-title{grid-row:auto}
+ .t-sum{grid-row:auto}
+}
+@media (max-width:620px){
+ .t-pax,.t-lang{grid-column:span 2}
+ .mx{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .mx .h0{display:none}
+ .mx .rh{grid-column:1/-1;flex-direction:row;align-items:baseline;gap:10px;padding:10px 2px 2px}
+ .cell{min-height:64px;padding:9px}.cell b{font-size:.9rem}
+ .t{padding:18px}.t-matrix{padding:18px}
+ .t-rate b,.t-km b{font-size:2.4rem}
+}
+</style>
+</head>
+<body>
+<div class="demo">Prototipo de demostración preparado para Cerro Frías · Precios y disponibilidad de ejemplo</div>
+<div class="shell">
+<div class="bento">
+  <div class="t t-logo"><div class="an">Cerro Frías</div><p>Estancia Alice · Ruta Provincial 11, a 25 km de El Calafate</p></div>
+  <div class="t t-title"><h1>Subí al cerro.<br><span>Bajá a comer.</span></h1><p>En 4x4, a caballo, colgado de la tirolesa o caminando. Arriba, la vista al Lago Argentino y a los Andes; abajo, el refugio con almuerzo, merienda o cena.</p></div>
+  <div class="t t-photo"><img src="https://cerrofrias.com/wp-content/uploads/2025/09/4x4-_06-Cerro-Frias-2-1.jpg" alt="Camioneta 4x4 de Cerro Frías en la cima con vista al Lago Argentino" onerror="this.outerHTML=document.getElementById('cerroSvg').innerHTML"></div>
+  <div class="t t-rate"><b>4,8</b>en Google, con más de 1.000 reseñas</div>
+  <div class="t t-km"><b>25 km</b>de El Calafate, con el Lago Argentino y los Andes de frente</div>
+
+  <div class="t t-matrix" id="combos">
+    <h2>Armá tu combinación</h2>
+    <p class="sub">Elegís cómo subir y en qué momento del día. Cada salida dura unas 4 horas con la comida en el refugio incluida.</p>
+    <div class="mx" id="mx" role="group" aria-label="Combinaciones de actividad y comida"></div>
+  </div>
+
+  <div class="t t-tiro"><b>4 × 500 m</b>tramos de tirolesa sobre el cañadón; para colgarse sobre la estepa</div>
+  <div class="t t-info t-wide"><h3>Trekking full day</h3><p>Para los que quieren caminar en serio: 8 a 9 horas de dificultad alta hasta la cumbre y vuelta por el filo. Lo encontrás en la última fila de la matriz.</p></div>
+
+  <div class="t t-cal" id="reservar"><h3>Día</h3><div data-bk="cal"></div><h3 style="margin-top:16px">Horario de salida</h3><div data-bk="horas"></div></div>
+  <div class="t t-sum">
+    <div data-bk="resumen"></div>
+    <input data-bk="nombre" placeholder="Nombre para la reserva" aria-label="Nombre para la reserva">
+    <button type="button" class="cb mp" data-bk="pagar">Pagar seña</button>
+    <a class="cb wa" data-bk="wa" href="#">Confirmar por WhatsApp</a>
+  </div>
+  <div class="t t-pax"><h3>Quiénes van</h3><div data-bk="pax"></div></div>
+  <div class="t t-lang"><h3>Guía en</h3><div data-bk="idioma"></div><div data-exw style="margin-top:12px"><h3>Extras</h3><div data-bk="extras"></div></div></div>
+
+  <div class="t t-info2"><h3>Traslado incluido</h3><p>Te buscamos por tu alojamiento en El Calafate y te devolvemos al terminar. Llevá abrigo y protector: arriba del cerro el viento manda.</p></div>
+  <div class="t t-info"><h3>Promo vigente</h3><p>20% off en trekking y tirolesa con precio congelado. En la matriz ya ves el precio con descuento aplicado.</p></div>
+
+  <div class="t t-foot">
+    <div><strong>Cerro Frías</strong><br>Estancia Alice, RP 11 · El Calafate, Santa Cruz</div>
+    <div>WhatsApp <a href="https://wa.me/5492966479567">+54 9 2966 47-9567</a><br>reservas@cerrofrias.com · @cerrofriasoficial</div>
+    <div class="pie">Prototipo preparado para Cerro Frías por Resolviendo Kos · <a href="https://resolviendokos.com">resolviendokos.com</a> · No es la web oficial</div>
+  </div>
+</div>
+</div>
+<template id="cerroSvg"><svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="400" height="400" fill="#bfe3ea"/><path d="M0 210 L80 150 L130 180 L200 110 L260 170 L320 130 L400 180 V400 H0Z" fill="#fffaf0"/><path d="M0 250 C120 230 260 240 400 230 V400 H0Z" fill="#4fa3b8"/><path d="M0 300 C140 270 260 320 400 290 V400 H0Z" fill="#c9a764"/><path d="M0 340 C140 330 270 350 400 335 V400 H0Z" fill="#6f7d3c"/></svg></template>
+<a class="wa-f" href="https://wa.me/5492966479567" target="_blank" rel="noopener">WhatsApp</a>
+<script>
+var ACT=[{k:'4x4',n:'4x4',d:'Baja',sub:'Dificultad baja'},{k:'cab',n:'Cabalgata',d:'Baja',sub:'Dificultad baja'},{k:'tiro',n:'Tirolesa',d:'Moderada',sub:'Dificultad moderada'},{k:'trek',n:'Trekking',d:'Moderada',sub:'Dificultad moderada'}];
+var COM=[{k:'alm',n:'Almuerzo',h:['10:00']},{k:'mer',n:'Merienda',h:['15:00']},{k:'cen',n:'Cena',h:['18:30']}];
+var BASE={'4x4':98000,'cab':105000,'tiro':112000,'trek':84000}, ADD={alm:0,mer:-12000,cen:14000};
+var NA={'tiro-cen':1,'trek-cen':1};
+var tours=[];
+ACT.forEach(function(a){COM.forEach(function(c){ if(NA[a.k+'-'+c.k]) return; var p=BASE[a.k]+ADD[c.k]; tours.push({id:a.k+'-'+c.k,nombre:a.n+' y '+c.n.toLowerCase(),dur:'4 horas',dif:a.d,punto:'Pickup en tu alojamiento de El Calafate',temporada:'Septiembre a abril',precioRes:p,precioExt:Math.round(p*1.25/1000)*1000,horarios:c.h,cupo:a.k==='cab'?10:16,meses:[8,9,10,11,0,1,2,3]}); });});
+tours.push({id:'trek-full',nombre:'Trekking full day',dur:'8 a 9 horas',dif:'Alta',punto:'Pickup en tu alojamiento',temporada:'Octubre a abril',precioRes:135000,precioExt:170000,horarios:['08:30'],cupo:12,menores:false,meses:[9,10,11,0,1,2,3]});
+window.BK={negocio:'Cerro Frías',wa:'5492966479567',sena:.3,calMode:'grid',idiomas:['Español','English','Português'],scrollTo:'#reservar',tours:tours};
+/* Motor de reserva demo · Resolviendo Kos */
+(function(){
+  var C = window.BK; if(!C) return;
+  var root = document.querySelector('[data-bk-root]') || document;
+  var $ = function(k){ return root.querySelector('[data-bk="'+k+'"]'); };
+  var fmt = function(n){ return '$' + Math.round(n).toLocaleString('es-AR'); };
+  var DIAS = ['dom','lun','mar','mié','jue','vie','sáb'];
+  var DIASL = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+  var MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  var hoy = new Date(); hoy.setHours(0,0,0,0);
+  var S = { tour: C.tours[0].id, fecha: null, hora: null, res: C.paxIni != null ? C.paxIni : 2, ext: 0, men: 0, idioma: (C.idiomas||['Español'])[0], extras: {}, pagado: false, mes: null };
+  var T = function(){ for(var i=0;i<C.tours.length;i++){ if(C.tours[i].id===S.tour) return C.tours[i]; } return C.tours[0]; };
+  function hash(s){ var h=2166136261; for(var i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,16777619);} return (h>>>0); }
+  function key(d){ return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
+  function enTemporada(t,d){ return !t.meses || t.meses.indexOf(d.getMonth())>=0; }
+  function opera(t,d){ if(t.dias && t.dias.indexOf(d.getDay())<0) return false; return enTemporada(t,d) && d>=hoy; }
+  function cupos(t,d,h){ var cap=t.cupo||10; var x=hash(t.id+key(d)+(h||'')) % 100; if(d.getTime()===hoy.getTime()) x=x%40; if(x<10) return 0; if(x<28) return Math.max(1,(x%3)+1); return Math.max(2, Math.round(cap*(x/100))); }
+  function cuposDia(t,d){ var hs=t.horarios||['—']; var tot=0; hs.forEach(function(h){ tot+=cupos(t,d,h); }); return tot; }
+  function pax(){ return S.res+S.ext+S.men; }
+  function extrasTotal(){ var t=T(), s=0; (t.extras||[]).forEach(function(e){ if(S.extras[e.id]) s += e.porPersona ? e.precio*pax() : e.precio; }); return s; }
+  function total(){ var t=T(); return S.res*t.precioRes + S.ext*t.precioExt + S.men*Math.round(t.precioRes*(t.menorFactor||0.5)) + extrasTotal(); }
+  function ddmm(d){ return DIASL[d.getDay()]+' '+d.getDate()+' de '+MESES[d.getMonth()]; }
+  function fire(){ document.dispatchEvent(new CustomEvent('bk:change',{detail:{S:S,tour:T(),total:total()}})); }
+
+  /* --- tours --- */
+  function renderTours(){
+    var el=$('tours'); if(!el) return;
+    if(el.tagName==='SELECT'){ el.innerHTML=C.tours.map(function(t){return '<option value="'+t.id+'">'+t.nombre+'</option>';}).join(''); el.value=S.tour; el.onchange=function(){ setTour(el.value); }; return; }
+    el.innerHTML = C.tours.map(function(t){
+      return '<button type="button" class="bk-tour'+(t.id===S.tour?' is-on':'')+'" data-id="'+t.id+'" aria-pressed="'+(t.id===S.tour)+'"><span class="bk-tour-n">'+t.nombre+'</span><span class="bk-tour-m">'+(t.dur||'')+(t.dif?' · '+t.dif:'')+'</span><span class="bk-tour-p">desde '+fmt(t.precioRes)+'</span></button>';
+    }).join('');
+    el.querySelectorAll('.bk-tour').forEach(function(b){ b.onclick=function(){ setTour(b.getAttribute('data-id')); }; });
+  }
+  function setTour(id, scroll){
+    S.tour=id; S.hora=null; S.extras={};
+    if(S.fecha && !opera(T(),S.fecha)) S.fecha=null;
+    renderAll();
+    if(scroll){ var tgt=document.querySelector(C.scrollTo||'[data-bk-root]'); if(tgt) tgt.scrollIntoView({behavior:'smooth',block:'start'}); }
+  }
+  document.querySelectorAll('[data-pick-tour]').forEach(function(b){ b.addEventListener('click',function(e){ e.preventDefault(); setTour(b.getAttribute('data-pick-tour'), true); }); });
+
+  /* --- ficha --- */
+  function renderFicha(){
+    var el=$('ficha'); if(!el) return; var t=T();
+    var rows=[['Duración',t.dur],['Dificultad',t.dif],['Punto de encuentro',t.punto],['Temporada',t.temporada],['Edad mínima',t.edad]].filter(function(r){return r[1];});
+    el.innerHTML='<dl class="bk-dl">'+rows.map(function(r){return '<div><dt>'+r[0]+'</dt><dd>'+r[1]+'</dd></div>';}).join('')+'</dl>'+
+      (t.incluye?'<p class="bk-inc-t">Incluye</p><ul class="bk-inc">'+t.incluye.map(function(i){return '<li>'+i+'</li>';}).join('')+'</ul>':'');
+  }
+
+  /* --- calendario --- */
+  function firstOpen(t){ var d=new Date(hoy); for(var i=0;i<370;i++){ if(opera(t,d)) return new Date(d); d.setDate(d.getDate()+1);} return new Date(hoy); }
+  function renderCal(){
+    var el=$('cal'); if(!el) return; var t=T(); var mode=C.calMode||'grid';
+    var days=[]; var start;
+    if(mode==='grid'){
+      if(!S.mes){ var f=firstOpen(t); S.mes=new Date(f.getFullYear(), f.getMonth(), 1); }
+      var m=S.mes; var first=new Date(m.getFullYear(), m.getMonth(), 1); var lead=(first.getDay()+6)%7;
+      var dim=new Date(m.getFullYear(), m.getMonth()+1, 0).getDate();
+      var html='<div class="bk-cal-h"><button type="button" class="bk-nav" data-n="-1" aria-label="Mes anterior">‹</button><strong>'+MESES[m.getMonth()]+' '+m.getFullYear()+'</strong><button type="button" class="bk-nav" data-n="1" aria-label="Mes siguiente">›</button></div>';
+      html+='<div class="bk-grid">'+['lu','ma','mi','ju','vi','sá','do'].map(function(x){return '<span class="bk-dow">'+x+'</span>';}).join('');
+      for(var i=0;i<lead;i++) html+='<span></span>';
+      for(var dd=1; dd<=dim; dd++){ var d=new Date(m.getFullYear(), m.getMonth(), dd); html+=dayBtn(t,d,dd,''); }
+      el.innerHTML=html+'</div>';
+      el.querySelectorAll('.bk-nav').forEach(function(b){ b.onclick=function(){ var n=+b.getAttribute('data-n'); var nm=new Date(S.mes.getFullYear(), S.mes.getMonth()+n, 1); var lim=new Date(hoy.getFullYear(), hoy.getMonth(),1); if(nm<lim) return; S.mes=nm; renderCal(); }; });
+    } else {
+      var n = mode==='list' ? 10 : 21; start=firstOpen(t); var d=new Date(start); var html2='';
+      var c=0, guard=0;
+      while(c<n && guard<400){ guard++; if(mode==='strip' || opera(t,d)){ html2+= mode==='list' ? listRow(t,new Date(d)) : dayBtn(t,new Date(d), d.getDate(), '<small>'+DIAS[d.getDay()]+'</small>', true); c++; } d.setDate(d.getDate()+1); }
+      el.innerHTML='<div class="bk-'+mode+'">'+html2+'</div>';
+    }
+    el.querySelectorAll('[data-d]').forEach(function(b){ b.onclick=function(){ var p=b.getAttribute('data-d').split('-'); S.fecha=new Date(+p[0],+p[1]-1,+p[2]); S.hora=null; var hs=T().horarios||[]; if(hs.length===1) S.hora=hs[0]; if(b.getAttribute('data-h')) S.hora=b.getAttribute('data-h'); renderAll(); }; });
+  }
+  function dayBtn(t,d,label,pre,showMonth){
+    var ok=opera(t,d); var q=ok?cuposDia(t,d):0; var sel=S.fecha&&d.getTime()===S.fecha.getTime();
+    var cls='bk-day'+(ok?(q===0?' is-full':(q<=3?' is-few':'')):' is-off')+(sel?' is-on':'');
+    var lab=ok?(q===0?'completo':(q<=3?'últimos '+q:q+' lugares')):(enTemporada(t,d)||d<hoy?'':'fuera de temp.');
+    var mm = showMonth && d.getDate()===1 ? '<em>'+MESES[d.getMonth()].slice(0,3)+'</em>' : '';
+    return '<button type="button" class="'+cls+'" '+((ok&&q>0)?'data-d="'+key(d)+'"':'disabled')+' aria-label="'+ddmm(d)+' '+lab+'">'+(pre||'')+mm+'<b>'+label+'</b><i>'+lab+'</i></button>';
+  }
+  function listRow(t,d){
+    var hs=t.horarios||['—'];
+    return '<div class="bk-row"><div class="bk-row-d"><b>'+d.getDate()+'</b><span>'+DIAS[d.getDay()]+' · '+MESES[d.getMonth()].slice(0,3)+'</span></div><div class="bk-row-h">'+hs.map(function(h){ var q=cupos(t,d,h); var sel=S.fecha&&d.getTime()===S.fecha.getTime()&&S.hora===h; return '<button type="button" class="bk-slot'+(q===0?' is-full':(q<=3?' is-few':''))+(sel?' is-on':'')+'" '+(q>0?'data-d="'+key(d)+'" data-h="'+h+'"':'disabled')+'><b>'+h+'</b><i>'+(q===0?'completo':(q<=3?'quedan '+q:q+' lugares'))+'</i></button>'; }).join('')+'</div></div>';
+  }
+  function renderHoras(){
+    var el=$('horas'); if(!el) return; var t=T(); var hs=t.horarios||[];
+    if(!S.fecha){ el.innerHTML='<p class="bk-hint">Elegí una fecha para ver los horarios.</p>'; return; }
+    el.innerHTML=hs.map(function(h){ var q=cupos(t,S.fecha,h); return '<button type="button" class="bk-hora'+(S.hora===h?' is-on':'')+(q===0?' is-full':'')+'" '+(q>0?'data-h="'+h+'"':'disabled')+'><b>'+h+'</b><i>'+(q===0?'completo':q+' lugares')+'</i></button>'; }).join('');
+    el.querySelectorAll('[data-h]').forEach(function(b){ b.onclick=function(){ S.hora=b.getAttribute('data-h'); renderAll(); }; });
+  }
+
+  /* --- pasajeros --- */
+  function renderPax(){
+    var el=$('pax'); if(!el) return; var t=T();
+    var filas=[['res','Residentes argentinos',t.precioRes],['ext','Extranjeros',t.precioExt]];
+    if(t.menores!==false) filas.push(['men','Menores'+(t.edadMenor?' ('+t.edadMenor+')':''),Math.round(t.precioRes*(t.menorFactor||0.5))]);
+    el.innerHTML=filas.map(function(f){ return '<div class="bk-pax-r"><div><span>'+f[1]+'</span><small>'+fmt(f[2])+' c/u</small></div><div class="bk-step"><button type="button" data-k="'+f[0]+'" data-v="-1" aria-label="Restar '+f[1]+'">−</button><output>'+S[f[0]]+'</output><button type="button" data-k="'+f[0]+'" data-v="1" aria-label="Sumar '+f[1]+'">+</button></div></div>'; }).join('');
+    el.querySelectorAll('button').forEach(function(b){ b.onclick=function(){ var k=b.getAttribute('data-k'); var v=S[k]+(+b.getAttribute('data-v')); var max=t.maxGrupo||12; if(v<0) return; if(pax()-S[k]+v>max) return; if(pax()-S[k]+v<1) return; S[k]=v; renderAll(); }; });
+  }
+  function renderIdioma(){
+    var el=$('idioma'); if(!el) return; var ids=C.idiomas||['Español','English','Português'];
+    el.innerHTML=ids.map(function(i){ return '<button type="button" class="bk-lang'+(S.idioma===i?' is-on':'')+'" aria-pressed="'+(S.idioma===i)+'">'+i+'</button>'; }).join('');
+    el.querySelectorAll('button').forEach(function(b){ b.onclick=function(){ S.idioma=b.textContent; renderAll(); }; });
+  }
+  function renderExtras(){
+    var el=$('extras'); if(!el) return; var t=T(); var ex=t.extras||[];
+    var w=document.querySelectorAll('[data-exw]'); w.forEach(function(x){x.hidden=!ex.length;}); if(!ex.length){ el.innerHTML=''; el.hidden=true; return; } el.hidden=false;
+    el.innerHTML=ex.map(function(e){ return '<label class="bk-extra"><input type="checkbox" data-e="'+e.id+'"'+(S.extras[e.id]?' checked':'')+'><span>'+e.nombre+'</span><small>+'+fmt(e.precio)+(e.porPersona?' p/p':'')+'</small></label>'; }).join('');
+    el.querySelectorAll('input').forEach(function(i){ i.onchange=function(){ S.extras[i.getAttribute('data-e')]=i.checked; renderAll(); }; });
+  }
+
+  /* --- resumen --- */
+  function listo(){ return S.fecha && (S.hora || !(T().horarios||[]).length); }
+  function renderResumen(){
+    var el=$('resumen'); if(!el) return; var t=T(); var tot=total(); var sena=tot*(C.sena||0.3);
+    var falta = !S.fecha ? 'Falta elegir la fecha' : (!listo() ? 'Falta elegir el horario' : '');
+    el.innerHTML='<div class="bk-res-t">'+t.nombre+'</div>'+
+      '<div class="bk-res-l"><span>Fecha</span><b>'+(S.fecha?ddmm(S.fecha)+(S.hora?' · '+S.hora:''):'—')+'</b></div>'+
+      '<div class="bk-res-l"><span>Grupo</span><b>'+paxTxt()+'</b></div>'+
+      '<div class="bk-res-l"><span>Guía en</span><b>'+S.idioma+'</b></div>'+
+      '<div class="bk-res-l bk-res-tot"><span>Total</span><b>'+fmt(tot)+'</b></div>'+
+      '<div class="bk-res-l bk-res-sena"><span>Seña 30% para confirmar</span><b>'+fmt(sena)+'</b></div>'+
+      '<div class="bk-res-l bk-res-rest"><span>Saldo el día de la salida</span><b>'+fmt(tot-sena)+'</b></div>'+
+      '<p class="bk-ahorro">Por una plataforma con ~25% de comisión, de esta reserva te quedarían '+fmt(tot*0.75)+'. Directo, te quedan los '+fmt(tot)+'.</p>'+
+      (falta?'<p class="bk-falta">'+falta+'</p>':'')+
+      (S.pagado?'<p class="bk-ok">Seña abonada (demo). Mandá el pedido por WhatsApp para cerrar.</p>':'');
+    var p=$('pagar'); if(p){ p.disabled=!listo(); p.textContent = S.pagado ? 'Seña abonada ✓ (demo)' : (C.txtPagar||'Pagar seña de '+fmt(sena)+' con Mercado Pago'); }
+    var w=$('wa'); if(w){ w.href='https://wa.me/'+C.wa+'?text='+encodeURIComponent(msg()); w.setAttribute('target','_blank'); w.setAttribute('rel','noopener'); }
+    var pv=$('preview'); if(pv){ pv.textContent=msg(); }
+  }
+  function paxTxt(){ var a=[]; if(S.res) a.push(S.res+' residente'+(S.res>1?'s':'')); if(S.ext) a.push(S.ext+' extranjero'+(S.ext>1?'s':'')); if(S.men) a.push(S.men+' menor'+(S.men>1?'es':'')); return a.join(', '); }
+  function msg(){
+    var t=T(); var tot=total(); var nm=$('nombre'); var nombre=nm&&nm.value.trim();
+    var ex=(t.extras||[]).filter(function(e){return S.extras[e.id];}).map(function(e){return e.nombre;});
+    var L=['Hola '+C.negocio+'! Quiero reservar desde la web:','','• Salida: '+t.nombre,'• Fecha: '+(S.fecha?ddmm(S.fecha):'(a definir)')+(S.hora?' · '+S.hora+' hs':''),'• Grupo: '+paxTxt()+' ('+pax()+' en total)','• Idioma del guía: '+S.idioma];
+    if(ex.length) L.push('• Extras: '+ex.join(', '));
+    L.push('• Total: '+fmt(tot),'• Seña 30%: '+fmt(tot*(C.sena||0.3))+(S.pagado?' (abonada por Mercado Pago)':' (pago por Mercado Pago)'));
+    if(nombre) L.push('• A nombre de: '+nombre);
+    L.push('','¿Me confirman el lugar?');
+    return L.join('\n');
+  }
+
+  /* --- pago demo --- */
+  function modal(){
+    var tot=total(); var sena=tot*(C.sena||0.3);
+    var m=document.createElement('div'); m.className='bk-modal'; m.setAttribute('role','dialog'); m.setAttribute('aria-modal','true'); m.setAttribute('aria-label','Pago de seña (demo)');
+    m.innerHTML='<div class="bk-mp"><div class="bk-mp-top"><span class="bk-mp-logo">mercado pago</span><span class="bk-mp-demo">DEMO · no se cobra nada</span></div><p class="bk-mp-to">Pagás a <b>'+C.negocio+'</b></p><p class="bk-mp-amt">'+fmt(sena)+'</p><p class="bk-mp-d">Seña 30% · '+T().nombre+(S.fecha?' · '+ddmm(S.fecha):'')+'</p><div class="bk-mp-opts"><label><input type="radio" name="mpo" checked> Dinero en cuenta</label><label><input type="radio" name="mpo"> Tarjeta de débito</label><label><input type="radio" name="mpo"> Tarjeta de crédito · hasta 3 cuotas</label></div><button type="button" class="bk-mp-pay">Pagar '+fmt(sena)+'</button><button type="button" class="bk-mp-x">Cancelar</button></div>';
+    document.body.appendChild(m);
+    var close=function(){ m.remove(); document.removeEventListener('keydown',esc); };
+    var esc=function(e){ if(e.key==='Escape') close(); };
+    document.addEventListener('keydown',esc);
+    m.querySelector('.bk-mp-x').onclick=close; m.onclick=function(e){ if(e.target===m) close(); };
+    m.querySelector('.bk-mp-pay').onclick=function(){ var b=this; b.disabled=true; b.textContent='Procesando…'; setTimeout(function(){ S.pagado=true; close(); renderAll(); var w=$('wa'); if(w) w.focus(); },700); };
+    m.querySelector('.bk-mp-pay').focus();
+  }
+  var pb=$('pagar'); if(pb) pb.addEventListener('click',function(){ if(listo()) modal(); });
+  var nm=$('nombre'); if(nm) nm.addEventListener('input',renderResumen);
+
+  function renderAll(){ renderTours(); renderFicha(); renderCal(); renderHoras(); renderPax(); renderIdioma(); renderExtras(); renderResumen(); fire(); }
+  window.BKAPI={ setTour:setTour, state:S, total:total, fmt:fmt, tour:T, render:renderAll };
+  renderAll();
+})();
+
+(function(){
+  var mx=document.getElementById('mx'),f=BKAPI.fmt;
+  var h='<div class="h h0"></div>'+COM.map(function(c){return '<div class="h h0">'+c.n+'</div>';}).join('');
+  ACT.forEach(function(a){
+    h+='<div class="rh">'+a.n+'<small>'+a.sub+'</small></div>';
+    COM.forEach(function(c){ var id=a.k+'-'+c.k; if(NA[id]){ h+='<button type="button" class="cell na" disabled><b>'+c.n+'</b><span>no disponible</span></button>'; return;} var t=tours.filter(function(x){return x.id===id;})[0]; h+='<button type="button" class="cell" data-t="'+id+'" aria-pressed="false"><b>'+c.n+'</b><span>'+c.h[0]+' hs · '+f(t.precioRes)+'</span></button>'; });
+  });
+  h+='<div class="rh">Trekking<small>Full day · dificultad alta</small></div><button type="button" class="cell" data-t="trek-full" style="grid-column:span 3"><b>Cumbre y filo, 8 a 9 horas</b><span>08:30 hs · '+f(135000)+'</span></button>';
+  mx.innerHTML=h;
+  function sync(){ var cur=BKAPI.state.tour; mx.querySelectorAll('[data-t]').forEach(function(b){ var on=b.getAttribute('data-t')===cur; b.classList.toggle('is-on',on); b.setAttribute('aria-pressed',on); }); }
+  mx.addEventListener('click',function(e){ var b=e.target.closest('[data-t]'); if(!b) return; BKAPI.setTour(b.getAttribute('data-t')); });
+  document.addEventListener('bk:change',sync); sync();
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Cerro Frías"></script>
+</body>
+</html>
