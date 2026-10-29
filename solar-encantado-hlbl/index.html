@@ -90,8 +90,10 @@ section{padding:96px 0}
 .unit{display:grid;grid-template-columns:1.1fr .9fr;gap:0;margin-top:40px;border-radius:4px;overflow:hidden;background:var(--cream)}
 .unit.rev{grid-template-columns:.9fr 1.1fr}
 .unit.rev .pics{order:2}
-.pics{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr;gap:4px;min-height:420px}
-.pics .ph:first-child{grid-row:span 2}
+.pics{display:flex;flex-direction:column;gap:4px;align-self:start}
+.pics .ph img{height:auto}
+.pics .ph.noimg{aspect-ratio:4/3}
+.pics .thumbs{display:grid;grid-template-columns:1fr 1fr;gap:4px;align-items:start}
 .utext{padding:40px 40px 36px}
 .utext h3{font-family:var(--serif);font-weight:400;font-size:clamp(30px,3vw,42px);line-height:1}
 .utext .cap{display:inline-block;margin:12px 0 16px;background:var(--wood);color:var(--cream);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:5px 12px;border-radius:999px}
@@ -181,7 +183,6 @@ footer{background:var(--night);color:#f6ead2;padding:60px 0 26px}
   .ringsec{grid-template-columns:1fr;gap:30px}
   .unit,.unit.rev{grid-template-columns:1fr}
   .unit.rev .pics{order:0}
-  .pics{min-height:300px}
   .flatg{grid-template-columns:1fr 1fr}
   .steps{grid-template-columns:1fr}
   .step{border-right:0;border-bottom:1px solid var(--line)}
@@ -195,7 +196,6 @@ footer{background:var(--night);color:#f6ead2;padding:60px 0 26px}
   .hero{min-height:620px}
   .utext{padding:26px 20px}
   .utext ul{columns:1}
-  .pics{min-height:240px}
   .valle{grid-template-columns:1fr}
   .flatg strong{font-size:32px}
   section{padding:64px 0}
@@ -486,7 +486,7 @@ $('#ring').addEventListener('click', e => { const s = e.target.closest('.seg'); 
 $('#ring').addEventListener('keydown', e => { if (e.key === 'Enter'){ const s = e.target.closest('.seg'); if (s){ ringSel = +s.dataset.i; drawRing(ringSel); } } });
 
 /* Unidades */
-$('#unitsBox').innerHTML = UNITS.map((u, i) => `<article class="unit ${i ? 'rev' : ''}"><div class="pics">${u.imgs.map((s, k) => `<div class="ph" data-label="${u.short}"><img loading="lazy" src="${s}" alt="${u.name}, foto ${k + 1}"></div>`).join('')}</div>
+$('#unitsBox').innerHTML = UNITS.map((u, i) => `<article class="unit ${i ? 'rev' : ''}"><div class="pics">${(() => { const ph = (s, k) => `<div class="ph" data-label="${u.short}"><img loading="lazy" src="${s}" alt="${u.name}, foto ${k + 1}"></div>`; return ph(u.imgs[0], 0) + `<div class="thumbs">${u.imgs.slice(1).map((s, k) => ph(s, k + 1)).join('')}</div>`; })()}</div>
   <div class="utext"><h3>${u.name}</h3><span class="cap">Hasta ${u.cap} personas</span><p style="color:var(--soft);margin-bottom:16px">${u.txt}</p><ul>${u.feat.map(f => `<li>${f}</li>`).join('')}</ul>
   <div class="from"><span><strong>${RK.money(u.price)}</strong> / noche en baja <span class="tag">ejemplo</span></span><a class="btn sun" href="#reservar" data-u="${u.id}">Elegir ${u.short.toLowerCase()}</a></div></div></article>`).join('');
 fb($('#unitsBox'));
