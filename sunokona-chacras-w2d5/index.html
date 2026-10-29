@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Sunokona · Chacras de Coria</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--papel:#F2EEE6;--tinta:#1D1A17;--uva:#5B2340;--sumi:#2D2A26;--ocre:#C48A3A;--olivo:#6C7448;--gris:#6F6860;--linea:#D8D0C2;--book:#2E5BC9;--air:#E0565B}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow-x:clip}
+body{font-family:Figtree,system-ui,sans-serif;background:var(--papel);color:var(--tinta);line-height:1.55}
+img{display:block;max-width:100%}
+button,select{font:inherit;color:inherit}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--ocre);outline-offset:3px}
+.mc{font-family:Marcellus,serif;font-weight:400;letter-spacing:.01em}
+.aviso{background:var(--sumi);color:#E7E0D3;font-size:13px;padding:7px 16px;text-align:center}
+.cab{display:flex;justify-content:space-between;align-items:center;padding:18px 36px}
+.cab .m{font-family:Marcellus;font-size:26px;letter-spacing:.14em;text-decoration:none}
+.cab nav{display:flex;gap:22px;font-size:14px}
+.cab nav a{text-decoration:none;color:var(--gris)}
+.cab .wa{background:var(--tinta);color:var(--papel);padding:9px 16px;text-decoration:none;font-size:14px;font-weight:600}
+
+/* tríptico */
+.trip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border-top:1px solid var(--linea);border-bottom:1px solid var(--linea)}
+.hoja{position:relative;border:0;background:none;text-align:left;cursor:pointer;padding:0;border-right:1px solid var(--linea);display:flex;flex-direction:column}
+.hoja:last-child{border-right:0}
+.hoja .ph{aspect-ratio:3/4;position:relative;overflow:hidden;background:#D9CFBF}
+.hoja .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.hoja:hover .ph img{transform:scale(1.03)}
+.hoja .kanji{position:absolute;top:18px;right:18px;writing-mode:vertical-rl;font-family:Marcellus;font-size:15px;letter-spacing:.3em;color:#fff;background:rgba(29,26,23,.55);padding:12px 6px;z-index:2}
+.hoja .tx{padding:20px 24px 24px}
+.hoja h2{font-size:38px;line-height:1}
+.hoja .sig{font-size:14px;color:var(--gris);margin:4px 0 10px;font-style:italic}
+.hoja ul{list-style:none;font-size:14px;display:grid;gap:3px}
+.hoja ul li:before{content:"";display:inline-block;width:12px;height:1px;background:var(--ocre);margin-right:8px;vertical-align:4px}
+.hoja .sel{display:inline-block;margin-top:14px;font-size:13px;font-weight:600;border-bottom:1px solid var(--tinta);padding-bottom:1px}
+.hoja[aria-pressed=true]{background:#EAE3D6}
+.hoja[aria-pressed=true] .sel{color:var(--uva);border-color:var(--uva)}
+.hoja[aria-pressed=true] .ph:after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 0 6px var(--uva);z-index:2}
+
+.intro{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:48px;padding:56px 36px;align-items:end}
+.intro h1{font-size:clamp(34px,4.4vw,60px);line-height:1.05}
+.intro p{color:var(--gris);max-width:58ch}
+.intro .rt{display:flex;gap:24px;margin-top:18px;font-size:14px}
+.intro .rt b{display:block;font-family:Marcellus;font-weight:400;font-size:30px;color:var(--uva)}
+
+/* reserva */
+.res{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:0;background:#fff;margin:0 36px;border:1px solid var(--linea)}
+.cal-w{padding:26px 28px;border-right:1px solid var(--linea)}
+.cal-w h3{font-size:26px}
+.cal-w .q{font-size:14px;color:var(--gris);margin:4px 0 14px}
+.meses{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.nav2{display:flex;justify-content:space-between;margin-bottom:6px}
+.nav2 button{border:1px solid var(--linea);background:none;width:34px;height:34px;cursor:pointer}
+.cal-t{font-family:Marcellus;font-size:19px;text-transform:capitalize;margin-bottom:6px}
+.cal-g{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.cal-g i{font-style:normal;font-size:11px;color:var(--gris);text-align:center}
+.cal-g button{aspect-ratio:1;border:0;background:transparent;cursor:pointer;font-size:13.5px}
+.cal-g button:hover{background:#F1EBDF}
+.cal-g button.x{color:#BDB4A6;cursor:not-allowed;text-decoration:line-through}
+.cal-g button.x.c-airbnb{background:linear-gradient(transparent 82%,var(--air) 82%)}
+.cal-g button.x.c-booking{background:linear-gradient(transparent 82%,var(--book) 82%)}
+.cal-g button.x.c-directo{background:linear-gradient(transparent 82%,var(--olivo) 82%)}
+.cal-g button.r{background:#EFE6D6}
+.cal-g button.s{background:var(--uva);color:#fff}
+.cal-g button.p{opacity:.3;pointer-events:none}
+.ley{display:flex;gap:16px;font-size:12px;color:var(--gris);margin-top:12px;flex-wrap:wrap}
+.ley i{display:inline-block;width:14px;height:3px;margin-right:5px;vertical-align:3px}
+.cuenta{padding:26px 28px;background:#FBF9F5}
+.cuenta .pax{display:flex;align-items:center;gap:12px;margin-bottom:14px;font-size:15px}
+.cuenta .pax button{width:34px;height:34px;border:1px solid var(--tinta);background:none;cursor:pointer;font-size:17px}
+.cmp{font-size:14px;width:100%;border-collapse:collapse;margin-top:6px}
+.cmp th{font-weight:600;text-align:right;font-size:12.5px;color:var(--gris);padding:6px 0;border-bottom:1px solid var(--linea)}
+.cmp th:first-child{text-align:left}
+.cmp td{padding:7px 0 7px 10px;border-bottom:1px dashed var(--linea);text-align:right;white-space:nowrap}
+.cmp td:first-child{text-align:left;white-space:normal}
+.cmp tr.t td{font-weight:700;font-size:17px;border-bottom:0}
+.cmp td.dir{color:var(--uva)}
+.ahorro{margin-top:10px;font-size:14px;background:#F0E7EC;color:var(--uva);padding:10px 12px}
+.ir{display:block;text-align:center;margin-top:14px;background:var(--uva);color:#fff;text-decoration:none;padding:14px;font-weight:600}
+.ir.off{background:#B5ACA2;pointer-events:none}
+.msg{white-space:pre-wrap;font-size:12.5px;color:var(--gris);margin-top:10px}
+.nota{font-size:13px;color:var(--gris);margin-top:8px}
+
+.lugar{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;margin:56px 36px 0}
+.lugar .im{position:relative;min-height:340px;background:#C9BBA4;overflow:hidden}
+.lugar .im img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.lugar .tx{background:var(--sumi);color:#E7E0D3;padding:36px}
+.lugar h2{font-size:34px;line-height:1.1;color:#fff}
+.lugar p{margin-top:12px;color:#C9C0B2}
+.lugar dl{margin-top:18px;display:grid;grid-template-columns:auto 1fr;gap:6px 16px;font-size:14px}
+.lugar dt{color:var(--ocre)}
+footer{padding:36px;font-size:14px;color:var(--gris)}
+footer .fx{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;border-top:1px solid var(--linea);padding-top:20px}
+footer b{font-family:Marcellus;font-weight:400;letter-spacing:.14em;font-size:20px;color:var(--tinta);display:block}
+footer .legal{margin-top:14px;font-size:13px}
+@media (max-width:900px){
+ .cab{padding:14px 16px}.cab nav{display:none}
+ .trip{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:82%;overflow-x:auto;scroll-snap-type:x mandatory}
+ .hoja{scroll-snap-align:start}
+ .hoja .ph{aspect-ratio:4/3}
+ .intro{grid-template-columns:1fr;gap:16px;padding:36px 16px}
+ .res{grid-template-columns:1fr;margin:0 16px}
+ .cal-w{border-right:0;border-bottom:1px solid var(--linea);padding:20px 16px}
+ .meses{grid-template-columns:1fr}
+ .meses>div:nth-child(2){display:none}
+ .cuenta{padding:20px 16px}
+ .lugar{grid-template-columns:1fr;margin:36px 16px 0}.lugar .im{min-height:220px}.lugar .tx{padding:24px 18px}
+ footer{padding:28px 16px}
+}
+</style>
+</head>
+<body>
+<div class="aviso">Prototipo de demostración preparado para Sunokona · Precios y disponibilidad de ejemplo</div>
+<header class="cab"><a class="m" href="#">SUNOKONA</a><nav><a href="#trip">Departamentos</a><a href="#res">Reservar</a><a href="#lugar">Chacras</a></nav><a class="wa" href="https://wa.me/542615607355" target="_blank" rel="noopener">WhatsApp</a></header>
+
+<section class="trip" id="trip" aria-label="Elegí departamento"></section>
+
+<section class="intro">
+ <h1 class="mc">Tres departamentos en Chacras de Coria. Elegí uno y reservá sin intermediarios.</h1>
+ <div><p>Liniers Green Apartments 2, con seguridad las 24 horas, pileta compartida a 80 metros, parrilla propia en cada unidad y ropa blanca incluida. La plaza de Chacras, los restaurantes y las bodegas, a una caminata.</p>
+ <div class="rt"><div><b>4,99</b>calificación en Airbnb</div><div><b>1%</b>entre los mejores de Airbnb</div><div><b>3</b>unidades, un solo calendario</div></div></div>
+</section>
+
+<section class="res" id="res">
+ <div class="cal-w"><h3 class="mc" id="calT"></h3><p class="q">Tocá la llegada y la salida. Las noches tachadas ya están reservadas.</p>
+  <div class="nav2"><button type="button" id="prev" aria-label="Meses anteriores">‹</button><button type="button" id="next" aria-label="Meses siguientes">›</button></div>
+  <div class="meses" id="meses"></div>
+  <div class="ley"><span><i style="background:var(--air)"></i>Airbnb</span><span><i style="background:var(--book)"></i>Booking</span><span><i style="background:var(--olivo)"></i>Directo</span><span>Sincronización de ejemplo</span></div></div>
+ <div class="cuenta" id="cuenta"></div>
+</section>
+
+<section class="lugar" id="lugar">
+ <div class="im"><svg viewBox="0 0 400 340" preserveAspectRatio="xMidYMid slice" style="position:absolute;inset:0;width:100%;height:100%" aria-hidden="true"><rect width="400" height="340" fill="#C9BBA4"/><path d="M0 150 L70 90 L130 130 L200 60 L270 120 L340 80 L400 110 V340 H0Z" fill="#8C7B66"/><path d="M110 74 L130 92 H92Z M200 60 L222 80 H178Z" fill="#F2EEE6"/>${""}</svg><img src="https://www.sunokona.com/assets/mendoza-valle-uco-1920-1920-v13.webp" alt="Viñedos de Mendoza" loading="lazy" onerror="this.remove()"></div>
+ <div class="tx"><h2 class="mc">Vendimia, fines de semana largos y el resto del año</h2><p>Las tarifas cambian solas según la fecha. El huésped ve el total antes de escribir, y el mensaje llega con todo cargado.</p>
+ <dl><dt>Vendimia</dt><dd>del 26 de febrero al 7 de marzo, mínimo 3 noches</dd><dt>Finde largo</dt><dd>noviembre, diciembre, Carnaval y Semana Santa, mínimo 3 noches</dd><dt>Invierno</dt><dd>del 10 al 25 de julio, ruta a Penitentes y Las Leñas</dd><dt>Resto del año</dt><dd>tarifa base, mínimo 2 noches</dd></dl></div>
+</section>
+
+<footer><div class="fx"><div><b>SUNOKONA</b>Liniers 1645, Liniers Green Apartments 2 · Chacras de Coria, Luján de Cuyo, Mendoza</div><div>WhatsApp +54 261 560-7355 · @sunokona.arg</div></div>
+<p class="legal">Prototipo preparado para Sunokona por Resolviendo Kos · resolviendokos.com · No es la web oficial</p></footer>
+
+<script>
+/* motor de reservas de ejemplo: temporadas, ocupación sincronizada (simulada), cotización y WhatsApp */
+const E=(()=>{
+  const MES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  const DIA=['lu','ma','mi','ju','vi','sá','do'];
+  const pad=n=>String(n).padStart(2,'0');
+  const d=s=>{const [y,m,dd]=s.split('-').map(Number);return new Date(y,m-1,dd)};
+  const iso=x=>x.getFullYear()+'-'+pad(x.getMonth()+1)+'-'+pad(x.getDate());
+  const add=(x,n)=>{const y=new Date(x);y.setDate(y.getDate()+n);return y};
+  const nights=(a,b)=>(a&&b)?Math.round((d(b)-d(a))/864e5):0;
+  const ars=n=>'$ '+Math.round(n).toLocaleString('es-AR');
+  const usd=n=>'USD '+Math.round(n).toLocaleString('es-AR');
+  const corta=s=>{if(!s)return'';const x=d(s);return x.getDate()+' '+MES[x.getMonth()].slice(0,3)};
+  const larga=s=>{if(!s)return'';const x=d(s);return x.getDate()+' de '+MES[x.getMonth()]};
+  function rnd(str){let h=2166136261;for(const c of String(str)){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return()=>{h^=h<<13;h^=h>>>17;h^=h<<5;return((h>>>0)%100000)/100000}}
+  const SRC=['Booking','Airbnb','Directo'];
+  /* ocupación de ejemplo: devuelve Map fecha -> canal */
+  function ocupacion(id,desde='2026-11-01',dias=330){
+    const r=rnd(id),m=new Map(),base=d(desde);let i=Math.floor(r()*5);
+    while(i<dias){const largo=2+Math.floor(r()*6),canal=SRC[Math.floor(r()*3)];
+      for(let k=0;k<largo;k++)m.set(iso(add(base,i+k)),canal);
+      i+=largo+6+Math.floor(r()*16)}
+    return m}
+  function temporada(T,f){for(const t of T)if(f>=t.desde&&f<=t.hasta)return t;return T.find(t=>t.base)||{nombre:'Base',mult:1}}
+  /* cotiza noche por noche */
+  function cotizar(p,T,a,b){
+    const n=nights(a,b);if(n<=0)return null;let total=0;const det={};let choque=null;const occ=p._occ||(p._occ=ocupacion(p.id));
+    for(let k=0;k<n;k++){const f=iso(add(d(a),k));const t=temporada(T,f);const v=p.noche*t.mult;total+=v;
+      det[t.nombre]=(det[t.nombre]||{n:0,v:0});det[t.nombre].n++;det[t.nombre].v+=v;if(occ.has(f)&&!choque)choque=f}
+    const minimo=Math.max(...Object.keys(det).map(k=>(T.find(t=>t.nombre===k)||{}).min||1));
+    return{noches:n,total,det,choque,minimo}}
+  function libre(p,a,b){const occ=p._occ||(p._occ=ocupacion(p.id));const n=nights(a,b);for(let k=0;k<n;k++)if(occ.has(iso(add(d(a),k))))return false;return true}
+  const wa=(num,txt)=>'https://wa.me/'+num+'?text='+encodeURIComponent(txt);
+  /* grilla de un mes: celdas con data-f, clases: x (ocupado, data-c canal), s (seleccionado), r (rango), p (pasado/fuera) */
+  function mes(y,m,occ,a,b,opt={}){
+    const first=new Date(y,m,1),off=(first.getDay()+6)%7,len=new Date(y,m+1,0).getDate();
+    let h='<div class="'+(opt.cls||'cal')+'"><div class="cal-t">'+MES[m]+' '+y+'</div><div class="cal-g">'+DIA.map(x=>'<i>'+x+'</i>').join('');
+    for(let k=0;k<off;k++)h+='<span></span>';
+    for(let k=1;k<=len;k++){const f=y+'-'+pad(m+1)+'-'+pad(k);let c='';const o=occ&&occ.get(f);
+      if(o)c+=' x c-'+o.toLowerCase();if(f===a||f===b)c+=' s';else if(a&&b&&f>a&&f<b)c+=' r';if(opt.min&&f<opt.min)c+=' p';
+      h+='<button type="button" data-f="'+f+'" class="'+c.trim()+'"'+(o?' title="Ocupado · '+o+'" aria-label="'+k+' ocupado por '+o+'"':' aria-label="'+k+' de '+MES[m]+'"')+'>'+k+'</button>'}
+    return h+'</div></div>'}
+  return{MES,DIA,d,iso,add,nights,ars,usd,corta,larga,ocupacion,temporada,cotizar,libre,wa,mes,rnd}
+})();
+
+const WA='542615607355';const A='https://www.sunokona.com/assets/';
+const U=[
+ {id:'imoto',n:'Imōto',jp:'妹 · IMŌTO',sig:'“hermana menor”',cap:4,noche:62000,f:A+'imoto-01.avif',it:['Living luminoso con sillón','Cocina equipada','Parrilla privada','Pileta y estacionamiento']},
+ {id:'keiken',n:'Keiken',jp:'経験 · KEIKEN',sig:'“experiencia”',cap:4,noche:68000,f:A+'keiken-01.avif',it:['Patio con parrilla','Losa radiante','A menos de una cuadra de la plaza','Cuna y silla para bebé a pedido']},
+ {id:'senshi',n:'Senshi',jp:'戦士 · SENSHI',sig:'“guerrero”',cap:4,noche:65000,f:A+'senshi-01.avif',it:['Living comedor','Parrilla privada en el patio','Acceso a la pileta','Hasta 4 huéspedes']}];
+const T=[
+ {nombre:'Finde largo',desde:'2026-11-20',hasta:'2026-11-23',mult:1.3,min:3},
+ {nombre:'Finde largo',desde:'2026-12-05',hasta:'2026-12-08',mult:1.3,min:3},
+ {nombre:'Fiestas',desde:'2026-12-24',hasta:'2027-01-01',mult:1.25,min:3},
+ {nombre:'Carnaval',desde:'2027-02-06',hasta:'2027-02-09',mult:1.35,min:3},
+ {nombre:'Vendimia',desde:'2027-02-26',hasta:'2027-03-07',mult:1.6,min:3},
+ {nombre:'Semana Santa',desde:'2027-03-25',hasta:'2027-03-28',mult:1.35,min:3},
+ {nombre:'Vacaciones de invierno',desde:'2027-07-10',hasta:'2027-07-25',mult:1.25,min:3},
+ {nombre:'Tarifa base',base:true,mult:1,min:2}];
+const $=i=>document.getElementById(i);const st={u:U[1],a:null,b:null,cm:[2026,10],pax:2};
+function sumi(i){const cols=['#5B2340','#6C7448','#C48A3A'];return`<svg viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice" style="position:absolute;inset:0;width:100%;height:100%" aria-hidden="true"><rect width="300" height="400" fill="#E4DACA"/><circle cx="${90+i*60}" cy="120" r="54" fill="${cols[i]}" opacity=".85"/><path d="M0 300 C60 270 110 290 160 262 S250 250 300 270 V400 H0Z" fill="#2D2A26" opacity=".85"/><path d="M0 330 C70 312 140 330 210 306 S280 300 300 312 V400 H0Z" fill="#2D2A26"/>${[...Array(9)].map((_,k)=>`<path d="M${20+k*32} 400 V${352-(k%3)*6}" stroke="#6C7448" stroke-width="3"/><circle cx="${20+k*32}" cy="${348-(k%3)*6}" r="5" fill="#5B2340"/>`).join('')}</svg>`}
+function trip(){$('trip').innerHTML=U.map(u=>`<button type="button" class="hoja" data-id="${u.id}" aria-pressed="${st.u===u}"><div class="ph">${sumi(U.indexOf(u))}<img src="${u.f}" alt="Departamento ${u.n}" loading="lazy" onerror="this.remove()"><span class="kanji">${u.jp}</span></div><div class="tx"><h2 class="mc">${u.n}</h2><p class="sig">${u.sig}</p><ul>${u.it.map(i=>'<li>'+i+'</li>').join('')}</ul><span class="sel">${st.u===u?'Elegido':'Ver calendario'}</span></div></button>`).join('')}
+$('trip').onclick=e=>{const b=e.target.closest('.hoja');if(!b)return;st.u=U.find(u=>u.id===b.dataset.id);st.a=st.b=null;trip();cal();cuenta();if(innerWidth<900)$('res').scrollIntoView({behavior:'smooth'})};
+function sh(n){let[y,m]=st.cm;m+=n;if(m<0){m=11;y--}if(m>11){m=0;y++}st.cm=[y,m];cal()}
+$('prev').onclick=()=>sh(-1);$('next').onclick=()=>sh(1);
+function cal(){const u=st.u;const o=u._o||(u._o=E.ocupacion(u.id));const[y,m]=st.cm;let y2=y,m2=m+1;if(m2>11){m2=0;y2++}
+ $('calT').textContent='Calendario de '+u.n;$('meses').innerHTML=E.mes(y,m,o,st.a,st.b,{min:'2026-10-29'})+E.mes(y2,m2,o,st.a,st.b,{min:'2026-10-29'})}
+$('meses').onclick=e=>{const b=e.target.closest('button');if(!b||b.classList.contains('p'))return;const f=b.dataset.f;if(b.classList.contains('x')&&!(st.a&&!st.b&&f>st.a))return;
+ if(!st.a||st.b){st.a=f;st.b=null}else if(f<=st.a)st.a=f;else st.b=f;cal();cuenta()};
+function cuenta(){const u=st.u;const c=$('cuenta');
+ let h=`<h3 class="mc" style="font-size:26px">${u.n}</h3><div class="pax"><button type="button" id="pm" aria-label="Menos">−</button><span>${st.pax} huésped${st.pax>1?'es':''}</span><button type="button" id="pp" aria-label="Más">+</button></div>`;
+ if(!(st.a&&st.b)){c.innerHTML=h+`<p class="nota">${st.a?'Llegada el '+E.larga(st.a)+'. Ahora elegí la salida.':'Elegí las fechas en el calendario para ver el total.'}</p>`;bind();return}
+ const q=E.cotizar(u,T,st.a,st.b);const ok=E.libre(u,st.a,st.b);const limp=25000;const dir=q.total+limp;const abnb=dir*1.142;const corto=q.noches<q.minimo;
+ const txt=`Hola Sunokona! Quiero reservar ${u.n}.\nLlegada ${E.larga(st.a)} · salida ${E.larga(st.b)} (${q.noches} noches) · ${st.pax} huésped${st.pax>1?'es':''}.\nTotal directo: ${E.ars(dir)}. Seña 30%: ${E.ars(dir*.3)}.\n¿Me confirman?`;
+ h+=`<table class="cmp"><tr><th></th><th>En Airbnb</th><th>Directo</th></tr>
+ ${Object.entries(q.det).map(([k,v])=>`<tr><td>${v.n} noche${v.n>1?'s':''} · ${k}</td><td>${E.ars(v.v)}</td><td class="dir">${E.ars(v.v)}</td></tr>`).join('')}
+ <tr><td>Limpieza</td><td>${E.ars(limp)}</td><td class="dir">${E.ars(limp)}</td></tr>
+ <tr><td>Tarifa de servicio de la plataforma</td><td>${E.ars(abnb-dir)}</td><td class="dir">$ 0</td></tr>
+ <tr class="t"><td>Total</td><td>${E.ars(abnb)}</td><td class="dir">${E.ars(dir)}</td></tr></table>
+ <div class="ahorro">Reservando directo, el huésped paga ${E.ars(abnb-dir)} menos y Sunokona no paga la comisión de anfitrión. Valores de ejemplo.</div>
+ ${!ok?'<p class="nota" style="color:var(--uva)">Hay noches tomadas en ese rango.</p>':''}${corto&&ok?`<p class="nota" style="color:var(--uva)">En esa fecha el mínimo es de ${q.minimo} noches.</p>`:''}
+ <a class="ir${!ok||corto?' off':''}" href="${E.wa(WA,txt)}" target="_blank" rel="noopener">Reservar por WhatsApp · seña ${E.ars(dir*.3)}</a><div class="msg">${txt.replace(/</g,'&lt;')}</div>`;
+ c.innerHTML=h;bind()}
+function bind(){$('pm').onclick=()=>{st.pax=Math.max(1,st.pax-1);cuenta()};$('pp').onclick=()=>{st.pax=Math.min(st.u.cap,st.pax+1);cuenta()}}
+trip();cal();cuenta();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Sunokona"></script>
+</body>
+</html>
