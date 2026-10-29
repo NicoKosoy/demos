@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Via Libre Pádel · Turnos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;800&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--turf:#1f6b4a;--turf2:#15503a;--chalk:#f5f7f2;--ink:#0e1d17;--ball:#e4f05a;--line:#d7ded8;--mute:#5d6e66;--busy:#e9ece8}
+*{box-sizing:border-box;margin:0}
+body{font-family:'Work Sans',system-ui,sans-serif;background:var(--chalk);color:var(--ink);line-height:1.5}
+h1,h2,h3,.disp{font-family:'Outfit',sans-serif;line-height:1.05;letter-spacing:-.02em}
+a{color:inherit}
+.demo{background:var(--ink);color:#cfe3d8;font-size:13px;text-align:center;padding:7px 16px}
+.hero{position:relative;min-height:92vh;display:grid;align-items:end;color:#fff;overflow:hidden;background:var(--turf2)}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.9) brightness(.62)}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(14,29,23,.1) 30%,rgba(14,29,23,.85))}
+.hero-in{position:relative;z-index:2;max-width:1200px;margin:0 auto;width:100%;padding:0 24px 48px;display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:end}
+.brand{position:absolute;top:22px;left:24px;z-index:3;display:flex;align-items:center;gap:12px;font-family:Outfit;font-weight:700;letter-spacing:.02em}
+.brand img{position:static;width:auto;height:34px;filter:none}
+.hero h1{font-size:clamp(44px,7vw,96px);font-weight:800}
+.hero p{max-width:46ch;margin-top:18px;color:#dfe9e3;font-size:17px}
+.board{background:rgba(10,22,17,.78);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.14);border-radius:6px;padding:18px}
+.board h2{font-size:15px;font-weight:500;color:#b9cfc4;margin-bottom:10px}
+.row{display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:center;padding:10px 4px;border-top:1px solid rgba(255,255,255,.08);font-variant-numeric:tabular-nums;cursor:pointer;background:none;color:#fff;width:100%;text-align:left;font:inherit;border-left:0;border-right:0;border-bottom:0}
+.row:hover,.row:focus-visible{background:rgba(228,240,90,.08);outline:none}
+.row .h{font-family:Outfit;font-size:24px;font-weight:700;color:var(--ball)}
+.row small{color:#9fb6aa}
+.row .p{font-weight:600}
+section{max-width:1200px;margin:0 auto;padding:72px 24px}
+.sec-h{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:24px}
+.sec-h h2{font-size:clamp(32px,4vw,52px);font-weight:700}
+.sec-h p{color:var(--mute);max-width:52ch}
+.days{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
+.day{flex:0 0 auto;border:1px solid var(--line);background:#fff;border-radius:4px;padding:8px 14px;cursor:pointer;font:inherit;text-align:center;min-width:70px}
+.day b{display:block;font-family:Outfit;font-size:22px}
+.day small{color:var(--mute);font-size:12px}
+.day[aria-pressed=true]{background:var(--turf);color:#fff;border-color:var(--turf)}
+.day[aria-pressed=true] small{color:#cfe3d8}
+.day:disabled{opacity:.4;cursor:not-allowed}
+.tools{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin:18px 0}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:4px;overflow:hidden;background:#fff}
+.seg button{border:0;background:none;padding:8px 14px;font:inherit;cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--ink);color:#fff}
+.legend{display:flex;gap:14px;font-size:13px;color:var(--mute);flex-wrap:wrap}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.gridwrap{overflow-x:auto;border:1px solid var(--line);border-radius:6px;background:#fff}
+table{border-collapse:collapse;width:100%;min-width:900px;font-variant-numeric:tabular-nums}
+th,td{border-bottom:1px solid var(--line);padding:0}
+thead th{font-size:12px;color:var(--mute);font-weight:500;padding:8px 0;text-align:center}
+tbody th{text-align:left;padding:10px 14px;min-width:170px;font-weight:600;font-size:14px;position:sticky;left:0;background:#fff;z-index:1;border-right:1px solid var(--line)}
+tbody th small{display:block;color:var(--mute);font-weight:400;font-size:12px}
+td button{width:100%;min-width:24px;height:46px;border:0;border-left:1px solid #f0f2ef;background:#fff;cursor:pointer;font-size:0}
+td button.peak{background:#f7f9df}
+td button.b{background:var(--busy) repeating-linear-gradient(135deg,transparent 0 5px,#dfe3de 5px 6px);cursor:not-allowed}
+td button.sel{background:var(--turf)}
+td button:not(.b):hover{background:var(--ball)}
+td button:focus-visible{outline:2px solid var(--ink);outline-offset:-2px}
+.panel{display:grid;grid-template-columns:1fr 360px;gap:28px;margin-top:28px;align-items:start}
+.court-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.cc{border:1px solid var(--line);background:#fff;border-radius:6px;overflow:hidden}
+.cc img{width:100%;height:120px;object-fit:cover;display:block;background:var(--turf)}
+.cc div{padding:10px 12px}
+.cc b{font-family:Outfit;font-size:18px}
+.cc small{display:block;color:var(--mute)}
+.sum{background:var(--ink);color:#fff;border-radius:6px;padding:22px;position:sticky;top:16px}
+.sum h3{font-size:26px;margin-bottom:6px}
+.sum dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:14px 0;font-size:14px}
+.sum dt{color:#9fb6aa}
+.sum dd{text-align:right}
+.tot{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid rgba(255,255,255,.15);padding-top:12px;margin-top:6px}
+.tot b{font-family:Outfit;font-size:30px;color:var(--ball)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:4px;padding:13px 18px;font:600 15px 'Work Sans',sans-serif;cursor:pointer;text-decoration:none;width:100%;margin-top:10px}
+.btn.y{background:var(--ball);color:var(--ink)}
+.btn.g{background:#25d366;color:#08301a}
+.btn.o{background:none;border:1px solid rgba(255,255,255,.3);color:#fff}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.sum label{display:block;font-size:13px;color:#9fb6aa;margin-top:10px}
+.sum input[type=text]{width:100%;margin-top:4px;padding:10px;border-radius:4px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:#fff;font:inherit}
+.chk{display:flex;gap:8px;align-items:center;margin-top:10px;font-size:14px}
+.empty{color:#9fb6aa;font-size:14px}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--line)}
+.split>div{padding:40px 32px 40px 0}
+.split>div+div{border-left:1px solid var(--line);padding-left:32px}
+.falta li{list-style:none;display:grid;grid-template-columns:90px 1fr auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.falta ul{padding:0;margin-top:14px}
+.falta .h{font-family:Outfit;font-size:20px;font-weight:700}
+.mini{border:1px solid var(--ink);background:none;border-radius:4px;padding:7px 12px;cursor:pointer;font:500 14px 'Work Sans'}
+.mini:hover{background:var(--ink);color:#fff}
+.tag{font-size:12px;background:#eef2ec;border-radius:3px;padding:2px 7px;color:var(--mute)}
+.fogon{display:grid;grid-template-columns:1.1fr 1fr;min-height:420px;background:var(--turf2);color:#fff}
+.fogon.noimg{grid-template-columns:1fr}.fogon.noimg .tx{max-width:760px}
+.fogon img{width:100%;height:100%;object-fit:cover;display:block}
+.fogon .tx{min-width:0;padding:56px 48px;display:flex;flex-direction:column;justify-content:center;gap:14px}
+.fogon h2{font-size:clamp(32px,4vw,48px)}
+.fogon form{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+.fogon select,.fogon input{min-width:0;width:100%;padding:11px;border-radius:4px;border:0;font:inherit}
+.fogon .btn{grid-column:1/-1}
+.prices{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--line);border-radius:6px;background:#fff;margin-top:20px}
+.prices div{padding:20px}
+.prices div+div{border-left:1px solid var(--line)}
+.prices b{font-family:Outfit;font-size:30px;display:block}
+footer{background:var(--ink);color:#9fb6aa;padding:40px 24px 90px;text-align:center;font-size:14px}
+footer b{color:#fff}
+.fab{position:fixed;right:16px;bottom:16px;z-index:20;background:#25d366;color:#08301a;border-radius:999px;padding:12px 18px;font-weight:600;text-decoration:none;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+dialog{border:0;border-radius:8px;padding:0;max-width:400px;width:calc(100% - 32px)}
+dialog::backdrop{background:rgba(14,29,23,.6)}
+.mp{padding:22px}
+.mp header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.mp .logo{background:#00b1ea;color:#fff;font-weight:700;border-radius:4px;padding:4px 8px;font-size:13px}
+.mp .amt{font-family:Outfit;font-size:38px;font-weight:700;margin:10px 0}
+.mp .x{border:0;background:none;font-size:22px;cursor:pointer}
+.mp .btn.mpb{background:#009ee3;color:#fff}
+.mp .ok{font-size:40px;color:var(--turf)}
+@media (max-width:860px){
+ .hero-in{grid-template-columns:1fr;padding-bottom:28px}
+ .hero{min-height:auto;padding-top:90px}
+ .panel{grid-template-columns:1fr}
+ .sum{position:static}
+ .split{grid-template-columns:1fr}
+ .split>div{padding:32px 0}
+ .split>div+div{border-left:0;border-top:1px solid var(--line);padding-left:0}
+ .fogon{grid-template-columns:1fr}
+ .fogon img{height:240px}
+ .fogon .tx{padding:32px 20px}
+ .prices{grid-template-columns:1fr}
+ .prices div+div{border-left:0;border-top:1px solid var(--line)}
+ section{padding:52px 16px}
+ .hero-in{padding-left:16px;padding-right:16px}
+ .brand{left:16px}
+ .falta li{grid-template-columns:70px 1fr;}
+ tbody th{min-width:118px;padding:8px 10px}
+ .court-cards{grid-template-columns:1fr 1fr}.cc img{height:90px}
+ .falta li .mini{grid-column:1/-1}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="demo">Prototipo de demostración preparado para Via Libre Padel Center · Precios y disponibilidad de ejemplo</div>
+
+<header class="hero">
+  <img src="https://vialibrepadelcenter.com/wp-content/uploads/2022/03/cancha-padel-villa-maria-cordoba-3.jpg" alt="Canchas techadas de Via Libre" onerror="this.remove()">
+  <div class="brand"><img src="https://vialibrepadelcenter.com/wp-content/uploads/2021/01/logo-vialibre-white.png" alt="Via Libre" onerror="this.replaceWith(document.createTextNode('VIA LIBRE'))"></div>
+  <div class="hero-in">
+    <div>
+      <h1 class="disp">Cinco canchas.<br>Tu turno, sin esperar respuesta.</h1>
+      <p>Antonio Sobral 673, Villa María. Cuatro canchas techadas y una al aire libre, café en el Club de Amigos y fogonero propio. Elegí horario, dejá la seña y listo.</p>
+    </div>
+    <div class="board" aria-live="polite">
+      <h2>Próximos turnos libres</h2>
+      <div id="next"></div>
+    </div>
+  </div>
+</header>
+
+<section id="turnos">
+  <div class="sec-h">
+    <h2>Grilla de turnos</h2>
+    <p>Tocá un casillero libre. Las franjas con fondo amarillo son horario pico (desde las 18).</p>
+  </div>
+  <div class="days" id="days"></div>
+  <div class="tools">
+    <div class="seg" role="group" aria-label="Vista"><button data-v="dia" aria-pressed="true">Por día</button><button data-v="semana" aria-pressed="false">Semana</button></div>
+    <div class="seg" role="group" aria-label="Duración" id="durs"><button data-d="60">60 min</button><button data-d="90" aria-pressed="true">90 min</button><button data-d="120">120 min</button></div>
+    <div class="legend"><span><i style="background:#fff;border:1px solid var(--line)"></i>Libre valle</span><span><i style="background:#f7f9df"></i>Libre pico</span><span><i style="background:var(--busy)"></i>Ocupado</span></div>
+  </div>
+  <div class="gridwrap"><table id="grid"></table></div>
+
+  <div class="panel">
+    <div>
+      <h3 class="disp" style="font-size:24px;margin-bottom:12px">Las canchas</h3>
+      <div class="court-cards" id="cards"></div>
+      <div class="prices">
+        <div><small>Valle · hasta 18 h</small><b id="pv"></b><small>por hora · ejemplo</small></div>
+        <div><small>Pico · 18 a 24 h</small><b id="pp"></b><small>por hora · ejemplo</small></div>
+        <div><small>Seña online</small><b>30%</b><small>se descuenta del total</small></div>
+      </div>
+    </div>
+    <aside class="sum" id="sum" aria-live="polite"></aside>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="split">
+    <div class="falta">
+      <h2 class="disp" style="font-size:36px">Falta 1</h2>
+      <p style="color:var(--mute)">Partidos armados que buscan cuarto jugador. Te sumás con un mensaje.</p>
+      <ul id="falta"></ul>
+    </div>
+    <div>
+      <h2 class="disp" style="font-size:36px">Escuela y torneos</h2>
+      <p style="color:var(--mute)">Grupos por nivel en la escuela de pádel. Horarios y fechas de ejemplo para mostrar cómo se inscriben.</p>
+      <ul class="falta" style="padding:0;margin-top:14px" id="clases"></ul>
+    </div>
+  </div>
+</section>
+
+<div class="fogon">
+  <img src="https://vialibrepadelcenter.com/wp-content/uploads/2021/01/fogonero-via-libre-padel-center-villa-maria.jpg" alt="Fogonero de Via Libre" onerror="this.parentNode.classList.add('noimg');this.remove()">
+  <div class="tx">
+    <h2 class="disp">Cumpleaños, after office y el asado después del partido</h2>
+    <p style="color:#cfe3d8">El fogonero es exclusivo para quien lo reserva. Armamos canchas + parrilla + Club de Amigos para grupos.</p>
+    <form id="ev">
+      <select name="tipo" aria-label="Tipo de evento"><option>Cumpleaños</option><option>Evento de empresa</option><option>Torneo entre amigos</option><option>Asado post partido</option></select>
+      <input name="pers" type="number" min="4" max="80" value="16" aria-label="Personas">
+      <input name="fecha" type="text" placeholder="Fecha tentativa" aria-label="Fecha tentativa">
+      <select name="can" aria-label="Canchas"><option>2 canchas</option><option>3 canchas</option><option>Las 5</option></select>
+      <button class="btn g" type="submit">Consultar por WhatsApp</button>
+    </form>
+  </div>
+</div>
+
+<footer>
+  <p><b>Via Libre Padel Center</b> · Antonio Sobral 673, Villa María, Córdoba · Lun a vie 8 a 24 · Sáb 8 a 20</p>
+  <p style="margin-top:10px">Prototipo preparado para Via Libre Padel Center por Resolviendo Kos · resolviendokos.com · No es la web oficial</p>
+</footer>
+<a class="fab" id="fab" href="#">WhatsApp</a>
+
+<dialog id="kpay"><div class="mp">
+  <header><span class="logo">Mercado Pago · demo</span><button class="x" data-k="close" aria-label="Cerrar">×</button></header>
+  <div data-k="step1"><p data-k="summary"></p><div class="amt" data-k="amount"></div><p style="font-size:13px;color:var(--mute)">Simulación: no se cobra nada.</p><button class="btn mpb" data-k="pay">Pagar seña</button></div>
+  <div data-k="step2" hidden><div class="ok">✓</div><h3 class="disp" style="font-size:24px">Seña acreditada (demo)</h3><p>Mandá la confirmación al club para cerrar el turno.</p><a class="btn g" data-k="wa" target="_blank" rel="noopener">Enviar confirmación</a></div>
+</div></dialog>
+
+<script>
+window.KCFG={negocio:'Via Libre Padel Center',wa:'5493534281866',peak:18,sena:.3,
+hours:{0:null,6:[8,20],def:[8,24]},price:{valle:24000,pico:32000},
+courts:[
+{id:'c1',name:'Cancha 1',type:'techada · césped sintético',img:'https://vialibrepadelcenter.com/wp-content/uploads/2022/03/cancha-padel-villa-maria-cordoba-2.jpg'},
+{id:'c2',name:'Cancha 2',type:'techada · césped sintético',img:'https://vialibrepadelcenter.com/wp-content/uploads/2022/03/cancha-padel-villa-maria-cordoba-4.jpg'},
+{id:'c3',name:'Cancha 3',type:'techada · césped sintético',img:'https://vialibrepadelcenter.com/wp-content/uploads/2022/03/cancha-padel-villa-maria-cordoba-5.jpg'},
+{id:'c4',name:'Cancha 4',type:'techada · césped sintético',img:'https://vialibrepadelcenter.com/wp-content/uploads/2022/03/cancha-padel-villa-maria-cordoba-6.jpg'},
+{id:'c5',name:'Cancha 5',type:'descubierta · césped sintético',extra:-2000,img:'https://vialibrepadelcenter.com/wp-content/uploads/2022/02/padel-vialibre.png'}]};
+</script>
+<script>
+const K=(()=>{
+const C=window.KCFG;
+const pad=n=>String(n).padStart(2,'0');
+const DOW=['dom','lun','mar','mié','jue','vie','sáb'];
+const DOWL=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+const MES=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+function days(n){const out=[];const t=new Date();t.setHours(0,0,0,0);for(let i=0;i<n;i++){const d=new Date(t);d.setDate(t.getDate()+i);out.push(d)}return out}
+function hours(d){const h=C.hours||{};const v=h[d.getDay()];return v===undefined?(h.def||[8,24]):v}
+function slots(d){const h=hours(d);if(!h)return[];const o=[];for(let m=h[0]*60;m<h[1]*60;m+=30)o.push(m);return o}
+function hourSlots(d){return slots(d).filter(m=>m%60===0)}
+function t(m){return pad(Math.floor(m/60)%24)+':'+pad(m%60)}
+function seed(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return(h>>>0)/4294967295}
+function past(d,m){const n=new Date();return d.toDateString()===n.toDateString()&&m<n.getHours()*60+n.getMinutes()}
+function busy(c,d,m){if(past(d,m))return true;const r=seed(c+'|'+d.toDateString()+'|'+Math.floor(m/90)+C.negocio);const peak=m>=C.peak*60;const wk=(d.getDay()===0||d.getDay()===6)?.08:0;return r<(peak?.36:.18)+wk}
+function free(c,d,m,dur){const s=slots(d);for(let x=m;x<m+dur;x+=30){if(s.indexOf(x)<0||busy(c,d,x))return false}return true}
+function court(id){return C.courts.find(c=>c.id===id)}
+function rate(cid,m){const c=court(cid)||{};let b=m>=C.peak*60?C.price.pico:C.price.valle;if(C.price.manana&&m<(C.price.mananaHasta||12)*60)b=C.price.manana;return b+(c.extra||0)}
+function price(cid,m,dur){let s=0;for(let x=m;x<m+dur;x+=30)s+=rate(cid,x)/2;return Math.round(s/100)*100}
+function sena(total){return Math.round(total*(C.sena||.3)/100)*100}
+function money(n){return '$ '+Math.round(n).toLocaleString('es-AR')}
+function dlabel(d,long){const n=new Date();n.setHours(0,0,0,0);const diff=Math.round((d-n)/864e5);if(!long){if(diff===0)return'hoy';if(diff===1)return'mañana'}return (long?DOWL:DOW)[d.getDay()]+' '+d.getDate()+'/'+(d.getMonth()+1)}
+function dshort(d){return {dow:DOW[d.getDay()],n:d.getDate(),mes:MES[d.getMonth()]}}
+function freeCount(d){let n=0;C.courts.forEach(c=>slots(d).forEach(m=>{if(m%60===0&&free(c.id,d,m,60))n++}));return n}
+function nextFree(){const ds=days(3);for(const d of ds)for(const m of slots(d))for(const c of C.courts)if(free(c.id,d,m,90))return{d,m,c};return null}
+function msg(s,paid){const c=court(s.court);const tot=price(s.court,s.m,s.dur);let x='Hola! Quiero reservar cancha en '+C.negocio+':\n';x+='• Cancha: '+c.name+(c.type?' ('+c.type+')':'')+'\n';x+='• Día: '+dlabel(s.d,true)+'\n';x+='• Horario: '+t(s.m)+' a '+t(s.m+s.dur)+' ('+s.dur+' min)\n';x+='• Total: '+money(tot)+'\n';if(paid)x+='• Seña de '+money(sena(tot))+' pagada por Mercado Pago (demo)\n';if(s.name)x+='A nombre de: '+s.name+'\n';if(s.falta)x+='Nos falta 1 jugador: ¿lo pueden publicar en el grupo?\n';return x}
+function wa(text){return 'https://wa.me/'+C.wa+'?text='+encodeURIComponent(text)}
+function go(text){window.open(wa(text),'_blank','noopener')}
+function matches(n){const out=[];const lv=['8va','7ma','6ta','5ta','4ta'];const g=['mixto','caballeros','damas','caballeros'];days(3).forEach(d=>{C.courts.forEach(c=>{slots(d).forEach(m=>{if(m%90===0&&m>=17*60&&busy(c.id,d,m)&&!past(d,m)){const r=seed('f'+c.id+d.toDateString()+m);if(r<.5)out.push({d,m,c,nivel:lv[Math.floor(r*16)%5],g:g[Math.floor(r*40)%4]})}})})});return out.slice(0,n||6)}
+function joinMsg(x){return 'Hola! Vi en la web de '+C.negocio+' que falta 1 para el partido del '+dlabel(x.d,true)+' a las '+t(x.m)+' en '+x.c.name+' ('+x.nivel+', '+x.g+'). Me sumo, ¿sigue libre el lugar?'}
+function pay(s,opts){const dlg=document.getElementById('kpay');if(!dlg)return;const tot=price(s.court,s.m,s.dur),se=sena(tot),c=court(s.court);const q=k=>dlg.querySelector('[data-k='+k+']');q('summary').innerHTML='<b>'+c.name+'</b> · '+dlabel(s.d,true)+' · '+t(s.m)+'–'+t(s.m+s.dur)+'<br>Total '+money(tot)+' · Seña '+money(se);q('amount').textContent=money(se);q('step1').hidden=false;q('step2').hidden=true;const b=q('pay');b.disabled=false;b.textContent=b.dataset.label||b.textContent;b.dataset.label=b.textContent;b.onclick=()=>{b.disabled=true;b.textContent='Procesando…';setTimeout(()=>{q('step1').hidden=true;q('step2').hidden=false;q('wa').href=wa(msg(s,true));},900)};q('close').onclick=()=>dlg.close();dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});if(dlg.showModal)dlg.showModal();else dlg.setAttribute('open','')}
+return{C,days,slots,hourSlots,t,busy,free,price,sena,money,dlabel,dshort,freeCount,nextFree,msg,wa,go,matches,joinMsg,pay,court,rate,seed,past,DOWL}
+})();
+
+</script>
+<script>
+(()=>{
+const D=K.days(7);let st={d:D.find(d=>K.freeCount(d)>0)||D[0],court:null,m:null,dur:90,view:'dia',wcourt:'c1'};
+const $=s=>document.querySelector(s);
+$('#pv').textContent=K.money(K.C.price.valle);$('#pp').textContent=K.money(K.C.price.pico);
+function next(){const out=[];for(const d of K.days(3)){for(const m of K.hourSlots(d)){for(const c of K.C.courts){if(out.length<5&&K.free(c.id,d,m,90)&&!out.some(o=>o.d===d&&o.m===m))out.push({d,m,c})}}}
+$('#next').innerHTML=out.map((o,i)=>`<button class="row" data-i="${i}"><span class="h">${K.t(o.m)}</span><span>${o.c.name}<br><small>${K.dlabel(o.d)} · ${o.c.type}</small></span><span class="p">${K.money(K.price(o.c.id,o.m,90))}</span></button>`).join('')||'<p class="empty">Sin turnos libres en los próximos días.</p>';
+$('#next').querySelectorAll('.row').forEach(b=>b.onclick=()=>{const o=out[b.dataset.i];Object.assign(st,{d:o.d,court:o.c.id,m:o.m,dur:90,view:'dia'});render();document.getElementById('turnos').scrollIntoView({behavior:'smooth'})})}
+function days(){$('#days').innerHTML=D.map((d,i)=>{const s=K.dshort(d);const c=!K.slots(d).length;return `<button class="day" data-i="${i}" aria-pressed="${d===st.d}" ${c?'disabled':''}><small>${K.dlabel(d)}</small><b>${s.n}</b><small>${c?'cerrado':s.dow}</small></button>`}).join('');
+$('#days').querySelectorAll('.day').forEach(b=>b.onclick=()=>{st.d=D[b.dataset.i];st.m=null;render()})}
+function grid(){const g=$('#grid');
+if(st.view==='dia'){const hs=K.hourSlots(st.d);g.innerHTML='<thead><tr><th></th>'+hs.map(m=>`<th colspan="2">${K.t(m)}</th>`).join('')+'</tr></thead><tbody>'+K.C.courts.map(c=>`<tr><th>${c.name}<small>${c.type}</small></th>`+K.slots(st.d).map(m=>{const b=K.busy(c.id,st.d,m);const sel=st.court===c.id&&st.m!==null&&m>=st.m&&m<st.m+st.dur;return `<td><button data-c="${c.id}" data-m="${m}" class="${b?'b':''} ${m>=K.C.peak*60?'peak':''} ${sel?'sel':''}" aria-label="${c.name} ${K.t(m)} ${b?'ocupado':'libre'}">${K.t(m)}</button></td>`}).join('')+'</tr>').join('')+'</tbody>';}
+else{const c=K.court(st.wcourt);const hs=[];for(let m=8*60;m<24*60;m+=60)hs.push(m);g.innerHTML='<thead><tr><th><select id="wc" aria-label="Cancha">'+K.C.courts.map(x=>`<option value="${x.id}" ${x.id===st.wcourt?'selected':''}>${x.name}</option>`).join('')+'</select></th>'+hs.map(m=>`<th>${K.t(m)}</th>`).join('')+'</tr></thead><tbody>'+D.map((d,i)=>`<tr><th>${K.dlabel(d,true)}<small>${K.slots(d).length?K.freeCount(d)+' turnos libres en el club':'cerrado'}</small></th>`+hs.map(m=>{const ok=K.slots(d).includes(m);const b=!ok||K.busy(c.id,d,m);return `<td><button data-d="${i}" data-c="${c.id}" data-m="${m}" class="${b?'b':''} ${m>=K.C.peak*60?'peak':''}" aria-label="${K.t(m)} ${b?'ocupado':'libre'}">.</button></td>`}).join('')+'</tr>').join('')+'</tbody>';
+$('#wc').onchange=e=>{st.wcourt=e.target.value;grid()}}
+g.querySelectorAll('td button').forEach(b=>b.onclick=()=>{if(b.classList.contains('b'))return;if(b.dataset.d)st.d=D[b.dataset.d];st.court=b.dataset.c;st.m=+b.dataset.m;if(!K.free(st.court,st.d,st.m,st.dur)){st.dur=[120,90,60].find(x=>K.free(st.court,st.d,st.m,x))||60}st.view='dia';render()})}
+function cards(){$('#cards').innerHTML=K.C.courts.map(c=>`<div class="cc"><img src="${c.img}" alt="${c.name}" onerror="this.style.display='none'"><div><b>${c.name}</b><small>${c.type}</small></div></div>`).join('')}
+function sum(){const s=$('#sum');if(st.m===null){s.innerHTML='<h3 class="disp">Tu reserva</h3><p class="empty">Elegí un casillero libre en la grilla o un turno del tablero.</p>';return}
+const c=K.court(st.court);const ok=K.free(st.court,st.d,st.m,st.dur);const tot=K.price(st.court,st.m,st.dur);
+s.innerHTML=`<h3 class="disp">${K.t(st.m)} a ${K.t(st.m+st.dur)}</h3><dl><dt>Día</dt><dd>${K.dlabel(st.d,true)}</dd><dt>Cancha</dt><dd>${c.name}, ${c.type}</dd><dt>Duración</dt><dd>${st.dur} min</dd><dt>Seña (30%)</dt><dd>${K.money(K.sena(tot))}</dd></dl><div class="tot"><span>Total</span><b>${K.money(tot)}</b></div>${ok?'':'<p style="color:#ffb4a8;margin-top:8px;font-size:14px">Esa duración se pisa con otro turno. Probá 60 min.</p>'}<label>A nombre de<input type="text" id="nm" placeholder="Nombre y apellido" value="${st.name||''}"></label><label class="chk"><input type="checkbox" id="f1" ${st.falta?'checked':''}> Nos falta 1, publiquen el partido</label><button class="btn y" id="paybtn" ${ok?'':'disabled'}>Pagar seña con Mercado Pago</button><button class="btn o" id="wab" ${ok?'':'disabled'}>Reservar sin seña por WhatsApp</button>`;
+$('#nm').oninput=e=>st.name=e.target.value;$('#f1').onchange=e=>st.falta=e.target.checked;
+$('#paybtn').onclick=()=>K.pay(st);$('#wab').onclick=()=>K.go(K.msg(st,false))}
+function falta(){const ms=K.matches(5);$('#falta').innerHTML=ms.map((x,i)=>`<li><span class="h">${K.t(x.m)}</span><span>${K.dlabel(x.d,true)} · ${x.c.name}<br><span class="tag">${x.nivel} · ${x.g}</span></span><button class="mini" data-i="${i}">Me sumo</button></li>`).join('')||'<li>No hay partidos abiertos ahora.</li>';$('#falta').querySelectorAll('button').forEach(b=>b.onclick=()=>K.go(K.joinMsg(ms[b.dataset.i])))}
+function clases(){const cl=[['Escuela · iniciación','Lun y mié 19 h (ejemplo)','Clase grupal'],['Escuela · intermedio','Mar y jue 20 h (ejemplo)','Clase grupal'],['Clase particular','Horario a convenir','Profe + cancha'],['Americano de los sábados','Fecha de ejemplo','Torneo']];
+$('#clases').innerHTML=cl.map((c,i)=>`<li><span class="tag">${c[2]}</span><span><b>${c[0]}</b><br><small style="color:var(--mute)">${c[1]}</small></span><button class="mini" data-i="${i}">Inscribirme</button></li>`).join('');
+$('#clases').querySelectorAll('button').forEach(b=>b.onclick=()=>{const c=cl[b.dataset.i];K.go('Hola! Quiero inscribirme en "'+c[0]+'" de Via Libre ('+c[1]+'). ¿Hay lugar? ¿Cuál es el valor?')})}
+document.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>{st.view=b.dataset.v;render()});
+document.querySelectorAll('[data-d]').forEach(b=>{if(b.closest('#durs'))b.onclick=()=>{st.dur=+b.dataset.d;render()}});
+$('#ev').onsubmit=e=>{e.preventDefault();const f=new FormData(e.target);K.go('Hola! Quiero consultar por un evento en Via Libre:\n• Tipo: '+f.get('tipo')+'\n• Personas: '+f.get('pers')+'\n• Fecha tentativa: '+(f.get('fecha')||'a definir')+'\n• Canchas: '+f.get('can')+'\n¿Está disponible el fogonero?')};
+$('#fab').href=K.wa('Hola! Quiero consultar por un turno en Via Libre.');
+function render(){days();document.querySelectorAll('[data-v]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===st.view));document.querySelectorAll('#durs button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.d===st.dur));grid();sum()}
+next();cards();falta();clases();render();
+window.__test=()=>{document.querySelector('#next .row')?.click();const m=st.m!==null?K.msg(st,true):'none';return m.slice(0,140).replace(/\n/g,' | ')}
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Via Libre Padel Center"></script>
+</body>
+</html>
