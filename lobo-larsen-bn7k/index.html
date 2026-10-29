@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Lobo Larsen · Snorkel y buceo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Climate+Crisis&family=Onest:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* estructura base del motor (cada página la viste a su manera) */
+.bk-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.bk-dow{font-size:.72rem;text-align:center;opacity:.6;padding:4px 0}
+.bk-day{appearance:none;border:0;background:transparent;color:inherit;font:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:52px;padding:4px 2px;line-height:1.1}
+.bk-day b{font-size:1rem}.bk-day i{font-style:normal;font-size:.62rem;opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.bk-day small{font-size:.66rem;opacity:.7}.bk-day em{font-style:normal;font-size:.6rem;font-weight:700}
+.bk-day:disabled{cursor:not-allowed}.bk-day.is-off{opacity:.3}.bk-day.is-full{opacity:.45;text-decoration:line-through}
+.bk-cal-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;text-transform:capitalize}
+.bk-nav{appearance:none;border:0;background:transparent;color:inherit;font:inherit;font-size:1.4rem;cursor:pointer;width:40px;height:40px}
+.bk-strip{display:flex;gap:6px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;-webkit-overflow-scrolling:touch}
+.bk-strip .bk-day{flex:0 0 64px;scroll-snap-align:start}
+.bk-list{display:flex;flex-direction:column;gap:6px}
+.bk-row{display:grid;grid-template-columns:76px 1fr;gap:10px;align-items:center}
+.bk-row-d b{display:block;font-size:1.5rem;line-height:1}.bk-row-d span{font-size:.75rem;opacity:.7}
+.bk-row-h{display:flex;flex-wrap:wrap;gap:6px}
+.bk-slot,.bk-hora,.bk-lang{appearance:none;font:inherit;color:inherit;cursor:pointer;display:inline-flex;flex-direction:column;align-items:flex-start;padding:8px 12px;line-height:1.15}
+.bk-slot i,.bk-hora i{font-style:normal;font-size:.7rem;opacity:.75}
+.bk-slot:disabled,.bk-hora:disabled{opacity:.4;cursor:not-allowed;text-decoration:line-through}
+#horas,.bk-horas,[data-bk=horas],[data-bk=idioma]{display:flex;flex-wrap:wrap;gap:8px}
+.bk-pax-r{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 0}
+.bk-pax-r small{display:block;opacity:.7;font-size:.78rem}
+.bk-step{display:flex;align-items:center;gap:4px;flex:none}
+.bk-step button{appearance:none;font:inherit;color:inherit;cursor:pointer;width:38px;height:38px;font-size:1.2rem;line-height:1}
+.bk-step output{min-width:28px;text-align:center;font-weight:700}
+.bk-extra{display:flex;gap:10px;align-items:baseline;padding:6px 0;cursor:pointer}
+.bk-extra small{margin-left:auto;opacity:.75;white-space:nowrap}
+.bk-res-l{display:flex;justify-content:space-between;gap:12px;padding:5px 0}
+.bk-res-l b{text-align:right}
+.bk-ahorro,.bk-falta,.bk-ok{font-size:.82rem;margin:.6em 0 0}
+.bk-dl{margin:0;display:grid;gap:8px}.bk-dl div{display:grid;grid-template-columns:130px 1fr;gap:10px}.bk-dl dt{opacity:.7}.bk-dl dd{margin:0}
+.bk-inc{margin:.3em 0 0;padding-left:1.1em}.bk-inc-t{margin:1em 0 0;font-weight:700}
+.bk-tour{appearance:none;font:inherit;color:inherit;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:2px}
+.bk-tour-m,.bk-tour-p{font-size:.8rem;opacity:.8}
+.bk-modal{position:fixed;inset:0;background:rgba(10,20,30,.55);display:flex;align-items:center;justify-content:center;z-index:9999;padding:16px}
+.bk-mp{background:#fff;color:#2d3277;width:min(380px,100%);border-radius:10px;padding:20px;font-family:system-ui,-apple-system,sans-serif;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.bk-mp-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.bk-mp-logo{font-weight:800;color:#00a1e4;letter-spacing:-.02em;font-size:1.1rem}
+.bk-mp-demo{font-size:.66rem;background:#fff4cc;color:#6b5400;padding:3px 6px;border-radius:4px}
+.bk-mp-to{margin:0;color:#555;font-size:.85rem}.bk-mp-amt{font-size:2rem;font-weight:700;margin:4px 0;color:#222}.bk-mp-d{margin:0 0 12px;font-size:.8rem;color:#666}
+.bk-mp-opts{display:grid;gap:6px;margin-bottom:14px;font-size:.88rem;color:#333}
+.bk-mp-opts label{display:flex;gap:8px;padding:9px;border:1px solid #e3e3e3;border-radius:6px}
+.bk-mp-pay{width:100%;border:0;background:#009ee3;color:#fff;font-weight:700;padding:13px;border-radius:6px;font-size:1rem;cursor:pointer}
+.bk-mp-x{width:100%;border:0;background:transparent;color:#009ee3;padding:10px;cursor:pointer;font-size:.9rem}
+[data-bk=wa]{text-decoration:none}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid currentColor;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+[hidden]{display:none!important}
+.bk-sel{display:flex;flex-direction:column;gap:4px}.bk-sel select{font:inherit;padding:10px;max-width:100%}
+
+:root{--sup:#9fd6d2;--m5:#3d8ea0;--m10:#1f5f78;--m20:#123c55;--fondo:#0a2233;--arena:#f1e6cf;--neopren:#ffcf3f;--blanco:#fff}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--fondo);color:var(--blanco);font-family:Onest,system-ui,sans-serif;font-size:16.5px;line-height:1.55;overflow-x:hidden}
+h1,h2,.cc{font-family:"Climate Crisis",Impact,sans-serif;font-weight:400;line-height:.95;margin:0;letter-spacing:-.01em}
+h3{font-weight:700;margin:0;font-size:1.15rem}
+a{color:inherit}
+.demo{background:var(--neopren);color:#1d1600;font-size:.8rem;text-align:center;padding:7px 16px;font-weight:500}
+.ocean{background:linear-gradient(180deg,var(--sup) 0,var(--m5) 18%,var(--m10) 40%,var(--m20) 65%,var(--fondo) 100%);position:relative}
+.depth{position:fixed;left:18px;top:50%;transform:translateY(-50%);z-index:20;display:flex;flex-direction:column;align-items:center;gap:6px;font-weight:700;font-size:.8rem;color:#fff;mix-blend-mode:difference}
+.depth .bar{width:4px;height:180px;background:rgba(255,255,255,.35);position:relative;border-radius:2px}
+.depth .bar i{position:absolute;left:-4px;width:12px;height:12px;border-radius:50%;background:#fff;top:0}
+.depth b{font-size:1.1rem}
+.lvl{min-height:80vh;padding:70px 8vw 70px 12vw;position:relative}
+.lvl .mk{position:absolute;left:12vw;top:26px;font-weight:700;font-size:.85rem;opacity:.75}
+.top{display:flex;justify-content:space-between;align-items:center;padding:18px 8vw 0 12vw;color:var(--fondo);font-weight:700;gap:12px;flex-wrap:wrap}
+.top a{background:var(--fondo);color:#fff;text-decoration:none;padding:9px 16px;border-radius:30px}
+.l0{color:var(--fondo);min-height:86vh;display:flex;flex-direction:column;justify-content:center}
+.l0 h1{font-size:clamp(3rem,9vw,8.4rem)}
+.l0 p{max-width:520px;font-size:1.15rem;margin:22px 0 0;font-weight:500}
+.bub{position:absolute;border-radius:50%;border:2px solid rgba(255,255,255,.55)}
+.l5 .grid{display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:center;margin-top:20px}
+.l5 h2,.l10 h2,.l20 h2{font-size:clamp(2rem,5vw,4rem)}
+.ph{border-radius:40% 60% 55% 45% / 50% 45% 55% 50%;overflow:hidden;aspect-ratio:1;background:var(--m10)}
+.ph img{width:100%;height:100%;object-fit:cover;display:block}
+.svgseal{width:100%;height:auto;display:block}
+.l10 .cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:28px}
+.l10 .c{border:1.5px solid rgba(255,255,255,.35);border-radius:22px;padding:20px;display:flex;flex-direction:column;gap:8px;background:rgba(10,34,51,.25)}
+.l10 .c .dd{font-size:.85rem;opacity:.8}
+.l10 .c a{margin-top:auto;font-weight:700;color:var(--neopren)}
+.l10 .c.big{grid-column:span 3;background:rgba(255,207,63,.1);border-color:var(--neopren)}
+.cursos{margin-top:28px;display:flex;flex-wrap:wrap;gap:8px}
+.cursos span{border:1px solid rgba(255,255,255,.35);border-radius:30px;padding:6px 14px;font-size:.88rem}
+/* reserva */
+.l20 .bk{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:30px;margin-top:24px;align-items:start}
+.pn{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:22px;padding:18px;margin-bottom:12px}
+.pn h4{margin:0 0 10px;font-size:.88rem;color:var(--neopren)}
+[data-bk=tours]{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.bk-tour{border:1.5px solid rgba(255,255,255,.3);background:transparent;border-radius:16px;padding:12px}
+.bk-tour.is-on{background:var(--neopren);color:#1d1600;border-color:var(--neopren)}
+.bk-day{border-radius:12px;background:rgba(255,255,255,.07)}
+.bk-day.is-on{background:var(--neopren);color:#1d1600}
+.bk-day.is-few i{color:var(--neopren)}
+.bk-hora,.bk-lang{border:1.5px solid rgba(255,255,255,.35);background:transparent;border-radius:30px}
+.bk-hora.is-on,.bk-lang.is-on{background:#fff;color:var(--fondo)}
+.bk-step button{border:1.5px solid rgba(255,255,255,.35);background:transparent;border-radius:50%}
+.bk-hint{opacity:.75;margin:0}
+.sum{background:var(--arena);color:var(--fondo);border-radius:22px;padding:22px;position:sticky;top:16px}
+.bk-res-t{font-family:"Climate Crisis";font-size:1.25rem;line-height:1;margin-bottom:12px}
+.bk-res-l{border-bottom:1px solid #dccfb3}
+.bk-res-tot b{font-size:1.4rem}
+.bk-res-sena b{color:#a26a00}
+.bk-ahorro{background:#e6d8b8;border-radius:12px;padding:10px}
+.bk-falta{color:#b3401f;font-weight:700}.bk-ok{color:#1f6b4e;font-weight:700}
+.sum input{width:100%;padding:11px;border-radius:12px;border:1.5px solid #cbbd9e;font:inherit;margin:12px 0 6px}
+.sb{display:block;width:100%;text-align:center;padding:13px;border-radius:30px;border:0;font:inherit;font-weight:700;margin-top:8px;cursor:pointer;text-decoration:none}
+.sb.mp{background:#009ee3;color:#fff}.sb.mp:disabled{opacity:.45;cursor:not-allowed}
+.sb.wa{background:var(--fondo);color:#fff}
+.fondo{padding:40px 8vw 30px 12vw;font-size:.9rem;color:#9fb7c4;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;border-top:1px solid #1d3a4e}
+.fondo b{color:#fff}
+.pie{width:100%;font-size:.8rem}
+@media (max-width:900px){
+ .depth{display:none}
+ .lvl,.top,.fondo{padding-left:18px;padding-right:18px}
+ .lvl .mk{left:18px}
+ .l5 .grid,.l20 .bk{grid-template-columns:minmax(0,1fr)}
+ .l10 .cards{grid-template-columns:minmax(0,1fr)}.l10 .c.big{grid-column:auto}
+ [data-bk=tours]{grid-template-columns:minmax(0,1fr)}
+ .sum{position:static}
+ .lvl{min-height:0;padding-top:60px;padding-bottom:50px}
+ .ph{max-width:320px}
+}
+</style>
+</head>
+<body>
+<div class="demo">Prototipo de demostración preparado para Lobo Larsen Buceo · Precios y disponibilidad de ejemplo</div>
+<div class="depth" aria-hidden="true"><b id="dv">0 m</b><div class="bar"><i id="dot"></i></div><span>prof.</span></div>
+<div class="ocean">
+  <div class="top"><span>Lobo Larsen · Puerto Madryn</span><a href="#reservar">Reservar</a></div>
+  <section class="lvl l0" data-depth="0">
+    <h1>Nadá con lobos marinos</h1>
+    <p>Snorkel y buceo en el Golfo Nuevo con la colonia de lobos marinos de un pelo. Ellos se acercan, juegan y te miran a los ojos. Vos solo tenés que flotar.</p>
+    <span class="bub" style="width:60px;height:60px;right:14vw;top:30%"></span><span class="bub" style="width:26px;height:26px;right:20vw;top:48%"></span><span class="bub" style="width:14px;height:14px;right:17vw;top:60%"></span>
+  </section>
+  <section class="lvl l5" data-depth="5">
+    <span class="mk">— 5 metros</span>
+    <div class="grid">
+      <div><h2>Cómo es el encuentro</h2><p>Salimos en semirrígido desde la primera bajada al mar, a pasos de Boulevard Brown 860. En la lobería, los lobos jóvenes se tiran al agua y se acercan solos. Con traje seco no pasás frío aunque el agua del golfo esté fresca.</p><p>No hace falta experiencia: el guía está en el agua con vos todo el tiempo, y si nunca hiciste snorkel te enseñamos antes de saltar.</p></div>
+      <div class="ph"><img src="https://lobolarsen.com/wp-content/uploads/2024/05/img_3.jpg" alt="Lobo marino nadando junto a un buzo de Lobo Larsen" onerror="this.outerHTML=document.getElementById('seal').innerHTML"></div>
+    </div>
+  </section>
+  <section class="lvl l10" data-depth="10">
+    <span class="mk">— 10 metros</span>
+    <h2>Cuatro formas de bajar</h2>
+    <div class="cards">
+      <div class="c big"><h3>Snorkel con lobos marinos</h3><p>Flotás en superficie con máscara, snorkel y traje seco mientras la colonia juega alrededor. La salida más pedida.</p><span class="dd">Desde 8 años · sin experiencia</span><a href="#reservar" data-pick-tour="snorkel">Ver fechas</a></div>
+      <div class="c"><h3>Buceo con lobos</h3><p>Inmersión con tanque en la lobería, para buzos certificados.</p><span class="dd">Con certificación</span><a href="#reservar" data-pick-tour="buceo-lobos">Ver fechas</a></div>
+      <div class="c"><h3>Bautismo: Descubriendo el Buceo</h3><p>Tu primera vez con tanque, con instructor al lado todo el tiempo.</p><span class="dd">Desde 10 años</span><a href="#reservar" data-pick-tour="bautismo">Ver fechas</a></div>
+      <div class="c"><h3>Buceo en Puerto Madryn</h3><p>Naufragios y parques submarinos del golfo para buzos certificados.</p><span class="dd">Con certificación</span><a href="#reservar" data-pick-tour="buceo-madryn">Ver fechas</a></div>
+    </div>
+    <div class="cursos" aria-label="Cursos"><span>Open Water Diver</span><span>Advanced Open Water</span><span>Rescue Diver</span><span>Divemaster</span><span>RCP y primeros auxilios</span><span>Alquiler de traje seco</span><span>Fotos y video</span></div>
+  </section>
+  <section class="lvl l20" data-depth="20" id="reservar">
+    <span class="mk">— 20 metros</span>
+    <h2>Reservá tu salida</h2>
+    <div class="bk" data-bk-root>
+      <div>
+        <div class="pn"><h4>Actividad</h4><div data-bk="tours"></div></div>
+        <div class="pn"><h4>Día</h4><div data-bk="cal"></div></div>
+        <div class="pn"><h4>Salida del semirrígido</h4><div data-bk="horas"></div></div>
+        <div class="pn"><h4>Quiénes se tiran al agua</h4><div data-bk="pax"></div></div>
+        <div class="pn"><h4>Instructor en</h4><div data-bk="idioma"></div></div>
+        <div class="pn" data-exw><h4>Sumá</h4><div data-bk="extras"></div></div>
+      </div>
+      <div class="sum">
+        <div data-bk="resumen"></div>
+        <input data-bk="nombre" placeholder="Nombre y apellido" aria-label="Nombre y apellido">
+        <button type="button" class="sb mp" data-bk="pagar">Pagar seña</button>
+        <a class="sb wa" data-bk="wa" href="#">Enviar por WhatsApp</a>
+      </div>
+    </div>
+  </section>
+</div>
+<footer class="fondo">
+  <div><b>Lobo Larsen Buceo</b><br>Boulevard Brown 860, 1ra Bajada al Mar · Puerto Madryn, Chubut<br>Todos los días de 9:30 a 21</div>
+  <div>WhatsApp <a href="https://wa.me/5492804327476" style="color:#fff">+54 9 280 432-7476</a><br>info@lobolarsen.com · @lobolarsenbuceo</div>
+  <div class="pie">Prototipo preparado para Lobo Larsen Buceo por Resolviendo Kos · <a href="https://resolviendokos.com" style="color:#fff">resolviendokos.com</a> · No es la web oficial</div>
+</footer>
+<template id="seal"><svg class="svgseal" viewBox="0 0 400 400" aria-hidden="true"><rect width="400" height="400" fill="#1f5f78"/><g fill="none" stroke="#9fd6d2" stroke-width="1.5" opacity=".5"><path d="M0 80 C100 60 300 100 400 70"/><path d="M0 130 C120 110 280 150 400 120"/></g><path d="M70 230 C110 170 220 150 300 180 C340 195 360 215 350 232 C335 250 300 240 270 245 C230 252 200 290 140 285 C100 282 60 270 70 230Z" fill="#0a2233"/><path d="M300 180 C318 168 340 172 348 190" fill="#0a2233"/><circle cx="322" cy="192" r="4" fill="#9fd6d2"/><path d="M120 280 C100 310 80 320 60 330 M170 282 C170 310 180 325 195 340" stroke="#0a2233" stroke-width="16" stroke-linecap="round"/><circle cx="90" cy="120" r="10" fill="none" stroke="#fff" stroke-width="2"/><circle cx="110" cy="90" r="6" fill="none" stroke="#fff" stroke-width="2"/></svg></template>
+<script>
+window.BK={negocio:'Lobo Larsen',wa:'5492804327476',sena:.3,calMode:'grid',idiomas:['Español','English','Português'],scrollTo:'#reservar',
+tours:[
+ {id:'snorkel',nombre:'Snorkel con lobos marinos',dur:'3 horas aprox.',dif:'Sin experiencia',punto:'Boulevard Brown 860, 1ra Bajada al Mar',temporada:'Todo el año',edad:'8 años',precioRes:120000,precioExt:155000,horarios:['09:30','12:30','15:30'],cupo:16,edadMenor:'8 a 12',incluye:['Traje seco o semiseco','Máscara, snorkel y aletas','Navegación en semirrígido','Guía en el agua'],extras:[{id:'fotos',nombre:'Fotos y video bajo el agua',precio:30000}]},
+ {id:'buceo-lobos',nombre:'Buceo con lobos',dur:'3 horas aprox.',dif:'Buzos certificados',punto:'Boulevard Brown 860',temporada:'Todo el año',edad:'12 años',precioRes:185000,precioExt:230000,horarios:['10:00','14:00'],cupo:8,menores:false,incluye:['Equipo completo y tanque','Traje seco','Navegación','Divemaster'],extras:[{id:'fotos',nombre:'Fotos y video bajo el agua',precio:30000}]},
+ {id:'bautismo',nombre:'Descubriendo el Buceo',dur:'2 horas',dif:'Sin experiencia',punto:'Boulevard Brown 860',temporada:'Todo el año',edad:'10 años',precioRes:140000,precioExt:175000,horarios:['10:00','15:00'],cupo:6,incluye:['Clase teórica breve','Equipo completo','Instructor 1 a 2']},
+ {id:'buceo-madryn',nombre:'Buceo en Puerto Madryn',dur:'2 a 3 horas',dif:'Buzos certificados',punto:'Boulevard Brown 860',temporada:'Todo el año',edad:'12 años',precioRes:150000,precioExt:190000,horarios:['09:30','14:30'],cupo:8,menores:false,incluye:['Equipo y tanque','Navegación','Guía de buceo']}
+]};
+/* Motor de reserva demo · Resolviendo Kos */
+(function(){
+  var C = window.BK; if(!C) return;
+  var root = document.querySelector('[data-bk-root]') || document;
+  var $ = function(k){ return root.querySelector('[data-bk="'+k+'"]'); };
+  var fmt = function(n){ return '$' + Math.round(n).toLocaleString('es-AR'); };
+  var DIAS = ['dom','lun','mar','mié','jue','vie','sáb'];
+  var DIASL = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+  var MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  var hoy = new Date(); hoy.setHours(0,0,0,0);
+  var S = { tour: C.tours[0].id, fecha: null, hora: null, res: C.paxIni != null ? C.paxIni : 2, ext: 0, men: 0, idioma: (C.idiomas||['Español'])[0], extras: {}, pagado: false, mes: null };
+  var T = function(){ for(var i=0;i<C.tours.length;i++){ if(C.tours[i].id===S.tour) return C.tours[i]; } return C.tours[0]; };
+  function hash(s){ var h=2166136261; for(var i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,16777619);} return (h>>>0); }
+  function key(d){ return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
+  function enTemporada(t,d){ return !t.meses || t.meses.indexOf(d.getMonth())>=0; }
+  function opera(t,d){ if(t.dias && t.dias.indexOf(d.getDay())<0) return false; return enTemporada(t,d) && d>=hoy; }
+  function cupos(t,d,h){ var cap=t.cupo||10; var x=hash(t.id+key(d)+(h||'')) % 100; if(d.getTime()===hoy.getTime()) x=x%40; if(x<10) return 0; if(x<28) return Math.max(1,(x%3)+1); return Math.max(2, Math.round(cap*(x/100))); }
+  function cuposDia(t,d){ var hs=t.horarios||['—']; var tot=0; hs.forEach(function(h){ tot+=cupos(t,d,h); }); return tot; }
+  function pax(){ return S.res+S.ext+S.men; }
+  function extrasTotal(){ var t=T(), s=0; (t.extras||[]).forEach(function(e){ if(S.extras[e.id]) s += e.porPersona ? e.precio*pax() : e.precio; }); return s; }
+  function total(){ var t=T(); return S.res*t.precioRes + S.ext*t.precioExt + S.men*Math.round(t.precioRes*(t.menorFactor||0.5)) + extrasTotal(); }
+  function ddmm(d){ return DIASL[d.getDay()]+' '+d.getDate()+' de '+MESES[d.getMonth()]; }
+  function fire(){ document.dispatchEvent(new CustomEvent('bk:change',{detail:{S:S,tour:T(),total:total()}})); }
+
+  /* --- tours --- */
+  function renderTours(){
+    var el=$('tours'); if(!el) return;
+    if(el.tagName==='SELECT'){ el.innerHTML=C.tours.map(function(t){return '<option value="'+t.id+'">'+t.nombre+'</option>';}).join(''); el.value=S.tour; el.onchange=function(){ setTour(el.value); }; return; }
+    el.innerHTML = C.tours.map(function(t){
+      return '<button type="button" class="bk-tour'+(t.id===S.tour?' is-on':'')+'" data-id="'+t.id+'" aria-pressed="'+(t.id===S.tour)+'"><span class="bk-tour-n">'+t.nombre+'</span><span class="bk-tour-m">'+(t.dur||'')+(t.dif?' · '+t.dif:'')+'</span><span class="bk-tour-p">desde '+fmt(t.precioRes)+'</span></button>';
+    }).join('');
+    el.querySelectorAll('.bk-tour').forEach(function(b){ b.onclick=function(){ setTour(b.getAttribute('data-id')); }; });
+  }
+  function setTour(id, scroll){
+    S.tour=id; S.hora=null; S.extras={};
+    if(S.fecha && !opera(T(),S.fecha)) S.fecha=null;
+    renderAll();
+    if(scroll){ var tgt=document.querySelector(C.scrollTo||'[data-bk-root]'); if(tgt) tgt.scrollIntoView({behavior:'smooth',block:'start'}); }
+  }
+  document.querySelectorAll('[data-pick-tour]').forEach(function(b){ b.addEventListener('click',function(e){ e.preventDefault(); setTour(b.getAttribute('data-pick-tour'), true); }); });
+
+  /* --- ficha --- */
+  function renderFicha(){
+    var el=$('ficha'); if(!el) return; var t=T();
+    var rows=[['Duración',t.dur],['Dificultad',t.dif],['Punto de encuentro',t.punto],['Temporada',t.temporada],['Edad mínima',t.edad]].filter(function(r){return r[1];});
+    el.innerHTML='<dl class="bk-dl">'+rows.map(function(r){return '<div><dt>'+r[0]+'</dt><dd>'+r[1]+'</dd></div>';}).join('')+'</dl>'+
+      (t.incluye?'<p class="bk-inc-t">Incluye</p><ul class="bk-inc">'+t.incluye.map(function(i){return '<li>'+i+'</li>';}).join('')+'</ul>':'');
+  }
+
+  /* --- calendario --- */
+  function firstOpen(t){ var d=new Date(hoy); for(var i=0;i<370;i++){ if(opera(t,d)) return new Date(d); d.setDate(d.getDate()+1);} return new Date(hoy); }
+  function renderCal(){
+    var el=$('cal'); if(!el) return; var t=T(); var mode=C.calMode||'grid';
+    var days=[]; var start;
+    if(mode==='grid'){
+      if(!S.mes){ var f=firstOpen(t); S.mes=new Date(f.getFullYear(), f.getMonth(), 1); }
+      var m=S.mes; var first=new Date(m.getFullYear(), m.getMonth(), 1); var lead=(first.getDay()+6)%7;
+      var dim=new Date(m.getFullYear(), m.getMonth()+1, 0).getDate();
+      var html='<div class="bk-cal-h"><button type="button" class="bk-nav" data-n="-1" aria-label="Mes anterior">‹</button><strong>'+MESES[m.getMonth()]+' '+m.getFullYear()+'</strong><button type="button" class="bk-nav" data-n="1" aria-label="Mes siguiente">›</button></div>';
+      html+='<div class="bk-grid">'+['lu','ma','mi','ju','vi','sá','do'].map(function(x){return '<span class="bk-dow">'+x+'</span>';}).join('');
+      for(var i=0;i<lead;i++) html+='<span></span>';
+      for(var dd=1; dd<=dim; dd++){ var d=new Date(m.getFullYear(), m.getMonth(), dd); html+=dayBtn(t,d,dd,''); }
+      el.innerHTML=html+'</div>';
+      el.querySelectorAll('.bk-nav').forEach(function(b){ b.onclick=function(){ var n=+b.getAttribute('data-n'); var nm=new Date(S.mes.getFullYear(), S.mes.getMonth()+n, 1); var lim=new Date(hoy.getFullYear(), hoy.getMonth(),1); if(nm<lim) return; S.mes=nm; renderCal(); }; });
+    } else {
+      var n = mode==='list' ? 10 : 21; start=firstOpen(t); var d=new Date(start); var html2='';
+      var c=0, guard=0;
+      while(c<n && guard<400){ guard++; if(mode==='strip' || opera(t,d)){ html2+= mode==='list' ? listRow(t,new Date(d)) : dayBtn(t,new Date(d), d.getDate(), '<small>'+DIAS[d.getDay()]+'</small>', true); c++; } d.setDate(d.getDate()+1); }
+      el.innerHTML='<div class="bk-'+mode+'">'+html2+'</div>';
+    }
+    el.querySelectorAll('[data-d]').forEach(function(b){ b.onclick=function(){ var p=b.getAttribute('data-d').split('-'); S.fecha=new Date(+p[0],+p[1]-1,+p[2]); S.hora=null; var hs=T().horarios||[]; if(hs.length===1) S.hora=hs[0]; if(b.getAttribute('data-h')) S.hora=b.getAttribute('data-h'); renderAll(); }; });
+  }
+  function dayBtn(t,d,label,pre,showMonth){
+    var ok=opera(t,d); var q=ok?cuposDia(t,d):0; var sel=S.fecha&&d.getTime()===S.fecha.getTime();
+    var cls='bk-day'+(ok?(q===0?' is-full':(q<=3?' is-few':'')):' is-off')+(sel?' is-on':'');
+    var lab=ok?(q===0?'completo':(q<=3?'últimos '+q:q+' lugares')):(enTemporada(t,d)||d<hoy?'':'fuera de temp.');
+    var mm = showMonth && d.getDate()===1 ? '<em>'+MESES[d.getMonth()].slice(0,3)+'</em>' : '';
+    return '<button type="button" class="'+cls+'" '+((ok&&q>0)?'data-d="'+key(d)+'"':'disabled')+' aria-label="'+ddmm(d)+' '+lab+'">'+(pre||'')+mm+'<b>'+label+'</b><i>'+lab+'</i></button>';
+  }
+  function listRow(t,d){
+    var hs=t.horarios||['—'];
+    return '<div class="bk-row"><div class="bk-row-d"><b>'+d.getDate()+'</b><span>'+DIAS[d.getDay()]+' · '+MESES[d.getMonth()].slice(0,3)+'</span></div><div class="bk-row-h">'+hs.map(function(h){ var q=cupos(t,d,h); var sel=S.fecha&&d.getTime()===S.fecha.getTime()&&S.hora===h; return '<button type="button" class="bk-slot'+(q===0?' is-full':(q<=3?' is-few':''))+(sel?' is-on':'')+'" '+(q>0?'data-d="'+key(d)+'" data-h="'+h+'"':'disabled')+'><b>'+h+'</b><i>'+(q===0?'completo':(q<=3?'quedan '+q:q+' lugares'))+'</i></button>'; }).join('')+'</div></div>';
+  }
+  function renderHoras(){
+    var el=$('horas'); if(!el) return; var t=T(); var hs=t.horarios||[];
+    if(!S.fecha){ el.innerHTML='<p class="bk-hint">Elegí una fecha para ver los horarios.</p>'; return; }
+    el.innerHTML=hs.map(function(h){ var q=cupos(t,S.fecha,h); return '<button type="button" class="bk-hora'+(S.hora===h?' is-on':'')+(q===0?' is-full':'')+'" '+(q>0?'data-h="'+h+'"':'disabled')+'><b>'+h+'</b><i>'+(q===0?'completo':q+' lugares')+'</i></button>'; }).join('');
+    el.querySelectorAll('[data-h]').forEach(function(b){ b.onclick=function(){ S.hora=b.getAttribute('data-h'); renderAll(); }; });
+  }
+
+  /* --- pasajeros --- */
+  function renderPax(){
+    var el=$('pax'); if(!el) return; var t=T();
+    var filas=[['res','Residentes argentinos',t.precioRes],['ext','Extranjeros',t.precioExt]];
+    if(t.menores!==false) filas.push(['men','Menores'+(t.edadMenor?' ('+t.edadMenor+')':''),Math.round(t.precioRes*(t.menorFactor||0.5))]);
+    el.innerHTML=filas.map(function(f){ return '<div class="bk-pax-r"><div><span>'+f[1]+'</span><small>'+fmt(f[2])+' c/u</small></div><div class="bk-step"><button type="button" data-k="'+f[0]+'" data-v="-1" aria-label="Restar '+f[1]+'">−</button><output>'+S[f[0]]+'</output><button type="button" data-k="'+f[0]+'" data-v="1" aria-label="Sumar '+f[1]+'">+</button></div></div>'; }).join('');
+    el.querySelectorAll('button').forEach(function(b){ b.onclick=function(){ var k=b.getAttribute('data-k'); var v=S[k]+(+b.getAttribute('data-v')); var max=t.maxGrupo||12; if(v<0) return; if(pax()-S[k]+v>max) return; if(pax()-S[k]+v<1) return; S[k]=v; renderAll(); }; });
+  }
+  function renderIdioma(){
+    var el=$('idioma'); if(!el) return; var ids=C.idiomas||['Español','English','Português'];
+    el.innerHTML=ids.map(function(i){ return '<button type="button" class="bk-lang'+(S.idioma===i?' is-on':'')+'" aria-pressed="'+(S.idioma===i)+'">'+i+'</button>'; }).join('');
+    el.querySelectorAll('button').forEach(function(b){ b.onclick=function(){ S.idioma=b.textContent; renderAll(); }; });
+  }
+  function renderExtras(){
+    var el=$('extras'); if(!el) return; var t=T(); var ex=t.extras||[];
+    var w=document.querySelectorAll('[data-exw]'); w.forEach(function(x){x.hidden=!ex.length;}); if(!ex.length){ el.innerHTML=''; el.hidden=true; return; } el.hidden=false;
+    el.innerHTML=ex.map(function(e){ return '<label class="bk-extra"><input type="checkbox" data-e="'+e.id+'"'+(S.extras[e.id]?' checked':'')+'><span>'+e.nombre+'</span><small>+'+fmt(e.precio)+(e.porPersona?' p/p':'')+'</small></label>'; }).join('');
+    el.querySelectorAll('input').forEach(function(i){ i.onchange=function(){ S.extras[i.getAttribute('data-e')]=i.checked; renderAll(); }; });
+  }
+
+  /* --- selects custom --- */
+  S.sel={};
+  function renderSelects(){
+    var el=$('selects'); if(!el||!C.selects) return;
+    if(!el.dataset.done){ el.innerHTML=C.selects.map(function(x){ S.sel[x.id]=S.sel[x.id]||x.opciones[0]; return '<label class="bk-sel"><span>'+x.label+'</span><select data-s="'+x.id+'">'+x.opciones.map(function(o){return '<option>'+o+'</option>';}).join('')+'</select></label>'; }).join(''); el.dataset.done=1;
+      el.querySelectorAll('select').forEach(function(s){ s.onchange=function(){ S.sel[s.getAttribute('data-s')]=s.value; renderResumen(); }; }); }
+  }
+  /* --- resumen --- */
+  function listo(){ return S.fecha && (S.hora || !(T().horarios||[]).length); }
+  function renderResumen(){
+    var el=$('resumen'); if(!el) return; var t=T(); var tot=total(); var sena=tot*(C.sena||0.3);
+    var falta = !S.fecha ? 'Falta elegir la fecha' : (!listo() ? 'Falta elegir el horario' : '');
+    el.innerHTML='<div class="bk-res-t">'+t.nombre+'</div>'+
+      '<div class="bk-res-l"><span>Fecha</span><b>'+(S.fecha?ddmm(S.fecha)+(S.hora?' · '+S.hora:''):'—')+'</b></div>'+
+      '<div class="bk-res-l"><span>Grupo</span><b>'+paxTxt()+'</b></div>'+
+      '<div class="bk-res-l"><span>Guía en</span><b>'+S.idioma+'</b></div>'+
+      '<div class="bk-res-l bk-res-tot"><span>Total</span><b>'+fmt(tot)+'</b></div>'+
+      '<div class="bk-res-l bk-res-sena"><span>Seña 30% para confirmar</span><b>'+fmt(sena)+'</b></div>'+
+      '<div class="bk-res-l bk-res-rest"><span>Saldo el día de la salida</span><b>'+fmt(tot-sena)+'</b></div>'+
+      '<p class="bk-ahorro">Por una plataforma con ~25% de comisión, de esta reserva te quedarían '+fmt(tot*0.75)+'. Directo, te quedan los '+fmt(tot)+'.</p>'+
+      (falta?'<p class="bk-falta">'+falta+'</p>':'')+
+      (S.pagado?'<p class="bk-ok">Seña abonada (demo). Mandá el pedido por WhatsApp para cerrar.</p>':'');
+    var p=$('pagar'); if(p){ p.disabled=!listo(); p.textContent = S.pagado ? 'Seña abonada ✓ (demo)' : (C.txtPagar||'Pagar seña de '+fmt(sena)+' con Mercado Pago'); }
+    var w=$('wa'); if(w){ w.href='https://wa.me/'+C.wa+'?text='+encodeURIComponent(msg()); w.setAttribute('target','_blank'); w.setAttribute('rel','noopener'); }
+    var pv=$('preview'); if(pv){ pv.textContent=msg(); }
+  }
+  function paxTxt(){ var a=[]; if(S.res) a.push(S.res+' residente'+(S.res>1?'s':'')); if(S.ext) a.push(S.ext+' extranjero'+(S.ext>1?'s':'')); if(S.men) a.push(S.men+' menor'+(S.men>1?'es':'')); return a.join(', '); }
+  function msg(){
+    var t=T(); var tot=total(); var nm=$('nombre'); var nombre=nm&&nm.value.trim();
+    var ex=(t.extras||[]).filter(function(e){return S.extras[e.id];}).map(function(e){return e.nombre;});
+    var L=['Hola '+C.negocio+'! Quiero reservar desde la web:','','• Salida: '+t.nombre,'• Fecha: '+(S.fecha?ddmm(S.fecha):'(a definir)')+(S.hora?' · '+S.hora+' hs':''),'• Grupo: '+paxTxt()+' ('+pax()+' en total)','• Idioma del guía: '+S.idioma];
+    if(ex.length) L.push('• Extras: '+ex.join(', '));
+    (C.selects||[]).forEach(function(x){ L.push('• '+x.label+': '+S.sel[x.id]); });
+    L.push('• Total: '+fmt(tot),'• Seña 30%: '+fmt(tot*(C.sena||0.3))+(S.pagado?' (abonada por Mercado Pago)':' (pago por Mercado Pago)'));
+    if(nombre) L.push('• A nombre de: '+nombre);
+    L.push('','¿Me confirman el lugar?');
+    return L.join('\n');
+  }
+
+  /* --- pago demo --- */
+  function modal(){
+    var tot=total(); var sena=tot*(C.sena||0.3);
+    var m=document.createElement('div'); m.className='bk-modal'; m.setAttribute('role','dialog'); m.setAttribute('aria-modal','true'); m.setAttribute('aria-label','Pago de seña (demo)');
+    m.innerHTML='<div class="bk-mp"><div class="bk-mp-top"><span class="bk-mp-logo">mercado pago</span><span class="bk-mp-demo">DEMO · no se cobra nada</span></div><p class="bk-mp-to">Pagás a <b>'+C.negocio+'</b></p><p class="bk-mp-amt">'+fmt(sena)+'</p><p class="bk-mp-d">Seña 30% · '+T().nombre+(S.fecha?' · '+ddmm(S.fecha):'')+'</p><div class="bk-mp-opts"><label><input type="radio" name="mpo" checked> Dinero en cuenta</label><label><input type="radio" name="mpo"> Tarjeta de débito</label><label><input type="radio" name="mpo"> Tarjeta de crédito · hasta 3 cuotas</label></div><button type="button" class="bk-mp-pay">Pagar '+fmt(sena)+'</button><button type="button" class="bk-mp-x">Cancelar</button></div>';
+    document.body.appendChild(m);
+    var close=function(){ m.remove(); document.removeEventListener('keydown',esc); };
+    var esc=function(e){ if(e.key==='Escape') close(); };
+    document.addEventListener('keydown',esc);
+    m.querySelector('.bk-mp-x').onclick=close; m.onclick=function(e){ if(e.target===m) close(); };
+    m.querySelector('.bk-mp-pay').onclick=function(){ var b=this; b.disabled=true; b.textContent='Procesando…'; setTimeout(function(){ S.pagado=true; close(); renderAll(); var w=$('wa'); if(w) w.focus(); },700); };
+    m.querySelector('.bk-mp-pay').focus();
+  }
+  var pb=$('pagar'); if(pb) pb.addEventListener('click',function(){ if(listo()) modal(); });
+  var nm=$('nombre'); if(nm) nm.addEventListener('input',renderResumen);
+
+  function renderAll(){ renderTours(); renderFicha(); renderCal(); renderHoras(); renderPax(); renderIdioma(); renderExtras(); renderSelects(); renderResumen(); fire(); }
+  window.BKAPI={ setTour:setTour, state:S, total:total, fmt:fmt, tour:T, render:renderAll };
+  renderAll();
+})();
+
+(function(){var secs=[].slice.call(document.querySelectorAll('.lvl')),dv=document.getElementById('dv'),dot=document.getElementById('dot');
+function upd(){var h=document.documentElement,mx=h.scrollHeight-innerHeight,p=mx>0?scrollY/mx:0;dot.style.top=(p*168)+'px';var d=0;secs.forEach(function(s){if(s.getBoundingClientRect().top<innerHeight*.5)d=+s.getAttribute("data-depth");});dv.textContent=d+' m';}
+addEventListener('scroll',upd,{passive:true});upd();})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Lobo Larsen Buceo"></script>
+</body>
+</html>
