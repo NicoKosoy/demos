@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>San Miguel Padel · Turnos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;600;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--river:#0f4c5c;--deep:#082f38;--sand:#f3eadb;--sun:#f28f2c;--glass:#9fd8df;--ink:#10262b;--mute:#58706f;--line:#d9cfbd}
+*{box-sizing:border-box;margin:0}
+body{font-family:'IBM Plex Sans',system-ui,sans-serif;background:var(--sand);color:var(--ink);line-height:1.55}
+h1,h2,h3,.s{font-family:'Sora',sans-serif;letter-spacing:-.03em;line-height:1.05}
+.demo{background:var(--deep);color:var(--glass);font-size:13px;text-align:center;padding:7px 16px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+.hd{display:flex;justify-content:space-between;align-items:center;padding:20px 0}
+.hd b{font-family:Sora;font-weight:800;font-size:20px}
+.hd a{color:var(--river);font-weight:600;text-decoration:none;border-bottom:2px solid var(--sun)}
+.split{display:grid;grid-template-columns:1fr 1.15fr;gap:40px;align-items:center;padding:20px 0 56px}
+.split h1{font-size:clamp(40px,5.4vw,74px);font-weight:800;color:var(--deep)}
+.split p.lead{font-size:18px;color:var(--mute);margin-top:18px;max-width:44ch}
+.facts{display:flex;gap:28px;margin-top:28px;flex-wrap:wrap}
+.facts div{border-left:3px solid var(--sun);padding-left:12px}
+.facts b{font-family:Sora;font-size:22px;display:block}
+.facts small{color:var(--mute)}
+.plan{background:var(--river);border-radius:28px;padding:22px;color:#fff}
+.plan .cap{display:flex;justify-content:space-between;font-size:13px;color:var(--glass);margin-bottom:12px;gap:10px;flex-wrap:wrap}
+.courts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.court{background:none;border:0;padding:0;cursor:pointer;color:#fff;text-align:center;font:inherit}
+.court svg{width:100%;height:auto;display:block;border-radius:6px;transition:transform .2s}
+.court .nm{font-family:Sora;font-weight:600;margin-top:8px;display:block}
+.court .st{font-size:12px;color:var(--glass)}
+.court[aria-pressed=true] svg{outline:3px solid var(--sun);outline-offset:3px}
+.court:hover svg{transform:translateY(-2px)}
+.court:focus-visible{outline:2px dashed #fff;outline-offset:4px}
+.when{background:#fff;border-radius:28px;margin-top:-28px;position:relative;z-index:2;padding:28px;display:grid;grid-template-columns:1.4fr 1fr;gap:32px;box-shadow:0 20px 40px -24px rgba(8,47,56,.4)}
+.when>*{min-width:0}
+.when h2{font-size:28px;margin-bottom:14px}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:18px}
+.cal button{border:1px solid var(--line);background:var(--sand);border-radius:12px;padding:8px 0;cursor:pointer;font:inherit;font-size:12px;color:var(--mute)}
+.cal b{display:block;font-family:Sora;font-size:20px;color:var(--ink)}
+.cal button[aria-pressed=true]{background:var(--deep);border-color:var(--deep);color:var(--glass)}
+.cal button[aria-pressed=true] b{color:#fff}
+.track{position:relative;overflow-x:auto;padding-bottom:6px}
+.bar{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(26px,1fr);gap:2px;min-width:560px}
+.bar button{height:54px;border:0;border-radius:4px;background:var(--glass);cursor:pointer;position:relative}
+.bar button.pk{background:#6fc0ca}
+.bar button.b{background:#e7e1d4;cursor:not-allowed}
+.bar button.sel{background:var(--sun)}
+.bar button:not(.b):hover{background:var(--sun);opacity:.7}
+.ticks{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(26px,1fr);gap:2px;min-width:560px;font-size:11px;color:var(--mute);margin-top:4px}
+.ticks span:nth-child(odd){visibility:visible}.ticks span:nth-child(even){visibility:hidden}
+.durs{display:flex;gap:8px;margin:16px 0}
+.durs button{flex:1;border:1px solid var(--line);background:#fff;border-radius:999px;padding:9px;font:600 14px 'IBM Plex Sans';cursor:pointer}
+.durs button[aria-pressed=true]{background:var(--sun);border-color:var(--sun);color:#fff}
+.tk{background:var(--sand);border-radius:20px;padding:22px;display:flex;flex-direction:column;gap:6px}
+.tk .big{font-family:Sora;font-size:44px;font-weight:800;color:var(--deep)}
+.tk .ln{display:flex;justify-content:space-between;font-size:15px;border-bottom:1px solid var(--line);padding:6px 0}
+.tk input[type=text]{padding:10px 12px;border-radius:10px;border:1px solid var(--line);font:inherit;margin-top:8px}
+.tk label{font-size:14px;display:flex;gap:8px;align-items:center}
+.btn{display:flex;justify-content:center;align-items:center;border:0;border-radius:999px;padding:13px;font:600 15px 'IBM Plex Sans';cursor:pointer;text-decoration:none;margin-top:6px;width:100%}
+.btn.o{background:var(--sun);color:#fff}.btn.d{background:var(--deep);color:#fff}.btn.w{background:#25d366;color:#053a1d}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.pz{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin:64px 0 0;border-top:2px solid var(--deep)}
+.pz>div{padding:22px 22px 0 0}
+.pz>div+div{padding-left:22px;border-left:1px solid var(--line)}
+.pz b{font-family:Sora;font-size:30px;font-weight:800;display:block;color:var(--river)}
+.pz small{color:var(--mute)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin:72px 0}
+.box{background:#fff;border-radius:24px;padding:26px}
+.box h2{font-size:30px;margin-bottom:6px}
+.box>p{color:var(--mute);margin-bottom:12px}
+.ln2{display:grid;grid-template-columns:72px 1fr auto;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+.ln2 .h{font-family:Sora;font-weight:800;font-size:20px;color:var(--river)}
+.ln2 small{color:var(--mute);display:block}
+.ln2 button{border:0;background:var(--sand);border-radius:999px;padding:8px 14px;font:600 14px 'IBM Plex Sans';cursor:pointer;color:var(--deep)}
+.ln2 button:hover{background:var(--sun);color:#fff}
+.photos{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:72px}
+.photos img{width:100%;height:280px;object-fit:cover;border-radius:24px;display:block}
+.ev{background:var(--deep);color:#fff;border-radius:28px;padding:36px;display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-bottom:60px}
+.ev p{color:var(--glass)}
+.ev form{display:grid;gap:10px;grid-template-columns:1fr 1fr}
+.ev select,.ev input{padding:12px;border-radius:12px;border:0;font:inherit;min-width:0;width:100%}
+.ev .btn{grid-column:1/-1}
+footer{border-top:1px solid var(--line);padding:30px 0 90px;font-size:14px;color:var(--mute)}
+.fab{position:fixed;right:16px;bottom:16px;background:#25d366;color:#053a1d;padding:12px 18px;border-radius:999px;font-weight:600;text-decoration:none;z-index:20;box-shadow:0 8px 20px rgba(0,0,0,.2)}
+dialog{border:0;border-radius:24px;padding:0;max-width:390px;width:calc(100% - 32px)}
+dialog::backdrop{background:rgba(8,47,56,.6)}
+.mp{padding:24px}.mp header{display:flex;justify-content:space-between;align-items:center}.mp .logo{background:#009ee3;color:#fff;border-radius:999px;padding:4px 10px;font-size:13px;font-weight:600}
+.mp .x{border:0;background:none;font-size:24px;cursor:pointer}.mp .amt{font:800 40px Sora;margin:10px 0;color:var(--deep)}.mp .btn.mpb{background:#009ee3;color:#fff}
+@media (max-width:900px){
+ .wrap{padding:0 16px}
+ .split,.when,.two,.ev{grid-template-columns:1fr}
+ .when{padding:20px;margin-top:-20px}
+ .pz{grid-template-columns:1fr}.pz>div+div{border-left:0;padding-left:0;border-top:1px solid var(--line)}.pz>div{padding:16px 0}
+ .photos{grid-template-columns:1fr}.photos img{height:220px}
+ .ev{padding:24px}.ev form{grid-template-columns:1fr}
+ .cal button b{font-size:16px}
+ .plan{padding:16px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="demo">Prototipo de demostración preparado para San Miguel Padel · Precios y disponibilidad de ejemplo</div>
+<div class="wrap">
+  <div class="hd"><b>San Miguel Padel</b><a href="#reservar">Reservar</a></div>
+  <section class="split">
+    <div>
+      <h1>Tres canchas de vidrio sobre calle Honduras.</h1>
+      <p class="lead">Entre Av. La Paz y Av. Maipú, en Corrientes. Tocá la cancha en el plano, elegí la franja y dejá la seña. Las parrillas siguen siendo libres.</p>
+      <div class="facts"><div><b>3</b><small>canchas blindex</small></div><div><b>Desde 2021</b><small>en el barrio</small></div><div><b>Boutique</b><small>y alquiler de paletas</small></div></div>
+    </div>
+    <div class="plan" id="reservar">
+      <div class="cap"><span>Planta del club · elegí cancha</span><span id="capday"></span></div>
+      <div class="courts" id="courts"></div>
+    </div>
+  </section>
+  <section class="when">
+    <div>
+      <h2 id="wh">¿Cuándo?</h2>
+      <div class="cal" id="cal"></div>
+      <div class="track"><div class="bar" id="bar"></div><div class="ticks" id="ticks"></div></div>
+      <div class="durs" id="durs"><button data-d="60">60 min</button><button data-d="90" aria-pressed="true">90 min</button><button data-d="120">120 min</button></div>
+      <p style="font-size:13px;color:var(--mute)">Celeste claro: valle. Celeste fuerte: pico desde las 18. Beige: ocupado.</p>
+    </div>
+    <aside class="tk" id="tk" aria-live="polite"></aside>
+  </section>
+  <div class="pz">
+    <div><small>Hasta las 12</small><b id="p1"></b><small>la hora · ejemplo</small></div>
+    <div><small>12 a 18</small><b id="p2"></b><small>la hora · ejemplo</small></div>
+    <div><small>Desde las 18</small><b id="p3"></b><small>la hora · ejemplo</small></div>
+  </div>
+  <div class="two">
+    <div class="box"><h2>Falta 1</h2><p>Partidos armados que buscan el cuarto.</p><div id="falta"></div></div>
+    <div class="box"><h2>Clases y torneos</h2><p>Clases con Geri Campuzano y torneos del club. Días y horarios de ejemplo.</p><div id="cls"></div></div>
+  </div>
+  <div class="photos">
+    <img src="https://static.wixstatic.com/media/71587b_25fb209c8ab54c7bb28e0549dd332679~mv2.jpg" alt="Canchas de San Miguel Padel" onerror="this.remove()">
+    <img src="https://static.wixstatic.com/media/71587b_8fad5da547424fd3a649d192531855eb~mv2.jpg" alt="San Miguel Padel" onerror="this.remove()">
+  </div>
+  <section class="ev">
+    <div><h2 style="font-size:34px">Cumple con pádel y parrilla</h2><p style="margin-top:10px">Las parrillas son de uso libre; reservás canchas por bloque y la cantina se encarga de bebida y comida.</p></div>
+    <form id="evf"><select name="t" aria-label="Tipo"><option>Cumpleaños</option><option>Evento de empresa</option><option>Torneo de amigos</option></select><input name="p" type="number" value="12" min="4" aria-label="Personas"><input name="f" type="text" placeholder="Fecha tentativa" aria-label="Fecha"><select name="c" aria-label="Canchas"><option>1 cancha</option><option>2 canchas</option><option>Las 3</option></select><button class="btn w" type="submit">Consultar por WhatsApp</button></form>
+  </section>
+  <footer>San Miguel Padel · Calle Honduras entre Av. La Paz y Av. Maipú, Corrientes · Lun a vie 10 a 24 · Dom 13 a 24 · smpadel0704@gmail.com<br>Prototipo preparado para San Miguel Padel por Resolviendo Kos · resolviendokos.com · No es la web oficial</footer>
+</div>
+<a class="fab" id="fab" href="#">WhatsApp</a>
+<dialog id="kpay"><div class="mp"><header><span class="logo">Mercado Pago · demo</span><button class="x" data-k="close" aria-label="Cerrar">×</button></header>
+<div data-k="step1"><p data-k="summary" style="margin-top:12px"></p><div class="amt" data-k="amount"></div><p style="font-size:13px;color:var(--mute)">Simulación, no se cobra nada.</p><button class="btn mpb" data-k="pay">Pagar seña</button></div>
+<div data-k="step2" hidden><h3 style="font-size:26px;margin:8px 0">Seña acreditada (demo)</h3><p>Confirmale el turno al club por WhatsApp.</p><a class="btn w" data-k="wa" target="_blank" rel="noopener">Enviar confirmación</a></div></div></dialog>
+<script>
+window.KCFG={negocio:'San Miguel Padel',wa:'5493795058106',peak:18,sena:.3,hours:{0:[13,24],def:[10,24]},price:{manana:16000,valle:20000,pico:28000},
+courts:[{id:'1',name:'Cancha 1',type:'blindex · césped sintético'},{id:'2',name:'Cancha 2',type:'blindex · césped sintético'},{id:'3',name:'Cancha 3',type:'blindex · césped sintético'}]};
+</script>
+<script>
+const K=(()=>{
+const C=window.KCFG;
+const pad=n=>String(n).padStart(2,'0');
+const DOW=['dom','lun','mar','mié','jue','vie','sáb'];
+const DOWL=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+const MES=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+function days(n){const out=[];const t=new Date();t.setHours(0,0,0,0);for(let i=0;i<n;i++){const d=new Date(t);d.setDate(t.getDate()+i);out.push(d)}return out}
+function hours(d){const h=C.hours||{};const v=h[d.getDay()];return v===undefined?(h.def||[8,24]):v}
+function slots(d){const h=hours(d);if(!h)return[];const o=[];for(let m=h[0]*60;m<h[1]*60;m+=30)o.push(m);return o}
+function hourSlots(d){return slots(d).filter(m=>m%60===0)}
+function t(m){return pad(Math.floor(m/60)%24)+':'+pad(m%60)}
+function seed(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return(h>>>0)/4294967295}
+function past(d,m){const n=new Date();return d.toDateString()===n.toDateString()&&m<n.getHours()*60+n.getMinutes()}
+function busy(c,d,m){if(past(d,m))return true;const r=seed(c+'|'+d.toDateString()+'|'+Math.floor(m/90)+C.negocio);const peak=m>=C.peak*60;const wk=(d.getDay()===0||d.getDay()===6)?.08:0;return r<(peak?.36:.18)+wk}
+function free(c,d,m,dur){const s=slots(d);for(let x=m;x<m+dur;x+=30){if(s.indexOf(x)<0||busy(c,d,x))return false}return true}
+function court(id){return C.courts.find(c=>c.id===id)}
+function rate(cid,m){const c=court(cid)||{};let b=m>=C.peak*60?C.price.pico:C.price.valle;if(C.price.manana&&m<(C.price.mananaHasta||12)*60)b=C.price.manana;return b+(c.extra||0)}
+function price(cid,m,dur){let s=0;for(let x=m;x<m+dur;x+=30)s+=rate(cid,x)/2;return Math.round(s/100)*100}
+function sena(total){return Math.round(total*(C.sena||.3)/100)*100}
+function money(n){return '$ '+Math.round(n).toLocaleString('es-AR')}
+function dlabel(d,long){const n=new Date();n.setHours(0,0,0,0);const diff=Math.round((d-n)/864e5);if(!long){if(diff===0)return'hoy';if(diff===1)return'mañana'}return (long?DOWL:DOW)[d.getDay()]+' '+d.getDate()+'/'+(d.getMonth()+1)}
+function dshort(d){return {dow:DOW[d.getDay()],n:d.getDate(),mes:MES[d.getMonth()]}}
+function freeCount(d){let n=0;C.courts.forEach(c=>slots(d).forEach(m=>{if(m%60===0&&free(c.id,d,m,60))n++}));return n}
+function nextFree(){const ds=days(3);for(const d of ds)for(const m of slots(d))for(const c of C.courts)if(free(c.id,d,m,90))return{d,m,c};return null}
+function msg(s,paid){const c=court(s.court);const tot=price(s.court,s.m,s.dur);let x='Hola! Quiero reservar cancha en '+C.negocio+':\n';x+='• Cancha: '+c.name+(c.type?' ('+c.type+')':'')+'\n';x+='• Día: '+dlabel(s.d,true)+'\n';x+='• Horario: '+t(s.m)+' a '+t(s.m+s.dur)+' ('+s.dur+' min)\n';x+='• Total: '+money(tot)+'\n';if(paid)x+='• Seña de '+money(sena(tot))+' pagada por Mercado Pago (demo)\n';if(s.name)x+='A nombre de: '+s.name+'\n';if(s.falta)x+='Nos falta 1 jugador: ¿lo pueden publicar en el grupo?\n';return x}
+function wa(text){return 'https://wa.me/'+C.wa+'?text='+encodeURIComponent(text)}
+function go(text){window.open(wa(text),'_blank','noopener')}
+function matches(n){const out=[];const lv=['8va','7ma','6ta','5ta','4ta'];const g=['mixto','caballeros','damas','caballeros'];days(3).forEach(d=>{C.courts.forEach(c=>{slots(d).forEach(m=>{if(m%90===0&&m>=17*60&&busy(c.id,d,m)&&!past(d,m)){const r=seed('f'+c.id+d.toDateString()+m);if(r<.5)out.push({d,m,c,nivel:lv[Math.floor(r*16)%5],g:g[Math.floor(r*40)%4]})}})})});return out.slice(0,n||6)}
+function joinMsg(x){return 'Hola! Vi en la web de '+C.negocio+' que falta 1 para el partido del '+dlabel(x.d,true)+' a las '+t(x.m)+' en '+x.c.name+' ('+x.nivel+', '+x.g+'). Me sumo, ¿sigue libre el lugar?'}
+function pay(s,opts){const dlg=document.getElementById('kpay');if(!dlg)return;const tot=price(s.court,s.m,s.dur),se=sena(tot),c=court(s.court);const q=k=>dlg.querySelector('[data-k='+k+']');q('summary').innerHTML='<b>'+c.name+'</b> · '+dlabel(s.d,true)+' · '+t(s.m)+'–'+t(s.m+s.dur)+'<br>Total '+money(tot)+' · Seña '+money(se);q('amount').textContent=money(se);q('step1').hidden=false;q('step2').hidden=true;const b=q('pay');b.disabled=false;b.textContent=b.dataset.label||b.textContent;b.dataset.label=b.textContent;b.onclick=()=>{b.disabled=true;b.textContent='Procesando…';setTimeout(()=>{q('step1').hidden=true;q('step2').hidden=false;q('wa').href=wa(msg(s,true));},900)};q('close').onclick=()=>dlg.close();dlg.addEventListener('click',e=>{if(e.target===dlg)dlg.close()});if(dlg.showModal)dlg.showModal();else dlg.setAttribute('open','')}
+return{C,days,slots,hourSlots,t,busy,free,price,sena,money,dlabel,dshort,freeCount,nextFree,msg,wa,go,matches,joinMsg,pay,court,rate,seed,past,DOWL}
+})();
+
+</script>
+<script>
+(()=>{const $=s=>document.querySelector(s);const D=K.days(7);
+// three-tier price: morning cheaper
+const base=K.price;
+const st={d:D.find(d=>K.freeCount(d)>0)||D[0],court:'1',m:null,dur:90};
+$('#p1').textContent=K.money(K.C.price.manana);$('#p2').textContent=K.money(K.C.price.valle);$('#p3').textContent=K.money(K.C.price.pico);
+function svg(c,free){return `<svg viewBox="0 0 100 200" aria-hidden="true"><rect x="0" y="0" width="100" height="200" fill="#1b6f80"/><rect x="6" y="6" width="88" height="188" fill="${free?'#2a8c84':'#3d6e74'}" stroke="#bfeef2" stroke-width="2"/><line x1="6" y1="100" x2="94" y2="100" stroke="#fff" stroke-width="3"/><line x1="6" y1="58" x2="94" y2="58" stroke="#fff" stroke-width="1.5"/><line x1="6" y1="142" x2="94" y2="142" stroke="#fff" stroke-width="1.5"/><line x1="50" y1="58" x2="50" y2="142" stroke="#fff" stroke-width="1.5"/><rect x="6" y="6" width="88" height="22" fill="rgba(191,238,242,.18)"/><rect x="6" y="172" width="88" height="22" fill="rgba(191,238,242,.18)"/><text x="50" y="122" text-anchor="middle" font-family="Sora" font-weight="800" font-size="30" fill="rgba(255,255,255,.35)">${c.id}</text></svg>`}
+function courts(){$('#capday').textContent=K.dlabel(st.d,true);$('#courts').innerHTML=K.C.courts.map(c=>{const n=K.hourSlots(st.d).filter(m=>K.free(c.id,st.d,m,60)).length;return `<button class="court" data-c="${c.id}" aria-pressed="${c.id===st.court}">${svg(c,n>0)}<span class="nm">${c.name}</span><span class="st">${n} horas libres</span></button>`}).join('');$('#courts').querySelectorAll('button').forEach(b=>b.onclick=()=>{st.court=b.dataset.c;st.m=null;all()})}
+function cal(){$('#cal').innerHTML=D.map((d,i)=>{const s=K.dshort(d);return `<button data-i="${i}" aria-pressed="${d===st.d}">${s.dow}<b>${s.n}</b></button>`}).join('');$('#cal').querySelectorAll('button').forEach(b=>b.onclick=()=>{st.d=D[b.dataset.i];st.m=null;all()})}
+function bar(){$('#wh').textContent=K.court(st.court).name+', '+K.dlabel(st.d,true);const sl=K.slots(st.d);$('#bar').innerHTML=sl.map(m=>{const b=K.busy(st.court,st.d,m);const sel=st.m!==null&&m>=st.m&&m<st.m+st.dur;return `<button class="${b?'b':''} ${m>=K.C.peak*60?'pk':''} ${sel?'sel':''}" data-m="${m}" aria-label="${K.t(m)} ${b?'ocupado':'libre'}"></button>`}).join('');$('#ticks').innerHTML=sl.map(m=>`<span>${m%60===0?K.t(m).slice(0,2):''}</span>`).join('');
+$('#bar').querySelectorAll('button').forEach(b=>b.onclick=()=>{if(b.classList.contains('b'))return;st.m=+b.dataset.m;if(!K.free(st.court,st.d,st.m,st.dur))st.dur=[90,60].find(x=>K.free(st.court,st.d,st.m,x))||60;all()})}
+function tk(){const t=$('#tk');if(st.m===null){t.innerHTML='<h3 class="s" style="font-size:22px">Tu turno</h3><p style="color:var(--mute)">Tocá un bloque celeste de la barra. Cada bloque son 30 minutos.</p>';return}
+const tot=K.price(st.court,st.m,st.dur),ok=K.free(st.court,st.d,st.m,st.dur);
+t.innerHTML=`<span style="color:var(--mute);font-size:14px">${K.court(st.court).name} · ${K.dlabel(st.d,true)}</span><div class="big">${K.t(st.m)}–${K.t(st.m+st.dur)}</div><div class="ln"><span>Duración</span><b>${st.dur} min</b></div><div class="ln"><span>Total (ejemplo)</span><b>${K.money(tot)}</b></div><div class="ln"><span>Seña 30%</span><b>${K.money(K.sena(tot))}</b></div>${ok?'':'<p style="color:#b4421b;font-size:14px">Se pisa con otro turno: probá una duración menor.</p>'}<input type="text" id="nm" placeholder="Nombre para la reserva" value="${st.name||''}" aria-label="Nombre"><label><input type="checkbox" id="f1" ${st.falta?'checked':''}>Nos falta 1</label><label><input type="checkbox" id="pal" ${st.pal?'checked':''}>Necesito alquilar paletas</label><button class="btn o" id="pb" ${ok?'':'disabled'}>Pagar seña con Mercado Pago</button><button class="btn d" id="wb" ${ok?'':'disabled'}>Reservar por WhatsApp</button>`;
+$('#nm').oninput=e=>st.name=e.target.value;$('#f1').onchange=e=>st.falta=e.target.checked;$('#pal').onchange=e=>st.pal=e.target.checked;
+const m=p=>K.msg(st,p)+(st.pal?'Necesitamos alquilar paletas.\n':'');$('#pb').onclick=()=>{K.pay(st);document.querySelector('[data-k=pay]').addEventListener('click',()=>setTimeout(()=>{document.querySelector('[data-k=wa]').href=K.wa(m(true))},950),{once:true})};$('#wb').onclick=()=>K.go(m(false))}
+function lists(){const ms=K.matches(4);$('#falta').innerHTML=ms.map((x,i)=>`<div class="ln2"><span class="h">${K.t(x.m)}</span><span>${K.dlabel(x.d,true)} · ${x.c.name}<small>${x.nivel} · ${x.g}</small></span><button data-i="${i}">Me sumo</button></div>`).join('');$('#falta').querySelectorAll('button').forEach(b=>b.onclick=()=>K.go(K.joinMsg(ms[b.dataset.i])));
+const cl=[['Clase particular','con Geri Campuzano · a convenir'],['Grupo principiantes','Mar y jue 19 h · ejemplo'],['Torneo del club','Fin de semana de ejemplo · por categoría'],['Americano','Viernes de ejemplo · 21 h']];
+$('#cls').innerHTML=cl.map((c,i)=>`<div class="ln2"><span class="h" style="font-size:14px">${i<2?'Clase':'Torneo'}</span><span>${c[0]}<small>${c[1]}</small></span><button data-i="${i}">Anotarme</button></div>`).join('');$('#cls').querySelectorAll('button').forEach(b=>b.onclick=()=>{const c=cl[b.dataset.i];K.go('Hola San Miguel! Quiero anotarme en "'+c[0]+'" ('+c[1]+'). ¿Hay lugar?')})}
+document.querySelectorAll('#durs button').forEach(b=>b.onclick=()=>{st.dur=+b.dataset.d;all()});
+$('#evf').onsubmit=e=>{e.preventDefault();const f=new FormData(e.target);K.go('Hola San Miguel! Quiero consultar por un evento:\n• '+f.get('t')+'\n• '+f.get('p')+' personas\n• Fecha: '+(f.get('f')||'a definir')+'\n• '+f.get('c')+' + parrillas')};
+$('#fab').href=K.wa('Hola San Miguel Padel! Quiero consultar por un turno.');
+function all(){courts();cal();document.querySelectorAll('#durs button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.d===st.dur));bar();tk()}
+all();lists();
+window.__test=()=>{document.querySelector('#bar button:not(.b)').click();return K.msg(st,true).replace(/\n/g,' | ').slice(0,170)}
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="San Miguel Padel"></script>
+</body>
+</html>
