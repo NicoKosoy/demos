@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Bodega Jean Rivier · San Rafael</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Della+Respira&family=Mulish:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--green:#1d3a2f;--green2:#264a3c;--wine:#7b1e2c;--stone:#e3e6df;--paper:#f2f3ef;--brass:#b48a3a;--ink:#1a1f1c;
+--rk-line:#c9cec4;--rk-accent:#7b1e2c;--rk-card:#fff;--rk-sel:#f6eef0;--rk-r:2px;--rk-r-sm:2px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:Mulish,system-ui,sans-serif;font-size:16px;line-height:1.55;overflow-x:hidden}
+/* componentes del motor de reserva; cada página define --rk-* */
+.rk-exps{display:grid;gap:var(--rk-gap,10px)}
+.rk-exp{all:unset;box-sizing:border-box;cursor:pointer;display:grid;gap:4px;padding:14px 16px;border:1px solid var(--rk-line);border-radius:var(--rk-r,6px);background:var(--rk-card,transparent);color:inherit;transition:border-color .15s,background .15s}
+.rk-exp:hover{border-color:var(--rk-accent)}
+.rk-exp[aria-pressed="true"]{border-color:var(--rk-accent);background:var(--rk-sel,rgba(0,0,0,.04));box-shadow:inset 3px 0 0 var(--rk-accent)}
+.rk-exp__n{font-weight:600;font-size:1.02em}
+.rk-exp__d{font-size:.88em;opacity:.78;line-height:1.45}
+.rk-exp__m{display:flex;justify-content:space-between;gap:8px;font-size:.85em;margin-top:2px}
+.rk-exp__p{font-weight:600;color:var(--rk-accent-ink,var(--rk-accent))}
+.rk-cal{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+.rk-cal--grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));overflow:visible}
+.rk-cal__h{text-align:center;font-size:.72em;opacity:.6;padding:2px 0}
+.rk-day{all:unset;box-sizing:border-box;cursor:pointer;flex:0 0 58px;display:grid;justify-items:center;gap:1px;padding:8px 2px;border:1px solid var(--rk-line);border-radius:var(--rk-r-sm,4px);background:var(--rk-card,transparent);min-width:0}
+.rk-day__w{font-size:.7em;opacity:.7}.rk-day__n{font-size:1.15em;font-weight:600;line-height:1.1}.rk-day__m{font-size:.62em;opacity:.65}
+.rk-day:disabled{opacity:.35;cursor:not-allowed;text-decoration:line-through}
+.rk-day:not(:disabled):hover{border-color:var(--rk-accent)}
+.rk-day[aria-pressed="true"]{background:var(--rk-accent);border-color:var(--rk-accent);color:var(--rk-on-accent,#fff)}
+.rk-times,.rk-langs{display:flex;flex-wrap:wrap;gap:8px}
+.rk-time,.rk-lang{all:unset;box-sizing:border-box;cursor:pointer;padding:9px 14px;border:1px solid var(--rk-line);border-radius:var(--rk-r-sm,4px);background:var(--rk-card,transparent);display:grid;gap:1px;text-align:center}
+.rk-time__t{font-weight:600}.rk-time__c{font-size:.72em;opacity:.7}
+.rk-time:disabled{opacity:.35;cursor:not-allowed}
+.rk-time[aria-pressed="true"],.rk-lang[aria-pressed="true"]{background:var(--rk-accent);border-color:var(--rk-accent);color:var(--rk-on-accent,#fff)}
+.rk-step{display:inline-flex;align-items:center;border:1px solid var(--rk-line);border-radius:var(--rk-r-sm,4px);overflow:hidden;background:var(--rk-card,transparent)}
+.rk-step__b{all:unset;cursor:pointer;width:40px;height:40px;display:grid;place-items:center;font-size:1.2em}
+.rk-step__b:disabled{opacity:.3;cursor:not-allowed}
+.rk-step__b:not(:disabled):hover{background:var(--rk-sel,rgba(0,0,0,.05))}
+.rk-step__v{min-width:96px;text-align:center;font-weight:600;font-size:.92em}
+.rk-step--sm .rk-step__b{width:34px;height:34px}.rk-step--sm .rk-step__v{min-width:74px;font-size:.85em}
+.rk-sum{display:grid;gap:6px}
+.rk-sum__row{display:flex;justify-content:space-between;gap:12px;font-size:.92em}
+.rk-sum__row span:last-child{text-align:right;white-space:nowrap}
+.rk-sum__tot{font-weight:700;font-size:1.08em;padding-top:8px;border-top:1px solid var(--rk-line)}
+.rk-sum__sena,.rk-sum__dto{font-size:.84em;opacity:.8}
+.rk-hint{margin:0;font-size:.88em;opacity:.7}
+.rk-book{display:inline-flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;cursor:pointer}
+.rk-book.is-off{opacity:.55;cursor:not-allowed}
+.rk-shop{display:grid;gap:0}
+.rk-wine{display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--rk-line)}
+.rk-wine__img{width:44px;height:64px;object-fit:contain;grid-column:1;grid-row:1}
+.rk-wine__i{grid-column:2;grid-row:1}.rk-wine__p{grid-column:3;grid-row:1}.rk-wine>.rk-step{grid-column:4;grid-row:1}
+.rk-wine__i{display:grid;gap:1px;min-width:0}
+.rk-wine__l{font-size:.72em;opacity:.65}.rk-wine__n{font-weight:600}.rk-wine__v{font-size:.82em;opacity:.75}
+.rk-wine__p{display:grid;text-align:right;font-size:.82em}.rk-wine__b{font-weight:600}.rk-wine__c{opacity:.65}
+.rk-wine.is-in .rk-wine__n{color:var(--rk-accent-ink,var(--rk-accent))}
+.rk-club{display:grid;gap:10px}
+.rk-plan{all:unset;box-sizing:border-box;cursor:pointer;display:grid;gap:3px;padding:16px;border:1px solid var(--rk-line);border-radius:var(--rk-r,6px);background:var(--rk-card,transparent)}
+.rk-plan__n{font-weight:700;font-size:1.05em}.rk-plan__b{font-size:.85em;opacity:.8}.rk-plan__d{font-size:.82em;opacity:.7;line-height:1.4}
+.rk-plan__p{font-weight:700;margin-top:6px;font-size:1.15em}.rk-plan__p small{font-weight:400;font-size:.65em;opacity:.7}
+.rk-plan:hover{border-color:var(--rk-accent)}
+.rk-plan[aria-pressed="true"]{border-color:var(--rk-accent);box-shadow:inset 0 0 0 1px var(--rk-accent);background:var(--rk-sel,rgba(0,0,0,.04))}
+.rk-exp:focus-visible,.rk-day:focus-visible,.rk-time:focus-visible,.rk-lang:focus-visible,.rk-step__b:focus-visible,.rk-plan:focus-visible,.rk-book:focus-visible{outline:2px solid var(--rk-accent);outline-offset:2px}
+.rk-pulse{animation:rkp .7s}
+@keyframes rkp{0%,100%{transform:none}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.rk-banner{font-size:12.5px;line-height:1.35;text-align:center;padding:7px 16px}
+@media (max-width:560px){.rk-wine{grid-template-columns:auto 1fr auto;row-gap:10px;column-gap:12px}.rk-wine__img{grid-row:1/3}.rk-wine__p{grid-column:3}.rk-wine>.rk-step{grid-column:2/4;grid-row:2;justify-self:start}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+.rk-banner{background:var(--green);color:#dfe7df}
+h1,h2,h3{font-family:"Della Respira",serif;font-weight:400;line-height:1.08;margin:0}
+a{color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+header.top{display:flex;justify-content:space-between;align-items:center;padding:18px 24px;max-width:1180px;margin:0 auto}
+.logo{font-family:"Della Respira";font-size:22px;letter-spacing:.06em;text-decoration:none}
+.logo small{display:block;font-family:Mulish;font-size:11px;letter-spacing:.02em;opacity:.65}
+nav.links{display:flex;gap:22px;font-size:14px}nav.links a{text-decoration:none;border-bottom:1px solid transparent}nav.links a:hover{border-color:var(--wine)}
+.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;padding:40px 24px 72px;max-width:1180px;margin:0 auto}
+.hero h1{font-size:clamp(46px,7vw,96px);color:var(--green)}
+.hero h1 span{display:block;font-size:.42em;color:var(--wine);margin-top:10px;letter-spacing:.01em}
+.hero p.lead{font-size:18px;max-width:46ch;margin:22px 0 28px}
+.btn{display:inline-flex;align-items:center;gap:10px;background:var(--wine);color:#fff;text-decoration:none;padding:14px 22px;font-weight:700;border:0;border-radius:2px;font-size:15px}
+.btn--ghost{background:transparent;color:var(--green);border:1px solid var(--green)}
+.btns{display:flex;gap:12px;flex-wrap:wrap}
+/* tablero */
+.board{background:var(--green);color:#eef1e8;padding:26px 26px 22px;border-radius:3px;box-shadow:0 0 0 6px var(--green2),0 0 0 7px var(--brass);position:relative}
+.board__h{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid rgba(255,255,255,.18);padding-bottom:12px;margin-bottom:6px}
+.board__h h2{font-size:26px}
+.season{display:flex;border:1px solid rgba(255,255,255,.3);border-radius:2px;overflow:hidden}
+.season button{all:unset;cursor:pointer;padding:5px 10px;font-size:12px}
+.season button[aria-pressed=true]{background:var(--brass);color:var(--green)}
+.row{display:grid;grid-template-columns:92px 1fr auto;gap:12px;padding:11px 0;border-bottom:1px dashed rgba(255,255,255,.16);align-items:baseline}
+.row b{font-family:"Della Respira";font-size:22px;font-weight:400;color:#f3dca6}
+.row span{font-size:14.5px}.row em{font-style:normal;font-size:12px;opacity:.7}
+.board small{display:block;margin-top:12px;font-size:12px;opacity:.7}
+.photo-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:-30px;max-width:1180px;margin-left:auto;margin-right:auto;padding:0 24px}
+.photo-strip figure{margin:0;aspect-ratio:4/3;background:linear-gradient(135deg,var(--green2),var(--green));overflow:hidden;position:relative}
+.photo-strip figure::after{content:attr(data-c);position:absolute;left:12px;bottom:10px;color:#f3dca6;font-family:"Della Respira";font-size:18px}
+.photo-strip img{width:100%;height:100%;object-fit:cover;display:block}
+section{padding:84px 0}
+.sec-h{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:34px;flex-wrap:wrap}
+.sec-h h2{font-size:clamp(34px,4.6vw,56px);color:var(--green)}
+.sec-h p{max-width:44ch;margin:0;opacity:.8}
+.book{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr) minmax(0,.9fr);gap:28px;align-items:start}
+.col h3{font-family:Mulish;font-weight:800;font-size:13px;margin:0 0 12px;color:var(--wine)}
+.col+.col{border-left:1px solid var(--rk-line);padding-left:28px}
+.col .blk{margin-bottom:22px}
+.ticket{background:#fff;border:1px solid var(--rk-line);padding:20px;position:sticky;top:16px}
+.ticket .btn{width:100%;justify-content:center;margin-top:14px}
+.ticket input{width:100%;padding:11px 12px;border:1px solid var(--rk-line);font:inherit;margin-top:12px;border-radius:2px}
+.rk-need{font-size:12.5px;opacity:.7;margin-top:8px;text-align:center}
+.wines{background:var(--stone)}
+.shopgrid{display:grid;grid-template-columns:1.6fr 1fr;gap:40px;align-items:start}
+.rk-wine__img{width:40px;height:84px}
+.cartbox{background:var(--green);color:#eef1e8;padding:24px;position:sticky;top:16px;--rk-line:rgba(255,255,255,.25)}
+.cartbox h3{font-size:28px;margin-bottom:10px;color:#f3dca6}
+.cartbox .btn{background:var(--brass);color:var(--green);width:100%;justify-content:center;margin-top:16px}
+.club .rk-club{grid-template-columns:repeat(3,1fr)}
+.club .rk-plan{background:#fff}
+.club .rk-plan:nth-child(2){border-color:var(--brass)}
+.clubfoot{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-top:22px;flex-wrap:wrap}
+.visit{display:grid;grid-template-columns:1fr 1fr;gap:48px}
+.visit dl{display:grid;grid-template-columns:150px 1fr;gap:10px 18px;margin:0}
+.visit dt{font-weight:800;font-size:14px;color:var(--wine)}.visit dd{margin:0}
+.map{background:var(--green);min-height:280px;position:relative;overflow:hidden;border-radius:2px}
+.map svg{position:absolute;inset:0;width:100%;height:100%}
+.owner{border:1px solid var(--brass);padding:26px;display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:center;background:#fff}
+.owner b{font-family:"Della Respira";font-weight:400;font-size:44px;color:var(--wine);line-height:1}
+footer{background:var(--green);color:#cfd8cf;padding:34px 24px;font-size:13.5px;text-align:center}
+@media (max-width:980px){.book{grid-template-columns:1fr 1fr}.ticket-col{grid-column:1/-1}.col+.col{border-left:0;padding-left:0}.ticket{position:static}}
+@media (max-width:760px){.hero{grid-template-columns:1fr;gap:34px;padding-top:20px}nav.links{display:none}.book,.shopgrid,.visit{grid-template-columns:1fr}.club .rk-club{grid-template-columns:1fr}.photo-strip{grid-template-columns:1fr 1fr;margin-top:0}.photo-strip figure:nth-child(3){display:none}.wrap{padding:0 16px}header.top,.hero,.photo-strip{padding-left:16px;padding-right:16px}section{padding:60px 0}.cartbox{position:static}.visit dl{grid-template-columns:1fr}.owner{grid-template-columns:1fr}.row{grid-template-columns:70px 1fr}.row em{grid-column:2}}
+</style>
+</head>
+<body>
+<div class="rk-banner">Prototipo de demostración preparado para Bodega Jean Rivier · Precios y disponibilidad de ejemplo</div>
+<header class="top"><a class="logo" href="#">JEAN RIVIER<small>Bodega familiar · San Rafael, Mendoza</small></a>
+<nav class="links"><a href="#visitas">Visitas</a><a href="#vinos">Vinos</a><a href="#club">Club</a><a href="#llegar">Cómo llegar</a></nav></header>
+
+<div class="hero">
+ <div>
+  <h1>Jean Rivier<span>La bodega a pasos del centro de San Rafael</span></h1>
+  <p class="lead">Recorrés la bodega con la familia, el enólogo o uno de nuestros guías, y terminás en la cava probando tres vinos. Son 45 minutos y se reserva acá, sin intermediarios.</p>
+  <div class="btns"><a class="btn" href="#visitas">Reservar una visita</a><a class="btn btn--ghost" href="#vinos">Comprar vino por caja</a></div>
+ </div>
+ <aside class="board" aria-label="Horarios de visita">
+  <div class="board__h"><h2>Salidas de hoy</h2>
+   <div class="season" role="group" aria-label="Temporada"><button type="button" data-s="baja" aria-pressed="true">Temp. baja</button><button type="button" data-s="alta" aria-pressed="false">Temp. alta</button></div></div>
+  <div id="boardRows"></div>
+  <small>Temporada alta: enero, febrero, Semana Santa y vacaciones de invierno. Atención lun a vie 8 a 12 y 15 a 19, sáb 8 a 12.</small>
+ </aside>
+</div>
+
+<div class="photo-strip">
+ <figure data-c="La bodega"><img src="https://www.jeanrivier.com/img/homebodega.jpg" alt="Bodega Jean Rivier" onerror="var f=this.parentNode,s=f.parentNode;f.remove();if(!s.children.length)s.remove()"></figure>
+ <figure data-c="Los viñedos"><img src="https://www.jeanrivier.com/img/homevinedos.jpg" alt="Viñedos Jean Rivier" onerror="var f=this.parentNode,s=f.parentNode;f.remove();if(!s.children.length)s.remove()"></figure>
+ <figure data-c="Vino Test"><img src="https://www.jeanrivier.com/img/bodega/img-vinotest.jpg" alt="Vino Test con alfajores" onerror="var f=this.parentNode,s=f.parentNode;f.remove();if(!s.children.length)s.remove()"></figure>
+</div>
+
+<section id="visitas" data-rk-scope>
+ <div class="wrap">
+  <div class="sec-h"><h2>Reservá tu visita</h2><p>Elegí la experiencia, el día y el horario. Ves los cupos que quedan y te llega la confirmación por WhatsApp.</p></div>
+  <div class="book">
+   <div class="col"><h3>1 · Experiencia</h3><div class="rk-exps" data-rk="exps"></div></div>
+   <div class="col">
+    <div class="blk"><h3>2 · Día</h3><div data-rk="cal" data-mode="grid"></div></div>
+    <div class="blk"><h3>3 · Horario</h3><div class="rk-times" data-rk="times"></div></div>
+    <div class="blk"><h3>4 · Idioma y personas</h3><div class="rk-langs" data-rk="langs" style="margin-bottom:12px"></div><div data-rk="pax"></div></div>
+   </div>
+   <div class="col ticket-col"><div class="ticket">
+    <h3 style="font-family:Mulish;font-weight:800;font-size:13px;color:var(--wine);margin:0 0 12px">Tu reserva</h3>
+    <div class="rk-sum" data-rk="sum"></div>
+    <input data-rk="nombre" placeholder="Tu nombre (opcional)" aria-label="Tu nombre">
+    <a class="btn rk-book" data-rk="book" target="_blank" rel="noopener"><span class="rk-book__l">Elegí día y horario</span></a>
+    <p class="rk-need">La seña se paga recién cuando la bodega confirma.</p>
+   </div></div>
+  </div>
+ </div>
+</section>
+
+<section id="vinos" class="wines" data-rk-scope>
+ <div class="wrap">
+  <div class="sec-h"><h2>Los vinos, directo de la bodega</h2><p>Varietales Jean Rivier, la línea Jomo y los cortes. Pedís por caja de 6 y lo retirás en Yrigoyen 2385 o coordinamos el envío.</p></div>
+  <div class="shopgrid">
+   <div class="rk-shop" data-rk="shop"></div>
+   <div class="cartbox"><h3>Tu pedido</h3><div class="rk-sum" data-rk="cart"></div>
+    <a class="btn rk-book" data-rk="shopbtn" target="_blank" rel="noopener"><span class="rk-book__l">Sumá al menos una caja</span></a>
+    <p class="rk-need" style="opacity:.75">Precios de ejemplo. Stock y añadas a confirmar.</p></div>
+  </div>
+ </div>
+</section>
+
+<section id="club" class="club" data-rk-scope>
+ <div class="wrap">
+  <div class="sec-h"><h2>Club Jean Rivier</h2><p>Para los que vinieron una vez y quieren seguir tomando lo que probaron en la cava. Cada mes, una selección elegida por la familia.</p></div>
+  <div class="rk-club" data-rk="club"></div>
+  <div class="clubfoot"><p class="rk-need" style="text-align:left;margin:0">Sin permanencia. Se pausa o se da de baja por WhatsApp.</p>
+   <a class="btn rk-book" data-rk="clubbtn" target="_blank" rel="noopener"><span class="rk-book__l">Elegí un plan</span></a></div>
+ </div>
+</section>
+
+<section id="llegar" style="padding-top:0">
+ <div class="wrap visit">
+  <dl>
+   <dt>Dirección</dt><dd>Av. Hipólito Yrigoyen 2385, San Rafael, Mendoza</dd>
+   <dt>Visitas</dt><dd>Con guía, dueños o enólogos. Por ahora en español.</dd>
+   <dt>Bodega</dt><dd>Lun a vie 8 a 12 y 15 a 19 · Sáb 8 a 12</dd>
+   <dt>WhatsApp</dt><dd><a href="#" data-wa="Hola Jean Rivier! Tengo una consulta sobre las visitas.">+54 9 260 423-2226</a></dd>
+   <dt>Instagram</dt><dd><a href="https://www.instagram.com/bodegajeanrivier/" target="_blank" rel="noopener">@bodegajeanrivier</a></dd>
+   <dt>Tour virtual</dt><dd><a href="https://my.matterport.com/show/?m=oTxcdKXHitU" target="_blank" rel="noopener">Recorrela en 360°</a></dd>
+  </dl>
+  <div class="map" aria-hidden="true"><svg viewBox="0 0 400 280" preserveAspectRatio="xMidYMid slice"><g stroke="#3d6352" stroke-width="1" fill="none"><path d="M0 60H400M0 120H400M0 180H400M0 240H400M60 0V280M140 0V280M220 0V280M300 0V280M370 0V280"/></g><path d="M0 150 L400 110" stroke="#b48a3a" stroke-width="6"/><text x="16" y="168" fill="#f3dca6" font-family="Mulish" font-size="11">Av. Hipólito Yrigoyen</text><path d="M140 0V280" stroke="#e3e6df" stroke-width="3"/><text x="146" y="20" fill="#e3e6df" font-family="Mulish" font-size="10">hacia el centro</text><circle cx="262" cy="122" r="11" fill="#7b1e2c" stroke="#f3dca6" stroke-width="3"/><text x="230" y="98" fill="#fff" font-family="Della Respira" font-size="18">Jean Rivier</text></svg></div>
+ </div>
+</section>
+
+<section style="padding-top:0"><div class="wrap"><div class="owner"><b>0%</b><div><strong>Para la familia Rivier:</strong> cada visita y cada caja que entra por acá llega directo a su WhatsApp, sin la comisión de 20-25% que cobran agencias y plataformas de excursiones. Y quien sale de la cava se puede llevar el vino o sumarse al club desde el celular.</div></div></div></section>
+
+<footer>Prototipo preparado para Bodega Jean Rivier por Resolviendo Kos · resolviendokos.com · No es la web oficial</footer>
+<script>(function(){
+"use strict";
+var C={}, S={exp:null,date:null,time:null,lang:null,pax:2,cart:{},plan:null};
+function $(s,r){return (r||document).querySelector(s);}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));}
+function money(n){return "$ "+Math.round(n).toLocaleString("es-AR");}
+function h(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e;}
+function hash(s){var x=2166136261;for(var i=0;i<s.length;i++){x^=s.charCodeAt(i);x=Math.imul(x,16777619);}return (x>>>0);}
+var DIAS=["dom","lun","mar","mié","jue","vie","sáb"],DIASL=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"],MES=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+function key(d){return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();}
+function fmtDate(d){return DIASL[d.getDay()]+" "+d.getDate()+"/"+(d.getMonth()+1);}
+function exp(){for(var i=0;i<C.exps.length;i++)if(C.exps[i].id===S.exp)return C.exps[i];return C.exps[0];}
+function cupos(d,t){var e=exp();var cap=e.cap||C.cap||12;var r=hash(key(d)+t+e.id+C.negocio)%100;if(r<14)return 0;return Math.max(1,Math.round(cap*(r/100)));}
+function open(d){var e=exp();var days=e.days||C.days||[1,2,3,4,5,6];return days.indexOf(d.getDay())>-1;}
+function times(){return exp().times||C.times||["10:00","12:00","16:00"];}
+function wa(text,num){if(!(num||C.wa)&&C.mail)return "mailto:"+C.mail+"?subject="+encodeURIComponent("Consulta desde la web - "+C.negocio)+"&body="+encodeURIComponent(text);return "https://wa.me/"+(num||C.wa)+"?text="+encodeURIComponent(text);}
+function each(sel,fn){$$('[data-rk="'+sel+'"]').forEach(fn);}
+
+function renderExps(){each("exps",function(box){box.innerHTML="";C.exps.forEach(function(e){
+  var b=h("button","rk-exp");b.type="button";b.setAttribute("aria-pressed",String(S.exp===e.id));
+  b.innerHTML='<span class="rk-exp__n">'+e.n+'</span>'+(e.d?'<span class="rk-exp__d">'+e.d+'</span>':'')+'<span class="rk-exp__m"><span class="rk-exp__dur">'+(e.dur||"")+'</span><span class="rk-exp__p">'+(e.p?money(e.p)+(e.pp===false?"":" p/p"):"Sin cargo")+'</span></span>';
+  b.addEventListener("click",function(){S.exp=e.id;S.time=null;if(S.date&&!open(S.date))S.date=null;renderAll();});
+  box.appendChild(b);});});}
+
+function renderCal(){each("cal",function(box){box.innerHTML="";var mode=box.getAttribute("data-mode")||C.calMode||"strip";
+  var start=new Date();start.setHours(0,0,0,0);start.setDate(start.getDate()+1);var n=C.horizon||21;
+  var wrap=h("div","rk-cal rk-cal--"+mode);
+  if(mode==="grid"){["L","M","M","J","V","S","D"].forEach(function(x){wrap.appendChild(h("span","rk-cal__h",x));});
+    var off=(start.getDay()+6)%7;for(var k=0;k<off;k++)wrap.appendChild(h("span","rk-cal__pad"));}
+  for(var i=0;i<n;i++){(function(i){var d=new Date(start);d.setDate(start.getDate()+i);
+    var b=h("button","rk-day");b.type="button";var ok=open(d);
+    var free=0;if(ok)times().forEach(function(t){free+=cupos(d,t);});
+    if(!ok||free===0){b.disabled=true;}
+    b.setAttribute("aria-pressed",String(S.date&&key(S.date)===key(d)));
+    b.setAttribute("aria-label",fmtDate(d)+(ok?(free?"":" completo"):" cerrado"));
+    b.innerHTML='<span class="rk-day__w">'+DIAS[d.getDay()]+'</span><span class="rk-day__n">'+d.getDate()+'</span><span class="rk-day__m">'+(!ok?"cerrado":free===0?"completo":MES[d.getMonth()])+'</span>';
+    b.addEventListener("click",function(){S.date=d;S.time=null;renderAll();});wrap.appendChild(b);})(i);}
+  box.appendChild(wrap);});}
+
+function renderTimes(){each("times",function(box){box.innerHTML="";
+  if(!S.date){box.appendChild(h("p","rk-hint","Elegí un día para ver los horarios y cupos."));return;}
+  times().forEach(function(t){var c=cupos(S.date,t);var b=h("button","rk-time");b.type="button";b.disabled=c===0||c<1;
+    b.setAttribute("aria-pressed",String(S.time===t));
+    b.innerHTML='<span class="rk-time__t">'+t+'</span><span class="rk-time__c">'+(c?("quedan "+c):"completo")+'</span>';
+    b.addEventListener("click",function(){S.time=t;if(S.pax>c)S.pax=c;renderAll();});box.appendChild(b);});});}
+
+function renderLangs(){each("langs",function(box){box.innerHTML="";var L=exp().langs||C.langs||["Español"];if(L.indexOf(S.lang)<0)S.lang=L[0];
+  L.forEach(function(l){var b=h("button","rk-lang",l);b.type="button";b.setAttribute("aria-pressed",String(S.lang===l));
+    b.addEventListener("click",function(){S.lang=l;renderAll();});box.appendChild(b);});});}
+
+function maxPax(){return S.date&&S.time?cupos(S.date,S.time):(exp().cap||C.cap||12);}
+function renderPax(){each("pax",function(box){box.innerHTML="";var w=h("div","rk-step");
+  var m=h("button","rk-step__b","&minus;");m.type="button";m.setAttribute("aria-label","Una persona menos");
+  var o=h("output","rk-step__v",S.pax+(S.pax===1?" persona":" personas"));
+  var p=h("button","rk-step__b","+");p.type="button";p.setAttribute("aria-label","Una persona más");
+  m.disabled=S.pax<=1;p.disabled=S.pax>=maxPax();
+  m.onclick=function(){S.pax=Math.max(1,S.pax-1);renderAll();};p.onclick=function(){S.pax=Math.min(maxPax(),S.pax+1);renderAll();};
+  w.appendChild(m);w.appendChild(o);w.appendChild(p);box.appendChild(w);});}
+
+function bookText(){var e=exp();var tot=(e.p||0)*(e.pp===false?1:S.pax);var sena=tot*(C.sena||0.3);
+  return "Hola "+C.negocio+"! Quiero reservar una visita:\n"+
+  "• Experiencia: "+e.n+"\n• Fecha: "+(S.date?fmtDate(S.date):"-")+"\n• Horario: "+(S.time||"-")+"\n• Idioma: "+S.lang+"\n• Personas: "+S.pax+"\n"+
+  "• Total: "+money(tot)+(tot?" (seña "+Math.round((C.sena||0.3)*100)+"%: "+money(sena)+")":"")+"\n"+(nombre()?"Mi nombre: "+nombre()+"\n":"")+"¿Me confirman disponibilidad?";}
+function nombre(){var i=$('[data-rk="nombre"]');return i&&i.value.trim()?i.value.trim():"";}
+function renderSum(){var e=exp();var tot=(e.p||0)*(e.pp===false?1:S.pax);var sena=tot*(C.sena||0.3);var ready=S.date&&S.time;
+  each("sum",function(box){box.innerHTML='<div class="rk-sum__row"><span>'+e.n+'</span><span>'+(e.p?money(e.p)+(e.pp===false?"":" × "+S.pax):"sin cargo")+'</span></div>'+
+   '<div class="rk-sum__row"><span>'+(S.date?fmtDate(S.date):"Día a elegir")+'</span><span>'+(S.time||"--:--")+' · '+S.lang+'</span></div>'+
+   '<div class="rk-sum__row rk-sum__tot"><span>Total de ejemplo</span><span>'+money(tot)+'</span></div>'+
+   (tot?'<div class="rk-sum__row rk-sum__sena"><span>Seña para confirmar ('+Math.round((C.sena||0.3)*100)+'%)</span><span>'+money(sena)+'</span></div>':'');});
+  each("book",function(a){a.href=ready?wa(bookText()):"#";a.setAttribute("aria-disabled",String(!ready));a.classList.toggle("is-off",!ready);
+    var lbl=a.querySelector(".rk-book__l");if(lbl)lbl.textContent=ready?(a.getAttribute("data-on")||"Reservar por WhatsApp"):(a.getAttribute("data-off")||"Elegí día y horario");});}
+
+function renderShop(){each("shop",function(box){if(box.getAttribute("data-built")){syncShop();return;}box.setAttribute("data-built","1");box.innerHTML="";
+  C.wines.forEach(function(w){var bx=w.box||C.box||6;var r=h("div","rk-wine");r.setAttribute("data-w",w.id);
+    r.innerHTML=(w.img?'<img class="rk-wine__img" src="'+w.img+'" alt="'+w.n+'" loading="lazy" onerror="this.remove()">':'')+
+    '<div class="rk-wine__i"><span class="rk-wine__l">'+(w.line||"")+'</span><span class="rk-wine__n">'+w.n+'</span>'+(w.v?'<span class="rk-wine__v">'+w.v+'</span>':'')+'</div>'+
+    '<div class="rk-wine__p"><span class="rk-wine__b">'+money(w.p)+' la botella</span><span class="rk-wine__c">'+money(w.p*bx)+' la caja de '+bx+'</span></div>';
+    var st=h("div","rk-step rk-step--sm");var m=h("button","rk-step__b","&minus;");m.type="button";m.setAttribute("aria-label","Quitar caja de "+w.n);
+    var o=h("output","rk-step__v","0 cajas");var p=h("button","rk-step__b","+");p.type="button";p.setAttribute("aria-label","Sumar caja de "+w.n);
+    m.onclick=function(){S.cart[w.id]=Math.max(0,(S.cart[w.id]||0)-1);syncShop();};p.onclick=function(){S.cart[w.id]=Math.min(20,(S.cart[w.id]||0)+1);syncShop();};
+    st.appendChild(m);st.appendChild(o);st.appendChild(p);r.appendChild(st);box.appendChild(r);});});syncShop();}
+function cartInfo(){var cj=0,bt=0,tot=0,lines=[];C.wines.forEach(function(w){var q=S.cart[w.id]||0;if(!q)return;var bx=w.box||C.box||6;cj+=q;bt+=q*bx;tot+=q*bx*w.p;lines.push("• "+q+(q>1?" cajas":" caja")+" de "+w.n+(w.v&&w.n.indexOf(w.v)<0?" ("+w.v+")":"")+" — "+money(q*bx*w.p));});
+  var dto=cj>=(C.dtoCajas||3)?(C.dto||0.1):0;return {cj:cj,bt:bt,tot:tot,dto:dto,fin:tot*(1-dto),lines:lines};}
+function syncShop(){$$(".rk-wine").forEach(function(r){var q=S.cart[r.getAttribute("data-w")]||0;var o=r.querySelector(".rk-step__v");if(o)o.textContent=q+(q===1?" caja":" cajas");r.classList.toggle("is-in",q>0);var m=r.querySelector(".rk-step__b");if(m)m.disabled=q===0;});
+  var c=cartInfo();each("cart",function(box){box.innerHTML=c.cj?('<div class="rk-sum__row"><span>'+c.cj+(c.cj>1?" cajas":" caja")+' · '+c.bt+' botellas</span><span>'+money(c.tot)+'</span></div>'+
+    (c.dto?'<div class="rk-sum__row rk-sum__dto"><span>'+Math.round(c.dto*100)+'% por llevar '+(C.dtoCajas||3)+' cajas o más</span><span>− '+money(c.tot*c.dto)+'</span></div>':'<div class="rk-sum__row rk-sum__dto"><span>Desde '+(C.dtoCajas||3)+' cajas: '+Math.round((C.dto||0.1)*100)+'% menos</span><span></span></div>')+
+    '<div class="rk-sum__row rk-sum__tot"><span>Total de ejemplo</span><span>'+money(c.fin)+'</span></div>'):'<p class="rk-hint">Sumá cajas para armar el pedido. '+(C.envio||"Retiro en la bodega o envío a coordinar.")+'</p>';});
+  each("shopbtn",function(a){var ok=c.cj>0;a.href=ok?wa("Hola "+C.negocio+"! Quiero hacer este pedido de vinos:\n"+c.lines.join("\n")+"\nTotal: "+money(c.fin)+(c.dto?" (con "+Math.round(c.dto*100)+"% off)":"")+"\n"+(nombre()?"Nombre: "+nombre()+"\n":"")+"¿Cómo coordinamos pago y entrega?"):"#";
+    a.setAttribute("aria-disabled",String(!ok));a.classList.toggle("is-off",!ok);var l=a.querySelector(".rk-book__l");if(l)l.textContent=ok?"Pedir "+c.cj+(c.cj>1?" cajas":" caja")+" por WhatsApp":"Sumá al menos una caja";});}
+
+function renderClub(){each("club",function(box){box.innerHTML="";C.club.forEach(function(p){var b=h("button","rk-plan");b.type="button";b.setAttribute("aria-pressed",String(S.plan===p.id));
+  b.innerHTML='<span class="rk-plan__n">'+p.n+'</span><span class="rk-plan__b">'+p.b+' botellas por mes</span>'+(p.d?'<span class="rk-plan__d">'+p.d+'</span>':'')+'<span class="rk-plan__p">'+money(p.p)+'<small> /mes</small></span>';
+  b.onclick=function(){S.plan=p.id;renderClub();};box.appendChild(b);});});
+  var plan=null;C.club.forEach(function(p){if(p.id===S.plan)plan=p;});
+  each("clubbtn",function(a){a.href=plan?wa("Hola "+C.negocio+"! Me quiero sumar al club del vino:\n• Plan: "+plan.n+" ("+plan.b+" botellas por mes)\n• Cuota de ejemplo: "+money(plan.p)+" por mes\n"+(nombre()?"Nombre: "+nombre()+"\n":"")+"¿Cómo sigo?"):"#";
+    a.setAttribute("aria-disabled",String(!plan));a.classList.toggle("is-off",!plan);var l=a.querySelector(".rk-book__l");if(l)l.textContent=plan?"Sumarme al plan "+plan.n:"Elegí un plan";});}
+
+function renderAll(){renderExps();renderCal();renderTimes();renderLangs();renderPax();renderSum();}
+document.addEventListener("click",function(ev){var a=ev.target.closest&&ev.target.closest('a[aria-disabled="true"]');if(a){ev.preventDefault();var t=a.closest("[data-rk-scope]");var hint=t&&t.querySelector(".rk-need");if(hint){hint.classList.remove("rk-pulse");void hint.offsetWidth;hint.classList.add("rk-pulse");}}});
+window.RK={init:function(cfg){C=cfg;S.exp=(cfg.exps[0]||{}).id;S.lang=(cfg.langs||["Español"])[0];if(cfg.club&&cfg.club[1])S.plan=null;
+  renderAll();if(cfg.wines)renderShop();if(cfg.club)renderClub();
+  $$('[data-rk="nombre"]').forEach(function(i){i.addEventListener("input",function(){renderSum();syncShop();renderClub();});});
+  $$("[data-wa]").forEach(function(a){a.href=wa(a.getAttribute("data-wa")||("Hola "+C.negocio+"! Quería hacer una consulta."));});},
+  state:S,pick:function(id){S.exp=id;S.time=null;renderAll();}};
+})();
+</script>
+<script>
+var SEASON={baja:{v:["10:30","15:30","16:30","17:30"],t:[["vie","17:30"]]},alta:{v:["09:00","10:00","11:00","15:15","16:15"],t:[["lun · mié · vie","17:30"],["sáb","11:00"]]}};
+function board(s){var r=document.getElementById("boardRows");var html="";SEASON[s].v.forEach(function(t){html+='<div class="row"><b>'+t+'</b><span>Visita guiada + 3 vinos en la cava</span><em>45 min</em></div>';});
+SEASON[s].t.forEach(function(x){html+='<div class="row"><b>'+x[1]+'</b><span>Vino Test con alfajores El Secreto</span><em>'+x[0]+'</em></div>';});r.innerHTML=html;
+document.querySelectorAll(".season button").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.s===s));});}
+document.querySelectorAll(".season button").forEach(function(b){b.onclick=function(){board(b.dataset.s);};});board("baja");
+var IMG="https://www.jeanrivier.com/img/carrousel/";
+RK.init({negocio:"Bodega Jean Rivier",wa:"5492604232226",sena:0.3,horizon:28,langs:["Español","Inglés (a pedido)"],
+exps:[
+{id:"visita",n:"Visita guiada",d:"Recorrido por la bodega y degustación de 3 vinos en la cava.",dur:"45 min",p:8000,cap:15,days:[1,2,3,4,5,6],times:["10:30","15:30","16:30","17:30"]},
+{id:"vinotest",n:"Vino Test",d:"Maridaje lúdico de alfajores El Secreto con vinos Jean Rivier.",dur:"50 min",p:12000,cap:12,days:[5],times:["17:30"]},
+{id:"quesos",n:"Queso & Blancos",d:"Quesos con nuestros blancos en tres propuestas.",dur:"60 min",p:16000,cap:10,days:[4,6],times:["11:00","17:00"]}],
+wines:[
+{id:"malbec",line:"Jean Rivier",n:"Malbec joven",v:"Malbec",p:9500,img:IMG+"slider-malbecjov.png"},
+{id:"cab",line:"Jean Rivier",n:"Cabernet Sauvignon",v:"Cabernet Sauvignon",p:9500,img:IMG+"slider-cabernet.png"},
+{id:"merlot",line:"Jean Rivier",n:"Merlot",v:"Merlot",p:9500,img:IMG+"slider-new-merlot.jpg"},
+{id:"tocai",line:"Jean Rivier",n:"Tocai Friulano",v:"Blanco",p:9000,img:IMG+"slider-tocai.png"},
+{id:"cfres",line:"Reserva",n:"Cabernet Franc Reserva",v:"Cabernet Franc",p:16500,img:IMG+"cabfranc_reserva.jpg"},
+{id:"jomo",line:"Jomo",n:"Jomo Tinto",v:"Tinto",p:6500,img:IMG+"jomo-tinto.jpg"},
+{id:"jomor",line:"Jomo",n:"Jomo Rosé",v:"Rosé",p:6500,img:IMG+"jomo-rose.jpg"},
+{id:"corte",line:"Corte",n:"Corte Tinto",v:"Blend",p:11000,img:IMG+"corte-tinto-c.jpg"},
+{id:"kumbre",line:"Alta gama",n:"Kumbre",v:"Tinto de guarda",p:24000,img:IMG+"slider-kumbre.png"}],
+club:[{id:"cava",n:"Cava",b:2,d:"Dos varietales del mes.",p:17000},{id:"familia",n:"Familia",b:4,d:"Varietales, un Reserva y una sorpresa de la bodega.",p:38000},{id:"enologo",n:"Del enólogo",b:6,d:"Reservas, Kumbre y partidas chicas que no salen a la venta.",p:79000}]});
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Bodega Jean Rivier"></script>
+</body>
+</html>
