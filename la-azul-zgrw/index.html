@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Bodega La Azul · Tupungato</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Forum&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--azul:#1f3f8f;--azul2:#162d66;--hielo:#e9eef8;--nieve:#ffffff;--malbec:#6b1d3a;--sol:#f0b44c;--ink:#141a2b;
+--rk-line:#c9d3ea;--rk-accent:#1f3f8f;--rk-card:#fff;--rk-sel:#eef2fb;--rk-r:0;--rk-r-sm:0}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--hielo);color:var(--ink);font-family:Manrope,system-ui,sans-serif;font-size:15.5px;line-height:1.55;overflow-x:hidden}
+/* componentes del motor de reserva; cada página define --rk-* */
+.rk-exps{display:grid;gap:var(--rk-gap,10px)}
+.rk-exp{all:unset;box-sizing:border-box;cursor:pointer;display:grid;gap:4px;padding:14px 16px;border:1px solid var(--rk-line);border-radius:var(--rk-r,6px);background:var(--rk-card,transparent);color:inherit;transition:border-color .15s,background .15s}
+.rk-exp:hover{border-color:var(--rk-accent)}
+.rk-exp[aria-pressed="true"]{border-color:var(--rk-accent);background:var(--rk-sel,rgba(0,0,0,.04));box-shadow:inset 3px 0 0 var(--rk-accent)}
+.rk-exp__n{font-weight:600;font-size:1.02em}
+.rk-exp__d{font-size:.88em;opacity:.78;line-height:1.45}
+.rk-exp__m{display:flex;justify-content:space-between;gap:8px;font-size:.85em;margin-top:2px}
+.rk-exp__p{font-weight:600;color:var(--rk-accent-ink,var(--rk-accent))}
+.rk-cal{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+.rk-cal--grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));overflow:visible}
+.rk-cal__h{text-align:center;font-size:.72em;opacity:.6;padding:2px 0}
+.rk-day{all:unset;box-sizing:border-box;cursor:pointer;flex:0 0 58px;display:grid;justify-items:center;gap:1px;padding:8px 2px;border:1px solid var(--rk-line);border-radius:var(--rk-r-sm,4px);background:var(--rk-card,transparent);min-width:0}
+.rk-day__w{font-size:.7em;opacity:.7}.rk-day__n{font-size:1.15em;font-weight:600;line-height:1.1}.rk-day__m{font-size:.62em;opacity:.65}
+.rk-day:disabled{opacity:.35;cursor:not-allowed;text-decoration:line-through}
+.rk-day:not(:disabled):hover{border-color:var(--rk-accent)}
+.rk-day[aria-pressed="true"]{background:var(--rk-accent);border-color:var(--rk-accent);color:var(--rk-on-accent,#fff)}
+.rk-times,.rk-langs{display:flex;flex-wrap:wrap;gap:8px}
+.rk-time,.rk-lang{all:unset;box-sizing:border-box;cursor:pointer;padding:9px 14px;border:1px solid var(--rk-line);border-radius:var(--rk-r-sm,4px);background:var(--rk-card,transparent);display:grid;gap:1px;text-align:center}
+.rk-time__t{font-weight:600}.rk-time__c{font-size:.72em;opacity:.7}
+.rk-time:disabled{opacity:.35;cursor:not-allowed}
+.rk-time[aria-pressed="true"],.rk-lang[aria-pressed="true"]{background:var(--rk-accent);border-color:var(--rk-accent);color:var(--rk-on-accent,#fff)}
+.rk-step{display:inline-flex;align-items:center;border:1px solid var(--rk-line);border-radius:var(--rk-r-sm,4px);overflow:hidden;background:var(--rk-card,transparent)}
+.rk-step__b{all:unset;cursor:pointer;width:40px;height:40px;display:grid;place-items:center;font-size:1.2em}
+.rk-step__b:disabled{opacity:.3;cursor:not-allowed}
+.rk-step__b:not(:disabled):hover{background:var(--rk-sel,rgba(0,0,0,.05))}
+.rk-step__v{min-width:96px;text-align:center;font-weight:600;font-size:.92em}
+.rk-step--sm .rk-step__b{width:34px;height:34px}.rk-step--sm .rk-step__v{min-width:74px;font-size:.85em}
+.rk-sum{display:grid;gap:6px}
+.rk-sum__row{display:flex;justify-content:space-between;gap:12px;font-size:.92em}
+.rk-sum__row span:last-child{text-align:right;white-space:nowrap}
+.rk-sum__tot{font-weight:700;font-size:1.08em;padding-top:8px;border-top:1px solid var(--rk-line)}
+.rk-sum__sena,.rk-sum__dto{font-size:.84em;opacity:.8}
+.rk-hint{margin:0;font-size:.88em;opacity:.7}
+.rk-book{display:inline-flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;cursor:pointer}
+.rk-book.is-off{opacity:.55;cursor:not-allowed}
+.rk-shop{display:grid;gap:0}
+.rk-wine{display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--rk-line)}
+.rk-wine__img{width:44px;height:64px;object-fit:contain;grid-column:1;grid-row:1}
+.rk-wine__i{grid-column:2;grid-row:1}.rk-wine__p{grid-column:3;grid-row:1}.rk-wine>.rk-step{grid-column:4;grid-row:1}
+.rk-wine__i{display:grid;gap:1px;min-width:0}
+.rk-wine__l{font-size:.72em;opacity:.65}.rk-wine__n{font-weight:600}.rk-wine__v{font-size:.82em;opacity:.75}
+.rk-wine__p{display:grid;text-align:right;font-size:.82em}.rk-wine__b{font-weight:600}.rk-wine__c{opacity:.65}
+.rk-wine.is-in .rk-wine__n{color:var(--rk-accent-ink,var(--rk-accent))}
+.rk-club{display:grid;gap:10px}
+.rk-plan{all:unset;box-sizing:border-box;cursor:pointer;display:grid;gap:3px;padding:16px;border:1px solid var(--rk-line);border-radius:var(--rk-r,6px);background:var(--rk-card,transparent)}
+.rk-plan__n{font-weight:700;font-size:1.05em}.rk-plan__b{font-size:.85em;opacity:.8}.rk-plan__d{font-size:.82em;opacity:.7;line-height:1.4}
+.rk-plan__p{font-weight:700;margin-top:6px;font-size:1.15em}.rk-plan__p small{font-weight:400;font-size:.65em;opacity:.7}
+.rk-plan:hover{border-color:var(--rk-accent)}
+.rk-plan[aria-pressed="true"]{border-color:var(--rk-accent);box-shadow:inset 0 0 0 1px var(--rk-accent);background:var(--rk-sel,rgba(0,0,0,.04))}
+.rk-exp:focus-visible,.rk-day:focus-visible,.rk-time:focus-visible,.rk-lang:focus-visible,.rk-step__b:focus-visible,.rk-plan:focus-visible,.rk-book:focus-visible{outline:2px solid var(--rk-accent);outline-offset:2px}
+.rk-pulse{animation:rkp .7s}
+@keyframes rkp{0%,100%{transform:none}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.rk-banner{font-size:12.5px;line-height:1.35;text-align:center;padding:7px 16px}
+@media (max-width:560px){.rk-wine{grid-template-columns:auto 1fr auto;row-gap:10px;column-gap:12px}.rk-wine__img{grid-row:1/3}.rk-wine__p{grid-column:3}.rk-wine>.rk-step{grid-column:2/4;grid-row:2;justify-self:start}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+.rk-banner{background:var(--sol);color:var(--ink)}
+h1,h2,h3{font-family:Forum,serif;font-weight:400;margin:0;line-height:1}
+a{color:inherit}
+.bar{display:flex;justify-content:space-between;align-items:center;padding:14px 28px;background:var(--azul);color:#fff}
+.bar b{font-family:Forum;font-size:26px;letter-spacing:.14em}
+.bar nav{display:flex;gap:6px}
+.bar nav a{font-size:13px;text-decoration:none;padding:6px 12px;border:1px solid rgba(255,255,255,.35)}
+.bar nav a:hover{background:#fff;color:var(--azul)}
+.rail{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;height:calc(100vh - 100px);min-height:620px;scrollbar-width:thin}
+.panel{flex:0 0 auto;scroll-snap-align:start;height:100%;padding:44px 40px;position:relative;overflow-y:auto;border-right:1px solid var(--rk-line)}
+.p-cover{width:min(92vw,760px);background:var(--azul);color:#fff;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden}
+.p-cover svg{position:absolute;left:0;right:0;top:0;height:62%;width:100%}
+.p-cover h1{font-size:clamp(64px,10vw,150px);position:relative}
+.p-cover p{position:relative;max-width:44ch;font-size:17px;margin:14px 0 18px;opacity:.92}
+.hint{position:relative;display:flex;gap:10px;align-items:center;font-size:13px;opacity:.85}
+.hint i{display:inline-block;width:40px;height:1px;background:#fff}
+.p-exp{width:min(92vw,440px);background:var(--nieve)}
+.p-when{width:min(92vw,520px);background:var(--nieve)}
+.p-pay{width:min(92vw,380px);background:var(--azul2);color:#e9eef8;--rk-line:rgba(255,255,255,.22);--rk-accent:#f0b44c;--rk-on-accent:#141a2b;--rk-card:transparent}
+.p-wine{width:min(92vw,760px);background:var(--hielo)}
+.p-club{width:min(92vw,480px);background:var(--malbec);color:#f7e8ee;--rk-line:rgba(255,255,255,.25);--rk-accent:#f0b44c;--rk-card:transparent;--rk-sel:rgba(255,255,255,.08)}
+.p-info{width:min(92vw,460px);background:var(--nieve)}
+.num{font-family:Forum;font-size:90px;line-height:.8;color:var(--rk-line);position:absolute;right:24px;top:20px}
+.panel h2{font-size:44px;margin-bottom:6px;position:relative}
+.panel .lead{margin:0 0 20px;font-size:14px;opacity:.8;max-width:38ch}
+.lb{font-size:12px;font-weight:800;color:var(--malbec);margin:20px 0 8px}
+.p-pay h2{color:var(--sol)}
+.p-pay input{width:100%;padding:12px;border:0;font:inherit;margin-top:14px}
+.btn{display:flex;justify-content:center;background:var(--sol);color:var(--ink);text-decoration:none;padding:15px;font-weight:800;margin-top:12px}
+.btn--azul{background:var(--azul);color:#fff}
+.rk-need{font-size:12px;opacity:.75;margin:10px 0 0}
+.p-wine .rk-wine__img{width:36px;height:80px}
+.dots{display:flex;justify-content:center;gap:8px;padding:12px;background:var(--azul2)}
+.dots a{width:34px;height:4px;background:rgba(255,255,255,.3);display:block}
+.dots a:hover{background:var(--sol)}
+.info dl{display:grid;gap:14px;margin:20px 0}
+.info dt{font-size:12px;font-weight:800;color:var(--malbec)}.info dd{margin:2px 0 0}
+.save{border:1px solid var(--azul);padding:16px;font-size:14px;margin-top:20px}
+.save b{font-family:Forum;font-size:40px;display:block;color:var(--azul);font-weight:400}
+footer{background:var(--ink);color:#c5cbe0;text-align:center;padding:20px 16px;font-size:12.5px}
+@media (max-width:760px){
+ .rail{display:block;height:auto;min-height:0;overflow:visible}
+ .panel{width:auto!important;height:auto;padding:36px 16px;border-right:0;border-bottom:1px solid var(--rk-line);overflow:visible}
+ .p-cover{min-height:78vh}.bar{padding:12px 16px}.bar nav{display:none}.dots,.hint{display:none}.num{font-size:64px}}
+</style>
+</head>
+<body>
+<div class="rk-banner">Prototipo de demostración preparado para Bodega La Azul · Precios y disponibilidad de ejemplo</div>
+<div class="bar"><b>LA AZUL</b><nav><a href="#p2">Reservar</a><a href="#p5">Vinos</a><a href="#p6">Club</a><a href="#p7">Llegar</a></nav></div>
+<main class="rail" id="rail">
+ <section class="panel p-cover" id="p1">
+  <svg viewBox="0 0 760 400" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><path d="M0 400 L0 250 L90 150 L150 200 L250 80 L330 170 L420 60 L520 160 L600 110 L760 220 L760 400Z" fill="#2c55b5"/><path d="M250 80 L280 120 L262 116 L240 98Z M420 60 L452 104 L432 100 L410 76Z M90 150 L112 178 L96 176Z" fill="#fff"/><path d="M0 400 L0 320 L200 280 L420 300 L760 270 L760 400Z" fill="#162d66"/><g stroke="#f0b44c" stroke-width="2" opacity=".55"><path d="M0 340 L760 300"/><path d="M0 362 L760 324"/><path d="M0 384 L760 348"/></g></svg>
+  <h1>La Azul</h1>
+  <p>Bodega y restó en Tupungato, Valle de Uco, con vista al Cordón del Plata. Elaboramos la línea Azul, El Buscapleito y Jauría, y cocinamos carnes argentinas desde 2011.</p>
+  <div class="hint"><i></i>Deslizá para reservar, comprar y sumarte al club</div>
+ </section>
+
+ <section class="panel p-exp" id="p2" data-rk-scope><span class="num" aria-hidden="true">1</span>
+  <h2>Elegí</h2><p class="lead">Qué querés hacer en la bodega.</p>
+  <div class="rk-exps" data-rk="exps"></div>
+ </section>
+ <section class="panel p-when" id="p3"><span class="num" aria-hidden="true">2</span>
+  <h2>Cuándo</h2><p class="lead">Los cupos se actualizan según la experiencia.</p>
+  <div class="lb">Día</div><div data-rk="cal" data-mode="grid"></div>
+  <div class="lb">Horario</div><div class="rk-times" data-rk="times"></div>
+  <div class="lb">Idioma</div><div class="rk-langs" data-rk="langs"></div>
+  <div class="lb">Personas</div><div data-rk="pax"></div>
+ </section>
+ <section class="panel p-pay" id="p4" data-rk-scope><span class="num" aria-hidden="true" style="color:rgba(255,255,255,.15)">3</span>
+  <h2>Confirmá</h2><p class="lead">Te llega la confirmación por WhatsApp.</p>
+  <div class="rk-sum" data-rk="sum"></div>
+  <input data-rk="nombre" placeholder="Tu nombre (opcional)" aria-label="Tu nombre">
+  <a class="btn rk-book" data-rk="book" target="_blank" rel="noopener"><span class="rk-book__l">Elegí día y horario</span></a>
+  <p class="rk-need">La seña se paga cuando la bodega confirma la reserva.</p>
+ </section>
+ <section class="panel p-wine" id="p5" data-rk-scope>
+  <h2>Los vinos</h2><p class="lead">Línea Azul, El Buscapleito y Jauría, por caja de 6. Retiro en la bodega o envío a coordinar.</p>
+  <div class="rk-shop" data-rk="shop"></div>
+  <div style="background:#fff;padding:16px;margin-top:16px"><div class="rk-sum" data-rk="cart"></div>
+   <a class="btn btn--azul rk-book" data-rk="shopbtn" target="_blank" rel="noopener"><span class="rk-book__l">Sumá al menos una caja</span></a></div>
+ </section>
+ <section class="panel p-club" id="p6" data-rk-scope>
+  <h2 style="color:#fff">Club Jauría</h2><p class="lead">Una caja por mes de Tupungato a tu casa. Sin permanencia.</p>
+  <div class="rk-club" data-rk="club"></div>
+  <a class="btn rk-book" data-rk="clubbtn" target="_blank" rel="noopener"><span class="rk-book__l">Elegí un plan</span></a>
+  <p class="rk-need">Cuotas de ejemplo.</p>
+ </section>
+ <section class="panel p-info info" id="p7">
+  <h2>Cómo llegar</h2>
+  <dl><div><dt>Dónde</dt><dd>Caminos del Vino, Tupungato, Valle de Uco, Mendoza</dd></div>
+  <div><dt>WhatsApp</dt><dd><a href="#" data-wa="Hola La Azul! Quería hacer una consulta.">+54 2622 60-3443</a></dd></div>
+  <div><dt>Mail</dt><dd><a href="mailto:administracion@bodegalaazul.com">administracion@bodegalaazul.com</a></dd></div>
+  <div><dt>Instagram</dt><dd><a href="https://www.instagram.com/bodegalaazul/" target="_blank" rel="noopener">@bodegalaazul</a></dd></div></dl>
+  <div class="save"><b>20–25%</b>Es lo que cobran las agencias y plataformas por cada visitante. Con reservas propias, queda en La Azul.</div>
+ </section>
+</main>
+<div class="dots" aria-hidden="true"><a href="#p1"></a><a href="#p2"></a><a href="#p3"></a><a href="#p4"></a><a href="#p5"></a><a href="#p6"></a><a href="#p7"></a></div>
+<footer>Prototipo preparado para Bodega La Azul por Resolviendo Kos · resolviendokos.com · No es la web oficial</footer>
+<script>(function(){
+"use strict";
+var C={}, S={exp:null,date:null,time:null,lang:null,pax:2,cart:{},plan:null};
+function $(s,r){return (r||document).querySelector(s);}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));}
+function money(n){return "$ "+Math.round(n).toLocaleString("es-AR");}
+function h(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e;}
+function hash(s){var x=2166136261;for(var i=0;i<s.length;i++){x^=s.charCodeAt(i);x=Math.imul(x,16777619);}return (x>>>0);}
+var DIAS=["dom","lun","mar","mié","jue","vie","sáb"],DIASL=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"],MES=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+function key(d){return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();}
+function fmtDate(d){return DIASL[d.getDay()]+" "+d.getDate()+"/"+(d.getMonth()+1);}
+function exp(){for(var i=0;i<C.exps.length;i++)if(C.exps[i].id===S.exp)return C.exps[i];return C.exps[0];}
+function cupos(d,t){var e=exp();var cap=e.cap||C.cap||12;var r=hash(key(d)+t+e.id+C.negocio)%100;if(r<14)return 0;return Math.max(1,Math.round(cap*(r/100)));}
+function open(d){var e=exp();var days=e.days||C.days||[1,2,3,4,5,6];return days.indexOf(d.getDay())>-1;}
+function times(){return exp().times||C.times||["10:00","12:00","16:00"];}
+function wa(text,num){if(!(num||C.wa)&&C.mail)return "mailto:"+C.mail+"?subject="+encodeURIComponent("Consulta desde la web - "+C.negocio)+"&body="+encodeURIComponent(text);return "https://wa.me/"+(num||C.wa)+"?text="+encodeURIComponent(text);}
+function each(sel,fn){$$('[data-rk="'+sel+'"]').forEach(fn);}
+
+function renderExps(){each("exps",function(box){box.innerHTML="";C.exps.forEach(function(e){
+  var b=h("button","rk-exp");b.type="button";b.setAttribute("aria-pressed",String(S.exp===e.id));
+  b.innerHTML='<span class="rk-exp__n">'+e.n+'</span>'+(e.d?'<span class="rk-exp__d">'+e.d+'</span>':'')+'<span class="rk-exp__m"><span class="rk-exp__dur">'+(e.dur||"")+'</span><span class="rk-exp__p">'+(e.p?money(e.p)+(e.pp===false?"":" p/p"):"Sin cargo")+'</span></span>';
+  b.addEventListener("click",function(){S.exp=e.id;S.time=null;if(S.date&&!open(S.date))S.date=null;renderAll();});
+  box.appendChild(b);});});}
+
+function renderCal(){each("cal",function(box){box.innerHTML="";var mode=box.getAttribute("data-mode")||C.calMode||"strip";
+  var start=new Date();start.setHours(0,0,0,0);start.setDate(start.getDate()+1);var n=C.horizon||21;
+  var wrap=h("div","rk-cal rk-cal--"+mode);
+  if(mode==="grid"){["L","M","M","J","V","S","D"].forEach(function(x){wrap.appendChild(h("span","rk-cal__h",x));});
+    var off=(start.getDay()+6)%7;for(var k=0;k<off;k++)wrap.appendChild(h("span","rk-cal__pad"));}
+  for(var i=0;i<n;i++){(function(i){var d=new Date(start);d.setDate(start.getDate()+i);
+    var b=h("button","rk-day");b.type="button";var ok=open(d);
+    var free=0;if(ok)times().forEach(function(t){free+=cupos(d,t);});
+    if(!ok||free===0){b.disabled=true;}
+    b.setAttribute("aria-pressed",String(S.date&&key(S.date)===key(d)));
+    b.setAttribute("aria-label",fmtDate(d)+(ok?(free?"":" completo"):" cerrado"));
+    b.innerHTML='<span class="rk-day__w">'+DIAS[d.getDay()]+'</span><span class="rk-day__n">'+d.getDate()+'</span><span class="rk-day__m">'+(!ok?"cerrado":free===0?"completo":MES[d.getMonth()])+'</span>';
+    b.addEventListener("click",function(){S.date=d;S.time=null;renderAll();});wrap.appendChild(b);})(i);}
+  box.appendChild(wrap);});}
+
+function renderTimes(){each("times",function(box){box.innerHTML="";
+  if(!S.date){box.appendChild(h("p","rk-hint","Elegí un día para ver los horarios y cupos."));return;}
+  times().forEach(function(t){var c=cupos(S.date,t);var b=h("button","rk-time");b.type="button";b.disabled=c===0||c<1;
+    b.setAttribute("aria-pressed",String(S.time===t));
+    b.innerHTML='<span class="rk-time__t">'+t+'</span><span class="rk-time__c">'+(c?("quedan "+c):"completo")+'</span>';
+    b.addEventListener("click",function(){S.time=t;if(S.pax>c)S.pax=c;renderAll();});box.appendChild(b);});});}
+
+function renderLangs(){each("langs",function(box){box.innerHTML="";var L=exp().langs||C.langs||["Español"];if(L.indexOf(S.lang)<0)S.lang=L[0];
+  L.forEach(function(l){var b=h("button","rk-lang",l);b.type="button";b.setAttribute("aria-pressed",String(S.lang===l));
+    b.addEventListener("click",function(){S.lang=l;renderAll();});box.appendChild(b);});});}
+
+function maxPax(){return S.date&&S.time?cupos(S.date,S.time):(exp().cap||C.cap||12);}
+function renderPax(){each("pax",function(box){box.innerHTML="";var w=h("div","rk-step");
+  var m=h("button","rk-step__b","&minus;");m.type="button";m.setAttribute("aria-label","Una persona menos");
+  var o=h("output","rk-step__v",S.pax+(S.pax===1?" persona":" personas"));
+  var p=h("button","rk-step__b","+");p.type="button";p.setAttribute("aria-label","Una persona más");
+  m.disabled=S.pax<=1;p.disabled=S.pax>=maxPax();
+  m.onclick=function(){S.pax=Math.max(1,S.pax-1);renderAll();};p.onclick=function(){S.pax=Math.min(maxPax(),S.pax+1);renderAll();};
+  w.appendChild(m);w.appendChild(o);w.appendChild(p);box.appendChild(w);});}
+
+function bookText(){var e=exp();var tot=(e.p||0)*(e.pp===false?1:S.pax);var sena=tot*(C.sena||0.3);
+  return "Hola "+C.negocio+"! Quiero reservar una visita:\n"+
+  "• Experiencia: "+e.n+"\n• Fecha: "+(S.date?fmtDate(S.date):"-")+"\n• Horario: "+(S.time||"-")+"\n• Idioma: "+S.lang+"\n• Personas: "+S.pax+"\n"+
+  "• Total: "+money(tot)+(tot?" (seña "+Math.round((C.sena||0.3)*100)+"%: "+money(sena)+")":"")+"\n"+(nombre()?"Mi nombre: "+nombre()+"\n":"")+"¿Me confirman disponibilidad?";}
+function nombre(){var i=$('[data-rk="nombre"]');return i&&i.value.trim()?i.value.trim():"";}
+function renderSum(){var e=exp();var tot=(e.p||0)*(e.pp===false?1:S.pax);var sena=tot*(C.sena||0.3);var ready=S.date&&S.time;
+  each("sum",function(box){box.innerHTML='<div class="rk-sum__row"><span>'+e.n+'</span><span>'+(e.p?money(e.p)+(e.pp===false?"":" × "+S.pax):"sin cargo")+'</span></div>'+
+   '<div class="rk-sum__row"><span>'+(S.date?fmtDate(S.date):"Día a elegir")+'</span><span>'+(S.time||"--:--")+' · '+S.lang+'</span></div>'+
+   '<div class="rk-sum__row rk-sum__tot"><span>Total de ejemplo</span><span>'+money(tot)+'</span></div>'+
+   (tot?'<div class="rk-sum__row rk-sum__sena"><span>Seña para confirmar ('+Math.round((C.sena||0.3)*100)+'%)</span><span>'+money(sena)+'</span></div>':'');});
+  each("book",function(a){a.href=ready?wa(bookText()):"#";a.setAttribute("aria-disabled",String(!ready));a.classList.toggle("is-off",!ready);
+    var lbl=a.querySelector(".rk-book__l");if(lbl)lbl.textContent=ready?(a.getAttribute("data-on")||"Reservar por WhatsApp"):(a.getAttribute("data-off")||"Elegí día y horario");});}
+
+function renderShop(){each("shop",function(box){if(box.getAttribute("data-built")){syncShop();return;}box.setAttribute("data-built","1");box.innerHTML="";
+  C.wines.forEach(function(w){var bx=w.box||C.box||6;var r=h("div","rk-wine");r.setAttribute("data-w",w.id);
+    r.innerHTML=(w.img?'<img class="rk-wine__img" src="'+w.img+'" alt="'+w.n+'" loading="lazy" onerror="this.remove()">':'')+
+    '<div class="rk-wine__i"><span class="rk-wine__l">'+(w.line||"")+'</span><span class="rk-wine__n">'+w.n+'</span>'+(w.v?'<span class="rk-wine__v">'+w.v+'</span>':'')+'</div>'+
+    '<div class="rk-wine__p"><span class="rk-wine__b">'+money(w.p)+' la botella</span><span class="rk-wine__c">'+money(w.p*bx)+' la caja de '+bx+'</span></div>';
+    var st=h("div","rk-step rk-step--sm");var m=h("button","rk-step__b","&minus;");m.type="button";m.setAttribute("aria-label","Quitar caja de "+w.n);
+    var o=h("output","rk-step__v","0 cajas");var p=h("button","rk-step__b","+");p.type="button";p.setAttribute("aria-label","Sumar caja de "+w.n);
+    m.onclick=function(){S.cart[w.id]=Math.max(0,(S.cart[w.id]||0)-1);syncShop();};p.onclick=function(){S.cart[w.id]=Math.min(20,(S.cart[w.id]||0)+1);syncShop();};
+    st.appendChild(m);st.appendChild(o);st.appendChild(p);r.appendChild(st);box.appendChild(r);});});syncShop();}
+function cartInfo(){var cj=0,bt=0,tot=0,lines=[];C.wines.forEach(function(w){var q=S.cart[w.id]||0;if(!q)return;var bx=w.box||C.box||6;cj+=q;bt+=q*bx;tot+=q*bx*w.p;lines.push("• "+q+(q>1?" cajas":" caja")+" de "+w.n+(w.v&&w.n.indexOf(w.v)<0?" ("+w.v+")":"")+" — "+money(q*bx*w.p));});
+  var dto=cj>=(C.dtoCajas||3)?(C.dto||0.1):0;return {cj:cj,bt:bt,tot:tot,dto:dto,fin:tot*(1-dto),lines:lines};}
+function syncShop(){$$(".rk-wine").forEach(function(r){var q=S.cart[r.getAttribute("data-w")]||0;var o=r.querySelector(".rk-step__v");if(o)o.textContent=q+(q===1?" caja":" cajas");r.classList.toggle("is-in",q>0);var m=r.querySelector(".rk-step__b");if(m)m.disabled=q===0;});
+  var c=cartInfo();each("cart",function(box){box.innerHTML=c.cj?('<div class="rk-sum__row"><span>'+c.cj+(c.cj>1?" cajas":" caja")+' · '+c.bt+' botellas</span><span>'+money(c.tot)+'</span></div>'+
+    (c.dto?'<div class="rk-sum__row rk-sum__dto"><span>'+Math.round(c.dto*100)+'% por llevar '+(C.dtoCajas||3)+' cajas o más</span><span>− '+money(c.tot*c.dto)+'</span></div>':'<div class="rk-sum__row rk-sum__dto"><span>Desde '+(C.dtoCajas||3)+' cajas: '+Math.round((C.dto||0.1)*100)+'% menos</span><span></span></div>')+
+    '<div class="rk-sum__row rk-sum__tot"><span>Total de ejemplo</span><span>'+money(c.fin)+'</span></div>'):'<p class="rk-hint">Sumá cajas para armar el pedido. '+(C.envio||"Retiro en la bodega o envío a coordinar.")+'</p>';});
+  each("shopbtn",function(a){var ok=c.cj>0;a.href=ok?wa("Hola "+C.negocio+"! Quiero hacer este pedido de vinos:\n"+c.lines.join("\n")+"\nTotal: "+money(c.fin)+(c.dto?" (con "+Math.round(c.dto*100)+"% off)":"")+"\n"+(nombre()?"Nombre: "+nombre()+"\n":"")+"¿Cómo coordinamos pago y entrega?"):"#";
+    a.setAttribute("aria-disabled",String(!ok));a.classList.toggle("is-off",!ok);var l=a.querySelector(".rk-book__l");if(l)l.textContent=ok?"Pedir "+c.cj+(c.cj>1?" cajas":" caja")+" por WhatsApp":"Sumá al menos una caja";});}
+
+function renderClub(){each("club",function(box){box.innerHTML="";C.club.forEach(function(p){var b=h("button","rk-plan");b.type="button";b.setAttribute("aria-pressed",String(S.plan===p.id));
+  b.innerHTML='<span class="rk-plan__n">'+p.n+'</span><span class="rk-plan__b">'+p.b+' botellas por mes</span>'+(p.d?'<span class="rk-plan__d">'+p.d+'</span>':'')+'<span class="rk-plan__p">'+money(p.p)+'<small> /mes</small></span>';
+  b.onclick=function(){S.plan=p.id;renderClub();};box.appendChild(b);});});
+  var plan=null;C.club.forEach(function(p){if(p.id===S.plan)plan=p;});
+  each("clubbtn",function(a){a.href=plan?wa("Hola "+C.negocio+"! Me quiero sumar al club del vino:\n• Plan: "+plan.n+" ("+plan.b+" botellas por mes)\n• Cuota de ejemplo: "+money(plan.p)+" por mes\n"+(nombre()?"Nombre: "+nombre()+"\n":"")+"¿Cómo sigo?"):"#";
+    a.setAttribute("aria-disabled",String(!plan));a.classList.toggle("is-off",!plan);var l=a.querySelector(".rk-book__l");if(l)l.textContent=plan?"Sumarme al plan "+plan.n:"Elegí un plan";});}
+
+function renderAll(){renderExps();renderCal();renderTimes();renderLangs();renderPax();renderSum();}
+document.addEventListener("click",function(ev){var a=ev.target.closest&&ev.target.closest('a[aria-disabled="true"]');if(a){ev.preventDefault();var t=a.closest("[data-rk-scope]");var hint=t&&t.querySelector(".rk-need");if(hint){hint.classList.remove("rk-pulse");void hint.offsetWidth;hint.classList.add("rk-pulse");}}});
+window.RK={init:function(cfg){C=cfg;S.exp=(cfg.exps[0]||{}).id;S.lang=(cfg.langs||["Español"])[0];if(cfg.club&&cfg.club[1])S.plan=null;
+  renderAll();if(cfg.wines)renderShop();if(cfg.club)renderClub();
+  $$('[data-rk="nombre"]').forEach(function(i){i.addEventListener("input",function(){renderSum();syncShop();renderClub();});});
+  $$("[data-wa]").forEach(function(a){a.href=wa(a.getAttribute("data-wa")||("Hola "+C.negocio+"! Quería hacer una consulta."));});},
+  state:S,pick:function(id){S.exp=id;S.time=null;renderAll();}};
+})();
+</script>
+<script>
+(function(){var r=document.getElementById("rail");r.addEventListener("wheel",function(e){if(window.innerWidth<=760)return;if(Math.abs(e.deltaY)>Math.abs(e.deltaX)){var t=e.target.closest(".panel");if(t&&t.scrollHeight>t.clientHeight+2)return;r.scrollLeft+=e.deltaY;e.preventDefault();}},{passive:false});
+document.querySelectorAll('a[href^="#p"]').forEach(function(a){a.addEventListener("click",function(e){var el=document.querySelector(a.getAttribute("href"));if(!el)return;e.preventDefault();if(window.innerWidth>760){r.scrollTo({left:el.offsetLeft,behavior:"smooth"});r.scrollIntoView({behavior:"smooth"});}else el.scrollIntoView({behavior:"smooth"});});});})();
+var IMG="https://bodegalaazul.com/wp-content/uploads/";
+RK.init({negocio:"Bodega La Azul",wa:"542622603443",sena:0.3,horizon:28,langs:["Español","Inglés"],days:[1,2,3,4,5,6,0],
+exps:[
+{id:"visita",n:"Visita y degustación",d:"Recorrido por bodega y viñedo con tres vinos de la línea Azul.",dur:"1 h",p:15000,cap:16,times:["10:30","12:00","15:30"]},
+{id:"premium",n:"Degustación premium",d:"Azul Gran Reserva, El Buscapleito y Jauría con el enólogo.",dur:"1 h 15",p:28000,cap:10,times:["11:00","16:00"]},
+{id:"resto",n:"Almuerzo en el restó",d:"Carnes argentinas con vista al Cordón del Plata, maridado con vinos de la casa.",dur:"2 h",p:48000,cap:40,times:["12:30","13:30","14:30"]}],
+wines:[
+{id:"sb",line:"Azul",n:"Azul Sauvignon Blanc",v:"Sauvignon Blanc",p:10000,img:IMG+"2026/08/azul-sauvignon-blanc-destacado.png"},
+{id:"mal",line:"Azul",n:"Azul Malbec",v:"Malbec",p:10500,img:IMG+"2016/03/azul-malbec-destacado.png"},
+{id:"res",line:"Azul",n:"Azul Reserva",v:"60% Malbec · 40% Cabernet Sauvignon",p:16000,img:IMG+"2016/03/azul-reserva-destacado.png"},
+{id:"gr",line:"Azul",n:"Azul Gran Reserva",v:"60% Malbec · 40% Cabernet",p:24000,img:IMG+"2026/08/azul-granreserva-destacado.png"},
+{id:"bp",line:"El Buscapleito",n:"El Buscapleito",v:"Cabernet Franc",p:21000,img:IMG+"2026/08/buscapleitos-franc-destacado.png"},
+{id:"ja",line:"Jauría",n:"Jauría Gran Reserva",v:"Malbec · Cabernet · Franc · Bonarda · Syrah",p:32000,img:IMG+"2026/08/jauria-destacado.png"}],
+club:[{id:"cordon",n:"Cordón",b:2,d:"Azul Malbec y Sauvignon Blanc.",p:20000},{id:"valle",n:"Valle de Uco",b:4,d:"Reserva y Buscapleito incluidos.",p:58000},{id:"jauria",n:"Jauría",b:6,d:"Gran Reservas y una Jauría.",p:120000}]});
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Bodega La Azul"></script>
+</body>
+</html>
