@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Terra Camiare · Colonia Caroya</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&family=Karla:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1f2a44;--lime:#e4e3dc;--paper:#f7f6f1;--ocre:#c18f2f;--tinto:#5b1a2b;--soft:#cfccc0;
+--rk-line:#cfccc0;--rk-accent:#1f2a44;--rk-accent-ink:#5b1a2b;--rk-card:#fff;--rk-sel:#eceae2;--rk-r:0;--rk-r-sm:999px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:Karla,system-ui,sans-serif;font-size:17px;line-height:1.6;overflow-x:hidden}
+/* componentes del motor de reserva; cada página define --rk-* */
+.rk-exps{display:grid;gap:var(--rk-gap,10px)}
+.rk-exp{all:unset;box-sizing:border-box;cursor:pointer;display:grid;gap:4px;padding:14px 16px;border:1px solid var(--rk-line);border-radius:var(--rk-r,6px);background:var(--rk-card,transparent);color:inherit;transition:border-color .15s,background .15s}
+.rk-exp:hover{border-color:var(--rk-accent)}
+.rk-exp[aria-pressed="true"]{border-color:var(--rk-accent);background:var(--rk-sel,rgba(0,0,0,.04));box-shadow:inset 3px 0 0 var(--rk-accent)}
+.rk-exp__n{font-weight:600;font-size:1.02em}
+.rk-exp__d{font-size:.88em;opacity:.78;line-height:1.45}
+.rk-exp__m{display:flex;justify-content:space-between;gap:8px;font-size:.85em;margin-top:2px}
+.rk-exp__p{font-weight:600;color:var(--rk-accent-ink,var(--rk-accent))}
+.rk-cal{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+.rk-cal--grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));overflow:visible}
+.rk-cal__h{text-align:center;font-size:.72em;opacity:.6;padding:2px 0}
+.rk-day{all:unset;box-sizing:border-box;cursor:pointer;flex:0 0 58px;display:grid;justify-items:center;gap:1px;padding:8px 2px;border:1px solid var(--rk-line);border-radius:var(--rk-r-sm,4px);background:var(--rk-card,transparent);min-width:0}
+.rk-day__w{font-size:.7em;opacity:.7}.rk-day__n{font-size:1.15em;font-weight:600;line-height:1.1}.rk-day__m{font-size:.62em;opacity:.65}
+.rk-day:disabled{opacity:.35;cursor:not-allowed;text-decoration:line-through}
+.rk-day:not(:disabled):hover{border-color:var(--rk-accent)}
+.rk-day[aria-pressed="true"]{background:var(--rk-accent);border-color:var(--rk-accent);color:var(--rk-on-accent,#fff)}
+.rk-times,.rk-langs{display:flex;flex-wrap:wrap;gap:8px}
+.rk-time,.rk-lang{all:unset;box-sizing:border-box;cursor:pointer;padding:9px 14px;border:1px solid var(--rk-line);border-radius:var(--rk-r-sm,4px);background:var(--rk-card,transparent);display:grid;gap:1px;text-align:center}
+.rk-time__t{font-weight:600}.rk-time__c{font-size:.72em;opacity:.7}
+.rk-time:disabled{opacity:.35;cursor:not-allowed}
+.rk-time[aria-pressed="true"],.rk-lang[aria-pressed="true"]{background:var(--rk-accent);border-color:var(--rk-accent);color:var(--rk-on-accent,#fff)}
+.rk-step{display:inline-flex;align-items:center;border:1px solid var(--rk-line);border-radius:var(--rk-r-sm,4px);overflow:hidden;background:var(--rk-card,transparent)}
+.rk-step__b{all:unset;cursor:pointer;width:40px;height:40px;display:grid;place-items:center;font-size:1.2em}
+.rk-step__b:disabled{opacity:.3;cursor:not-allowed}
+.rk-step__b:not(:disabled):hover{background:var(--rk-sel,rgba(0,0,0,.05))}
+.rk-step__v{min-width:96px;text-align:center;font-weight:600;font-size:.92em}
+.rk-step--sm .rk-step__b{width:34px;height:34px}.rk-step--sm .rk-step__v{min-width:74px;font-size:.85em}
+.rk-sum{display:grid;gap:6px}
+.rk-sum__row{display:flex;justify-content:space-between;gap:12px;font-size:.92em}
+.rk-sum__row span:last-child{text-align:right;white-space:nowrap}
+.rk-sum__tot{font-weight:700;font-size:1.08em;padding-top:8px;border-top:1px solid var(--rk-line)}
+.rk-sum__sena,.rk-sum__dto{font-size:.84em;opacity:.8}
+.rk-hint{margin:0;font-size:.88em;opacity:.7}
+.rk-book{display:inline-flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;cursor:pointer}
+.rk-book.is-off{opacity:.55;cursor:not-allowed}
+.rk-shop{display:grid;gap:0}
+.rk-wine{display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--rk-line)}
+.rk-wine__img{width:44px;height:64px;object-fit:contain;grid-column:1;grid-row:1}
+.rk-wine__i{grid-column:2;grid-row:1}.rk-wine__p{grid-column:3;grid-row:1}.rk-wine>.rk-step{grid-column:4;grid-row:1}
+.rk-wine__i{display:grid;gap:1px;min-width:0}
+.rk-wine__l{font-size:.72em;opacity:.65}.rk-wine__n{font-weight:600}.rk-wine__v{font-size:.82em;opacity:.75}
+.rk-wine__p{display:grid;text-align:right;font-size:.82em}.rk-wine__b{font-weight:600}.rk-wine__c{opacity:.65}
+.rk-wine.is-in .rk-wine__n{color:var(--rk-accent-ink,var(--rk-accent))}
+.rk-club{display:grid;gap:10px}
+.rk-plan{all:unset;box-sizing:border-box;cursor:pointer;display:grid;gap:3px;padding:16px;border:1px solid var(--rk-line);border-radius:var(--rk-r,6px);background:var(--rk-card,transparent)}
+.rk-plan__n{font-weight:700;font-size:1.05em}.rk-plan__b{font-size:.85em;opacity:.8}.rk-plan__d{font-size:.82em;opacity:.7;line-height:1.4}
+.rk-plan__p{font-weight:700;margin-top:6px;font-size:1.15em}.rk-plan__p small{font-weight:400;font-size:.65em;opacity:.7}
+.rk-plan:hover{border-color:var(--rk-accent)}
+.rk-plan[aria-pressed="true"]{border-color:var(--rk-accent);box-shadow:inset 0 0 0 1px var(--rk-accent);background:var(--rk-sel,rgba(0,0,0,.04))}
+.rk-exp:focus-visible,.rk-day:focus-visible,.rk-time:focus-visible,.rk-lang:focus-visible,.rk-step__b:focus-visible,.rk-plan:focus-visible,.rk-book:focus-visible{outline:2px solid var(--rk-accent);outline-offset:2px}
+.rk-pulse{animation:rkp .7s}
+@keyframes rkp{0%,100%{transform:none}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.rk-banner{font-size:12.5px;line-height:1.35;text-align:center;padding:7px 16px}
+@media (max-width:560px){.rk-wine{grid-template-columns:auto 1fr auto;row-gap:10px;column-gap:12px}.rk-wine__img{grid-row:1/3}.rk-wine__p{grid-column:3}.rk-wine>.rk-step{grid-column:2/4;grid-row:2;justify-self:start}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+.rk-banner{background:var(--tinto);color:#f3e6e9}
+h1,h2,h3{font-family:Cardo,serif;font-weight:400;margin:0;line-height:1.1}
+a{color:inherit}
+.col{max-width:720px;margin:0 auto;padding:0 20px}
+.mast{text-align:center;padding:56px 20px 30px;border-bottom:1px solid var(--soft);max-width:720px;margin:0 auto}
+.mast .km{font-size:14px;color:var(--tinto)}
+.mast h1{font-size:clamp(54px,11vw,120px);letter-spacing:-.01em;margin:8px 0 4px}
+.mast h1 i{font-style:italic;color:var(--ocre)}
+.mast p{font-family:Cardo;font-style:italic;font-size:21px;margin:10px auto 0;max-width:30ch}
+.strata{display:flex;height:14px;max-width:720px;margin:0 auto}
+.strata span{flex:1}
+.toc{display:flex;justify-content:center;gap:26px;flex-wrap:wrap;padding:16px 20px;font-size:14px;position:sticky;top:0;background:rgba(247,246,241,.94);backdrop-filter:blur(6px);z-index:5;border-bottom:1px solid var(--soft)}
+.toc a{text-decoration:none}.toc a:hover{color:var(--tinto)}
+.chap{padding:70px 0 10px}
+.chap h2{font-size:clamp(36px,6vw,58px);margin-bottom:18px}
+.chap h2 small{display:block;font-size:.36em;font-family:Karla;color:var(--tinto);margin-bottom:10px;font-weight:700}
+.drop::first-letter{font-family:Cardo;float:left;font-size:4.4em;line-height:.8;padding:6px 10px 0 0;color:var(--tinto)}
+.timeline{list-style:none;padding:0;margin:28px 0;border-left:2px solid var(--ocre)}
+.timeline li{padding:0 0 18px 22px;position:relative}
+.timeline li::before{content:"";position:absolute;left:-7px;top:8px;width:12px;height:12px;border-radius:50%;background:var(--paper);border:2px solid var(--ocre)}
+.timeline b{font-family:Cardo;font-size:20px;display:block}
+.step{margin:30px 0}
+.step h3{font-size:24px;margin-bottom:12px}
+.step h3 span{font-family:Karla;font-size:14px;color:var(--tinto);margin-right:8px;font-weight:700}
+.rk-exp{background:#fff}
+.rk-exp[aria-pressed="true"]{box-shadow:inset 4px 0 0 var(--tinto)}
+.receipt{background:#fff;border:1px solid var(--soft);padding:22px;margin:26px 0;font-size:15px;position:relative}
+.receipt::before,.receipt::after{content:"";position:absolute;left:0;right:0;height:8px;background:radial-gradient(circle at 6px 0,var(--paper) 5px,transparent 6px) 0 0/12px 8px repeat-x}
+.receipt::before{top:-1px}.receipt::after{bottom:-1px;transform:rotate(180deg)}
+.receipt input{width:100%;padding:10px 14px;border:1px solid var(--soft);border-radius:999px;font:inherit;margin:14px 0 0}
+.go{display:flex;width:100%;justify-content:center;background:var(--ink);color:#fff;text-decoration:none;padding:15px;border-radius:999px;font-weight:700;margin-top:14px}
+.go--ocre{background:var(--ocre);color:var(--ink)}
+.rk-need{text-align:center;font-size:13px;opacity:.7;margin:8px 0 0}
+.labels{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:26px 0}
+.lab{background:#fff;border:1px solid var(--soft);padding:16px 12px;text-align:center;font-size:13px}
+.lab b{display:block;font-family:Cardo;font-size:22px;font-weight:400;color:var(--tinto)}
+.rk-wine{border-color:var(--soft)}
+.club3{background:var(--ink);color:#eef0f5;padding:34px 26px;margin:20px 0;--rk-line:rgba(255,255,255,.25);--rk-card:transparent;--rk-sel:rgba(255,255,255,.08);--rk-accent:#c18f2f}
+.club3 h2{color:#fff}
+.club3 .rk-club{grid-template-columns:repeat(3,1fr)}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:16px 30px;margin:20px 0 60px;font-size:15.5px}
+.facts b{display:block;font-size:13px;color:var(--tinto)}
+.math{font-family:Cardo;font-size:22px;border-top:1px solid var(--soft);border-bottom:1px solid var(--soft);padding:24px 0;margin:40px 0}
+footer{text-align:center;font-size:13.5px;padding:30px 20px;border-top:1px solid var(--soft)}
+@media (max-width:640px){.labels{gap:6px}.lab{padding:12px 4px;font-size:11.5px}.lab b{font-size:18px}.club3 .rk-club{grid-template-columns:1fr}.facts{grid-template-columns:1fr}.toc{gap:14px;font-size:13px;justify-content:flex-start;overflow-x:auto;flex-wrap:nowrap;white-space:nowrap}.col{padding:0 16px}}
+</style>
+</head>
+<body>
+<div class="rk-banner">Prototipo de demostración preparado para Terra Camiare · Precios y disponibilidad de ejemplo</div>
+<header class="mast">
+ <div class="km">Colonia Caroya, Córdoba · a 52 km de la ciudad</div>
+ <h1>Terra <i>Camiare</i></h1>
+ <p>Donde nació el primer vino americano que llegó a la copa de Felipe V.</p>
+</header>
+<div class="strata" aria-hidden="true"><span style="background:#5b1a2b"></span><span style="background:#c18f2f"></span><span style="background:#1f2a44"></span><span style="background:#8a8f6a"></span><span style="background:#5b1a2b"></span></div>
+<nav class="toc"><a href="#visita">Reservar visita</a><a href="#vinos">Vinos por caja</a><a href="#club">Club</a><a href="#datos">Cómo llegar</a></nav>
+
+<main class="col">
+<section class="chap">
+ <h2><small>Capítulo uno</small>Tres capas en una copa</h2>
+ <p class="drop">Primero fueron los camiare, los pueblos originarios que le dan nombre a la bodega. Después los jesuitas, que plantaron viña en la Estancia de Caroya. Y después los friulanos, que llegaron a la colonia con el oficio del vino en las manos. Terra Camiare funciona en lo que fue una bodega familiar tradicional de Colonia Caroya y hoy elabora unas 170 mil botellas por año en 20 etiquetas.</p>
+ <ol class="timeline">
+  <li><b>Los camiare</b>El pueblo originario del norte cordobés.</li>
+  <li><b>Los jesuitas</b>La viña de la Estancia de Caroya, origen del vino que cruzó el océano.</li>
+  <li><b>La inmigración friulana</b>La colonia, el salame y la tradición de bodega familiar.</li>
+ </ol>
+</section>
+
+<section class="chap" id="visita" data-rk-scope>
+ <h2><small>Capítulo dos</small>Reservá tu visita</h2>
+ <p>Todas las experiencias que hoy se piden por WhatsApp, acá con día, horario y cupo a la vista.</p>
+ <div class="step"><h3><span>1</span>Qué querés hacer</h3><div class="rk-exps" data-rk="exps"></div></div>
+ <div class="step"><h3><span>2</span>Qué día</h3><div data-rk="cal"></div></div>
+ <div class="step"><h3><span>3</span>A qué hora</h3><div class="rk-times" data-rk="times"></div></div>
+ <div class="step"><h3><span>4</span>Idioma y personas</h3><div class="rk-langs" data-rk="langs" style="margin-bottom:12px"></div><div data-rk="pax"></div></div>
+ <div class="receipt"><div class="rk-sum" data-rk="sum"></div>
+  <input data-rk="nombre" placeholder="Tu nombre (opcional)" aria-label="Tu nombre">
+  <a class="go rk-book" data-rk="book" target="_blank" rel="noopener"><span class="rk-book__l">Elegí día y horario</span></a>
+  <p class="rk-need">Caminata y Socavones sin pago anticipado. Campestre y Terra Camiare con seña.</p></div>
+</section>
+
+<section class="chap" id="vinos" data-rk-scope>
+ <h2><small>Capítulo tres</small>Los vinos, por caja</h2>
+ <p>Las cuatro líneas de la bodega: Joven, Reserva, Alta Gama y Edición limitada. Hoy se compran por Mercado Libre; acá el pedido llega directo y sin la comisión del marketplace.</p>
+ <div class="labels"><div class="lab"><b>Joven</b>Indama, Navira</div><div class="lab"><b>Reserva</b>Socavones</div><div class="lab"><b>Alta gama</b>Ovum, Gran Quilino</div></div>
+ <div class="rk-shop" data-rk="shop"></div>
+ <div class="receipt"><div class="rk-sum" data-rk="cart"></div>
+  <a class="go go--ocre rk-book" data-rk="shopbtn" target="_blank" rel="noopener"><span class="rk-book__l">Sumá al menos una caja</span></a>
+  <p class="rk-need">Retiro en la bodega o envío dentro de Córdoba a coordinar.</p></div>
+</section>
+
+<section class="club3" id="club" data-rk-scope>
+ <h2 style="font-size:40px;margin-bottom:10px">Club Camiare</h2>
+ <p style="margin:0 0 20px;opacity:.85">Una caja chica por mes con etiquetas que no siempre llegan a la vinoteca: Capitulum, Ovum, Edición limitada.</p>
+ <div class="rk-club" data-rk="club"></div>
+ <a class="go go--ocre rk-book" data-rk="clubbtn" target="_blank" rel="noopener"><span class="rk-book__l">Elegí un plan</span></a>
+ <p class="rk-need" style="opacity:.8">Cuotas de ejemplo. Sin permanencia.</p>
+</section>
+
+<section class="chap" id="datos">
+ <h2><small>Epílogo</small>Cómo llegar</h2>
+ <div class="facts">
+  <div><b>Dirección</b>C. Santos Nóbile Nte. 505, Colonia Caroya, Córdoba</div>
+  <div><b>WhatsApp</b><a href="#" data-wa="Hola Terra Camiare! Tengo una consulta.">+54 9 3525 45-3305</a></div>
+  <div><b>Mail</b><a href="mailto:hola@terracamiare.com.ar">hola@terracamiare.com.ar</a></div>
+  <div><b>Instagram</b><a href="https://www.instagram.com/terracamiare/" target="_blank" rel="noopener">@terracamiare</a></div>
+ </div>
+ <p class="math">Si una plataforma de excursiones les manda 20 personas a Socavones, se lleva entre 76 y 95 mil pesos de comisión. Con su propio canal, eso queda en la bodega.</p>
+</section>
+</main>
+<footer>Prototipo preparado para Terra Camiare por Resolviendo Kos · resolviendokos.com · No es la web oficial</footer>
+<script>(function(){
+"use strict";
+var C={}, S={exp:null,date:null,time:null,lang:null,pax:2,cart:{},plan:null};
+function $(s,r){return (r||document).querySelector(s);}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));}
+function money(n){return "$ "+Math.round(n).toLocaleString("es-AR");}
+function h(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e;}
+function hash(s){var x=2166136261;for(var i=0;i<s.length;i++){x^=s.charCodeAt(i);x=Math.imul(x,16777619);}return (x>>>0);}
+var DIAS=["dom","lun","mar","mié","jue","vie","sáb"],DIASL=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"],MES=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+function key(d){return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();}
+function fmtDate(d){return DIASL[d.getDay()]+" "+d.getDate()+"/"+(d.getMonth()+1);}
+function exp(){for(var i=0;i<C.exps.length;i++)if(C.exps[i].id===S.exp)return C.exps[i];return C.exps[0];}
+function cupos(d,t){var e=exp();var cap=e.cap||C.cap||12;var r=hash(key(d)+t+e.id+C.negocio)%100;if(r<14)return 0;return Math.max(1,Math.round(cap*(r/100)));}
+function open(d){var e=exp();var days=e.days||C.days||[1,2,3,4,5,6];return days.indexOf(d.getDay())>-1;}
+function times(){return exp().times||C.times||["10:00","12:00","16:00"];}
+function wa(text,num){if(!(num||C.wa)&&C.mail)return "mailto:"+C.mail+"?subject="+encodeURIComponent("Consulta desde la web - "+C.negocio)+"&body="+encodeURIComponent(text);return "https://wa.me/"+(num||C.wa)+"?text="+encodeURIComponent(text);}
+function each(sel,fn){$$('[data-rk="'+sel+'"]').forEach(fn);}
+
+function renderExps(){each("exps",function(box){box.innerHTML="";C.exps.forEach(function(e){
+  var b=h("button","rk-exp");b.type="button";b.setAttribute("aria-pressed",String(S.exp===e.id));
+  b.innerHTML='<span class="rk-exp__n">'+e.n+'</span>'+(e.d?'<span class="rk-exp__d">'+e.d+'</span>':'')+'<span class="rk-exp__m"><span class="rk-exp__dur">'+(e.dur||"")+'</span><span class="rk-exp__p">'+(e.p?money(e.p)+(e.pp===false?"":" p/p"):"Sin cargo")+'</span></span>';
+  b.addEventListener("click",function(){S.exp=e.id;S.time=null;if(S.date&&!open(S.date))S.date=null;renderAll();});
+  box.appendChild(b);});});}
+
+function renderCal(){each("cal",function(box){box.innerHTML="";var mode=box.getAttribute("data-mode")||C.calMode||"strip";
+  var start=new Date();start.setHours(0,0,0,0);start.setDate(start.getDate()+1);var n=C.horizon||21;
+  var wrap=h("div","rk-cal rk-cal--"+mode);
+  if(mode==="grid"){["L","M","M","J","V","S","D"].forEach(function(x){wrap.appendChild(h("span","rk-cal__h",x));});
+    var off=(start.getDay()+6)%7;for(var k=0;k<off;k++)wrap.appendChild(h("span","rk-cal__pad"));}
+  for(var i=0;i<n;i++){(function(i){var d=new Date(start);d.setDate(start.getDate()+i);
+    var b=h("button","rk-day");b.type="button";var ok=open(d);
+    var free=0;if(ok)times().forEach(function(t){free+=cupos(d,t);});
+    if(!ok||free===0){b.disabled=true;}
+    b.setAttribute("aria-pressed",String(S.date&&key(S.date)===key(d)));
+    b.setAttribute("aria-label",fmtDate(d)+(ok?(free?"":" completo"):" cerrado"));
+    b.innerHTML='<span class="rk-day__w">'+DIAS[d.getDay()]+'</span><span class="rk-day__n">'+d.getDate()+'</span><span class="rk-day__m">'+(!ok?"cerrado":free===0?"completo":MES[d.getMonth()])+'</span>';
+    b.addEventListener("click",function(){S.date=d;S.time=null;renderAll();});wrap.appendChild(b);})(i);}
+  box.appendChild(wrap);});}
+
+function renderTimes(){each("times",function(box){box.innerHTML="";
+  if(!S.date){box.appendChild(h("p","rk-hint","Elegí un día para ver los horarios y cupos."));return;}
+  times().forEach(function(t){var c=cupos(S.date,t);var b=h("button","rk-time");b.type="button";b.disabled=c===0||c<1;
+    b.setAttribute("aria-pressed",String(S.time===t));
+    b.innerHTML='<span class="rk-time__t">'+t+'</span><span class="rk-time__c">'+(c?("quedan "+c):"completo")+'</span>';
+    b.addEventListener("click",function(){S.time=t;if(S.pax>c)S.pax=c;renderAll();});box.appendChild(b);});});}
+
+function renderLangs(){each("langs",function(box){box.innerHTML="";var L=exp().langs||C.langs||["Español"];if(L.indexOf(S.lang)<0)S.lang=L[0];
+  L.forEach(function(l){var b=h("button","rk-lang",l);b.type="button";b.setAttribute("aria-pressed",String(S.lang===l));
+    b.addEventListener("click",function(){S.lang=l;renderAll();});box.appendChild(b);});});}
+
+function maxPax(){return S.date&&S.time?cupos(S.date,S.time):(exp().cap||C.cap||12);}
+function renderPax(){each("pax",function(box){box.innerHTML="";var w=h("div","rk-step");
+  var m=h("button","rk-step__b","&minus;");m.type="button";m.setAttribute("aria-label","Una persona menos");
+  var o=h("output","rk-step__v",S.pax+(S.pax===1?" persona":" personas"));
+  var p=h("button","rk-step__b","+");p.type="button";p.setAttribute("aria-label","Una persona más");
+  m.disabled=S.pax<=1;p.disabled=S.pax>=maxPax();
+  m.onclick=function(){S.pax=Math.max(1,S.pax-1);renderAll();};p.onclick=function(){S.pax=Math.min(maxPax(),S.pax+1);renderAll();};
+  w.appendChild(m);w.appendChild(o);w.appendChild(p);box.appendChild(w);});}
+
+function bookText(){var e=exp();var tot=(e.p||0)*(e.pp===false?1:S.pax);var sena=tot*(C.sena||0.3);
+  return "Hola "+C.negocio+"! Quiero reservar una visita:\n"+
+  "• Experiencia: "+e.n+"\n• Fecha: "+(S.date?fmtDate(S.date):"-")+"\n• Horario: "+(S.time||"-")+"\n• Idioma: "+S.lang+"\n• Personas: "+S.pax+"\n"+
+  "• Total: "+money(tot)+(tot?" (seña "+Math.round((C.sena||0.3)*100)+"%: "+money(sena)+")":"")+"\n"+(nombre()?"Mi nombre: "+nombre()+"\n":"")+"¿Me confirman disponibilidad?";}
+function nombre(){var i=$('[data-rk="nombre"]');return i&&i.value.trim()?i.value.trim():"";}
+function renderSum(){var e=exp();var tot=(e.p||0)*(e.pp===false?1:S.pax);var sena=tot*(C.sena||0.3);var ready=S.date&&S.time;
+  each("sum",function(box){box.innerHTML='<div class="rk-sum__row"><span>'+e.n+'</span><span>'+(e.p?money(e.p)+(e.pp===false?"":" × "+S.pax):"sin cargo")+'</span></div>'+
+   '<div class="rk-sum__row"><span>'+(S.date?fmtDate(S.date):"Día a elegir")+'</span><span>'+(S.time||"--:--")+' · '+S.lang+'</span></div>'+
+   '<div class="rk-sum__row rk-sum__tot"><span>Total de ejemplo</span><span>'+money(tot)+'</span></div>'+
+   (tot?'<div class="rk-sum__row rk-sum__sena"><span>Seña para confirmar ('+Math.round((C.sena||0.3)*100)+'%)</span><span>'+money(sena)+'</span></div>':'');});
+  each("book",function(a){a.href=ready?wa(bookText()):"#";a.setAttribute("aria-disabled",String(!ready));a.classList.toggle("is-off",!ready);
+    var lbl=a.querySelector(".rk-book__l");if(lbl)lbl.textContent=ready?(a.getAttribute("data-on")||"Reservar por WhatsApp"):(a.getAttribute("data-off")||"Elegí día y horario");});}
+
+function renderShop(){each("shop",function(box){if(box.getAttribute("data-built")){syncShop();return;}box.setAttribute("data-built","1");box.innerHTML="";
+  C.wines.forEach(function(w){var bx=w.box||C.box||6;var r=h("div","rk-wine");r.setAttribute("data-w",w.id);
+    r.innerHTML=(w.img?'<img class="rk-wine__img" src="'+w.img+'" alt="'+w.n+'" loading="lazy" onerror="this.remove()">':'')+
+    '<div class="rk-wine__i"><span class="rk-wine__l">'+(w.line||"")+'</span><span class="rk-wine__n">'+w.n+'</span>'+(w.v?'<span class="rk-wine__v">'+w.v+'</span>':'')+'</div>'+
+    '<div class="rk-wine__p"><span class="rk-wine__b">'+money(w.p)+' la botella</span><span class="rk-wine__c">'+money(w.p*bx)+' la caja de '+bx+'</span></div>';
+    var st=h("div","rk-step rk-step--sm");var m=h("button","rk-step__b","&minus;");m.type="button";m.setAttribute("aria-label","Quitar caja de "+w.n);
+    var o=h("output","rk-step__v","0 cajas");var p=h("button","rk-step__b","+");p.type="button";p.setAttribute("aria-label","Sumar caja de "+w.n);
+    m.onclick=function(){S.cart[w.id]=Math.max(0,(S.cart[w.id]||0)-1);syncShop();};p.onclick=function(){S.cart[w.id]=Math.min(20,(S.cart[w.id]||0)+1);syncShop();};
+    st.appendChild(m);st.appendChild(o);st.appendChild(p);r.appendChild(st);box.appendChild(r);});});syncShop();}
+function cartInfo(){var cj=0,bt=0,tot=0,lines=[];C.wines.forEach(function(w){var q=S.cart[w.id]||0;if(!q)return;var bx=w.box||C.box||6;cj+=q;bt+=q*bx;tot+=q*bx*w.p;lines.push("• "+q+(q>1?" cajas":" caja")+" de "+w.n+(w.v&&w.n.indexOf(w.v)<0?" ("+w.v+")":"")+" — "+money(q*bx*w.p));});
+  var dto=cj>=(C.dtoCajas||3)?(C.dto||0.1):0;return {cj:cj,bt:bt,tot:tot,dto:dto,fin:tot*(1-dto),lines:lines};}
+function syncShop(){$$(".rk-wine").forEach(function(r){var q=S.cart[r.getAttribute("data-w")]||0;var o=r.querySelector(".rk-step__v");if(o)o.textContent=q+(q===1?" caja":" cajas");r.classList.toggle("is-in",q>0);var m=r.querySelector(".rk-step__b");if(m)m.disabled=q===0;});
+  var c=cartInfo();each("cart",function(box){box.innerHTML=c.cj?('<div class="rk-sum__row"><span>'+c.cj+(c.cj>1?" cajas":" caja")+' · '+c.bt+' botellas</span><span>'+money(c.tot)+'</span></div>'+
+    (c.dto?'<div class="rk-sum__row rk-sum__dto"><span>'+Math.round(c.dto*100)+'% por llevar '+(C.dtoCajas||3)+' cajas o más</span><span>− '+money(c.tot*c.dto)+'</span></div>':'<div class="rk-sum__row rk-sum__dto"><span>Desde '+(C.dtoCajas||3)+' cajas: '+Math.round((C.dto||0.1)*100)+'% menos</span><span></span></div>')+
+    '<div class="rk-sum__row rk-sum__tot"><span>Total de ejemplo</span><span>'+money(c.fin)+'</span></div>'):'<p class="rk-hint">Sumá cajas para armar el pedido. '+(C.envio||"Retiro en la bodega o envío a coordinar.")+'</p>';});
+  each("shopbtn",function(a){var ok=c.cj>0;a.href=ok?wa("Hola "+C.negocio+"! Quiero hacer este pedido de vinos:\n"+c.lines.join("\n")+"\nTotal: "+money(c.fin)+(c.dto?" (con "+Math.round(c.dto*100)+"% off)":"")+"\n"+(nombre()?"Nombre: "+nombre()+"\n":"")+"¿Cómo coordinamos pago y entrega?"):"#";
+    a.setAttribute("aria-disabled",String(!ok));a.classList.toggle("is-off",!ok);var l=a.querySelector(".rk-book__l");if(l)l.textContent=ok?"Pedir "+c.cj+(c.cj>1?" cajas":" caja")+" por WhatsApp":"Sumá al menos una caja";});}
+
+function renderClub(){each("club",function(box){box.innerHTML="";C.club.forEach(function(p){var b=h("button","rk-plan");b.type="button";b.setAttribute("aria-pressed",String(S.plan===p.id));
+  b.innerHTML='<span class="rk-plan__n">'+p.n+'</span><span class="rk-plan__b">'+p.b+' botellas por mes</span>'+(p.d?'<span class="rk-plan__d">'+p.d+'</span>':'')+'<span class="rk-plan__p">'+money(p.p)+'<small> /mes</small></span>';
+  b.onclick=function(){S.plan=p.id;renderClub();};box.appendChild(b);});});
+  var plan=null;C.club.forEach(function(p){if(p.id===S.plan)plan=p;});
+  each("clubbtn",function(a){a.href=plan?wa("Hola "+C.negocio+"! Me quiero sumar al club del vino:\n• Plan: "+plan.n+" ("+plan.b+" botellas por mes)\n• Cuota de ejemplo: "+money(plan.p)+" por mes\n"+(nombre()?"Nombre: "+nombre()+"\n":"")+"¿Cómo sigo?"):"#";
+    a.setAttribute("aria-disabled",String(!plan));a.classList.toggle("is-off",!plan);var l=a.querySelector(".rk-book__l");if(l)l.textContent=plan?"Sumarme al plan "+plan.n:"Elegí un plan";});}
+
+function renderAll(){renderExps();renderCal();renderTimes();renderLangs();renderPax();renderSum();}
+document.addEventListener("click",function(ev){var a=ev.target.closest&&ev.target.closest('a[aria-disabled="true"]');if(a){ev.preventDefault();var t=a.closest("[data-rk-scope]");var hint=t&&t.querySelector(".rk-need");if(hint){hint.classList.remove("rk-pulse");void hint.offsetWidth;hint.classList.add("rk-pulse");}}});
+window.RK={init:function(cfg){C=cfg;S.exp=(cfg.exps[0]||{}).id;S.lang=(cfg.langs||["Español"])[0];if(cfg.club&&cfg.club[1])S.plan=null;
+  renderAll();if(cfg.wines)renderShop();if(cfg.club)renderClub();
+  $$('[data-rk="nombre"]').forEach(function(i){i.addEventListener("input",function(){renderSum();syncShop();renderClub();});});
+  $$("[data-wa]").forEach(function(a){a.href=wa(a.getAttribute("data-wa")||("Hola "+C.negocio+"! Quería hacer una consulta."));});},
+  state:S,pick:function(id){S.exp=id;S.time=null;renderAll();}};
+})();
+</script>
+<script>
+RK.init({negocio:"Terra Camiare",wa:"5493525453305",sena:0.3,horizon:21,langs:["Español","Inglés"],
+exps:[
+{id:"caminata",n:"Caminata por viñedo",d:"Recorrido guiado por viñedo y bodega con degustación de 2 vinos.",dur:"30 min",p:12000,cap:16,days:[2,3,4,5,6,0],times:["11:00","13:00","16:00","17:30"]},
+{id:"socavones",n:"Socavones",d:"Recorrido guiado por viñedo y bodega con degustación de 4 vinos.",dur:"50 min",p:19000,cap:14,days:[2,3,4,5,6,0],times:["11:30","16:30"]},
+{id:"terra",n:"Experiencia Terra Camiare",d:"Copa de recepción, recorrido, 3 copas Reserva y Alta Gama, tapeo en el restaurante y copa de descorche.",dur:"2 h",p:35000,cap:10,days:[3,4,5],times:["12:30"]},
+{id:"campestre",n:"Campestre",d:"Picnic libre en el viñedo: botella Indama, picada, aguas o kit de mate y lona. Para 2.",dur:"Libre",p:52000,pp:false,cap:8,days:[2,3,4,5,6,0],times:["12:00","16:00"]}],
+wines:[
+{id:"indama",line:"Joven",n:"Indama Malbec · Cabernet Franc · Viognier",v:"Blend",p:9000},
+{id:"indamab",line:"Joven",n:"Indama Chardonnay · Viognier",v:"Blanco",p:9000},
+{id:"navira",line:"Joven",n:"Navira Malbec",v:"Malbec",p:8000},
+{id:"socm",line:"Reserva",n:"Socavones Malbec Reserva",v:"Malbec",p:15000},
+{id:"socp",line:"Reserva",n:"Socavones Pinot Noir · Ancellotta",v:"Tinto",p:15000},
+{id:"ovum",line:"Alta gama",n:"Ovum Cabernet Franc",v:"Cabernet Franc",p:26000},
+{id:"quilino",line:"Alta gama",n:"Gran Quilino",v:"Cab. Franc · Tannat · Malbec",p:32000},
+{id:"cap3",line:"Edición limitada",n:"Capitulum III Nebbiolo",v:"Nebbiolo",p:38000}],
+club:[{id:"colonia",n:"Colonia",b:2,d:"Joven y Reserva.",p:20000},{id:"socavon",n:"Socavón",b:3,d:"Reservas y una alta gama.",p:42000},{id:"capitulum",n:"Capitulum",b:4,d:"Alta gama y ediciones limitadas.",p:95000}]});
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Terra Camiare"></script>
+</body>
+</html>
