@@ -55,6 +55,7 @@
 button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid currentColor;outline-offset:2px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 [hidden]{display:none!important}
+.bk-sel{display:flex;flex-direction:column;gap:4px}.bk-sel select{font:inherit;padding:10px;max-width:100%}
 
 :root{--estepa:#e9dcc0;--coiron:#c9a764;--lago:#4fa3b8;--glaciar:#bfe3ea;--andes:#24303a;--fogon:#d9622b;--pasto:#6f7d3c;--blanco:#fffaf0}
 *{box-sizing:border-box}
@@ -304,6 +305,13 @@ window.BK={negocio:'Cerro Frías',wa:'5492966479567',sena:.3,calMode:'grid',idio
     el.querySelectorAll('input').forEach(function(i){ i.onchange=function(){ S.extras[i.getAttribute('data-e')]=i.checked; renderAll(); }; });
   }
 
+  /* --- selects custom --- */
+  S.sel={}; (C.selects||[]).forEach(function(x){ S.sel[x.id]=x.opciones[0]; });
+  function renderSelects(){
+    var el=$('selects'); if(!el||!C.selects) return;
+    if(!el.dataset.done){ el.innerHTML=C.selects.map(function(x){ S.sel[x.id]=S.sel[x.id]||x.opciones[0]; return '<label class="bk-sel"><span>'+x.label+'</span><select data-s="'+x.id+'">'+x.opciones.map(function(o){return '<option>'+o+'</option>';}).join('')+'</select></label>'; }).join(''); el.dataset.done=1;
+      el.querySelectorAll('select').forEach(function(s){ s.onchange=function(){ S.sel[s.getAttribute('data-s')]=s.value; renderResumen(); }; }); }
+  }
   /* --- resumen --- */
   function listo(){ return S.fecha && (S.hora || !(T().horarios||[]).length); }
   function renderResumen(){
@@ -329,6 +337,7 @@ window.BK={negocio:'Cerro Frías',wa:'5492966479567',sena:.3,calMode:'grid',idio
     var ex=(t.extras||[]).filter(function(e){return S.extras[e.id];}).map(function(e){return e.nombre;});
     var L=['Hola '+C.negocio+'! Quiero reservar desde la web:','','• Salida: '+t.nombre,'• Fecha: '+(S.fecha?ddmm(S.fecha):'(a definir)')+(S.hora?' · '+S.hora+' hs':''),'• Grupo: '+paxTxt()+' ('+pax()+' en total)','• Idioma del guía: '+S.idioma];
     if(ex.length) L.push('• Extras: '+ex.join(', '));
+    (C.selects||[]).forEach(function(x){ L.push('• '+x.label+': '+S.sel[x.id]); });
     L.push('• Total: '+fmt(tot),'• Seña 30%: '+fmt(tot*(C.sena||0.3))+(S.pagado?' (abonada por Mercado Pago)':' (pago por Mercado Pago)'));
     if(nombre) L.push('• A nombre de: '+nombre);
     L.push('','¿Me confirman el lugar?');
@@ -351,7 +360,7 @@ window.BK={negocio:'Cerro Frías',wa:'5492966479567',sena:.3,calMode:'grid',idio
   var pb=$('pagar'); if(pb) pb.addEventListener('click',function(){ if(listo()) modal(); });
   var nm=$('nombre'); if(nm) nm.addEventListener('input',renderResumen);
 
-  function renderAll(){ renderTours(); renderFicha(); renderCal(); renderHoras(); renderPax(); renderIdioma(); renderExtras(); renderResumen(); fire(); }
+  function renderAll(){ renderTours(); renderFicha(); renderCal(); renderHoras(); renderPax(); renderIdioma(); renderExtras(); renderSelects(); renderResumen(); fire(); }
   window.BKAPI={ setTour:setTour, state:S, total:total, fmt:fmt, tour:T, render:renderAll };
   renderAll();
 })();
