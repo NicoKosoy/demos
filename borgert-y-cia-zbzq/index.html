@@ -1,0 +1,635 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Borgert y Cía. — Cotizador de aberturas (prototipo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gloock&family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --papel:#F3EFE8;
+  --hoja:#FBF9F5;
+  --esmalte:#141413;
+  --grafito:#3A3936;
+  --gris:#7C7A75;
+  --filete:#D9D3C8;
+  --crudo:#C7CACC;
+  --cedro:#8A4B2A;
+  --cedro-osc:#5E3019;
+  --ruta:#1F6B47;
+  --horno:#E2622B;
+  --vidrio:#CFE1E3;
+  --r:4px;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--papel);color:var(--esmalte);font-family:"Sora",sans-serif;font-size:15.5px;line-height:1.55}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--horno);outline-offset:2px}
+img{max-width:100%;display:block}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+.mono{font-family:"JetBrains Mono",monospace}
+h1,h2,h3{font-family:"Gloock",serif;font-weight:400;letter-spacing:-.01em;margin:0}
+
+/* aviso */
+.aviso{background:var(--esmalte);color:#E9E5DC;font-size:12.5px;padding:8px 0}
+.aviso .wrap{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.aviso b{color:#fff;font-weight:600}
+
+/* header */
+header.top{border-bottom:1px solid var(--filete);background:var(--hoja)}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:14px;padding-bottom:14px}
+.marca{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:inherit}
+.marca strong{font-family:"Gloock",serif;font-size:26px;font-weight:400;letter-spacing:-.02em}
+.marca span{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gris)}
+nav.menu{display:flex;gap:22px;font-size:13.5px}
+nav.menu a{color:var(--grafito);text-decoration:none}
+nav.menu a:hover{color:var(--horno)}
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--esmalte);background:var(--esmalte);color:#fff;padding:11px 18px;border-radius:var(--r);cursor:pointer;font-weight:500;font-size:14px;text-decoration:none}
+.btn:hover{background:var(--grafito)}
+.btn.ghost{background:transparent;color:var(--esmalte)}
+.btn.ghost:hover{background:var(--esmalte);color:#fff}
+.btn.horno{background:var(--horno);border-color:var(--horno)}
+.btn.horno:hover{background:#c9501c}
+
+/* hero: línea de pintura */
+.hero{padding:56px 0 0;position:relative;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:40px;align-items:start}
+.kicker{font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--horno);font-weight:600}
+.hero h1{font-size:clamp(38px,5.2vw,70px);line-height:1.02;margin:14px 0 22px}
+.hero h1 em{font-style:normal;color:var(--cedro)}
+.hero p.lead{font-size:17px;max-width:520px;color:var(--grafito);margin:0 0 26px}
+.hero .ctas{display:flex;gap:10px;flex-wrap:wrap}
+.linea{position:relative;height:440px;background:linear-gradient(180deg,#ECE6DC 0,#F3EFE8 100%);border:1px solid var(--filete);border-radius:var(--r);overflow:hidden}
+.linea .riel{position:absolute;left:0;right:0;top:34px;height:10px;background:linear-gradient(#5b5a56,#2b2a28);box-shadow:0 2px 0 rgba(0,0,0,.12)}
+.linea .riel:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 22px,rgba(255,255,255,.18) 22px 24px)}
+.linea .rotulo{position:absolute;left:14px;top:8px;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gris)}
+.linea .horno-tag{position:absolute;right:14px;top:8px;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--horno);display:flex;align-items:center;gap:6px}
+.linea .horno-tag i{width:7px;height:7px;border-radius:50%;background:var(--horno);animation:pulso 1.6s infinite}
+@keyframes pulso{50%{opacity:.25}}
+.perchas{position:absolute;left:0;right:0;top:40px;bottom:0;display:flex;justify-content:space-around;padding:0 8px}
+.percha{position:relative;width:9%;min-width:28px;display:flex;flex-direction:column;align-items:center;cursor:pointer;background:none;border:0;padding:0;transform-origin:top center;animation:vaiven 5s ease-in-out infinite}
+.percha:nth-child(2n){animation-delay:-1.3s}.percha:nth-child(3n){animation-delay:-2.6s}
+@keyframes vaiven{0%,100%{transform:rotate(-1.2deg)}50%{transform:rotate(1.2deg)}}
+.percha .gancho{width:2px;height:26px;background:#3a3936}
+.percha .gancho:before{content:"";display:block;width:10px;height:10px;border:2px solid #3a3936;border-top-color:transparent;border-radius:50%;margin:-6px 0 0 -6px}
+.percha .barra{width:100%;border-radius:2px;box-shadow:inset -4px 0 0 rgba(0,0,0,.14),inset 3px 0 0 rgba(255,255,255,.25),0 6px 12px rgba(0,0,0,.12);background-size:cover;background-position:center;transition:transform .25s}
+.percha:hover .barra,.percha.on .barra{transform:translateY(8px)}
+.percha.on .barra{outline:2px solid var(--horno);outline-offset:3px}
+.percha .cod{margin-top:12px;font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--grafito);white-space:nowrap}
+.linea .pie{position:absolute;left:14px;right:14px;bottom:12px;display:flex;justify-content:space-between;align-items:flex-end;gap:10px;font-size:12.5px}
+.linea .pie b{font-family:"Gloock",serif;font-weight:400;font-size:22px;display:block;line-height:1.1}
+.hitos{display:grid;grid-template-columns:repeat(4,1fr);margin-top:48px;border-top:1px solid var(--esmalte)}
+.hito{padding:18px 18px 22px 0;border-right:1px solid var(--filete)}
+.hito:last-child{border-right:0}
+.hito + .hito{padding-left:18px}
+.hito .a{font-family:"Gloock",serif;font-size:34px;line-height:1}
+.hito p{margin:8px 0 0;font-size:13.5px;color:var(--grafito)}
+
+/* secciones */
+section.bloque{padding:72px 0}
+.titsec{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:28px;flex-wrap:wrap}
+.titsec h2{font-size:clamp(30px,3.6vw,46px);line-height:1.05;max-width:720px}
+.titsec p{max-width:420px;margin:0;color:var(--grafito);font-size:14.5px}
+
+/* cotizador */
+.cotiz{background:var(--hoja);border-top:1px solid var(--filete);border-bottom:1px solid var(--filete)}
+.banco{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:0;border:1px solid var(--esmalte);border-radius:var(--r);overflow:hidden;background:#fff}
+.mesa{padding:22px;border-right:1px solid var(--esmalte);background:
+  linear-gradient(var(--filete) 1px,transparent 1px) 0 0/24px 24px,
+  linear-gradient(90deg,var(--filete) 1px,transparent 1px) 0 0/24px 24px,#FDFCFA;position:relative}
+.mesa .cab{display:flex;justify-content:space-between;gap:10px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gris);background:#fff;padding:6px 10px;border:1px solid var(--filete);border-radius:var(--r)}
+.plano{width:100%;height:auto;display:block;margin:14px auto 0;max-height:430px}
+.prueba{display:flex;gap:10px;align-items:center;margin-top:10px;font-size:13px;flex-wrap:wrap;background:#fff;border:1px solid var(--filete);padding:8px 10px;border-radius:var(--r)}
+.prueba label{display:flex;align-items:center;gap:6px;cursor:pointer}
+.ficha{padding:22px 22px 18px;display:flex;flex-direction:column;gap:18px}
+.campo>.lab{display:flex;justify-content:space-between;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gris);margin-bottom:8px}
+.tipos{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.tipo{border:1px solid var(--filete);background:#fff;padding:9px 10px;border-radius:var(--r);cursor:pointer;text-align:left;font-size:13px;line-height:1.25;display:flex;gap:8px;align-items:center}
+.tipo svg{flex:none}
+.tipo[aria-pressed="true"]{border-color:var(--esmalte);background:var(--esmalte);color:#fff}
+.tipo[aria-pressed="true"] svg *{stroke:#fff}
+.medidas{display:grid;grid-template-columns:1fr 1fr 90px;gap:8px}
+.medidas label{display:flex;flex-direction:column;font-size:12px;color:var(--gris);gap:4px}
+.medidas input{border:1px solid var(--filete);border-radius:var(--r);padding:9px 10px;font-family:"JetBrains Mono",monospace;font-size:15px;width:100%;background:#fff}
+select{border:1px solid var(--filete);border-radius:var(--r);padding:9px 10px;width:100%;background:#fff}
+.muestras{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.muestra{aspect-ratio:1/1;border:1px solid var(--filete);border-radius:3px;cursor:pointer;background-size:cover;background-position:center;position:relative;padding:0}
+.muestra[aria-pressed="true"]{outline:2px solid var(--horno);outline-offset:2px}
+.muestra span{position:absolute;left:3px;bottom:2px;font-family:"JetBrains Mono",monospace;font-size:9.5px;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.6)}
+.mnom{font-size:13px;margin-top:8px;color:var(--grafito)}
+.extras{display:flex;flex-direction:column;gap:6px;font-size:13.5px}
+.extras label{display:flex;gap:8px;align-items:center;cursor:pointer}
+.precio{background:var(--esmalte);color:#fff;padding:16px 18px;border-radius:var(--r);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.precio small{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#B9B5AC}
+.precio .monto{font-family:"Gloock",serif;font-size:28px;line-height:1.1}
+.precio .btn{background:var(--horno);border-color:var(--horno)}
+
+/* comparador */
+.compara{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:22px}
+.lado{border:1px solid var(--filete);background:#fff;border-radius:var(--r);padding:16px}
+.lado .top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}
+.lado h3{font-size:22px}
+.lado .p{font-family:"Gloock",serif;font-size:22px}
+.lado select{max-width:220px}
+
+/* pedido */
+.pedido{display:grid;grid-template-columns:1.3fr .9fr;gap:22px;margin-top:22px}
+table.renglones{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--filete);font-size:13.5px}
+table.renglones th{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--gris);text-align:left;font-weight:500;padding:10px;border-bottom:1px solid var(--esmalte)}
+table.renglones td{padding:10px;border-bottom:1px solid var(--filete);vertical-align:top}
+table.renglones td.n{font-family:"JetBrains Mono",monospace;white-space:nowrap}
+table.renglones button{background:none;border:0;color:var(--gris);cursor:pointer;font-size:18px;line-height:1}
+.vacio{padding:26px;text-align:center;color:var(--gris);background:#fff;border:1px dashed var(--filete)}
+.envio{background:var(--esmalte);color:#EDEAE3;border-radius:var(--r);padding:20px;display:flex;flex-direction:column;gap:14px}
+.envio h3{font-size:24px;color:#fff}
+.destinos{display:flex;flex-direction:column;gap:8px}
+.destino{display:flex;gap:10px;align-items:flex-start;border:1px solid #3d3c39;padding:10px 12px;border-radius:var(--r);cursor:pointer}
+.destino input{margin-top:4px;accent-color:var(--horno)}
+.destino b{color:#fff;font-weight:600}
+.destino small{display:block;color:#A9A59C;font-size:12px}
+.envio input[type=text],.envio input[type=tel]{width:100%;background:#22211f;border:1px solid #3d3c39;border-radius:var(--r);padding:10px;color:#fff}
+.envio .total{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid #3d3c39;padding-top:12px}
+.envio .total b{font-family:"Gloock",serif;font-weight:400;font-size:26px;color:#fff}
+.nota{font-size:12px;color:#A9A59C}
+
+/* terminaciones */
+.decoral{display:grid;grid-template-columns:repeat(7,1fr);gap:0;border:1px solid var(--esmalte)}
+.tabla{position:relative;aspect-ratio:1/2.6;background-size:cover;background-position:center;border-right:1px solid var(--esmalte);cursor:pointer;padding:0;border-top:0;border-bottom:0;border-left:0}
+.tabla:last-child{border-right:0}
+.tabla .et{position:absolute;left:0;right:0;bottom:0;background:var(--hoja);padding:10px;text-align:left;border-top:1px solid var(--esmalte)}
+.tabla .et b{font-family:"Gloock",serif;font-weight:400;font-size:18px;display:block}
+.tabla .et span{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--gris)}
+.proceso{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:28px}
+.proceso div{border-top:2px solid var(--esmalte);padding-top:12px;font-size:14px;color:var(--grafito)}
+.proceso b{display:block;font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--horno);margin-bottom:4px;font-weight:600}
+
+/* obras */
+.obras{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.obra{background:#fff;border:1px solid var(--filete);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column}
+.obra .img{aspect-ratio:4/5;background:#FDFCFA;overflow:hidden;position:relative}
+.obra .img svg{position:absolute;inset:0;width:100%;height:100%}
+.obra img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.obra .t{padding:10px 12px 12px;font-size:13px;display:flex;flex-direction:column;gap:6px;flex:1}
+.obra .t b{font-weight:600}
+.obra .t small{color:var(--gris);font-family:"JetBrains Mono",monospace;font-size:11px}
+.obra button{margin-top:auto;align-self:flex-start;background:none;border:0;border-bottom:1px solid var(--esmalte);padding:0 0 1px;cursor:pointer;font-size:12.5px}
+
+/* ruta 12 */
+.ruta{background:var(--esmalte);color:#E9E5DC;padding:72px 0}
+.ruta h2{color:#fff}
+.ruta .titsec p{color:#B9B5AC}
+.mapa{border:1px solid #3d3c39;border-radius:var(--r);padding:18px;background:#1c1b19}
+.mapa svg{width:100%;height:auto;display:block}
+.sedes{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:22px}
+.sede{border-top:1px solid #57544f;padding-top:14px}
+.sede b{font-family:"Gloock",serif;font-weight:400;font-size:24px;color:#fff;display:block}
+.sede a{color:#fff}
+.sede p{margin:6px 0;font-size:14px}
+
+footer{padding:28px 0 40px;font-size:12.5px;color:var(--gris)}
+footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+/* drawer precios */
+.drawer{position:fixed;inset:0;background:rgba(20,20,19,.55);display:flex;justify-content:flex-end;z-index:50}
+.drawer .panel{width:min(560px,100%);background:var(--hoja);height:100%;overflow:auto;padding:22px}
+.drawer h3{font-size:28px;margin-bottom:6px}
+.drawer table{width:100%;border-collapse:collapse;font-size:13.5px;margin:14px 0}
+.drawer td,.drawer th{padding:8px 6px;border-bottom:1px solid var(--filete);text-align:left}
+.drawer th{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--gris);font-weight:500}
+.drawer input{width:120px;border:1px solid var(--filete);border-radius:var(--r);padding:6px 8px;font-family:"JetBrains Mono",monospace;background:#fff}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--esmalte);color:#fff;padding:10px 16px;border-radius:var(--r);font-size:13.5px;z-index:60}
+
+@media (max-width:960px){
+  .hero-grid,.banco,.pedido{grid-template-columns:1fr}
+  .mesa{border-right:0;border-bottom:1px solid var(--esmalte)}
+  .obras{grid-template-columns:repeat(2,1fr)}
+  .decoral{grid-template-columns:repeat(4,1fr)}
+  .tabla{aspect-ratio:1/1.6;border-bottom:1px solid var(--esmalte)}
+  nav.menu{display:none}
+}
+@media (max-width:620px){
+  .wrap{padding:0 16px}
+  .hero{padding-top:34px}
+  .linea{height:360px}
+  .percha .cod{display:none}
+  .percha.on .cod{display:block}
+  .linea .horno-tag{display:none}
+  .linea .pie{background:rgba(251,249,245,.94);padding:8px 10px;border:1px solid var(--filete);border-radius:4px;left:10px;right:10px;bottom:10px}
+  .percha .barra{max-height:210px}
+  .hitos{grid-template-columns:1fr 1fr}
+  .hito:nth-child(2){border-right:0}
+  .hito:nth-child(3){padding-left:0}
+  .hito:nth-child(n+3){border-top:1px solid var(--filete)}
+  .compara,.sedes,.proceso{grid-template-columns:1fr}
+  .decoral{grid-template-columns:repeat(2,1fr)}
+  .tipos{grid-template-columns:1fr}
+  .medidas{grid-template-columns:1fr 1fr}
+  .medidas label:last-child{grid-column:span 2}
+  section.bloque{padding:52px 0}
+  .marca span{display:none}
+  .obras{grid-template-columns:1fr 1fr;gap:10px}
+}
+</style>
+</head>
+<body>
+
+<div class="aviso"><div class="wrap"><span><b>Prototipo de demostración preparado para Borgert y Cía.</b> Los precios son de ejemplo.</span><span>Hecho por Resolviendo Kos · resolviendokos.com</span></div></div>
+
+<header class="top"><div class="wrap">
+  <a class="marca" href="#"><strong>Borgert y Cía.</strong><span>Aberturas de aluminio · desde 1977</span></a>
+  <nav class="menu"><a href="#cotizar">Cotizar</a><a href="#terminaciones">Terminaciones</a><a href="#obras">Trabajos</a><a href="#sedes">Planta y sucursal</a></nav>
+  <button class="btn ghost" id="abrirPrecios" type="button">Tabla de precios</button>
+</div></header>
+
+<section class="hero"><div class="wrap">
+  <div class="hero-grid">
+    <div>
+      <div class="kicker">Villa Aranguren · Paraná · Entre Ríos</div>
+      <h1>Hacemos la abertura, <em>la esmaltamos</em> y la vestimos de madera. En la misma planta.</h1>
+      <p class="lead">Fabricamos aberturas de aluminio desde 1977, esmaltamos perfiles desde 1987 y aplicamos el decorado símil madera Decoral desde 1999. Elegí la abertura, cargá la medida, colgala en la terminación que quieras y mirá el precio estimado al instante.</p>
+      <div class="ctas"><a class="btn horno" href="#cotizar">Cotizar mi abertura</a><a class="btn ghost" href="#terminaciones">Ver las 10 terminaciones</a></div>
+    </div>
+    <div class="linea" aria-label="Línea de pintura: elegí una terminación">
+      <div class="riel"></div>
+      <div class="rotulo">Línea de pintura · tocá un perfil</div>
+      <div class="horno-tag"><i></i>Esmaltado y Decoral</div>
+      <div class="perchas" id="perchas"></div>
+      <div class="pie"><div><small class="mono" id="pieCod">C7</small><b id="pieNom">Cedro</b></div><a class="btn" href="#cotizar" style="padding:8px 12px;font-size:13px">Usar en el cotizador ↓</a></div>
+    </div>
+  </div>
+  <div class="hitos">
+    <div class="hito"><div class="a">1977</div><p>Empezamos a fabricar aberturas de aluminio en Villa Aranguren.</p></div>
+    <div class="hito"><div class="a">1987</div><p>Sumamos el esmaltado de perfiles: el color lo damos nosotros.</p></div>
+    <div class="hito"><div class="a">1999</div><p>Llega Borgert Decoral: aluminio con aspecto de madera o mármol.</p></div>
+    <div class="hito"><div class="a">Ruta 12</div><p>Planta a 70 km de Paraná y sucursal en Churruarín 55.</p></div>
+  </div>
+</div></section>
+
+<section class="bloque cotiz" id="cotizar"><div class="wrap">
+  <div class="titsec">
+    <h2>El banco de trabajo: medida, vidrio y terminación, con el precio al lado.</h2>
+    <p>Los tipos de abertura son los que muestra Borgert en su catálogo. El dibujo se pinta con la terminación elegida para que veas cómo queda antes de pedirla.</p>
+  </div>
+
+  <div class="banco">
+    <div class="mesa">
+      <div class="cab"><span id="cabTipo">Ventana corrediza</span><span class="mono" id="cabMed">150 × 110 cm</span></div>
+      <svg class="plano" id="plano" viewBox="0 0 520 440" role="img" aria-label="Plano de la abertura"></svg>
+      <div class="prueba">
+        <span class="mono" style="font-size:11px;color:var(--gris)">VISTA</span>
+        <label><input type="radio" name="vista" value="frente" checked> Frente pintado</label>
+        <label><input type="radio" name="vista" value="tecnica"> Plano técnico</label>
+      </div>
+    </div>
+    <div class="ficha">
+      <div class="campo"><div class="lab"><span>01 · Tipo</span></div><div class="tipos" id="tipos"></div></div>
+      <div class="campo"><div class="lab"><span>02 · Medidas</span><span id="m2">1,65 m²</span></div>
+        <div class="medidas">
+          <label>Ancho (cm)<input type="number" id="ancho" min="40" max="400" value="150" inputmode="numeric"></label>
+          <label>Alto (cm)<input type="number" id="alto" min="40" max="260" value="110" inputmode="numeric"></label>
+          <label>Cantidad<input type="number" id="cant" min="1" max="50" value="1" inputmode="numeric"></label>
+        </div>
+      </div>
+      <div class="campo"><div class="lab"><span>03 · Terminación</span><span id="recargo">+18%</span></div>
+        <div class="muestras" id="muestras"></div>
+        <div class="mnom" id="mnom"></div>
+      </div>
+      <div class="campo"><div class="lab"><span>04 · Vidrio</span></div>
+        <select id="vidrio"></select>
+      </div>
+      <div class="campo"><div class="lab"><span>05 · Extras</span></div>
+        <div class="extras">
+          <label><input type="checkbox" id="xMosq"> Mosquitero</label>
+          <label><input type="checkbox" id="xInst" checked> Colocación en obra</label>
+        </div>
+      </div>
+      <div class="precio">
+        <div><small>Precio estimado</small><div class="monto" id="monto">$ —</div><small id="rango" style="text-transform:none;letter-spacing:0;font-size:12px"></small></div>
+        <button class="btn" id="agregar" type="button">Agregar al pedido</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="compara" aria-label="Comparar dos terminaciones">
+    <div class="lado"><div class="top"><h3>Prueba A</h3><select id="selA"></select></div><svg viewBox="0 0 520 440" id="planoA" style="width:100%;height:auto"></svg><div class="top"><span class="mono" id="codA"></span><span class="p" id="pA"></span></div></div>
+    <div class="lado"><div class="top"><h3>Prueba B</h3><select id="selB"></select></div><svg viewBox="0 0 520 440" id="planoB" style="width:100%;height:auto"></svg><div class="top"><span class="mono" id="codB"></span><span class="p" id="pB"></span></div></div>
+  </div>
+
+  <div class="pedido">
+    <div>
+      <div class="titsec" style="margin:0 0 12px"><h2 style="font-size:28px">Pedido</h2><p class="mono" style="font-size:12px">Cada renglón queda con tipo, medida, vidrio y terminación.</p></div>
+      <div id="renglones"></div>
+    </div>
+    <aside class="envio">
+      <h3>¿A dónde lo mandamos?</h3>
+      <div class="destinos">
+        <label class="destino"><input type="radio" name="dest" value="parana" checked><span><b>Sucursal Paraná</b><small>Churruarín 55 · 0343 424-6305 · sucursalparana@borgertycia.com.ar</small></span></label>
+        <label class="destino"><input type="radio" name="dest" value="central"><span><b>Casa Central y planta</b><small>Fray Mocho 255, Villa Aranguren · 03436 498098 · casacentral@borgertycia.com.ar</small></span></label>
+      </div>
+      <input type="text" id="cliNom" placeholder="Tu nombre" autocomplete="name">
+      <input type="tel" id="cliTel" placeholder="Tu teléfono o WhatsApp" autocomplete="tel">
+      <input type="text" id="cliLoc" placeholder="Localidad de la obra (ej. Paraná, Crespo, Diamante)">
+      <div class="total"><span>Total estimado</span><b id="total">$ 0</b></div>
+      <button class="btn horno" id="enviar" type="button" style="justify-content:center">Enviar pedido por mail</button>
+      <div class="nota">Se abre un mail a la sede elegida con todos los renglones cargados. Si Borgert suma un WhatsApp, el mismo pedido sale por ahí.</div>
+    </aside>
+  </div>
+</div></section>
+
+<section class="bloque" id="terminaciones"><div class="wrap">
+  <div class="titsec">
+    <h2>Borgert Decoral: el aluminio que parece cedro, nogal o mármol.</h2>
+    <p>Esmalte termoconvertible en polvo de base y el diseño aplicado por transferencia térmica. Satinado, resistente a la intemperie y a los solventes. Tocá una para cotizar en ese acabado.</p>
+  </div>
+  <div class="decoral" id="decoral"></div>
+  <div class="proceso">
+    <div><b>PASO 1 · BASE</b>El perfil se esmalta con pintura en polvo termoconvertible.</div>
+    <div><b>PASO 2 · DISEÑO</b>Se aplica por transferencia térmica el diseño que elige el cliente.</div>
+    <div><b>PASO 3 · ABERTURA</b>Con el perfil terminado se arma la abertura en la planta de Villa Aranguren.</div>
+  </div>
+</div></section>
+
+<section class="bloque" id="obras" style="padding-top:0"><div class="wrap">
+  <div class="titsec">
+    <h2>Del catálogo de Borgert: tocá una y cotizá una igual.</h2>
+    <p>Fotos publicadas por Borgert y Cía. Cada una carga el tipo y la terminación en el cotizador.</p>
+  </div>
+  <div class="obras" id="obrasGrid"></div>
+</div></section>
+
+<section class="ruta" id="sedes"><div class="wrap">
+  <div class="titsec">
+    <h2>Planta sobre la Ruta 12, sucursal en Paraná.</h2>
+    <p>Villa Aranguren queda a 70 km de Paraná, 130 km de Rosario y 340 km de Capital Federal.</p>
+  </div>
+  <div class="mapa">
+    <svg viewBox="0 0 900 220" role="img" aria-label="Esquema de la Ruta 12 entre Paraná y Villa Aranguren">
+      <path d="M40 120 C 220 60, 330 170, 480 120 S 760 70, 860 130" fill="none" stroke="#57544f" stroke-width="14" stroke-linecap="round"/>
+      <path d="M40 120 C 220 60, 330 170, 480 120 S 760 70, 860 130" fill="none" stroke="#F2C230" stroke-width="2" stroke-dasharray="14 12"/>
+      <circle cx="40" cy="120" r="12" fill="#E2622B"/><circle cx="40" cy="120" r="5" fill="#fff"/>
+      <text x="40" y="78" fill="#fff" font-family="Gloock" font-size="26" text-anchor="start">Paraná</text>
+      <text x="40" y="168" fill="#B9B5AC" font-family="JetBrains Mono" font-size="13">Sucursal · Churruarín 55</text>
+      <circle cx="560" cy="108" r="12" fill="#E2622B"/><circle cx="560" cy="108" r="5" fill="#fff"/>
+      <text x="560" y="66" fill="#fff" font-family="Gloock" font-size="26" text-anchor="middle">Villa Aranguren</text>
+      <text x="560" y="150" fill="#B9B5AC" font-family="JetBrains Mono" font-size="13" text-anchor="middle">Casa central y planta · Fray Mocho 255</text>
+      <rect x="270" y="100" width="64" height="30" rx="4" fill="#1F6B47"/><text x="302" y="121" fill="#fff" font-family="JetBrains Mono" font-size="14" text-anchor="middle">RN 12</text>
+      <text x="300" y="196" fill="#B9B5AC" font-family="JetBrains Mono" font-size="13" text-anchor="middle">← 70 km →</text>
+      <text x="860" y="96" fill="#B9B5AC" font-family="JetBrains Mono" font-size="13" text-anchor="end">Rosario 130 km →</text>
+    </svg>
+  </div>
+  <div class="sedes">
+    <div class="sede"><b>Sucursal Paraná</b><p>Churruarín 55, Paraná (3100), Entre Ríos</p><p>Tel. <a href="tel:+543434246305">0343 424-6305</a></p><p><a href="mailto:sucursalparana@borgertycia.com.ar">sucursalparana@borgertycia.com.ar</a></p></div>
+    <div class="sede"><b>Casa Central</b><p>Fray Mocho 255, Villa Aranguren (3162), Entre Ríos</p><p>Tel. <a href="tel:+543436498098">03436 498098</a> / 016</p><p><a href="mailto:casacentral@borgertycia.com.ar">casacentral@borgertycia.com.ar</a></p></div>
+  </div>
+</div></section>
+
+<footer><div class="wrap"><span>Prototipo de demostración preparado para Borgert y Cía. Precios de ejemplo, no son una oferta.</span><span>Resolviendo Kos · resolviendokos.com</span></div></footer>
+
+<div class="drawer" id="drawer" hidden>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="dTit">
+    <div style="display:flex;justify-content:space-between;align-items:center"><h3 id="dTit">Tabla de precios</h3><button class="btn ghost" id="cerrarPrecios" type="button">Cerrar</button></div>
+    <p style="margin:0;color:var(--grafito);font-size:14px">Esta tabla la maneja Borgert. Al cambiar un valor, el cotizador se actualiza al instante. Valores de ejemplo en pesos.</p>
+    <table id="tPrecios"></table>
+    <button class="btn ghost" id="resetPrecios" type="button">Volver a los valores de ejemplo</button>
+  </div>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(function(){
+const IMG='https://www.borgertycia.com.ar/app/views/images/';
+const TERM=[
+ {id:'BL',nom:'Blanco',cod:'Esmalte',fam:'esm',css:'#F4F4F1',rec:0},
+ {id:'NG',nom:'Negro semimate',cod:'Esmalte',fam:'esm',css:'#1d1d1c',rec:6},
+ {id:'GC',nom:'Gris claro',cod:'Esmalte',fam:'esm',css:'#B9BCBD',rec:6},
+ {id:'B7',nom:'Nogal',cod:'B7',fam:'dec',img:'bdecoral/B7.jpg',css:'repeating-linear-gradient(92deg,#5a3a24 0 3px,#6d4a30 3px 7px,#4e321f 7px 9px)',base:'#5f3e27',rec:18},
+ {id:'C7',nom:'Cedro',cod:'C7',fam:'dec',img:'bdecoral/C7.jpg',css:'repeating-linear-gradient(91deg,#8a4b2a 0 3px,#9b5a35 3px 8px,#743d21 8px 10px)',base:'#8a4b2a',rec:18},
+ {id:'C8',nom:'Cedro',cod:'C8',fam:'dec',img:'bdecoral/C8.jpg',css:'repeating-linear-gradient(90deg,#7a3f22 0 4px,#8e4f2d 4px 8px,#69361d 8px 10px)',base:'#7c4123',rec:18},
+ {id:'E7',nom:'Roble claro',cod:'E7',fam:'dec',img:'bdecoral/E7.jpg',css:'repeating-linear-gradient(91deg,#b88a5a 0 3px,#c99d6c 3px 8px,#a77a4d 8px 10px)',base:'#bb8d5d',rec:18},
+ {id:'G7',nom:'Cerezo',cod:'G7',fam:'dec',img:'bdecoral/G7.jpg',css:'repeating-linear-gradient(90deg,#8d3b26 0 3px,#a24a32 3px 8px,#7a311f 8px 10px)',base:'#923f29',rec:18},
+ {id:'G8',nom:'Douglas',cod:'G8',fam:'dec',img:'bdecoral/G8.jpg',css:'repeating-linear-gradient(92deg,#a9693a 0 3px,#bd7b48 3px 8px,#97592e 8px 10px)',base:'#ad6c3c',rec:18},
+ {id:'111',nom:'Mármol Carrara',cod:'111',fam:'dec',img:'bdecoral/111.jpg',css:'linear-gradient(115deg,transparent 0 38%,rgba(150,150,146,.55) 39%,transparent 41% 62%,rgba(170,170,166,.4) 63%,transparent 64%),linear-gradient(160deg,#f1f0ec,#dcdbd6)',base:'#e6e5e1',rec:22}
+];
+const TIPOS=[
+ {id:'corr',nom:'Ventana corrediza c/cortina barrio',corto:'Ventana corrediza con cortina',hojas:2,mov:'corr',cortina:true,w:150,h:110},
+ {id:'c45',nom:'Ventana corrediza hoja 45º',corto:'Ventana corrediza hoja 45º',hojas:2,mov:'corr',w:150,h:110},
+ {id:'celo',nom:'Celosía de abrir 1 hoja regulable',corto:'Celosía de abrir regulable',hojas:1,mov:'abrir',celosia:true,w:70,h:120},
+ {id:'pdm',nom:'Puerta doble moldura',corto:'Puerta doble moldura',hojas:1,mov:'puerta',ciega:true,w:85,h:205},
+ {id:'pcc',nom:'Puerta corrediza c/celosía de abrir',corto:'Puerta corrediza con celosía',hojas:2,mov:'corr',celosiaExt:true,w:180,h:205},
+ {id:'ppf',nom:'Puerta de abrir con paño fijo',corto:'Puerta de abrir con paño fijo',hojas:1,mov:'puerta',fijo:true,w:130,h:205}
+];
+const VIDRIOS=[{id:'f4',nom:'Float 4 mm'},{id:'lam',nom:'Laminado 3+3 de seguridad'},{id:'dvh',nom:'DVH 4/9/4 (doble vidriado)'},{id:'fant',nom:'Fantasía / esmerilado'}];
+const DEF={corr:198000,c45:176000,celo:214000,pdm:265000,pcc:232000,ppf:248000,f4:0,lam:46000,dvh:72000,fant:18000,mosq:38000,inst:9,minm2:0.9};
+const ETQ={corr:'Ventana corrediza c/cortina barrio (por m²)',c45:'Ventana corrediza hoja 45º (por m²)',celo:'Celosía de abrir regulable (por m²)',pdm:'Puerta doble moldura (por m²)',pcc:'Puerta corrediza c/celosía (por m²)',ppf:'Puerta de abrir c/paño fijo (por m²)',f4:'Vidrio float 4 mm (por m²)',lam:'Laminado 3+3 (por m²)',dvh:'DVH 4/9/4 (por m²)',fant:'Fantasía / esmerilado (por m²)',mosq:'Mosquitero (por unidad)',inst:'Colocación (% sobre el total)',minm2:'Superficie mínima facturable (m²)'};
+let P=Object.assign({},DEF);
+try{const s=localStorage.getItem('borgert-precios');if(s)Object.assign(P,JSON.parse(s))}catch(e){}
+const st={tipo:'corr',term:'C7',vidrio:'f4',vista:'frente',ancho:150,alto:110,cant:1,mosq:false,inst:true,A:'BL',B:'C7'};
+let pedido=[];
+const $=id=>document.getElementById(id);
+const fmt=n=>'$ '+Math.round(n).toLocaleString('es-AR');
+const T=id=>TERM.find(t=>t.id===id);
+const TP=id=>TIPOS.find(t=>t.id===id);
+
+/* preload texture images (fallback to css) */
+const ok={};
+TERM.forEach(t=>{if(!t.img)return;const im=new Image();im.onload=()=>{ok[t.id]=true;pintarTexturas();render()};im.onerror=()=>{};im.src=IMG+t.img});
+function fondo(t){return ok[t.id]?`url(${IMG+t.img}) center/cover`:t.css}
+function pintarTexturas(){
+  document.querySelectorAll('[data-term]').forEach(el=>{el.style.background=fondo(T(el.dataset.term))});
+}
+
+/* percha */
+const perchas=$('perchas');
+TERM.forEach((t,i)=>{
+  const b=document.createElement('button');b.type='button';b.className='percha';b.dataset.id=t.id;
+  b.setAttribute('aria-label',t.nom+' '+t.cod);
+  const h=[300,270,320,290,310,280,300,325,285,260][i];
+  b.innerHTML=`<span class="gancho"></span><span class="barra" data-term="${t.id}" style="height:${Math.round(h*0.82)}px"></span><span class="cod">${t.fam==='dec'?t.cod:t.nom.split(' ')[0]}</span>`;
+  b.onclick=()=>{setTerm(t.id)};
+  perchas.appendChild(b);
+});
+
+/* tipos */
+const icon=t=>{
+  const r=t.id.startsWith('p')?'<rect x="5" y="2" width="14" height="22" fill="none" stroke="#141413" stroke-width="1.6"/>':'<rect x="2" y="5" width="22" height="16" fill="none" stroke="#141413" stroke-width="1.6"/>';
+  const l=t.mov==='corr'?'<path d="M13 5v16M7 13h4M15 13h4" stroke="#141413" stroke-width="1.4"/>':(t.celosia?'<path d="M4 9h18M4 13h18M4 17h18" stroke="#141413" stroke-width="1.2"/>':'<path d="M7 6l10 7-10 7" fill="none" stroke="#141413" stroke-width="1.2"/>');
+  return `<svg width="26" height="26" viewBox="0 0 26 26">${r}${l}</svg>`};
+TIPOS.forEach(t=>{const b=document.createElement('button');b.type='button';b.className='tipo';b.dataset.id=t.id;b.innerHTML=icon(t)+'<span>'+t.nom+'</span>';b.onclick=()=>{st.tipo=t.id;st.ancho=t.w;st.alto=t.h;$('ancho').value=t.w;$('alto').value=t.h;render()};$('tipos').appendChild(b)});
+
+/* muestras */
+TERM.forEach(t=>{const b=document.createElement('button');b.type='button';b.className='muestra';b.dataset.id=t.id;b.dataset.term=t.id;b.title=t.nom+' '+t.cod;b.innerHTML=`<span>${t.fam==='dec'?t.cod:''}</span>`;b.onclick=()=>setTerm(t.id,true);$('muestras').appendChild(b)});
+VIDRIOS.forEach(v=>{const o=document.createElement('option');o.value=v.id;o.textContent=v.nom;$('vidrio').appendChild(o)});
+['selA','selB'].forEach(s=>TERM.forEach(t=>{const o=document.createElement('option');o.value=t.id;o.textContent=t.nom+(t.fam==='dec'?' · '+t.cod:'');$(s).appendChild(o)}));
+$('selA').value=st.A;$('selB').value=st.B;
+
+/* decoral grid */
+TERM.filter(t=>t.fam==='dec').forEach(t=>{const b=document.createElement('button');b.type='button';b.className='tabla';b.dataset.term=t.id;b.innerHTML=`<span class="et"><b>${t.nom}</b><span>Decoral · ${t.cod}</span></span>`;b.onclick=()=>{setTerm(t.id);location.hash='cotizar'};$('decoral').appendChild(b)});
+
+/* obras: fotos publicadas por Borgert */
+const OBRAS=[
+ {f:'100515-krhdddtbyz',t:'corr',term:'NG',n:'Ventana corrediza c/cortina barrio',c:'Negro semimate'},
+ {f:'100515-ghqgaluyqr',t:'pdm',term:'C7',n:'Puerta doble moldura',c:'Cedro C-7'},
+ {f:'100514-xonfbpqqpm',t:'c45',term:'BL',n:'Ventana corrediza hoja 45º',c:'Blanco'},
+ {f:'100514-pnrjnfiwje',t:'celo',term:'BL',n:'Celosía de abrir 1 hoja regulable',c:'Blanco'},
+ {f:'100514-mvikxixdod',t:'pcc',term:'GC',n:'Puerta corrediza c/celosía de abrir',c:'Gris claro'},
+ {f:'100513-rjwphqfbxy',t:'ppf',term:'BL',n:'Puerta de abrir con paño fijo',c:'Terminación a elección'},
+ {f:'100514-vxiqsqdvkm',t:'c45',term:'NG',n:'I-180',c:'Negro semimate'},
+ {f:'100513-hpkbhxbouh',t:'pdm',term:'C7',n:'Trabajo en Cedro',c:'Cedro C-7'}
+];
+OBRAS.forEach(o=>{
+  const d=document.createElement('article');d.className='obra';
+  d.innerHTML=`<div class="img"><svg viewBox="0 0 520 440" preserveAspectRatio="xMidYMid meet" aria-hidden="true" id="ob${o.f}"></svg><img loading="lazy" alt="${o.n}, ${o.c}" src="${IMG}aberturas/tb/${o.f}.jpg"></div><div class="t"><b>${o.n}</b><small>${o.c}</small><button type="button">Quiero una así →</button></div>`;
+  const img=d.querySelector('img');img.onerror=()=>{if(!img.dataset.r){img.dataset.r=1;img.src=IMG+'aberturas/ts/'+o.f+'.jpg'}else{img.remove()}};
+  d.querySelector('button').onclick=()=>{const tp=TP(o.t);st.tipo=o.t;st.ancho=tp.w;st.alto=tp.h;$('ancho').value=tp.w;$('alto').value=tp.h;setTerm(o.term);location.hash='cotizar';toast('Cargado: '+tp.corto+' en '+T(o.term).nom)};
+  $('obrasGrid').appendChild(d);
+  const tp0=TP(o.t);dibujar(d.querySelector('svg'),Object.assign({},st,{tipo:o.t,term:o.term,ancho:tp0.w,alto:tp0.h}),'frente');
+});
+
+function setTerm(id,silent){st.term=id;st.B=id;$('selB').value=id;render();if(!silent){}}
+
+/* precio */
+function calc(o){
+  const tp=o.tipo,m2=Math.max(P.minm2,(o.ancho/100)*(o.alto/100));
+  let base=P[tp]*m2;
+  const t=T(o.term);base*=1+t.rec/100;
+  const vidM2=TP(tp).ciega?m2*0.35:m2*0.8;
+  base+=P[o.vidrio]*vidM2;
+  if(o.mosq)base+=P.mosq;
+  if(o.inst)base*=1+P.inst/100;
+  return base*o.cant;
+}
+
+/* dibujo */
+function dibujar(svg,o,vista){
+  const tp=TP(o.tipo),t=T(o.term);
+  const W=520,H=440,pad=60;
+  const ratio=o.ancho/o.alto;
+  let w=W-pad*2,h=w/ratio;if(h>H-pad*2){h=H-pad*2;w=h*ratio}
+  const x=(W-w)/2,y=(H-h)/2+6,fr=Math.max(9,Math.min(16,w*0.035));
+  const pid='p'+svg.id+t.id;
+  const tec=vista==='tecnica';
+  const fill=tec?'#fff':`url(#${pid})`;
+  const stroke=tec?'#141413':'rgba(0,0,0,.35)';
+  let s=`<defs><pattern id="${pid}" patternUnits="userSpaceOnUse" width="160" height="160">`;
+  if(t.img&&ok[t.id])s+=`<image href="${IMG+t.img}" x="0" y="0" width="160" height="160" preserveAspectRatio="xMidYMid slice"/>`;
+  else s+=`<rect width="160" height="160" fill="${t.base||t.css}"/>`+(t.fam==='dec'?Array.from({length:14},(_,i)=>`<path d="M${i*12} 0 q 4 80 -2 160" stroke="rgba(0,0,0,.12)" stroke-width="2" fill="none"/>`).join(''):'');
+  s+=`</pattern><linearGradient id="g${pid}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E6F0F1"/><stop offset=".55" stop-color="#C9DEE1"/><stop offset="1" stop-color="#B3CFD3"/></linearGradient></defs>`;
+  const vid=tec?'#EEF5F6':`url(#g${pid})`;
+  // marco
+  s+=`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${fill}" stroke="${stroke}" stroke-width="1.5"/>`;
+  const ix=x+fr,iy=y+fr,iw=w-fr*2,ih=h-fr*2;
+  let ih2=ih,iy2=iy;
+  if(tp.cortina){const ch=Math.min(ih*0.22,46);s+=`<rect x="${x}" y="${y-ch}" width="${w}" height="${ch}" fill="${fill}" stroke="${stroke}" stroke-width="1.5"/>`;for(let k=1;k<5;k++)s+=`<line x1="${x+4}" x2="${x+w-4}" y1="${y-ch+k*ch/5}" y2="${y-ch+k*ch/5}" stroke="rgba(0,0,0,.25)"/>`;}
+  if(tp.fijo){const fw=iw*0.3;s+=`<rect x="${ix+iw-fw}" y="${iy}" width="${fw}" height="${ih}" fill="${vid}" stroke="${stroke}"/>`;
+    s+=hoja(ix,iy,iw-fw-fr*0.6,ih,fill,vid,stroke,fr,tp,tec,0);}
+  else if(tp.mov==='corr'){const hw=iw/2+fr*0.4;
+    s+=hoja(ix,iy,hw,ih,fill,vid,stroke,fr,tp,tec,1);s+=hoja(ix+iw-hw,iy,hw,ih,fill,vid,stroke,fr,tp,tec,2);
+    s+=`<path d="M${ix+hw*0.5-14} ${iy+ih/2}h28m-8 -6l8 6-8 6" fill="none" stroke="${tec?'#E2622B':'#fff'}" stroke-width="2"/>`;
+    s+=`<path d="M${ix+iw-hw*0.5+14} ${iy+ih/2}h-28m8 -6l-8 6 8 6" fill="none" stroke="${tec?'#E2622B':'#fff'}" stroke-width="2"/>`;}
+  else s+=hoja(ix,iy,iw,ih,fill,vid,stroke,fr,tp,tec,0);
+  // cotas
+  const c='#E2622B';
+  s+=`<g font-family="JetBrains Mono" font-size="13" fill="${c}" stroke="none"><line x1="${x}" x2="${x+w}" y1="${y+h+26}" y2="${y+h+26}" stroke="${c}"/><line x1="${x}" x2="${x}" y1="${y+h+18}" y2="${y+h+34}" stroke="${c}"/><line x1="${x+w}" x2="${x+w}" y1="${y+h+18}" y2="${y+h+34}" stroke="${c}"/><rect x="${x+w/2-34}" y="${y+h+17}" width="68" height="18" fill="#FDFCFA"/><text x="${x+w/2}" y="${y+h+31}" text-anchor="middle">${o.ancho} cm</text>
+  <line x1="${x-26}" x2="${x-26}" y1="${y}" y2="${y+h}" stroke="${c}"/><line x1="${x-34}" x2="${x-18}" y1="${y}" y2="${y}" stroke="${c}"/><line x1="${x-34}" x2="${x-18}" y1="${y+h}" y2="${y+h}" stroke="${c}"/><rect x="${x-44}" y="${y+h/2-9}" width="36" height="18" fill="#FDFCFA"/><text transform="translate(${x-22} ${y+h/2+4}) rotate(-90)" text-anchor="middle" font-size="12">${o.alto}</text></g>`;
+  if(tec)s+=`<text x="${W-12}" y="${H-10}" text-anchor="end" font-family="JetBrains Mono" font-size="11" fill="#7C7A75">${t.nom.toUpperCase()} ${t.fam==='dec'?'· DECORAL '+t.cod:''}</text>`;
+  svg.innerHTML=s;
+}
+function hoja(x,y,w,h,fill,vid,stroke,fr,tp,tec,n){
+  const f=fr*0.8;let s=`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${fill}" stroke="${stroke}"/>`;
+  const vx=x+f,vy=y+f,vw=w-f*2,vh=h-f*2;
+  if(tp.ciega){ // puerta doble moldura
+    const mh=(vh-f)/2;
+    s+=`<rect x="${vx}" y="${vy}" width="${vw}" height="${mh}" fill="none" stroke="${stroke}" stroke-width="2"/><rect x="${vx+6}" y="${vy+6}" width="${vw-12}" height="${mh-12}" fill="none" stroke="${stroke}"/>`;
+    s+=`<rect x="${vx}" y="${vy+mh+f}" width="${vw}" height="${mh}" fill="none" stroke="${stroke}" stroke-width="2"/><rect x="${vx+6}" y="${vy+mh+f+6}" width="${vw-12}" height="${mh-12}" fill="none" stroke="${stroke}"/>`;
+  } else if(tp.celosia){
+    s+=`<rect x="${vx}" y="${vy}" width="${vw}" height="${vh}" fill="${tec?'#fff':'rgba(0,0,0,.15)'}" stroke="${stroke}"/>`;
+    const n2=Math.max(6,Math.round(vh/14));for(let k=0;k<n2;k++){const yy=vy+k*vh/n2;s+=`<rect x="${vx+2}" y="${yy+2}" width="${vw-4}" height="${vh/n2-4}" fill="${fill}" stroke="${stroke}" stroke-width=".8"/>`}
+  } else {
+    s+=`<rect x="${vx}" y="${vy}" width="${vw}" height="${vh}" fill="${vid}" stroke="${stroke}"/>`;
+    if(!tec)s+=`<path d="M${vx+vw*0.12} ${vy+vh*0.2} l${vw*0.18} -${vh*0.12}" stroke="rgba(255,255,255,.7)" stroke-width="5" stroke-linecap="round"/>`;
+    if(tp.celosiaExt&&n===2){const n2=Math.max(8,Math.round(vh/16));for(let k=0;k<n2;k++){const yy=vy+k*vh/n2;s+=`<rect x="${vx+2}" y="${yy+2}" width="${vw-4}" height="${vh/n2-5}" fill="${fill}" stroke="${stroke}" stroke-width=".8"/>`}}
+  }
+  if(tp.mov==='puerta'||tp.mov==='abrir'){s+=`<path d="M${x+w} ${y} L${x+4} ${y+h/2} L${x+w} ${y+h}" fill="none" stroke="${tec?'#E2622B':'rgba(255,255,255,.55)'}" stroke-dasharray="6 5"/>`;
+    s+=`<rect x="${x+w-f*0.75}" y="${y+h*0.48}" width="${Math.max(3,f*0.35)}" height="${Math.max(18,h*0.07)}" rx="2" fill="${tec?'#141413':'#d8d6cf'}"/>`}
+  return s;
+}
+
+function render(){
+  document.querySelectorAll('.tipo').forEach(b=>b.setAttribute('aria-pressed',b.dataset.id===st.tipo));
+  document.querySelectorAll('.muestra').forEach(b=>b.setAttribute('aria-pressed',b.dataset.id===st.term));
+  document.querySelectorAll('.percha').forEach(b=>b.classList.toggle('on',b.dataset.id===st.term));
+  const t=T(st.term),tp=TP(st.tipo);
+  $('pieCod').textContent=t.fam==='dec'?'Decoral · '+t.cod:'Esmaltado';$('pieNom').textContent=t.nom;
+  $('mnom').innerHTML=`<b>${t.nom}</b> · ${t.fam==='dec'?'Borgert Decoral '+t.cod:'Esmaltado Borgert'}`;
+  $('recargo').textContent=t.rec?('+'+t.rec+'% sobre blanco'):'Base';
+  $('cabTipo').textContent=tp.corto;$('cabMed').textContent=st.ancho+' × '+st.alto+' cm'+(st.cant>1?' · ×'+st.cant:'');
+  $('m2').textContent=((st.ancho*st.alto)/10000).toLocaleString('es-AR',{maximumFractionDigits:2})+' m²';
+  dibujar($('plano'),st,st.vista);
+  const p=calc(st);$('monto').textContent=fmt(p);$('rango').textContent='Entre '+fmt(p*0.92)+' y '+fmt(p*1.08)+' según medición';
+  ['A','B'].forEach(k=>{const o=Object.assign({},st,{term:st[k]});dibujar($('plano'+k),o,'frente');const tt=T(st[k]);$('cod'+k).textContent=tt.fam==='dec'?'Decoral '+tt.cod:'Esmalte';$('p'+k).textContent=fmt(calc(o))});
+  pintarTexturas();
+}
+
+function renderPedido(){
+  const c=$('renglones');
+  if(!pedido.length){c.innerHTML='<div class="vacio">Todavía no agregaste aberturas. Configurá una arriba y tocá “Agregar al pedido”.</div>';$('total').textContent='$ 0';return}
+  let h='<table class="renglones"><thead><tr><th>Pos.</th><th>Abertura</th><th>Medida</th><th>Importe</th><th></th></tr></thead><tbody>';
+  pedido.forEach((o,i)=>{const tp=TP(o.tipo),t=T(o.term),v=VIDRIOS.find(x=>x.id===o.vidrio);
+    h+=`<tr><td class="n">${tp.id.startsWith('p')?'P':'V'}${i+1}</td><td><b>${tp.nom}</b><br><small>${t.nom}${t.fam==='dec'?' (Decoral '+t.cod+')':''} · ${v.nom}${o.mosq?' · mosquitero':''}${o.inst?' · con colocación':''}</small></td><td class="n">${o.ancho}×${o.alto}${o.cant>1?' ×'+o.cant:''}</td><td class="n">${fmt(calc(o))}</td><td><button type="button" aria-label="Quitar" data-i="${i}">×</button></td></tr>`});
+  h+='</tbody></table>';c.innerHTML=h;
+  c.querySelectorAll('button[data-i]').forEach(b=>b.onclick=()=>{pedido.splice(+b.dataset.i,1);renderPedido()});
+  $('total').textContent=fmt(pedido.reduce((a,o)=>a+calc(o),0));
+}
+
+function toast(m){const t=$('toast');t.textContent=m;t.hidden=false;clearTimeout(t._t);t._t=setTimeout(()=>t.hidden=true,2400)}
+
+/* eventos */
+const num=(id,k,mi,ma)=>$(id).addEventListener('input',e=>{let v=parseInt(e.target.value,10);if(isNaN(v))return;st[k]=Math.min(ma,Math.max(mi,v));render()});
+num('ancho','ancho',40,400);num('alto','alto',40,260);num('cant','cant',1,50);
+['ancho','alto','cant'].forEach(id=>$(id).addEventListener('blur',e=>{e.target.value=st[id]}));
+$('vidrio').onchange=e=>{st.vidrio=e.target.value;render()};
+$('xMosq').onchange=e=>{st.mosq=e.target.checked;render()};
+$('xInst').onchange=e=>{st.inst=e.target.checked;render()};
+document.querySelectorAll('input[name=vista]').forEach(r=>r.onchange=e=>{st.vista=e.target.value;render()});
+$('selA').onchange=e=>{st.A=e.target.value;render()};
+$('selB').onchange=e=>{st.B=e.target.value;render()};
+$('agregar').onclick=()=>{pedido.push(Object.assign({},st));renderPedido();toast('Agregado al pedido')};
+$('enviar').onclick=()=>{
+  if(!pedido.length){pedido.push(Object.assign({},st))}
+  renderPedido();
+  const dest=document.querySelector('input[name=dest]:checked').value;
+  const mail=dest==='parana'?'sucursalparana@borgertycia.com.ar':'casacentral@borgertycia.com.ar';
+  let b='Hola, quiero un presupuesto para estas aberturas:%0D%0A%0D%0A';
+  const L=[];
+  pedido.forEach((o,i)=>{const tp=TP(o.tipo),t=T(o.term),v=VIDRIOS.find(x=>x.id===o.vidrio);
+    L.push(`${tp.id.startsWith('p')?'P':'V'}${i+1}. ${tp.nom} · ${o.ancho}x${o.alto} cm${o.cant>1?' x'+o.cant:''} · ${t.nom}${t.fam==='dec'?' (Decoral '+t.cod+')':''} · ${v.nom}${o.mosq?' · mosquitero':''}${o.inst?' · con colocación':''} · estimado ${fmt(calc(o))}`)});
+  L.push('');L.push('Total estimado: '+fmt(pedido.reduce((a,o)=>a+calc(o),0)));
+  L.push('Nombre: '+($('cliNom').value||'-'));L.push('Teléfono: '+($('cliTel').value||'-'));L.push('Obra en: '+($('cliLoc').value||'-'));
+  const href='mailto:'+mail+'?subject='+encodeURIComponent('Pedido de presupuesto desde la web')+'&body='+b+encodeURIComponent(L.join('\n'));
+  window.location.href=href;
+};
+
+/* tabla de precios */
+function tablaPrecios(){
+  let h='<thead><tr><th>Concepto</th><th>Valor</th></tr></thead><tbody>';
+  Object.keys(DEF).forEach(k=>{h+=`<tr><td>${ETQ[k]}</td><td><input type="number" step="${k==='minm2'?'0.1':'1'}" data-k="${k}" value="${P[k]}"></td></tr>`});
+  h+='</tbody>';$('tPrecios').innerHTML=h;
+  $('tPrecios').querySelectorAll('input').forEach(i=>i.oninput=e=>{const v=parseFloat(e.target.value);if(isNaN(v))return;P[e.target.dataset.k]=v;try{localStorage.setItem('borgert-precios',JSON.stringify(P))}catch(_){}render();renderPedido()});
+}
+$('abrirPrecios').onclick=()=>{tablaPrecios();$('drawer').hidden=false};
+$('cerrarPrecios').onclick=()=>$('drawer').hidden=true;
+$('drawer').onclick=e=>{if(e.target.id==='drawer')$('drawer').hidden=true};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')$('drawer').hidden=true});
+$('resetPrecios').onclick=()=>{P=Object.assign({},DEF);try{localStorage.removeItem('borgert-precios')}catch(_){}tablaPrecios();render();renderPedido()};
+
+render();renderPedido();
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Borgert y Cía."></script>
+</body>
+</html>
