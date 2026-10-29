@@ -73,9 +73,9 @@ a{color:inherit}
 .fila{display:grid;grid-template-columns:132px 1fr 150px 168px;gap:20px;align-items:center;padding:14px 0;border-bottom:1px solid var(--linea);cursor:pointer;background:none;border-left:0;border-right:0;border-top:0;width:100%;text-align:left}
 .fila:hover .fn{color:var(--alerce)}
 .fila.ocupada{opacity:.55}
-.ph{aspect-ratio:4/3;background:linear-gradient(135deg,var(--hielo),#BFCFCD);border-radius:2px;overflow:hidden;position:relative}
-.ph img{width:100%;height:100%;object-fit:cover}
-.ph em{position:absolute;inset:auto 0 0 0;font-style:normal;font-size:11px;padding:3px 6px;color:var(--lago)}
+.ph{aspect-ratio:4/3;background:var(--lago);border-radius:2px;overflow:hidden;position:relative}
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}.ph svg{position:absolute;inset:0;width:100%;height:100%}.ph em{z-index:2}
+.ph em{position:absolute;left:0;bottom:0;font-style:normal;font-size:11px;padding:2px 6px;color:var(--lago);background:var(--nieve)}
 .fn{font-family:Gloock,serif;font-size:21px;line-height:1.15;transition:color .15s}
 .fd{font-size:14px;color:var(--gris);margin-top:3px}
 .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
@@ -96,7 +96,7 @@ a{color:inherit}
 .cajon{position:fixed;top:0;right:0;height:100%;width:min(520px,100%);background:#fff;z-index:60;transform:translateX(100%);transition:transform .28s cubic-bezier(.2,.7,.2,1);overflow:auto;box-shadow:-20px 0 50px rgba(0,0,0,.18)}
 .cajon.on{transform:none}
 .cj-foto{aspect-ratio:16/9;background:linear-gradient(135deg,var(--lago2),var(--coihue));position:relative}
-.cj-foto img{width:100%;height:100%;object-fit:cover}
+.cj-foto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}.cj-foto svg{position:absolute;inset:0;width:100%;height:100%}.cerrar{z-index:2}
 .cerrar{position:absolute;top:12px;right:12px;background:#fff;border:0;width:38px;height:38px;border-radius:50%;font-size:20px;cursor:pointer}
 .cj-b{padding:22px 26px 30px}
 .cj-b h3{font-size:30px;line-height:1.1}
@@ -243,7 +243,7 @@ footer .legal{margin-top:24px;padding-top:16px;border-top:1px solid #3A4549;colo
 
 <div class="velo" id="velo"></div>
 <aside class="cajon" id="cajon" aria-hidden="true" role="dialog" aria-label="Detalle del departamento">
- <div class="cj-foto"><img id="cjImg" alt="" onerror="this.style.display='none'"><button class="cerrar" id="cerrar" aria-label="Cerrar">×</button></div>
+ <div class="cj-foto"><div id="cjArte"></div><img id="cjImg" alt="" onerror="this.style.display='none'"><button class="cerrar" id="cerrar" aria-label="Cerrar">×</button></div>
  <div class="cj-b">
   <h3 class="g" id="cjN"></h3>
   <p class="fd" id="cjD"></p>
@@ -339,6 +339,10 @@ const T=[
  {nombre:'Invierno y nieve',desde:'2027-07-10',hasta:'2027-08-08',mult:1.85,min:5},
  {nombre:'Temporada de ski',desde:'2027-06-20',hasta:'2027-09-15',mult:1.5,min:3},
  {nombre:'Base',base:true,mult:1,min:2}];
+
+function arte(p,big){const lago=p.v==='Lago';const pisos=p.amb.includes('Dúplex')||p.amb.includes('2 dorm')?2:1;const ini=p.n.replace(/^(Departamento|Design|Studio)\s*/,'').slice(0,big?40:14);
+ const ventanas=[...Array(pisos*3)].map((_,i)=>`<rect x="${118+(i%3)*22}" y="${70-(Math.floor(i/3))*26}" width="12" height="16" fill="${i===1?'#D9A577':'#EEF2F1'}" opacity=".9"/>`).join('');
+ return`<svg viewBox="0 0 300 225" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="300" height="225" fill="#17384A"/><path transform="translate(${(p.id.length*37)%90-45},0)" d="M-60 120 L40 70 L70 95 L110 40 L150 88 L190 55 L235 100 L270 72 L300 96 L300 225 L0 225Z" fill="#245066"/><path d="M110 40 L122 55 L98 55Z M190 55 L201 68 L179 68Z" fill="#EEF2F1"/>${lago?'<rect y="150" width="300" height="75" fill="#3E7A92"/><g stroke="#9CC3CF" stroke-width="2" opacity=".6"><path d="M20 172h40M90 186h60M200 168h50M160 205h70"/></g>':'<rect y="150" width="300" height="75" fill="#3E5A45"/>'}<rect x="108" y="${pisos>1?44:70}" width="80" height="${pisos>1?106:80}" fill="#9A5B34"/><path d="M100 ${pisos>1?46:72} L148 ${pisos>1?18:44} L196 ${pisos>1?46:72}Z" fill="#1F2629"/>${ventanas.replace(/y="(\d+)"/g,(m,y)=>'y="'+(+y+(pisos>1?40:30))+'"')}${big?`<text x="14" y="214" font-family="Gloock,serif" font-size="22" fill="#EEF2F1">${ini}</text>`:''}</svg>`}
 const st={a:null,b:null,pax:2,v:'',s:[],ord:'cap',mm:[2026,10],cm:[2026,10],cur:null,ca:null,cb:null};
 const $=id=>document.getElementById(id);
 const HOY='2026-10-29';
@@ -371,7 +375,7 @@ function render(){
  $('resT').textContent=q?libres+' libres del '+E.larga(st.a)+' al '+E.larga(st.b):L.length+' departamentos';
  $('resS').textContent=q?E.nights(st.a,st.b)+' noches · '+st.pax+' personas · precio total de la estadía':'Elegí fechas para ver precio total y disponibilidad.';
  $('filas').innerHTML=L.length?L.map(({p,c,ok})=>`<button class="fila${ok?'':' ocupada'}" data-id="${p.id}">
-  <div class="ph"><img src="${p.f}" alt="${p.n}" loading="lazy" onerror="this.remove()"><em>${p.v==='Lago'?'Vista al lago':p.v==='Terraza'?'Terraza':'Centro'}</em></div>
+  <div class="ph">${arte(p)}<img src="${p.f}" alt="${p.n}" loading="lazy" onerror="this.remove()"><em>${p.v==='Lago'?'Vista al lago':p.v==='Terraza'?'Terraza':'Centro'}</em></div>
   <div><div class="fn">${p.n}</div><div class="fd">${p.amb} · ${p.d}</div><div class="tags">${p.s.map(s=>'<span>'+s+'</span>').join('')}</div></div>
   <div class="cap"><b>Hasta ${p.cap}</b>personas</div>
   <div class="pr">${c?`<b>${E.ars(c.total)}</b><small>${c.noches} noches</small>`:`<b>${E.ars(p.noche)}</b><small>por noche, base</small>`}<br><span class="estado ${ok?'ok':'no'}">${ok?(q?'Libre':'Ver calendario'):'Ocupado esas fechas'}</span></div></button>`).join(''):'<p class="vacio">Ningún departamento cumple todo eso. Probá sacar un filtro o bajar la cantidad de personas.</p>';
@@ -379,7 +383,7 @@ function render(){
 $('filas').onclick=e=>{const b=e.target.closest('.fila');if(b)abrir(b.dataset.id)};
 
 function abrir(id){const p=P.find(x=>x.id===id);st.cur=p;st.ca=st.a;st.cb=st.b;st.cm=st.a?[E.d(st.a).getFullYear(),E.d(st.a).getMonth()]:[2026,10];
- $('cjImg').style.display='';$('cjImg').src=p.f;$('cjImg').alt=p.n;$('cjN').textContent=p.n;$('cjD').textContent=p.amb+' · hasta '+p.cap+' personas · '+p.d+' · Wifi, ropa blanca y TV.';
+ $('cjArte').innerHTML=arte(p,1);$('cjImg').style.display='';$('cjImg').src=p.f;$('cjImg').alt=p.n;$('cjN').textContent=p.n;$('cjD').textContent=p.amb+' · hasta '+p.cap+' personas · '+p.d+' · Wifi, ropa blanca y TV.';
  $('cajon').classList.add('on');$('velo').classList.add('on');$('cajon').setAttribute('aria-hidden','false');drawCj();$('cerrar').focus()}
 function cerrar(){$('cajon').classList.remove('on');$('velo').classList.remove('on');$('cajon').setAttribute('aria-hidden','true')}
 $('cerrar').onclick=cerrar;$('velo').onclick=cerrar;document.addEventListener('keydown',e=>{if(e.key==='Escape')cerrar()});
