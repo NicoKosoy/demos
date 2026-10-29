@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Gimenez Riili · Los Chacayes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400;1,600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
+<style>
+:root{--stone:#8b8378;--stone2:#5f584f;--sage:#a7b39a;--snow:#f4f2ee;--copper:#a8592c;--ink:#24211d;--white:#fff;
+--rk-line:#d6d1c8;--rk-accent:#a8592c;--rk-card:#fff;--rk-sel:#f6ece5;--rk-r:10px;--rk-r-sm:8px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--snow);color:var(--ink);font-family:"DM Sans",system-ui,sans-serif;font-size:15.5px;line-height:1.6;overflow-x:hidden}
+/* componentes del motor de reserva; cada página define --rk-* */
+.rk-exps{display:grid;gap:var(--rk-gap,10px)}
+.rk-exp{all:unset;box-sizing:border-box;cursor:pointer;display:grid;gap:4px;padding:14px 16px;border:1px solid var(--rk-line);border-radius:var(--rk-r,6px);background:var(--rk-card,transparent);color:inherit;transition:border-color .15s,background .15s}
+.rk-exp:hover{border-color:var(--rk-accent)}
+.rk-exp[aria-pressed="true"]{border-color:var(--rk-accent);background:var(--rk-sel,rgba(0,0,0,.04));box-shadow:inset 3px 0 0 var(--rk-accent)}
+.rk-exp__n{font-weight:600;font-size:1.02em}
+.rk-exp__d{font-size:.88em;opacity:.78;line-height:1.45}
+.rk-exp__m{display:flex;justify-content:space-between;gap:8px;font-size:.85em;margin-top:2px}
+.rk-exp__p{font-weight:600;color:var(--rk-accent-ink,var(--rk-accent))}
+.rk-cal{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+.rk-cal--grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));overflow:visible}
+.rk-cal__h{text-align:center;font-size:.72em;opacity:.6;padding:2px 0}
+.rk-day{all:unset;box-sizing:border-box;cursor:pointer;flex:0 0 58px;display:grid;justify-items:center;gap:1px;padding:8px 2px;border:1px solid var(--rk-line);border-radius:var(--rk-r-sm,4px);background:var(--rk-card,transparent);min-width:0}
+.rk-day__w{font-size:.7em;opacity:.7}.rk-day__n{font-size:1.15em;font-weight:600;line-height:1.1}.rk-day__m{font-size:.62em;opacity:.65}
+.rk-day:disabled{opacity:.35;cursor:not-allowed;text-decoration:line-through}
+.rk-day:not(:disabled):hover{border-color:var(--rk-accent)}
+.rk-day[aria-pressed="true"]{background:var(--rk-accent);border-color:var(--rk-accent);color:var(--rk-on-accent,#fff)}
+.rk-times,.rk-langs{display:flex;flex-wrap:wrap;gap:8px}
+.rk-time,.rk-lang{all:unset;box-sizing:border-box;cursor:pointer;padding:9px 14px;border:1px solid var(--rk-line);border-radius:var(--rk-r-sm,4px);background:var(--rk-card,transparent);display:grid;gap:1px;text-align:center}
+.rk-time__t{font-weight:600}.rk-time__c{font-size:.72em;opacity:.7}
+.rk-time:disabled{opacity:.35;cursor:not-allowed}
+.rk-time[aria-pressed="true"],.rk-lang[aria-pressed="true"]{background:var(--rk-accent);border-color:var(--rk-accent);color:var(--rk-on-accent,#fff)}
+.rk-step{display:inline-flex;align-items:center;border:1px solid var(--rk-line);border-radius:var(--rk-r-sm,4px);overflow:hidden;background:var(--rk-card,transparent)}
+.rk-step__b{all:unset;cursor:pointer;width:40px;height:40px;display:grid;place-items:center;font-size:1.2em}
+.rk-step__b:disabled{opacity:.3;cursor:not-allowed}
+.rk-step__b:not(:disabled):hover{background:var(--rk-sel,rgba(0,0,0,.05))}
+.rk-step__v{min-width:96px;text-align:center;font-weight:600;font-size:.92em}
+.rk-step--sm .rk-step__b{width:34px;height:34px}.rk-step--sm .rk-step__v{min-width:74px;font-size:.85em}
+.rk-sum{display:grid;gap:6px}
+.rk-sum__row{display:flex;justify-content:space-between;gap:12px;font-size:.92em}
+.rk-sum__row span:last-child{text-align:right;white-space:nowrap}
+.rk-sum__tot{font-weight:700;font-size:1.08em;padding-top:8px;border-top:1px solid var(--rk-line)}
+.rk-sum__sena,.rk-sum__dto{font-size:.84em;opacity:.8}
+.rk-hint{margin:0;font-size:.88em;opacity:.7}
+.rk-book{display:inline-flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;cursor:pointer}
+.rk-book.is-off{opacity:.55;cursor:not-allowed}
+.rk-shop{display:grid;gap:0}
+.rk-wine{display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--rk-line)}
+.rk-wine__img{width:44px;height:64px;object-fit:contain;grid-column:1;grid-row:1}
+.rk-wine__i{grid-column:2;grid-row:1}.rk-wine__p{grid-column:3;grid-row:1}.rk-wine>.rk-step{grid-column:4;grid-row:1}
+.rk-wine__i{display:grid;gap:1px;min-width:0}
+.rk-wine__l{font-size:.72em;opacity:.65}.rk-wine__n{font-weight:600}.rk-wine__v{font-size:.82em;opacity:.75}
+.rk-wine__p{display:grid;text-align:right;font-size:.82em}.rk-wine__b{font-weight:600}.rk-wine__c{opacity:.65}
+.rk-wine.is-in .rk-wine__n{color:var(--rk-accent-ink,var(--rk-accent))}
+.rk-club{display:grid;gap:10px}
+.rk-plan{all:unset;box-sizing:border-box;cursor:pointer;display:grid;gap:3px;padding:16px;border:1px solid var(--rk-line);border-radius:var(--rk-r,6px);background:var(--rk-card,transparent)}
+.rk-plan__n{font-weight:700;font-size:1.05em}.rk-plan__b{font-size:.85em;opacity:.8}.rk-plan__d{font-size:.82em;opacity:.7;line-height:1.4}
+.rk-plan__p{font-weight:700;margin-top:6px;font-size:1.15em}.rk-plan__p small{font-weight:400;font-size:.65em;opacity:.7}
+.rk-plan:hover{border-color:var(--rk-accent)}
+.rk-plan[aria-pressed="true"]{border-color:var(--rk-accent);box-shadow:inset 0 0 0 1px var(--rk-accent);background:var(--rk-sel,rgba(0,0,0,.04))}
+.rk-exp:focus-visible,.rk-day:focus-visible,.rk-time:focus-visible,.rk-lang:focus-visible,.rk-step__b:focus-visible,.rk-plan:focus-visible,.rk-book:focus-visible{outline:2px solid var(--rk-accent);outline-offset:2px}
+.rk-pulse{animation:rkp .7s}
+@keyframes rkp{0%,100%{transform:none}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.rk-banner{font-size:12.5px;line-height:1.35;text-align:center;padding:7px 16px}
+@media (max-width:560px){.rk-wine{grid-template-columns:auto 1fr auto;row-gap:10px;column-gap:12px}.rk-wine__img{grid-row:1/3}.rk-wine__p{grid-column:3}.rk-wine>.rk-step{grid-column:2/4;grid-row:2;justify-self:start}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+.rk-banner{background:var(--ink);color:#e8e3da}
+h1,h2,h3{font-family:Lora,serif;font-weight:400;margin:0;line-height:1.08}
+a{color:inherit}
+.hero{position:relative;height:86vh;min-height:560px;background:var(--stone2);overflow:hidden;color:#fff}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero .fallback{position:absolute;inset:0}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.1) 40%,rgba(0,0,0,.55))}
+.hero nav{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;padding:20px 32px}
+.hero nav b{font-family:Lora;font-size:22px;font-weight:600}
+.hero nav div{display:flex;gap:22px;font-size:14px}.hero nav a{text-decoration:none}
+.hero .t{position:absolute;z-index:2;left:32px;right:32px;bottom:120px;max-width:820px}
+.hero h1{font-size:clamp(46px,7vw,100px);font-style:italic}
+.hero p{font-size:18px;max-width:46ch;margin:14px 0 0}
+.dock{position:relative;z-index:3;max-width:1180px;margin:-70px auto 0;background:#fff;border-radius:16px;box-shadow:0 18px 50px -20px rgba(36,33,29,.4);padding:22px 24px}
+.dock .bar{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1.6fr) minmax(0,1fr) auto;gap:18px;align-items:start}.dock .bar>div,.more>div{min-width:0}
+.dock .lb{font-size:12px;font-weight:700;color:var(--stone2);margin-bottom:8px}
+.dock select{width:100%;padding:12px;border:1px solid var(--rk-line);border-radius:8px;font:inherit;background:#fff}
+.btn{display:inline-flex;justify-content:center;align-items:center;background:var(--copper);color:#fff;text-decoration:none;padding:14px 22px;border-radius:8px;font-weight:700;white-space:nowrap}
+.btn--ghost{background:transparent;border:1px solid var(--ink);color:var(--ink)}
+.more{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 300px;gap:26px;margin-top:20px;padding-top:20px;border-top:1px solid var(--rk-line)}
+.dock input{width:100%;padding:11px;border:1px solid var(--rk-line);border-radius:8px;font:inherit;margin-top:12px}
+.rk-need{font-size:12px;color:var(--stone2);margin:8px 0 0}.mobbtn{display:none}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+.collage{display:grid;grid-template-columns:repeat(12,1fr);gap:18px;padding:90px 0 40px;align-items:center}
+.collage .txt{grid-column:1/6}
+.collage .txt h2{font-size:clamp(36px,4.4vw,58px)}
+.collage .txt p{color:#4a453e}
+.ph{border-radius:12px;overflow:hidden;background:var(--sage);position:relative}
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.ph{background:repeating-linear-gradient(100deg,#a7b39a 0 26px,#93a085 26px 30px)}
+.ph::before{content:"";position:absolute;left:0;right:0;top:0;height:38%;background:linear-gradient(160deg,#8b8378 0 50%,#5f584f 50%)}
+.ph2::before{background:#a8592c;height:100%;opacity:.92}.ph1::after,.ph2::after{bottom:auto;top:12px}
+.ph::after{content:attr(data-c);position:absolute;left:14px;bottom:12px;background:#fff;color:#24211d;font-size:13px;padding:5px 11px;border-radius:99px}
+.ph img{z-index:1}
+.ph1{grid-column:6/10;aspect-ratio:3/4}
+.ph2{grid-column:10/13;aspect-ratio:3/4;margin-top:120px}
+.ph3{grid-column:7/12;aspect-ratio:4/3;margin-top:-60px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.chips span{font-size:13px;padding:6px 12px;border-radius:99px;background:#fff;border:1px solid var(--rk-line)}
+.wines{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:40px;padding:60px 0;align-items:start}
+.wines h2,.club h2{font-size:clamp(34px,4vw,52px);margin-bottom:10px}
+.rk-wine__img{width:38px;height:78px}
+.cart{background:#fff;border-radius:14px;padding:22px;position:sticky;top:16px;border:1px solid var(--rk-line)}
+.cart .btn{width:100%;margin-top:14px}
+.club{background:var(--stone2);color:#f1ede6;border-radius:20px;padding:44px;margin:30px 0 70px;--rk-line:rgba(255,255,255,.25);--rk-card:transparent;--rk-sel:rgba(255,255,255,.08);--rk-accent:#e3a77e}
+.club .rk-club{grid-template-columns:repeat(3,minmax(0,1fr));margin-top:22px}
+.club .btn{margin-top:18px}
+.foot{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;padding:0 0 60px;font-size:14px}
+.foot b{display:block;font-size:12px;color:var(--copper)}
+footer{border-top:1px solid var(--rk-line);text-align:center;padding:22px 16px;font-size:12.5px;color:var(--stone2)}
+@media (max-width:1000px){.dock .bar{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.more{grid-template-columns:1fr 1fr}.more>div:last-child{grid-column:1/-1}.wines{grid-template-columns:minmax(0,1fr)}.cart{position:static}.club .rk-club{grid-template-columns:1fr}.foot{grid-template-columns:1fr 1fr}}
+@media (max-width:700px){.mobbtn{display:flex;width:100%;margin-top:14px}.dock .bar>div:last-child{display:none}.hero nav div{display:none}.hero nav,.hero .t{padding-left:16px;padding-right:16px}.hero .t{left:0;right:0;bottom:100px}.dock{margin:-60px 12px 0;padding:18px 16px}.dock .bar,.more{grid-template-columns:minmax(0,1fr)}.wrap{padding:0 16px}
+.collage{grid-template-columns:1fr 1fr;padding:60px 0 20px}.collage .txt{grid-column:1/-1}.ph1{grid-column:1/2}.ph2{grid-column:2/3;margin-top:40px}.ph3{grid-column:1/-1;margin-top:0}.club{padding:28px 18px}.foot{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="rk-banner">Prototipo de demostración preparado para Gimenez Riili · Precios y disponibilidad de ejemplo</div>
+<header class="hero">
+ <svg class="fallback" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="1200" height="700" fill="#8b8378"/><path d="M0 380 L160 230 L300 320 L480 150 L640 300 L820 170 L1000 290 L1200 200 L1200 700 L0 700Z" fill="#5f584f"/><path d="M480 150 L520 190 L500 188 L470 168Z M820 170 L860 214 L838 210 L808 190Z" fill="#f4f2ee"/><path d="M0 520 L1200 470 L1200 700 L0 700Z" fill="#a7b39a"/><g stroke="#7d8a6e" stroke-width="3"><path d="M0 560 L1200 510"/><path d="M0 600 L1200 552"/><path d="M0 640 L1200 594"/><path d="M0 680 L1200 636"/></g></svg>
+ <img src="https://gimenezriili.com/wp-content/uploads/2025/12/Gimenez-Riili-Los-chacayes-Valle-de-Uco-bodega-vino-Mendoza-ArgentinaRecurso-32-50.jpg" alt="Bodega Gimenez Riili en Los Chacayes" onerror="this.remove()">
+ <nav><b>Gimenez Riili</b><div><a href="#reservar">Experiencias</a><a href="#vinos">Vinos</a><a href="#club">Membresía</a><a href="#llegar">Cómo llegar</a></div></nav>
+ <div class="t"><h1>Los Chacayes, en familia</h1><p>Bodega familiar en el Valle de Uco. Visitas, juego de blending, cooking class, bicicletas entre viñedos y Sunset Riili.</p></div>
+</header>
+
+<section class="dock" id="reservar" data-rk-scope aria-label="Reservar experiencia">
+ <div class="bar">
+  <div><div class="lb">Experiencia</div><select id="expSel" aria-label="Experiencia"></select></div>
+  <div><div class="lb">Día</div><div data-rk="cal"></div></div>
+  <div><div class="lb">Personas</div><div data-rk="pax"></div></div>
+  <div><div class="lb">&nbsp;</div><a class="btn rk-book" data-rk="book" target="_blank" rel="noopener" data-on="Pedir por WhatsApp"><span class="rk-book__l">Elegí día y horario</span></a></div>
+ </div>
+ <div class="more">
+  <div><div class="lb">Horario</div><div class="rk-times" data-rk="times"></div></div>
+  <div><div class="lb">Idioma</div><div class="rk-langs" data-rk="langs"></div><input data-rk="nombre" placeholder="Tu nombre (opcional)" aria-label="Tu nombre"></div>
+  <div><div class="rk-sum" data-rk="sum"></div><a class="btn rk-book mobbtn" data-rk="book" target="_blank" rel="noopener" data-on="Pedir por WhatsApp"><span class="rk-book__l">Elegí día y horario</span></a><p class="rk-need">Hoy “Solicitar disponibilidad” abre un WhatsApp vacío; acá llega con todo cargado.</p></div>
+ </div>
+</section>
+
+<div class="wrap">
+ <section class="collage">
+  <div class="txt"><h2>Una bodega de hermanos</h2>
+   <p>Los nombres de los vinos cuentan la historia: Buenos Hermanos, Gran Familia, Joyas de la Familia. Viñedos en Los Chacayes, a los pies de la cordillera, con restaurante, habitaciones y experiencias pensadas para pasar el día.</p>
+   <div class="chips"><span>Visitas guiadas</span><span>Juego de Blending</span><span>Cooking Class</span><span>Bicicletas</span><span>Sunset Riili</span><span>Menú de 4 y 6 pasos</span></div></div>
+  <div class="ph ph1" data-c="Experiencias"><img src="https://gimenezriili.com/wp-content/uploads/2025/12/Gimenez-Riili-Los-chacayes-Valle-de-Uco-bodega-vino-Mendoza-Argentina-EXPERIENCIASRecurso-46-50-780x1386.jpg" alt="Experiencias en Gimenez Riili" onerror="this.remove()"></div>
+  <div class="ph ph2" data-c="Restaurante"><img src="https://gimenezriili.com/wp-content/uploads/2025/12/Gimenez-Riili-Los-chacayes-Valle-de-Uco-bodega-vino-Mendoza-Argentina-RESTAURANTE-SEBASTIAN-JUEZRecurso-55-50-550x825.jpg" alt="Restaurante de la bodega" onerror="this.remove()"></div>
+  <div class="ph ph3" data-c="Viñedos en Los Chacayes"><img src="https://gimenezriili.com/wp-content/uploads/2025/12/Gimenez-Riili-Los-chacayes-Valle-de-Uco-bodega-vino-Mendoza-ArgentinaRecurso-26-50-600x750.jpg" alt="Viñedos en Los Chacayes" onerror="this.remove()"></div>
+ </section>
+
+ <section class="wines" id="vinos" data-rk-scope>
+  <div><h2>Vinos por caja</h2><p style="margin:0 0 10px;color:#4a453e">Las cajas salen de la bodega. Retiro en Los Chacayes o envío a coordinar.</p><div class="rk-shop" data-rk="shop"></div></div>
+  <aside class="cart"><h3 style="font-size:26px;margin-bottom:10px">Tu caja</h3><div class="rk-sum" data-rk="cart"></div>
+   <a class="btn rk-book" data-rk="shopbtn" target="_blank" rel="noopener"><span class="rk-book__l">Sumá al menos una caja</span></a><p class="rk-need">Precios de ejemplo.</p></aside>
+ </section>
+
+ <section class="club" id="club" data-rk-scope>
+  <h2>La membresía, en un toque</h2>
+  <p style="max-width:56ch;margin:0;opacity:.9">Los tres planes que ya tiene la bodega, con alta directa por WhatsApp para el que sale de la visita con ganas de seguir.</p>
+  <div class="rk-club" data-rk="club"></div>
+  <a class="btn rk-book" data-rk="clubbtn" target="_blank" rel="noopener"><span class="rk-book__l">Elegí un plan</span></a>
+ </section>
+
+ <div class="foot" id="llegar">
+  <div><b>Dirección</b>K11 Los Chacayes, RP 94, Tunuyán, Mendoza</div>
+  <div><b>Reservas</b><a href="#" data-wa="Hola Gimenez Riili! Quería consultar disponibilidad.">+54 9 261 347-0392</a></div>
+  <div><b>Mail</b><a href="mailto:reservas@gimenezriili.com">reservas@gimenezriili.com</a></div>
+  <div><b>Lo que se ahorra</b>20-25% por cada reserva que hoy entra por agencia o plataforma.</div>
+ </div>
+</div>
+<footer>Prototipo preparado para Gimenez Riili por Resolviendo Kos · resolviendokos.com · No es la web oficial</footer>
+<script>(function(){
+"use strict";
+var C={}, S={exp:null,date:null,time:null,lang:null,pax:2,cart:{},plan:null};
+function $(s,r){return (r||document).querySelector(s);}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));}
+function money(n){return "$ "+Math.round(n).toLocaleString("es-AR");}
+function h(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e;}
+function hash(s){var x=2166136261;for(var i=0;i<s.length;i++){x^=s.charCodeAt(i);x=Math.imul(x,16777619);}return (x>>>0);}
+var DIAS=["dom","lun","mar","mié","jue","vie","sáb"],DIASL=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"],MES=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+function key(d){return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();}
+function fmtDate(d){return DIASL[d.getDay()]+" "+d.getDate()+"/"+(d.getMonth()+1);}
+function exp(){for(var i=0;i<C.exps.length;i++)if(C.exps[i].id===S.exp)return C.exps[i];return C.exps[0];}
+function cupos(d,t){var e=exp();var cap=e.cap||C.cap||12;var r=hash(key(d)+t+e.id+C.negocio)%100;if(r<14)return 0;return Math.max(1,Math.round(cap*(r/100)));}
+function open(d){var e=exp();var days=e.days||C.days||[1,2,3,4,5,6];return days.indexOf(d.getDay())>-1;}
+function times(){return exp().times||C.times||["10:00","12:00","16:00"];}
+function wa(text,num){if(!(num||C.wa)&&C.mail)return "mailto:"+C.mail+"?subject="+encodeURIComponent("Consulta desde la web - "+C.negocio)+"&body="+encodeURIComponent(text);return "https://wa.me/"+(num||C.wa)+"?text="+encodeURIComponent(text);}
+function each(sel,fn){$$('[data-rk="'+sel+'"]').forEach(fn);}
+
+function renderExps(){each("exps",function(box){box.innerHTML="";C.exps.forEach(function(e){
+  var b=h("button","rk-exp");b.type="button";b.setAttribute("aria-pressed",String(S.exp===e.id));
+  b.innerHTML='<span class="rk-exp__n">'+e.n+'</span>'+(e.d?'<span class="rk-exp__d">'+e.d+'</span>':'')+'<span class="rk-exp__m"><span class="rk-exp__dur">'+(e.dur||"")+'</span><span class="rk-exp__p">'+(e.p?money(e.p)+(e.pp===false?"":" p/p"):"Sin cargo")+'</span></span>';
+  b.addEventListener("click",function(){S.exp=e.id;S.time=null;if(S.date&&!open(S.date))S.date=null;renderAll();});
+  box.appendChild(b);});});}
+
+function renderCal(){each("cal",function(box){box.innerHTML="";var mode=box.getAttribute("data-mode")||C.calMode||"strip";
+  var start=new Date();start.setHours(0,0,0,0);start.setDate(start.getDate()+1);var n=C.horizon||21;
+  var wrap=h("div","rk-cal rk-cal--"+mode);
+  if(mode==="grid"){["L","M","M","J","V","S","D"].forEach(function(x){wrap.appendChild(h("span","rk-cal__h",x));});
+    var off=(start.getDay()+6)%7;for(var k=0;k<off;k++)wrap.appendChild(h("span","rk-cal__pad"));}
+  for(var i=0;i<n;i++){(function(i){var d=new Date(start);d.setDate(start.getDate()+i);
+    var b=h("button","rk-day");b.type="button";var ok=open(d);
+    var free=0;if(ok)times().forEach(function(t){free+=cupos(d,t);});
+    if(!ok||free===0){b.disabled=true;}
+    b.setAttribute("aria-pressed",String(S.date&&key(S.date)===key(d)));
+    b.setAttribute("aria-label",fmtDate(d)+(ok?(free?"":" completo"):" cerrado"));
+    b.innerHTML='<span class="rk-day__w">'+DIAS[d.getDay()]+'</span><span class="rk-day__n">'+d.getDate()+'</span><span class="rk-day__m">'+(!ok?"cerrado":free===0?"completo":MES[d.getMonth()])+'</span>';
+    b.addEventListener("click",function(){S.date=d;S.time=null;renderAll();});wrap.appendChild(b);})(i);}
+  box.appendChild(wrap);});}
+
+function renderTimes(){each("times",function(box){box.innerHTML="";
+  if(!S.date){box.appendChild(h("p","rk-hint","Elegí un día para ver los horarios y cupos."));return;}
+  times().forEach(function(t){var c=cupos(S.date,t);var b=h("button","rk-time");b.type="button";b.disabled=c===0||c<1;
+    b.setAttribute("aria-pressed",String(S.time===t));
+    b.innerHTML='<span class="rk-time__t">'+t+'</span><span class="rk-time__c">'+(c?("quedan "+c):"completo")+'</span>';
+    b.addEventListener("click",function(){S.time=t;if(S.pax>c)S.pax=c;renderAll();});box.appendChild(b);});});}
+
+function renderLangs(){each("langs",function(box){box.innerHTML="";var L=exp().langs||C.langs||["Español"];if(L.indexOf(S.lang)<0)S.lang=L[0];
+  L.forEach(function(l){var b=h("button","rk-lang",l);b.type="button";b.setAttribute("aria-pressed",String(S.lang===l));
+    b.addEventListener("click",function(){S.lang=l;renderAll();});box.appendChild(b);});});}
+
+function maxPax(){return S.date&&S.time?cupos(S.date,S.time):(exp().cap||C.cap||12);}
+function renderPax(){each("pax",function(box){box.innerHTML="";var w=h("div","rk-step");
+  var m=h("button","rk-step__b","&minus;");m.type="button";m.setAttribute("aria-label","Una persona menos");
+  var o=h("output","rk-step__v",S.pax+(S.pax===1?" persona":" personas"));
+  var p=h("button","rk-step__b","+");p.type="button";p.setAttribute("aria-label","Una persona más");
+  m.disabled=S.pax<=1;p.disabled=S.pax>=maxPax();
+  m.onclick=function(){S.pax=Math.max(1,S.pax-1);renderAll();};p.onclick=function(){S.pax=Math.min(maxPax(),S.pax+1);renderAll();};
+  w.appendChild(m);w.appendChild(o);w.appendChild(p);box.appendChild(w);});}
+
+function bookText(){var e=exp();var tot=(e.p||0)*(e.pp===false?1:S.pax);var sena=tot*(C.sena||0.3);
+  return "Hola "+C.negocio+"! Quiero reservar una visita:\n"+
+  "• Experiencia: "+e.n+"\n• Fecha: "+(S.date?fmtDate(S.date):"-")+"\n• Horario: "+(S.time||"-")+"\n• Idioma: "+S.lang+"\n• Personas: "+S.pax+"\n"+
+  "• Total: "+money(tot)+(tot?" (seña "+Math.round((C.sena||0.3)*100)+"%: "+money(sena)+")":"")+"\n"+(nombre()?"Mi nombre: "+nombre()+"\n":"")+"¿Me confirman disponibilidad?";}
+function nombre(){var i=$('[data-rk="nombre"]');return i&&i.value.trim()?i.value.trim():"";}
+function renderSum(){var e=exp();var tot=(e.p||0)*(e.pp===false?1:S.pax);var sena=tot*(C.sena||0.3);var ready=S.date&&S.time;
+  each("sum",function(box){box.innerHTML='<div class="rk-sum__row"><span>'+e.n+'</span><span>'+(e.p?money(e.p)+(e.pp===false?"":" × "+S.pax):"sin cargo")+'</span></div>'+
+   '<div class="rk-sum__row"><span>'+(S.date?fmtDate(S.date):"Día a elegir")+'</span><span>'+(S.time||"--:--")+' · '+S.lang+'</span></div>'+
+   '<div class="rk-sum__row rk-sum__tot"><span>Total de ejemplo</span><span>'+money(tot)+'</span></div>'+
+   (tot?'<div class="rk-sum__row rk-sum__sena"><span>Seña para confirmar ('+Math.round((C.sena||0.3)*100)+'%)</span><span>'+money(sena)+'</span></div>':'');});
+  each("book",function(a){a.href=ready?wa(bookText()):"#";a.setAttribute("aria-disabled",String(!ready));a.classList.toggle("is-off",!ready);
+    var lbl=a.querySelector(".rk-book__l");if(lbl)lbl.textContent=ready?(a.getAttribute("data-on")||(C.wa?"Reservar por WhatsApp":"Enviar reserva por mail")):(a.getAttribute("data-off")||"Elegí día y horario");});}
+
+function renderShop(){each("shop",function(box){if(box.getAttribute("data-built")){syncShop();return;}box.setAttribute("data-built","1");box.innerHTML="";
+  C.wines.forEach(function(w){var bx=w.box||C.box||6;var r=h("div","rk-wine");r.setAttribute("data-w",w.id);
+    r.innerHTML=(w.img?'<img class="rk-wine__img" src="'+w.img+'" alt="'+w.n+'" loading="lazy" onerror="this.remove()">':'')+
+    '<div class="rk-wine__i"><span class="rk-wine__l">'+(w.line||"")+'</span><span class="rk-wine__n">'+w.n+'</span>'+(w.v?'<span class="rk-wine__v">'+w.v+'</span>':'')+'</div>'+
+    '<div class="rk-wine__p"><span class="rk-wine__b">'+money(w.p)+' la botella</span><span class="rk-wine__c">'+money(w.p*bx)+' la caja de '+bx+'</span></div>';
+    var st=h("div","rk-step rk-step--sm");var m=h("button","rk-step__b","&minus;");m.type="button";m.setAttribute("aria-label","Quitar caja de "+w.n);
+    var o=h("output","rk-step__v","0 cajas");var p=h("button","rk-step__b","+");p.type="button";p.setAttribute("aria-label","Sumar caja de "+w.n);
+    m.onclick=function(){S.cart[w.id]=Math.max(0,(S.cart[w.id]||0)-1);syncShop();};p.onclick=function(){S.cart[w.id]=Math.min(20,(S.cart[w.id]||0)+1);syncShop();};
+    st.appendChild(m);st.appendChild(o);st.appendChild(p);r.appendChild(st);box.appendChild(r);});});syncShop();}
+function cartInfo(){var cj=0,bt=0,tot=0,lines=[];C.wines.forEach(function(w){var q=S.cart[w.id]||0;if(!q)return;var bx=w.box||C.box||6;cj+=q;bt+=q*bx;tot+=q*bx*w.p;lines.push("• "+q+(q>1?" cajas":" caja")+" de "+w.n+(w.v&&w.n.indexOf(w.v)<0?" ("+w.v+")":"")+" — "+money(q*bx*w.p));});
+  var dto=cj>=(C.dtoCajas||3)?(C.dto||0.1):0;return {cj:cj,bt:bt,tot:tot,dto:dto,fin:tot*(1-dto),lines:lines};}
+function syncShop(){$$(".rk-wine").forEach(function(r){var q=S.cart[r.getAttribute("data-w")]||0;var o=r.querySelector(".rk-step__v");if(o)o.textContent=q+(q===1?" caja":" cajas");r.classList.toggle("is-in",q>0);var m=r.querySelector(".rk-step__b");if(m)m.disabled=q===0;});
+  var c=cartInfo();each("cart",function(box){box.innerHTML=c.cj?('<div class="rk-sum__row"><span>'+c.cj+(c.cj>1?" cajas":" caja")+' · '+c.bt+' botellas</span><span>'+money(c.tot)+'</span></div>'+
+    (c.dto?'<div class="rk-sum__row rk-sum__dto"><span>'+Math.round(c.dto*100)+'% por llevar '+(C.dtoCajas||3)+' cajas o más</span><span>− '+money(c.tot*c.dto)+'</span></div>':'<div class="rk-sum__row rk-sum__dto"><span>Desde '+(C.dtoCajas||3)+' cajas: '+Math.round((C.dto||0.1)*100)+'% menos</span><span></span></div>')+
+    '<div class="rk-sum__row rk-sum__tot"><span>Total de ejemplo</span><span>'+money(c.fin)+'</span></div>'):'<p class="rk-hint">Sumá cajas para armar el pedido. '+(C.envio||"Retiro en la bodega o envío a coordinar.")+'</p>';});
+  each("shopbtn",function(a){var ok=c.cj>0;a.href=ok?wa("Hola "+C.negocio+"! Quiero hacer este pedido de vinos:\n"+c.lines.join("\n")+"\nTotal: "+money(c.fin)+(c.dto?" (con "+Math.round(c.dto*100)+"% off)":"")+"\n"+(nombre()?"Nombre: "+nombre()+"\n":"")+"¿Cómo coordinamos pago y entrega?"):"#";
+    a.setAttribute("aria-disabled",String(!ok));a.classList.toggle("is-off",!ok);var l=a.querySelector(".rk-book__l");if(l)l.textContent=ok?"Pedir "+c.cj+(c.cj>1?" cajas":" caja")+(C.wa?" por WhatsApp":" por mail"):"Sumá al menos una caja";});}
+
+function renderClub(){each("club",function(box){box.innerHTML="";C.club.forEach(function(p){var b=h("button","rk-plan");b.type="button";b.setAttribute("aria-pressed",String(S.plan===p.id));
+  b.innerHTML='<span class="rk-plan__n">'+p.n+'</span><span class="rk-plan__b">'+p.b+' botellas por mes</span>'+(p.d?'<span class="rk-plan__d">'+p.d+'</span>':'')+'<span class="rk-plan__p">'+money(p.p)+'<small> /mes</small></span>';
+  b.onclick=function(){S.plan=p.id;renderClub();};box.appendChild(b);});});
+  var plan=null;C.club.forEach(function(p){if(p.id===S.plan)plan=p;});
+  each("clubbtn",function(a){a.href=plan?wa("Hola "+C.negocio+"! Me quiero sumar al club del vino:\n• Plan: "+plan.n+" ("+plan.b+" botellas por mes)\n• Cuota de ejemplo: "+money(plan.p)+" por mes\n"+(nombre()?"Nombre: "+nombre()+"\n":"")+"¿Cómo sigo?"):"#";
+    a.setAttribute("aria-disabled",String(!plan));a.classList.toggle("is-off",!plan);var l=a.querySelector(".rk-book__l");if(l)l.textContent=plan?"Sumarme al plan "+plan.n:"Elegí un plan";});}
+
+function renderAll(){renderExps();renderCal();renderTimes();renderLangs();renderPax();renderSum();}
+document.addEventListener("click",function(ev){var a=ev.target.closest&&ev.target.closest('a[aria-disabled="true"]');if(a){ev.preventDefault();var t=a.closest("[data-rk-scope]");var hint=t&&t.querySelector(".rk-need");if(hint){hint.classList.remove("rk-pulse");void hint.offsetWidth;hint.classList.add("rk-pulse");}}});
+window.RK={init:function(cfg){C=cfg;S.exp=(cfg.exps[0]||{}).id;S.lang=(cfg.langs||["Español"])[0];if(cfg.club&&cfg.club[1])S.plan=null;
+  renderAll();if(cfg.wines)renderShop();if(cfg.club)renderClub();
+  $$('[data-rk="nombre"]').forEach(function(i){i.addEventListener("input",function(){renderSum();syncShop();renderClub();});});
+  $$("[data-wa]").forEach(function(a){a.href=wa(a.getAttribute("data-wa")||("Hola "+C.negocio+"! Quería hacer una consulta."));});},
+  state:S,pick:function(id){S.exp=id;S.time=null;renderAll();}};
+})();
+</script>
+<script>
+var EXPS=[
+{id:"visita",n:"Visita guiada y degustación",d:"Bodega, viñedo y degustación de línea.",dur:"1 h 15",p:25000,cap:14,times:["10:00","12:00","15:00"]},
+{id:"blend",n:"Juego de Blending",d:"Armás tu propio corte y te llevás tu botella.",dur:"1 h 30",p:42000,cap:10,times:["11:00","16:00"]},
+{id:"bici",n:"Paseo en bicicleta por los viñedos",d:"Recorrido en bici con parada de degustación.",dur:"1 h 30",p:30000,cap:8,times:["10:30","16:30"]},
+{id:"cooking",n:"Cooking Class",d:"Cocina con el equipo del restaurante, con vinos de la casa.",dur:"3 h",p:85000,cap:8,days:[4,5,6],times:["11:00"]},
+{id:"sunset",n:"Sunset Riili",d:"Vino al atardecer frente a la cordillera.",dur:"2 h",p:38000,cap:20,days:[5,6],times:["18:30"]},
+{id:"menu4",n:"Almuerzo de 4 pasos",d:"Menú maridado en el restaurante de la bodega.",dur:"2 h 30",p:68000,cap:30,times:["12:30","13:30"]}];
+var sel=document.getElementById("expSel");EXPS.forEach(function(e){var o=document.createElement("option");o.value=e.id;o.textContent=e.n+" · $ "+e.p.toLocaleString("es-AR");sel.appendChild(o);});
+sel.addEventListener("change",function(){RK.pick(sel.value);});
+RK.init({negocio:"Gimenez Riili",wa:"5492613470392",sena:0.3,horizon:21,langs:["Español","English","Português"],days:[1,2,3,4,5,6,0],exps:EXPS,
+wines:[
+{id:"bht",line:"Buenos Hermanos",n:"Buenos Hermanos Torrontés",v:"Torrontés",p:9500},
+{id:"bhm",line:"Buenos Hermanos",n:"Buenos Hermanos Malbec",v:"Malbec",p:11000,img:"https://gimenezriili.com/wp-content/uploads/2025/04/Buenos-Hermanos-Malbec-Vino-Gimenez-Riili-Valle-de-Uco-MEndoza-Argentina-Los-Chacayes-vinos-argentinos.png"},
+{id:"bhme",line:"Buenos Hermanos",n:"Buenos Hermanos Merlot",v:"Merlot",p:11000},
+{id:"bhcf",line:"Buenos Hermanos",n:"Buenos Hermanos Cabernet Franc",v:"Cabernet Franc",p:12000},
+{id:"bhb",line:"Buenos Hermanos",n:"Bonarda Valiente",v:"Bonarda",p:11000},
+{id:"td",line:"Tierra de Dioses",n:"Tierra de Dioses Cabernet Franc",v:"Cabernet Franc",p:19000,img:"https://gimenezriili.com/wp-content/uploads/2025/04/Tierra-de-Dioses-Vino-Gimenez-Riili-Valle-de-Uco-MEndoza-Argentina-Los-Chacayes-vinos-argentinos.png"},
+{id:"jf",line:"Joyas de la Familia",n:"Joyas de la Familia Gran Blend",v:"Gran Blend",p:34000}],
+club:[{id:"nietos",n:"Nietos Compañeros",b:2,d:"Para empezar: Buenos Hermanos.",p:24000},{id:"padres",n:"Padres Dedicados",b:4,d:"Buenos Hermanos y Gran Familia.",p:52000},{id:"tio",n:"Tío Excéntrico",b:6,d:"Cortes especiales y Joyas de la Familia.",p:110000}]});
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Gimenez Riili"></script>
+</body>
+</html>
