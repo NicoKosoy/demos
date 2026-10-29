@@ -1,0 +1,956 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Escondida en el Bosque · Mar de las Pampas</title>
+<meta name="description" content="Prototipo de demostración: web de reservas directas para Escondida en el Bosque, cabañas en la Cortada Yaganes, Mar de las Pampas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ovo&family=Sintony:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pino:#1C3127;
+  --pino2:#2A4536;
+  --musgo:#5C7352;
+  --helecho:#9DB08A;
+  --ladrillo:#9C4F33;
+  --ladrillo-vivo:#B9643F;
+  --arena:#E7DABF;
+  --papel:#F5EFE2;
+  --papel2:#EDE4D1;
+  --piedra:#857E72;
+  --madera:#6E4B2F;
+  --tinta:#20251F;
+  --tinta2:#4A4E44;
+  --mar:#7F9AA0;
+  --blanco:#FFFDF8;
+  --serif:"Ovo","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --sans:"Sintony","Gill Sans","Trebuchet MS","Segoe UI",sans-serif;
+  --claro-r:46px 38px 52px 34px / 40px 50px 36px 48px;
+  --gut:clamp(16px,4vw,48px);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--pino);color:var(--tinta);font:400 16.5px/1.65 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--ladrillo-vivo);outline-offset:3px;border-radius:4px}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:400;line-height:1.12;margin:0}
+p{margin:0 0 1em}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* aviso */
+.aviso{background:var(--arena);color:var(--tinta);font-size:13px;text-align:center;padding:8px var(--gut);line-height:1.4}
+.aviso strong{font-weight:700}
+
+/* barra */
+.barra{position:sticky;top:0;z-index:40;background:rgba(28,49,39,.94);backdrop-filter:blur(8px);color:var(--papel);border-bottom:1px solid rgba(231,218,191,.12)}
+.barra-in{max-width:1240px;margin:0 auto;display:flex;align-items:center;gap:20px;padding:10px var(--gut)}
+.marca{display:flex;align-items:baseline;gap:8px;text-decoration:none;font-family:var(--serif);font-size:20px;letter-spacing:.01em;white-space:nowrap}
+.marca small{font-family:var(--sans);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--helecho)}
+.barra nav{margin-left:auto;display:flex;gap:4px}
+.barra nav a{text-decoration:none;font-size:14px;padding:8px 10px;border-radius:999px;color:var(--arena);transition:background .2s}
+.barra nav a:hover{background:rgba(231,218,191,.1)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;cursor:pointer;text-decoration:none;font-weight:700;font-size:15px;padding:12px 20px;border-radius:999px;transition:transform .15s,background .2s,box-shadow .2s;line-height:1.2}
+.btn:active{transform:translateY(1px)}
+.btn-l{background:var(--ladrillo);color:var(--blanco)}
+.btn-l:hover{background:#87412a}
+.btn-a{background:var(--arena);color:var(--pino)}
+.btn-a:hover{background:#f0e6cf}
+.btn-o{background:transparent;color:inherit;box-shadow:inset 0 0 0 1.5px currentColor}
+.btn-o:hover{background:rgba(127,127,100,.1)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.barra .btn{padding:9px 16px;font-size:14px}
+
+/* portada: dosel */
+.dosel{position:relative;overflow:hidden;color:var(--papel);padding:clamp(40px,7vw,90px) var(--gut) 0;min-height:min(92vh,860px)}
+.dosel svg.pinos{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.dosel .pinos g{transition:transform .1s linear}
+.dosel-in{position:relative;max-width:1240px;margin:0 auto;display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(24px,5vw,64px);align-items:center}
+.kicker{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--helecho);font-weight:700;margin-bottom:18px;display:flex;gap:10px;align-items:center}
+.kicker::before{content:"";width:28px;height:1px;background:currentColor}
+.dosel h1{font-size:clamp(40px,6.4vw,84px);letter-spacing:-.01em;margin-bottom:22px;text-wrap:balance}
+.dosel h1 em{font-style:normal;color:var(--arena);background:linear-gradient(transparent 70%,rgba(185,100,63,.55) 70%)}
+.lede{font-size:clamp(16.5px,1.6vw,19px);max-width:34em;color:#E5DECF}
+.lema{font-family:var(--serif);font-size:clamp(20px,2.2vw,26px);color:var(--arena);margin:26px 0 30px;display:flex;flex-wrap:wrap;gap:.2em .5em}
+.lema span{opacity:0;transform:translateY(8px);animation:aparece .9s forwards}
+.lema span:nth-child(2){animation-delay:.6s}.lema span:nth-child(3){animation-delay:1.2s}
+@keyframes aparece{to{opacity:1;transform:none}}
+.ctas{display:flex;flex-wrap:wrap;gap:12px}
+.claro-foto{position:relative;justify-self:center;width:100%;max-width:560px}
+.claro-foto .marco{background:var(--arena);padding:clamp(12px,1.6vw,18px);border-radius:70px 120px 60px 140px / 60px 90px 70px 110px;box-shadow:0 30px 80px rgba(0,0,0,.35);transform:rotate(-1.5deg)}
+.claro-foto .marco>div{border-radius:58px 108px 48px 128px / 50px 80px 58px 98px;overflow:hidden;background:var(--pino2) repeating-linear-gradient(135deg,rgba(231,218,191,.06) 0 10px,transparent 10px 20px)}
+.claro-foto img{width:100%;height:auto}
+.claro-foto figcaption{position:absolute;right:4%;bottom:-14px;background:var(--pino);color:var(--arena);font-size:12px;padding:6px 12px;border-radius:999px;letter-spacing:.04em}
+.datos-dosel{position:relative;max-width:1240px;margin:clamp(40px,6vw,70px) auto 0;display:flex;flex-wrap:wrap;gap:0;border-top:1px solid rgba(231,218,191,.18)}
+.datos-dosel div{flex:1 1 200px;padding:18px 18px 26px 0;font-size:14px;color:#D8D1C0}
+.datos-dosel b{display:block;font-family:var(--serif);font-weight:400;font-size:22px;color:var(--papel);margin-bottom:2px}
+
+/* linea de árboles */
+.arboleda{height:64px;background-repeat:repeat-x;background-position:bottom left;background-size:auto 64px;margin-top:-1px}
+.arb-a{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='64' viewBox='0 0 240 64'%3E%3Cg fill='%232A4536'%3E%3Cpath d='M14 64 L28 10 L42 64Z'/%3E%3Cpath d='M44 64 L54 30 L64 64Z'/%3E%3Cpath d='M70 64 L88 0 L106 64Z'/%3E%3Cpath d='M110 64 L120 26 L130 64Z'/%3E%3Cpath d='M136 64 L152 14 L168 64Z'/%3E%3Cpath d='M172 64 L180 36 L188 64Z'/%3E%3Cpath d='M196 64 L214 6 L232 64Z'/%3E%3C/g%3E%3C/svg%3E")}
+
+/* claros: secciones */
+.claro{position:relative;background:var(--papel);border-radius:var(--claro-r);margin:0 auto;max-width:1300px;width:calc(100% - 2*clamp(8px,2vw,28px));padding:clamp(40px,6vw,88px) var(--gut)}
+.claro + .entre{height:clamp(36px,6vw,72px)}
+.claro.alt{background:var(--papel2)}
+.claro-in{max-width:1180px;margin:0 auto}
+.paso-claro{font-family:var(--serif);font-size:clamp(18px,2vw,22px);color:var(--ladrillo);margin-bottom:10px;display:flex;align-items:center;gap:12px}
+.paso-claro::after{content:"";flex:0 0 60px;height:1px;background:currentColor;opacity:.5}
+.claro h2{font-size:clamp(32px,4.4vw,56px);margin-bottom:16px;text-wrap:balance;color:var(--pino)}
+.intro{max-width:44em;color:var(--tinta2);font-size:17px}
+.puntos{display:inline-flex;gap:5px;vertical-align:middle;margin-left:6px}
+.puntos i{width:6px;height:6px;border-radius:50%;background:var(--ladrillo);opacity:.25;animation:respira 2.4s infinite}
+.puntos i:nth-child(2){animation-delay:.3s}.puntos i:nth-child(3){animation-delay:.6s}
+@keyframes respira{50%{opacity:1}}
+
+/* fotos */
+.ph{margin:0;background:var(--papel2) repeating-linear-gradient(135deg,rgba(92,115,82,.08) 0 10px,transparent 10px 20px);border-radius:10px;overflow:hidden}
+.ph img{width:100%;height:auto;transition:opacity .3s}
+img.err{opacity:0}
+.zoom{cursor:zoom-in;display:block;border:0;padding:0;background:none;width:100%;text-align:left;border-radius:10px}
+.zoom:hover img{opacity:.92}
+
+/* fichas */
+.fichas{display:grid;gap:clamp(48px,7vw,96px);margin-top:clamp(36px,5vw,60px)}
+.ficha{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:clamp(24px,4vw,56px);align-items:start}
+.ficha:nth-child(even){grid-template-columns:minmax(0,.75fr) minmax(0,1.25fr)}
+.ficha:nth-child(even) .ficha-fotos{order:2}
+.ficha-fotos .principal{border-radius:14px}
+.tira{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:10px;align-items:start}
+.tira .ph{border-radius:8px}
+.tira figcaption,.principal-cap{font-size:12px;color:var(--piedra);padding:5px 2px 0;background:var(--papel)}
+.claro.alt .tira figcaption{background:var(--papel2)}
+.ficha-txt{position:sticky;top:90px}
+.etiqueta{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--musgo);margin-bottom:10px}
+.ficha h3{font-size:clamp(28px,3vw,40px);color:var(--pino);margin-bottom:10px}
+.cap{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}
+.cap span{font-size:13px;background:var(--arena);border-radius:999px;padding:5px 12px;color:var(--tinta)}
+.lista{list-style:none;padding:0;margin:0 0 22px;border-top:1px solid rgba(32,37,31,.12)}
+.lista li{padding:10px 0;border-bottom:1px solid rgba(32,37,31,.12);font-size:15px;display:grid;grid-template-columns:110px 1fr;gap:12px}
+.lista li b{font-weight:700;color:var(--musgo);font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding-top:3px}
+.desde{font-size:14px;color:var(--tinta2);margin-bottom:16px}
+.desde strong{font-family:var(--serif);font-weight:400;font-size:24px;color:var(--ladrillo)}
+
+/* PB o PA */
+.pisos{margin-top:clamp(56px,8vw,110px);background:var(--pino);color:var(--papel);border-radius:28px;padding:clamp(28px,4vw,52px);display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(24px,4vw,56px);align-items:center}
+.pisos h3{font-size:clamp(28px,3.4vw,44px);margin-bottom:10px}
+.pisos p{color:#DCD5C4}
+.switch{display:inline-flex;background:rgba(231,218,191,.12);border-radius:999px;padding:5px;margin:8px 0 22px}
+.switch button{border:0;background:transparent;color:var(--arena);padding:10px 18px;border-radius:999px;cursor:pointer;font-weight:700;font-size:14px;transition:background .25s,color .25s}
+.switch button[aria-pressed="true"]{background:var(--arena);color:var(--pino)}
+.corte{width:100%;height:auto;max-width:440px;display:block;margin:0 auto}
+.corte .piso{transition:fill .4s,opacity .4s}
+.pisos-detalle{display:grid;gap:14px}
+.pisos-detalle ul{list-style:none;margin:0;padding:0}
+.pisos-detalle li{padding:9px 0 9px 26px;position:relative;border-bottom:1px solid rgba(231,218,191,.14);font-size:15px}
+.pisos-detalle li::before{content:"";position:absolute;left:0;top:17px;width:12px;height:2px;background:var(--ladrillo-vivo)}
+.pisos-fotos{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px;align-items:start}
+.pisos-fotos .ph{background-color:var(--pino2)}
+.pisos-fotos figcaption{font-size:12px;color:var(--helecho);padding-top:4px}
+.gemelas{font-size:13px;color:var(--helecho)}
+
+/* servicios */
+.serv{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,5vw,64px);margin-top:36px;align-items:start}
+.serv-lista{columns:2;column-gap:28px;list-style:none;padding:0;margin:0}
+.serv-lista li{break-inside:avoid;padding:12px 0;border-top:1px solid rgba(32,37,31,.14)}
+.serv-lista b{display:block;font-family:var(--serif);font-weight:400;font-size:19px;color:var(--pino)}
+.serv-lista span{font-size:14px;color:var(--tinta2)}
+.no{margin-top:22px;padding:14px 18px;border-radius:14px;background:var(--arena);font-size:14px}
+.mosaico{columns:2;column-gap:10px}
+.mosaico figure{break-inside:avoid;margin:0 0 10px}
+
+/* tarifas + reserva */
+.tarifas{width:100%;border-collapse:collapse;margin-top:28px;font-size:15px}
+.tarifas th,.tarifas td{padding:12px 10px;text-align:left;border-bottom:1px solid rgba(32,37,31,.12);vertical-align:top}
+.tarifas thead th{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--musgo);font-weight:700}
+.tarifas td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+.tarifas .tem{font-family:var(--serif);font-size:18px;color:var(--pino);display:flex;align-items:center;gap:10px}
+.tarifas small{display:block;color:var(--piedra);font-size:13px}
+.sw{width:12px;height:12px;border-radius:3px;flex:0 0 12px;display:inline-block}
+.nota-ej{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ladrillo);border:1.5px solid currentColor;border-radius:999px;padding:3px 10px}
+.tabla-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+
+.reserva{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,.65fr);gap:clamp(20px,3vw,40px);margin-top:clamp(40px,5vw,64px);align-items:start}
+.cal-box{background:var(--blanco);border-radius:22px;padding:clamp(16px,2.4vw,28px);box-shadow:0 1px 0 rgba(0,0,0,.04),0 18px 50px rgba(28,49,39,.08)}
+.cal-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+.cal-head h3{font-size:22px;color:var(--pino)}
+.cal-nav{display:flex;gap:6px}
+.cal-nav button{width:40px;height:40px;border-radius:50%;border:1.5px solid rgba(32,37,31,.2);background:transparent;cursor:pointer;font-size:18px;line-height:1}
+.cal-nav button:hover:not([disabled]){background:var(--papel)}
+.cal-nav button[disabled]{opacity:.3;cursor:default}
+.meses{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,3vw,32px)}
+.mes h4{font-size:18px;margin-bottom:8px;color:var(--pino)}
+.grilla{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px}
+.grilla .dow{font-size:11px;text-align:center;color:var(--piedra);font-weight:700;padding:4px 0}
+.dia{position:relative;aspect-ratio:1/1;border:0;border-radius:8px;background:transparent;cursor:pointer;font-size:14px;font-variant-numeric:tabular-nums;display:flex;align-items:center;justify-content:center;transition:background .15s,color .15s}
+.dia::after{content:"";position:absolute;left:22%;right:22%;bottom:12%;height:3px;border-radius:2px;background:var(--t,transparent)}
+.dia:hover:not([disabled]){background:var(--papel)}
+.dia[disabled]{cursor:not-allowed;color:#B7B0A3;text-decoration:line-through;background:repeating-linear-gradient(135deg,rgba(133,126,114,.12) 0 4px,transparent 4px 8px)}
+.dia.en-rango{background:rgba(156,79,51,.14);border-radius:0}
+.dia.ini,.dia.fin{background:var(--ladrillo);color:var(--blanco);border-radius:8px}
+.dia.ini::after,.dia.fin::after{background:rgba(255,255,255,.7)}
+.dia.hoy{box-shadow:inset 0 0 0 1.5px var(--musgo)}
+.leyenda{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:16px;font-size:12.5px;color:var(--tinta2)}
+.leyenda span{display:inline-flex;align-items:center;gap:6px}
+.sync{display:flex;gap:10px;align-items:flex-start;margin-top:16px;padding:12px 14px;border-radius:12px;background:var(--papel);font-size:13.5px}
+.sync svg{flex:0 0 18px;margin-top:2px}
+
+.sim{background:var(--pino);color:var(--papel);border-radius:22px;padding:clamp(20px,2.6vw,30px);position:sticky;top:84px}
+.sim h3{font-size:24px;margin-bottom:4px}
+.sim .sub{font-size:13px;color:var(--helecho);margin-bottom:16px}
+.campo{display:grid;gap:6px;margin-bottom:12px}
+.campo label,.campo .lbl{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--helecho);font-weight:700}
+.campo select{appearance:none;background:rgba(231,218,191,.1) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23E7DABF' stroke-width='1.6'/%3E%3C/svg%3E") no-repeat right 14px center;border:1.5px solid rgba(231,218,191,.25);color:var(--papel);border-radius:12px;padding:11px 36px 11px 14px;font:inherit;font-size:15px}
+.campo select option{color:var(--tinta)}
+.fechas{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fechas div{border:1.5px dashed rgba(231,218,191,.3);border-radius:12px;padding:8px 12px;font-size:15px;min-height:56px}
+.fechas small{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--helecho);font-weight:700}
+.desglose{margin:14px 0;padding:12px 0;border-top:1px solid rgba(231,218,191,.18);border-bottom:1px solid rgba(231,218,191,.18);font-size:14px;min-height:48px}
+.desglose .fila{display:flex;justify-content:space-between;gap:10px;padding:3px 0}
+.desglose .fila span:last-child{font-variant-numeric:tabular-nums;white-space:nowrap}
+.total{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.total strong{font-family:var(--serif);font-weight:400;font-size:30px;color:var(--arena)}
+.sena{display:flex;justify-content:space-between;gap:10px;font-size:14px;color:#DCD5C4;margin:4px 0 16px}
+.sena b{color:var(--papel);white-space:nowrap}
+.msg{font-size:13.5px;min-height:20px;color:#F2C6A8;margin-bottom:10px}
+.msg.ok{color:var(--helecho)}
+.sim .btn{width:100%}
+.mp{font-size:12px;color:var(--helecho);text-align:center;margin-top:10px}
+
+/* como encontrarnos */
+.ruta{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(24px,4vw,56px);margin-top:36px;align-items:start}
+.pasos{list-style:none;margin:0;padding:0;counter-reset:p}
+.pasos li{margin:0}
+.pasos button{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:44px 1fr;gap:14px;width:100%;padding:16px 14px;border-radius:16px;transition:background .25s}
+.pasos button:focus-visible{outline:3px solid var(--ladrillo-vivo)}
+.pasos button:hover{background:rgba(32,37,31,.04)}
+.pasos button[aria-current="step"]{background:var(--blanco);box-shadow:0 10px 30px rgba(28,49,39,.08)}
+.pasos .num{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:20px;border:1.5px solid var(--musgo);color:var(--musgo)}
+.pasos button[aria-current="step"] .num{background:var(--ladrillo);border-color:var(--ladrillo);color:var(--blanco)}
+.pasos b{display:block;font-family:var(--serif);font-weight:400;font-size:21px;color:var(--pino);margin-bottom:2px}
+.pasos span.t{font-size:15px;color:var(--tinta2)}
+.plano{background:var(--blanco);border-radius:22px;padding:14px;position:sticky;top:90px}
+.plano svg{width:100%;height:auto;display:block}
+.plano .seg{fill:none;stroke:var(--ladrillo);stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:var(--len);stroke-dashoffset:var(--len);transition:stroke-dashoffset 1s ease}
+.plano .seg.on{stroke-dashoffset:0}
+.plano .hito{transition:opacity .4s}
+.plano-pie{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding:12px 6px 4px;font-size:13px;color:var(--piedra)}
+.dir{margin-top:20px;padding:18px;border-radius:16px;background:var(--arena);display:grid;gap:4px}
+.dir b{font-family:var(--serif);font-weight:400;font-size:20px;color:var(--pino)}
+.dir .acc{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+.dir .btn-o{color:var(--pino)}
+
+/* mar de las pampas */
+.mdp{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(24px,4vw,56px);margin-top:36px;align-items:start}
+.indice{list-style:none;padding:0;margin:0}
+.indice li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 16px;padding:16px 0;border-top:1px solid rgba(32,37,31,.14)}
+.indice b{font-family:var(--serif);font-weight:400;font-size:21px;color:var(--pino)}
+.indice em{font-style:normal;font-size:13px;color:var(--ladrillo);font-weight:700;white-space:nowrap;align-self:center}
+.indice span{grid-column:1/-1;font-size:15px;color:var(--tinta2)}
+.mdp-fotos{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:start}
+.mdp-fotos .ancha{grid-column:1/-1}
+.mdp-fotos figcaption{font-size:12px;color:var(--piedra);padding:4px 2px 0;background:var(--papel2)}
+.sello{margin-top:20px;padding:16px 18px;border-left:3px solid var(--ladrillo);background:var(--blanco);border-radius:0 14px 14px 0;font-size:14.5px}
+.clima{margin-top:18px;font-size:14px;color:var(--tinta2)}
+
+/* faq */
+.faq{margin-top:28px;max-width:860px}
+.faq details{border-top:1px solid rgba(32,37,31,.14)}
+.faq details:last-child{border-bottom:1px solid rgba(32,37,31,.14)}
+.faq summary{cursor:pointer;list-style:none;padding:18px 40px 18px 0;position:relative;font-family:var(--serif);font-size:20px;color:var(--pino)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"";position:absolute;right:6px;top:50%;width:12px;height:12px;border-right:2px solid var(--ladrillo);border-bottom:2px solid var(--ladrillo);transform:translateY(-70%) rotate(45deg);transition:transform .25s}
+.faq details[open] summary::after{transform:translateY(-30%) rotate(-135deg)}
+.faq .r{padding:0 0 18px;color:var(--tinta2);max-width:44em}
+.tag{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border-radius:999px;padding:2px 8px;margin-left:6px;vertical-align:middle;font-family:var(--sans)}
+.tag.web{background:var(--helecho);color:var(--pino)}
+.tag.conf{background:var(--arena);color:var(--madera)}
+
+/* contacto / pie */
+.pie{color:var(--papel);padding:clamp(56px,8vw,100px) var(--gut) 40px}
+.pie-in{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:40px;align-items:end}
+.pie h2{font-size:clamp(34px,5vw,64px);margin-bottom:14px}
+.pie p{color:#D3CCBB}
+.contactos{display:grid;gap:10px}
+.contactos a{display:flex;justify-content:space-between;align-items:center;gap:12px;text-decoration:none;padding:16px 18px;border-radius:16px;background:rgba(231,218,191,.08);transition:background .2s}
+.contactos a:hover{background:rgba(231,218,191,.16)}
+.contactos small{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--helecho);font-weight:700}
+.contactos span.v{font-size:16px;word-break:break-word}
+.pie-legal{max-width:1180px;margin:56px auto 0;padding-top:20px;border-top:1px solid rgba(231,218,191,.14);font-size:13px;color:#B9B29F;display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
+
+/* barra móvil */
+.movil{display:none}
+
+/* modal + visor */
+.capa{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:16px}
+.capa.abierta{display:flex}
+.modal-fondo{position:absolute;inset:0;background:rgba(18,30,24,.72);backdrop-filter:blur(3px)}
+.modal{position:relative;background:var(--papel);border-radius:24px;max-width:480px;width:100%;padding:28px;box-shadow:0 30px 90px rgba(0,0,0,.4);max-height:calc(100vh - 32px);overflow:auto;animation:sube .3s ease}
+@keyframes sube{from{transform:translateY(14px);opacity:0}}
+.modal h3{font-size:28px;color:var(--pino);margin-bottom:8px}
+.modal dl{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 16px;margin:16px 0;font-size:15px}
+.modal dt{color:var(--piedra)}
+.modal dd{margin:0;text-align:right;font-weight:700;white-space:nowrap}
+.modal .demo{background:var(--arena);border-radius:12px;padding:12px 14px;font-size:13.5px;margin-bottom:16px}
+.modal .acc{display:flex;flex-wrap:wrap;gap:10px}
+.cerrar{position:absolute;top:12px;right:12px;width:40px;height:40px;border-radius:50%;border:0;background:rgba(32,37,31,.06);cursor:pointer;font-size:22px;line-height:1}
+.visor{background:rgba(12,20,16,.94)}
+.visor figure{margin:0;max-width:min(1100px,100%);max-height:100%;display:flex;flex-direction:column;align-items:center;gap:10px}
+.visor img{max-width:100%;max-height:calc(100vh - 110px);width:auto;height:auto;object-fit:contain;border-radius:6px;background:var(--pino2);min-width:200px;min-height:140px}
+.visor figcaption{color:var(--arena);font-size:14px;text-align:center}
+.visor .vb{position:absolute;width:52px;height:52px;border-radius:50%;border:0;background:rgba(231,218,191,.14);color:var(--papel);cursor:pointer;font-size:24px;display:flex;align-items:center;justify-content:center}
+.visor .vb:hover{background:rgba(231,218,191,.26)}
+.visor .ant{left:16px;top:50%;transform:translateY(-50%)}
+.visor .sig{right:16px;top:50%;transform:translateY(-50%)}
+.visor .cer{top:16px;right:16px}
+
+@media (max-width:980px){
+  .dosel-in,.ficha,.ficha:nth-child(even),.pisos,.serv,.reserva,.ruta,.mdp,.pie-in{grid-template-columns:minmax(0,1fr)}
+  .ficha:nth-child(even) .ficha-fotos{order:0}
+  .ficha-txt,.sim,.plano{position:static}
+  .ruta .plano{order:-1}
+  .indice li{grid-template-columns:minmax(0,1fr)}
+  .indice em{grid-row:1;align-self:start}
+  .barra nav{display:none}
+  .barra .btn{margin-left:auto}
+  .claro-foto{max-width:520px}
+}
+@media (max-width:640px){
+  body{font-size:16px;padding-bottom:72px}
+  .barra .btn{display:none}
+  .dosel{min-height:0}
+  .meses{grid-template-columns:minmax(0,1fr)}
+  .tira{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .serv-lista{columns:1}
+  .lista li{grid-template-columns:1fr;gap:2px}
+  .claro{width:calc(100% - 12px);border-radius:30px 26px 34px 24px}
+  .tarifas thead{display:none}
+  .tarifas tr{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px 10px;padding:14px 0;border-bottom:1px solid rgba(32,37,31,.12)}
+  .tarifas td{border:0;padding:0}
+  .tarifas td:first-child{grid-column:1/-1;margin-bottom:6px}
+  .tarifas td.n::before{content:attr(data-l);display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--musgo);font-weight:700}
+  .movil{display:grid;grid-template-columns:1fr 1fr;gap:8px;position:fixed;left:0;right:0;bottom:0;z-index:60;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:rgba(28,49,39,.97);border-top:1px solid rgba(231,218,191,.15)}
+  .movil .btn{padding:13px 10px}
+  .visor .ant,.visor .sig{top:auto;bottom:16px;transform:none}
+  .visor img{max-height:calc(100vh - 170px)}
+  .datos-dosel div{flex:1 1 140px}
+}
+</style>
+</head>
+<body>
+<div class="aviso" role="note"><strong>Prototipo de demostración preparado para Escondida en el Bosque</strong> · precios, disponibilidad y pago son de ejemplo.</div>
+
+<header class="barra">
+  <div class="barra-in">
+    <a class="marca" href="#inicio">Escondida <small>en el Bosque</small></a>
+    <nav aria-label="Secciones">
+      <a href="#cabanas">Cabañas</a>
+      <a href="#servicios">Servicios</a>
+      <a href="#reservar">Tarifas</a>
+      <a href="#llegar">Cómo encontrarnos</a>
+      <a href="#mdp">Mar de las Pampas</a>
+      <a href="#faq">Preguntas</a>
+    </nav>
+    <a class="btn btn-l" href="#reservar">Reservar</a>
+  </div>
+</header>
+
+<main id="inicio">
+  <section class="dosel" aria-labelledby="h1">
+    <svg class="pinos" id="pinos" aria-hidden="true" preserveAspectRatio="xMidYMax slice" viewBox="0 0 1440 860"></svg>
+    <div class="dosel-in">
+      <div>
+        <p class="kicker">Mar de las Pampas · Buenos Aires</p>
+        <h1 id="h1">Al final de la <em>Cortada Yaganes</em>, entre pinos.</h1>
+        <p class="lede">Cabañas de ladrillo a la vista, piedra y madera, para tres personas o para dos. Desayuno servido en la cabaña, hidromasaje en las tres tipologías y el silencio de una calle que casi nadie encuentra sin indicaciones.</p>
+        <p class="lema" aria-label="Mar, bosque, silencio"><span>Mar...</span><span>bosque...</span><span>silencio...</span></p>
+        <div class="ctas">
+          <a class="btn btn-a" href="#reservar">Ver fechas y tarifas</a>
+          <a class="btn btn-o" href="#llegar">Cómo encontrarnos</a>
+        </div>
+      </div>
+      <figure class="claro-foto">
+        <div class="marco"><div>
+          <button class="zoom" data-g="complejo" data-cap="El frente del complejo" aria-label="Ampliar foto del frente del complejo">
+            <img src="https://escondidaenelbosque.com.ar/img0/slider/05042015221100d1c1396dfrente.jpg" width="960" height="420" alt="Frente de Escondida en el Bosque: edificio de ladrillo con detalles de piedra y madera, rodeado de pinos" fetchpriority="high">
+          </button>
+        </div></div>
+        <figcaption>El frente, entre los pinos</figcaption>
+      </figure>
+    </div>
+    <div class="datos-dosel">
+      <div><b>3 tipologías</b>planta baja, planta alta y apart para parejas</div>
+      <div><b>8 km</b>de Villa Gesell, según su web</div>
+      <div><b>Desayuno</b>continental o seco, en la cabaña</div>
+      <div><b>Losa radiante</b>para el invierno, y hogar de piedra</div>
+    </div>
+    <div class="arboleda arb-a" aria-hidden="true" style="margin:0 calc(-1*var(--gut))"></div>
+  </section>
+
+  <!-- CLARO 1 · BOSQUE -->
+  <section class="claro" id="cabanas" aria-labelledby="h-cab">
+    <div class="claro-in">
+      <p class="paso-claro">Bosque...</p>
+      <h2 id="h-cab">Tres maneras de esconderse</h2>
+      <p class="intro">Todas tienen hogar de piedra para leños, losa radiante, aire frío/calor, TV LCD en cada ambiente, alarma monitoreada, caja de seguridad y deck de madera con parrilla y muebles de jardín. Tocá cualquier foto para verla grande.</p>
+
+      <div class="fichas" id="fichas"></div>
+
+      <div class="pisos" id="pisos" aria-labelledby="h-pisos">
+        <div>
+          <svg class="corte" viewBox="0 0 440 360" role="img" aria-labelledby="corte-t">
+            <title id="corte-t">Esquema del edificio de dos plantas, con la planta elegida resaltada</title>
+            <g fill="#2A4536">
+              <path d="M10 330 L34 220 L58 330Z"/><path d="M380 330 L404 200 L428 330Z"/><path d="M356 330 L370 262 L384 330Z"/>
+            </g>
+            <path d="M70 140 L220 46 L370 140Z" fill="#6E4B2F"/>
+            <path d="M70 140 L220 46 L370 140" fill="none" stroke="#E7DABF" stroke-width="3" stroke-linejoin="round"/>
+            <rect class="piso" id="pisoPA" x="86" y="140" width="268" height="94" fill="#9C4F33"/>
+            <rect class="piso" id="pisoPB" x="86" y="234" width="268" height="96" fill="#9C4F33"/>
+            <g stroke="rgba(0,0,0,.18)" stroke-width="1">
+              <path d="M86 163h268M86 187h268M86 210h268M86 258h268M86 282h268M86 306h268"/>
+            </g>
+            <g fill="#F5EFE2" opacity=".92">
+              <rect x="112" y="160" width="54" height="50" rx="3"/><rect x="274" y="160" width="54" height="50" rx="3"/>
+              <rect x="112" y="254" width="54" height="50" rx="3"/><rect x="198" y="258" width="44" height="72" rx="3"/><rect x="274" y="254" width="54" height="50" rx="3"/>
+            </g>
+            <g fill="#857E72"><rect x="86" y="230" width="268" height="6"/><rect x="74" y="326" width="292" height="8"/></g>
+            <text id="pisoTxt" x="220" y="22" text-anchor="middle" fill="#E7DABF" font-family="Sintony, sans-serif" font-size="15" font-weight="700" letter-spacing="2">PLANTA BAJA</text>
+            <path d="M0 340 H440" stroke="#5C7352" stroke-width="2"/>
+          </svg>
+        </div>
+        <div>
+          <h3 id="h-pisos">¿Abajo o arriba?</h3>
+          <p>Las dos cabañas para 3 son casi gemelas por dentro. Lo que cambia es el piso. Elegí y mirá la diferencia.</p>
+          <div class="switch" role="group" aria-label="Elegir planta">
+            <button type="button" data-piso="pb" aria-pressed="true">Planta baja</button>
+            <button type="button" data-piso="pa" aria-pressed="false">Planta alta</button>
+          </div>
+          <div class="pisos-detalle" id="pisosDet" aria-live="polite"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="entre arboleda arb-a" aria-hidden="true"></div>
+
+  <!-- CLARO 2 · SERVICIOS -->
+  <section class="claro alt" id="servicios" aria-labelledby="h-serv">
+    <div class="claro-in">
+      <p class="paso-claro">Lo que ya viene incluido</p>
+      <h2 id="h-serv">Mucama todos los días y el desayuno en la mesa de la cabaña</h2>
+      <div class="serv">
+        <div>
+          <ul class="serv-lista">
+            <li><b>Desayuno en la cabaña</b><span>Continental o seco, a elección.</span></li>
+            <li><b>Mucama diaria</b><span>Servicio de limpieza todos los días.</span></li>
+            <li><b>Ropa blanca</b><span>Con cambio diario de toallas.</span></li>
+            <li><b>Para la playa</b><span>Reposeras y toallas.</span></li>
+            <li><b>Wi-Fi y Netflix</b><span>En todas las cabañas.</span></li>
+            <li><b>Estacionamiento</b><span>Descubierto y sin cargo, dentro del predio.</span></li>
+            <li><b>Seguridad</b><span>Alarma monitoreada y caja de seguridad.</span></li>
+            <li><b>Lavado de ropa</b><span>Disponible, con cargo adicional.</span></li>
+          </ul>
+          <p class="no"><b>Para cuidar el silencio:</b> no se admiten mascotas, cuatriciclos ni motos de agua.</p>
+        </div>
+        <div class="mosaico" id="mosaico"></div>
+      </div>
+    </div>
+  </section>
+  <div class="entre arboleda arb-a" aria-hidden="true"></div>
+
+  <!-- CLARO 3 · SILENCIO (RESERVA) -->
+  <section class="claro" id="reservar" aria-labelledby="h-res">
+    <div class="claro-in">
+      <p class="paso-claro">Silencio...</p>
+      <h2 id="h-res">Temporada 2026-2027, con fechas y precios a la vista</h2>
+      <p class="intro">Así se vería la tarifa por noche de cada cabaña, con el desayuno incluido. <span class="nota-ej">Montos de ejemplo</span> Las estadías mínimas también son de ejemplo: las define el complejo.</p>
+      <div class="tabla-wrap">
+        <table class="tarifas" id="tablaTarifas">
+          <caption class="sr">Tarifas de ejemplo por noche, por temporada y tipología</caption>
+          <thead><tr><th scope="col">Temporada</th><th scope="col">PB o PA (hasta 3)</th><th scope="col">Apart parejas</th><th scope="col">Mínimo</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div class="reserva">
+        <div class="cal-box">
+          <div class="cal-head">
+            <h3>Disponibilidad <span class="puntos" aria-hidden="true"><i></i><i></i><i></i></span></h3>
+            <div class="cal-nav">
+              <button type="button" id="calAnt" aria-label="Meses anteriores">&#8249;</button>
+              <button type="button" id="calSig" aria-label="Meses siguientes">&#8250;</button>
+            </div>
+          </div>
+          <p style="font-size:14px;color:var(--tinta2);margin:-4px 0 14px" id="calAyuda">Tocá el día de llegada y después el de salida. Se muestra la ocupación de: <b id="calUnidad">Cabaña planta baja</b>.</p>
+          <div class="meses" id="meses"></div>
+          <div class="leyenda" id="leyenda"></div>
+          <p class="sync">
+            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 13.7-5.6L20 4v6h-6l2.3-2.3A6 6 0 0 0 6 12zm16 0a8 8 0 0 1-13.7 5.6L4 20v-6h6l-2.3 2.3A6 6 0 0 0 18 12z" fill="#5C7352"/></svg>
+            <span><b>Se sincroniza con Booking y Airbnb: no hay dobles reservas.</b> Cuando entra una reserva por cualquier canal, esas noches se bloquean acá solas. (Ocupación de ejemplo.)</span>
+          </p>
+        </div>
+
+        <aside class="sim" aria-labelledby="h-sim">
+          <h3 id="h-sim">Tu estadía</h3>
+          <p class="sub">Simulador de reserva directa (demo)</p>
+          <div class="campo">
+            <label for="personas">Personas</label>
+            <select id="personas"><option value="1">1 persona</option><option value="2" selected>2 personas</option><option value="3">3 personas</option></select>
+          </div>
+          <div class="campo">
+            <label for="unidad">Cabaña</label>
+            <select id="unidad"></select>
+          </div>
+          <div class="campo">
+            <span class="lbl">Fechas</span>
+            <div class="fechas">
+              <div><small>Llegada</small><span id="fIn">Elegila en el calendario</span></div>
+              <div><small>Salida</small><span id="fOut">—</span></div>
+            </div>
+          </div>
+          <div class="desglose" id="desglose" aria-live="polite"><span style="color:var(--helecho)">Elegí las fechas para ver el total.</span></div>
+          <div class="total"><span>Total</span><strong id="total">$ 0</strong></div>
+          <div class="sena"><span>Seña del 30% por Mercado Pago (demo)</span><b id="sena">$ 0</b></div>
+          <p class="msg" id="msg" role="status"></p>
+          <button type="button" class="btn btn-a" id="btnReservar" disabled>Reservar y pagar la seña</button>
+          <p class="mp">Pago de demostración: no se cobra ni se envía nada.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+  <div class="entre arboleda arb-a" aria-hidden="true"></div>
+
+  <!-- CLARO 4 · COMO ENCONTRARNOS -->
+  <section class="claro alt" id="llegar" aria-labelledby="h-lleg">
+    <div class="claro-in">
+      <p class="paso-claro">Se llama Escondida por algo</p>
+      <h2 id="h-lleg">Cómo encontrarnos, paso a paso</h2>
+      <p class="intro">La cortada no es una calle de paso: por eso el silencio, y por eso conviene llegar con el camino a mano. Tocá cada paso y el sendero se dibuja en el esquema.</p>
+      <div class="ruta">
+        <div>
+          <ol class="pasos" id="pasos">
+            <li><button type="button" data-paso="1" aria-current="step"><span class="num">1</span><span><b>Desde Villa Gesell, hacia el sur</b><span class="t">Mar de las Pampas queda a unos 8 km de Villa Gesell, siguiendo la costa hacia el sur.</span></span></button></li>
+            <li><button type="button" data-paso="2"><span class="num">2</span><span><b>Entrás a Mar de las Pampas</b><span class="t">Desde acá empiezan el bosque y las calles de arena: velocidad de paseo.</span></span></button></li>
+            <li><button type="button" data-paso="3"><span class="num">3</span><span><b>Buscá la calle Querandíes</b><span class="t">Es el acceso a la cortada. Con el GPS de abajo llegás sin vueltas.</span></span></button></li>
+            <li><button type="button" data-paso="4"><span class="num">4</span><span><b>Cortada Yaganes: llegaste</b><span class="t">Una calle corta entre los pinos. Al final, los edificios de ladrillo con piedra y madera.</span></span></button></li>
+          </ol>
+          <div class="dir">
+            <b>Cortada Yaganes, acceso por Querandíes</b>
+            <span>Mar de las Pampas, Buenos Aires</span>
+            <span style="font-size:14px;color:var(--tinta2)">GPS: −37.328031, −57.026431</span>
+            <div class="acc">
+              <a class="btn btn-l" href="https://www.google.com/maps/search/?api=1&amp;query=-37.328031%2C-57.026431" target="_blank" rel="noopener">Abrir en Google Maps</a>
+              <button type="button" class="btn btn-o" id="copiarGps">Copiar coordenadas</button>
+            </div>
+          </div>
+        </div>
+        <div class="plano">
+          <svg viewBox="0 0 600 520" role="img" aria-labelledby="plano-t plano-d" id="planoSvg">
+            <title id="plano-t">Esquema de llegada a Escondida en el Bosque</title>
+            <desc id="plano-d">Esquema sin escala: Villa Gesell al norte, la costa al este, Mar de las Pampas al sur con su bosque, la calle Querandíes y la Cortada Yaganes.</desc>
+            <defs>
+              <pattern id="pinar" width="26" height="26" patternUnits="userSpaceOnUse"><path d="M13 3 L20 20 H6Z" fill="#9DB08A" opacity=".55"/></pattern>
+            </defs>
+            <rect width="600" height="520" fill="#F5EFE2"/>
+            <path d="M470 0 C 450 120, 500 220, 470 330 S 480 470, 460 520 L600 520 L600 0Z" fill="#C9D6D4"/>
+            <path d="M470 0 C 450 120, 500 220, 470 330 S 480 470, 460 520" fill="none" stroke="#E7DABF" stroke-width="18" opacity=".9"/>
+            <g fill="#7F9AA0" font-family="Sintony, sans-serif" font-size="13" letter-spacing="3"><text x="530" y="260" transform="rotate(90 530 260)">MAR ARGENTINO</text></g>
+            <rect x="120" y="20" width="300" height="110" rx="10" fill="#E2D7C1"/>
+            <g stroke="#CFC2A6" stroke-width="2"><path d="M140 50h260M140 80h260M140 110h260M180 30v95M240 30v95M300 30v95M360 30v95"/></g>
+            <text x="270" y="74" text-anchor="middle" font-family="Ovo, serif" font-size="24" fill="#20251F">Villa Gesell</text>
+            <path d="M70 318 C 140 300, 300 300, 450 318 L 455 510 L 65 510Z" fill="url(#pinar)"/>
+            <text x="96" y="300" font-family="Ovo, serif" font-size="22" fill="#2A4536">Mar de las Pampas</text>
+            <path class="base" d="M270 130 C 268 190, 290 230, 300 300" fill="none" stroke="#D8CBB0" stroke-width="10" stroke-linecap="round"/>
+            <path class="base" d="M300 300 C 305 330, 300 350, 300 372" fill="none" stroke="#D8CBB0" stroke-width="8" stroke-linecap="round"/>
+            <path class="base" d="M300 372 H 190" fill="none" stroke="#D8CBB0" stroke-width="8" stroke-linecap="round"/>
+            <path class="base" d="M215 372 V 440" fill="none" stroke="#D8CBB0" stroke-width="6" stroke-linecap="round" stroke-dasharray="2 9"/>
+            <path class="seg" id="seg1" d="M270 130 C 268 190, 290 230, 300 300"/>
+            <path class="seg" id="seg2" d="M300 300 C 305 330, 300 350, 300 372"/>
+            <path class="seg" id="seg3" d="M300 372 H 215"/>
+            <path class="seg" id="seg4" d="M215 372 V 440"/>
+            <g font-family="Sintony, sans-serif" font-size="13" fill="#4A4E44" stroke="#F5EFE2" stroke-width="4" paint-order="stroke">
+              <text x="290" y="200">unos 8 km</text>
+              <text class="hito" id="h3t" x="222" y="364">Querandíes</text>
+              <text class="hito" id="h4t" x="226" y="420">Cortada Yaganes</text>
+            </g>
+            <g class="hito" id="pin" transform="translate(215 446)">
+              <circle r="15" fill="#9C4F33"/><circle r="5" fill="#FFFDF8"/>
+            </g>
+            <g class="hito" id="pinTxt" font-family="Ovo, serif" font-size="18" fill="#9C4F33" stroke="#F5EFE2" stroke-width="4" paint-order="stroke"><text x="238" y="468">Escondida</text></g>
+            <g transform="translate(60 70)" font-family="Sintony, sans-serif" font-size="12" fill="#857E72">
+              <path d="M0 -24 L8 0 L0 -6 L-8 0Z" fill="#857E72"/><text x="0" y="16" text-anchor="middle">N</text>
+            </g>
+          </svg>
+          <div class="plano-pie"><span>Esquema sin escala, orientativo. Distancia según su web.</span><span id="pasoTxt">Paso 1 de 4</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="entre arboleda arb-a" aria-hidden="true"></div>
+
+  <!-- CLARO 5 · MAR -->
+  <section class="claro" id="mdp" aria-labelledby="h-mdp" style="background:var(--papel2)">
+    <div class="claro-in">
+      <p class="paso-claro">Mar...</p>
+      <h2 id="h-mdp">Mar de las Pampas, la “ciudad sin prisa”</h2>
+      <p class="intro">Así la describen en su propia web: bosque de pinos, acacias, eucaliptos y cipreses plantados por el hombre, calles de arena y una playa ancha.</p>
+      <div class="mdp">
+        <div>
+          <ul class="indice">
+            <li><b>El bosque y las calles de arena</b><em>en la puerta</em><span>Caminatas, bicicleta, paseos a caballo y en sulky, sin asfalto ni apuro.</span></li>
+            <li><b>La playa</b><em>Mar de las Pampas</em><span>Playa ancha para la reposera (las ponen ellos) y, para los activos, windsurf, wakeboard y natación.</span></li>
+            <li><b>El centro comercial</b><em>Juan de Garay · Juan Forn · Lynch</em><span>Casas de té, restaurantes, tiendas y artesanos entre los árboles.</span></li>
+            <li><b>Mar Azul y Las Gaviotas</b><em>a pocos km</em><span>Los balnearios vecinos, todavía más tranquilos, para una tarde distinta.</span></li>
+            <li><b>Villa Gesell</b><em>a 8 km</em><span>Para cuando haga falta movimiento, compras o una salida de noche.</span></li>
+            <li><b>Faro Querandí y la Reserva Dunícola</b><em>~25 km, en 4x4</em><span>Médanos, playa virgen y el faro: se llega con excursión en 4x4. También hay sandboard en los médanos.</span></li>
+          </ul>
+          <p class="sello"><b>Candidata 2026 a Best Tourism Villages de ONU Turismo.</b> Mar de las Pampas fue postulada a la distinción de pueblos turísticos de la Organización Mundial del Turismo.</p>
+          <p class="clima">Clima según su web: templado, con máximas de verano de hasta unos 33 °C; inviernos frescos y ventosos, de 2 a 17 °C. Para eso está la losa radiante.</p>
+        </div>
+        <div class="mdp-fotos" id="mdpFotos"></div>
+      </div>
+    </div>
+  </section>
+  <div class="entre arboleda arb-a" aria-hidden="true"></div>
+
+  <!-- CLARO 6 · FAQ -->
+  <section class="claro alt" id="faq" aria-labelledby="h-faq">
+    <div class="claro-in">
+      <p class="paso-claro">Antes de venir</p>
+      <h2 id="h-faq">Preguntas frecuentes</h2>
+      <p class="intro"><span class="tag web">De su web</span> es lo que el complejo ya publica. <span class="tag conf">A confirmar</span> es lo que hay que completar con ellos.</p>
+      <div class="faq">
+        <details><summary>¿Puedo ir con mi mascota? <span class="tag web">De su web</span></summary><div class="r">No. El complejo no admite mascotas (tampoco cuatriciclos ni motos de agua).</div></details>
+        <details><summary>¿Hay ropa blanca y limpieza? <span class="tag web">De su web</span></summary><div class="r">Sí: ropa blanca con cambio diario de toallas y servicio de mucama todos los días. Para la playa hay reposeras y toallas. El lavado de ropa personal tiene un cargo adicional.</div></details>
+        <details><summary>¿El desayuno está incluido? <span class="tag web">De su web</span></summary><div class="r">Se sirve en la cabaña, continental o seco, a elección.</div></details>
+        <details><summary>¿Cómo se calefaccionan en invierno? <span class="tag web">De su web</span></summary><div class="r">Con losa radiante. El hogar de piedra para leños queda como un detalle de ambiente. También tienen aire acondicionado frío/calor.</div></details>
+        <details><summary>¿A qué hora es el check-in y el check-out? <span class="tag conf">A confirmar</span></summary><div class="r">Su web no publica horarios. En la versión final se muestran acá y en el mail de confirmación de cada reserva.</div></details>
+        <details><summary>¿Hay estadía mínima? <span class="tag conf">A confirmar</span></summary><div class="r">No la publican. En este prototipo usamos mínimos de ejemplo por temporada (se ven en la tabla de tarifas) y el simulador los valida solo.</div></details>
+        <details><summary>¿Cómo se paga la seña y qué pasa si cancelo? <span class="tag conf">A confirmar</span></summary><div class="r">En la propuesta, la reserva se confirma con una seña del 30% por Mercado Pago y el saldo se abona al llegar. La política de cancelación la define el complejo y se muestra antes de pagar.</div></details>
+        <details><summary>¿Hay estacionamiento? <span class="tag web">De su web</span></summary><div class="r">Sí, descubierto y sin cargo, dentro del predio.</div></details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="pie" id="contacto">
+  <div class="pie-in">
+    <div>
+      <p class="paso-claro" style="color:var(--helecho)">Escribinos</p>
+      <h2>¿Te guardamos unas noches en el bosque?</h2>
+      <p>Consultas, fechas especiales o la promo de los fines de semana largos: respondemos por WhatsApp o por mail.</p>
+    </div>
+    <div class="contactos">
+      <a href="https://wa.me/5491157385960?text=Hola%2C%20quiero%20consultar%20por%20una%20estad%C3%ADa%20en%20Escondida%20en%20el%20Bosque" target="_blank" rel="noopener"><span><small>Teléfono / WhatsApp</small><span class="v">(011) 15-5738-5960</span></span><span aria-hidden="true">&#8599;</span></a>
+      <a href="tel:+5491157385959"><span><small>Teléfono</small><span class="v">(011) 15-5738-5959</span></span><span aria-hidden="true">&#8599;</span></a>
+      <a href="mailto:info@escondidaenelbosque.com.ar"><span><small>Mail</small><span class="v">info@escondidaenelbosque.com.ar</span></span><span aria-hidden="true">&#8599;</span></a>
+      <a href="https://www.booking.com/hotel/ar/escondida-en-el-bosque.html" target="_blank" rel="noopener"><span><small>También en</small><span class="v">Booking.com</span></span><span aria-hidden="true">&#8599;</span></a>
+    </div>
+  </div>
+  <div class="pie-legal">
+    <span><strong>Prototipo de demostración preparado para Escondida en el Bosque.</strong> Precios, disponibilidad y pago son de ejemplo.</span>
+    <span>Fotos y datos: escondidaenelbosque.com.ar · Cortada Yaganes, Mar de las Pampas</span>
+  </div>
+</footer>
+
+<div class="movil" aria-label="Acciones rápidas">
+  <a class="btn btn-a" href="#reservar">Reservar</a>
+  <a class="btn btn-o" style="color:var(--arena)" href="https://wa.me/5491157385960" target="_blank" rel="noopener">WhatsApp</a>
+</div>
+
+<div class="capa" id="modal" role="dialog" aria-modal="true" aria-labelledby="m-t">
+  <div class="modal-fondo" data-cerrar></div>
+  <div class="modal">
+    <button type="button" class="cerrar" data-cerrar aria-label="Cerrar">&times;</button>
+    <h3 id="m-t">Reserva lista para confirmar</h3>
+    <p style="color:var(--tinta2);font-size:15px">Así vería el huésped el resumen antes de pagar la seña.</p>
+    <dl id="m-dl"></dl>
+    <p class="demo"><b>Demo:</b> no se envió ningún dato ni se cobró nada. En la versión real, este paso abre Mercado Pago y bloquea las fechas en Booking y Airbnb.</p>
+    <div class="acc">
+      <button type="button" class="btn btn-l" data-cerrar>Entendido</button>
+      <a class="btn btn-o" id="m-wa" href="https://wa.me/5491157385960" target="_blank" rel="noopener" style="color:var(--pino)">Consultar por WhatsApp</a>
+    </div>
+  </div>
+</div>
+
+<div class="capa visor" id="visor" role="dialog" aria-modal="true" aria-label="Visor de fotos">
+  <figure>
+    <img id="v-img" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" alt="">
+    <figcaption id="v-cap"></figcaption>
+  </figure>
+  <button type="button" class="vb ant" id="v-ant" aria-label="Foto anterior">&#8249;</button>
+  <button type="button" class="vb sig" id="v-sig" aria-label="Foto siguiente">&#8250;</button>
+  <button type="button" class="vb cer" id="v-cer" aria-label="Cerrar visor">&times;</button>
+</div>
+
+<script>
+(function(){
+"use strict";
+var B="https://escondidaenelbosque.com.ar/img0/";
+var UNITS=[
+ {id:"pb",nombre:"Cabaña planta baja",largo:"Cabaña para 3 personas en planta baja",cap:3,cap2:"Hasta 3 personas",
+  chips:["Hasta 3 personas","Dos ambientes","Vista al frente"],
+  lista:[["Dormitorio","Amplio, admite sommier king size; área de lavado integrada"],["Living","Sillón cama para la tercera persona, TV LCD y DVD"],["Cocina","Equipada: horno eléctrico, microondas, vajilla y cafetera"],["Baño","Completo, ducha amplia y bañera con hidromasaje"],["Afuera","Deck de madera con parrilla y muebles de jardín"]],
+  fotos:[["tipologia/05042015225127deeb61d1pbaja.jpg","Cabaña en planta baja",640,427],["slider/05042015221435765c3571cama2.jpg","Dormitorio de planta baja",960,420],["tipologia/070420152256558ead0751pb_img01.jpg","Planta baja",640,427],["tipologia/070420152301519851f32apb_img02.jpg","Planta baja",640,427],["tipologia/07042015230553c06b602fpb_img03.jpg","Planta baja",640,427],["tipologia/070420152309146b761987pb_img3.jpg","Planta baja",640,427],["tipologia/0704201523112304fa065apb_img04.jpg","Planta baja",640,427],["tipologia/0704201523583384c3cbb3pb_img05.jpg","Planta baja",640,427],["galery/080420150006162cb9a99basador.jpg","Asador de planta baja",800,600]]},
+ {id:"pa",nombre:"Cabaña planta alta",largo:"Cabaña para 3 personas en planta alta",cap:3,
+  chips:["Hasta 3 personas","Dos ambientes","Vista al frente"],
+  lista:[["Dormitorio","Cama king size de 2 x 2 m, área de lavado integrada y amplio guardado"],["Living","Sillón cama para la tercera persona, TV LCD y DVD"],["Cocina","Completa: microondas, horno eléctrico, vajilla y cafetera"],["Baño","Completo, ducha grande y bañera con hidromasaje; antebaño"],["Afuera","Deck de madera con parrilla y muebles de jardín"]],
+  fotos:[["tipologia/0504201522564049356673palta.jpg","Cabaña en planta alta",640,427],["slider/05042015221236f5081005cama1.jpg","Dormitorio de planta alta",960,420],["tipologia/05042015231322f136e8fepa_img01.jpg","Mesa de desayuno",640,427],["tipologia/0504201523213687b255a2pa_img02.jpg","Dormitorio",640,427],["tipologia/0504201523223927d767a0pa_img03.jpg","Antebaño",640,427],["tipologia/05042015232345221c2e68pa_img04.jpg","Baño con hidromasaje",640,427],["tipologia/0504201523251209951385pa_img05.jpg","Vista del living desde el dormitorio",640,427],["tipologia/0504201523275887140dd0pa_img06.jpg","Living",640,427]]},
+ {id:"ap",nombre:"Apart para parejas",largo:"Apart para parejas",cap:2,
+  chips:["Para parejas","Loft de 40 m²","Vista al bosque"],
+  lista:[["Ambiente","Loft amplio de 40 m² con cama king size"],["Baño","Completo, y bañera de hidromasaje de 1,80 x 1,50 m"],["Cocina","Kitchenette con comedor: mesa para dos"],["Estar","Hogar de piedra para leños, TV LCD y DVD"],["Afuera","Deck en voladizo con vista al bosque y parrilla"]],
+  fotos:[["tipologia/05042015230104012af717apart.jpg","Apart para parejas",640,427],["tipologia/070420152338352eaccb63apart_01.jpg","Hidromasaje",640,427],["tipologia/070420152342558bd5a658apart_02.jpg","Antebaño",640,427],["tipologia/0704201523473393a25edfapart_03.jpg","Kitchenette",640,427],["tipologia/0704201523493231eba9cdapart_04.jpg","Mesa para dos",640,427],["tipologia/070420152351215fcbb656apart_05.jpg","Dormitorio",640,427],["tipologia/0704201523545584bb4be1apart_06.jpg","Hogar",640,427],["galery/080420150008391f9b7028balcon.jpg","Balcón del apart",800,600]]}
+];
+var SEASONS=[
+ {id:"carn",nombre:"Carnaval 2027",fechas:"Sáb 6 a mar 9 de febrero",r:[["2027-02-06","2027-02-09"]],p:{pb:170000,pa:170000,ap:142000},min:3,c:"#7A2E1C"},
+ {id:"ss",nombre:"Semana Santa 2027",fechas:"Jue 25 a dom 28 de marzo",r:[["2027-03-25","2027-03-27"]],p:{pb:110000,pa:110000,ap:92000},min:3,c:"#6E4B2F"},
+ {id:"ffll",nombre:"Fines de semana largos",fechas:"20 al 22 de noviembre 2026 · 2 al 4 de abril 2027 · mayo 2027, según calendario oficial",r:[["2026-11-20","2026-11-21"],["2027-04-02","2027-04-03"]],p:{pb:98000,pa:98000,ap:82000},min:2,c:"#B9643F"},
+ {id:"inv",nombre:"Vacaciones de invierno",fechas:"19 al 30 de julio 2027 (aprox., PBA)",r:[["2027-07-19","2027-07-30"]],p:{pb:92000,pa:92000,ap:78000},min:3,c:"#7F9AA0"},
+ {id:"fies",nombre:"Navidad y Año Nuevo",fechas:"22 de diciembre 2026 al 2 de enero 2027",r:[["2026-12-22","2027-01-01"]],p:{pb:150000,pa:150000,ap:125000},min:3,c:"#A88A3C"},
+ {id:"e1",nombre:"Enero, 1.ª quincena",fechas:"2 al 16 de enero 2027",r:[["2027-01-02","2027-01-15"]],p:{pb:168000,pa:168000,ap:140000},min:4,c:"#9C4F33"},
+ {id:"e2",nombre:"Enero, 2.ª quincena",fechas:"16 al 31 de enero 2027",r:[["2027-01-16","2027-01-31"]],p:{pb:160000,pa:160000,ap:134000},min:4,c:"#9C4F33"},
+ {id:"f1",nombre:"Febrero, 1.ª quincena",fechas:"1 al 15 de febrero 2027 (sin Carnaval)",r:[["2027-02-01","2027-02-14"]],p:{pb:145000,pa:145000,ap:120000},min:3,c:"#C07A55"},
+ {id:"f2",nombre:"Febrero, 2.ª quincena",fechas:"15 al 28 de febrero 2027",r:[["2027-02-15","2027-02-28"]],p:{pb:118000,pa:118000,ap:98000},min:2,c:"#D3A07E"},
+ {id:"baja",nombre:"Temporada baja",fechas:"El resto del año",r:[],p:{pb:78000,pa:78000,ap:65000},min:2,c:"#5C7352"}
+];
+var ALTA={e1:1,e2:1,f1:1,carn:1,fies:1};
+var $=function(s,c){return (c||document).querySelector(s)};
+var $$=function(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s))};
+var money=function(n){return "$ "+Math.round(n).toLocaleString("es-AR")};
+function pad(n){return (n<10?"0":"")+n}
+function key(d){return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())}
+function fromKey(k){var a=k.split("-");return new Date(+a[0],+a[1]-1,+a[2])}
+function addDays(d,n){var x=new Date(d.getFullYear(),d.getMonth(),d.getDate()+n);return x}
+var fmtLargo=function(d){return d.toLocaleDateString("es-AR",{weekday:"short",day:"numeric",month:"short",year:"numeric"})};
+function seasonOf(k){
+  for(var i=0;i<SEASONS.length;i++){var s=SEASONS[i];for(var j=0;j<s.r.length;j++){if(k>=s.r[j][0]&&k<=s.r[j][1])return s}}
+  return SEASONS[SEASONS.length-1];
+}
+function imgTag(f,alt,g,cap,eager){
+  return '<button type="button" class="zoom" data-g="'+g+'" data-cap="'+cap.replace(/"/g,"&quot;")+'" aria-label="Ampliar foto: '+cap.replace(/"/g,"&quot;")+'"><figure class="ph"><img src="'+B+f[0]+'" width="'+f[2]+'" height="'+f[3]+'" alt="'+alt.replace(/"/g,"&quot;")+'"'+(eager?'':' loading="lazy"')+'></figure></button>';
+}
+
+/* fichas */
+var fichasHTML=UNITS.map(function(u){
+  var main=u.fotos[0],rest=u.fotos.slice(1);
+  var desde=Math.min.apply(null,SEASONS.map(function(s){return s.p[u.id]}));
+  return '<article class="ficha" id="ficha-'+u.id+'" aria-labelledby="t-'+u.id+'">'+
+   '<div class="ficha-fotos">'+imgTag(main,u.largo+" en Escondida en el Bosque","u-"+u.id,main[1])+
+   '<div class="tira">'+rest.map(function(f){return '<div>'+imgTag(f,f[1]+" · "+u.nombre,"u-"+u.id,f[1])+'<figcaption>'+f[1]+'</figcaption></div>'}).join("")+'</div></div>'+
+   '<div class="ficha-txt"><p class="etiqueta">'+(u.id==="ap"?"Para dos":"Para tres")+'</p><h3 id="t-'+u.id+'">'+u.largo+'</h3>'+
+   '<p class="cap">'+u.chips.map(function(c){return "<span>"+c+"</span>"}).join("")+'</p>'+
+   '<ul class="lista">'+u.lista.map(function(l){return "<li><b>"+l[0]+"</b><span>"+l[1]+"</span></li>"}).join("")+'</ul>'+
+   '<p class="desde">Desde <strong>'+money(desde)+'</strong> por noche, con desayuno <span class="nota-ej" style="font-size:10px;padding:2px 8px;margin-left:4px">ejemplo</span></p>'+
+   '<a class="btn btn-l" href="#reservar" data-elegir="'+u.id+'">Ver fechas de esta cabaña</a></div></article>';
+}).join("");
+$("#fichas").innerHTML=fichasHTML;
+
+/* PB o PA */
+var PISOS={
+ pb:{t:"PLANTA BAJA",items:["A nivel del jardín: la opción para quien prefiere no subir escaleras.","En su galería aparece el asador de la planta baja, junto al deck.","Dormitorio amplio que admite sommier king size."],f:[["slider/05042015221435765c3571cama2.jpg","Dormitorio de planta baja",960,420],["galery/08042015000337360c22dfliving_pb.jpg","Living de planta baja",800,600]]},
+ pa:{t:"PLANTA ALTA",items:["En el piso de arriba del edificio de ladrillo: se sube por escalera.","Cama king de 2 x 2 m y amplio guardado en el dormitorio.","Antebaño y baño con hidromasaje, como muestra su galería."],f:[["slider/05042015221236f5081005cama1.jpg","Dormitorio de planta alta",960,420],["galery/07042015025937fb89c700living_pa.jpg","Living de planta alta",800,600]]}
+};
+function setPiso(p){
+  $$(".switch button").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.piso===p?"true":"false")});
+  $("#pisoPA").style.fill=p==="pa"?"#B9643F":"#5E3523";
+  $("#pisoPB").style.fill=p==="pb"?"#B9643F":"#5E3523";
+  $("#pisoTxt").textContent=PISOS[p].t;
+  var d=PISOS[p];
+  $("#pisosDet").innerHTML='<ul>'+d.items.map(function(i){return "<li>"+i+"</li>"}).join("")+'</ul>'+
+   '<p class="gemelas">En las dos: dos ambientes, vista al frente, sillón cama, cocina equipada, hidromasaje, hogar y deck con parrilla.</p>'+
+   '<div class="pisos-fotos">'+d.f.map(function(f){return '<div>'+imgTag(f,f[1],"piso-"+p,f[1])+'<figcaption>'+f[1]+'</figcaption></div>'}).join("")+'</div>'+
+   '<p><a class="btn btn-a" href="#reservar" data-elegir="'+p+'">Ver fechas en '+(p==="pb"?"planta baja":"planta alta")+'</a></p>';
+}
+$$(".switch button").forEach(function(b){b.addEventListener("click",function(){setPiso(b.dataset.piso)})});
+setPiso("pb");
+
+/* mosaico servicios */
+var MOS=[["slider/05042015221529d2f83f51desayuno.jpg","Desayuno continental",960,420],["galery/08042015001727da7e2148lateral.jpg","Lateral del complejo",800,600],["galery/08042015003403baf59c66desayuno2.jpg","Desayuno",800,600],["galery/08042015002103423a0f60fondo.jpg","El fondo, entre pinos",800,600],["bar/07042015162236ffcf731aacerca.jpg","Escondida en el Bosque",640,427]];
+$("#mosaico").innerHTML=MOS.map(function(f){return '<figure>'+imgTag(f,f[1],"complejo",f[1])+'</figure>'}).join("");
+
+/* fotos MdP */
+var MDP=[["slider/05042015221617a8be143fplaya.jpg","La playa",960,420,1],["slider/05042015221850cfdf35fccalle.jpg","El centro comercial",960,420,0],["slider/050420152217222a7585f7playa2.jpg","Playa",960,420,0],["galery/08042015004327e3168dbahuellas.jpg","Huellas en la playa",800,600,0],["galery/08042015004654769ca288mar.jpg","Mar y playa",800,600,0]];
+$("#mdpFotos").innerHTML=MDP.map(function(f){return '<div class="'+(f[4]?"ancha":"")+'">'+imgTag(f,f[1]+" · Mar de las Pampas","mdp",f[1])+'<figcaption>'+f[1]+'</figcaption></div>'}).join("");
+
+/* errores de imagen: placeholder limpio */
+function marcarErr(img){img.classList.add("err")}
+$$("img").forEach(function(img){
+  if(img.complete&&img.naturalWidth===0&&img.src.indexOf("data:")!==0)marcarErr(img);
+  img.addEventListener("error",function(){marcarErr(img)});
+  img.addEventListener("load",function(){img.classList.remove("err")});
+});
+
+/* tabla tarifas */
+$("#tablaTarifas tbody").innerHTML=SEASONS.slice().sort(function(a,b){
+  var o=["fies","e1","e2","f1","carn","f2","ss","ffll","inv","baja"];return o.indexOf(a.id)-o.indexOf(b.id)
+}).map(function(s){
+  return '<tr><td><span class="tem"><i class="sw" style="background:'+s.c+'"></i>'+s.nombre+'</span><small>'+s.fechas+'</small></td><td class="n" data-l="PB o PA">'+money(s.p.pb)+'</td><td class="n" data-l="Apart">'+money(s.p.ap)+'</td><td class="n" data-l="Mínimo">'+s.min+' noches</td></tr>';
+}).join("");
+
+/* ocupación de ejemplo */
+var CAL_INI=new Date(2026,10,1), CAL_FIN=new Date(2027,8,30), HOY=new Date(2026,9,29);
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;var t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+var OCC={};
+UNITS.forEach(function(u,i){
+  var r=rng(1234+i*97),set={},d=new Date(CAL_INI);
+  while(d<=CAL_FIN){
+    var s=seasonOf(key(d)),prob=ALTA[s.id]?0.42:(s.id==="baja"?0.1:0.3);
+    if(r()<prob){var len=s.min+Math.floor(r()*3);for(var k=0;k<len;k++){set[key(addDays(d,k))]=1}d=addDays(d,len+1+Math.floor(r()*2))}
+    else d=addDays(d,1);
+  }
+  OCC[u.id]=set;
+});
+
+/* estado reserva */
+var st={u:"pb",pers:2,ini:null,fin:null,mes:0};
+var selU=$("#unidad"),selP=$("#personas");
+function renderUnidades(){
+  selU.innerHTML=UNITS.map(function(u){var ok=u.cap>=st.pers;return '<option value="'+u.id+'"'+(ok?"":" disabled")+(u.id===st.u?" selected":"")+'>'+u.nombre+(ok?"":" (hasta "+u.cap+")")+'</option>'}).join("");
+}
+function unidad(){for(var i=0;i<UNITS.length;i++)if(UNITS[i].id===st.u)return UNITS[i]}
+selP.addEventListener("change",function(){st.pers=+selP.value;if(unidad().cap<st.pers){st.u="pb";aviso("El apart es para parejas: te pasamos a la cabaña de planta baja, para 3.",false)}renderUnidades();validarSel();render()});
+selU.addEventListener("change",function(){st.u=selU.value;validarSel();render()});
+function validarSel(){if(st.ini&&st.fin&&!libre(st.ini,st.fin)){st.fin=null;aviso("Esas fechas están ocupadas en esta cabaña. Elegí otra salida.",false)}if(st.ini&&OCC[st.u][st.ini]){st.ini=null;st.fin=null}}
+function libre(a,b){var d=fromKey(a),e=fromKey(b);while(d<e){if(OCC[st.u][key(d)])return false;d=addDays(d,1)}return true}
+function noches(){if(!st.ini||!st.fin)return[];var r=[],d=fromKey(st.ini),e=fromKey(st.fin);while(d<e){r.push(key(d));d=addDays(d,1)}return r}
+var msgEl=$("#msg");
+function aviso(t,ok){msgEl.textContent=t;msgEl.className="msg"+(ok?" ok":"")}
+
+var DOW=["lu","ma","mi","ju","vi","sá","do"];
+function mesHTML(y,m){
+  var first=new Date(y,m,1),nd=new Date(y,m+1,0).getDate(),off=(first.getDay()+6)%7;
+  var h='<div class="mes"><h4>'+(function(t){return t.charAt(0).toUpperCase()+t.slice(1)})(first.toLocaleDateString("es-AR",{month:"long",year:"numeric"}))+'</h4><div class="grilla" role="grid">';
+  DOW.forEach(function(d){h+='<span class="dow" aria-hidden="true">'+d+'</span>'});
+  for(var i=0;i<off;i++)h+='<span></span>';
+  var nn=noches();
+  for(var dd=1;dd<=nd;dd++){
+    var dt=new Date(y,m,dd),k=key(dt),s=seasonOf(k),occ=!!OCC[st.u][k],past=dt<HOY;
+    var cls="dia";
+    if(k===st.ini)cls+=" ini";if(k===st.fin)cls+=" fin";
+    if(nn.indexOf(k)>0)cls+=" en-rango";
+    var esSalida=st.ini&&!st.fin&&k>st.ini&&libre(st.ini,k);
+    var dis=past||(occ&&!esSalida);
+    var lab=fmtLargo(dt)+", "+s.nombre+(occ?", ocupado":", libre");
+    h+='<button type="button" class="'+cls+'" data-k="'+k+'" style="--t:'+(s.id==="baja"?"transparent":s.c)+'"'+(dis?" disabled":"")+' aria-label="'+lab+'">'+dd+'</button>';
+  }
+  return h+'</div></div>';
+}
+function renderCal(){
+  var a=new Date(CAL_INI.getFullYear(),CAL_INI.getMonth()+st.mes,1),b=new Date(a.getFullYear(),a.getMonth()+1,1);
+  $("#meses").innerHTML=mesHTML(a.getFullYear(),a.getMonth())+mesHTML(b.getFullYear(),b.getMonth());
+  $("#calAnt").disabled=st.mes<=0;$("#calSig").disabled=st.mes>=9;
+  $("#calUnidad").textContent=unidad().nombre;
+  var vis={};$$("#meses .dia").forEach(function(el){vis[seasonOf(el.dataset.k).id]=1});
+  $("#leyenda").innerHTML=SEASONS.filter(function(s){return vis[s.id]}).map(function(s){return '<span><i class="sw" style="background:'+(s.id==="baja"?"transparent;box-shadow:inset 0 0 0 1px #857E72":s.c)+'"></i>'+s.nombre+'</span>'}).join("")+'<span><i class="sw" style="background:repeating-linear-gradient(135deg,rgba(133,126,114,.4) 0 3px,transparent 3px 6px)"></i>Ocupado</span>';
+}
+$("#meses").addEventListener("click",function(e){
+  var b=e.target.closest(".dia");if(!b||b.disabled)return;var k=b.dataset.k;
+  if(!st.ini||st.fin||k<=st.ini){st.ini=k;st.fin=null;aviso("Ahora tocá el día de salida.",true)}
+  else if(libre(st.ini,k)){st.fin=k;aviso("",true)}
+  else{st.ini=k;st.fin=null;aviso("Hay noches ocupadas en el medio: empezamos de nuevo desde este día.",false)}
+  render();
+});
+$("#calAnt").addEventListener("click",function(){if(st.mes>0){st.mes--;renderCal()}});
+$("#calSig").addEventListener("click",function(){if(st.mes<9){st.mes++;renderCal()}});
+
+var ultimoOK=false;
+function renderSim(){
+  $("#fIn").textContent=st.ini?fmtLargo(fromKey(st.ini)):"Elegila en el calendario";
+  $("#fOut").textContent=st.fin?fmtLargo(fromKey(st.fin)):"—";
+  var nn=noches(),u=unidad();
+  if(!nn.length){$("#desglose").innerHTML='<span style="color:var(--helecho)">'+(st.ini?"Falta la fecha de salida.":"Elegí las fechas para ver el total.")+'</span>';$("#total").textContent=money(0);$("#sena").textContent=money(0);$("#btnReservar").disabled=true;ultimoOK=false;return}
+  var grupos=[],tot=0;
+  nn.forEach(function(k){var s=seasonOf(k),p=s.p[u.id];tot+=p;var g=grupos[grupos.length-1];if(g&&g.s===s&&g.p===p)g.n++;else grupos.push({s:s,p:p,n:1})});
+  var sIni=seasonOf(nn[0]),min=sIni.min;
+  $("#desglose").innerHTML=grupos.map(function(g){return '<div class="fila"><span>'+g.n+' '+(g.n>1?"noches":"noche")+' · '+g.s.nombre+'</span><span>'+money(g.p*g.n)+'</span></div>'}).join("")+'<div class="fila" style="color:var(--helecho)"><span>'+u.nombre+' · '+st.pers+' '+(st.pers>1?"personas":"persona")+' · desayuno incluido</span><span>'+nn.length+' n.</span></div>';
+  $("#total").textContent=money(tot);$("#sena").textContent=money(tot*0.3);
+  if(nn.length<min){aviso("En "+sIni.nombre+" la estadía mínima de ejemplo es de "+min+" noches.",false);$("#btnReservar").disabled=true;ultimoOK=false}
+  else{aviso(nn.length+" noches disponibles en "+u.nombre+".",true);$("#btnReservar").disabled=false;ultimoOK={tot:tot,nn:nn.length,u:u}}
+}
+function render(){renderCal();renderSim()}
+renderUnidades();render();
+aviso("",true);
+
+$$("[data-elegir]").forEach(function(a){a.addEventListener("click",function(){var id=a.dataset.elegir;if(UNITS.filter(function(u){return u.id===id})[0].cap<st.pers){st.pers=2;selP.value="2"}st.u=id;renderUnidades();validarSel();render()})});
+document.addEventListener("click",function(e){var a=e.target.closest("#pisosDet [data-elegir]");if(!a)return;st.u=a.dataset.elegir;renderUnidades();validarSel();render()});
+
+/* modal */
+var modal=$("#modal"),lastFocus=null;
+function abrir(capa){lastFocus=document.activeElement;capa.classList.add("abierta");document.body.style.overflow="hidden";var f=capa.querySelector("button");if(f)f.focus()}
+function cerrar(capa){capa.classList.remove("abierta");document.body.style.overflow="";if(lastFocus&&lastFocus.focus)lastFocus.focus()}
+$("#btnReservar").addEventListener("click",function(){
+  if(!ultimoOK)return;var o=ultimoOK;
+  $("#m-dl").innerHTML='<dt>Cabaña</dt><dd>'+o.u.nombre+'</dd><dt>Personas</dt><dd>'+st.pers+'</dd><dt>Llegada</dt><dd>'+fmtLargo(fromKey(st.ini))+'</dd><dt>Salida</dt><dd>'+fmtLargo(fromKey(st.fin))+'</dd><dt>Noches</dt><dd>'+o.nn+'</dd><dt>Total (ejemplo)</dt><dd>'+money(o.tot)+'</dd><dt>Seña 30% · Mercado Pago (demo)</dt><dd>'+money(o.tot*0.3)+'</dd><dt>Saldo al llegar</dt><dd>'+money(o.tot*0.7)+'</dd>';
+  $("#m-wa").href="https://wa.me/5491157385960?text="+encodeURIComponent("Hola, quiero consultar por "+o.u.nombre+" del "+st.ini.split("-").reverse().join("/")+" al "+st.fin.split("-").reverse().join("/")+" para "+st.pers+" "+(st.pers>1?"personas":"persona")+".");
+  abrir(modal);
+});
+$$("[data-cerrar]",modal).forEach(function(b){b.addEventListener("click",function(){cerrar(modal)})});
+
+/* visor */
+var visor=$("#visor"),vImg=$("#v-img"),vCap=$("#v-cap"),grupo=[],idx=0;
+function mostrar(){var b=grupo[idx],img=b.querySelector("img");vImg.classList.remove("err");vImg.src=img.src;vImg.alt=img.alt;vCap.textContent=b.dataset.cap+"  ·  "+(idx+1)+" de "+grupo.length}
+vImg.addEventListener("error",function(){vImg.classList.add("err")});
+document.addEventListener("click",function(e){var b=e.target.closest(".zoom");if(!b)return;grupo=$$('.zoom[data-g="'+b.dataset.g+'"]');idx=grupo.indexOf(b);mostrar();abrir(visor)});
+function mover(n){idx=(idx+n+grupo.length)%grupo.length;mostrar()}
+$("#v-ant").addEventListener("click",function(){mover(-1)});$("#v-sig").addEventListener("click",function(){mover(1)});
+$("#v-cer").addEventListener("click",function(){cerrar(visor)});
+visor.addEventListener("click",function(e){if(e.target===visor)cerrar(visor)});
+document.addEventListener("keydown",function(e){
+  if(visor.classList.contains("abierta")){if(e.key==="Escape")cerrar(visor);else if(e.key==="ArrowLeft")mover(-1);else if(e.key==="ArrowRight")mover(1)}
+  else if(modal.classList.contains("abierta")&&e.key==="Escape")cerrar(modal);
+});
+
+/* cómo encontrarnos */
+$$(".plano .seg").forEach(function(p){var l=Math.ceil(p.getTotalLength?p.getTotalLength():300);p.style.setProperty("--len",l)});
+function paso(n){
+  $$("#pasos button").forEach(function(b){if(+b.dataset.paso===n)b.setAttribute("aria-current","step");else b.removeAttribute("aria-current")});
+  for(var i=1;i<=4;i++)$("#seg"+i).classList.toggle("on",i<=n);
+  $("#h3t").style.opacity=n>=3?1:.35;$("#h4t").style.opacity=n>=4?1:.35;
+  $("#pin").style.opacity=n>=4?1:.25;$("#pinTxt").style.opacity=n>=4?1:0;
+  $("#pasoTxt").textContent="Paso "+n+" de 4";
+}
+$$("#pasos button").forEach(function(b){b.addEventListener("click",function(){paso(+b.dataset.paso)})});
+paso(1);
+var visto=false;
+if("IntersectionObserver" in window){var io=new IntersectionObserver(function(en){en.forEach(function(x){if(x.isIntersecting&&!visto){visto=true;var n=1;var t=setInterval(function(){n++;if(n>4){clearInterval(t);return}paso(n)},900)}})},{threshold:.4});io.observe($("#planoSvg"))}
+$("#copiarGps").addEventListener("click",function(){
+  var b=this,txt="-37.328031, -57.026431";
+  try{navigator.clipboard.writeText(txt).then(function(){b.textContent="Copiadas"},function(){b.textContent=txt})}catch(err){b.textContent=txt}
+  setTimeout(function(){b.textContent="Copiar coordenadas"},2200);
+});
+
+/* dosel de pinos */
+var svg=$("#pinos"),NS="http://www.w3.org/2000/svg",r=rng(77),capas=[[],[],[]];
+var colores=["#24402F","#2C4A38","#1A2D24"];
+for(var c=0;c<3;c++){
+  var g=document.createElementNS(NS,"g");g.setAttribute("fill",colores[c]);g.setAttribute("opacity",c===0?".55":c===1?".8":"1");
+  var n=c===2?16:22;
+  for(var i=0;i<n;i++){
+    var lado=i%2?1:-1,x=lado<0?r()*430:1010+r()*430,base=860,h=(c===2?260:180)+r()*(c===2?360:300),w=h*(.28+r()*.1);
+    if(c===2&&r()<.5)x=r()*1440;
+    var p=document.createElementNS(NS,"path");
+    var y0=base-h;
+    p.setAttribute("d","M"+x+" "+y0+" L"+(x+w/2)+" "+(base-h*.45)+" L"+(x+w*.3)+" "+(base-h*.45)+" L"+(x+w*.62)+" "+base+" L"+(x-w*.62)+" "+base+" L"+(x-w*.3)+" "+(base-h*.45)+" L"+(x-w/2)+" "+(base-h*.45)+"Z");
+    p.dataset.lado=lado;g.appendChild(p);
+  }
+  if(c===2){var o=document.createElementNS(NS,"rect");o.setAttribute("x","0");o.setAttribute("y","846");o.setAttribute("width","1440");o.setAttribute("height","14");g.appendChild(o)}
+  svg.appendChild(g);capas[c]=g;
+}
+var reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches,tick=false;
+function abrirClaro(){
+  tick=false;var y=Math.min(window.scrollY,900);
+  capas.forEach(function(g,c){
+    $$("path",g).forEach(function(p){p.setAttribute("transform","translate("+(p.dataset.lado*y*(.12+c*.08))+" "+(y*(.05*(2-c)))+")")});
+  });
+}
+if(!reduce)window.addEventListener("scroll",function(){if(!tick){tick=true;requestAnimationFrame(abrirClaro)}},{passive:true});
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Escondida en el Bosque"></script>
+</body>
+</html>
