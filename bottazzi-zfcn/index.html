@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Bottazzi · Avistaje de ballenas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;700;800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* estructura base del motor (cada página la viste a su manera) */
+.bk-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.bk-dow{font-size:.72rem;text-align:center;opacity:.6;padding:4px 0}
+.bk-day{appearance:none;border:0;background:transparent;color:inherit;font:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:52px;padding:4px 2px;line-height:1.1}
+.bk-day b{font-size:1rem}.bk-day i{font-style:normal;font-size:.62rem;opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.bk-day small{font-size:.66rem;opacity:.7}.bk-day em{font-style:normal;font-size:.6rem;font-weight:700}
+.bk-day:disabled{cursor:not-allowed}.bk-day.is-off{opacity:.3}.bk-day.is-full{opacity:.45;text-decoration:line-through}
+.bk-cal-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;text-transform:capitalize}
+.bk-nav{appearance:none;border:0;background:transparent;color:inherit;font:inherit;font-size:1.4rem;cursor:pointer;width:40px;height:40px}
+.bk-strip{display:flex;gap:6px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;-webkit-overflow-scrolling:touch}
+.bk-strip .bk-day{flex:0 0 64px;scroll-snap-align:start}
+.bk-list{display:flex;flex-direction:column;gap:6px}
+.bk-row{display:grid;grid-template-columns:76px 1fr;gap:10px;align-items:center}
+.bk-row-d b{display:block;font-size:1.5rem;line-height:1}.bk-row-d span{font-size:.75rem;opacity:.7}
+.bk-row-h{display:flex;flex-wrap:wrap;gap:6px}
+.bk-slot,.bk-hora,.bk-lang{appearance:none;font:inherit;color:inherit;cursor:pointer;display:inline-flex;flex-direction:column;align-items:flex-start;padding:8px 12px;line-height:1.15}
+.bk-slot i,.bk-hora i{font-style:normal;font-size:.7rem;opacity:.75}
+.bk-slot:disabled,.bk-hora:disabled{opacity:.4;cursor:not-allowed;text-decoration:line-through}
+#horas,.bk-horas,[data-bk=horas],[data-bk=idioma]{display:flex;flex-wrap:wrap;gap:8px}
+.bk-pax-r{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 0}
+.bk-pax-r small{display:block;opacity:.7;font-size:.78rem}
+.bk-step{display:flex;align-items:center;gap:4px;flex:none}
+.bk-step button{appearance:none;font:inherit;color:inherit;cursor:pointer;width:38px;height:38px;font-size:1.2rem;line-height:1}
+.bk-step output{min-width:28px;text-align:center;font-weight:700}
+.bk-extra{display:flex;gap:10px;align-items:baseline;padding:6px 0;cursor:pointer}
+.bk-extra small{margin-left:auto;opacity:.75;white-space:nowrap}
+.bk-res-l{display:flex;justify-content:space-between;gap:12px;padding:5px 0}
+.bk-res-l b{text-align:right}
+.bk-ahorro,.bk-falta,.bk-ok{font-size:.82rem;margin:.6em 0 0}
+.bk-dl{margin:0;display:grid;gap:8px}.bk-dl div{display:grid;grid-template-columns:130px 1fr;gap:10px}.bk-dl dt{opacity:.7}.bk-dl dd{margin:0}
+.bk-inc{margin:.3em 0 0;padding-left:1.1em}.bk-inc-t{margin:1em 0 0;font-weight:700}
+.bk-tour{appearance:none;font:inherit;color:inherit;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:2px}
+.bk-tour-m,.bk-tour-p{font-size:.8rem;opacity:.8}
+.bk-modal{position:fixed;inset:0;background:rgba(10,20,30,.55);display:flex;align-items:center;justify-content:center;z-index:9999;padding:16px}
+.bk-mp{background:#fff;color:#2d3277;width:min(380px,100%);border-radius:10px;padding:20px;font-family:system-ui,-apple-system,sans-serif;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.bk-mp-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.bk-mp-logo{font-weight:800;color:#00a1e4;letter-spacing:-.02em;font-size:1.1rem}
+.bk-mp-demo{font-size:.66rem;background:#fff4cc;color:#6b5400;padding:3px 6px;border-radius:4px}
+.bk-mp-to{margin:0;color:#555;font-size:.85rem}.bk-mp-amt{font-size:2rem;font-weight:700;margin:4px 0;color:#222}.bk-mp-d{margin:0 0 12px;font-size:.8rem;color:#666}
+.bk-mp-opts{display:grid;gap:6px;margin-bottom:14px;font-size:.88rem;color:#333}
+.bk-mp-opts label{display:flex;gap:8px;padding:9px;border:1px solid #e3e3e3;border-radius:6px}
+.bk-mp-pay{width:100%;border:0;background:#009ee3;color:#fff;font-weight:700;padding:13px;border-radius:6px;font-size:1rem;cursor:pointer}
+.bk-mp-x{width:100%;border:0;background:transparent;color:#009ee3;padding:10px;cursor:pointer;font-size:.9rem}
+[data-bk=wa]{text-decoration:none}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid currentColor;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+[hidden]{display:none!important}
+
+:root{--golfo:#16323f;--hondo:#0c2029;--acant:#d9b77e;--arena:#f4ecdf;--espuma:#fbfaf7;--senal:#d8432c;--gris:#6d7f86}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--espuma);color:var(--hondo);font-family:"Instrument Sans",system-ui,sans-serif;font-size:16.5px;line-height:1.55;overflow-x:hidden}
+h1,h2,h3,.sy{font-family:Syne,sans-serif;font-weight:800;line-height:.95;margin:0;letter-spacing:-.02em}
+a{color:inherit}
+.demo{background:var(--acant);color:var(--hondo);text-align:center;font-size:.8rem;padding:7px 16px;font-weight:600}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);min-height:86vh}
+.split.solo{grid-template-columns:1fr;min-height:70vh}.split.solo h1{font-size:clamp(2.8rem,7vw,6.4rem);max-width:1000px}
+.split .txt{background:var(--golfo);color:var(--arena);padding:28px 48px 48px;display:flex;flex-direction:column}
+.brand{display:flex;justify-content:space-between;align-items:center;font-family:Syne;font-weight:700}
+.brand small{font-family:"Instrument Sans";font-weight:500;opacity:.7}
+.split h1{font-size:clamp(2.6rem,4.6vw,4.6rem);margin-top:auto;color:#fff}
+.split h1 span{display:block;color:var(--acant)}
+.split p{max-width:440px;opacity:.9;margin:20px 0 26px}
+.horas{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+.horas span{border:1px solid rgba(244,236,223,.35);padding:6px 12px;border-radius:2px;font-size:.92rem}
+.cta{display:inline-flex;background:var(--senal);color:#fff;padding:15px 24px;text-decoration:none;font-weight:600;border-radius:2px;width:max-content}
+.split .img{position:relative;background:var(--hondo);overflow:hidden}
+.split .img img{width:100%;height:100%;object-fit:cover;display:block}
+.split .img figcaption{position:absolute;left:16px;bottom:16px;background:rgba(12,32,41,.7);color:#fff;padding:6px 10px;font-size:.8rem}
+/* temporada */
+.temp{padding:70px 0 56px}
+.wrap{max-width:1160px;margin:0 auto;padding:0 28px}
+.temp-g{display:grid;grid-template-columns:1fr 1.5fr;gap:48px;align-items:end}
+.temp h2{font-size:clamp(2.2rem,4.4vw,3.6rem)}
+.meses{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:4px;align-items:end;height:200px}
+.mes{display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;gap:6px}
+.mes i{display:block;width:100%;background:var(--golfo);border-radius:2px 2px 0 0}
+.mes.off i{background:#d8dfe1}
+.mes span{font-size:.72rem;color:var(--gris)}
+.mes.pico i{background:var(--senal)}
+.temp .nota{font-size:.88rem;color:var(--gris);margin-top:12px}
+/* flota: scroll horizontal */
+.flota{background:var(--arena);padding:60px 0}
+.flota-h{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:22px}
+.flota h2{font-size:clamp(2rem,4vw,3.2rem)}
+.rail{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 28px 14px;max-width:100vw}
+.rail figure{flex:0 0 min(78vw,380px);margin:0;scroll-snap-align:start}
+.rail img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;background:var(--golfo)}
+.rail figcaption{font-family:Syne;font-weight:700;margin-top:8px}
+.rail figcaption small{display:block;font-family:"Instrument Sans";font-weight:400;color:var(--gris)}
+/* reservar */
+.reserva{padding:70px 0}
+.reserva-g{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:40px;align-items:start}
+.reserva h2{font-size:clamp(2.2rem,4.4vw,3.6rem);margin-bottom:10px}
+.lbl{font-family:Syne;font-weight:700;font-size:1.05rem;margin:26px 0 10px;display:flex;gap:10px;align-items:baseline}
+.lbl em{font-style:normal;color:var(--senal)}
+[data-bk=tours]{display:flex;gap:8px;flex-wrap:wrap}
+.bk-tour{border:1.5px solid var(--hondo);background:transparent;padding:10px 14px;border-radius:2px}
+.bk-tour.is-on{background:var(--hondo);color:#fff}
+.bk-list{border-top:1px solid #d7d1c6}
+.bk-row{border-bottom:1px solid #d7d1c6;padding:8px 0}
+.bk-row-d b{font-family:Syne}
+.bk-slot{border:1.5px solid #c9c2b5;background:#fff;border-radius:2px;min-width:92px}
+.bk-slot.is-few i{color:var(--senal);font-weight:600}
+.bk-slot.is-on{background:var(--senal);border-color:var(--senal);color:#fff}
+.bk-lang{border:1.5px solid #c9c2b5;background:#fff;border-radius:2px}
+.bk-lang.is-on{background:var(--hondo);color:#fff;border-color:var(--hondo)}
+.bk-step button{border:1.5px solid #c9c2b5;background:#fff;border-radius:2px}
+[data-bk=horas]{display:none}
+.resumen{position:sticky;top:16px;background:var(--golfo);color:var(--arena);padding:26px}
+.bk-res-t{font-family:Syne;font-weight:800;font-size:1.5rem;color:#fff;margin-bottom:10px}
+.bk-res-l{border-bottom:1px solid rgba(244,236,223,.15)}
+.bk-res-tot b{font-family:Syne;font-size:1.5rem;color:#fff}
+.bk-res-sena b{color:var(--acant)}
+.bk-ahorro{border-left:3px solid var(--acant);padding-left:10px;opacity:.9}
+.bk-falta{color:#ffb4a6}.bk-ok{color:#b9f0c9}
+.resumen label{display:block;font-size:.85rem;margin-top:16px;opacity:.8}
+.resumen input{width:100%;padding:11px;border:0;margin:4px 0 12px;font:inherit;border-radius:2px}
+.rb{display:block;width:100%;text-align:center;padding:14px;font:inherit;font-weight:600;border:0;border-radius:2px;cursor:pointer;text-decoration:none;margin-top:8px}
+.rb.mp{background:#009ee3;color:#fff}.rb.mp:disabled{opacity:.4;cursor:not-allowed}
+.rb.wa{background:var(--senal);color:#fff}
+.cancel{font-size:.82rem;opacity:.75;margin-top:12px}
+.otras{background:var(--hondo);color:var(--arena);padding:60px 0}
+.otras-g{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:rgba(244,236,223,.15);margin-top:24px}
+.otras-g div{background:var(--hondo);padding:20px}
+.otras h2{font-size:clamp(1.8rem,3.4vw,2.6rem)}
+.otras h3{font-size:1.2rem;margin-bottom:6px}
+.otras p{margin:0;font-size:.92rem;opacity:.8}
+footer{background:var(--arena);padding:34px 0;font-size:.9rem}
+footer .wrap{display:flex;gap:30px;justify-content:space-between;flex-wrap:wrap}
+.pie{width:100%;border-top:1px solid #d7d1c6;padding-top:12px;font-size:.8rem;color:var(--gris)}
+.wa-f{position:fixed;right:16px;bottom:16px;background:#25d366;color:#05301a;font-weight:700;padding:11px 16px;border-radius:30px;text-decoration:none;z-index:40;font-size:.9rem;box-shadow:0 6px 18px rgba(0,0,0,.2)}
+@media (max-width:900px){
+ .split,.temp-g,.reserva-g{grid-template-columns:1fr}
+ .split.solo{grid-template-columns:1fr;min-height:70vh}.split.solo h1{font-size:clamp(2.8rem,7vw,6.4rem);max-width:1000px}
+.split .txt{padding:22px 20px 34px;min-height:70vh}
+ .split .img{height:46vh}
+ .otras-g{grid-template-columns:1fr 1fr}
+ .resumen{position:static}
+ .wrap{padding:0 18px}.rail{padding:0 18px 14px}
+ .meses{height:150px}
+}
+@media (max-width:520px){.otras-g{grid-template-columns:1fr}.bk-row{grid-template-columns:44px 1fr;gap:6px}.bk-row-h{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}.bk-slot{min-width:0;padding:7px 5px;align-items:center}.bk-slot i{font-size:.6rem}.bk-row-d b{font-size:1.25rem}.bk-row-d span{font-size:.65rem}}
+</style>
+</head>
+<body>
+<div class="demo">Prototipo de demostración preparado para Bottazzi Avistajes · Precios y disponibilidad de ejemplo</div>
+<header class="split">
+  <div class="txt">
+    <div class="brand">Bottazzi <small>Puerto Pirámides · Península Valdés</small></div>
+    <h1>Ballena franca austral<span>a metros de la borda</span></h1>
+    <p>Noventa minutos en el Golfo Nuevo con la tripulación que lleva décadas saliendo desde la primera bajada al mar. Elegí la salida, mirá los lugares libres y dejá la seña desde acá.</p>
+    <div class="horas" aria-label="Salidas diarias en temporada"><span>09:30</span><span>11:00</span><span>14:30</span><span>Última del día · luz de tarde</span></div>
+    <a class="cta" href="#reservar">Reservar avistaje</a>
+  </div>
+  <figure class="img" style="margin:0">
+    <img src="https://www.titobottazzi.com/images/01/madre-cria.webp" alt="Ballena franca con su cría junto a una embarcación de Bottazzi" onerror="this.src='https://www.titobottazzi.com/images/01/hero-home-00.webp';this.onerror=function(){var h=this.closest('.split');this.closest('figure').remove();h.classList.add('solo')}">
+    <figcaption>Madre y cría en el Golfo Nuevo</figcaption>
+  </figure>
+</header>
+
+<section class="temp wrap">
+  <div class="temp-g">
+    <div>
+      <h2>Cuándo están las ballenas</h2>
+      <p>La temporada va de junio a diciembre. Entre septiembre y octubre el golfo se llena de madres con cría, y es cuando más lugares se agotan.</p>
+    </div>
+    <div>
+      <div class="meses" role="img" aria-label="Presencia de ballenas por mes: de junio a diciembre, con pico en septiembre y octubre">
+        <div class="mes off"><i style="height:4%"></i><span>ene</span></div>
+        <div class="mes off"><i style="height:4%"></i><span>feb</span></div>
+        <div class="mes off"><i style="height:4%"></i><span>mar</span></div>
+        <div class="mes off"><i style="height:4%"></i><span>abr</span></div>
+        <div class="mes off"><i style="height:8%"></i><span>may</span></div>
+        <div class="mes"><i style="height:35%"></i><span>jun</span></div>
+        <div class="mes"><i style="height:60%"></i><span>jul</span></div>
+        <div class="mes"><i style="height:80%"></i><span>ago</span></div>
+        <div class="mes pico"><i style="height:100%"></i><span>sep</span></div>
+        <div class="mes pico"><i style="height:96%"></i><span>oct</span></div>
+        <div class="mes"><i style="height:62%"></i><span>nov</span></div>
+        <div class="mes"><i style="height:25%"></i><span>dic</span></div>
+      </div>
+      <p class="nota">Gráfico orientativo. Salidas diarias en temporada alta hasta el 15 de diciembre.</p>
+    </div>
+  </div>
+</section>
+
+<section class="flota">
+  <div class="wrap flota-h"><h2>La flota</h2><p style="margin:0;color:var(--gris);max-width:360px">Embarcaciones pensadas para avistaje: visión de 360°, motores ecológicos y tripulación capacitada por Prefectura.</p></div>
+  <div class="rail">
+    <figure><img src="https://www.titobottazzi.com/images/01/embarcacion-mimosa-IV.webp" alt="Embarcación Mimosa IV" loading="lazy" onerror="var r=this.closest('.rail');this.closest('figure').remove();if(!r.querySelector('figure'))r.closest('section').remove()"><figcaption>Mimosa IV<small>la más nueva de la flota</small></figcaption></figure>
+    <figure><img src="https://www.titobottazzi.com/images/01/embarcacion-iris.webp" alt="Embarcación Iris" loading="lazy" onerror="var r=this.closest('.rail');this.closest('figure').remove();if(!r.querySelector('figure'))r.closest('section').remove()"><figcaption>Iris<small>salidas especiales y privadas</small></figcaption></figure>
+    <figure><img src="https://www.titobottazzi.com/images/01/embarcacion-mimosa-III.webp" alt="Embarcación Mimosa III" loading="lazy" onerror="var r=this.closest('.rail');this.closest('figure').remove();if(!r.querySelector('figure'))r.closest('section').remove()"><figcaption>Mimosa III<small>avistaje tradicional</small></figcaption></figure>
+    <figure><img src="https://www.titobottazzi.com/images/01/lancha-atardecer.webp" alt="Lancha al atardecer frente a los acantilados" loading="lazy" onerror="var r=this.closest('.rail');this.closest('figure').remove();if(!r.querySelector('figure'))r.closest('section').remove()"><figcaption>Última salida<small>la luz de la tarde sobre el acantilado</small></figcaption></figure>
+    <figure><img src="https://www.titobottazzi.com/images/01/pasajera-borda.webp" alt="Pasajera mirando desde la borda" loading="lazy" onerror="var r=this.closest('.rail');this.closest('figure').remove();if(!r.querySelector('figure'))r.closest('section').remove()"><figcaption>Desde la borda<small>cubierta abierta para fotos</small></figcaption></figure>
+  </div>
+</section>
+
+<section class="reserva wrap" id="reservar">
+  <div class="reserva-g" data-bk-root>
+    <div>
+      <h2>Reservá tu salida</h2>
+      <p style="color:var(--gris);margin:0">Cada horario muestra cuántos lugares quedan. Con la seña del 30% el lugar queda tuyo; el resto se paga al embarcar.</p>
+      <div class="lbl"><em>1</em> Excursión</div><div data-bk="tours"></div>
+      <div class="lbl"><em>2</em> Día y horario</div><div data-bk="cal"></div><div data-bk="horas"></div>
+      <div class="lbl"><em>3</em> Pasajeros</div><div data-bk="pax"></div>
+      <div class="lbl"><em>4</em> Idioma de la guiada a bordo</div><div data-bk="idioma"></div>
+      <div class="lbl" data-exw><em>5</em> Extras</div><div data-bk="extras"></div>
+    </div>
+    <aside class="resumen">
+      <div data-bk="resumen"></div>
+      <label for="nm">Nombre de quien reserva</label>
+      <input id="nm" data-bk="nombre" placeholder="Nombre y apellido">
+      <button type="button" class="rb mp" data-bk="pagar">Pagar seña</button>
+      <a class="rb wa" data-bk="wa" href="#">Confirmar por WhatsApp</a>
+      <p class="cancel">Cancelación sin cargo hasta 24 horas antes de la salida. Si el puerto se cierra por viento, se reprograma.</p>
+    </aside>
+  </div>
+</section>
+
+<section class="otras">
+  <div class="wrap">
+    <h2>Más salidas desde Madryn y Pirámides</h2>
+    <div class="otras-g">
+      <div><h3>Península Valdés</h3><p>Día completo por la reserva: lobos, elefantes marinos y estepa.</p></div>
+      <div><h3>Punta Tombo</h3><p>Día completo a la pingüinera continental más grande.</p></div>
+      <div><h3>Punta Loma</h3><p>Medio día con city tour y lobería.</p></div>
+      <div><h3>Aventura con delfines</h3><p>Navegación en busca de toninas y delfines oscuros.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div><strong>Bottazzi Avistajes</strong><br>Primera bajada al mar, Puerto Pirámides · Oficina: Av. Roca 31, Puerto Madryn</div>
+    <div>WhatsApp <a href="https://wa.me/5492804363690">+54 9 280 436-3690</a><br>ventas@titobottazzi.com</div>
+    <div class="pie">Prototipo preparado para Bottazzi Avistajes por Resolviendo Kos · <a href="https://resolviendokos.com">resolviendokos.com</a> · No es la web oficial</div>
+  </div>
+</footer>
+<a class="wa-f" href="https://wa.me/5492804363690" target="_blank" rel="noopener">WhatsApp</a>
+<script>
+window.BK={negocio:'Bottazzi',wa:'5492804363690',sena:.3,calMode:'list',idiomas:['Español','English','Português','Italiano'],scrollTo:'#reservar',
+tours:[
+ {id:'ballenas',nombre:'Avistaje de ballenas',dur:'90 minutos',dif:'Apto para todos',punto:'Primera bajada al mar, Puerto Pirámides',temporada:'Junio a diciembre',precioRes:195000,precioExt:235000,menorFactor:.5,edadMenor:'hasta 12',horarios:['09:30','11:00','14:30','16:30'],meses:[5,6,7,8,9,10,11],cupo:60,maxGrupo:20,extras:[{id:'traslado',nombre:'Traslado desde Puerto Madryn',precio:30000,porPersona:true}]},
+ {id:'delfines',nombre:'Aventura con delfines',dur:'2 horas',dif:'Apto para todos',punto:'Puerto Madryn',temporada:'Octubre a abril',precioRes:120000,precioExt:150000,horarios:['10:00','15:00'],meses:[9,10,11,0,1,2,3],cupo:30,maxGrupo:20},
+ {id:'nautico',nombre:'Paseo náutico',dur:'1 hora',dif:'Apto para todos',punto:'Primera bajada al mar, Puerto Pirámides',temporada:'Enero a mayo',precioRes:70000,precioExt:90000,horarios:['11:00','16:00'],meses:[0,1,2,3,4],cupo:40,maxGrupo:20}
+]};
+/* Motor de reserva demo · Resolviendo Kos */
+(function(){
+  var C = window.BK; if(!C) return;
+  var root = document.querySelector('[data-bk-root]') || document;
+  var $ = function(k){ return root.querySelector('[data-bk="'+k+'"]'); };
+  var fmt = function(n){ return '$' + Math.round(n).toLocaleString('es-AR'); };
+  var DIAS = ['dom','lun','mar','mié','jue','vie','sáb'];
+  var DIASL = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+  var MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  var hoy = new Date(); hoy.setHours(0,0,0,0);
+  var S = { tour: C.tours[0].id, fecha: null, hora: null, res: C.paxIni != null ? C.paxIni : 2, ext: 0, men: 0, idioma: (C.idiomas||['Español'])[0], extras: {}, pagado: false, mes: null };
+  var T = function(){ for(var i=0;i<C.tours.length;i++){ if(C.tours[i].id===S.tour) return C.tours[i]; } return C.tours[0]; };
+  function hash(s){ var h=2166136261; for(var i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,16777619);} return (h>>>0); }
+  function key(d){ return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
+  function enTemporada(t,d){ return !t.meses || t.meses.indexOf(d.getMonth())>=0; }
+  function opera(t,d){ if(t.dias && t.dias.indexOf(d.getDay())<0) return false; return enTemporada(t,d) && d>=hoy; }
+  function cupos(t,d,h){ var cap=t.cupo||10; var x=hash(t.id+key(d)+(h||'')) % 100; if(d.getTime()===hoy.getTime()) x=x%40; if(x<10) return 0; if(x<28) return Math.max(1,(x%3)+1); return Math.max(2, Math.round(cap*(x/100))); }
+  function cuposDia(t,d){ var hs=t.horarios||['—']; var tot=0; hs.forEach(function(h){ tot+=cupos(t,d,h); }); return tot; }
+  function pax(){ return S.res+S.ext+S.men; }
+  function extrasTotal(){ var t=T(), s=0; (t.extras||[]).forEach(function(e){ if(S.extras[e.id]) s += e.porPersona ? e.precio*pax() : e.precio; }); return s; }
+  function total(){ var t=T(); return S.res*t.precioRes + S.ext*t.precioExt + S.men*Math.round(t.precioRes*(t.menorFactor||0.5)) + extrasTotal(); }
+  function ddmm(d){ return DIASL[d.getDay()]+' '+d.getDate()+' de '+MESES[d.getMonth()]; }
+  function fire(){ document.dispatchEvent(new CustomEvent('bk:change',{detail:{S:S,tour:T(),total:total()}})); }
+
+  /* --- tours --- */
+  function renderTours(){
+    var el=$('tours'); if(!el) return;
+    if(el.tagName==='SELECT'){ el.innerHTML=C.tours.map(function(t){return '<option value="'+t.id+'">'+t.nombre+'</option>';}).join(''); el.value=S.tour; el.onchange=function(){ setTour(el.value); }; return; }
+    el.innerHTML = C.tours.map(function(t){
+      return '<button type="button" class="bk-tour'+(t.id===S.tour?' is-on':'')+'" data-id="'+t.id+'" aria-pressed="'+(t.id===S.tour)+'"><span class="bk-tour-n">'+t.nombre+'</span><span class="bk-tour-m">'+(t.dur||'')+(t.dif?' · '+t.dif:'')+'</span><span class="bk-tour-p">desde '+fmt(t.precioRes)+'</span></button>';
+    }).join('');
+    el.querySelectorAll('.bk-tour').forEach(function(b){ b.onclick=function(){ setTour(b.getAttribute('data-id')); }; });
+  }
+  function setTour(id, scroll){
+    S.tour=id; S.hora=null; S.extras={};
+    if(S.fecha && !opera(T(),S.fecha)) S.fecha=null;
+    renderAll();
+    if(scroll){ var tgt=document.querySelector(C.scrollTo||'[data-bk-root]'); if(tgt) tgt.scrollIntoView({behavior:'smooth',block:'start'}); }
+  }
+  document.querySelectorAll('[data-pick-tour]').forEach(function(b){ b.addEventListener('click',function(e){ e.preventDefault(); setTour(b.getAttribute('data-pick-tour'), true); }); });
+
+  /* --- ficha --- */
+  function renderFicha(){
+    var el=$('ficha'); if(!el) return; var t=T();
+    var rows=[['Duración',t.dur],['Dificultad',t.dif],['Punto de encuentro',t.punto],['Temporada',t.temporada],['Edad mínima',t.edad]].filter(function(r){return r[1];});
+    el.innerHTML='<dl class="bk-dl">'+rows.map(function(r){return '<div><dt>'+r[0]+'</dt><dd>'+r[1]+'</dd></div>';}).join('')+'</dl>'+
+      (t.incluye?'<p class="bk-inc-t">Incluye</p><ul class="bk-inc">'+t.incluye.map(function(i){return '<li>'+i+'</li>';}).join('')+'</ul>':'');
+  }
+
+  /* --- calendario --- */
+  function firstOpen(t){ var d=new Date(hoy); for(var i=0;i<370;i++){ if(opera(t,d)) return new Date(d); d.setDate(d.getDate()+1);} return new Date(hoy); }
+  function renderCal(){
+    var el=$('cal'); if(!el) return; var t=T(); var mode=C.calMode||'grid';
+    var days=[]; var start;
+    if(mode==='grid'){
+      if(!S.mes){ var f=firstOpen(t); S.mes=new Date(f.getFullYear(), f.getMonth(), 1); }
+      var m=S.mes; var first=new Date(m.getFullYear(), m.getMonth(), 1); var lead=(first.getDay()+6)%7;
+      var dim=new Date(m.getFullYear(), m.getMonth()+1, 0).getDate();
+      var html='<div class="bk-cal-h"><button type="button" class="bk-nav" data-n="-1" aria-label="Mes anterior">‹</button><strong>'+MESES[m.getMonth()]+' '+m.getFullYear()+'</strong><button type="button" class="bk-nav" data-n="1" aria-label="Mes siguiente">›</button></div>';
+      html+='<div class="bk-grid">'+['lu','ma','mi','ju','vi','sá','do'].map(function(x){return '<span class="bk-dow">'+x+'</span>';}).join('');
+      for(var i=0;i<lead;i++) html+='<span></span>';
+      for(var dd=1; dd<=dim; dd++){ var d=new Date(m.getFullYear(), m.getMonth(), dd); html+=dayBtn(t,d,dd,''); }
+      el.innerHTML=html+'</div>';
+      el.querySelectorAll('.bk-nav').forEach(function(b){ b.onclick=function(){ var n=+b.getAttribute('data-n'); var nm=new Date(S.mes.getFullYear(), S.mes.getMonth()+n, 1); var lim=new Date(hoy.getFullYear(), hoy.getMonth(),1); if(nm<lim) return; S.mes=nm; renderCal(); }; });
+    } else {
+      var n = mode==='list' ? 10 : 21; start=firstOpen(t); var d=new Date(start); var html2='';
+      var c=0, guard=0;
+      while(c<n && guard<400){ guard++; if(mode==='strip' || opera(t,d)){ html2+= mode==='list' ? listRow(t,new Date(d)) : dayBtn(t,new Date(d), d.getDate(), '<small>'+DIAS[d.getDay()]+'</small>', true); c++; } d.setDate(d.getDate()+1); }
+      el.innerHTML='<div class="bk-'+mode+'">'+html2+'</div>';
+    }
+    el.querySelectorAll('[data-d]').forEach(function(b){ b.onclick=function(){ var p=b.getAttribute('data-d').split('-'); S.fecha=new Date(+p[0],+p[1]-1,+p[2]); S.hora=null; var hs=T().horarios||[]; if(hs.length===1) S.hora=hs[0]; if(b.getAttribute('data-h')) S.hora=b.getAttribute('data-h'); renderAll(); }; });
+  }
+  function dayBtn(t,d,label,pre,showMonth){
+    var ok=opera(t,d); var q=ok?cuposDia(t,d):0; var sel=S.fecha&&d.getTime()===S.fecha.getTime();
+    var cls='bk-day'+(ok?(q===0?' is-full':(q<=3?' is-few':'')):' is-off')+(sel?' is-on':'');
+    var lab=ok?(q===0?'completo':(q<=3?'últimos '+q:q+' lugares')):(enTemporada(t,d)||d<hoy?'':'fuera de temp.');
+    var mm = showMonth && d.getDate()===1 ? '<em>'+MESES[d.getMonth()].slice(0,3)+'</em>' : '';
+    return '<button type="button" class="'+cls+'" '+((ok&&q>0)?'data-d="'+key(d)+'"':'disabled')+' aria-label="'+ddmm(d)+' '+lab+'">'+(pre||'')+mm+'<b>'+label+'</b><i>'+lab+'</i></button>';
+  }
+  function listRow(t,d){
+    var hs=t.horarios||['—'];
+    return '<div class="bk-row"><div class="bk-row-d"><b>'+d.getDate()+'</b><span>'+DIAS[d.getDay()]+' · '+MESES[d.getMonth()].slice(0,3)+'</span></div><div class="bk-row-h">'+hs.map(function(h){ var q=cupos(t,d,h); var sel=S.fecha&&d.getTime()===S.fecha.getTime()&&S.hora===h; return '<button type="button" class="bk-slot'+(q===0?' is-full':(q<=3?' is-few':''))+(sel?' is-on':'')+'" '+(q>0?'data-d="'+key(d)+'" data-h="'+h+'"':'disabled')+'><b>'+h+'</b><i>'+(q===0?'completo':(q<=3?'quedan '+q:q+' lugares'))+'</i></button>'; }).join('')+'</div></div>';
+  }
+  function renderHoras(){
+    var el=$('horas'); if(!el) return; var t=T(); var hs=t.horarios||[];
+    if(!S.fecha){ el.innerHTML='<p class="bk-hint">Elegí una fecha para ver los horarios.</p>'; return; }
+    el.innerHTML=hs.map(function(h){ var q=cupos(t,S.fecha,h); return '<button type="button" class="bk-hora'+(S.hora===h?' is-on':'')+(q===0?' is-full':'')+'" '+(q>0?'data-h="'+h+'"':'disabled')+'><b>'+h+'</b><i>'+(q===0?'completo':q+' lugares')+'</i></button>'; }).join('');
+    el.querySelectorAll('[data-h]').forEach(function(b){ b.onclick=function(){ S.hora=b.getAttribute('data-h'); renderAll(); }; });
+  }
+
+  /* --- pasajeros --- */
+  function renderPax(){
+    var el=$('pax'); if(!el) return; var t=T();
+    var filas=[['res','Residentes argentinos',t.precioRes],['ext','Extranjeros',t.precioExt]];
+    if(t.menores!==false) filas.push(['men','Menores'+(t.edadMenor?' ('+t.edadMenor+')':''),Math.round(t.precioRes*(t.menorFactor||0.5))]);
+    el.innerHTML=filas.map(function(f){ return '<div class="bk-pax-r"><div><span>'+f[1]+'</span><small>'+fmt(f[2])+' c/u</small></div><div class="bk-step"><button type="button" data-k="'+f[0]+'" data-v="-1" aria-label="Restar '+f[1]+'">−</button><output>'+S[f[0]]+'</output><button type="button" data-k="'+f[0]+'" data-v="1" aria-label="Sumar '+f[1]+'">+</button></div></div>'; }).join('');
+    el.querySelectorAll('button').forEach(function(b){ b.onclick=function(){ var k=b.getAttribute('data-k'); var v=S[k]+(+b.getAttribute('data-v')); var max=t.maxGrupo||12; if(v<0) return; if(pax()-S[k]+v>max) return; if(pax()-S[k]+v<1) return; S[k]=v; renderAll(); }; });
+  }
+  function renderIdioma(){
+    var el=$('idioma'); if(!el) return; var ids=C.idiomas||['Español','English','Português'];
+    el.innerHTML=ids.map(function(i){ return '<button type="button" class="bk-lang'+(S.idioma===i?' is-on':'')+'" aria-pressed="'+(S.idioma===i)+'">'+i+'</button>'; }).join('');
+    el.querySelectorAll('button').forEach(function(b){ b.onclick=function(){ S.idioma=b.textContent; renderAll(); }; });
+  }
+  function renderExtras(){
+    var el=$('extras'); if(!el) return; var t=T(); var ex=t.extras||[];
+    var w=document.querySelectorAll('[data-exw]'); w.forEach(function(x){x.hidden=!ex.length;}); if(!ex.length){ el.innerHTML=''; el.hidden=true; return; } el.hidden=false;
+    el.innerHTML=ex.map(function(e){ return '<label class="bk-extra"><input type="checkbox" data-e="'+e.id+'"'+(S.extras[e.id]?' checked':'')+'><span>'+e.nombre+'</span><small>+'+fmt(e.precio)+(e.porPersona?' p/p':'')+'</small></label>'; }).join('');
+    el.querySelectorAll('input').forEach(function(i){ i.onchange=function(){ S.extras[i.getAttribute('data-e')]=i.checked; renderAll(); }; });
+  }
+
+  /* --- resumen --- */
+  function listo(){ return S.fecha && (S.hora || !(T().horarios||[]).length); }
+  function renderResumen(){
+    var el=$('resumen'); if(!el) return; var t=T(); var tot=total(); var sena=tot*(C.sena||0.3);
+    var falta = !S.fecha ? 'Falta elegir la fecha' : (!listo() ? 'Falta elegir el horario' : '');
+    el.innerHTML='<div class="bk-res-t">'+t.nombre+'</div>'+
+      '<div class="bk-res-l"><span>Fecha</span><b>'+(S.fecha?ddmm(S.fecha)+(S.hora?' · '+S.hora:''):'—')+'</b></div>'+
+      '<div class="bk-res-l"><span>Grupo</span><b>'+paxTxt()+'</b></div>'+
+      '<div class="bk-res-l"><span>Guía en</span><b>'+S.idioma+'</b></div>'+
+      '<div class="bk-res-l bk-res-tot"><span>Total</span><b>'+fmt(tot)+'</b></div>'+
+      '<div class="bk-res-l bk-res-sena"><span>Seña 30% para confirmar</span><b>'+fmt(sena)+'</b></div>'+
+      '<div class="bk-res-l bk-res-rest"><span>Saldo el día de la salida</span><b>'+fmt(tot-sena)+'</b></div>'+
+      '<p class="bk-ahorro">Por una plataforma con ~25% de comisión, de esta reserva te quedarían '+fmt(tot*0.75)+'. Directo, te quedan los '+fmt(tot)+'.</p>'+
+      (falta?'<p class="bk-falta">'+falta+'</p>':'')+
+      (S.pagado?'<p class="bk-ok">Seña abonada (demo). Mandá el pedido por WhatsApp para cerrar.</p>':'');
+    var p=$('pagar'); if(p){ p.disabled=!listo(); p.textContent = S.pagado ? 'Seña abonada ✓ (demo)' : (C.txtPagar||'Pagar seña de '+fmt(sena)+' con Mercado Pago'); }
+    var w=$('wa'); if(w){ w.href='https://wa.me/'+C.wa+'?text='+encodeURIComponent(msg()); w.setAttribute('target','_blank'); w.setAttribute('rel','noopener'); }
+    var pv=$('preview'); if(pv){ pv.textContent=msg(); }
+  }
+  function paxTxt(){ var a=[]; if(S.res) a.push(S.res+' residente'+(S.res>1?'s':'')); if(S.ext) a.push(S.ext+' extranjero'+(S.ext>1?'s':'')); if(S.men) a.push(S.men+' menor'+(S.men>1?'es':'')); return a.join(', '); }
+  function msg(){
+    var t=T(); var tot=total(); var nm=$('nombre'); var nombre=nm&&nm.value.trim();
+    var ex=(t.extras||[]).filter(function(e){return S.extras[e.id];}).map(function(e){return e.nombre;});
+    var L=['Hola '+C.negocio+'! Quiero reservar desde la web:','','• Salida: '+t.nombre,'• Fecha: '+(S.fecha?ddmm(S.fecha):'(a definir)')+(S.hora?' · '+S.hora+' hs':''),'• Grupo: '+paxTxt()+' ('+pax()+' en total)','• Idioma del guía: '+S.idioma];
+    if(ex.length) L.push('• Extras: '+ex.join(', '));
+    L.push('• Total: '+fmt(tot),'• Seña 30%: '+fmt(tot*(C.sena||0.3))+(S.pagado?' (abonada por Mercado Pago)':' (pago por Mercado Pago)'));
+    if(nombre) L.push('• A nombre de: '+nombre);
+    L.push('','¿Me confirman el lugar?');
+    return L.join('\n');
+  }
+
+  /* --- pago demo --- */
+  function modal(){
+    var tot=total(); var sena=tot*(C.sena||0.3);
+    var m=document.createElement('div'); m.className='bk-modal'; m.setAttribute('role','dialog'); m.setAttribute('aria-modal','true'); m.setAttribute('aria-label','Pago de seña (demo)');
+    m.innerHTML='<div class="bk-mp"><div class="bk-mp-top"><span class="bk-mp-logo">mercado pago</span><span class="bk-mp-demo">DEMO · no se cobra nada</span></div><p class="bk-mp-to">Pagás a <b>'+C.negocio+'</b></p><p class="bk-mp-amt">'+fmt(sena)+'</p><p class="bk-mp-d">Seña 30% · '+T().nombre+(S.fecha?' · '+ddmm(S.fecha):'')+'</p><div class="bk-mp-opts"><label><input type="radio" name="mpo" checked> Dinero en cuenta</label><label><input type="radio" name="mpo"> Tarjeta de débito</label><label><input type="radio" name="mpo"> Tarjeta de crédito · hasta 3 cuotas</label></div><button type="button" class="bk-mp-pay">Pagar '+fmt(sena)+'</button><button type="button" class="bk-mp-x">Cancelar</button></div>';
+    document.body.appendChild(m);
+    var close=function(){ m.remove(); document.removeEventListener('keydown',esc); };
+    var esc=function(e){ if(e.key==='Escape') close(); };
+    document.addEventListener('keydown',esc);
+    m.querySelector('.bk-mp-x').onclick=close; m.onclick=function(e){ if(e.target===m) close(); };
+    m.querySelector('.bk-mp-pay').onclick=function(){ var b=this; b.disabled=true; b.textContent='Procesando…'; setTimeout(function(){ S.pagado=true; close(); renderAll(); var w=$('wa'); if(w) w.focus(); },700); };
+    m.querySelector('.bk-mp-pay').focus();
+  }
+  var pb=$('pagar'); if(pb) pb.addEventListener('click',function(){ if(listo()) modal(); });
+  var nm=$('nombre'); if(nm) nm.addEventListener('input',renderResumen);
+
+  function renderAll(){ renderTours(); renderFicha(); renderCal(); renderHoras(); renderPax(); renderIdioma(); renderExtras(); renderResumen(); fire(); }
+  window.BKAPI={ setTour:setTour, state:S, total:total, fmt:fmt, tour:T, render:renderAll };
+  renderAll();
+})();
+
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Bottazzi Avistajes"></script>
+</body>
+</html>
