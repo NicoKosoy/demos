@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Semillán · Alquileres en Monte Hermoso</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--arena:#EFE2C4;--arena2:#E4D2AA;--medano:#D2B983;--mar:#0D5470;--mar2:#167A96;--espuma:#F8F3E6;--sol:#E8892B;--tinta:#1B2A2F;--gris:#5F6762}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow-x:clip}body{font-family:"Work Sans",system-ui,sans-serif;background:var(--espuma);color:var(--tinta);line-height:1.5}
+img{display:block;max-width:100%}
+button,input,select{font:inherit;color:inherit}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--sol);outline-offset:2px}
+.r{font-family:"Rozha One",Georgia,serif;font-weight:400;letter-spacing:-.005em}
+.aviso{background:var(--mar);color:var(--arena);font-size:13px;padding:7px 16px;text-align:center}
+.cab{display:flex;justify-content:space-between;align-items:center;padding:16px 32px;gap:16px}
+.cab .logo{font-family:"Rozha One",serif;font-size:30px;color:var(--mar);line-height:1;text-decoration:none}
+.cab .logo small{display:block;font-family:"Work Sans";font-size:12px;color:var(--gris);letter-spacing:.02em;margin-top:2px}
+.cab .wa{display:inline-flex;align-items:center;gap:8px;background:var(--sol);color:#fff;font-weight:600;text-decoration:none;padding:10px 18px;border-radius:40px}
+
+/* mapa */
+.carta{position:relative;margin:0 32px;border-radius:28px;overflow:hidden;background:var(--arena);min-height:640px}
+.carta svg{position:absolute;inset:0;width:100%;height:100%}
+.zona{cursor:pointer;transition:fill .2s}
+.zona:hover,.zona.on{fill:#F6C98E}
+.znom{font-family:"Work Sans";font-weight:600;font-size:15px;fill:var(--tinta);pointer-events:none}
+.zcant{font-size:12px;fill:var(--gris);pointer-events:none}
+.titulo{position:absolute;left:44px;top:40px;max-width:540px;color:var(--mar);z-index:2}
+.titulo h1{font-size:clamp(40px,5.4vw,74px);line-height:.95}
+.titulo p{font-size:16px;max-width:40ch!important;color:var(--tinta);margin-top:14px;max-width:44ch}
+.flota{position:absolute;right:36px;top:36px;width:340px;background:var(--espuma);border-radius:22px;padding:22px;box-shadow:0 18px 40px rgba(13,84,112,.18);z-index:3}
+.flota h2{font-size:24px;color:var(--mar);line-height:1.1;margin-bottom:12px}
+.q{margin-bottom:14px}
+.q>span{display:block;font-size:13px;color:var(--gris);margin-bottom:6px;font-weight:500}
+.pills{display:flex;flex-wrap:wrap;gap:6px}
+.pills button{border:1.5px solid var(--medano);background:transparent;border-radius:30px;padding:6px 12px;font-size:14px;cursor:pointer}
+.pills button[aria-pressed=true]{background:var(--mar);border-color:var(--mar);color:#fff}
+.cnt{display:flex;align-items:center;gap:10px}
+.cnt button{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--medano);background:none;cursor:pointer;font-size:18px}
+.cnt b{min-width:24px;text-align:center;font-size:18px}
+input[type=range]{width:100%;accent-color:var(--mar)}
+.solo-m{display:none}
+.flota .tot{border-top:1.5px dashed var(--medano);padding-top:12px;font-size:14px;color:var(--gris)}
+.flota .tot b{color:var(--mar);font-size:20px}
+
+/* tira */
+.tira-h{display:flex;justify-content:space-between;align-items:end;padding:48px 32px 16px;gap:20px}
+.tira-h h2{font-size:40px;line-height:1;color:var(--mar)}
+.tira-h p{color:var(--gris);font-size:15px}
+.flechas{display:flex;gap:8px}
+.flechas button{width:46px;height:46px;border-radius:50%;border:1.5px solid var(--mar);background:none;color:var(--mar);font-size:20px;cursor:pointer}
+.tira{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 32px 28px;scrollbar-width:thin}
+.prop{flex:0 0 290px;scroll-snap-align:start;background:#fff;border-radius:20px;overflow:hidden;display:flex;flex-direction:column;border:1px solid #EDE3CC}
+.prop .f{aspect-ratio:4/3;background:repeating-linear-gradient(-12deg,var(--arena) 0 14px,var(--arena2) 14px 28px);position:relative}
+.prop .f img{width:100%;height:100%;object-fit:cover}
+.cuadras{position:absolute;left:12px;bottom:12px;background:var(--espuma);border-radius:30px;padding:4px 11px;font-size:13px;font-weight:600;color:var(--mar)}
+.cod{position:absolute;right:12px;top:12px;background:rgba(27,42,47,.75);color:#fff;font-size:12px;padding:2px 8px;border-radius:20px}
+.prop .b{padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px;flex:1}
+.prop h3{font-size:19px;line-height:1.15}
+.prop .m{font-size:14px;color:var(--gris)}
+.prop .pz b{white-space:nowrap}.prop .pz{margin-top:auto;display:flex;gap:8px;justify-content:space-between;align-items:end;padding-top:8px}
+.prop .pz b{font-size:18px;color:var(--mar)}
+.prop .pz small{display:block;font-size:12px;color:var(--gris)}
+.prop .elegir{border:0;background:var(--mar);color:#fff;border-radius:30px;padding:8px 14px;cursor:pointer;font-weight:600;font-size:14px}
+.prop.no{opacity:.5}
+.prop.no .elegir{background:#9AA}
+.sinres{padding:30px 32px;color:var(--gris)}
+
+/* reserva */
+.reserva{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);margin:24px 32px 0;border-radius:28px;overflow:hidden;background:var(--mar);color:var(--espuma)}
+.reserva .izq{padding:40px}
+.reserva h2{font-size:42px;line-height:1;color:#fff}
+.reserva .sub{color:#BFD7DE;margin:10px 0 24px;max-width:48ch}
+.periodos{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.per{text-align:left;border:1.5px solid #2E7590;background:transparent;color:inherit;border-radius:16px;padding:12px 14px;cursor:pointer}
+.per b{display:block;font-size:16px}
+.per small{color:#9EC3CE;font-size:13px}
+.per[aria-pressed=true]{background:var(--espuma);color:var(--tinta);border-color:var(--espuma)}
+.per[aria-pressed=true] small{color:var(--gris)}
+.per.ocup{opacity:.45;text-decoration:line-through}
+.canal{display:block;font-size:12px;margin-top:4px}
+.der{background:var(--espuma);color:var(--tinta);padding:40px}
+.der h3{font-size:26px;color:var(--mar);line-height:1.1}
+.der .elegida{font-size:15px;color:var(--gris);margin:6px 0 18px}
+.lin span:last-child{white-space:nowrap}.lin{gap:12px;display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #E6DBC3;font-size:15px}
+.lin.t{border:0;font-size:20px;font-weight:700;color:var(--mar);padding-top:14px}
+.sena{background:var(--arena);border-radius:14px;padding:12px 14px;margin-top:12px;font-size:14px}
+.enviar{display:flex;justify-content:center;margin-top:18px;background:var(--sol);color:#fff;font-weight:700;text-decoration:none;padding:15px;border-radius:40px;font-size:16px}
+.enviar.off{background:#C9B999;pointer-events:none}
+.vista{font-size:13px;white-space:pre-wrap;color:var(--gris);margin-top:12px;border-left:3px solid var(--medano);padding-left:10px}
+.nota{font-size:13px;color:var(--gris);margin-top:8px}
+
+.cuenta{display:grid;grid-template-columns:auto 1fr;gap:48px;align-items:center;padding:72px 32px}
+.cuenta .num{font-family:"Rozha One";font-size:clamp(90px,14vw,190px);line-height:.85;color:var(--sol)}
+.cuenta h2{font-size:34px;line-height:1.05;color:var(--mar);max-width:22ch}
+.cuenta p{color:var(--gris);margin-top:12px;max-width:60ch}
+.cuenta ul{margin-top:16px;list-style:none;display:grid;gap:8px}
+.cuenta li{padding-left:22px;position:relative}
+.cuenta li:before{content:"";position:absolute;left:0;top:9px;width:12px;height:3px;background:var(--sol);border-radius:2px}
+footer{background:var(--tinta);color:#CBD3CF;padding:36px 32px;font-size:14px}
+footer .fx{display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px}
+footer b.r{font-size:26px;color:var(--arena);display:block;font-weight:400}
+footer .legal{border-top:1px solid #34464C;margin-top:22px;padding-top:14px;color:#8E9B98;font-size:13px}
+@media (max-width:900px){
+ .cab{padding:12px 16px}.cab .logo{font-size:24px}.cab .wa{padding:8px 14px;font-size:14px}
+ .carta{margin:0 16px;min-height:0;border-radius:20px;display:flex;flex-direction:column}
+ .carta svg{display:none}.solo-m{display:block}
+ .titulo{position:relative;left:auto;top:auto;padding:24px 20px 0}
+ .flota{position:relative;right:auto;top:auto;width:auto;margin:0 12px 12px;order:3}
+ .tira-h{padding:36px 16px 12px}.tira-h h2{font-size:30px}.flechas{display:none}
+ .tira{padding:6px 16px 22px}.prop{flex-basis:78%}
+ .reserva{grid-template-columns:1fr;margin:16px 16px 0;border-radius:20px}
+ .reserva .izq,.der{padding:24px 18px}.reserva h2{font-size:32px}
+ .cuenta{grid-template-columns:1fr;gap:12px;padding:48px 16px}
+ footer{padding:30px 16px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="aviso">Prototipo de demostración preparado para Semillán Negocios Inmobiliarios · Precios y disponibilidad de ejemplo</div>
+<header class="cab">
+ <a class="logo" href="#">Semillán<small>Negocios Inmobiliarios · Faro Recalada 492, Monte Hermoso</small></a>
+ <a class="wa" href="https://wa.me/5492932637870" target="_blank" rel="noopener">WhatsApp</a>
+</header>
+
+<section class="carta" aria-label="Mapa de zonas">
+ <div class="titulo"><h1 class="r">40 casas y deptos, a cuadras del mar.</h1><p>Tocá una zona del mapa para ver qué hay ahí. El sol sale y se pone sobre el agua, como en ningún otro balneario del país.</p></div>
+ <svg viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" id="mapa" role="img" aria-label="Zonas de Monte Hermoso">
+  <defs><pattern id="ola" width="60" height="16" patternUnits="userSpaceOnUse"><path d="M0 8 Q15 0 30 8 T60 8" fill="none" stroke="#2C8BA6" stroke-width="1.4" opacity=".6"/></pattern></defs>
+  <rect x="0" y="0" width="1200" height="600" fill="#EFE2C4"/>
+  <path d="M0 470 C200 455 400 480 600 468 S1000 450 1200 470 L1200 600 L0 600Z" fill="#0D5470"/>
+  <path d="M0 470 C200 455 400 480 600 468 S1000 450 1200 470 L1200 600 L0 600Z" fill="url(#ola)"/>
+  <path d="M0 440 C200 428 400 452 600 440 S1000 424 1200 442 L1200 472 C1000 452 800 470 600 468 S200 455 0 470Z" fill="#F6EBD1"/>
+  <g id="zonas"></g>
+  <circle cx="1080" cy="540" r="34" fill="#E8892B"/><text x="1080" y="590" text-anchor="middle" class="zcant" style="fill:#F6EBD1">sale y se pone en el mar</text>
+ </svg>
+ <div class="flota">
+  <h2 class="r">¿Cuántos son y cuándo vienen?</h2>
+  <div class="q"><span>Personas</span><div class="cnt"><button type="button" id="menos" aria-label="Menos">−</button><b id="pax">4</b><button type="button" id="mas" aria-label="Más">+</button></div></div>
+  <div class="q"><span>Tipo</span><div class="pills" id="tipo"><button type="button" aria-pressed="true" data-v="">Todo</button><button type="button" aria-pressed="false" data-v="Casa">Casa</button><button type="button" aria-pressed="false" data-v="Depto">Depto</button><button type="button" aria-pressed="false" data-v="Dúplex">Dúplex</button></div></div>
+  <div class="q"><span>Distancia al mar: hasta <b id="cuO">7</b> cuadras</span><input type="range" id="cu" min="1" max="7" value="7" aria-label="Cuadras al mar"></div>
+  <div class="q solo-m"><span>Zona</span><div class="pills" id="zpills"></div></div>
+  <div class="q"><span>Extras</span><div class="pills" id="ext"><button type="button" aria-pressed="false" data-v="parrilla">Parrilla</button><button type="button" aria-pressed="false" data-v="cochera">Cochera</button><button type="button" aria-pressed="false" data-v="mascotas">Acepta mascotas</button><button type="button" aria-pressed="false" data-v="vista">Vista al mar</button></div></div>
+  <div class="tot"><b id="cuantas">40</b> propiedades para ustedes</div>
+ </div>
+</section>
+
+<div class="tira-h"><div><h2 class="r" id="tiraT">Todas las zonas</h2><p>Deslizá para ver más. Fotos de las fichas de Semillán.</p></div><div class="flechas"><button type="button" id="izq" aria-label="Anteriores">‹</button><button type="button" id="der" aria-label="Siguientes">›</button></div></div>
+<div class="tira" id="tira"></div>
+
+<section class="reserva" id="reserva">
+ <div class="izq">
+  <h2 class="r">Elegí la quincena</h2>
+  <p class="sub">En Monte Hermoso se alquila por quincena o por semana. Cada período muestra si ya lo tomó alguien por Booking, Airbnb o directo.</p>
+  <div class="periodos" id="periodos"></div>
+ </div>
+ <div class="der" id="detalle"></div>
+</section>
+
+<section class="cuenta">
+ <div class="num">15%</div>
+ <div>
+  <h2 class="r">Lo que deja de irse a un portal en cada reserva directa.</h2>
+  <p>Una quincena de enero para cinco personas cuesta varios millones. Si una sola de cada cinco unidades se reserva por acá en vez de por Booking, con 40 propiedades la web se paga sola muchas veces en un verano.</p>
+  <ul><li>Hoy todas las fichas dicen "Consultar": el turista se va al portal que le muestra el precio.</li><li>Acá elige quincena, ve el total y manda la seña por WhatsApp.</li><li>Un único calendario para Booking, Airbnb y lo que entra por la oficina.</li></ul>
+ </div>
+</section>
+
+<footer>
+ <div class="fx">
+  <div><b class="r">Semillán</b>Negocios Inmobiliarios · Faro Recalada 492, Monte Hermoso</div>
+  <div>WhatsApp 2932 637870 · Tel. (02921) 481041<br>info@semillan.com.ar · @inmobiliariasemillan</div>
+ </div>
+ <div class="legal">Prototipo preparado para Semillán Negocios Inmobiliarios por Resolviendo Kos · resolviendokos.com · No es la web oficial</div>
+</footer>
+
+<script>
+/* motor de reservas de ejemplo: temporadas, ocupación sincronizada (simulada), cotización y WhatsApp */
+const E=(()=>{
+  const MES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  const DIA=['lu','ma','mi','ju','vi','sá','do'];
+  const pad=n=>String(n).padStart(2,'0');
+  const d=s=>{const [y,m,dd]=s.split('-').map(Number);return new Date(y,m-1,dd)};
+  const iso=x=>x.getFullYear()+'-'+pad(x.getMonth()+1)+'-'+pad(x.getDate());
+  const add=(x,n)=>{const y=new Date(x);y.setDate(y.getDate()+n);return y};
+  const nights=(a,b)=>(a&&b)?Math.round((d(b)-d(a))/864e5):0;
+  const ars=n=>'$ '+Math.round(n).toLocaleString('es-AR');
+  const usd=n=>'USD '+Math.round(n).toLocaleString('es-AR');
+  const corta=s=>{if(!s)return'';const x=d(s);return x.getDate()+' '+MES[x.getMonth()].slice(0,3)};
+  const larga=s=>{if(!s)return'';const x=d(s);return x.getDate()+' de '+MES[x.getMonth()]};
+  function rnd(str){let h=2166136261;for(const c of String(str)){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return()=>{h^=h<<13;h^=h>>>17;h^=h<<5;return((h>>>0)%100000)/100000}}
+  const SRC=['Booking','Airbnb','Directo'];
+  /* ocupación de ejemplo: devuelve Map fecha -> canal */
+  function ocupacion(id,desde='2026-11-01',dias=330){
+    const r=rnd(id),m=new Map(),base=d(desde);let i=Math.floor(r()*5);
+    while(i<dias){const largo=2+Math.floor(r()*6),canal=SRC[Math.floor(r()*3)];
+      for(let k=0;k<largo;k++)m.set(iso(add(base,i+k)),canal);
+      i+=largo+2+Math.floor(r()*10)}
+    return m}
+  function temporada(T,f){for(const t of T)if(f>=t.desde&&f<=t.hasta)return t;return T.find(t=>t.base)||{nombre:'Base',mult:1}}
+  /* cotiza noche por noche */
+  function cotizar(p,T,a,b){
+    const n=nights(a,b);if(n<=0)return null;let total=0;const det={};let choque=null;const occ=p._occ||(p._occ=ocupacion(p.id));
+    for(let k=0;k<n;k++){const f=iso(add(d(a),k));const t=temporada(T,f);const v=p.noche*t.mult;total+=v;
+      det[t.nombre]=(det[t.nombre]||{n:0,v:0});det[t.nombre].n++;det[t.nombre].v+=v;if(occ.has(f)&&!choque)choque=f}
+    const minimo=Math.max(...Object.keys(det).map(k=>(T.find(t=>t.nombre===k)||{}).min||1));
+    return{noches:n,total,det,choque,minimo}}
+  function libre(p,a,b){const occ=p._occ||(p._occ=ocupacion(p.id));const n=nights(a,b);for(let k=0;k<n;k++)if(occ.has(iso(add(d(a),k))))return false;return true}
+  const wa=(num,txt)=>'https://wa.me/'+num+'?text='+encodeURIComponent(txt);
+  /* grilla de un mes: celdas con data-f, clases: x (ocupado, data-c canal), s (seleccionado), r (rango), p (pasado/fuera) */
+  function mes(y,m,occ,a,b,opt={}){
+    const first=new Date(y,m,1),off=(first.getDay()+6)%7,len=new Date(y,m+1,0).getDate();
+    let h='<div class="'+(opt.cls||'cal')+'"><div class="cal-t">'+MES[m]+' '+y+'</div><div class="cal-g">'+DIA.map(x=>'<i>'+x+'</i>').join('');
+    for(let k=0;k<off;k++)h+='<span></span>';
+    for(let k=1;k<=len;k++){const f=y+'-'+pad(m+1)+'-'+pad(k);let c='';const o=occ&&occ.get(f);
+      if(o)c+=' x c-'+o.toLowerCase();if(f===a||f===b)c+=' s';else if(a&&b&&f>a&&f<b)c+=' r';if(opt.min&&f<opt.min)c+=' p';
+      h+='<button type="button" data-f="'+f+'" class="'+c.trim()+'"'+(o?' title="Ocupado · '+o+'" aria-label="'+k+' ocupado por '+o+'"':' aria-label="'+k+' de '+MES[m]+'"')+'>'+k+'</button>'}
+    return h+'</div></div>'}
+  return{MES,DIA,d,iso,add,nights,ars,usd,corta,larga,ocupacion,temporada,cotizar,libre,wa,mes,rnd}
+})();
+
+const WA='5492932637870';
+const IMG=n=>'https://www.semillan.com.ar/img.php?a=img-'+n+'.jpg&t=500';
+const R=[
+['A017C','Los Cardenales al 300','Casa','Monte del Este',2,6,2,4,'0000000195-202410191917-5161'],
+['A057D','Dr. Viega al 200 · Frente','Depto','Centro',2,4,1,1,'0000000133-202201061053-9413'],
+['A072D','Patagonia y Pte. Perón · 6º piso','Depto','Costanera',1,2,1,1,'0000000096-201912312009-5816'],
+['A074D','Pte. Perón (O) al 600 · 6º Frente','Depto','Costanera',2,4,1,1,'0000000218-202510301909-3928'],
+['A080D','Patagonia y Pte. Perón · 5º piso','Depto','Costanera',2,5,2,1,'0000000053-201910022051-2659'],
+['A058D','Pte. Perón (E) al 800 · 2º Frente','Depto','Monte del Este',2,5,1,1,'0000000197-202410171150-8817'],
+['A042C','Pampa al 300','Casa','Centro',2,5,1,4,'0000000031-202501232055-7892'],
+['A023C','Maipú al 400','Casa','Monte del Este',2,4,2,7,'0000000224-202512202032-5716'],
+['A079D','Patagonia al 0 · 2º piso','Depto','Centro',1,4,1,1,'0000000052-202212101545-5862'],
+['A063D','Patagonia y Pte. Perón · 3º piso','Depto','Costanera',2,5,2,1,'0000000176-202311091416-5783'],
+['A035C','Del Tiburón al 300','Casa','Las Dunas',2,4,1,3,'0000000065-201912112049-9848'],
+['A016C','Los Delfines al 200','Casa','Las Dunas',3,6,2,3,'0000000022-201909301132-2065'],
+['A008D','Los Cardenales al 300','Dúplex','Monte del Este',3,6,3,4,'0000000193-202410092109-8273'],
+['A078D','Patagonia al 0 · 1º piso','Depto','Centro',1,4,1,1,'0000000051-202312061433-9587'],
+['A021C','Del Calamar al 1800','Casa','Las Dunas',2,5,2,3,'0000000024-201909301231-4091'],
+['A012D','Dr. Viega al 100','Dúplex','Centro',2,6,2,1,'0000000109-202011071205-3735'],
+['A052D','Pte. Perón (E) al 300 · 2º Contrafrente','Depto','Costanera',1,4,1,1,'0000000037-201910021123-8784'],
+['A070D','Pte. Perón (O) al 1200 · 2º Frente','Depto','Costanera',2,4,2,1,'0000000177-202311111941-8132'],
+['A051D','Patagonia y Pte. Perón · 6º piso','Depto','Costanera',1,4,1,1,'0000000036-201910011019-1021'],
+['A004C','Las Golondrinas al 500','Casa','Monte del Este',3,7,2,6,'0000000010-201909301031-5126'],
+['A089D','Pte. Perón (E) al 0 · 2º Contrafrente','Depto','Costanera',1,4,1,1,'0000000059-201910031402-2568'],
+['A076D','Patagonia y Pte. Perón · 2º piso','Depto','Costanera',1,4,1,1,'0000000008-201909281149-5176'],
+['A073D','Gregorio Juárez al 100 · 5º piso','Depto','Centro',1,4,1,1,'0000000004-201909272328-8732'],
+['A007D','Chascomús y Río Negro','Dúplex','Dufaur',2,6,2,1,'0000000088-202211061418-7974'],
+['A038D','N. Fossatty al 1200 · U1','Dúplex','Centro',2,4,2,3,'0000000130-202211192014-7640'],
+['A037C','Dr. Zabala al 200','Casa','Centro',2,5,1,3,'0000000148-202211121142-2411'],
+['A018C','Bahía Blanca al 700','Casa','Centro',2,5,2,4,'0000000023-202211061357-7351'],
+['A031C','Pampa al 300','Casa','Centro',1,4,1,4,'0000000026-202501232017-3846'],
+['A068D','Gregorio Juárez al 100 · 7º piso','Depto','Centro',1,4,1,1,'0000000202-202501261442-4324'],
+['A001C','Santa Cruz al 200 · interno con patio','Depto','Dufaur',1,4,1,2,'0000000014-201909301023-5570'],
+['A059D','Dr. Viega al 200 · Lateral','Depto','Centro',2,4,1,1,'0000000042-202311072224-9590'],
+['A055D','Dufaur al 500','Depto','Centro',1,4,1,5,'0000000090-201910302107-2512'],
+['A033C','Río Asunción al 0 · Unidad 1','Casa','Dufaur',2,6,1,1,'0000000027-201909281212-4179'],
+['A005C','Los Camarones al 1500','Casa','Las Dunas',1,4,1,3,'0000000017-201909301046-6766'],
+['A003C','Río Asunción al 0 · Unidad 3','Casa','Dufaur',2,6,1,1,'0000000016-201909281236-3394'],
+['A054D','Pedro de Mendoza al 200 · 3º Lateral','Depto','Centro',1,4,1,2,'0000000039-201910011102-2513'],
+['A045C','Argentina al 1100','Casa','Centro',2,6,2,1,'0000000033-201909301957-5333'],
+['A014D','Dr. Viega y Traful Bis','Dúplex','Centro',2,5,1,1,'0000000182-202312131203-5055'],
+['A009C','Dorrego al 300','Casa','Centro',2,5,2,3,'0000000019-201909301051-6334'],
+['A034C','Del Calamar al 1800 · Frente','Casa','Las Dunas',2,5,1,3,'0000000028-201909301924-3047']
+].map(([cod,dir,tipo,zona,dorm,pax,banos,cu,img],i)=>{
+ const ex=[];if(tipo==='Casa'||tipo==='Dúplex')ex.push('parrilla');if(i%3!==1)ex.push('cochera');if(tipo==='Casa'&&i%2===0)ex.push('mascotas');if(zona==='Costanera'||/Frente/.test(dir))ex.push('vista');
+ const base=(tipo==='Casa'?95000:80000)+pax*16000+(cu<=1?22000:0);
+ return{id:cod,cod,dir,tipo,zona,dorm,pax,banos,cu,img:IMG(img),ex,noche:Math.round(base/1000)*1000}});
+const PER=[
+ {id:'fl-nov',n:'Finde largo de noviembre',r:'20 al 23 de noviembre',a:'2026-11-20',b:'2026-11-23',m:1.1},
+ {id:'fiestas',n:'Fiestas',r:'26 de diciembre al 2 de enero',a:'2026-12-26',b:'2027-01-02',m:1.5},
+ {id:'e1',n:'1ª quincena de enero',r:'2 al 16 de enero',a:'2027-01-02',b:'2027-01-16',m:1.7},
+ {id:'e2',n:'2ª quincena de enero',r:'16 al 31 de enero',a:'2027-01-16',b:'2027-01-31',m:1.8},
+ {id:'f1',n:'1ª quincena de febrero',r:'1 al 15 de febrero, con Carnaval',a:'2027-02-01',b:'2027-02-15',m:1.6},
+ {id:'f2',n:'2ª quincena de febrero',r:'15 de febrero al 1 de marzo',a:'2027-02-15',b:'2027-03-01',m:1.15},
+ {id:'s1',n:'Semana en enero',r:'23 al 30 de enero',a:'2027-01-23',b:'2027-01-30',m:1.8},
+ {id:'ss',n:'Semana Santa',r:'25 al 28 de marzo',a:'2027-03-25',b:'2027-03-28',m:1.0}];
+const ZON=[['Las Dunas',44,322,170,92],['Monte del Este',228,322,170,92],['Centro',412,322,170,92],['Dufaur',596,322,170,92],['Costanera',140,428,560,24]];
+const st={pax:4,tipo:'',cu:7,ex:[],zona:'',sel:R[1],per:'e1'};
+const $=i=>document.getElementById(i);
+const CAN=['Booking','Airbnb','Directo'];const occ=(p,per)=>{const r=E.rnd(p.id+per.id)();return r<.28?CAN[Math.floor(r*100)%3]:null};
+function zonas(){const cnt=z=>filtrar().filter(p=>p.zona===z).length;
+ $('zonas').innerHTML=ZON.map(([z,x,y,w,h])=>`<g tabindex="0" role="button" aria-label="${z}" data-z="${z}"><rect class="zona${st.zona===z?' on':''}" data-z="${z}" x="${x}" y="${y}" width="${w}" height="${h}" rx="18" fill="${z==='Costanera'?'#F2DDB2':'#E4D2AA'}" stroke="#C9AE76" stroke-width="1.5" stroke-dasharray="${z==='Costanera'?'0':'5 5'}"/><text class="znom" x="${x+18}" y="${z==='Costanera'?y+17:y+30}">${z==='Costanera'?'':z}</text><text class="zcant" x="${x+18}" y="${z==='Costanera'?y+17:y+50}">${z==='Costanera'?'Costanera · ':''}${cnt(z)} propiedades</text></g>`).join('')}
+$('zonas').addEventListener('click',e=>{const z=e.target.closest('[data-z]');if(!z)return;st.zona=st.zona===z.dataset.z?'':z.dataset.z;todo()});
+$('zonas').addEventListener('keydown',e=>{if(e.key==='Enter'){const z=e.target.dataset.z;st.zona=st.zona===z?'':z;todo()}});
+function filtrar(){return R.filter(p=>p.pax>=st.pax&&(!st.tipo||p.tipo===st.tipo)&&p.cu<=st.cu&&st.ex.every(x=>p.ex.includes(x)))}
+function tira(){const per=PER.find(x=>x.id===st.per);const L=filtrar().filter(p=>!st.zona||p.zona===st.zona);
+ $('cuantas').textContent=L.length;$('tiraT').textContent=(st.zona||'Todas las zonas')+' · '+L.length;
+ $('tira').innerHTML=L.length?L.map(p=>{const o=occ(p,per);const q=E.cotizar(p,[],per.a,per.b);const tot=q.total*per.m;
+  return`<article class="prop${o?' no':''}"><div class="f"><img src="${p.img}" alt="${p.tipo} en ${p.dir}" loading="lazy" onerror="this.remove()"><span class="cod">${p.cod}</span><span class="cuadras">${p.cu===1?'A 1 cuadra del mar':'A '+p.cu+' cuadras del mar'}</span></div>
+  <div class="b"><h3 class="r">${p.dir}</h3><div class="m">${p.tipo} en ${p.zona} · ${p.dorm} dorm. · ${p.banos} baño${p.banos>1?'s':''} · hasta ${p.pax}</div>
+  <div class="pz"><div><b>${E.ars(tot)}</b><small>${o?'Tomada · '+o:per.n}</small></div><button class="elegir" type="button" data-id="${p.id}">${o?'Ver otras fechas':'Elegir'}</button></div></div></article>`}).join(''):'';
+ if(!L.length)$('tira').innerHTML='<p class="sinres">No hay propiedades con todo eso. Sacá algún extra o ampliá las cuadras.</p>'}
+$('tira').onclick=e=>{const b=e.target.closest('.elegir');if(!b)return;st.sel=R.find(p=>p.id===b.dataset.id);reserva();$('reserva').scrollIntoView({behavior:'smooth'})};
+$('izq').onclick=()=>$('tira').scrollBy({left:-620,behavior:'smooth'});$('der').onclick=()=>$('tira').scrollBy({left:620,behavior:'smooth'});
+function reserva(){const p=st.sel;
+ $('periodos').innerHTML=PER.map(x=>{const o=occ(p,x);return`<button type="button" class="per${o?' ocup':''}" aria-pressed="${st.per===x.id}" data-id="${x.id}"><b>${x.n}</b><small>${x.r}</small>${o?'<span class="canal">Tomada por '+o+'</span>':''}</button>`}).join('');
+ const per=PER.find(x=>x.id===st.per);const o=occ(p,per);const q=E.cotizar(p,[],per.a,per.b);const tot=q.total*per.m;const limp=45000;const sena=(tot+limp)*.3;
+ const txt=`Hola Semillán! Me interesa la ${p.cod} (${p.tipo} en ${p.dir}, ${p.zona}).\nPeríodo: ${per.n}, del ${E.larga(per.a)} al ${E.larga(per.b)} (${q.noches} noches).\nSomos ${st.pax} personas.\nTotal que vi: ${E.ars(tot+limp)} · Seña 30%: ${E.ars(sena)}\n¿Está disponible?`;
+ $('detalle').innerHTML=`<h3 class="r">${p.cod} · ${p.dir}</h3><p class="elegida">${p.tipo} en ${p.zona}, a ${p.cu} cuadra${p.cu>1?'s':''} del mar · ${p.dorm} dorm. · hasta ${p.pax} personas</p>
+  <div class="lin"><span>${per.n} · ${q.noches} noches</span><span>${E.ars(tot)}</span></div>
+  <div class="lin"><span>Limpieza de salida</span><span>${E.ars(limp)}</span></div>
+  <div class="lin t"><span>Total</span><span>${E.ars(tot+limp)}</span></div>
+  <div class="sena">Se reserva con una seña del 30%: <b>${E.ars(sena)}</b> por transferencia. El saldo se paga al retirar las llaves en Faro Recalada 492.</div>
+  ${o?'<p class="nota" style="color:#9B3B2B">Ese período ya está tomado ('+o+'). Elegí otro.</p>':''}
+  <a class="enviar${o?' off':''}" href="${E.wa(WA,txt)}" target="_blank" rel="noopener">Mandar la reserva por WhatsApp</a>
+  <div class="vista">${txt.replace(/</g,'&lt;')}</div><p class="nota">Precios y disponibilidad de ejemplo.</p>`}
+$('periodos').onclick=e=>{const b=e.target.closest('.per');if(!b)return;st.per=b.dataset.id;reserva();tira()};
+function zp(){$('zpills').innerHTML=['',...ZON.map(z=>z[0])].map(z=>`<button type="button" data-v="${z}" aria-pressed="${st.zona===z}">${z||'Todas'}</button>`).join('')}
+$('zpills').onclick=e=>{const b=e.target.closest('button');if(!b)return;st.zona=b.dataset.v;todo()};
+function todo(){zp();zonas();tira();reserva()}
+$('menos').onclick=()=>{st.pax=Math.max(1,st.pax-1);$('pax').textContent=st.pax;todo()};
+$('mas').onclick=()=>{st.pax=Math.min(7,st.pax+1);$('pax').textContent=st.pax;todo()};
+$('cu').oninput=e=>{st.cu=+e.target.value;$('cuO').textContent=st.cu;todo()};
+$('tipo').onclick=e=>{const b=e.target.closest('button');if(!b)return;st.tipo=b.dataset.v;[...$('tipo').children].forEach(x=>x.setAttribute('aria-pressed',x===b));todo()};
+$('ext').onclick=e=>{const b=e.target.closest('button');if(!b)return;const on=b.getAttribute('aria-pressed')!=='true';b.setAttribute('aria-pressed',on);st.ex=on?[...st.ex,b.dataset.v]:st.ex.filter(x=>x!==b.dataset.v);todo()};
+todo();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Semillán Negocios Inmobiliarios"></script>
+</body>
+</html>
