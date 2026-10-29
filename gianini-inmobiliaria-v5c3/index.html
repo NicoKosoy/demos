@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Gianini · Temporada en la costa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--pino:#2F4A3A;--medano:#E8D9B5;--sol:#E0703A;--cielo:#7FB4C9;--crema:#FBF6EA;--tinta:#1F2A24;--gris:#5F675F;--linea:#DCCFAE}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow-x:clip}
+body{font-family:"Hanken Grotesk",system-ui,sans-serif;background:var(--crema);color:var(--tinta);line-height:1.5}
+img{display:block;max-width:100%}
+button,select{font:inherit;color:inherit}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--sol);outline-offset:2px}
+.ab{font-family:"Abril Fatface",Georgia,serif;font-weight:400}
+.aviso{background:var(--pino);color:var(--medano);font-size:13px;padding:7px 16px;text-align:center}
+.wrap{max-width:1240px;margin:0 auto;padding:20px 24px 40px}
+.bento{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));grid-auto-rows:minmax(120px,auto);gap:12px}
+.t{border-radius:22px;padding:20px;position:relative;overflow:hidden;background:#fff}
+.t-logo{grid-column:span 2;background:var(--pino);color:var(--crema);display:flex;flex-direction:column;justify-content:space-between}
+.t-logo b{font-family:"Abril Fatface";font-weight:400;font-size:44px;line-height:1}
+.t-logo small{color:#C9D6C9}
+.t-titulo{grid-column:span 4;background:var(--medano);display:flex;align-items:flex-end}
+.t-titulo h1{font-size:clamp(34px,4.6vw,64px);line-height:.98}
+.t-titulo h1 span{color:var(--sol)}
+.t-costa{grid-column:span 2;grid-row:span 2;background:var(--cielo);padding:0}
+.t-costa svg{width:100%;height:100%;display:block}
+.t-buscar{grid-column:span 4;background:#fff}
+.t-buscar h2{font-size:26px;line-height:1.1;margin-bottom:12px}
+.ctrl{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center}
+.ctrl .grp{display:flex;gap:6px;flex-wrap:wrap}
+.ctrl button{border:2px solid var(--linea);background:var(--crema);border-radius:30px;padding:6px 12px;cursor:pointer;font-weight:600;font-size:14px}
+.ctrl button[aria-pressed=true]{background:var(--tinta);color:#fff;border-color:var(--tinta)}
+.ctrl label{font-size:14px;color:var(--gris);display:flex;gap:6px;align-items:center}
+.ctrl select{border:2px solid var(--linea);border-radius:12px;padding:5px 8px;background:var(--crema)}
+.t-prop{grid-column:span 2;padding:0;display:flex;flex-direction:column;cursor:pointer;border:0;text-align:left}
+.t-prop .ft{height:170px;position:relative;background:var(--medano)}
+.t-prop .ft img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.t-prop .ft svg{position:absolute;inset:0;width:100%;height:100%}
+.t-prop .zona{position:absolute;left:12px;top:12px;background:var(--crema);border-radius:20px;padding:2px 10px;font-size:12px;font-weight:700;z-index:2}
+.t-prop .bd{padding:14px 18px 18px;flex:1;display:flex;flex-direction:column;gap:4px}
+.t-prop h3{font-size:22px;line-height:1.1}
+.t-prop .m{font-size:14px;color:var(--gris)}
+.t-prop .pr{margin-top:auto;display:flex;justify-content:space-between;align-items:end;padding-top:10px}
+.t-prop .pr b{font-size:20px}
+.est{font-size:12px;font-weight:700;border-radius:20px;padding:2px 9px}
+.est.ok{background:#DDEBDD;color:var(--pino)}.est.no{background:#F7DCCF;color:#9B3D17}
+.t-prop[aria-pressed=true]{box-shadow:0 0 0 3px var(--sol)}
+.t-prop.off{opacity:.5}
+.t-res{grid-column:span 4;background:var(--tinta);color:#EDE8DC}
+.t-res h3{font-size:28px;line-height:1.1;color:#fff}
+.t-res .q{color:#B9C0B6;font-size:14px;margin:4px 0 12px}
+.t-res .gr{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px}
+.ln{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid #3A463E;font-size:15px}
+.ln span:last-child{white-space:nowrap}
+.ln.tt{font-weight:700;font-size:19px;border:0;color:#fff}
+.t-res pre{white-space:pre-wrap;font-family:inherit;font-size:13px;color:#C9CFC5;background:#2A3730;border-radius:14px;padding:12px}
+.t-res a{display:block;text-align:center;margin-top:10px;background:var(--sol);color:#fff;text-decoration:none;font-weight:700;padding:13px;border-radius:30px}
+.t-res a.off{background:#6A746C;pointer-events:none}
+.t-cuenta{grid-column:span 2;background:var(--sol);color:#fff}
+.t-cuenta b{font-family:"Abril Fatface";font-weight:400;font-size:56px;line-height:1;display:block}
+.t-cuenta p{font-size:14px;color:#FFE9DD}
+.t-suc{grid-column:span 2;background:#fff}.t-suc:last-child{grid-column:span 4}
+.t-suc h4{font-family:"Abril Fatface";font-weight:400;font-size:24px}
+.t-suc p{font-size:14px;color:var(--gris)}
+.t-suc a{font-weight:700;color:var(--pino)}
+.t-cal{grid-column:span 2;background:var(--medano)}
+.t-cal h4{font-size:18px;margin-bottom:6px}
+.t-cal ul{list-style:none;font-size:14px;display:grid;gap:4px}
+.t-cal li b{display:inline-block;min-width:86px}
+footer{max-width:1240px;margin:0 auto;padding:0 24px 30px;font-size:13px;color:var(--gris)}
+@media (max-width:900px){
+ .wrap{padding:14px 16px 30px}
+ .bento{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .t-logo,.t-titulo,.t-buscar,.t-res,.t-prop,.t-suc,.t-cal,.t-cuenta,.t-suc:last-child{grid-column:span 2}
+ .t-costa{grid-column:span 2;grid-row:auto;height:200px}
+ .t-res .gr{grid-template-columns:1fr}
+ footer{padding:0 16px 24px}
+}
+</style>
+</head>
+<body>
+<div class="aviso">Prototipo de demostración preparado para Gianini Inmobiliaria · Precios y disponibilidad de ejemplo</div>
+<main class="wrap">
+<div class="bento">
+ <div class="t t-logo"><b>Gianini</b><small>Inmobiliaria · Villa Gesell, Mar de las Pampas y Mar Azul</small></div>
+ <div class="t t-titulo"><h1 class="ab">Temporada 2027, <span>a 100 metros</span> del mar.</h1></div>
+ <div class="t t-costa" aria-hidden="true"><svg viewBox="0 0 300 300" preserveAspectRatio="xMinYMid slice"><rect width="300" height="300" fill="#7FB4C9"/><path d="M190 0 C175 80 200 160 180 300 H300 V0Z" fill="#2F4A3A" opacity=".2"/><path d="M0 0 H170 C150 90 175 170 150 300 H0Z" fill="#E8D9B5"/><path d="M0 0 H120 C100 100 120 200 100 300 H0Z" fill="#2F4A3A"/><g font-family="Hanken Grotesk" font-weight="700" font-size="13" fill="#FBF6EA"><circle cx="135" cy="60" r="7" fill="#E0703A"/><text x="16" y="65">Villa Gesell</text><circle cx="140" cy="190" r="7" fill="#E0703A"/><text x="16" y="195">Mar de las Pampas</text><circle cx="128" cy="250" r="7" fill="#E0703A"/><text x="16" y="255">Mar Azul</text></g><text x="180" y="290" font-family="Abril Fatface" font-size="14" transform="rotate(-90 180 290)" fill="#FBF6EA">Atlántico</text></svg></div>
+ <div class="t t-buscar"><h2 class="ab">¿Qué quincena?</h2>
+  <div class="ctrl"><div class="grp" id="per" role="group" aria-label="Período"></div><label>Personas <select id="pax"><option>2</option><option>3</option><option selected>4</option><option>5</option><option>6</option></select></label><label><input type="checkbox" id="mas"> Vamos con mascota</label></div></div>
+ <div id="props" style="display:contents"></div>
+ <div class="t t-res" id="res" aria-live="polite"></div>
+ <div class="t t-cuenta"><b>15%</b><p>Lo que no se lleva Booking cuando una familia reserva directo. En una semana de enero, más de $150.000 por departamento.</p></div>
+ <div class="t t-cal"><h4>Condiciones Gianini</h4><ul><li><b>Check-in</b>14 h · check-out 10 h</li><li><b>Reserva</b>50% al reservar, saldo al llegar</li><li><b>Garantía</b>depósito reintegrable</li><li><b>Grupos</b>no se alquila a jóvenes</li></ul></div>
+ <div class="t t-suc"><h4>Villa Gesell</h4><p>Av. Buenos Aires 1134 · (02255) 450525<br>Abierto de lunes a lunes, salvo miércoles</p></div>
+ <div class="t t-suc"><h4>Mar de las Pampas</h4><p>Santa María y El Ceibo · (02255) 456282<br>gianinimardelaspampas@gmail.com</p></div>
+ <div class="t t-suc"><h4>Mar Azul</h4><p>Mar del Plata y Calle 33 · (02255) 479558<br><a href="https://wa.me/5492255606355" target="_blank" rel="noopener">WhatsApp 02255 60-6355</a></p></div>
+</div>
+</main>
+<footer>Prototipo preparado para Gianini Inmobiliaria por Resolviendo Kos · resolviendokos.com · No es la web oficial</footer>
+<script>
+/* motor de reservas de ejemplo: temporadas, ocupación sincronizada (simulada), cotización y WhatsApp */
+const E=(()=>{
+  const MES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  const DIA=['lu','ma','mi','ju','vi','sá','do'];
+  const pad=n=>String(n).padStart(2,'0');
+  const d=s=>{const [y,m,dd]=s.split('-').map(Number);return new Date(y,m-1,dd)};
+  const iso=x=>x.getFullYear()+'-'+pad(x.getMonth()+1)+'-'+pad(x.getDate());
+  const add=(x,n)=>{const y=new Date(x);y.setDate(y.getDate()+n);return y};
+  const nights=(a,b)=>(a&&b)?Math.round((d(b)-d(a))/864e5):0;
+  const ars=n=>'$ '+Math.round(n).toLocaleString('es-AR');
+  const usd=n=>'USD '+Math.round(n).toLocaleString('es-AR');
+  const corta=s=>{if(!s)return'';const x=d(s);return x.getDate()+' '+MES[x.getMonth()].slice(0,3)};
+  const larga=s=>{if(!s)return'';const x=d(s);return x.getDate()+' de '+MES[x.getMonth()]};
+  function rnd(str){let h=2166136261;for(const c of String(str)){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return()=>{h^=h<<13;h^=h>>>17;h^=h<<5;return((h>>>0)%100000)/100000}}
+  const SRC=['Booking','Airbnb','Directo'];
+  /* ocupación de ejemplo: devuelve Map fecha -> canal */
+  function ocupacion(id,desde='2026-11-01',dias=330){
+    const r=rnd(id),m=new Map(),base=d(desde);let i=Math.floor(r()*5);
+    while(i<dias){const largo=2+Math.floor(r()*6),canal=SRC[Math.floor(r()*3)];
+      for(let k=0;k<largo;k++)m.set(iso(add(base,i+k)),canal);
+      i+=largo+6+Math.floor(r()*16)}
+    return m}
+  function temporada(T,f){for(const t of T)if(f>=t.desde&&f<=t.hasta)return t;return T.find(t=>t.base)||{nombre:'Base',mult:1}}
+  /* cotiza noche por noche */
+  function cotizar(p,T,a,b){
+    const n=nights(a,b);if(n<=0)return null;let total=0;const det={};let choque=null;const occ=p._occ||(p._occ=ocupacion(p.id));
+    for(let k=0;k<n;k++){const f=iso(add(d(a),k));const t=temporada(T,f);const v=p.noche*t.mult;total+=v;
+      det[t.nombre]=(det[t.nombre]||{n:0,v:0});det[t.nombre].n++;det[t.nombre].v+=v;if(occ.has(f)&&!choque)choque=f}
+    const minimo=Math.max(...Object.keys(det).map(k=>(T.find(t=>t.nombre===k)||{}).min||1));
+    return{noches:n,total,det,choque,minimo}}
+  function libre(p,a,b){const occ=p._occ||(p._occ=ocupacion(p.id));const n=nights(a,b);for(let k=0;k<n;k++)if(occ.has(iso(add(d(a),k))))return false;return true}
+  const wa=(num,txt)=>'https://wa.me/'+num+'?text='+encodeURIComponent(txt);
+  /* grilla de un mes: celdas con data-f, clases: x (ocupado, data-c canal), s (seleccionado), r (rango), p (pasado/fuera) */
+  function mes(y,m,occ,a,b,opt={}){
+    const first=new Date(y,m,1),off=(first.getDay()+6)%7,len=new Date(y,m+1,0).getDate();
+    let h='<div class="'+(opt.cls||'cal')+'"><div class="cal-t">'+MES[m]+' '+y+'</div><div class="cal-g">'+DIA.map(x=>'<i>'+x+'</i>').join('');
+    for(let k=0;k<off;k++)h+='<span></span>';
+    for(let k=1;k<=len;k++){const f=y+'-'+pad(m+1)+'-'+pad(k);let c='';const o=occ&&occ.get(f);
+      if(o)c+=' x c-'+o.toLowerCase();if(f===a||f===b)c+=' s';else if(a&&b&&f>a&&f<b)c+=' r';if(opt.min&&f<opt.min)c+=' p';
+      h+='<button type="button" data-f="'+f+'" class="'+c.trim()+'"'+(o?' title="Ocupado · '+o+'" aria-label="'+k+' ocupado por '+o+'"':' aria-label="'+k+' de '+MES[m]+'"')+'>'+k+'</button>'}
+    return h+'</div></div>'}
+  return{MES,DIA,d,iso,add,nights,ars,usd,corta,larga,ocupacion,temporada,cotizar,libre,wa,mes,rnd}
+})();
+
+const WA='5492255606355';const OG=c=>'https://rd45xzpdrc3qe6uvqzqdor3e7q0eymtj.lambda-url.us-east-1.on.aws/?param=600x315_maxHeight&path='+c;
+const P=[
+ {id:'gi13044',n:'Depto en Barrio Norte',zona:'Gesell Norte',m:'2 ambientes · 40 m² · patio propio · a 100 m de la playa, cerca de Luna Roja',pax:4,mas:true,f:OG('gi13044_2.jpg&_1763240346'),f2:'https://cdn-images.xintelweb.com/upload/gi13044_2.jpg?1763240346',sem:950000},
+ {id:'gi13023',n:'Dúplex en Gesell Sur',zona:'Gesell Sur',m:'3 ambientes · 2 dormitorios · 2 baños · patio con parrilla y lugar para el auto',pax:6,mas:true,f:OG('gi13023_2.jpg&_178117'),f2:'https://cdn-images.xintelweb.com/upload/gi13023_2.jpg?178117',sem:1150000},
+ {id:'gi13018',n:'Edificio Pridemar · UF 15',zona:'Gesell Sur',m:'2 ambientes · 35 m² · 2º piso · cochera y parrillas en común · a 200 m del mar',pax:4,mas:false,f:OG('gi13018_2.jpg&_113202'),f2:'https://cdn-images.xintelweb.com/upload/gi13018_2.jpg?113202',sem:820000}];
+const PER=[{id:'s1',n:'1ª semana ene',r:'3 al 10 de enero',a:'2027-01-03',b:'2027-01-10',k:1},{id:'q1',n:'1ª quincena ene',r:'1 al 15 de enero',a:'2027-01-01',b:'2027-01-15',k:2},{id:'q2',n:'2ª quincena ene',r:'16 al 31 de enero',a:'2027-01-16',b:'2027-01-31',k:2.1},{id:'f1',n:'1ª feb + Carnaval',r:'1 al 15 de febrero',a:'2027-02-01',b:'2027-02-15',k:1.9},{id:'f2',n:'2ª feb',r:'16 al 28 de febrero',a:'2027-02-16',b:'2027-02-28',k:1.3},{id:'ss',n:'Semana Santa',r:'25 al 28 de marzo',a:'2027-03-25',b:'2027-03-28',k:.42}];
+const $=i=>document.getElementById(i);const st={per:'q2',sel:P[1]};
+const occ=(p,q)=>{const r=E.rnd(p.id+q.id)();return r<.3?['Booking','Airbnb','Oficina'][Math.floor(r*10)%3]:null};
+function dib(p){const i=P.indexOf(p);return`<svg viewBox="0 0 300 170" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="300" height="170" fill="#E8D9B5"/><rect y="120" width="300" height="50" fill="#7FB4C9"/>${[0,1,2,3,4].map(k=>`<path d="M${20+k*60} 120 L${40+k*60} ${60+(k%2)*14} L${60+k*60} 120Z" fill="#2F4A3A" opacity=".8"/>`).join('')}<circle cx="${230-i*40}" cy="42" r="18" fill="#E0703A"/></svg>`}
+$('per').innerHTML=PER.map(q=>`<button type="button" data-id="${q.id}" aria-pressed="${st.per===q.id}">${q.n}</button>`).join('');
+$('per').onclick=e=>{const b=e.target.closest('button');if(!b)return;st.per=b.dataset.id;[...$('per').children].forEach(x=>x.setAttribute('aria-pressed',x===b));todo()};
+$('pax').onchange=todo;$('mas').onchange=todo;
+const cot=(p,q)=>{const alq=p.sem*q.k;return{alq,tot:alq,sena:alq*.5}};
+function todo(){const q=PER.find(x=>x.id===st.per);const pax=+$('pax').value,mas=$('mas').checked;
+ $('props').innerHTML=P.map(p=>{const o=occ(p,q);const off=p.pax<pax||(mas&&!p.mas);const c=cot(p,q);
+  return`<button type="button" class="t t-prop${off?' off':''}" data-id="${p.id}" aria-pressed="${st.sel===p}"><div class="ft">${dib(p)}<img src="${p.f2}" alt="${p.n}" loading="lazy" onerror="this.remove()"><span class="zona">${p.zona}</span></div><div class="bd"><h3 class="ab">${p.n}</h3><p class="m">${p.m}</p><p class="m">Hasta ${p.pax} personas${p.mas?' · acepta mascotas':''}</p><div class="pr"><b>${E.ars(c.tot)}</b><span class="est ${o||off?'no':'ok'}">${off?(p.pax<pax?'No entran':'Sin mascotas'):o?'Tomado · '+o:'Libre'}</span></div></div></button>`}).join('');res()}
+$('props').onclick=e=>{const b=e.target.closest('.t-prop');if(!b)return;st.sel=P.find(p=>p.id===b.dataset.id);todo()};
+function res(){const p=st.sel,q=PER.find(x=>x.id===st.per),o=occ(p,q),c=cot(p,q),pax=$('pax').value;
+ const txt=`Hola Gianini! Me interesa el ${p.n} (código ${p.id.toUpperCase()}, ${p.zona}).\nPeríodo: ${q.r}. Somos ${pax}${$('mas').checked?', con mascota':''}.\nTotal que vi: ${E.ars(c.tot)}. Reserva 50%: ${E.ars(c.sena)}.\n¿Está disponible?`;
+ $('res').innerHTML=`<h3 class="ab">${p.n}</h3><p class="q">${q.r} · ${E.nights(q.a,q.b)} noches · ${p.zona}</p><div class="gr"><div><div class="ln"><span>Alquiler</span><span>${E.ars(c.alq)}</span></div><div class="ln"><span>Reserva (50%)</span><span>${E.ars(c.sena)}</span></div><div class="ln"><span>Saldo al llegar</span><span>${E.ars(c.tot-c.sena)}</span></div><div class="ln tt"><span>Total</span><span>${E.ars(c.tot)}</span></div>${o?`<p class="q" style="color:#F2A27D;margin-top:8px">Ese período está tomado por ${o}. Probá otra quincena.</p>`:''}</div><div><pre>${txt.replace(/</g,'&lt;')}</pre><a class="${o?'off':''}" href="${E.wa(WA,txt)}" target="_blank" rel="noopener">Reservar por WhatsApp</a></div></div>`}
+todo();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Gianini Inmobiliaria"></script>
+</body>
+</html>
