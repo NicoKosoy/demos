@@ -57,7 +57,7 @@ input[type=range]{width:100%;accent-color:var(--mar)}
 .tira{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 32px 28px;scrollbar-width:thin}
 .prop{flex:0 0 290px;scroll-snap-align:start;background:#fff;border-radius:20px;overflow:hidden;display:flex;flex-direction:column;border:1px solid #EDE3CC}
 .prop .f{aspect-ratio:4/3;background:repeating-linear-gradient(-12deg,var(--arena) 0 14px,var(--arena2) 14px 28px);position:relative}
-.prop .f img{width:100%;height:100%;object-fit:cover}
+.prop .f img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}.prop .f svg{position:absolute;inset:0;width:100%;height:100%}.cuadras,.cod{z-index:2}
 .cuadras{position:absolute;left:12px;bottom:12px;background:var(--espuma);border-radius:30px;padding:4px 11px;font-size:13px;font-weight:600;color:var(--mar)}
 .cod{position:absolute;right:12px;top:12px;background:rgba(27,42,47,.75);color:#fff;font-size:12px;padding:2px 8px;border-radius:20px}
 .prop .b{padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px;flex:1}
@@ -201,7 +201,7 @@ const E=(()=>{
     const r=rnd(id),m=new Map(),base=d(desde);let i=Math.floor(r()*5);
     while(i<dias){const largo=2+Math.floor(r()*6),canal=SRC[Math.floor(r()*3)];
       for(let k=0;k<largo;k++)m.set(iso(add(base,i+k)),canal);
-      i+=largo+2+Math.floor(r()*10)}
+      i+=largo+6+Math.floor(r()*16)}
     return m}
   function temporada(T,f){for(const t of T)if(f>=t.desde&&f<=t.hasta)return t;return T.find(t=>t.base)||{nombre:'Base',mult:1}}
   /* cotiza noche por noche */
@@ -282,6 +282,12 @@ const PER=[
  {id:'s1',n:'Semana en enero',r:'23 al 30 de enero',a:'2027-01-23',b:'2027-01-30',m:1.8},
  {id:'ss',n:'Semana Santa',r:'25 al 28 de marzo',a:'2027-03-25',b:'2027-03-28',m:1.0}];
 const ZON=[['Las Dunas',44,322,170,92],['Monte del Este',228,322,170,92],['Centro',412,322,170,92],['Dufaur',596,322,170,92],['Costanera',140,428,560,24]];
+
+const ZCOL={'Las Dunas':'#D2B983','Monte del Este':'#8FAE8B','Centro':'#E8892B','Costanera':'#167A96','Dufaur':'#B5654A'};
+function arte(p){const c=ZCOL[p.zona];const casa=p.tipo!=='Depto';const mar=Math.max(0,150-p.cu*16);
+ const edif=casa?`<rect x="70" y="${p.tipo==='Dúplex'?70:96}" width="${p.tipo==='Dúplex'?120:110}" height="${p.tipo==='Dúplex'?84:58}" fill="#F8F3E6"/><path d="M58 ${p.tipo==='Dúplex'?72:98} L${p.tipo==='Dúplex'?130:125} ${p.tipo==='Dúplex'?34:62} L${p.tipo==='Dúplex'?202:192} ${p.tipo==='Dúplex'?72:98}Z" fill="${c}"/><rect x="${p.tipo==='Dúplex'?118:112}" y="124" width="22" height="30" fill="${c}"/>`
+ :`<rect x="86" y="30" width="86" height="124" fill="#F8F3E6"/>${[...Array(12)].map((_,i)=>`<rect x="${96+(i%3)*24}" y="${40+Math.floor(i/3)*28}" width="16" height="16" fill="${c}" opacity="${i%4?'.55':'1'}"/>`).join('')}`;
+ return`<svg viewBox="0 0 300 225" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="300" height="225" fill="#EFE2C4"/><circle cx="238" cy="58" r="26" fill="#E8892B" opacity=".85"/><rect y="154" width="300" height="71" fill="#E4D2AA"/><rect y="${225-Math.round(mar/3)}" width="300" height="${Math.round(mar/3)+2}" fill="#0D5470"/>${edif}<text x="200" y="146" font-family="Rozha One,serif" font-size="40" fill="#0D5470">${p.cu}</text><text x="200" y="164" font-family="Work Sans" font-size="11" fill="#1B2A2F">cuadra${p.cu>1?'s':''} al mar</text></svg>`}
 const st={pax:4,tipo:'',cu:7,ex:[],zona:'',sel:R[1],per:'e1'};
 const $=i=>document.getElementById(i);
 const CAN=['Booking','Airbnb','Directo'];const occ=(p,per)=>{const r=E.rnd(p.id+per.id)();return r<.28?CAN[Math.floor(r*100)%3]:null};
@@ -293,7 +299,7 @@ function filtrar(){return R.filter(p=>p.pax>=st.pax&&(!st.tipo||p.tipo===st.tipo
 function tira(){const per=PER.find(x=>x.id===st.per);const L=filtrar().filter(p=>!st.zona||p.zona===st.zona);
  $('cuantas').textContent=L.length;$('tiraT').textContent=(st.zona||'Todas las zonas')+' · '+L.length;
  $('tira').innerHTML=L.length?L.map(p=>{const o=occ(p,per);const q=E.cotizar(p,[],per.a,per.b);const tot=q.total*per.m;
-  return`<article class="prop${o?' no':''}"><div class="f"><img src="${p.img}" alt="${p.tipo} en ${p.dir}" loading="lazy" onerror="this.remove()"><span class="cod">${p.cod}</span><span class="cuadras">${p.cu===1?'A 1 cuadra del mar':'A '+p.cu+' cuadras del mar'}</span></div>
+  return`<article class="prop${o?' no':''}"><div class="f">${arte(p)}<img src="${p.img}" alt="${p.tipo} en ${p.dir}" loading="lazy" onerror="this.remove()"><span class="cod">${p.cod}</span><span class="cuadras">${p.cu===1?'A 1 cuadra del mar':'A '+p.cu+' cuadras del mar'}</span></div>
   <div class="b"><h3 class="r">${p.dir}</h3><div class="m">${p.tipo} en ${p.zona} · ${p.dorm} dorm. · ${p.banos} baño${p.banos>1?'s':''} · hasta ${p.pax}</div>
   <div class="pz"><div><b>${E.ars(tot)}</b><small>${o?'Tomada · '+o:per.n}</small></div><button class="elegir" type="button" data-id="${p.id}">${o?'Ver otras fechas':'Elegir'}</button></div></div></article>`}).join(''):'';
  if(!L.length)$('tira').innerHTML='<p class="sinres">No hay propiedades con todo eso. Sacá algún extra o ampliá las cuadras.</p>'}
