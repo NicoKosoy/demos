@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Las Arcas de Tolombón · Colalao del Valle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bellefair&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{--sand:#e8cfbd;--sand2:#dcb9a2;--cardon:#33503a;--cardon2:#24392a;--gold:#e0b84a;--clay:#9c4a2f;--ink:#2a2420;
+--rk-line:#c49c84;--rk-accent:#33503a;--rk-accent-ink:#33503a;--rk-card:#f3e3d7;--rk-sel:#e3efe1;--rk-r:14px;--rk-r-sm:10px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--sand);color:var(--ink);font-family:Outfit,system-ui,sans-serif;font-size:16px;line-height:1.55;overflow-x:hidden}
+/* componentes del motor de reserva; cada página define --rk-* */
+.rk-exps{display:grid;gap:var(--rk-gap,10px)}
+.rk-exp{all:unset;box-sizing:border-box;cursor:pointer;display:grid;gap:4px;padding:14px 16px;border:1px solid var(--rk-line);border-radius:var(--rk-r,6px);background:var(--rk-card,transparent);color:inherit;transition:border-color .15s,background .15s}
+.rk-exp:hover{border-color:var(--rk-accent)}
+.rk-exp[aria-pressed="true"]{border-color:var(--rk-accent);background:var(--rk-sel,rgba(0,0,0,.04));box-shadow:inset 3px 0 0 var(--rk-accent)}
+.rk-exp__n{font-weight:600;font-size:1.02em}
+.rk-exp__d{font-size:.88em;opacity:.78;line-height:1.45}
+.rk-exp__m{display:flex;justify-content:space-between;gap:8px;font-size:.85em;margin-top:2px}
+.rk-exp__p{font-weight:600;color:var(--rk-accent-ink,var(--rk-accent))}
+.rk-cal{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+.rk-cal--grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));overflow:visible}
+.rk-cal__h{text-align:center;font-size:.72em;opacity:.6;padding:2px 0}
+.rk-day{all:unset;box-sizing:border-box;cursor:pointer;flex:0 0 58px;display:grid;justify-items:center;gap:1px;padding:8px 2px;border:1px solid var(--rk-line);border-radius:var(--rk-r-sm,4px);background:var(--rk-card,transparent);min-width:0}
+.rk-day__w{font-size:.7em;opacity:.7}.rk-day__n{font-size:1.15em;font-weight:600;line-height:1.1}.rk-day__m{font-size:.62em;opacity:.65}
+.rk-day:disabled{opacity:.35;cursor:not-allowed;text-decoration:line-through}
+.rk-day:not(:disabled):hover{border-color:var(--rk-accent)}
+.rk-day[aria-pressed="true"]{background:var(--rk-accent);border-color:var(--rk-accent);color:var(--rk-on-accent,#fff)}
+.rk-times,.rk-langs{display:flex;flex-wrap:wrap;gap:8px}
+.rk-time,.rk-lang{all:unset;box-sizing:border-box;cursor:pointer;padding:9px 14px;border:1px solid var(--rk-line);border-radius:var(--rk-r-sm,4px);background:var(--rk-card,transparent);display:grid;gap:1px;text-align:center}
+.rk-time__t{font-weight:600}.rk-time__c{font-size:.72em;opacity:.7}
+.rk-time:disabled{opacity:.35;cursor:not-allowed}
+.rk-time[aria-pressed="true"],.rk-lang[aria-pressed="true"]{background:var(--rk-accent);border-color:var(--rk-accent);color:var(--rk-on-accent,#fff)}
+.rk-step{display:inline-flex;align-items:center;border:1px solid var(--rk-line);border-radius:var(--rk-r-sm,4px);overflow:hidden;background:var(--rk-card,transparent)}
+.rk-step__b{all:unset;cursor:pointer;width:40px;height:40px;display:grid;place-items:center;font-size:1.2em}
+.rk-step__b:disabled{opacity:.3;cursor:not-allowed}
+.rk-step__b:not(:disabled):hover{background:var(--rk-sel,rgba(0,0,0,.05))}
+.rk-step__v{min-width:96px;text-align:center;font-weight:600;font-size:.92em}
+.rk-step--sm .rk-step__b{width:34px;height:34px}.rk-step--sm .rk-step__v{min-width:74px;font-size:.85em}
+.rk-sum{display:grid;gap:6px}
+.rk-sum__row{display:flex;justify-content:space-between;gap:12px;font-size:.92em}
+.rk-sum__row span:last-child{text-align:right;white-space:nowrap}
+.rk-sum__tot{font-weight:700;font-size:1.08em;padding-top:8px;border-top:1px solid var(--rk-line)}
+.rk-sum__sena,.rk-sum__dto{font-size:.84em;opacity:.8}
+.rk-hint{margin:0;font-size:.88em;opacity:.7}
+.rk-book{display:inline-flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;cursor:pointer}
+.rk-book.is-off{opacity:.55;cursor:not-allowed}
+.rk-shop{display:grid;gap:0}
+.rk-wine{display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--rk-line)}
+.rk-wine__img{width:44px;height:64px;object-fit:contain;grid-column:1;grid-row:1}
+.rk-wine__i{grid-column:2;grid-row:1}.rk-wine__p{grid-column:3;grid-row:1}.rk-wine>.rk-step{grid-column:4;grid-row:1}
+.rk-wine__i{display:grid;gap:1px;min-width:0}
+.rk-wine__l{font-size:.72em;opacity:.65}.rk-wine__n{font-weight:600}.rk-wine__v{font-size:.82em;opacity:.75}
+.rk-wine__p{display:grid;text-align:right;font-size:.82em}.rk-wine__b{font-weight:600}.rk-wine__c{opacity:.65}
+.rk-wine.is-in .rk-wine__n{color:var(--rk-accent-ink,var(--rk-accent))}
+.rk-club{display:grid;gap:10px}
+.rk-plan{all:unset;box-sizing:border-box;cursor:pointer;display:grid;gap:3px;padding:16px;border:1px solid var(--rk-line);border-radius:var(--rk-r,6px);background:var(--rk-card,transparent)}
+.rk-plan__n{font-weight:700;font-size:1.05em}.rk-plan__b{font-size:.85em;opacity:.8}.rk-plan__d{font-size:.82em;opacity:.7;line-height:1.4}
+.rk-plan__p{font-weight:700;margin-top:6px;font-size:1.15em}.rk-plan__p small{font-weight:400;font-size:.65em;opacity:.7}
+.rk-plan:hover{border-color:var(--rk-accent)}
+.rk-plan[aria-pressed="true"]{border-color:var(--rk-accent);box-shadow:inset 0 0 0 1px var(--rk-accent);background:var(--rk-sel,rgba(0,0,0,.04))}
+.rk-exp:focus-visible,.rk-day:focus-visible,.rk-time:focus-visible,.rk-lang:focus-visible,.rk-step__b:focus-visible,.rk-plan:focus-visible,.rk-book:focus-visible{outline:2px solid var(--rk-accent);outline-offset:2px}
+.rk-pulse{animation:rkp .7s}
+@keyframes rkp{0%,100%{transform:none}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.rk-banner{font-size:12.5px;line-height:1.35;text-align:center;padding:7px 16px}
+@media (max-width:560px){.rk-wine{grid-template-columns:auto 1fr auto;row-gap:10px;column-gap:12px}.rk-wine__img{grid-row:1/3}.rk-wine__p{grid-column:3}.rk-wine>.rk-step{grid-column:2/4;grid-row:2;justify-self:start}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+.rk-banner{background:var(--cardon2);color:#e9e2c9}
+h1,h2,h3{font-family:Bellefair,serif;font-weight:400;margin:0;line-height:1.05}
+a{color:inherit}
+.top{display:flex;justify-content:space-between;align-items:center;max-width:1240px;margin:0 auto;padding:18px 20px}
+.brand{font-family:Bellefair;font-size:24px;text-decoration:none}
+.brand em{font-style:normal;color:var(--clay)}
+.top a.wa{font-size:14px;background:var(--cardon);color:#fff;padding:9px 16px;border-radius:99px;text-decoration:none}
+.bento{max-width:1240px;margin:0 auto;padding:0 20px 20px;display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+.t{border-radius:22px;padding:24px;position:relative;overflow:hidden;min-width:0}
+.t-title{grid-column:span 7;background:var(--cardon);color:#efe8d0;display:flex;flex-direction:column;justify-content:space-between;min-height:340px}
+.t-title h1{font-size:clamp(46px,6.4vw,90px)}
+.t-title p{max-width:42ch;margin:16px 0 0;opacity:.9}
+.alt{font-size:clamp(60px,9vw,128px);font-family:Bellefair;line-height:.9;color:var(--gold)}
+.t-alt{grid-column:span 5;background:var(--clay);color:#fbe9dc;display:flex;flex-direction:column;justify-content:space-between}
+.t-alt small{font-size:14px;opacity:.9}
+.t-photo{grid-column:span 4;min-height:260px;background:var(--sand2)}
+.t-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.t-photo.noimg{background:var(--cardon) repeating-linear-gradient(115deg,transparent 0 22px,rgba(224,184,74,.35) 22px 25px)}
+.t-photo.noimg::before{content:"";position:absolute;left:-10%;right:-10%;bottom:-30%;height:70%;background:var(--clay);border-radius:50% 50% 0 0}
+.t-photo span{z-index:1;position:absolute;left:16px;bottom:14px;background:rgba(36,57,42,.85);color:#fff;padding:5px 12px;border-radius:99px;font-size:13px}
+.t-cows{grid-column:span 4;background:#f3e3d7}
+.cows{display:flex;gap:6px;margin:14px 0}
+.cows svg{width:34px;height:24px}
+.t-route{grid-column:span 4;background:var(--gold);color:var(--cardon2)}
+.t-route b{font-family:Bellefair;font-size:34px;font-weight:400;display:block;line-height:1}
+.t-book{grid-column:span 12;background:#f6ebe2;padding:30px}
+.bk{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr) minmax(0,.9fr);gap:26px}.bk>div{min-width:0}
+.bk h3{font-family:Outfit;font-weight:600;font-size:14px;margin:0 0 10px;color:var(--clay)}
+.bk .sp{margin-bottom:20px}
+.tk{background:var(--cardon);color:#efe8d0;border-radius:18px;padding:20px;--rk-line:rgba(255,255,255,.22)}
+.tk input{width:100%;margin-top:12px;padding:11px 14px;border-radius:10px;border:0;font:inherit}
+.btn{display:flex;justify-content:center;background:var(--gold);color:var(--cardon2);font-weight:600;padding:14px;border-radius:12px;text-decoration:none;margin-top:12px}
+.rk-need{font-size:12.5px;opacity:.75;margin:10px 0 0;text-align:center}
+.note{background:var(--sand);border-radius:12px;padding:12px 14px;font-size:14px;margin-bottom:16px}
+.t-shop{grid-column:span 8;background:#f6ebe2}
+.t-cart{grid-column:span 4;background:var(--cardon2);color:#efe8d0;--rk-line:rgba(255,255,255,.22);align-self:start;position:sticky;top:12px}
+.t h2{font-size:clamp(32px,3.6vw,46px);margin-bottom:8px}
+.t-club{grid-column:span 7;background:#f3e3d7}
+.t-club .rk-club{grid-template-columns:repeat(3,1fr)}
+.t-club .btn{background:var(--cardon);color:#fff}
+.t-info{grid-column:span 5;background:var(--cardon);color:#efe8d0}
+.t-info dl{display:grid;grid-template-columns:110px 1fr;gap:8px 14px;margin:14px 0 0;font-size:15px}
+.t-info dt{opacity:.7}.t-info dd{margin:0}
+.t-math{grid-column:span 12;background:var(--clay);color:#fbe9dc;display:flex;gap:24px;align-items:center;flex-wrap:wrap}
+.t-math b{font-family:Bellefair;font-weight:400;font-size:56px;color:#fff;line-height:1}
+footer{text-align:center;font-size:13px;padding:24px 20px 34px}
+@media (max-width:1000px){.t-title,.t-alt{grid-column:span 12}.t-photo,.t-cows,.t-route{grid-column:span 6}.t-route{grid-column:span 12}.bk{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.bk .tkw{grid-column:1/-1}.t-shop,.t-cart,.t-club,.t-info{grid-column:span 12}.t-cart{position:static}}
+@media (max-width:640px){.bento{padding:0 12px 16px;gap:10px}.t{padding:20px 16px;border-radius:18px}.t-photo,.t-cows{grid-column:span 12}.t-photo{min-height:170px}.bk{grid-template-columns:minmax(0,1fr)}.t-book{padding:22px 16px}.t-club .rk-club{grid-template-columns:1fr}.t-info dl{grid-template-columns:1fr}.top{padding:14px 16px}.t-title{min-height:0}}
+</style>
+</head>
+<body>
+<div class="rk-banner">Prototipo de demostración preparado para Las Arcas de Tolombón · Precios y disponibilidad de ejemplo</div>
+<header class="top"><a class="brand" href="#">Las Arcas <em>de Tolombón</em></a><a class="wa" href="#" data-wa="Hola Las Arcas de Tolombón! Tengo una consulta sobre las visitas.">WhatsApp</a></header>
+<main class="bento">
+ <div class="t t-title"><div><h1>Siete Vacas y un valle a 1.700 metros</h1>
+  <p>Bodega de Colalao del Valle, sobre la Ruta 40, en los Valles Calchaquíes tucumanos. Visitás todas las etapas de la elaboración y terminás con cinco copas y queso de cabra o criollo.</p></div></div>
+ <div class="t t-alt"><small>Ruta Nacional 40, km 4.313</small><div class="alt">RN 40</div><small>A 15 minutos de las Ruinas de Quilmes y a 30 de Cafayate.</small></div>
+
+ <div class="t t-photo"><img src="https://bodegalasarcas.com.ar/web/wp-content/uploads/2018/05/vides.jpg" alt="Viñedos de Las Arcas de Tolombón" onerror="this.parentNode.classList.add('noimg');this.remove()"><span>Los viñedos</span></div>
+ <div class="t t-cows"><h3 style="font-size:28px">Por qué Siete Vacas</h3>
+  <div class="cows" aria-hidden="true"></div>
+  <p style="margin:0;font-size:15px">La historia de las siete vacas le puso nombre a la primera etiqueta de la bodega, y hoy es la línea Origen: Torrontés, Torrontés Tardío, Rosé, Naranjo y Tannat.</p></div>
+ <div class="t t-photo"><img src="https://bodegalasarcas.com.ar/web/wp-content/uploads/2024/06/visitas_degustacion_1-819x1024.jpg" alt="Degustación en la bodega" onerror="this.parentNode.classList.add('noimg');this.remove()"><span>La degustación</span></div>
+
+ <section class="t t-book" id="visita" data-rk-scope>
+  <h2>Reservá tu degustación</h2>
+  <p style="margin:0 0 20px;max-width:60ch">Las visitas particulares no necesitan reserva, pero con esto el que viene desde Tafí o Cafayate se asegura lugar y la bodega sabe cuántos llegan. Grupos y empresas, igual.</p>
+  <div class="bk">
+   <div><h3>Experiencia</h3><div class="rk-exps" data-rk="exps"></div></div>
+   <div><div class="sp"><h3>Día</h3><div data-rk="cal"></div></div>
+    <div class="sp"><h3>Horario</h3><div class="rk-times" data-rk="times"></div></div>
+    <div class="sp"><h3>Idioma y personas</h3><div class="rk-langs" data-rk="langs" style="margin-bottom:10px"></div><div data-rk="pax"></div></div></div>
+   <div class="tkw"><div class="note">Pagando en efectivo en la bodega, la degustación sale $12.000 en vez de $14.000.</div>
+    <div class="tk"><div class="rk-sum" data-rk="sum"></div>
+    <input data-rk="nombre" placeholder="Tu nombre (opcional)" aria-label="Tu nombre">
+    <a class="btn rk-book" data-rk="book" target="_blank" rel="noopener"><span class="rk-book__l">Elegí día y horario</span></a>
+    <p class="rk-need">Cerrado domingos, 25/12, 1/1 y 1/5.</p></div></div>
+  </div>
+ </section>
+
+ <section class="t t-shop" id="vinos" data-rk-scope>
+  <h2>Llevate la caja</h2>
+  <p style="margin:0 0 10px">Lo que probaste en la degustación, por caja de 6. Retirás en la bodega o te lo mandamos.</p>
+  <div class="rk-shop" data-rk="shop"></div>
+ </section>
+ <aside class="t t-cart" data-rk-scope><h2 style="color:var(--gold)">Pedido</h2><div class="rk-sum" data-rk="cart"></div>
+  <a class="btn rk-book" data-rk="shopbtn" target="_blank" rel="noopener"><span class="rk-book__l">Sumá al menos una caja</span></a><p class="rk-need">Precios de ejemplo.</p></aside>
+
+ <section class="t t-club" id="club" data-rk-scope>
+  <h2>Club Siete Vacas</h2><p style="margin:0 0 14px">Torrontés de altura todos los meses, para el que se quedó con ganas de volver.</p>
+  <div class="rk-club" data-rk="club"></div>
+  <a class="btn rk-book" data-rk="clubbtn" target="_blank" rel="noopener"><span class="rk-book__l">Elegí un plan</span></a>
+ </section>
+ <aside class="t t-info"><h2>Visitas</h2>
+  <dl><dt>Dónde</dt><dd>Ruta Nacional 40, km 4.313, Colalao del Valle, Tucumán</dd>
+  <dt>Horario</dt><dd>Lunes a sábado y feriados, 10 a 17</dd>
+  <dt>WhatsApp</dt><dd><a href="#" data-wa="Hola Las Arcas! Quería consultar por una visita.">+54 9 381 335-1240</a></dd>
+  <dt>Mail</dt><dd><a href="mailto:info@bodegalasarcas.com.ar">info@bodegalasarcas.com.ar</a></dd>
+  <dt>Instagram</dt><dd><a href="https://www.instagram.com/bodegalasarcas_oficial/" target="_blank" rel="noopener">@bodegalasarcas_oficial</a></dd></dl></aside>
+ <div class="t t-math"><b>−25%</b><p style="margin:0;max-width:70ch">Es lo que se llevan las excursiones que paran en la bodega de camino a Quilmes. Con su propio sistema, la reserva y la caja que el turista se lleva quedan enteras para Las Arcas.</p></div>
+</main>
+<footer>Prototipo preparado para Las Arcas de Tolombón por Resolviendo Kos · resolviendokos.com · No es la web oficial</footer>
+<script>(function(){
+"use strict";
+var C={}, S={exp:null,date:null,time:null,lang:null,pax:2,cart:{},plan:null};
+function $(s,r){return (r||document).querySelector(s);}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));}
+function money(n){return "$ "+Math.round(n).toLocaleString("es-AR");}
+function h(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e;}
+function hash(s){var x=2166136261;for(var i=0;i<s.length;i++){x^=s.charCodeAt(i);x=Math.imul(x,16777619);}return (x>>>0);}
+var DIAS=["dom","lun","mar","mié","jue","vie","sáb"],DIASL=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"],MES=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+function key(d){return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();}
+function fmtDate(d){return DIASL[d.getDay()]+" "+d.getDate()+"/"+(d.getMonth()+1);}
+function exp(){for(var i=0;i<C.exps.length;i++)if(C.exps[i].id===S.exp)return C.exps[i];return C.exps[0];}
+function cupos(d,t){var e=exp();var cap=e.cap||C.cap||12;var r=hash(key(d)+t+e.id+C.negocio)%100;if(r<14)return 0;return Math.max(1,Math.round(cap*(r/100)));}
+function open(d){var e=exp();var days=e.days||C.days||[1,2,3,4,5,6];return days.indexOf(d.getDay())>-1;}
+function times(){return exp().times||C.times||["10:00","12:00","16:00"];}
+function wa(text,num){if(!(num||C.wa)&&C.mail)return "mailto:"+C.mail+"?subject="+encodeURIComponent("Consulta desde la web - "+C.negocio)+"&body="+encodeURIComponent(text);return "https://wa.me/"+(num||C.wa)+"?text="+encodeURIComponent(text);}
+function each(sel,fn){$$('[data-rk="'+sel+'"]').forEach(fn);}
+
+function renderExps(){each("exps",function(box){box.innerHTML="";C.exps.forEach(function(e){
+  var b=h("button","rk-exp");b.type="button";b.setAttribute("aria-pressed",String(S.exp===e.id));
+  b.innerHTML='<span class="rk-exp__n">'+e.n+'</span>'+(e.d?'<span class="rk-exp__d">'+e.d+'</span>':'')+'<span class="rk-exp__m"><span class="rk-exp__dur">'+(e.dur||"")+'</span><span class="rk-exp__p">'+(e.p?money(e.p)+(e.pp===false?"":" p/p"):"Sin cargo")+'</span></span>';
+  b.addEventListener("click",function(){S.exp=e.id;S.time=null;if(S.date&&!open(S.date))S.date=null;renderAll();});
+  box.appendChild(b);});});}
+
+function renderCal(){each("cal",function(box){box.innerHTML="";var mode=box.getAttribute("data-mode")||C.calMode||"strip";
+  var start=new Date();start.setHours(0,0,0,0);start.setDate(start.getDate()+1);var n=C.horizon||21;
+  var wrap=h("div","rk-cal rk-cal--"+mode);
+  if(mode==="grid"){["L","M","M","J","V","S","D"].forEach(function(x){wrap.appendChild(h("span","rk-cal__h",x));});
+    var off=(start.getDay()+6)%7;for(var k=0;k<off;k++)wrap.appendChild(h("span","rk-cal__pad"));}
+  for(var i=0;i<n;i++){(function(i){var d=new Date(start);d.setDate(start.getDate()+i);
+    var b=h("button","rk-day");b.type="button";var ok=open(d);
+    var free=0;if(ok)times().forEach(function(t){free+=cupos(d,t);});
+    if(!ok||free===0){b.disabled=true;}
+    b.setAttribute("aria-pressed",String(S.date&&key(S.date)===key(d)));
+    b.setAttribute("aria-label",fmtDate(d)+(ok?(free?"":" completo"):" cerrado"));
+    b.innerHTML='<span class="rk-day__w">'+DIAS[d.getDay()]+'</span><span class="rk-day__n">'+d.getDate()+'</span><span class="rk-day__m">'+(!ok?"cerrado":free===0?"completo":MES[d.getMonth()])+'</span>';
+    b.addEventListener("click",function(){S.date=d;S.time=null;renderAll();});wrap.appendChild(b);})(i);}
+  box.appendChild(wrap);});}
+
+function renderTimes(){each("times",function(box){box.innerHTML="";
+  if(!S.date){box.appendChild(h("p","rk-hint","Elegí un día para ver los horarios y cupos."));return;}
+  times().forEach(function(t){var c=cupos(S.date,t);var b=h("button","rk-time");b.type="button";b.disabled=c===0||c<1;
+    b.setAttribute("aria-pressed",String(S.time===t));
+    b.innerHTML='<span class="rk-time__t">'+t+'</span><span class="rk-time__c">'+(c?("quedan "+c):"completo")+'</span>';
+    b.addEventListener("click",function(){S.time=t;if(S.pax>c)S.pax=c;renderAll();});box.appendChild(b);});});}
+
+function renderLangs(){each("langs",function(box){box.innerHTML="";var L=exp().langs||C.langs||["Español"];if(L.indexOf(S.lang)<0)S.lang=L[0];
+  L.forEach(function(l){var b=h("button","rk-lang",l);b.type="button";b.setAttribute("aria-pressed",String(S.lang===l));
+    b.addEventListener("click",function(){S.lang=l;renderAll();});box.appendChild(b);});});}
+
+function maxPax(){return S.date&&S.time?cupos(S.date,S.time):(exp().cap||C.cap||12);}
+function renderPax(){each("pax",function(box){box.innerHTML="";var w=h("div","rk-step");
+  var m=h("button","rk-step__b","&minus;");m.type="button";m.setAttribute("aria-label","Una persona menos");
+  var o=h("output","rk-step__v",S.pax+(S.pax===1?" persona":" personas"));
+  var p=h("button","rk-step__b","+");p.type="button";p.setAttribute("aria-label","Una persona más");
+  m.disabled=S.pax<=1;p.disabled=S.pax>=maxPax();
+  m.onclick=function(){S.pax=Math.max(1,S.pax-1);renderAll();};p.onclick=function(){S.pax=Math.min(maxPax(),S.pax+1);renderAll();};
+  w.appendChild(m);w.appendChild(o);w.appendChild(p);box.appendChild(w);});}
+
+function bookText(){var e=exp();var tot=(e.p||0)*(e.pp===false?1:S.pax);var sena=tot*(C.sena||0.3);
+  return "Hola "+C.negocio+"! Quiero reservar una visita:\n"+
+  "• Experiencia: "+e.n+"\n• Fecha: "+(S.date?fmtDate(S.date):"-")+"\n• Horario: "+(S.time||"-")+"\n• Idioma: "+S.lang+"\n• Personas: "+S.pax+"\n"+
+  "• Total: "+money(tot)+(tot?" (seña "+Math.round((C.sena||0.3)*100)+"%: "+money(sena)+")":"")+"\n"+(nombre()?"Mi nombre: "+nombre()+"\n":"")+"¿Me confirman disponibilidad?";}
+function nombre(){var i=$('[data-rk="nombre"]');return i&&i.value.trim()?i.value.trim():"";}
+function renderSum(){var e=exp();var tot=(e.p||0)*(e.pp===false?1:S.pax);var sena=tot*(C.sena||0.3);var ready=S.date&&S.time;
+  each("sum",function(box){box.innerHTML='<div class="rk-sum__row"><span>'+e.n+'</span><span>'+(e.p?money(e.p)+(e.pp===false?"":" × "+S.pax):"sin cargo")+'</span></div>'+
+   '<div class="rk-sum__row"><span>'+(S.date?fmtDate(S.date):"Día a elegir")+'</span><span>'+(S.time||"--:--")+' · '+S.lang+'</span></div>'+
+   '<div class="rk-sum__row rk-sum__tot"><span>Total de ejemplo</span><span>'+money(tot)+'</span></div>'+
+   (tot?'<div class="rk-sum__row rk-sum__sena"><span>Seña para confirmar ('+Math.round((C.sena||0.3)*100)+'%)</span><span>'+money(sena)+'</span></div>':'');});
+  each("book",function(a){a.href=ready?wa(bookText()):"#";a.setAttribute("aria-disabled",String(!ready));a.classList.toggle("is-off",!ready);
+    var lbl=a.querySelector(".rk-book__l");if(lbl)lbl.textContent=ready?(a.getAttribute("data-on")||"Reservar por WhatsApp"):(a.getAttribute("data-off")||"Elegí día y horario");});}
+
+function renderShop(){each("shop",function(box){if(box.getAttribute("data-built")){syncShop();return;}box.setAttribute("data-built","1");box.innerHTML="";
+  C.wines.forEach(function(w){var bx=w.box||C.box||6;var r=h("div","rk-wine");r.setAttribute("data-w",w.id);
+    r.innerHTML=(w.img?'<img class="rk-wine__img" src="'+w.img+'" alt="'+w.n+'" loading="lazy" onerror="this.remove()">':'')+
+    '<div class="rk-wine__i"><span class="rk-wine__l">'+(w.line||"")+'</span><span class="rk-wine__n">'+w.n+'</span>'+(w.v?'<span class="rk-wine__v">'+w.v+'</span>':'')+'</div>'+
+    '<div class="rk-wine__p"><span class="rk-wine__b">'+money(w.p)+' la botella</span><span class="rk-wine__c">'+money(w.p*bx)+' la caja de '+bx+'</span></div>';
+    var st=h("div","rk-step rk-step--sm");var m=h("button","rk-step__b","&minus;");m.type="button";m.setAttribute("aria-label","Quitar caja de "+w.n);
+    var o=h("output","rk-step__v","0 cajas");var p=h("button","rk-step__b","+");p.type="button";p.setAttribute("aria-label","Sumar caja de "+w.n);
+    m.onclick=function(){S.cart[w.id]=Math.max(0,(S.cart[w.id]||0)-1);syncShop();};p.onclick=function(){S.cart[w.id]=Math.min(20,(S.cart[w.id]||0)+1);syncShop();};
+    st.appendChild(m);st.appendChild(o);st.appendChild(p);r.appendChild(st);box.appendChild(r);});});syncShop();}
+function cartInfo(){var cj=0,bt=0,tot=0,lines=[];C.wines.forEach(function(w){var q=S.cart[w.id]||0;if(!q)return;var bx=w.box||C.box||6;cj+=q;bt+=q*bx;tot+=q*bx*w.p;lines.push("• "+q+(q>1?" cajas":" caja")+" de "+w.n+(w.v&&w.n.indexOf(w.v)<0?" ("+w.v+")":"")+" — "+money(q*bx*w.p));});
+  var dto=cj>=(C.dtoCajas||3)?(C.dto||0.1):0;return {cj:cj,bt:bt,tot:tot,dto:dto,fin:tot*(1-dto),lines:lines};}
+function syncShop(){$$(".rk-wine").forEach(function(r){var q=S.cart[r.getAttribute("data-w")]||0;var o=r.querySelector(".rk-step__v");if(o)o.textContent=q+(q===1?" caja":" cajas");r.classList.toggle("is-in",q>0);var m=r.querySelector(".rk-step__b");if(m)m.disabled=q===0;});
+  var c=cartInfo();each("cart",function(box){box.innerHTML=c.cj?('<div class="rk-sum__row"><span>'+c.cj+(c.cj>1?" cajas":" caja")+' · '+c.bt+' botellas</span><span>'+money(c.tot)+'</span></div>'+
+    (c.dto?'<div class="rk-sum__row rk-sum__dto"><span>'+Math.round(c.dto*100)+'% por llevar '+(C.dtoCajas||3)+' cajas o más</span><span>− '+money(c.tot*c.dto)+'</span></div>':'<div class="rk-sum__row rk-sum__dto"><span>Desde '+(C.dtoCajas||3)+' cajas: '+Math.round((C.dto||0.1)*100)+'% menos</span><span></span></div>')+
+    '<div class="rk-sum__row rk-sum__tot"><span>Total de ejemplo</span><span>'+money(c.fin)+'</span></div>'):'<p class="rk-hint">Sumá cajas para armar el pedido. '+(C.envio||"Retiro en la bodega o envío a coordinar.")+'</p>';});
+  each("shopbtn",function(a){var ok=c.cj>0;a.href=ok?wa("Hola "+C.negocio+"! Quiero hacer este pedido de vinos:\n"+c.lines.join("\n")+"\nTotal: "+money(c.fin)+(c.dto?" (con "+Math.round(c.dto*100)+"% off)":"")+"\n"+(nombre()?"Nombre: "+nombre()+"\n":"")+"¿Cómo coordinamos pago y entrega?"):"#";
+    a.setAttribute("aria-disabled",String(!ok));a.classList.toggle("is-off",!ok);var l=a.querySelector(".rk-book__l");if(l)l.textContent=ok?"Pedir "+c.cj+(c.cj>1?" cajas":" caja")+" por WhatsApp":"Sumá al menos una caja";});}
+
+function renderClub(){each("club",function(box){box.innerHTML="";C.club.forEach(function(p){var b=h("button","rk-plan");b.type="button";b.setAttribute("aria-pressed",String(S.plan===p.id));
+  b.innerHTML='<span class="rk-plan__n">'+p.n+'</span><span class="rk-plan__b">'+p.b+' botellas por mes</span>'+(p.d?'<span class="rk-plan__d">'+p.d+'</span>':'')+'<span class="rk-plan__p">'+money(p.p)+'<small> /mes</small></span>';
+  b.onclick=function(){S.plan=p.id;renderClub();};box.appendChild(b);});});
+  var plan=null;C.club.forEach(function(p){if(p.id===S.plan)plan=p;});
+  each("clubbtn",function(a){a.href=plan?wa("Hola "+C.negocio+"! Me quiero sumar al club del vino:\n• Plan: "+plan.n+" ("+plan.b+" botellas por mes)\n• Cuota de ejemplo: "+money(plan.p)+" por mes\n"+(nombre()?"Nombre: "+nombre()+"\n":"")+"¿Cómo sigo?"):"#";
+    a.setAttribute("aria-disabled",String(!plan));a.classList.toggle("is-off",!plan);var l=a.querySelector(".rk-book__l");if(l)l.textContent=plan?"Sumarme al plan "+plan.n:"Elegí un plan";});}
+
+function renderAll(){renderExps();renderCal();renderTimes();renderLangs();renderPax();renderSum();}
+document.addEventListener("click",function(ev){var a=ev.target.closest&&ev.target.closest('a[aria-disabled="true"]');if(a){ev.preventDefault();var t=a.closest("[data-rk-scope]");var hint=t&&t.querySelector(".rk-need");if(hint){hint.classList.remove("rk-pulse");void hint.offsetWidth;hint.classList.add("rk-pulse");}}});
+window.RK={init:function(cfg){C=cfg;S.exp=(cfg.exps[0]||{}).id;S.lang=(cfg.langs||["Español"])[0];if(cfg.club&&cfg.club[1])S.plan=null;
+  renderAll();if(cfg.wines)renderShop();if(cfg.club)renderClub();
+  $$('[data-rk="nombre"]').forEach(function(i){i.addEventListener("input",function(){renderSum();syncShop();renderClub();});});
+  $$("[data-wa]").forEach(function(a){a.href=wa(a.getAttribute("data-wa")||("Hola "+C.negocio+"! Quería hacer una consulta."));});},
+  state:S,pick:function(id){S.exp=id;S.time=null;renderAll();}};
+})();
+</script>
+<script>
+(function(){var c=document.querySelector(".cows");var s='<svg viewBox="0 0 34 24"><path d="M5 9h20l4-3 2 3-3 3v7h-3v-5H10v5H7v-6L3 11z" fill="#33503a"/></svg>';c.innerHTML=new Array(8).join(s);})();
+RK.init({negocio:"Las Arcas de Tolombón",wa:"5493813351240",sena:0.3,horizon:21,langs:["Español","Inglés"],
+times:["10:00","11:30","13:00","14:30","16:00"],days:[1,2,3,4,5,6],
+exps:[
+{id:"deg",n:"Visita guiada + degustación",d:"Cinco copas: cuatro Siete Vacas y Campo Las Arcas Gran Reserva, con queso de cabra o criollo.",dur:"1 h",p:14000,cap:20},
+{id:"grupo",n:"Grupos y empresas",d:"Visita cerrada para contingentes, con degustación a medida.",dur:"1 h 30",p:13000,cap:40,times:["10:30","15:00"]}],
+wines:[
+{id:"tor",line:"Siete Vacas · Origen",n:"Siete Vacas Torrontés",v:"Torrontés",p:8500,img:"https://bodegalasarcas.com.ar/web/wp-content/uploads/2019/06/vinos_torrontes.jpg"},
+{id:"tard",line:"Siete Vacas · Origen",n:"Siete Vacas Torrontés Tardío",v:"Dulce natural",p:9500,img:"https://bodegalasarcas.com.ar/web/wp-content/uploads/2019/06/vinos_torrontes_tardio.jpg"},
+{id:"rose",line:"Siete Vacas · Origen",n:"Siete Vacas Torrontés Rosé",v:"Rosé",p:8500},
+{id:"nar",line:"Siete Vacas · Origen",n:"Siete Vacas Naranjo",v:"Vino naranjo",p:11000,img:"https://bodegalasarcas.com.ar/web/wp-content/uploads/2025/05/vinos_naranjo.jpg"},
+{id:"tan",line:"Siete Vacas · Origen",n:"Siete Vacas Tannat",v:"Tannat",p:9500,img:"https://bodegalasarcas.com.ar/web/wp-content/uploads/2019/06/vinos_tannat.jpg"},
+{id:"res",line:"Reserva",n:"Siete Vacas Reserva",v:"Tinto con roble francés",p:15000},
+{id:"esp",line:"Espumante",n:"Siete Vacas Espumante",v:"Espumante",p:12000},
+{id:"gr",line:"Gran Reserva",n:"Campo Las Arcas Gran Reserva",v:"Tinto de guarda",p:26000}],
+club:[{id:"origen",n:"Origen",b:2,d:"Línea Siete Vacas Origen.",p:17000},{id:"reserva",n:"Reserva",b:3,d:"Origen + un Reserva.",p:32000},{id:"campo",n:"Campo",b:4,d:"Reservas y Gran Reserva.",p:62000}]});
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Las Arcas de Tolombón"></script>
+</body>
+</html>
