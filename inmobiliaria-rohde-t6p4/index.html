@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Rohde · Agenda de alquileres</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--lacar:#123F4A;--lacar2:#1D5A68;--nieve:#F4F6F5;--coihue:#B23A2E;--musgo:#5D7A3A;--tinta:#16242A;--gris:#5C6A6E;--linea:#D5DDDC;--book:#2E5BC9;--air:#D2475A;--dir:#5D7A3A}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow-x:clip}
+body{font-family:"IBM Plex Sans",system-ui,sans-serif;background:var(--nieve);color:var(--tinta);line-height:1.5;font-size:15px}
+img{display:block;max-width:100%}
+button,select{font:inherit;color:inherit}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--coihue);outline-offset:2px}
+.y{font-family:"Young Serif",Georgia,serif;font-weight:400}
+.aviso{background:var(--coihue);color:#fff;font-size:13px;padding:7px 16px;text-align:center}
+.barra{display:flex;align-items:center;gap:18px;padding:12px 28px;background:#fff;border-bottom:1px solid var(--linea);flex-wrap:wrap}
+.barra .m{font-family:"Young Serif";font-size:22px;color:var(--lacar);text-decoration:none}
+.barra .m small{font-family:"IBM Plex Sans";font-size:13px;color:var(--gris);margin-left:8px}
+.barra .ventanas{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto}
+.barra .ventanas button{border:1px solid var(--linea);background:#fff;padding:6px 12px;border-radius:4px;cursor:pointer;font-size:14px}
+.barra .ventanas button[aria-pressed=true]{background:var(--lacar);color:#fff;border-color:var(--lacar)}
+.barra .wa{background:var(--musgo);color:#fff;text-decoration:none;padding:7px 14px;border-radius:4px;font-weight:600;font-size:14px}
+
+/* agenda */
+.agenda-w{padding:18px 28px 0}
+.agenda-h{display:flex;justify-content:space-between;align-items:end;gap:14px;flex-wrap:wrap;margin-bottom:10px}
+.agenda-h h1{font-size:clamp(24px,2.8vw,36px);line-height:1.1;color:var(--lacar)}
+.agenda-h p{color:var(--gris);font-size:14px;max-width:62ch}
+.ley{display:flex;gap:14px;font-size:13px;color:var(--gris);flex-wrap:wrap}
+.ley i{display:inline-block;width:18px;height:10px;border-radius:2px;margin-right:5px;vertical-align:0}
+.agenda{overflow-x:auto;background:#fff;border:1px solid var(--linea);border-radius:6px}
+.gr{display:grid;min-width:max-content}
+.gr .u{position:sticky;left:0;z-index:2;background:#fff;border-right:1px solid var(--linea);padding:8px 12px;display:flex;gap:10px;align-items:center;width:240px;border-bottom:1px solid var(--linea)}
+.gr .u svg{flex:0 0 46px;height:46px;border-radius:4px}
+.gr .u b{display:block;font-family:"Young Serif";font-weight:400;font-size:15.5px;line-height:1.15}
+.gr .u small{font-size:12px;color:var(--gris)}
+.gr .hd{position:sticky;top:0;background:var(--nieve);font-size:11px;text-align:center;color:var(--gris);padding:4px 0;border-bottom:1px solid var(--linea);z-index:1}
+.gr .hd b{display:block;font-size:13px;color:var(--tinta);font-weight:600}
+.gr .hd.fds{background:#E8EEEC}
+.gr .hd.fer{background:#F6E2DE;color:var(--coihue)}
+.gr .hd.mes{font-weight:600}
+.gr .corner{position:sticky;left:0;top:0;z-index:3;background:var(--nieve);border-right:1px solid var(--linea);border-bottom:1px solid var(--linea);font-size:12px;color:var(--gris);padding:6px 12px;display:flex;align-items:end}
+.d{width:34px;height:62px;border:0;border-left:1px solid #EEF1F0;border-bottom:1px solid var(--linea);background:transparent;cursor:pointer;position:relative;padding:0}
+.d:hover{background:#E6EFEC}
+.d.fds{background:#FAFBFA}
+.d .bar{position:absolute;left:0;right:0;top:18px;height:26px}
+.d.c-booking .bar{background:var(--book)}.d.c-airbnb .bar{background:var(--air)}.d.c-directo .bar{background:var(--dir)}
+.d.ini .bar{left:3px;border-radius:13px 0 0 13px}.d.fin .bar{right:3px;border-radius:0 13px 13px 0}
+.d.x{cursor:not-allowed}
+.d.sel .bar,.d.rg .bar{background:#E3A33B;opacity:.8}
+.d.sel .bar{opacity:1}
+.d .pr{position:absolute;bottom:3px;left:0;right:0;font-size:9.5px;color:var(--gris);text-align:center}
+
+/* ficha y cuenta */
+.abajo{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:28px;padding:22px 28px 40px}
+.res{background:#fff;border:1px solid var(--linea);border-radius:6px;padding:22px}
+.res h2{font-size:26px;color:var(--lacar);line-height:1.15}
+.res .sub{color:var(--gris);font-size:14px;margin:4px 0 14px}
+.res .vacio{color:var(--gris)}
+.lin{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px dashed var(--linea)}
+.lin span:last-child{white-space:nowrap;font-variant-numeric:tabular-nums}
+.lin.t{font-weight:600;font-size:19px;border:0;padding-top:10px}
+.sena{background:var(--nieve);padding:10px 12px;margin-top:10px;font-size:14px;border-left:3px solid var(--musgo)}
+.wab{display:block;text-align:center;margin-top:14px;background:var(--musgo);color:#fff;text-decoration:none;padding:13px;border-radius:4px;font-weight:600}
+.wab.off{background:#A8B3AE;pointer-events:none}
+.msg{white-space:pre-wrap;font-size:12.5px;color:var(--gris);margin-top:10px}
+.alerta{color:var(--coihue);font-size:14px;margin-top:8px}
+.foto-ciudad{position:relative;border-radius:6px;overflow:hidden;min-height:300px;background:linear-gradient(180deg,#9BB9C0,#123F4A)}
+.foto-ciudad img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.foto-ciudad svg{position:absolute;inset:0;width:100%;height:100%}
+.foto-ciudad .tx{position:absolute;left:0;right:0;bottom:0;padding:20px 22px;background:linear-gradient(0deg,rgba(18,63,74,.92),rgba(18,63,74,0));color:#fff;z-index:2}
+.foto-ciudad .tx h3{font-size:26px;line-height:1.1}
+.foto-ciudad .tx p{font-size:14px;color:#D7E5E8;margin-top:6px}
+.num{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--linea);border-top:1px solid var(--linea)}
+.num div{background:#fff;padding:22px 28px}
+.num b{font-family:"Young Serif";font-weight:400;font-size:38px;color:var(--coihue);display:block;line-height:1}
+.num p{font-size:14px;color:var(--gris);margin-top:6px}
+footer{background:var(--lacar);color:#CFE0E3;padding:28px;font-size:14px}
+footer .fx{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px}
+footer b{font-family:"Young Serif";font-weight:400;font-size:22px;color:#fff;display:block}
+footer .legal{margin-top:16px;padding-top:12px;border-top:1px solid #2A5966;font-size:13px;color:#9FBAC0}
+@media (max-width:860px){
+ .barra{padding:10px 16px}.barra .ventanas{margin-left:0;order:3;width:100%}
+ .agenda-w{padding:14px 16px 0}
+ .gr .u{width:150px;padding:6px 8px}.gr .u svg{display:none}.gr .u b{font-size:14px}
+ .abajo{grid-template-columns:1fr;padding:18px 16px 30px}
+ .num{grid-template-columns:1fr}.num div{padding:18px 16px}
+ footer{padding:24px 16px}
+}
+</style>
+</head>
+<body>
+<div class="aviso">Prototipo de demostración preparado para Inmobiliaria Rohde · Precios y disponibilidad de ejemplo</div>
+<header class="barra">
+ <a class="m" href="#">Rohde<small>Alquiler temporario · San Martín de los Andes</small></a>
+ <div class="ventanas" id="vent" role="group" aria-label="Período a mostrar"></div>
+ <a class="wa" href="https://wa.me/5492944292297" target="_blank" rel="noopener">WhatsApp</a>
+</header>
+<main>
+<section class="agenda-w">
+ <div class="agenda-h"><div><h1 class="y" id="tit"></h1><p>Las siete unidades de Rohde en una sola agenda. Tocá el día de llegada y el de salida en la fila de la que te guste: el total y la reserva aparecen abajo.</p></div>
+ <div class="ley"><span><i style="background:var(--book)"></i>Booking</span><span><i style="background:var(--air)"></i>Airbnb</span><span><i style="background:var(--dir)"></i>Directo</span><span><i style="background:#E3A33B"></i>Tu estadía</span></div></div>
+ <div class="agenda" id="agenda"></div>
+</section>
+<section class="abajo">
+ <div class="res" id="res"><p class="vacio">Elegí llegada y salida en cualquier fila de la agenda.</p></div>
+ <div class="foto-ciudad"><svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="400" height="300" fill="#9BB9C0"/><path d="M0 170 L60 110 L110 150 L170 80 L230 140 L290 95 L350 150 L400 120 L400 300 L0 300Z" fill="#3F6A5A"/><path d="M0 200 L80 160 L160 190 L240 150 L320 185 L400 165 L400 300 L0 300Z" fill="#2B5444"/><rect y="215" width="400" height="85" fill="#1D5A68"/></svg><img src="https://static.tokkobroker.com/tfw_images/9722_Inmobiliaria%20ROHDE/Portada-San-Mart%C3%ADn-de-los-Andes.png" alt="San Martín de los Andes y el lago Lácar" onerror="this.remove()">
+  <div class="tx"><h3 class="y">Del centro al Lácar caminando, a 20 km de Chapelco</h3><p>Departamentos en Roca, Belgrano, Villegas y Sarmiento, la Casa Adolim en Los Rosales y la cabaña 4 Estaciones.</p></div></div>
+</section>
+<section class="num">
+ <div><b>7</b><p>unidades que hoy se consultan una por una por WhatsApp o por la ficha de Tokko.</p></div>
+ <div><b>15%</b><p>lo que se lleva Booking de cada estadía. Una semana de julio en la Casa Adolim deja más de USD 400 de comisión.</p></div>
+ <div><b>1</b><p>agenda: lo de Booking, Airbnb y la oficina de San Martín 851 bloqueado en el mismo lugar.</p></div>
+</section>
+</main>
+<footer><div class="fx"><div><b>Inmobiliaria Rohde</b>Av. San Martín 851, 1º piso, oficina 1 · San Martín de los Andes, Neuquén</div><div>Ventas y turismo +54 9 2944 29-2297 · Fijo (02972) 427220<br>info@inmobiliariarohde.com.ar · @rohde.inmobiliaria</div></div>
+<p class="legal">Prototipo preparado para Inmobiliaria Rohde por Resolviendo Kos · resolviendokos.com · No es la web oficial</p></footer>
+<script>
+/* motor de reservas de ejemplo: temporadas, ocupación sincronizada (simulada), cotización y WhatsApp */
+const E=(()=>{
+  const MES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  const DIA=['lu','ma','mi','ju','vi','sá','do'];
+  const pad=n=>String(n).padStart(2,'0');
+  const d=s=>{const [y,m,dd]=s.split('-').map(Number);return new Date(y,m-1,dd)};
+  const iso=x=>x.getFullYear()+'-'+pad(x.getMonth()+1)+'-'+pad(x.getDate());
+  const add=(x,n)=>{const y=new Date(x);y.setDate(y.getDate()+n);return y};
+  const nights=(a,b)=>(a&&b)?Math.round((d(b)-d(a))/864e5):0;
+  const ars=n=>'$ '+Math.round(n).toLocaleString('es-AR');
+  const usd=n=>'USD '+Math.round(n).toLocaleString('es-AR');
+  const corta=s=>{if(!s)return'';const x=d(s);return x.getDate()+' '+MES[x.getMonth()].slice(0,3)};
+  const larga=s=>{if(!s)return'';const x=d(s);return x.getDate()+' de '+MES[x.getMonth()]};
+  function rnd(str){let h=2166136261;for(const c of String(str)){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return()=>{h^=h<<13;h^=h>>>17;h^=h<<5;return((h>>>0)%100000)/100000}}
+  const SRC=['Booking','Airbnb','Directo'];
+  /* ocupación de ejemplo: devuelve Map fecha -> canal */
+  function ocupacion(id,desde='2026-11-01',dias=330){
+    const r=rnd(id),m=new Map(),base=d(desde);let i=Math.floor(r()*5);
+    while(i<dias){const largo=2+Math.floor(r()*6),canal=SRC[Math.floor(r()*3)];
+      for(let k=0;k<largo;k++)m.set(iso(add(base,i+k)),canal);
+      i+=largo+6+Math.floor(r()*16)}
+    return m}
+  function temporada(T,f){for(const t of T)if(f>=t.desde&&f<=t.hasta)return t;return T.find(t=>t.base)||{nombre:'Base',mult:1}}
+  /* cotiza noche por noche */
+  function cotizar(p,T,a,b){
+    const n=nights(a,b);if(n<=0)return null;let total=0;const det={};let choque=null;const occ=p._occ||(p._occ=ocupacion(p.id));
+    for(let k=0;k<n;k++){const f=iso(add(d(a),k));const t=temporada(T,f);const v=p.noche*t.mult;total+=v;
+      det[t.nombre]=(det[t.nombre]||{n:0,v:0});det[t.nombre].n++;det[t.nombre].v+=v;if(occ.has(f)&&!choque)choque=f}
+    const minimo=Math.max(...Object.keys(det).map(k=>(T.find(t=>t.nombre===k)||{}).min||1));
+    return{noches:n,total,det,choque,minimo}}
+  function libre(p,a,b){const occ=p._occ||(p._occ=ocupacion(p.id));const n=nights(a,b);for(let k=0;k<n;k++)if(occ.has(iso(add(d(a),k))))return false;return true}
+  const wa=(num,txt)=>'https://wa.me/'+num+'?text='+encodeURIComponent(txt);
+  /* grilla de un mes: celdas con data-f, clases: x (ocupado, data-c canal), s (seleccionado), r (rango), p (pasado/fuera) */
+  function mes(y,m,occ,a,b,opt={}){
+    const first=new Date(y,m,1),off=(first.getDay()+6)%7,len=new Date(y,m+1,0).getDate();
+    let h='<div class="'+(opt.cls||'cal')+'"><div class="cal-t">'+MES[m]+' '+y+'</div><div class="cal-g">'+DIA.map(x=>'<i>'+x+'</i>').join('');
+    for(let k=0;k<off;k++)h+='<span></span>';
+    for(let k=1;k<=len;k++){const f=y+'-'+pad(m+1)+'-'+pad(k);let c='';const o=occ&&occ.get(f);
+      if(o)c+=' x c-'+o.toLowerCase();if(f===a||f===b)c+=' s';else if(a&&b&&f>a&&f<b)c+=' r';if(opt.min&&f<opt.min)c+=' p';
+      h+='<button type="button" data-f="'+f+'" class="'+c.trim()+'"'+(o?' title="Ocupado · '+o+'" aria-label="'+k+' ocupado por '+o+'"':' aria-label="'+k+' de '+MES[m]+'"')+'>'+k+'</button>'}
+    return h+'</div></div>'}
+  return{MES,DIA,d,iso,add,nights,ars,usd,corta,larga,ocupacion,temporada,cotizar,libre,wa,mes,rnd}
+})();
+
+const WA='5492944292297';
+const U=[
+ {id:'adolim',n:'Casa Adolim',dir:'Los Rosales 75',tipo:'casa',cap:8,usd:250},
+ {id:'cumbres',n:'Cumbres II',dir:'Villegas 556',tipo:'depto',cap:4,usd:90},
+ {id:'belgrano7',n:'Belgrano 7',dir:'Belgrano al 900',tipo:'depto',cap:4,usd:75},
+ {id:'roca18',n:'Roca 18',dir:'Gral. Roca 1018',tipo:'depto',cap:3,usd:70},
+ {id:'roca17',n:'Roca 17',dir:'Gral. Roca al 1000',tipo:'depto',cap:3,usd:70},
+ {id:'4est',n:'4 Estaciones · Cabaña 1',dir:'Coronel Díaz al 900',tipo:'cabana',cap:4,usd:85},
+ {id:'sarm',n:'Depto Sarmiento',dir:'Sarmiento al 600',tipo:'depto',cap:2,usd:80}];
+U.forEach(u=>u.noche=u.usd);
+const V=[
+ {id:'nov',n:'Finde largo de noviembre',a:'2026-11-14',d:21},
+ {id:'fie',n:'Fiestas y enero',a:'2026-12-20',d:28},
+ {id:'feb',n:'Febrero',a:'2027-01-30',d:28},
+ {id:'ss',n:'Semana Santa',a:'2027-03-17',d:21},
+ {id:'inv',n:'Invierno y nieve',a:'2027-07-03',d:35}];
+const T=[
+ {nombre:'Fin de semana largo',desde:'2026-11-20',hasta:'2026-11-23',mult:1.3,min:3},
+ {nombre:'Fiestas',desde:'2026-12-24',hasta:'2027-01-02',mult:1.4,min:4},
+ {nombre:'Verano',desde:'2027-01-03',hasta:'2027-02-28',mult:1.3,min:3},
+ {nombre:'Carnaval',desde:'2027-02-06',hasta:'2027-02-09',mult:1.45,min:3},
+ {nombre:'Semana Santa',desde:'2027-03-25',hasta:'2027-03-28',mult:1.35,min:3},
+ {nombre:'Vacaciones de invierno',desde:'2027-07-10',hasta:'2027-07-31',mult:1.9,min:5},
+ {nombre:'Temporada de ski',desde:'2027-07-01',hasta:'2027-08-31',mult:1.5,min:3},
+ {nombre:'Tarifa publicada',base:true,mult:1,min:2}];
+const FER=['2026-11-23','2026-12-08','2026-12-25','2027-01-01','2027-02-08','2027-02-09','2027-03-24','2027-03-25','2027-03-26','2027-04-02','2027-07-09'];
+const DOLAR=1180;
+const $=i=>document.getElementById(i);
+const st={v:'inv',u:null,a:null,b:null};
+function ico(t){const c={casa:'#B23A2E',depto:'#1D5A68',cabana:'#5D7A3A'}[t];
+ const body=t==='casa'?'<rect x="10" y="22" width="26" height="18" fill="#F4F6F5"/><path d="M6 24 L23 9 L40 24Z" fill="'+c+'"/>':t==='cabana'?'<path d="M8 40 L23 12 L38 40Z" fill="'+c+'"/><rect x="19" y="30" width="8" height="10" fill="#F4F6F5"/>':'<rect x="13" y="8" width="20" height="32" fill="'+c+'"/>'+[0,1,2,3].map(i=>`<rect x="${16+(i%2)*8}" y="${12+Math.floor(i/2)*10}" width="5" height="6" fill="#F4F6F5"/>`).join('');
+ return`<svg viewBox="0 0 46 46" aria-hidden="true"><rect width="46" height="46" fill="#E6EDEC"/>${body}</svg>`}
+function agenda(){const v=V.find(x=>x.id===st.v);const dias=[...Array(v.d)].map((_,i)=>E.iso(E.add(E.d(v.a),i)));
+ $('tit').textContent=v.n+': del '+E.larga(dias[0])+' al '+E.larga(dias[dias.length-1]);
+ let h=`<div class="gr" style="grid-template-columns:auto repeat(${v.d},34px)"><div class="corner">Unidad</div>`;
+ h+=dias.map(f=>{const x=E.d(f);const w=(x.getDay()+6)%7;return`<div class="hd${w>4?' fds':''}${FER.includes(f)?' fer':''}">${E.DIA[w]}<b>${x.getDate()}</b>${x.getDate()===1?E.MES[x.getMonth()].slice(0,3):''}</div>`}).join('');
+ U.forEach(u=>{const o=u._occ||(u._occ=E.ocupacion(u.id,'2026-11-01',330));
+  h+=`<div class="u">${ico(u.tipo)}<div><b>${u.n}</b><small>${u.dir} · hasta ${u.cap}</small></div></div>`;
+  dias.forEach((f,i)=>{const c=o.get(f);const prev=o.get(dias[i-1]||E.iso(E.add(E.d(f),-1)));const nxt=o.get(E.iso(E.add(E.d(f),1)));
+   let cls='d';const w=(E.d(f).getDay()+6)%7;if(w>4)cls+=' fds';
+   if(c){cls+=' x c-'+c.toLowerCase();if(prev!==c)cls+=' ini';if(nxt!==c)cls+=' fin'}
+   if(st.u===u&&st.a){if(f===st.a||f===st.b)cls+=' sel';else if(st.b&&f>st.a&&f<st.b)cls+=' rg';if(f===st.a)cls+=' ini';if(f===(st.b||st.a))cls+=' fin'}
+   const t=E.temporada(T,f);
+   h+=`<button type="button" class="${cls}" data-u="${u.id}" data-f="${f}" aria-label="${u.n}, ${E.larga(f)}${c?', ocupado por '+c:''}" title="${c?'Ocupado · '+c:'USD '+Math.round(u.usd*t.mult)}"><span class="bar"></span>${c?'':`<span class="pr">${Math.round(u.usd*t.mult)}</span>`}</button>`})});
+ $('agenda').innerHTML=h+'</div>'}
+$('agenda').onclick=e=>{const b=e.target.closest('.d');if(!b)return;const u=U.find(x=>x.id===b.dataset.u),f=b.dataset.f;
+ if(b.classList.contains('x')&&!(st.u===u&&st.a&&!st.b&&f>st.a))return;
+ if(st.u!==u||!st.a||st.b){st.u=u;st.a=f;st.b=null}else if(f<=st.a)st.a=f;else st.b=f;
+ const sl=$('agenda').scrollLeft;agenda();$('agenda').scrollLeft=sl;res()};
+function res(){const r=$('res');const u=st.u;if(!u||!st.a){r.innerHTML='<p class="vacio">Elegí llegada y salida en cualquier fila de la agenda.</p>';return}
+ if(!st.b){r.innerHTML=`<h2 class="y">${u.n}</h2><p class="sub">Llegada el ${E.larga(st.a)}. Ahora tocá el día de salida en la misma fila.</p>`;return}
+ const q=E.cotizar(u,T,st.a,st.b);const ok=E.libre(u,st.a,st.b);const limp=35;const tot=q.total+limp;const sena=tot*.3;const corto=q.noches<q.minimo;
+ const txt=`Hola Rohde! Quiero reservar ${u.n} (${u.dir}).\nLlegada ${E.larga(st.a)} · salida ${E.larga(st.b)} (${q.noches} noches).\nTotal que vi: USD ${Math.round(tot)} (aprox. ${E.ars(tot*DOLAR)}). Seña 30%: USD ${Math.round(sena)}.\n¿Está disponible?`;
+ r.innerHTML=`<h2 class="y">${u.n}</h2><p class="sub">${u.dir} · ${u.tipo==='casa'?'Casa':u.tipo==='cabana'?'Cabaña':'Departamento'} hasta ${u.cap} personas · Wifi, estacionamiento, ropa blanca y toallas</p>
+ ${Object.entries(q.det).map(([k,v])=>`<div class="lin"><span>${v.n} noche${v.n>1?'s':''} · ${k}</span><span>USD ${Math.round(v.v)}</span></div>`).join('')}
+ <div class="lin"><span>Limpieza final</span><span>USD ${limp}</span></div><div class="lin t"><span>Total</span><span>USD ${Math.round(tot)}</span></div>
+ <div class="sena">Seña del 30% para confirmar: <b>USD ${Math.round(sena)}</b> (aprox. ${E.ars(sena*DOLAR)} a $${DOLAR}). Valores de ejemplo.</div>
+ ${!ok?'<p class="alerta">Hay noches ocupadas en ese rango.</p>':''}${corto&&ok?`<p class="alerta">En esa fecha la estadía mínima es de ${q.minimo} noches.</p>`:''}
+ <a class="wab${!ok||corto?' off':''}" href="${E.wa(WA,txt)}" target="_blank" rel="noopener">Reservar por WhatsApp</a><div class="msg">${txt.replace(/</g,'&lt;')}</div>`}
+$('vent').innerHTML=V.map(v=>`<button type="button" data-v="${v.id}" aria-pressed="${st.v===v.id}">${v.n}</button>`).join('');
+$('vent').onclick=e=>{const b=e.target.closest('button');if(!b)return;st.v=b.dataset.v;st.u=null;st.a=st.b=null;[...$('vent').children].forEach(x=>x.setAttribute('aria-pressed',x===b));agenda();res()};
+agenda();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Inmobiliaria Rohde"></script>
+</body>
+</html>
