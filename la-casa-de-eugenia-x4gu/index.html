@@ -1,0 +1,1085 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>La Casa de Eugenia · San Martín de los Andes</title>
+<meta name="description" content="Prototipo de web de reservas directas para La Casa de Eugenia, hotel boutique B&B en una casa de 1928 a 100 metros del lago Lácar.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bentham&family=Nokora:wght@300;400;700&display=swap" rel="stylesheet">
+<script>
+/* Reemplazo de dirección de arte para fotos que no cargan */
+function art(img){
+  img.onerror=null;
+  var d=document.createElement('div');
+  d.className='art '+(img.getAttribute('data-tone')||'azul');
+  d.setAttribute('role','img');
+  d.setAttribute('aria-label',img.alt||'Foto de La Casa de Eugenia');
+  var k=img.getAttribute('data-kicker')||'La Casa de Eugenia';
+  var t=img.getAttribute('data-label')||img.alt||'';
+  d.innerHTML='<span class="art-k">'+k+'</span><span class="art-t">'+t+'</span><span class="art-s">Fotografía a adjuntar · lceugenia.com</span>';
+  img.replaceWith(d);
+}
+function logoFail(img){
+  img.onerror=null;
+  var s=document.createElement('span');
+  s.className='wordmark';
+  s.innerHTML='La Casa <em>de</em> Eugenia';
+  img.replaceWith(s);
+}
+</script>
+<style>
+:root{
+  --azul:#2B5A8A; --azul-o:#1B3A5C; --azul-c:#DCE6EF;
+  --blanco:#FCFBF7; --papel:#F3ECDC; --papel2:#E6DAC0; --papel3:#D9CAA8;
+  --linea:#CBBB98; --verde:#557A57; --verde-o:#3B5A40; --verde-c:#DCE6D3;
+  --rosa:#B9506D; --rosa-c:#F1D7DC; --ambar:#E9B75A;
+  --tinta:#23252A; --tinta2:#51545A;
+  --f-t:'Bentham', 'Times New Roman', serif;
+  --f-x:'Nokora', 'Segoe UI', system-ui, sans-serif;
+  --r:2px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--papel2);color:var(--tinta);font-family:var(--f-x);font-weight:400;font-size:16px;line-height:1.6;
+  background-image:radial-gradient(rgba(120,95,50,.06) 1px,transparent 1px);background-size:5px 5px}
+img{display:block;max-width:100%}
+a{color:var(--azul-o);text-underline-offset:3px}
+a:hover{color:var(--rosa)}
+:focus-visible{outline:3px solid var(--rosa);outline-offset:3px}
+h1,h2,h3,h4{font-family:var(--f-t);font-weight:400;line-height:1.12;margin:0;letter-spacing:.005em}
+p{margin:0 0 1em}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5em;min-height:46px;padding:.7em 1.25em;border:1.5px solid var(--azul-o);background:var(--azul-o);color:var(--blanco);font:700 .92rem/1.2 var(--f-x);letter-spacing:.04em;text-decoration:none;border-radius:var(--r);cursor:pointer;transition:background .2s,color .2s,transform .2s}
+.btn:hover{background:var(--azul);color:var(--blanco);transform:translateY(-1px)}
+.btn.sec{background:transparent;color:var(--azul-o)}
+.btn.sec:hover{background:var(--azul-c);color:var(--azul-o)}
+.btn.verde{background:var(--verde-o);border-color:var(--verde-o)}
+.btn.verde:hover{background:var(--verde)}
+
+/* Franja de aviso */
+.aviso{background:var(--tinta);color:#F3ECDC;font-size:.78rem;letter-spacing:.06em;text-align:center;padding:6px 16px}
+
+/* Barra */
+.barra{position:sticky;top:0;z-index:30;background:rgba(243,236,220,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--linea)}
+.barra-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:20px;padding:8px 24px}
+.barra .logo{height:34px;width:auto;mix-blend-mode:multiply}
+.wordmark{font-family:var(--f-t);font-size:1.25rem;color:var(--azul-o);white-space:nowrap}
+.wordmark em{font-style:italic;color:var(--rosa)}
+.indice{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0}
+.indice::-webkit-scrollbar{display:none}
+.indice a{flex:none;font-size:.8rem;text-decoration:none;color:var(--tinta2);padding:10px 9px;border-bottom:2px solid transparent;white-space:nowrap}
+.indice a b{font-family:var(--f-t);font-weight:400;color:var(--rosa);margin-right:4px}
+.indice a:hover,.indice a.on{color:var(--azul-o);border-bottom-color:var(--azul)}
+.barra .btn{min-height:40px;padding:.5em 1em;font-size:.82rem;flex:none}
+
+/* Hojas */
+.legajo{max-width:1180px;margin:0 auto;padding:32px 24px 64px}
+.foja{position:relative;background:var(--papel);margin:0 0 34px;padding:54px 60px 60px 92px;box-shadow:0 1px 0 var(--papel3),0 2px 0 var(--papel),0 3px 0 var(--papel3),0 18px 40px -22px rgba(60,40,10,.35);
+  background-image:linear-gradient(90deg,transparent 70px,rgba(185,80,109,.28) 70px,rgba(185,80,109,.28) 71px,transparent 71px)}
+.foja::before,.foja::after{content:"";position:absolute;left:26px;width:18px;height:18px;border-radius:50%;background:var(--papel2);box-shadow:inset 0 2px 3px rgba(60,40,10,.3)}
+.foja::before{top:120px}.foja::after{bottom:120px}
+.foja-h{display:flex;align-items:baseline;gap:18px;border-bottom:1px solid var(--linea);padding-bottom:14px;margin-bottom:34px}
+.foja-h .fs{font-size:.74rem;letter-spacing:.2em;text-transform:uppercase;color:var(--rosa);font-weight:700;white-space:nowrap}
+.foja-h h2{font-size:clamp(1.9rem,3.6vw,2.9rem);color:var(--azul-o)}
+.foja-h .folio{margin-left:auto;font-family:var(--f-t);font-size:1.5rem;color:var(--tinta2);transform:rotate(-4deg);white-space:nowrap}
+.foja-b{display:grid;grid-template-columns:168px minmax(0,1fr);gap:40px}
+.margen{font-size:.82rem;line-height:1.5;color:var(--tinta2)}
+.nota{border-left:2px solid var(--rosa);padding:2px 0 2px 12px;margin:0 0 22px}
+.nota b{display:block;font-family:var(--f-t);font-weight:400;color:var(--rosa);font-size:1rem;margin-bottom:2px}
+.cuerpo{min-width:0}
+.lead{font-size:1.14rem;line-height:1.65;max-width:62ch}
+.kicker{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--tinta2);font-weight:700}
+.sello{position:absolute;border:2.5px solid currentColor;border-radius:50%;display:grid;place-items:center;text-align:center;font-family:var(--f-t);mix-blend-mode:multiply;pointer-events:none}
+
+/* Carátula */
+.caratula{padding:0;background:var(--azul-o);color:var(--blanco);overflow:hidden;background-image:none}
+.caratula::before,.caratula::after{background:var(--papel2)}
+.car-in{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);min-height:620px}
+.car-txt{padding:58px 52px 48px 92px;position:relative;display:flex;flex-direction:column}
+.car-txt::before{content:"";position:absolute;inset:22px 22px 22px 70px;border:1px solid rgba(252,251,247,.25);pointer-events:none}
+.car-top{display:flex;justify-content:space-between;gap:16px;font-size:.76rem;letter-spacing:.16em;text-transform:uppercase;color:#C9D6E4}
+.car-top span:last-child{text-align:right}
+.car-titulo{margin:auto 0 0;padding-top:48px}
+.car-titulo .kicker{color:#E8C3CD}
+.car-titulo h1{font-size:clamp(2.6rem,6.2vw,5.4rem);line-height:.98;margin:.25em 0 .3em}
+.car-titulo h1 em{font-style:italic;color:#F4D7DE}
+.car-titulo p{font-size:1.14rem;max-width:34ch;color:#E6ECF2;margin:0}
+.campos{margin:34px 0 0;display:grid;grid-template-columns:1fr 1fr;border-top:1px solid rgba(252,251,247,.3)}
+.campo{padding:12px 14px 12px 0;border-bottom:1px solid rgba(252,251,247,.18)}
+.campo:nth-child(odd){padding-right:18px;border-right:1px solid rgba(252,251,247,.18)}
+.campo:nth-child(even){padding-left:18px}
+.campo dt{font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:#AFC2D6}
+.campo dd{margin:2px 0 0;font-size:.95rem}
+.car-acc{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.car-acc .btn{background:var(--blanco);color:var(--azul-o);border-color:var(--blanco)}
+.car-acc .btn:hover{background:#F4D7DE}
+.car-acc .btn.sec{background:transparent;color:var(--blanco);border-color:rgba(252,251,247,.6)}
+.car-acc .btn.sec:hover{background:rgba(252,251,247,.12)}
+.car-foto{position:relative;background:var(--papel);padding:58px 44px 44px;display:flex;flex-direction:column;justify-content:center;color:var(--tinta)}
+.adjunta{position:relative;background:var(--blanco);padding:12px 12px 40px;box-shadow:0 14px 30px -16px rgba(0,0,0,.45);transform:rotate(1.6deg);transition:transform .5s}
+.adjunta:hover{transform:rotate(.4deg)}
+.adjunta img{width:100%;height:auto}
+.adjunta figcaption{position:absolute;left:14px;right:14px;bottom:10px;font-size:.78rem;color:var(--tinta2)}
+.clip{position:absolute;top:-22px;left:38px;width:24px;height:64px;border:3px solid #8E949B;border-radius:12px;z-index:2}
+.clip::after{content:"";position:absolute;left:4px;top:10px;width:10px;height:40px;border:3px solid #8E949B;border-top:0;border-radius:0 0 8px 8px}
+.car-foto .sello{width:150px;height:150px;right:28px;top:40px;color:var(--rosa);transform:rotate(-14deg);font-size:2.6rem;line-height:1;z-index:3;border-width:3px;opacity:.9;
+  box-shadow:inset 0 0 0 6px var(--papel),inset 0 0 0 7.5px var(--rosa)}
+.car-foto .sello small{display:block;font-family:var(--f-x);font-size:.55rem;letter-spacing:.22em;text-transform:uppercase;font-weight:700;margin-top:4px}
+.car-foto .idx{margin-top:34px;font-size:.84rem;columns:2;column-gap:22px}
+.car-foto .idx a{display:flex;gap:8px;text-decoration:none;color:var(--tinta);padding:5px 0;border-bottom:1px dotted var(--linea);break-inside:avoid}
+.car-foto .idx a b{font-family:var(--f-t);font-weight:400;color:var(--rosa);min-width:44px}
+.car-foto .idx a:hover{color:var(--azul)}
+.car-foto .idx h3{column-span:all;font-size:1.25rem;margin-bottom:6px;color:var(--azul-o)}
+
+/* Dirección de arte (fallback) */
+.art{position:relative;width:100%;aspect-ratio:4/3;display:flex;flex-direction:column;justify-content:flex-end;padding:22px;color:var(--blanco);overflow:hidden;background:var(--azul)}
+.art::before{content:"";position:absolute;right:-30px;top:-30px;width:62%;aspect-ratio:3/4;border:2px solid rgba(252,251,247,.5);
+  background:linear-gradient(90deg,transparent 49%,rgba(252,251,247,.5) 49% 51%,transparent 51%),linear-gradient(transparent 49%,rgba(252,251,247,.5) 49% 51%,transparent 51%)}
+.art.verde{background:var(--verde-o)}.art.rosa{background:var(--rosa)}.art.papel{background:var(--papel3);color:var(--azul-o)}
+.art.papel::before{border-color:rgba(27,58,92,.35);background:linear-gradient(90deg,transparent 49%,rgba(27,58,92,.35) 49% 51%,transparent 51%),linear-gradient(transparent 49%,rgba(27,58,92,.35) 49% 51%,transparent 51%)}
+.art-k{position:relative;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;opacity:.85}
+.art-t{position:relative;font-family:var(--f-t);font-size:clamp(1.3rem,2.6vw,2rem);line-height:1.1;margin:4px 0 8px}
+.art-s{position:relative;font-size:.72rem;opacity:.75}
+
+/* Foja 1 */
+.asientos{list-style:none;margin:30px 0 0;padding:0;border-top:1px solid var(--linea)}
+.asientos li{display:grid;grid-template-columns:120px minmax(0,1fr);gap:20px;padding:18px 0;border-bottom:1px solid var(--linea)}
+.asientos .an{font-family:var(--f-t);font-size:2rem;line-height:1;color:var(--azul)}
+.asientos h3{font-size:1.3rem;margin-bottom:4px}
+.asientos p{margin:0;color:var(--tinta2)}
+.cita{margin:36px 0 0;padding:26px 28px;background:var(--blanco);border:1px solid var(--linea);position:relative;max-width:640px}
+.cita blockquote{margin:0;font-family:var(--f-t);font-size:clamp(1.5rem,3vw,2.2rem);line-height:1.15;color:var(--azul-o)}
+.cita figcaption{margin-top:10px;font-size:.84rem;color:var(--tinta2)}
+.cita::after{content:"Recorte";position:absolute;top:-11px;right:18px;background:var(--rosa);color:var(--blanco);font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;padding:3px 9px;font-weight:700}
+.muestras{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}
+.muestra{display:flex;align-items:center;gap:10px;background:var(--blanco);border:1px solid var(--linea);padding:6px 14px 6px 6px;font-size:.84rem}
+.muestra i{width:30px;height:30px;display:block;border:1px solid rgba(0,0,0,.12)}
+
+/* Foja 2: fachada */
+.fachada-wrap{background:linear-gradient(#EAF0F4,#F7F3E9 70%);border:1px solid var(--linea);padding:10px 10px 0;position:relative}
+.fachada-wrap svg{display:block;width:100%;height:auto}
+.fachada-ayuda{position:absolute;left:18px;top:14px;font-size:.78rem;color:var(--tinta2);background:rgba(252,251,247,.85);padding:4px 10px;border:1px solid var(--linea)}
+.ventana{cursor:pointer;outline:none}
+.ventana .vidrio{fill:#1E3550;transition:fill .35s}
+.ventana .luz{opacity:0;transition:opacity .35s}
+.ventana:hover .vidrio,.ventana:focus-visible .vidrio{fill:#36597D}
+.ventana:focus-visible .marco{stroke:var(--rosa);stroke-width:5}
+.ventana.on .vidrio{fill:#F2CF7E}
+.ventana.on .luz{opacity:1}
+.ventana .tag circle{fill:var(--blanco);stroke:var(--rosa);stroke-width:2;transition:fill .3s}
+.ventana .tag text{font-family:var(--f-t);font-size:17px;fill:var(--rosa)}
+.ventana.on .tag circle{fill:var(--rosa)}
+.ventana.on .tag text{fill:var(--blanco)}
+.pestanas{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--linea);border-top:0;background:var(--blanco)}
+.pestanas button{font:inherit;font-size:.86rem;line-height:1.3;text-align:left;background:none;border:0;border-right:1px solid var(--linea);padding:12px 14px;cursor:pointer;color:var(--tinta2);min-height:56px;transition:background .2s}
+.pestanas button:last-child{border-right:0}
+.pestanas button b{font-family:var(--f-t);font-weight:400;color:var(--rosa);display:block;font-size:1rem}
+.pestanas button[aria-pressed="true"]{background:var(--azul-o);color:var(--blanco)}
+.pestanas button[aria-pressed="true"] b{color:#F4D7DE}
+.ficha{margin-top:30px;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:34px;animation:entra .5s ease}
+@keyframes entra{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.ficha-foto img{width:100%;height:auto}
+.ficha-foto figcaption{font-size:.78rem;color:var(--tinta2);margin-top:6px}
+.miniaturas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px;align-items:start}
+.miniaturas figure{margin:0}
+.miniaturas img{width:100%;height:auto}
+.miniaturas .art{aspect-ratio:1;padding:10px}
+.miniaturas .art .art-t{font-size:.95rem}.miniaturas .art .art-s{display:none}
+.mini-tit{font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--tinta2);margin:20px 0 0;font-weight:700}
+.ficha-datos h3{font-size:clamp(1.8rem,3vw,2.5rem);color:var(--azul-o);margin:6px 0 14px}
+.ficha-datos table{width:100%;border-collapse:collapse;font-size:.92rem;margin:0 0 18px}
+.ficha-datos th{text-align:left;font-weight:700;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--tinta2);padding:9px 12px 9px 0;border-bottom:1px solid var(--linea);vertical-align:top;width:40%}
+.ficha-datos td{padding:9px 0;border-bottom:1px solid var(--linea)}
+.pend{color:var(--rosa);font-size:.84rem}
+
+/* Foja 3 */
+.inventario{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border-top:1px solid var(--linea);border-left:1px solid var(--linea);margin-top:28px}
+.item{padding:20px 20px 22px;border-right:1px solid var(--linea);border-bottom:1px solid var(--linea);background:rgba(252,251,247,.5);transition:background .25s}
+.item:hover{background:var(--blanco)}
+.item .n{font-family:var(--f-t);color:var(--rosa);font-size:.95rem}
+.item h3{font-size:1.35rem;margin:4px 0 6px;color:var(--azul-o)}
+.item p{margin:0;font-size:.9rem;color:var(--tinta2)}
+.desayuno{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:34px;align-items:start}
+.desayuno figure{margin:0;background:var(--blanco);padding:10px 10px 12px;border:1px solid var(--linea);transform:rotate(-1deg)}
+.desayuno figure img{width:100%;height:auto}
+.desayuno figcaption{font-size:.78rem;color:var(--tinta2);margin-top:8px}
+.tacc{display:inline-flex;align-items:center;gap:8px;background:var(--verde-c);color:var(--verde-o);font-weight:700;font-size:.82rem;padding:6px 12px;border:1px solid #B9CDB0;margin-bottom:16px}
+
+/* Foja 4 */
+.real{display:grid;grid-template-columns:auto minmax(0,1fr);gap:26px;align-items:center;background:var(--blanco);border:1px solid var(--linea);padding:24px 28px;position:relative}
+.real .monto{font-family:var(--f-t);font-size:clamp(2.2rem,5vw,3.6rem);line-height:1;color:var(--azul-o);white-space:nowrap}
+.real .monto small{font-size:.4em;display:block;color:var(--tinta2);font-family:var(--f-x);margin-top:6px}
+.real p{margin:0}
+.ejemplo-tag{display:inline-block;background:var(--rosa-c);color:#8A2F48;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;padding:4px 10px;margin:30px 0 12px}
+.tabla-scroll{overflow-x:auto;border:1px solid var(--linea);background:var(--blanco)}
+.tarifas{border-collapse:collapse;width:100%;min-width:780px;font-size:.88rem}
+.tarifas th,.tarifas td{padding:11px 12px;border-bottom:1px solid var(--linea);text-align:right;white-space:nowrap}
+.tarifas thead th{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--tinta2);font-weight:700;vertical-align:bottom;background:var(--papel)}
+.tarifas th:first-child,.tarifas td:first-child{text-align:left;position:sticky;left:0;background:var(--blanco)}
+.tarifas thead th:first-child{background:var(--papel)}
+.tarifas tbody th{font-family:var(--f-t);font-weight:400;font-size:1.02rem;color:var(--azul-o)}
+.temporadas{list-style:none;padding:0;margin:30px 0 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 34px}
+.temporadas li{display:grid;grid-template-columns:14px minmax(0,1fr);gap:12px;padding:12px 0;border-bottom:1px dotted var(--linea)}
+.temporadas i{width:12px;height:12px;border-radius:50%;margin-top:6px}
+.temporadas b{display:block}
+.temporadas span{font-size:.88rem;color:var(--tinta2)}
+.promo{margin-top:30px;border:2px dashed var(--verde);padding:20px 24px;background:rgba(220,230,211,.45);display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+.promo h3{font-size:1.6rem;color:var(--verde-o)}
+.promo p{margin:0;flex:1;min-width:220px}
+
+/* Foja 5 */
+.reserva{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:36px;align-items:start}
+.cal{background:var(--blanco);border:1px solid var(--linea);padding:18px}
+.cal-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.cal-h h3{font-size:1.5rem;color:var(--azul-o);text-transform:capitalize}
+.cal-h button{width:44px;height:44px;border:1px solid var(--linea);background:var(--papel);font-size:1.2rem;cursor:pointer;color:var(--azul-o)}
+.cal-h button:disabled{opacity:.35;cursor:default}
+.cal-g{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.cal-g .dn{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;text-align:center;color:var(--tinta2);padding:4px 0}
+.dia{aspect-ratio:1;min-height:40px;border:1px solid transparent;background:var(--verde-c);font:inherit;font-size:.9rem;cursor:pointer;position:relative;color:var(--tinta);padding:0;transition:transform .15s}
+.dia:hover:not(:disabled){transform:scale(1.06);border-color:var(--azul)}
+.dia.pocas{background:#F6E3B8}
+.dia.lleno{background:var(--papel2);color:#8C8576;text-decoration:line-through;cursor:not-allowed}
+.dia:disabled{opacity:.4;cursor:default;background:transparent}
+.dia.sel{background:var(--azul-o)!important;color:var(--blanco);text-decoration:none}
+.dia.rango{background:var(--azul-c)!important}
+.dia .ev{position:absolute;top:3px;right:4px;width:6px;height:6px;border-radius:50%;background:var(--rosa)}
+.cal-ley{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:.78rem;color:var(--tinta2);margin-top:14px}
+.cal-ley span{display:inline-flex;align-items:center;gap:6px}
+.cal-ley i{width:14px;height:14px;display:inline-block;border:1px solid var(--linea)}
+.sync{margin-top:12px;font-size:.82rem;background:var(--papel);padding:8px 12px;border-left:3px solid var(--azul)}
+.form{background:var(--blanco);border:1px solid var(--linea);padding:24px 24px 26px;position:relative}
+.form h3{font-size:1.65rem;color:var(--azul-o);margin-bottom:4px}
+.form .sub{font-size:.86rem;color:var(--tinta2);margin-bottom:18px}
+.fila{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.campo-f{display:flex;flex-direction:column;gap:4px;margin-bottom:14px;min-width:0}
+.campo-f label{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--tinta2);font-weight:700}
+.campo-f input,.campo-f select{font:inherit;font-size:1rem;min-height:46px;padding:8px 10px;border:1px solid var(--papel3);border-bottom:2px solid var(--azul-o);background:var(--papel);color:var(--tinta);border-radius:0;width:100%;min-width:0}
+.campo-f input:focus,.campo-f select:focus{outline:none;border-bottom-color:var(--rosa);background:var(--blanco)}
+.desglose{border-top:1px solid var(--linea);margin-top:6px;padding-top:12px;font-size:.88rem}
+.desglose .ln{display:flex;justify-content:space-between;gap:12px;padding:3px 0;color:var(--tinta2)}
+.desglose .tot{display:flex;justify-content:space-between;align-items:baseline;gap:12px;border-top:1px solid var(--tinta);margin-top:10px;padding-top:10px}
+.desglose .tot span:first-child{font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:.78rem}
+.desglose .tot strong{font-family:var(--f-t);font-weight:400;font-size:2rem;color:var(--azul-o)}
+.desglose .sena{display:flex;justify-content:space-between;gap:12px;background:var(--azul-c);padding:10px 12px;margin-top:10px;font-weight:700}
+.alerta{font-size:.84rem;padding:8px 12px;margin-top:10px;background:var(--rosa-c);color:#7C2840}
+.ok{font-size:.84rem;padding:8px 12px;margin-top:10px;background:var(--verde-c);color:var(--verde-o)}
+.form .btn{width:100%;margin-top:16px}
+.vacio{color:var(--tinta2);font-size:.9rem}
+.resumen{margin-top:16px;border:2px solid var(--verde-o);padding:18px;background:var(--verde-c);position:relative;animation:entra .4s ease}
+.resumen h4{font-size:1.4rem;color:var(--verde-o);margin-bottom:6px}
+.resumen p{margin:0 0 4px;font-size:.9rem}
+.resumen .sello{position:absolute;right:12px;top:-18px;width:86px;height:86px;color:var(--verde-o);transform:rotate(12deg);font-size:.78rem;line-height:1.05;background:rgba(220,230,211,.9)}
+
+/* Anexo */
+.anexo{columns:3 240px;column-gap:16px}
+.anexo figure{break-inside:avoid;margin:0 0 16px;background:var(--blanco);padding:8px 8px 10px;border:1px solid var(--linea)}
+.anexo img{width:100%;height:auto}
+.anexo figcaption{font-size:.76rem;color:var(--tinta2);margin-top:6px}
+
+/* Foja 6 */
+.mapa-g{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:34px;align-items:start}
+.mapa{background:var(--blanco);border:1px solid var(--linea);padding:8px}
+.mapa svg{display:block;width:100%;height:auto}
+.mapa svg text{font-family:var(--f-x)}
+.lugares{list-style:none;margin:0;padding:0;counter-reset:l}
+.lugares li{padding:12px 0;border-bottom:1px solid var(--linea);display:grid;grid-template-columns:30px minmax(0,1fr);gap:10px}
+.lugares li::before{counter-increment:l;content:counter(l);font-family:var(--f-t);font-size:1.15rem;color:var(--rosa)}
+.lugares b{display:block;font-weight:700}
+.lugares span{font-size:.88rem;color:var(--tinta2)}
+.direccion{margin-top:22px;padding:18px;background:var(--azul-o);color:var(--blanco)}
+.direccion b{font-family:var(--f-t);font-weight:400;font-size:1.4rem;display:block}
+.direccion p{margin:6px 0 14px;color:#D5E0EA;font-size:.9rem}
+.direccion .btn{background:var(--blanco);color:var(--azul-o);border-color:var(--blanco)}
+
+/* Foja 7 */
+.faq details{border-bottom:1px solid var(--linea)}
+.faq summary{cursor:pointer;list-style:none;padding:18px 40px 18px 0;font-family:var(--f-t);font-size:1.3rem;color:var(--azul-o);position:relative;min-height:44px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";position:absolute;right:6px;top:14px;font-size:1.6rem;color:var(--rosa);transition:transform .25s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{margin:0 0 18px;max-width:64ch;color:var(--tinta2)}
+
+/* Foja 8 */
+.cierre{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:40px;align-items:start}
+.cierre h3{font-size:clamp(1.8rem,3.6vw,2.8rem);color:var(--azul-o);margin-bottom:14px}
+.canales{list-style:none;padding:0;margin:0;border-top:1px solid var(--linea)}
+.canales li{border-bottom:1px solid var(--linea)}
+.canales a{display:grid;grid-template-columns:110px minmax(0,1fr) auto;gap:12px;align-items:center;padding:14px 4px;text-decoration:none;color:var(--tinta);min-height:52px;transition:background .2s,padding .2s}
+.canales a:hover{background:var(--blanco);padding-left:12px}
+.canales small{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--tinta2);font-weight:700}
+.canales span{overflow-wrap:anywhere}
+.canales em{font-style:normal;color:var(--rosa);font-family:var(--f-t);font-size:1.2rem}
+.firma{margin-top:30px;font-family:var(--f-t);font-size:1.5rem;color:var(--azul-o);transform:rotate(-2deg);display:inline-block;border-bottom:1px solid var(--azul-o);padding:0 30px 4px 0}
+.pie{max-width:1180px;margin:0 auto;padding:0 24px 40px;font-size:.78rem;color:var(--tinta2);display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
+.wa-flot{position:fixed;right:18px;bottom:18px;z-index:40;width:56px;height:56px;border-radius:50%;background:var(--verde-o);color:#fff;display:grid;place-items:center;box-shadow:0 8px 22px -8px rgba(0,0,0,.5);transition:transform .2s}
+.wa-flot:hover{transform:scale(1.07);color:#fff}
+
+/* Revelado */
+.rev{opacity:0;transform:translateY(14px);transition:opacity .7s ease,transform .7s ease}
+.rev.vis{opacity:1;transform:none}
+
+/* Responsive */
+@media (max-width:980px){
+  .car-in{grid-template-columns:1fr}
+  .car-foto{padding:44px 32px 36px}
+  .foja-b{grid-template-columns:1fr;gap:10px}
+  .margen{order:2;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0 22px;margin-top:22px}
+  .ficha,.reserva,.mapa-g,.cierre,.desayuno{grid-template-columns:1fr}
+  .inventario{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:640px){
+  .barra-in{padding:6px 16px;gap:10px}
+  .barra .logo{height:28px}
+  .barra .indice{display:none}
+  .barra-in .esp{flex:1}
+  .legajo{padding:16px 0 40px}
+  .foja{padding:34px 16px 40px;margin-bottom:16px;background-image:none}
+  .foja::before,.foja::after{display:none}
+  .foja.caratula{padding:0}
+  .adjunta .art{padding:18px 16px}
+  .foja-h{flex-wrap:wrap;gap:4px 12px;margin-bottom:24px}
+  .foja-h h2{order:3;width:100%}
+  .car-txt{padding:36px 16px 32px}
+  .car-txt::before{inset:10px}
+  .car-top{font-size:.66rem;letter-spacing:.1em}
+  .car-titulo{padding-top:30px}
+  .campos{grid-template-columns:1fr}
+  .campo:nth-child(odd){border-right:0;padding-right:0}
+  .campo:nth-child(even){padding-left:0}
+  .car-acc .btn{flex:1 1 100%}
+  .car-foto{padding:40px 16px 30px}
+  .car-foto .sello{width:110px;height:110px;font-size:1.9rem;right:10px;top:10px}
+  .car-foto .idx{columns:1}
+  .asientos li{grid-template-columns:1fr;gap:4px}
+  .pestanas{grid-template-columns:1fr 1fr}
+  .pestanas button:nth-child(2){border-right:0}
+  .pestanas button:nth-child(-n+2){border-bottom:1px solid var(--linea)}
+  .fachada-ayuda{position:static;margin:0 0 8px;display:inline-block}
+  .inventario{grid-template-columns:1fr}
+  .real{grid-template-columns:1fr;padding:20px 16px}
+  .temporadas{grid-template-columns:1fr}
+  .fila{grid-template-columns:1fr 1fr;gap:10px}
+  .form{padding:20px 16px}
+  .cal{padding:12px}
+  .cal-g{gap:3px}
+  .dia{min-height:38px;font-size:.84rem}
+  .canales a{grid-template-columns:1fr auto;gap:2px 10px}
+  .canales a small{grid-column:1 / -1}
+  .anexo{columns:2 140px;column-gap:10px}
+  .anexo figure{margin-bottom:10px;padding:5px 5px 8px}
+  .miniaturas{gap:6px}
+  .ventana .tag circle{r:24px}
+  .ventana .tag text{font-size:24px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .rev{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<div class="aviso">Prototipo de demostración preparado para La Casa de Eugenia</div>
+
+<header class="barra">
+  <div class="barra-in">
+    <a href="#caratula" aria-label="La Casa de Eugenia, ir al inicio"><img class="logo" src="https://images.squarespace-cdn.com/content/v1/53397fd6e4b0dc95bcc1b4a8/118da029-e530-4897-b7d2-271a1e016267/letras+lce.jpg?format=1500w" alt="La Casa de Eugenia" onerror="logoFail(this)"></a>
+    <span class="esp"></span>
+    <nav class="indice" aria-label="Índice de fojas">
+      <a href="#casa"><b>1</b>La casa</a>
+      <a href="#habitaciones"><b>2</b>Habitaciones</a>
+      <a href="#desayuno"><b>3</b>Desayuno</a>
+      <a href="#tarifas"><b>4</b>Tarifas</a>
+      <a href="#reservar"><b>5</b>Reservar</a>
+      <a href="#alrededores"><b>6</b>Alrededores</a>
+      <a href="#preguntas"><b>7</b>Preguntas</a>
+      <a href="#contacto"><b>8</b>Contacto</a>
+    </nav>
+    <a class="btn" href="#reservar">Reservar</a>
+  </div>
+</header>
+
+<main class="legajo">
+
+<!-- CARÁTULA -->
+<section class="foja caratula" id="caratula" aria-labelledby="t-car">
+  <div class="car-in">
+    <div class="car-txt">
+      <div class="car-top"><span>Legajo · Expte. N.º 1186/1928</span><span>San Martín de los Andes<br><span id="fecha-hoy">30 de octubre de 2026</span></span></div>
+      <div class="car-titulo">
+        <p class="kicker">Carátula · Hotel boutique B&amp;B</p>
+        <h1 id="t-car">La casa que fue la <em>Intendencia</em> del Parque Nacional Lanín</h1>
+        <p>Una casa de 1928 a 100 metros del lago Lácar. Hoy, nueve habitaciones con desayuno casero.</p>
+      </div>
+      <dl class="campos">
+        <div class="campo"><dt>Domicilio</dt><dd>Cnel. Díaz 1186</dd></div>
+        <div class="campo"><dt>Construcción</dt><dd>1928</dd></div>
+        <div class="campo"><dt>1937 – 1939</dt><dd>Sede de la Intendencia del PN Lanín</dd></div>
+        <div class="campo"><dt>Desde 2006</dt><dd>La administra Agustín Roca</dd></div>
+      </dl>
+      <div class="car-acc">
+        <a class="btn" href="#habitaciones">Abrir el expediente</a>
+        <a class="btn sec" href="#reservar">Ver disponibilidad</a>
+      </div>
+    </div>
+    <div class="car-foto">
+      <div class="sello" aria-hidden="true"><span>1928<small>Casa de colección</small></span></div>
+      <figure class="adjunta">
+        <span class="clip" aria-hidden="true"></span>
+        <img src="https://images.squarespace-cdn.com/content/v1/53397fd6e4b0dc95bcc1b4a8/5ef3fb01-ccdb-4303-819d-8f741f8951d1/IMG_2554.JPEG?format=1500w" alt="La Casa de Eugenia, fotografía publicada en su web" data-label="La casa azul de ventanas blancas" data-kicker="Fotografía adjunta" onerror="art(this)">
+        <figcaption>Fotografía adjunta · lceugenia.com</figcaption>
+      </figure>
+      <nav class="idx" aria-label="Índice del expediente">
+        <h3>Índice</h3>
+        <a href="#casa"><b>fs. 1</b>La casa</a>
+        <a href="#habitaciones"><b>fs. 2</b>Las habitaciones</a>
+        <a href="#desayuno"><b>fs. 3</b>Desayuno y sala de té</a>
+        <a href="#tarifas"><b>fs. 4</b>Tarifas y temporadas</a>
+        <a href="#reservar"><b>fs. 5</b>Disponibilidad y reserva</a>
+        <a href="#alrededores"><b>fs. 6</b>Alrededores</a>
+        <a href="#preguntas"><b>fs. 7</b>Preguntas</a>
+        <a href="#contacto"><b>fs. 8</b>Contacto</a>
+      </nav>
+    </div>
+  </div>
+</section>
+
+<!-- FOJA 1 -->
+<section class="foja rev" id="casa" aria-labelledby="t-casa">
+  <header class="foja-h"><span class="fs">Foja 1</span><h2 id="t-casa">La casa</h2><span class="folio" aria-hidden="true">fs. 1</span></header>
+  <div class="foja-b">
+    <aside class="margen" aria-label="Notas al margen">
+      <p class="nota"><b>Nota</b>Casa azul con ventanas blancas, rosales y paredes verdes.</p>
+      <p class="nota"><b>Ubicación</b>A 100 m del lago Lácar, en pleno San Martín de los Andes.</p>
+      <p class="nota"><b>Colores</b>Algunas habitaciones llevan nombre de color: Verde, Azul, Naranja, Pradera y Amarilla.</p>
+    </aside>
+    <div class="cuerpo">
+      <p class="lead">“Un pequeño gran lugar en la Patagonia”. Así se presenta La Casa de Eugenia: <strong>el primer hotel boutique de San Martín basado en un concepto de B&amp;B</strong>, en una casa construida en 1928 que guarda en sus paredes un capítulo de la historia del Parque Nacional Lanín.</p>
+      <ol class="asientos">
+        <li><span class="an">1928</span><div><h3>Se levanta la casa</h3><p>Azul, de ventanas blancas, con rosales y parque con frutales, a 100 metros del lago Lácar.</p></div></li>
+        <li><span class="an">1937</span><div><h3>Intendencia del Parque Nacional Lanín</h3><p>Entre 1937 y 1939 funcionó acá la sede de la Intendencia del Parque.</p></div></li>
+        <li><span class="an">2006</span><div><h3>La familia Roca abre sus puertas</h3><p>Agustín Roca la administra desde 2006, con la atención personal de sus dueños.</p></div></li>
+      </ol>
+      <figure class="cita">
+        <blockquote>“Una casa de colección”.</blockquote>
+        <figcaption>Agustín Roca, en La Nación (2024).</figcaption>
+      </figure>
+      <div class="muestras" aria-label="Paleta de la casa">
+        <span class="muestra"><i style="background:#2B5A8A"></i>Azul fachada</span>
+        <span class="muestra"><i style="background:#FCFBF7"></i>Blanco ventana</span>
+        <span class="muestra"><i style="background:#557A57"></i>Verde pared</span>
+        <span class="muestra"><i style="background:#B9506D"></i>Rosa de rosal</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOJA 2 -->
+<section class="foja rev" id="habitaciones" aria-labelledby="t-hab">
+  <header class="foja-h"><span class="fs">Foja 2</span><h2 id="t-hab">Las habitaciones</h2><span class="folio" aria-hidden="true">fs. 2</span></header>
+  <div class="foja-b">
+    <aside class="margen" aria-label="Notas al margen">
+      <p class="nota"><b>Cómo leer esta foja</b>Cada ventana de la fachada es una categoría. Tocala y se abre su ficha.</p>
+      <p class="nota"><b>Total</b>9 habitaciones, todas con desayuno casero incluido.</p>
+      <p class="nota"><b>Pendiente</b>Metros cuadrados y equipamiento de cada categoría: los completa la casa.</p>
+    </aside>
+    <div class="cuerpo">
+      <p class="lead">Nueve habitaciones en cuatro categorías: Suite Superior Doble, Standard Suite Doble, una Triple Suite dúplex y un Cuarto doble grande familiar.</p>
+      <div class="fachada-wrap">
+        <span class="fachada-ayuda">La fachada · tocá una ventana</span>
+        <svg viewBox="0 0 900 560" role="group" aria-label="Ilustración de la fachada de La Casa de Eugenia. Cada ventana numerada abre una categoría de habitación.">
+          <defs>
+            <pattern id="tablas" width="20" height="16" patternUnits="userSpaceOnUse"><rect width="20" height="16" fill="#2B5A8A"/><line x1="0" y1="15.5" x2="20" y2="15.5" stroke="#1E4670" stroke-width="1.5"/></pattern>
+            <radialGradient id="brillo" cx=".5" cy=".5" r=".6"><stop offset="0" stop-color="#FFE7A8" stop-opacity=".9"/><stop offset="1" stop-color="#FFE7A8" stop-opacity="0"/></radialGradient>
+          </defs>
+          <!-- montañas -->
+          <path d="M0 330 L120 240 L200 290 L320 180 L430 270 L560 170 L680 260 L780 200 L900 280 L900 400 L0 400Z" fill="#C9D6E1"/>
+          <path d="M320 180 L345 205 L330 203 L312 214 L300 199Z M560 170 L585 196 L568 192 L552 204 L540 189Z" fill="#F4F6F8"/>
+          <!-- árbol frutal izquierdo -->
+          <rect x="70" y="380" width="14" height="130" fill="#6B5134"/>
+          <circle cx="77" cy="355" r="62" fill="#557A57"/><circle cx="40" cy="380" r="36" fill="#4A6E4D"/><circle cx="116" cy="372" r="40" fill="#5E8560"/>
+          <g fill="#D9644A"><circle cx="52" cy="340" r="6"/><circle cx="96" cy="330" r="6"/><circle cx="72" cy="380" r="6"/><circle cx="118" cy="368" r="6"/><circle cx="34" cy="378" r="6"/></g>
+          <!-- árbol frutal derecho -->
+          <rect x="818" y="390" width="14" height="120" fill="#6B5134"/>
+          <circle cx="825" cy="365" r="56" fill="#5E8560"/><circle cx="860" cy="392" r="32" fill="#4A6E4D"/>
+          <g fill="#E9B75A"><circle cx="800" cy="350" r="6"/><circle cx="842" cy="338" r="6"/><circle cx="828" cy="384" r="6"/><circle cx="866" cy="388" r="6"/></g>
+          <!-- césped -->
+          <rect x="0" y="505" width="900" height="55" fill="#7E9E6E"/>
+          <path d="M405 560 L425 508 L475 508 L495 560Z" fill="#E6DAC0"/>
+          <!-- chimenea -->
+          <rect x="610" y="120" width="34" height="80" fill="#8B5A49"/><rect x="604" y="114" width="46" height="10" fill="#6E4638"/>
+          <!-- techo -->
+          <path d="M150 262 L450 108 L750 262Z" fill="#3A3F46"/>
+          <path d="M150 262 L450 108 L750 262" fill="none" stroke="#FCFBF7" stroke-width="7" stroke-linejoin="round"/>
+          <!-- cuerpo -->
+          <rect x="175" y="262" width="550" height="248" fill="url(#tablas)"/>
+          <rect x="175" y="262" width="550" height="248" fill="none" stroke="#1B3A5C" stroke-width="2"/>
+          <rect x="175" y="374" width="550" height="8" fill="#FCFBF7"/>
+          <rect x="168" y="500" width="564" height="12" fill="#D9CAA8"/>
+          <!-- frontón con buhardilla (Ventana I) -->
+          <!-- ventanas decorativas -->
+          <g>
+            <rect x="404" y="286" width="92" height="70" fill="#FCFBF7"/><rect x="411" y="293" width="78" height="56" fill="#1E3550"/>
+            <line x1="450" y1="293" x2="450" y2="349" stroke="#FCFBF7" stroke-width="5"/><line x1="411" y1="321" x2="489" y2="321" stroke="#FCFBF7" stroke-width="5"/>
+            <rect x="398" y="356" width="104" height="8" fill="#FCFBF7"/>
+          </g>
+          <g>
+            <rect x="590" y="398" width="82" height="84" fill="#FCFBF7"/><rect x="597" y="405" width="68" height="70" fill="#1E3550"/>
+            <line x1="631" y1="405" x2="631" y2="475" stroke="#FCFBF7" stroke-width="5"/><line x1="597" y1="440" x2="665" y2="440" stroke="#FCFBF7" stroke-width="5"/>
+            <rect x="584" y="482" width="94" height="8" fill="#FCFBF7"/>
+          </g>
+          <!-- puerta -->
+          <rect x="414" y="398" width="72" height="104" fill="#FCFBF7"/>
+          <rect x="421" y="405" width="58" height="97" fill="#557A57"/>
+          <path d="M421 405 h58 v30 h-58z" fill="#3B5A40"/>
+          <circle cx="470" cy="456" r="3.5" fill="#E9B75A"/>
+          <rect x="398" y="388" width="104" height="10" fill="#FCFBF7"/>
+          <!-- placa -->
+          <rect x="350" y="420" width="46" height="28" fill="#FCFBF7" stroke="#1B3A5C"/><text x="373" y="439" text-anchor="middle" font-family="Bentham, serif" font-size="14" fill="#1B3A5C">1928</text>
+
+          <!-- Ventana I: Triple dúplex (buhardilla) -->
+          <g class="ventana" data-cat="triple" tabindex="0" role="button" aria-label="Ventana I: Triple Suite dúplex">
+            <circle cx="450" cy="205" r="48" fill="url(#brillo)" class="luz"/>
+            <path class="marco" d="M418 240 V200 a32 32 0 0 1 64 0 V240Z" fill="#FCFBF7" stroke="#FCFBF7" stroke-width="2"/>
+            <path class="vidrio" d="M425 234 V201 a25 25 0 0 1 50 0 V234Z"/>
+            <line x1="450" y1="176" x2="450" y2="234" stroke="#FCFBF7" stroke-width="4"/><line x1="425" y1="208" x2="475" y2="208" stroke="#FCFBF7" stroke-width="4"/>
+            <g class="tag"><circle cx="505" cy="186" r="15"/><text x="505" y="192" text-anchor="middle">I</text></g>
+          </g>
+          <!-- Ventana II: Suite Superior (alta izquierda) -->
+          <g class="ventana" data-cat="superior" tabindex="0" role="button" aria-label="Ventana II: Suite Superior Doble">
+            <rect x="200" y="270" width="150" height="110" fill="url(#brillo)" class="luz"/>
+            <rect class="marco" x="228" y="286" width="92" height="70" fill="#FCFBF7"/>
+            <rect class="vidrio" x="235" y="293" width="78" height="56"/>
+            <line x1="274" y1="293" x2="274" y2="349" stroke="#FCFBF7" stroke-width="5"/><line x1="235" y1="321" x2="313" y2="321" stroke="#FCFBF7" stroke-width="5"/>
+            <rect x="222" y="356" width="104" height="8" fill="#FCFBF7"/>
+            <g fill="#B9506D"><circle cx="232" cy="366" r="5"/><circle cx="252" cy="368" r="5"/><circle cx="276" cy="366" r="5"/><circle cx="300" cy="368" r="5"/><circle cx="318" cy="366" r="5"/></g>
+            <g class="tag"><circle cx="214" cy="290" r="15"/><text x="214" y="296" text-anchor="middle">II</text></g>
+          </g>
+          <!-- Ventana III: Standard (alta derecha) -->
+          <g class="ventana" data-cat="standard" tabindex="0" role="button" aria-label="Ventana III: Standard Suite Doble">
+            <rect x="550" y="270" width="150" height="110" fill="url(#brillo)" class="luz"/>
+            <rect class="marco" x="580" y="286" width="92" height="70" fill="#FCFBF7"/>
+            <rect class="vidrio" x="587" y="293" width="78" height="56"/>
+            <line x1="626" y1="293" x2="626" y2="349" stroke="#FCFBF7" stroke-width="5"/><line x1="587" y1="321" x2="665" y2="321" stroke="#FCFBF7" stroke-width="5"/>
+            <rect x="574" y="356" width="104" height="8" fill="#FCFBF7"/>
+            <g class="tag"><circle cx="688" cy="290" r="15"/><text x="688" y="296" text-anchor="middle">III</text></g>
+          </g>
+          <!-- Ventana IV: Familiar (baja izquierda) -->
+          <g class="ventana" data-cat="familiar" tabindex="0" role="button" aria-label="Ventana IV: Cuarto doble grande familiar">
+            <rect x="200" y="390" width="150" height="110" fill="url(#brillo)" class="luz"/>
+            <rect class="marco" x="216" y="398" width="116" height="84" fill="#FCFBF7"/>
+            <rect class="vidrio" x="223" y="405" width="102" height="70"/>
+            <line x1="257" y1="405" x2="257" y2="475" stroke="#FCFBF7" stroke-width="5"/><line x1="291" y1="405" x2="291" y2="475" stroke="#FCFBF7" stroke-width="5"/><line x1="223" y1="440" x2="325" y2="440" stroke="#FCFBF7" stroke-width="5"/>
+            <rect x="210" y="482" width="128" height="8" fill="#FCFBF7"/>
+            <g class="tag"><circle cx="200" cy="402" r="15"/><text x="200" y="408" text-anchor="middle">IV</text></g>
+          </g>
+          <!-- rosales -->
+          <g>
+            <ellipse cx="205" cy="505" rx="34" ry="18" fill="#3B5A40"/><ellipse cx="285" cy="507" rx="40" ry="17" fill="#4A6E4D"/><ellipse cx="365" cy="506" rx="34" ry="16" fill="#3B5A40"/>
+            <ellipse cx="540" cy="506" rx="34" ry="16" fill="#3B5A40"/><ellipse cx="620" cy="507" rx="40" ry="17" fill="#4A6E4D"/><ellipse cx="700" cy="505" rx="34" ry="18" fill="#3B5A40"/>
+            <g fill="#D97C93"><circle cx="190" cy="498" r="5"/><circle cx="214" cy="494" r="5"/><circle cx="268" cy="499" r="5"/><circle cx="298" cy="494" r="5"/><circle cx="352" cy="499" r="5"/><circle cx="378" cy="497" r="5"/><circle cx="530" cy="498" r="5"/><circle cx="556" cy="495" r="5"/><circle cx="606" cy="498" r="5"/><circle cx="636" cy="494" r="5"/><circle cx="688" cy="497" r="5"/><circle cx="712" cy="494" r="5"/></g>
+            <g fill="#B9506D"><circle cx="230" cy="502" r="4"/><circle cx="320" cy="503" r="4"/><circle cx="584" cy="502" r="4"/><circle cx="660" cy="503" r="4"/></g>
+          </g>
+        </svg>
+      </div>
+      <div class="pestanas" role="group" aria-label="Categorías de habitación">
+        <button type="button" data-cat="triple" aria-pressed="false"><b>I</b>Triple Suite dúplex</button>
+        <button type="button" data-cat="superior" aria-pressed="true"><b>II</b>Suite Superior Doble</button>
+        <button type="button" data-cat="standard" aria-pressed="false"><b>III</b>Standard Suite Doble</button>
+        <button type="button" data-cat="familiar" aria-pressed="false"><b>IV</b>Cuarto doble grande familiar</button>
+      </div>
+      <div id="ficha" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOJA 3 -->
+<section class="foja rev" id="desayuno" aria-labelledby="t-des">
+  <header class="foja-h"><span class="fs">Foja 3</span><h2 id="t-des">Desayuno y sala de té</h2><span class="folio" aria-hidden="true">fs. 3</span></header>
+  <div class="foja-b">
+    <aside class="margen" aria-label="Notas al margen">
+      <p class="nota"><b>B&amp;B</b>El desayuno está incluido en todas las habitaciones.</p>
+      <p class="nota"><b>Sin TACC</b>Hay opción sin TACC: avisalo al reservar.</p>
+    </aside>
+    <div class="cuerpo">
+      <div class="desayuno">
+        <div>
+          <span class="tacc">Desayuno casero · opción sin TACC</span>
+          <p class="lead">La casa funciona como un B&amp;B de verdad: la mañana empieza con un desayuno casero y la tarde puede seguir en la sala de té o en alguno de sus dos livings.</p>
+          <p>Afuera, el parque con frutales, la pileta y el quincho. Y si el día fue largo en la montaña, masajes en la casa.</p>
+        </div>
+        <figure>
+          <img src="https://images.squarespace-cdn.com/content/v1/53397fd6e4b0dc95bcc1b4a8/3ca1a85d-37bd-4cdf-a871-cd0db607a77a/desayuno.jpg?format=1500w" alt="Desayuno en La Casa de Eugenia" data-label="Desayuno casero" data-kicker="Foja 3" data-tone="rosa" onerror="art(this)">
+          <figcaption>Desayuno · foto de lceugenia.com</figcaption>
+        </figure>
+      </div>
+      <div class="inventario" aria-label="Inventario de la casa">
+        <div class="item"><span class="n">Ítem 1</span><h3>Sala de té</h3><p>Para la tarde, adentro de la casa.</p></div>
+        <div class="item"><span class="n">Ítem 2</span><h3>Dos livings</h3><p>Espacios comunes para leer y charlar.</p></div>
+        <div class="item"><span class="n">Ítem 3</span><h3>Pileta</h3><p>Para los días de verano.</p></div>
+        <div class="item"><span class="n">Ítem 4</span><h3>Parque con frutales</h3><p>Con rosales y árboles frutales.</p></div>
+        <div class="item"><span class="n">Ítem 5</span><h3>Quincho</h3><p>Para compartir entre huéspedes.</p></div>
+        <div class="item"><span class="n">Ítem 6</span><h3>Masajes</h3><p>Se coordinan con la casa.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOJA 4 -->
+<section class="foja rev" id="tarifas" aria-labelledby="t-tar">
+  <header class="foja-h"><span class="fs">Foja 4</span><h2 id="t-tar">Tarifas y temporadas 2026 – 2027</h2><span class="folio" aria-hidden="true">fs. 4</span></header>
+  <div class="foja-b">
+    <aside class="margen" aria-label="Notas al margen">
+      <p class="nota"><b>Fuente</b>La tarifa de referencia en dólares es la publicada por La Nación en 2024.</p>
+      <p class="nota"><b>Ejemplo</b>Los montos en pesos de la tabla son de ejemplo: la casa carga los suyos.</p>
+    </aside>
+    <div class="cuerpo">
+      <div class="real">
+        <div class="monto">USD 150–180<small>por noche, habitación doble</small></div>
+        <p><strong>Tarifa de referencia real.</strong> Según La Nación (2024), la doble en La Casa de Eugenia va de USD 150 a 180 la noche. Fuente: La Nación, 2024.</p>
+      </div>
+      <span class="ejemplo-tag">Tarifa de ejemplo · la carga el complejo</span>
+      <div class="tabla-scroll" tabindex="0" role="region" aria-label="Tarifario de ejemplo por noche, desplazable">
+        <table class="tarifas" id="tabla-tarifas"></table>
+      </div>
+      <ul class="temporadas" id="lista-temp"></ul>
+      <div class="promo">
+        <h3>Promo de agosto</h3>
+        <p>La casa ya publica una promo de temporada: en agosto, <strong>upgrade de habitación con mínimo de 3 noches</strong>. En esta web se aplica sola: el simulador la detecta.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOJA 5 -->
+<section class="foja rev" id="reservar" aria-labelledby="t-res">
+  <header class="foja-h"><span class="fs">Foja 5</span><h2 id="t-res">Disponibilidad y reserva</h2><span class="folio" aria-hidden="true">fs. 5</span></header>
+  <div class="foja-b">
+    <aside class="margen" aria-label="Notas al margen">
+      <p class="nota"><b>Hoy</b>Se reserva por consulta en la web y por WhatsApp. Esta foja muestra cómo sería reservar directo.</p>
+      <p class="nota"><b>Demo</b>La disponibilidad es de ejemplo. No se envía nada a ningún lado.</p>
+    </aside>
+    <div class="cuerpo">
+      <div class="reserva">
+        <div>
+          <div class="cal" id="cal">
+            <div class="cal-h">
+              <button type="button" id="cal-prev" aria-label="Mes anterior">‹</button>
+              <h3 id="cal-mes" aria-live="polite"></h3>
+              <button type="button" id="cal-next" aria-label="Mes siguiente">›</button>
+            </div>
+            <div class="cal-g" id="cal-g"></div>
+            <div class="cal-ley">
+              <span><i style="background:var(--verde-c)"></i>Disponible</span>
+              <span><i style="background:#F6E3B8"></i>Últimas habitaciones</span>
+              <span><i style="background:var(--papel2)"></i>Completo</span>
+              <span><i style="background:var(--rosa);border-radius:50%;width:8px;height:8px"></i>Fecha especial</span>
+            </div>
+            <p class="sync">Disponibilidad de ejemplo · se sincroniza con Booking y Airbnb para no duplicar reservas.</p>
+          </div>
+          <p class="vacio" style="margin-top:12px">Tocá un día para la entrada y otro para la salida.</p>
+        </div>
+        <form class="form" id="sim" novalidate>
+          <h3>Solicitud de reserva</h3>
+          <p class="sub">Habitación con desayuno casero incluido.</p>
+          <div class="fila">
+            <div class="campo-f"><label for="f-in">Entrada</label><input type="date" id="f-in" required></div>
+            <div class="campo-f"><label for="f-out">Salida</label><input type="date" id="f-out" required></div>
+          </div>
+          <div class="fila">
+            <div class="campo-f"><label for="f-pax">Personas</label>
+              <select id="f-pax"><option value="1">1</option><option value="2" selected>2</option><option value="3">3</option><option value="4">4</option></select></div>
+            <div class="campo-f"><label for="f-cat">Habitación</label><select id="f-cat"></select></div>
+          </div>
+          <div id="desglose" class="desglose" aria-live="polite"><p class="vacio">Elegí fechas para ver el total.</p></div>
+          <div class="campo-f" style="margin-top:14px"><label for="f-nom">Nombre</label><input type="text" id="f-nom" autocomplete="name" placeholder="Tu nombre"></div>
+          <button class="btn" type="submit" id="f-enviar">Enviar pedido y pagar seña (demo)</button>
+          <div id="resumen"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ANEXO -->
+<section class="foja rev" id="anexo" aria-labelledby="t-anx">
+  <header class="foja-h"><span class="fs">Anexo I</span><h2 id="t-anx">Fotografías de la casa</h2><span class="folio" aria-hidden="true">fs. 5 bis</span></header>
+  <div class="foja-b">
+    <aside class="margen" aria-label="Notas al margen">
+      <p class="nota"><b>Origen</b>Fotos publicadas en lceugenia.com, sin recortes.</p>
+    </aside>
+    <div class="cuerpo"><div class="anexo" id="anexo-g"></div></div>
+  </div>
+</section>
+
+<!-- FOJA 6 -->
+<section class="foja rev" id="alrededores" aria-labelledby="t-alr">
+  <header class="foja-h"><span class="fs">Foja 6</span><h2 id="t-alr">Alrededores y cómo llegar</h2><span class="folio" aria-hidden="true">fs. 6</span></header>
+  <div class="foja-b">
+    <aside class="margen" aria-label="Notas al margen">
+      <p class="nota"><b>Antecedente</b>Desde esta casa se administró el Parque Nacional Lanín entre 1937 y 1939.</p>
+      <p class="nota"><b>Avión</b>El aeropuerto Chapelco (Aviador Carlos Campos) queda a unos 20 km del centro.</p>
+    </aside>
+    <div class="cuerpo">
+      <div class="mapa-g">
+        <div class="mapa">
+          <svg viewBox="0 0 800 560" role="img" aria-label="Mapa ilustrado: La Casa de Eugenia en Cnel. Díaz 1186, a 100 metros del lago Lácar, y los atractivos cercanos.">
+            <rect width="800" height="560" fill="#F3ECDC"/>
+            <path d="M0 0H800V560H0Z" fill="none" stroke="#CBBB98" stroke-width="2"/>
+            <!-- relieve -->
+            <g fill="none" stroke="#D9CAA8" stroke-width="1.5">
+              <path d="M520 470 q60 -60 140 -30 q60 20 120 -10"/><path d="M540 500 q60 -50 130 -24 q60 20 110 -8"/>
+              <path d="M40 120 q80 -50 150 -10 q50 30 100 0"/><path d="M60 150 q70 -40 140 -6 q50 26 90 0"/>
+            </g>
+            <!-- lago Lolog al norte -->
+            <path d="M330 0 q20 40 -10 70 q-30 30 20 50 q60 10 90 -40 q20 -40 10 -80Z" fill="#9FBCD4"/>
+            <text x="400" y="40" font-size="14" fill="#1B3A5C" font-weight="700">Lago Lolog</text>
+            <!-- lago Lácar -->
+            <path d="M0 250 Q120 230 210 262 Q260 280 300 300 Q340 316 352 340 Q358 372 320 392 Q260 420 200 440 Q120 470 0 470Z" fill="#9FBCD4"/>
+            <path d="M0 250 Q120 230 210 262 Q260 280 300 300 Q340 316 352 340 Q358 372 320 392 Q260 420 200 440 Q120 470 0 470" fill="none" stroke="#6F93B3" stroke-width="2"/>
+            <text x="90" y="350" font-family="Bentham, serif" font-size="30" fill="#1B3A5C" font-style="italic">Lago Lácar</text>
+            <!-- pueblo -->
+            <g stroke="#CBBB98" stroke-width="1.5">
+              <rect x="362" y="230" width="260" height="190" fill="#EADFC6"/>
+              <path d="M362 268H622M362 306H622M362 344H622M362 382H622M404 230V420M446 230V420M488 230V420M530 230V420M572 230V420"/>
+            </g>
+            <text x="492" y="222" text-anchor="middle" font-size="13" fill="#51545A" font-weight="700" letter-spacing="1.5">SAN MARTÍN DE LOS ANDES</text>
+            <!-- costanera -->
+            <path d="M300 300 Q340 316 352 340 Q358 372 320 392" fill="none" stroke="#B9506D" stroke-width="2" stroke-dasharray="5 5"/>
+            <!-- rutas -->
+            <path d="M560 230 Q580 150 640 90 L720 20" fill="none" stroke="#2B5A8A" stroke-width="4"/>
+            <path d="M470 230 Q450 160 430 120" fill="none" stroke="#2B5A8A" stroke-width="3" stroke-dasharray="8 5"/>
+            <path d="M622 400 Q690 440 720 520 L740 560" fill="none" stroke="#2B5A8A" stroke-width="4"/>
+            <path d="M330 395 Q300 440 270 470 Q220 510 150 520" fill="none" stroke="#2B5A8A" stroke-width="3" stroke-dasharray="8 5"/>
+            <!-- casa -->
+            <g>
+              <circle cx="384" cy="330" r="26" fill="#B9506D" opacity=".18"/>
+              <path d="M370 336 V322 L384 310 L398 322 V336Z" fill="#2B5A8A" stroke="#FCFBF7" stroke-width="2"/>
+              <rect x="380" y="326" width="8" height="10" fill="#FCFBF7"/>
+            </g>
+            <g>
+              <rect x="410" y="344" width="214" height="46" fill="#1B3A5C"/>
+              <text x="420" y="364" font-family="Bentham, serif" font-size="17" fill="#FCFBF7">La Casa de Eugenia</text>
+              <text x="420" y="382" font-size="12" fill="#D5E0EA">Cnel. Díaz 1186 · 100 m del lago</text>
+            </g>
+            <!-- puntos -->
+            <g font-size="13" fill="#23252A">
+              <circle cx="232" cy="236" r="7" fill="#557A57"/><text x="200" y="218" font-weight="700">Mirador Bandurrias</text>
+              <circle cx="262" cy="468" r="7" fill="#557A57"/><text x="186" y="496" font-weight="700">Playa Catritre</text>
+              <circle cx="120" cy="508" r="7" fill="#557A57"/><text x="40" y="540" font-weight="700">Quila Quina</text>
+              <text x="14" y="236" font-weight="700">← Hua Hum</text>
+              <text x="560" y="58" font-weight="700" text-anchor="end">Lago Lolog / Volcán Lanín ↑</text>
+              <text x="770" y="90" font-weight="700" text-anchor="end">Aeropuerto Chapelco</text>
+              <text x="770" y="108" text-anchor="end" fill="#51545A">≈ 20 km · Junín de los Andes ↗</text>
+              <text x="790" y="478" font-weight="700" text-anchor="end">Cerro Chapelco ↘</text>
+              <text x="790" y="496" text-anchor="end" fill="#51545A">Ruta de los Siete Lagos</text>
+            </g>
+            <!-- rosa de los vientos -->
+            <g transform="translate(720 300)"><circle r="28" fill="#FCFBF7" stroke="#CBBB98"/><path d="M0 -24 L6 0 L0 24 L-6 0Z" fill="#1B3A5C"/><path d="M0 -24 L6 0 L-6 0Z" fill="#B9506D"/><text y="-32" text-anchor="middle" font-size="12" font-weight="700" fill="#1B3A5C">N</text></g>
+            <text x="790" y="548" font-size="11" text-anchor="end" fill="#51545A">Esquema ilustrativo · no está a escala</text>
+          </svg>
+        </div>
+        <div>
+          <ul class="lugares">
+            <li><div><b>Lago Lácar y la costanera</b><span>A 100 m de la casa: se llega caminando.</span></div></li>
+            <li><div><b>Playa Catritre y Quila Quina</b><span>Playas sobre la costa del Lácar.</span></div></li>
+            <li><div><b>Mirador Bandurrias</b><span>La vista clásica del pueblo y el lago.</span></div></li>
+            <li><div><b>Cerro Chapelco</b><span>Centro de ski en invierno, montaña todo el año.</span></div></li>
+            <li><div><b>Ruta de los Siete Lagos</b><span>Rumbo a Villa La Angostura.</span></div></li>
+            <li><div><b>Lago Lolog</b><span>Al norte del pueblo.</span></div></li>
+            <li><div><b>Parque Nacional Lanín y volcán Lanín</b><span>El parque que se administraba desde esta casa.</span></div></li>
+            <li><div><b>Hua Hum</b><span>Al oeste, en el extremo del lago Lácar.</span></div></li>
+          </ul>
+          <div class="direccion">
+            <b>Cnel. Díaz 1186</b>
+            <p>San Martín de los Andes, Neuquén · a 100 m del lago Lácar.</p>
+            <a class="btn" href="https://www.google.com/maps/search/?api=1&amp;query=La+Casa+de+Eugenia+Cnel.+D%C3%ADaz+1186+San+Mart%C3%ADn+de+los+Andes" target="_blank" rel="noopener">Abrir en Google Maps</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOJA 7 -->
+<section class="foja rev" id="preguntas" aria-labelledby="t-faq">
+  <header class="foja-h"><span class="fs">Foja 7</span><h2 id="t-faq">Preguntas frecuentes</h2><span class="folio" aria-hidden="true">fs. 7</span></header>
+  <div class="foja-b">
+    <aside class="margen" aria-label="Notas al margen">
+      <p class="nota"><b>Criterio</b>Solo figuran las reglas que la casa ya publica. El resto se consulta.</p>
+    </aside>
+    <div class="cuerpo faq">
+      <details open><summary>¿El desayuno está incluido?</summary><p>Sí. La Casa de Eugenia es un B&amp;B: todas las habitaciones incluyen desayuno casero, con opción sin TACC.</p></details>
+      <details><summary>¿Puedo ir con mi mascota?</summary><p>La casa es pet friendly para mascotas chicas, con condiciones. Consultá las condiciones por WhatsApp antes de reservar.</p></details>
+      <details><summary>¿Cómo se reserva hoy?</summary><p>Por la página de consulta de su web y por WhatsApp. También figura en Booking.</p></details>
+      <details><summary>¿Hay promociones?</summary><p>En agosto publican una promo con upgrade de habitación y mínimo de 3 noches.</p></details>
+      <details><summary>¿Qué hay en la casa además de las habitaciones?</summary><p>Pileta, parque con frutales, sala de té, dos livings, quincho y masajes.</p></details>
+      <details><summary>¿Qué tan cerca está del lago?</summary><p>A 100 metros del lago Lácar, en Cnel. Díaz 1186.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- FOJA 8 -->
+<section class="foja rev" id="contacto" aria-labelledby="t-con">
+  <header class="foja-h"><span class="fs">Foja 8</span><h2 id="t-con">Contacto</h2><span class="folio" aria-hidden="true">fs. 8</span></header>
+  <div class="foja-b">
+    <aside class="margen" aria-label="Notas al margen">
+      <p class="nota"><b>Atención</b>Atención personal de sus dueños, la familia Roca.</p>
+    </aside>
+    <div class="cuerpo cierre">
+      <div>
+        <h3>Se eleva a consideración del huésped.</h3>
+        <p class="lead">Escribinos con tus fechas y te respondemos desde la casa.</p>
+        <a class="btn verde" href="https://wa.me/5492972227502?text=Hola%2C%20quiero%20consultar%20disponibilidad%20en%20La%20Casa%20de%20Eugenia" target="_blank" rel="noopener">Escribir por WhatsApp</a>
+        <div><span class="firma">La Casa de Eugenia</span></div>
+      </div>
+      <ul class="canales">
+        <li><a href="https://wa.me/5492972227502" target="_blank" rel="noopener"><small>WhatsApp</small><span>+54 9 2972 227502</span><em>→</em></a></li>
+        <li><a href="mailto:hosterialacasadeeugenia@gmail.com"><small>Mail</small><span>hosterialacasadeeugenia@gmail.com</span><em>→</em></a></li>
+        <li><a href="https://www.instagram.com/hotel_lacasadeeugenia/" target="_blank" rel="noopener"><small>Instagram</small><span>@hotel_lacasadeeugenia</span><em>→</em></a></li>
+        <li><a href="https://www.facebook.com/lacasadeeugenia" target="_blank" rel="noopener"><small>Facebook</small><span>lacasadeeugenia</span><em>→</em></a></li>
+        <li><a href="https://www.booking.com/hotel/ar/eugenia.html" target="_blank" rel="noopener"><small>Booking</small><span>booking.com/hotel/ar/eugenia</span><em>→</em></a></li>
+        <li><a href="https://lceugenia.com" target="_blank" rel="noopener"><small>Web actual</small><span>lceugenia.com</span><em>→</em></a></li>
+      </ul>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="pie">
+  <span>La Casa de Eugenia · Cnel. Díaz 1186 · San Martín de los Andes, Neuquén</span>
+  <span>Prototipo de demostración preparado para La Casa de Eugenia · tarifas en pesos y disponibilidad de ejemplo</span>
+</footer>
+
+<a class="wa-flot" href="https://wa.me/5492972227502" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.5-.3Z"/></svg>
+</a>
+
+<script>
+(function(){
+  'use strict';
+  var BASE='https://images.squarespace-cdn.com/content/v1/53397fd6e4b0dc95bcc1b4a8/';
+  var F={
+    desayuno:BASE+'3ca1a85d-37bd-4cdf-a871-cd0db607a77a/desayuno.jpg?format=1500w',
+    f2554:BASE+'5ef3fb01-ccdb-4303-819d-8f741f8951d1/IMG_2554.JPEG?format=1500w',
+    fa1:BASE+'1745422654685-ZEQ2C15ZM2INPDP5DB47/image-asset.jpeg?format=1500w',
+    fa2:BASE+'1732282573795-934Y59S1RNNKGUDF3ZVP/image-asset.jpeg?format=1500w',
+    f3660:BASE+'1720015912195-DVKR74WSWINW8V6VWN4E/IMG_3660.JPEG?format=1500w',
+    superior:BASE+'1620668300668-5OJXANXB68NXMF8CXQZJ/Hab+Superior+%282%29.jpg?format=1500w',
+    f0795:BASE+'1720016010003-G9BOFE5VNTZKEO25331L/IMG_0795.JPEG?format=1500w',
+    f5120:BASE+'1533700015703-SIGVTQZE0RU433CQR6A8/IMG_5120.JPG?format=1500w'
+  };
+  function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+  function img(src,alt,label,tone,kicker){
+    return '<img src="'+src+'" alt="'+esc(alt)+'" data-label="'+esc(label)+'" data-tone="'+(tone||'azul')+'" data-kicker="'+esc(kicker||'La Casa de Eugenia')+'" loading="lazy" onerror="art(this)">';
+  }
+
+  /* ---------- Categorías ---------- */
+  var CATS={
+    triple:{n:'Triple Suite dúplex',num:'I',cap:3,base:168000,tone:'verde',
+      desc:'Suite en dos niveles para tres personas.',
+      datos:[['Capacidad','3 personas'],['Planta','Dúplex, en dos niveles'],['Desayuno','Casero, incluido · opción sin TACC']],
+      foto:null,mini:[F.fa1,F.f3660,F.f5120]},
+    superior:{n:'Suite Superior Doble',num:'II',cap:2,base:138000,tone:'azul',
+      desc:'La categoría más numerosa de la casa: suites dobles con desayuno casero incluido.',
+      datos:[['Capacidad','2 personas'],['Tipo','Habitación doble'],['Desayuno','Casero, incluido · opción sin TACC']],
+      foto:F.superior,mini:[F.fa2,F.f0795,F.f2554]},
+    standard:{n:'Standard Suite Doble',num:'III',cap:2,base:118000,tone:'rosa',
+      desc:'Suites dobles con el mismo desayuno y los mismos espacios comunes de la casa.',
+      datos:[['Capacidad','2 personas'],['Tipo','Habitación doble'],['Desayuno','Casero, incluido · opción sin TACC']],
+      foto:null,mini:[F.f3660,F.fa1,F.desayuno]},
+    familiar:{n:'Cuarto doble grande familiar',num:'IV',cap:4,base:186000,tone:'papel',
+      desc:'Un cuarto doble grande pensado para familias.',
+      datos:[['Capacidad','Hasta 4 personas (capacidad de ejemplo, a confirmar)'],['Tipo','Doble grande familiar'],['Desayuno','Casero, incluido · opción sin TACC']],
+      foto:null,mini:[F.f5120,F.fa2,F.f0795]}
+  };
+  var ORDEN=['triple','superior','standard','familiar'];
+  var actual='superior';
+
+  function renderFicha(id){
+    var c=CATS[id];
+    var principal=c.foto
+      ? img(c.foto,'Foto de la '+c.n,c.n,c.tone,'Ventana '+c.num)
+      : '<div class="art '+c.tone+'" role="img" aria-label="'+esc(c.n)+': foto pendiente"><span class="art-k">Ventana '+c.num+'</span><span class="art-t">'+esc(c.n)+'</span><span class="art-s">Foto de la habitación · la carga la casa</span></div>';
+    var minis=c.mini.map(function(u,i){return '<figure>'+img(u,'Espacios de La Casa de Eugenia, foto '+(i+1),'La casa',['azul','verde','rosa'][i%3],'Anexo')+'</figure>';}).join('');
+    var filas=c.datos.map(function(d){return '<tr><th scope="row">'+d[0]+'</th><td>'+esc(d[1])+'</td></tr>';}).join('');
+    document.getElementById('ficha').innerHTML=
+      '<article class="ficha">'+
+        '<div><figure class="ficha-foto" style="margin:0">'+principal+'<figcaption>'+(c.foto?'Foto de la '+esc(c.n)+' · lceugenia.com':'Foto específica de esta categoría: pendiente')+'</figcaption></figure>'+
+        '<p class="mini-tit">Espacios de la casa</p><div class="miniaturas">'+minis+'</div></div>'+
+        '<div class="ficha-datos"><span class="kicker">Ficha · Ventana '+c.num+'</span><h3>'+esc(c.n)+'</h3><p>'+esc(c.desc)+'</p>'+
+        '<table>'+filas+'<tr><th scope="row">m² y equipamiento</th><td class="pend">A completar por la casa</td></tr>'+
+        '<tr><th scope="row">Desde</th><td><strong>$ '+fmt(c.base)+'</strong> por noche <span class="pend">(ejemplo)</span></td></tr></table>'+
+        '<button type="button" class="btn" id="llevar">Simular esta habitación</button></div>'+
+      '</article>';
+    document.getElementById('llevar').addEventListener('click',function(){
+      var pax=document.getElementById('f-pax');
+      if(+pax.value>c.cap) pax.value=String(c.cap);
+      llenarCats(); document.getElementById('f-cat').value=id; calcular();
+      document.getElementById('reservar').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+    });
+  }
+  function elegir(id,foco){
+    actual=id;
+    document.querySelectorAll('.ventana').forEach(function(v){var on=v.getAttribute('data-cat')===id;v.classList.toggle('on',on);v.setAttribute('aria-pressed',on?'true':'false');});
+    document.querySelectorAll('.pestanas button').forEach(function(b){b.setAttribute('aria-pressed',b.getAttribute('data-cat')===id?'true':'false');});
+    renderFicha(id);
+    if(foco){document.getElementById('ficha').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'nearest'});}
+  }
+  document.querySelectorAll('.ventana').forEach(function(v){
+    v.addEventListener('click',function(){elegir(v.getAttribute('data-cat'),true);});
+    v.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();elegir(v.getAttribute('data-cat'),true);}});
+  });
+  document.querySelectorAll('.pestanas button').forEach(function(b){b.addEventListener('click',function(){elegir(b.getAttribute('data-cat'),false);});});
+
+  /* ---------- Fechas y temporadas ---------- */
+  function fmt(n){return new Intl.NumberFormat('es-AR',{maximumFractionDigits:0}).format(Math.round(n));}
+  function p(s){var a=s.split('-');return new Date(+a[0],+a[1]-1,+a[2]);}
+  function iso(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+  var MES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  function corta(d){return d.getDate()+' '+MES[d.getMonth()].slice(0,3);}
+
+  var TEMP=[
+    {id:'ssanta',n:'Semana Santa 2027',d:'jue 25 – dom 28 mar 2027',from:'2027-03-25',to:'2027-03-28',f:1.35,c:'#B9506D'},
+    {id:'prun',n:'Patagonia Run',d:'abril 2027 · carrera de trail en San Martín de los Andes (fecha de ejemplo: 8 – 11 abr)',from:'2027-04-08',to:'2027-04-11',f:1.30,c:'#C9773E'},
+    {id:'finde',n:'Fin de semana largo',d:'Soberanía Nacional (trasladado al lunes): sáb 21 – lun 23 nov 2026 · y los demás del calendario oficial',from:'2026-11-21',to:'2026-11-23',f:1.20,c:'#7A6AA8'},
+    {id:'vinv',n:'Vacaciones de invierno',d:'julio 2027 (aprox. 10 – 25 jul)',from:'2027-07-10',to:'2027-07-25',f:1.55,c:'#1B3A5C'},
+    {id:'ski',n:'Temporada de ski · Cerro Chapelco',d:'aprox. 20 jun – 27 sep 2027',from:'2027-06-20',to:'2027-09-27',f:1.35,c:'#2B5A8A'},
+    {id:'verano',n:'Verano',d:'2 ene – 28 feb 2027 · incluye el Aniversario de San Martín de los Andes (4 de febrero, fundada en 1898)',from:'2027-01-02',to:'2027-02-28',f:1.40,c:'#E9B75A'}
+  ];
+  var BAJA={id:'baja',n:'Temporada baja',d:'primavera y otoño',f:1,c:'#557A57'};
+  var EVENTOS={'2027-02-04':'Aniversario de San Martín de los Andes','2027-03-25':'Semana Santa','2027-04-08':'Patagonia Run (ejemplo)','2026-11-20':'Fin de semana largo'};
+  function temporada(d){var s=iso(d);for(var i=0;i<TEMP.length;i++){if(s>=TEMP[i].from&&s<=TEMP[i].to)return TEMP[i];}return BAJA;}
+
+  // tabla tarifas
+  (function(){
+    var cols=[BAJA,TEMP[2],TEMP[5],TEMP[0],TEMP[1],TEMP[4],TEMP[3]];
+    var h='<caption class="sr">Tarifas de ejemplo por noche en pesos, habitación con desayuno</caption><thead><tr><th scope="col">Habitación</th>'+cols.map(function(t){return '<th scope="col">'+t.n.replace(' · Cerro Chapelco','').replace(' 2027','')+'</th>';}).join('')+'</tr></thead><tbody>';
+    ORDEN.forEach(function(k){var c=CATS[k];h+='<tr><th scope="row">'+c.n+'</th>'+cols.map(function(t){return '<td>$ '+fmt(Math.round(c.base*t.f/1000)*1000)+'</td>';}).join('')+'</tr>';});
+    document.getElementById('tabla-tarifas').innerHTML=h+'</tbody>';
+    var l=[BAJA].concat(TEMP).map(function(t){return '<li><i style="background:'+t.c+'"></i><div><b>'+t.n+'</b><span>'+t.d+'</span></div></li>';}).join('');
+    document.getElementById('lista-temp').innerHTML=l;
+  })();
+
+  /* ---------- Calendario ---------- */
+  var hoy=new Date();hoy.setHours(0,0,0,0);
+  var vista=new Date(hoy.getFullYear(),hoy.getMonth(),1);
+  var limite=new Date(2027,8,1);
+  var fin=document.getElementById('f-in'),fout=document.getElementById('f-out');
+  fin.min=iso(hoy);fout.min=iso(new Date(hoy.getTime()+864e5));
+  function estado(d){
+    var s=iso(d),h=0;for(var i=0;i<s.length;i++){h=(h*31+s.charCodeAt(i))%9973;}
+    var t=temporada(d).id;var r=h%100;
+    var lleno=t==='baja'?8:(t==='vinv'||t==='ssanta')?38:22;
+    if(r<lleno)return 'lleno';if(r<lleno+20)return 'pocas';return 'libre';
+  }
+  function dibujarCal(){
+    var g=document.getElementById('cal-g');
+    document.getElementById('cal-mes').textContent=MES[vista.getMonth()]+' '+vista.getFullYear();
+    var html=['lu','ma','mi','ju','vi','sá','do'].map(function(d){return '<span class="dn" aria-hidden="true">'+d+'</span>';}).join('');
+    var off=(vista.getDay()+6)%7;for(var i=0;i<off;i++)html+='<span></span>';
+    var dias=new Date(vista.getFullYear(),vista.getMonth()+1,0).getDate();
+    var a=fin.value?p(fin.value):null,b=fout.value?p(fout.value):null;
+    for(var dd=1;dd<=dias;dd++){
+      var d=new Date(vista.getFullYear(),vista.getMonth(),dd),s=iso(d),pas=d<hoy,est=pas?'':estado(d);
+      var cls='dia '+est;
+      if(a&&s===iso(a))cls+=' sel';else if(b&&s===iso(b))cls+=' sel';else if(a&&b&&d>a&&d<b)cls+=' rango';
+      var lab=dd+' de '+MES[d.getMonth()]+(est==='lleno'?', completo':est==='pocas'?', últimas habitaciones':pas?'':', disponible')+(EVENTOS[s]?', '+EVENTOS[s]:'');
+      html+='<button type="button" class="'+cls+'" data-d="'+s+'"'+(pas?' disabled':'')+(est==='lleno'?' aria-disabled="true"':'')+' aria-label="'+lab+'"'+(EVENTOS[s]?' title="'+EVENTOS[s]+'"':'')+'>'+dd+(EVENTOS[s]?'<span class="ev" aria-hidden="true"></span>':'')+'</button>';
+    }
+    g.innerHTML=html;
+    document.getElementById('cal-prev').disabled=vista<=new Date(hoy.getFullYear(),hoy.getMonth(),1);
+    document.getElementById('cal-next').disabled=vista>=limite;
+  }
+  document.getElementById('cal-prev').addEventListener('click',function(){vista=new Date(vista.getFullYear(),vista.getMonth()-1,1);dibujarCal();});
+  document.getElementById('cal-next').addEventListener('click',function(){vista=new Date(vista.getFullYear(),vista.getMonth()+1,1);dibujarCal();});
+  document.getElementById('cal-g').addEventListener('click',function(e){
+    var bt=e.target.closest('.dia');if(!bt||bt.disabled)return;
+    var s=bt.getAttribute('data-d');
+    if(bt.classList.contains('lleno')&&!(fin.value&&!fout.value&&s>fin.value))return;
+    if(!fin.value||fout.value||s<=fin.value){fin.value=s;fout.value='';}
+    else{fout.value=s;}
+    calcular();dibujarCal();
+  });
+
+  /* ---------- Simulador ---------- */
+  var pax=document.getElementById('f-pax'),cat=document.getElementById('f-cat');
+  function llenarCats(){
+    var n=+pax.value,prev=cat.value;
+    cat.innerHTML=ORDEN.filter(function(k){return CATS[k].cap>=n;}).map(function(k){return '<option value="'+k+'">'+CATS[k].n+' (hasta '+CATS[k].cap+')</option>';}).join('');
+    if(prev&&cat.querySelector('option[value="'+prev+'"]'))cat.value=prev;
+  }
+  var ultimo=null;
+  function calcular(){
+    var out=document.getElementById('desglose');ultimo=null;
+    document.getElementById('resumen').innerHTML='';
+    if(!fin.value||!fout.value){out.innerHTML='<p class="vacio">Elegí fechas para ver el total.</p>';return;}
+    var a=p(fin.value),b=p(fout.value);
+    if(b<=a){out.innerHTML='<p class="alerta">La salida tiene que ser posterior a la entrada.</p>';return;}
+    var c=CATS[cat.value];if(!c){out.innerHTML='<p class="alerta">No hay habitaciones para esa cantidad de personas.</p>';return;}
+    var grupos={},orden=[],total=0,n=0,llenos=0,agosto=false;
+    for(var d=new Date(a);d<b;d.setDate(d.getDate()+1)){
+      var t=temporada(d),pr=Math.round(c.base*t.f/1000)*1000;
+      if(!grupos[t.id]){grupos[t.id]={t:t,n:0,pr:pr};orden.push(t.id);}
+      grupos[t.id].n++;total+=pr;n++;
+      if(estado(d)==='lleno')llenos++;
+      if(d.getMonth()===7)agosto=true;
+    }
+    if(n>60){out.innerHTML='<p class="alerta">Para estadías de más de 60 noches, consultá por WhatsApp.</p>';return;}
+    var sena=Math.round(total*0.3);
+    var h=orden.map(function(k){var g=grupos[k];return '<div class="ln"><span>'+g.n+' noche'+(g.n>1?'s':'')+' · '+g.t.n+' × $ '+fmt(g.pr)+'</span><span>$ '+fmt(g.pr*g.n)+'</span></div>';}).join('');
+    h+='<div class="ln"><span>Desayuno casero para '+pax.value+' persona'+(pax.value>1?'s':'')+'</span><span>incluido</span></div>';
+    h+='<div class="tot"><span>Total · '+n+' noche'+(n>1?'s':'')+'</span><strong id="total">$ '+fmt(total)+'</strong></div>';
+    h+='<div class="sena"><span>Seña 30% por Mercado Pago (demo)</span><span id="sena">$ '+fmt(sena)+'</span></div>';
+    h+='<p class="vacio" style="margin:8px 0 0;font-size:.8rem">Montos de ejemplo en pesos, por habitación y por noche. La casa carga sus tarifas.</p>';
+    if(agosto&&n>=3)h+='<p class="ok">Aplica la promo de agosto: upgrade de habitación (sujeto a disponibilidad) por estadía de 3 noches o más.</p>';
+    else if(agosto)h+='<p class="ok">En agosto, con 3 noches o más, la casa ofrece upgrade de habitación.</p>';
+    if(llenos)h+='<p class="alerta">'+llenos+' noche'+(llenos>1?'s':'')+' de este rango figura'+(llenos>1?'n':'')+' completa'+(llenos>1?'s':'')+' en el calendario de ejemplo: la casa te confirma alternativas.</p>';
+    out.innerHTML=h;
+    ultimo={c:c,a:a,b:b,n:n,total:total,sena:sena};
+  }
+  pax.addEventListener('change',function(){llenarCats();calcular();});
+  cat.addEventListener('change',calcular);
+  fin.addEventListener('change',function(){if(fin.value){var x=p(fin.value);vista=new Date(x.getFullYear(),x.getMonth(),1);fout.min=iso(new Date(x.getTime()+864e5));if(fout.value&&fout.value<=fin.value)fout.value='';}calcular();dibujarCal();});
+  fout.addEventListener('change',function(){calcular();dibujarCal();});
+  document.getElementById('sim').addEventListener('submit',function(e){
+    e.preventDefault();calcular();
+    var r=document.getElementById('resumen');
+    if(!ultimo){r.innerHTML='<p class="alerta">Completá entrada, salida y habitación.</p>';return;}
+    var nom=document.getElementById('f-nom').value.trim();
+    var cod='LCE-'+(ultimo.a.getMonth()+1)+String(ultimo.a.getDate()).padStart(2,'0')+'-'+ultimo.n+String(ultimo.total).slice(-2);
+    r.innerHTML='<div class="resumen" role="status"><div class="sello" aria-hidden="true">Recibido<br>demo</div>'+
+      '<h4>Pedido de reserva enviado (demo)</h4>'+
+      '<p><strong>'+(nom?esc(nom)+', ':'')+ultimo.c.n+'</strong></p>'+
+      '<p>'+corta(ultimo.a)+' → '+corta(ultimo.b)+' '+ultimo.b.getFullYear()+' · '+ultimo.n+' noche'+(ultimo.n>1?'s':'')+' · '+pax.value+' persona'+(pax.value>1?'s':'')+'</p>'+
+      '<p>Total $ '+fmt(ultimo.total)+' · seña $ '+fmt(ultimo.sena)+' por Mercado Pago (demo)</p>'+
+      '<p style="font-size:.8rem;margin-top:8px">Legajo '+cod+'. En la versión real, la casa recibe el pedido y la seña confirma la habitación. Esta demo no envía nada.</p></div>';
+  });
+
+  /* ---------- Anexo ---------- */
+  var anexo=[[F.f2554,'Fotografía n.º 1'],[F.desayuno,'Fotografía n.º 2 · desayuno'],[F.superior,'Fotografía n.º 3 · habitación Superior'],[F.fa1,'Fotografía n.º 4'],[F.f3660,'Fotografía n.º 5'],[F.fa2,'Fotografía n.º 6'],[F.f0795,'Fotografía n.º 7'],[F.f5120,'Fotografía n.º 8']];
+  document.getElementById('anexo-g').innerHTML=anexo.map(function(x,i){return '<figure>'+img(x[0],'La Casa de Eugenia, '+x[1],x[1].replace('Fotografía ','Foto '),['azul','verde','rosa','papel'][i%4],'Anexo I')+'<figcaption>'+x[1]+' · lceugenia.com</figcaption></figure>';}).join('');
+
+  /* ---------- Inicio ---------- */
+  var fh=document.getElementById('fecha-hoy');fh.textContent=hoy.getDate()+' de '+MES[hoy.getMonth()]+' de '+hoy.getFullYear();
+  llenarCats();elegir('superior',false);dibujarCal();
+
+  // revelado e índice activo
+  var rm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var revs=document.querySelectorAll('.rev');
+  if(rm||!('IntersectionObserver' in window)){revs.forEach(function(x){x.classList.add('vis');});}
+  else{var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('vis');io.unobserve(en.target);}});},{rootMargin:'0px 0px -8% 0px'});revs.forEach(function(x){io.observe(x);});}
+  var links=document.querySelectorAll('.indice a');
+  if('IntersectionObserver' in window){
+    var io2=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){links.forEach(function(l){l.classList.toggle('on',l.getAttribute('href')==='#'+en.target.id);});}});},{rootMargin:'-40% 0px -55% 0px'});
+    document.querySelectorAll('.foja[id]').forEach(function(s){io2.observe(s);});
+  }
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="La Casa de Eugenia"></script>
+</body>
+</html>
