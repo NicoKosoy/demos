@@ -1,0 +1,730 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>CEA · Cotizador de aberturas — Prototipo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Radio+Canada:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --selva:#0F1F1C;      /* verde casi negro del pedemonte */
+  --selva-2:#1B302B;
+  --bruma:#E7ECE9;
+  --hoja:#F8FAF8;
+  --pvc:#FFFFFF;
+  --tinta:#16211F;
+  --tinta-2:#55635F;
+  --linea:#C9D3CF;
+  --limon:#DCD64A;      /* limón tucumano */
+  --limon-2:#B9B32C;
+  --cerro:#4D6B78;
+  --cerro-2:#87A3AE;
+  --rpt:#E07B39;        /* barra de poliamida */
+  --r:10px;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--hoja);color:var(--tinta);font-family:"Radio Canada",system-ui,sans-serif;font-size:16px;line-height:1.5}
+h1,h2,h3,.disp{font-family:"Bai Jamjuree",sans-serif;letter-spacing:-.01em}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--limon-2);outline-offset:2px}
+.wrap{max-width:1240px;margin:0 auto;padding:0 20px}
+img{max-width:100%;display:block}
+
+/* aviso */
+.aviso{background:var(--limon);color:var(--selva);font-size:13px}
+.aviso .wrap{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding-top:7px;padding-bottom:7px}
+
+/* header */
+.top{background:var(--selva);color:#E9F0EC;position:sticky;top:0;z-index:20}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:66px}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
+.logo img{height:34px;width:auto}
+.logo .txt{font-family:"Bai Jamjuree";font-weight:700;font-size:20px;letter-spacing:.06em}
+.logo .txt small{display:block;font-size:10.5px;letter-spacing:.14em;font-weight:500;opacity:.7}
+.top nav{display:flex;gap:22px;font-size:14.5px}
+.top nav a{color:#C9D6D0;text-decoration:none}
+.top nav a:hover{color:#fff}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:999px;padding:11px 18px;font-weight:600;cursor:pointer;text-decoration:none;font-size:15px;transition:transform .15s,background .15s}
+.btn:active{transform:scale(.98)}
+.btn-limon{background:var(--limon);color:var(--selva)}
+.btn-limon:hover{background:#E8E25E}
+.btn-dark{background:var(--selva);color:#fff}
+.btn-dark:hover{background:var(--selva-2)}
+.btn-line{background:transparent;border:1.5px solid currentColor}
+@media(max-width:760px){.top nav{display:none}.top .btn{padding:9px 14px;font-size:14px}}
+
+/* hero */
+.hero{background:var(--selva);color:#EAF1ED;position:relative;overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;padding-top:56px;padding-bottom:64px}
+.kicker{font-family:"Bai Jamjuree";font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--limon)}
+.hero h1{font-size:clamp(38px,5.6vw,74px);line-height:.98;margin:14px 0 18px;font-weight:600}
+.hero h1 em{font-style:italic;font-weight:500;color:var(--limon)}
+.hero p.lead{font-size:18px;color:#BFD0C8;max-width:52ch;margin:0 0 26px}
+.hero .cta{display:flex;gap:12px;flex-wrap:wrap}
+.hero .facts{display:grid;grid-template-columns:repeat(3,auto);gap:8px 28px;margin-top:34px;font-size:13.5px;color:#9FB5AC;justify-content:start}
+.hero .facts b{display:block;font-family:"Bai Jamjuree";font-size:26px;color:#fff;font-weight:600;line-height:1.1}
+.corte-hero{background:radial-gradient(120% 90% at 70% 30%,#24413A 0%,#0F1F1C 70%);border:1px solid #2A443D;border-radius:18px;padding:22px;position:relative}
+.corte-hero svg{width:100%;height:auto;display:block}
+.corte-hero .lbl{position:absolute;left:22px;bottom:18px;font-size:12.5px;color:#9FB5AC}
+.corte-hero .lbl b{color:#fff;font-family:"Bai Jamjuree";font-size:15px;display:block}
+.corte-hero .sw{position:absolute;right:16px;top:16px;display:flex;gap:6px}
+.corte-hero .sw button{background:#1E3631;border:1px solid #31504A;color:#CFE0D8;border-radius:999px;padding:5px 11px;font-size:12.5px;cursor:pointer}
+.corte-hero .sw button[aria-pressed=true]{background:var(--limon);color:var(--selva);border-color:var(--limon)}
+@media(max-width:900px){.hero .wrap{grid-template-columns:1fr;padding-top:36px;padding-bottom:44px}.hero .facts{grid-template-columns:repeat(3,1fr)}}
+
+/* fichero */
+section{scroll-margin-top:80px}
+.sec-h{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:22px}
+.sec-h h2{font-size:clamp(28px,3.6vw,44px);line-height:1.02;margin:6px 0 0;font-weight:600;max-width:20ch}
+.sec-h p{margin:0;color:var(--tinta-2);max-width:46ch}
+.fichero{padding:64px 0 30px;background:var(--bruma)}
+.tabs-mat{display:inline-flex;background:#fff;border:1px solid var(--linea);border-radius:999px;padding:4px}
+.tabs-mat button{border:0;background:transparent;border-radius:999px;padding:8px 16px;cursor:pointer;font-weight:500;font-size:14.5px}
+.tabs-mat button[aria-pressed=true]{background:var(--selva);color:#fff}
+.rail{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(232px,1fr);gap:14px;overflow-x:auto;padding:4px 20px 22px;scroll-snap-type:x mandatory;max-width:1240px;margin:0 auto}
+.rail::-webkit-scrollbar{height:8px}.rail::-webkit-scrollbar-thumb{background:#B9C5C0;border-radius:9px}
+.ficha{scroll-snap-align:start;background:#fff;border:1px solid var(--linea);border-radius:14px;padding:16px 16px 14px;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:8px;transition:border-color .15s,transform .15s,box-shadow .15s}
+.ficha:hover{transform:translateY(-2px);box-shadow:0 10px 24px -14px rgba(15,31,28,.35)}
+.ficha[aria-pressed=true]{border-color:var(--selva);box-shadow:inset 0 0 0 1.5px var(--selva)}
+.ficha .tag{display:flex;gap:6px;flex-wrap:wrap}
+.ficha .tag span{font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:999px;background:var(--bruma);color:var(--tinta-2)}
+.ficha .tag span.rptt{background:#FBE6D7;color:#9A4716}
+.ficha .tag span.pvct{background:#E6EEF1;color:#33515C}
+.ficha h3{margin:0;font-size:19px;font-weight:600}
+.ficha p{margin:0;font-size:13.5px;color:var(--tinta-2);line-height:1.4}
+.ficha svg{width:100%;height:96px;background:linear-gradient(#FAFBFA,#F0F3F1);border-radius:8px}
+.ficha .go{margin-top:auto;font-size:13px;font-weight:600;color:var(--selva)}
+
+/* cotizador */
+.mesa{padding:60px 0 70px}
+.mesa-grid{display:grid;grid-template-columns:330px minmax(0,1fr) 320px;gap:20px;align-items:start}
+@media(max-width:1120px){.mesa-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.col-precio{grid-column:1/-1}}
+@media(max-width:760px){.mesa-grid{grid-template-columns:1fr}}
+.panel{background:#fff;border:1px solid var(--linea);border-radius:16px;padding:20px}
+.f{margin-bottom:18px}
+.f>label,.f>.lab{display:block;font-weight:600;font-size:14px;margin-bottom:7px}
+.f .hint{font-size:12.5px;color:var(--tinta-2);margin-top:5px}
+select,input[type=number]{width:100%;border:1px solid var(--linea);border-radius:9px;padding:10px 11px;background:#fff;font-size:15px}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{border:1px solid var(--linea);background:#fff;border-radius:9px;padding:8px 11px;cursor:pointer;font-size:14px}
+.seg button[aria-pressed=true]{background:var(--selva);border-color:var(--selva);color:#fff}
+.seg button:disabled{opacity:.35;cursor:not-allowed}
+.medidas{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.medidas .u{position:relative}
+.medidas .u span{position:absolute;right:11px;top:10px;color:var(--tinta-2);font-size:13px;pointer-events:none}
+.chk{display:flex;align-items:center;gap:9px;font-size:14.5px;margin:6px 0;cursor:pointer}
+.chk input{width:18px;height:18px;accent-color:var(--selva)}
+.colores{display:flex;gap:8px;flex-wrap:wrap}
+.colores button{width:auto;display:flex;align-items:center;gap:7px;border:1px solid var(--linea);background:#fff;border-radius:999px;padding:5px 11px 5px 5px;cursor:pointer;font-size:13.5px}
+.colores button i{width:22px;height:22px;border-radius:50%;border:1px solid rgba(0,0,0,.15);display:block}
+.colores button[aria-pressed=true]{border-color:var(--selva);box-shadow:inset 0 0 0 1.5px var(--selva)}
+
+.vista{position:relative}
+.vista .head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.vista .head h3{margin:0;font-size:18px}
+.vista .head .sys{font-size:13px;color:var(--tinta-2)}
+#elev{width:100%;height:auto;display:block;background:linear-gradient(#F4F7F5,#E9EEEB);border-radius:12px}
+.libre{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;margin-top:16px;padding:14px;border-radius:12px;background:var(--bruma)}
+.dial{width:96px;height:96px}
+.libre h4{margin:0 0 3px;font-family:"Bai Jamjuree";font-size:16px}
+.libre p{margin:0;font-size:13.5px;color:var(--tinta-2)}
+.barras{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:13px;margin-top:14px;align-items:center}
+.barras .b{height:8px;border-radius:9px;background:#DDE4E1;overflow:hidden}
+.barras .b i{display:block;height:100%;background:var(--cerro);border-radius:9px;transition:width .3s}
+.aviso-linea{margin-top:14px;padding:12px 14px;border-radius:10px;background:#FFF6D9;border:1px solid #EDD78A;font-size:14px;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.aviso-linea button{background:var(--selva);color:#fff;border:0;border-radius:999px;padding:7px 13px;cursor:pointer;font-size:13.5px}
+
+.col-precio{position:sticky;top:84px}
+@media(max-width:1120px){.col-precio{position:static}}
+.precio{background:var(--selva);color:#EAF1ED;border-radius:16px;padding:20px}
+.precio .lab{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--limon)}
+.precio .big{font-family:"Bai Jamjuree";font-size:clamp(30px,3.2vw,38px);font-weight:600;line-height:1.05;margin:6px 0 4px;color:#fff}
+.precio .rng{font-size:13.5px;color:#A9BDB4}
+.desg{margin:16px 0 14px;padding:0;list-style:none;font-size:13.5px;border-top:1px solid #2C4740}
+.desg li{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid #2C4740;color:#C6D5CE}
+.desg li b{color:#fff;font-weight:500;white-space:nowrap}
+.precio .btn{width:100%}
+.pedido{margin-top:14px}
+.pedido h4{margin:0 0 8px;font-family:"Bai Jamjuree";font-size:16px;display:flex;justify-content:space-between}
+.pos{list-style:none;margin:0;padding:0}
+.pos li{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:start;padding:10px 0;border-bottom:1px solid var(--linea);font-size:13.5px}
+.pos .cod{font-family:"Bai Jamjuree";font-weight:700;background:var(--limon);color:var(--selva);border-radius:6px;padding:1px 7px;font-size:13px}
+.pos .x{border:0;background:transparent;cursor:pointer;color:var(--tinta-2);font-size:18px;line-height:1;padding:0 4px}
+.pos small{display:block;color:var(--tinta-2)}
+.tot{display:flex;justify-content:space-between;font-weight:600;padding:10px 0 4px;font-family:"Bai Jamjuree";font-size:17px}
+.vacio{font-size:13.5px;color:var(--tinta-2);padding:8px 0}
+.envio{display:grid;gap:8px;margin-top:12px}
+.envio input{border:1px solid var(--linea);border-radius:9px;padding:10px 11px;width:100%}
+
+/* obras */
+.obras{background:var(--selva);color:#EAF1ED;padding:60px 0}
+.obras .sec-h p{color:#A9BDB4}
+.obras-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.obras-grid figure{margin:0;border-radius:12px;overflow:hidden;background:#1B302B;aspect-ratio:4/5}
+.obras-grid img{width:100%;height:100%;object-fit:cover}
+@media(max-width:760px){.obras-grid{grid-template-columns:1fr 1fr}}
+
+/* guía pvc vs alu */
+.guia{padding:60px 0}
+.guia-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.guia-grid article{border-top:3px solid var(--selva);padding-top:14px}
+.guia-grid article.rp{border-color:var(--rpt)}
+.guia-grid article.pv{border-color:var(--cerro)}
+.guia-grid h3{margin:0 0 6px;font-size:20px}
+.guia-grid p{margin:0 0 8px;color:var(--tinta-2);font-size:14.5px}
+.guia-grid q{display:block;font-size:14px;color:var(--tinta);font-style:italic;quotes:"“" "”"}
+@media(max-width:860px){.guia-grid{grid-template-columns:1fr}}
+
+/* contacto */
+.contacto{background:var(--bruma);padding:56px 0}
+.c-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:20px}
+.c-grid h3{margin:0 0 6px;font-size:15px;letter-spacing:.1em;text-transform:uppercase;color:var(--tinta-2);font-weight:500}
+.c-grid p{margin:0;font-size:16px}
+.c-grid a{color:var(--tinta)}
+.c-grid .big{font-family:"Bai Jamjuree";font-size:28px;line-height:1.08;font-weight:600}
+@media(max-width:860px){.c-grid{grid-template-columns:1fr 1fr}.c-grid>div:first-child{grid-column:1/-1}}
+footer{background:var(--selva);color:#9FB5AC;font-size:13px}
+footer .wrap{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding-top:16px;padding-bottom:16px}
+footer button{background:none;border:0;color:var(--limon);cursor:pointer;text-decoration:underline;padding:0;font-size:13px}
+
+/* modal precios */
+dialog{border:0;border-radius:16px;padding:0;max-width:760px;width:calc(100% - 32px);max-height:86vh}
+dialog::backdrop{background:rgba(15,31,28,.6)}
+.dlg-h{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--linea);position:sticky;top:0;background:#fff}
+.dlg-h h3{margin:0}
+.dlg-b{padding:16px 20px;overflow:auto}
+.ptab{width:100%;border-collapse:collapse;font-size:14px}
+.ptab th{text-align:left;font-weight:600;color:var(--tinta-2);font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:10px 6px 6px}
+.ptab td{padding:5px 6px;border-bottom:1px solid #EEF1EF}
+.ptab input{width:130px;padding:7px 8px;border:1px solid var(--linea);border-radius:7px;text-align:right}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);background:var(--selva);color:#fff;padding:10px 16px;border-radius:999px;font-size:14px;opacity:0;transition:.25s;pointer-events:none;z-index:50}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<div class="aviso"><div class="wrap"><span><b>Prototipo de demostración preparado para CEA – Cerramientos Especiales y Aberturas.</b> Los precios son de ejemplo.</span><span>Hecho por Resolviendo Kos · resolviendokos.com</span></div></div>
+
+<header class="top"><div class="wrap">
+  <a class="logo" href="#inicio" aria-label="CEA, inicio">
+    <img src="https://cerramientosespeciales.com.ar/wp-content/uploads/2024/03/logo-blanco.png" alt="CEA Cerramientos Especiales y Aberturas" onerror="this.remove();document.getElementById('logoTxt').hidden=false">
+    <span class="txt" id="logoTxt" hidden>CEA<small>CERRAMIENTOS ESPECIALES Y ABERTURAS</small></span>
+  </a>
+  <nav aria-label="Secciones"><a href="#sistemas">Sistemas</a><a href="#cotizar">Cotizar</a><a href="#guia">PVC o aluminio</a><a href="#contacto">Contacto</a></nav>
+  <a class="btn btn-limon" href="#cotizar">Cotizar ahora</a>
+</div></header>
+
+<section class="hero" id="inicio"><div class="wrap">
+  <div>
+    <div class="kicker">Yerba Buena · Tucumán · Grupo MP</div>
+    <h1>Cuatro sistemas de PVC y ocho de aluminio. <em>Elegí el corte.</em></h1>
+    <p class="lead">En CEA fabricamos aberturas de PVC y de aluminio de primera fusión. Elegí el sistema, cargá las medidas y mirá el precio estimado y cuánto paisaje deja ver tu ventana. El pedido nos llega con todo cargado.</p>
+    <div class="cta"><a class="btn btn-limon" href="#cotizar">Armar mi abertura</a><a class="btn btn-line" href="#sistemas" style="color:#EAF1ED">Ver los 12 sistemas</a></div>
+    <div class="facts">
+      <div><b>4</b>sistemas PVC</div>
+      <div><b>8</b>líneas de aluminio</div>
+      <div><b>RPT</b>Mónaco y Mediterránea</div>
+    </div>
+  </div>
+  <div class="corte-hero" aria-label="Corte de perfil ilustrativo">
+    <div class="sw" role="group" aria-label="Ver corte">
+      <button type="button" data-hc="pvc" aria-pressed="true">PVC</button>
+      <button type="button" data-hc="rpt" aria-pressed="false">Aluminio RPT</button>
+    </div>
+    <svg id="heroCut" viewBox="0 0 520 380" role="img" aria-label="Esquema del corte de un perfil"></svg>
+    <div class="lbl"><b id="heroCutName">Synego</b><span id="heroCutTxt">“Eficiencia energética y vista panorámica”</span><br><span style="font-size:11.5px;opacity:.75">Corte ilustrativo, no a escala</span></div>
+  </div>
+</div></section>
+
+<section class="fichero" id="sistemas">
+  <div class="wrap sec-h">
+    <div><div class="kicker" style="color:var(--cerro)">El fichero</div><h2>Los doce sistemas, en corte</h2></div>
+    <div style="display:flex;flex-direction:column;gap:12px;align-items:flex-start">
+      <p>Cada ficha usa la descripción de la línea tal como la presentan. Tocá una y se carga en el cotizador.</p>
+      <div class="tabs-mat" role="group" aria-label="Filtrar sistemas">
+        <button type="button" data-f="todos" aria-pressed="true">Todos</button>
+        <button type="button" data-f="pvc" aria-pressed="false">PVC</button>
+        <button type="button" data-f="alu" aria-pressed="false">Aluminio</button>
+      </div>
+    </div>
+  </div>
+  <div class="rail" id="rail"></div>
+</section>
+
+<section class="mesa" id="cotizar"><div class="wrap">
+  <div class="sec-h">
+    <div><div class="kicker" style="color:var(--cerro)">Cotizador</div><h2>Tu abertura, con el cerro de fondo</h2></div>
+    <p>El dibujo usa el ancho de perfil de cada sistema: así se ve cuánto vidrio y cuánto marco queda en la medida que cargás.</p>
+  </div>
+  <div class="mesa-grid">
+    <div class="panel col-ctrl">
+      <div class="f"><span class="lab">Material</span>
+        <div class="seg" id="segMat" role="group" aria-label="Material">
+          <button type="button" data-m="pvc" aria-pressed="false">PVC</button>
+          <button type="button" data-m="alu" aria-pressed="true">Aluminio</button>
+        </div>
+      </div>
+      <div class="f"><label for="selSys">Sistema</label><select id="selSys"></select>
+        <div class="hint" id="sysHint"></div></div>
+      <div class="f"><span class="lab">Tipo de apertura</span><div class="seg" id="segAp" role="group" aria-label="Apertura"></div></div>
+      <div class="f" id="fHojas"><span class="lab">Hojas</span><div class="seg" id="segHojas" role="group" aria-label="Hojas"></div></div>
+      <div class="f"><span class="lab">Medidas del vano</span>
+        <div class="medidas">
+          <div class="u"><input id="inAncho" type="number" inputmode="numeric" min="40" max="600" step="1" value="180" aria-label="Ancho en centímetros"><span>ancho cm</span></div>
+          <div class="u"><input id="inAlto" type="number" inputmode="numeric" min="40" max="300" step="1" value="150" aria-label="Alto en centímetros"><span>alto cm</span></div>
+        </div>
+      </div>
+      <div class="f"><label for="selVid">Vidrio</label><select id="selVid"></select></div>
+      <div class="f"><span class="lab">Color</span><div class="colores" id="colores"></div></div>
+      <div class="f" style="margin-bottom:4px"><span class="lab">Extras</span>
+        <label class="chk"><input type="checkbox" id="exMos"> Mosquitero</label>
+        <label class="chk"><input type="checkbox" id="exCort"> Cortina de enrollar</label>
+        <label class="chk"><input type="checkbox" id="exInst" checked> Instalación en Gran Tucumán</label>
+      </div>
+    </div>
+
+    <div class="panel vista">
+      <div class="head"><h3 id="vTitle">Ventana corrediza</h3><span class="sys" id="vSys">Mediterránea RPT · 180 × 150 cm</span></div>
+      <svg id="elev" viewBox="0 0 640 480" role="img" aria-label="Dibujo de la abertura con medidas"></svg>
+      <div class="libre">
+        <svg class="dial" id="dial" viewBox="0 0 100 100" aria-hidden="true"></svg>
+        <div><h4 id="libreTit">Vista libre</h4><p id="libreTxt"></p></div>
+      </div>
+      <div class="barras" id="barras"></div>
+      <div class="aviso-linea" id="avisoLinea" hidden><span id="avisoTxt"></span><button type="button" id="avisoBtn"></button></div>
+    </div>
+
+    <div class="col-precio">
+      <div class="precio" aria-live="polite">
+        <div class="lab">Precio estimado</div>
+        <div class="big" id="pBig">$ 0</div>
+        <div class="rng" id="pRng"></div>
+        <ul class="desg" id="desg"></ul>
+        <button class="btn btn-limon" type="button" id="btnAdd">Agregar al pedido</button>
+      </div>
+      <div class="panel pedido">
+        <h4><span>Tu pedido</span><span id="cnt" style="color:var(--tinta-2);font-weight:500">0 posiciones</span></h4>
+        <ul class="pos" id="pos"></ul>
+        <div class="vacio" id="vacio">Todavía no agregaste aberturas. Cada una queda con su código (V1, P1…) para la medición.</div>
+        <div class="tot" id="tot" hidden><span>Total estimado</span><span id="totV"></span></div>
+        <div class="envio">
+          <input id="nom" placeholder="Tu nombre" autocomplete="name" aria-label="Tu nombre">
+          <input id="barrio" placeholder="Barrio o localidad de la obra" aria-label="Barrio o localidad">
+          <button class="btn btn-dark" type="button" id="btnWa">Enviar por WhatsApp</button>
+          <button class="btn btn-line" type="button" id="btnMail" style="color:var(--selva)">Enviar por mail</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<section class="guia" id="guia"><div class="wrap">
+  <div class="sec-h"><div><div class="kicker" style="color:var(--cerro)">Antes de elegir</div><h2>PVC, aluminio o aluminio con RPT</h2></div>
+  <p>Tres caminos que CEA fabrica. Las citas son de sus propias fichas.</p></div>
+  <div class="guia-grid">
+    <article><h3>Aluminio</h3><p>Perfiles de materia prima Aluar, primera fusión, aleación 6063. De Tradicional y Delta para medidas convencionales a Niza y Mediterránea para grandes paños.</p><q>Ofrece altas prestaciones, gracias a sus perfiles y accesorios especialmente diseñados para resolver aberturas de grandes dimensiones.</q></article>
+    <article class="rp"><h3>Aluminio con RPT</h3><p>Mónaco RPT y Mediterránea RPT llevan ruptura de puente térmico con poliamidas de la alemana Technoform Bautec.</p><q>El atributo principal de la Línea es el uso racional de la energía y el ahorro que genera.</q></article>
+    <article class="pv"><h3>PVC</h3><p>Euro Design 60, Euro Design Slide, High Design Slide y Synego, para abrir, oscilobatir o correr en grandes ventanales.</p><q>Eficiencia energética y vista panorámica.</q></article>
+  </div>
+</div></section>
+
+<section class="obras" id="obras"><div class="wrap">
+  <div class="sec-h"><div><div class="kicker">De su web</div><h2>Trabajos de CEA</h2></div><p>Fotos tomadas de cerramientosespeciales.com.ar.</p></div>
+  <div class="obras-grid" id="obrasGrid">
+    <figure><img loading="lazy" src="https://cerramientosespeciales.com.ar/wp-content/uploads/2024/03/00001.jpg" alt="Trabajo de CEA"></figure>
+    <figure><img loading="lazy" src="https://cerramientosespeciales.com.ar/wp-content/uploads/2024/03/00002.jpg" alt="Trabajo de CEA"></figure>
+    <figure><img loading="lazy" src="https://cerramientosespeciales.com.ar/wp-content/uploads/2024/03/00003.jpg" alt="Trabajo de CEA"></figure>
+    <figure><img loading="lazy" src="https://cerramientosespeciales.com.ar/wp-content/uploads/2024/03/00004.jpg" alt="Trabajo de CEA"></figure>
+  </div>
+</div></section>
+
+<section class="contacto" id="contacto"><div class="wrap c-grid">
+  <div><h3>Casa central</h3><p class="big">Federico Rossi 4ª cuadra<br>Yerba Buena</p></div>
+  <div><h3>Horario</h3><p>Lunes a viernes<br>de 8 a 17 hs.</p></div>
+  <div><h3>WhatsApp</h3><p><a href="https://wa.me/5493812530663" target="_blank" rel="noopener">+54 9 381 253-0663</a></p></div>
+  <div><h3>Mail</h3><p><a href="mailto:info@cerramientosespeciales.com.ar">info@cerramientos<wbr>especiales.com.ar</a><br><a href="https://www.instagram.com/cerramientosespeciales/" target="_blank" rel="noopener">@cerramientosespeciales</a></p></div>
+</div></section>
+
+<footer><div class="wrap"><span>Prototipo de demostración preparado para CEA – Cerramientos Especiales y Aberturas. Precios de ejemplo, no son una oferta.</span><span><button type="button" id="btnPrecios">Editar tabla de precios</button> · Resolviendo Kos · resolviendokos.com</span></div></footer>
+
+<dialog id="dlg">
+  <div class="dlg-h"><h3>Tabla de precios (ejemplo)</h3><div style="display:flex;gap:8px"><button class="btn btn-line" type="button" id="btnReset" style="padding:7px 12px;font-size:13.5px">Restaurar</button><button class="btn btn-dark" type="button" id="btnClose" style="padding:7px 14px;font-size:13.5px">Listo</button></div></div>
+  <div class="dlg-b"><p style="margin:0 0 8px;font-size:14px;color:var(--tinta-2)">Así se actualizan los precios sin tocar la web. Los cambios se guardan en este navegador.</p><table class="ptab" id="ptab"></table></div>
+</dialog>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function(){
+"use strict";
+const WA="5493812530663", MAIL="info@cerramientosespeciales.com.ar";
+const fmt=n=>"$ "+Math.round(n).toLocaleString("es-AR");
+const $=id=>document.getElementById(id);
+
+/* Sistemas reales de CEA. face = ancho visible de perfil en mm (valor orientativo para el dibujo). */
+const SYS=[
+ {id:"ed60",n:"Euro Design 60",m:"pvc",d:"Sistema para ventanas y puertas de apertura interior o exterior. Profundidad en 60 mm.",ap:["abrir","oscilo","proy","fijo","puerta"],face:112,big:false,ais:4,ac:4},
+ {id:"eds",n:"Euro Design Slide",m:"pvc",d:"El sistema de puertas corredizas. Ventanas desde 1 hasta 6 hojas móviles.",ap:["corr","pcorr"],face:118,big:false,ais:3,ac:3,maxH:6},
+ {id:"hds",n:"High Design Slide",m:"pvc",d:"El sistema para proyectos de grandes ventanales. Balconeras de grandes dimensiones.",ap:["corr","pcorr"],face:102,big:true,ais:4,ac:4},
+ {id:"syn",n:"Synego",m:"pvc",d:"Eficiencia energética y vista panorámica.",ap:["abrir","oscilo","fijo"],face:94,big:false,ais:5,ac:5},
+ {id:"tra",n:"Tradicional",m:"alu",d:"Difundido uso en nuestro país, prestaciones básicas para medidas convencionales.",ap:["corr","abrir"],face:78,big:false,ais:1,ac:1},
+ {id:"gam",n:"Gamma",m:"alu",d:"Consultar prestaciones con CEA.",ap:[],face:80,big:false,ais:1,ac:1,consultar:true},
+ {id:"del",n:"Delta",m:"alu",d:"Difundido uso en nuestro país, para aberturas de dimensiones convencionales.",ap:["abrir","corr"],face:80,big:false,ais:1,ac:2},
+ {id:"mon",n:"Mónaco",m:"alu",d:"Media/alta prestación, ideal para dimensiones convencionales, con estética moderna.",ap:["corr","abrir","pcorr"],face:74,big:false,ais:2,ac:2},
+ {id:"monr",n:"Mónaco RPT",m:"alu",d:"Mónaco con ruptura de puente térmico: media/alta prestación.",ap:["corr","abrir"],face:82,big:false,ais:4,ac:3,rpt:true},
+ {id:"niz",n:"Niza",m:"alu",d:"Altas prestaciones para aberturas de grandes dimensiones. Corredizas a 45° o 90°.",ap:["corr","abrir","pcorr"],face:70,big:true,ais:2,ac:3},
+ {id:"med",n:"Mediterránea",m:"alu",d:"Altas prestaciones; resuelve aberturas de grandes dimensiones con estética moderna.",ap:["corr","abrir","elev","pleg","oscilo","pcorr"],face:72,big:true,ais:2,ac:3},
+ {id:"medr",n:"Mediterránea RPT",m:"alu",d:"La máxima expresión actual de la tecnología del aluminio: uso racional de la energía.",ap:["corr","abrir","elev","pleg","oscilo","pcorr"],face:80,big:true,ais:4,ac:4,rpt:true}
+];
+const AP={corr:"Ventana corrediza",pcorr:"Puerta corrediza / balconera",abrir:"De abrir",oscilo:"Oscilobatiente",proy:"Proyectante",fijo:"Paño fijo",puerta:"Puerta de abrir",elev:"Corrediza elevable",pleg:"Plegadiza"};
+const APS={corr:"Corrediza",pcorr:"Puerta corrediza",abrir:"De abrir",oscilo:"Oscilobatiente",proy:"Proyectante",fijo:"Paño fijo",puerta:"Puerta",elev:"Elevable",pleg:"Plegadiza"};
+const VID=[
+ {id:"s4",n:"Float 4 mm"},
+ {id:"lam",n:"Laminado 3+3"},
+ {id:"d9",n:"DVH 4/9/4"},
+ {id:"d12",n:"DVH 4/12/4"},
+ {id:"dl",n:"DVH laminado 3+3/12/4"}
+];
+const COL={
+ pvc:[{id:"bl",n:"Blanco",c:"#F7F7F5"},{id:"ng",n:"Negro",c:"#232526"},{id:"ma",n:"Símil madera",c:"linear-gradient(135deg,#8A5A35,#6B4428)"}],
+ alu:[{id:"bl",n:"Blanco",c:"#F2F2F0"},{id:"ng",n:"Negro",c:"#232526"},{id:"an",n:"Anodizado natural",c:"linear-gradient(135deg,#D7DBDD,#A9B0B4)"},{id:"ma",n:"Símil madera",c:"linear-gradient(135deg,#8A5A35,#6B4428)"}]
+};
+const COLHEX={bl:"#F5F5F2",ng:"#2A2C2E",an:"#B9C0C4",ma:"#7B4E2F"};
+
+const DEF={
+ m2:{ed60:520000,eds:500000,hds:650000,syn:720000,tra:260000,del:300000,mon:360000,monr:450000,niz:430000,med:470000,medr:580000},
+ vid:{s4:0,lam:45000,d9:70000,d12:85000,dl:130000},
+ col:{bl:0,ng:12,an:8,ma:22},
+ ap:{corr:0,pcorr:6,abrir:8,oscilo:18,proy:5,fijo:-18,puerta:15,elev:30,pleg:35},
+ mos:55000, cort:120000, inst:9, minM2:1
+};
+let P=load();
+function load(){try{const s=localStorage.getItem("cea_precios");if(s){const o=JSON.parse(s);return merge(structuredClone(DEF),o);}}catch(e){}return structuredClone(DEF);}
+function merge(a,b){for(const k in b){if(typeof b[k]==="object"&&b[k]&&a[k])merge(a[k],b[k]);else if(k in a)a[k]=b[k];}return a;}
+function save(){try{localStorage.setItem("cea_precios",JSON.stringify(P));}catch(e){}}
+
+const S={mat:"alu",sys:"medr",ap:"corr",hojas:2,w:180,h:150,vid:"d12",col:"ng",mos:false,cort:false,inst:true};
+let pedido=[];
+
+/* ---------- corte (perfil ilustrativo) ---------- */
+function cutSVG(sys,W,H,big){
+  const w=W,h=H, pad=big?40:8;
+  let s="";
+  const x0=pad, y0=pad, cw=w-pad*2, ch=h-pad*2;
+  if(sys.m==="pvc"){
+    s+=`<rect x="${x0}" y="${y0}" width="${cw}" height="${ch}" rx="${big?10:4}" fill="#FFFFFF" stroke="#2B3A37" stroke-width="${big?3:1.6}"/>`;
+    // cámaras: grilla ilustrativa
+    const cols=sys.id==="syn"?4:3, rows=2;
+    const gx=cw/cols, gy=ch/rows;
+    for(let i=0;i<cols;i++)for(let j=0;j<rows;j++){
+      const inset=big?6:2.5;
+      s+=`<rect x="${x0+i*gx+inset}" y="${y0+j*gy+inset}" width="${gx-inset*2}" height="${gy-inset*2}" rx="${big?4:2}" fill="#EEF3F5" stroke="#8FA6AF" stroke-width="${big?1.6:.9}"/>`;
+    }
+    // refuerzo
+    s+=`<rect x="${x0+gx+gx*.25}" y="${y0+ch*.2}" width="${gx*.5}" height="${ch*.6}" fill="none" stroke="#4D6B78" stroke-width="${big?3:1.4}" stroke-dasharray="${big?'6 4':'3 2'}"/>`;
+    // vidrio
+    s+=`<rect x="${x0+cw*.42}" y="${y0-(big?30:6)}" width="${big?10:4}" height="${big?40:9}" fill="#BFDCE3"/><rect x="${x0+cw*.42+(big?22:9)}" y="${y0-(big?30:6)}" width="${big?10:4}" height="${big?40:9}" fill="#BFDCE3"/>`;
+  } else {
+    const rpt=!!sys.rpt;
+    const half=rpt?(cw-cw*.16)/2:cw;
+    const drawBox=(x,wd)=>`<rect x="${x}" y="${y0}" width="${wd}" height="${ch}" rx="${big?6:2}" fill="#D9DEE1" stroke="#2B3A37" stroke-width="${big?3:1.6}"/><rect x="${x+wd*.18}" y="${y0+ch*.22}" width="${wd*.64}" height="${ch*.56}" rx="${big?4:1.5}" fill="#F3F5F6" stroke="#8B969B" stroke-width="${big?1.6:.9}"/>`;
+    if(rpt){
+      s+=drawBox(x0,half);
+      s+=drawBox(x0+cw-half,half);
+      const bx=x0+half, bw=cw-half*2;
+      s+=`<rect x="${bx}" y="${y0+ch*.18}" width="${bw}" height="${ch*.16}" fill="#E07B39"/><rect x="${bx}" y="${y0+ch*.66}" width="${bw}" height="${ch*.16}" fill="#E07B39"/>`;
+      if(big)s+=`<text x="${bx+bw/2}" y="${y0+ch+30}" fill="#E07B39" font-family="Bai Jamjuree" font-size="15" text-anchor="middle">poliamida · RPT</text>`;
+    } else {
+      s+=drawBox(x0,cw);
+    }
+    s+=`<rect x="${x0+cw*.44}" y="${y0-(big?30:6)}" width="${big?9:4}" height="${big?40:9}" fill="#BFDCE3"/>`;
+  }
+  return s;
+}
+function heroCut(kind){
+  const sys=kind==="pvc"?SYS.find(x=>x.id==="syn"):SYS.find(x=>x.id==="medr");
+  const svg=$("heroCut");
+  svg.innerHTML=`<g transform="translate(70,70)">${cutSVG(sys,380,220,true)}</g>`;
+  $("heroCutName").textContent=sys.n;
+  $("heroCutTxt").textContent=kind==="pvc"?"“Eficiencia energética y vista panorámica”":"“La máxima expresión actual de la tecnología del aluminio”";
+  document.querySelectorAll("[data-hc]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.hc===kind));
+}
+document.querySelectorAll("[data-hc]").forEach(b=>b.addEventListener("click",()=>heroCut(b.dataset.hc)));
+
+/* ---------- fichero ---------- */
+let filtro="todos";
+function rail(){
+  const r=$("rail");
+  r.innerHTML="";
+  SYS.filter(s=>filtro==="todos"||s.m===filtro).forEach(s=>{
+    const b=document.createElement("button");
+    b.type="button";b.className="ficha";b.setAttribute("aria-pressed",s.id===S.sys);
+    const tags=[`<span class="${s.m==='pvc'?'pvct':''}">${s.m==='pvc'?'PVC':'Aluminio'}</span>`];
+    if(s.rpt)tags.push('<span class="rptt">RPT</span>');
+    if(s.big)tags.push('<span>Grandes paños</span>');
+    b.innerHTML=`<svg viewBox="0 0 220 96" aria-hidden="true"><g transform="translate(40,18)">${cutSVG(s,140,68,false)}</g></svg><div class="tag">${tags.join("")}</div><h3>${s.n}</h3><p>${s.d}</p><span class="go">${s.consultar?"Consultar en CEA":"Cotizar en "+s.n+" →"}</span>`;
+    b.addEventListener("click",()=>{
+      if(s.consultar){location.href=`https://wa.me/${WA}?text=${encodeURIComponent("Hola CEA, quería consultar por la línea Gamma.")}`;return;}
+      pickSys(s.id);document.getElementById("cotizar").scrollIntoView({behavior:"smooth"});
+    });
+    r.appendChild(b);
+  });
+}
+document.querySelectorAll("[data-f]").forEach(b=>b.addEventListener("click",()=>{filtro=b.dataset.f;document.querySelectorAll("[data-f]").forEach(x=>x.setAttribute("aria-pressed",x===b));rail();}));
+
+/* ---------- controles ---------- */
+function sysObj(){return SYS.find(s=>s.id===S.sys);}
+function pickSys(id){
+  const s=SYS.find(x=>x.id===id);S.sys=id;S.mat=s.m;
+  if(!s.ap.includes(S.ap))S.ap=s.ap[0];
+  if(!COL[S.mat].some(c=>c.id===S.col))S.col="bl";
+  renderCtrls();update();rail();
+}
+function renderCtrls(){
+  document.querySelectorAll("#segMat button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.m===S.mat));
+  const sel=$("selSys");sel.innerHTML="";
+  SYS.filter(s=>s.m===S.mat&&!s.consultar).forEach(s=>{const o=document.createElement("option");o.value=s.id;o.textContent=s.n+(s.rpt?" (RPT)":"");sel.appendChild(o);});
+  sel.value=S.sys;
+  const s=sysObj();
+  $("sysHint").textContent=s.d;
+  const ap=$("segAp");ap.innerHTML="";
+  s.ap.forEach(k=>{const b=document.createElement("button");b.type="button";b.textContent=APS[k];b.setAttribute("aria-pressed",k===S.ap);b.addEventListener("click",()=>{S.ap=k;renderCtrls();update();});ap.appendChild(b);});
+  const showH=["corr","pcorr","elev","pleg"].includes(S.ap);
+  $("fHojas").hidden=!showH;
+  const opts=S.ap==="pleg"?[3,4,5,6]:(s.maxH?[2,3,4,6]:[2,3,4]);
+  if(!opts.includes(S.hojas))S.hojas=opts[0];
+  const hj=$("segHojas");hj.innerHTML="";
+  opts.forEach(n=>{const b=document.createElement("button");b.type="button";b.textContent=n+" hojas";b.setAttribute("aria-pressed",n===S.hojas);b.addEventListener("click",()=>{S.hojas=n;renderCtrls();update();});hj.appendChild(b);});
+  const vs=$("selVid");if(!vs.options.length){VID.forEach(v=>{const o=document.createElement("option");o.value=v.id;o.textContent=v.n;vs.appendChild(o);});}
+  vs.value=S.vid;
+  const cc=$("colores");cc.innerHTML="";
+  COL[S.mat].forEach(c=>{const b=document.createElement("button");b.type="button";b.setAttribute("aria-pressed",c.id===S.col);b.innerHTML=`<i style="background:${c.c}"></i>${c.n}`;b.addEventListener("click",()=>{S.col=c.id;renderCtrls();update();});cc.appendChild(b);});
+}
+document.querySelectorAll("#segMat button").forEach(b=>b.addEventListener("click",()=>{
+  if(S.mat===b.dataset.m)return;
+  const first=SYS.find(s=>s.m===b.dataset.m&&!s.consultar);
+  pickSys(b.dataset.m==="pvc"?"syn":first.id);
+}));
+$("selSys").addEventListener("change",e=>pickSys(e.target.value));
+$("selVid").addEventListener("change",e=>{S.vid=e.target.value;update();});
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+$("inAncho").addEventListener("input",e=>{const v=parseFloat(e.target.value);if(!isNaN(v)){S.w=clamp(v,40,600);update();}});
+$("inAlto").addEventListener("input",e=>{const v=parseFloat(e.target.value);if(!isNaN(v)){S.h=clamp(v,40,300);update();}});
+$("inAncho").addEventListener("blur",e=>{e.target.value=S.w;});
+$("inAlto").addEventListener("blur",e=>{e.target.value=S.h;});
+[["exMos","mos"],["exCort","cort"],["exInst","inst"]].forEach(([id,k])=>$(id).addEventListener("change",e=>{S[k]=e.target.checked;update();}));
+
+/* ---------- precio ---------- */
+function calc(st){
+  const s=SYS.find(x=>x.id===st.sys);
+  const m2=Math.max(P.minM2,(st.w/100)*(st.h/100));
+  const base=P.m2[s.id]*m2;
+  const apAdj=base*(P.ap[st.ap]||0)/100;
+  const hojAdj=(["corr","pcorr","elev"].includes(st.ap)&&st.hojas>2)?base*0.07*(st.hojas-2):0;
+  const vid=(P.vid[st.vid]||0)*m2;
+  const sub1=base+apAdj+hojAdj;
+  const col=sub1*(P.col[st.col]||0)/100;
+  const mos=st.mos?P.mos*m2:0;
+  const cort=st.cort?P.cort*m2:0;
+  const pre=sub1+vid+col+mos+cort;
+  const inst=st.inst?pre*P.inst/100:0;
+  return {m2,base,apAdj:apAdj+hojAdj,vid,col,mos,cort,inst,total:pre+inst};
+}
+
+/* ---------- dibujo ---------- */
+function landscape(id,x,y,w,h){
+  return `<clipPath id="${id}"><rect x="${x}" y="${y}" width="${w}" height="${h}"/></clipPath>
+  <g clip-path="url(#${id})">
+   <rect x="${x}" y="${y}" width="${w}" height="${h}" fill="url(#sky)"/>
+   <path d="M${x-20} ${y+h*.62} C ${x+w*.18} ${y+h*.36}, ${x+w*.34} ${y+h*.44}, ${x+w*.5} ${y+h*.38} S ${x+w*.86} ${y+h*.30}, ${x+w+20} ${y+h*.48} L ${x+w+20} ${y+h} L ${x-20} ${y+h} Z" fill="#6E8C97"/>
+   <path d="M${x-20} ${y+h*.74} C ${x+w*.2} ${y+h*.58}, ${x+w*.42} ${y+h*.66}, ${x+w*.62} ${y+h*.6} S ${x+w*.9} ${y+h*.64}, ${x+w+20} ${y+h*.7} L ${x+w+20} ${y+h} L ${x-20} ${y+h} Z" fill="#3F5F55"/>
+   <path d="M${x-20} ${y+h*.86} C ${x+w*.3} ${y+h*.8}, ${x+w*.6} ${y+h*.9}, ${x+w+20} ${y+h*.82} L ${x+w+20} ${y+h} L ${x-20} ${y+h} Z" fill="#26443A"/>
+  </g>`;
+}
+function draw(){
+  const s=sysObj(), svg=$("elev");
+  const VW=640,VH=480, maxW=470,maxH=330;
+  const sc=Math.min(maxW/S.w,maxH/S.h);
+  const W=S.w*sc,H=S.h*sc, X=(VW-W)/2+10, Y=(VH-H)/2-14;
+  const f=Math.max(5,(s.face/10)*sc*0.55); // perfil en px (0,55 por la vista de frente)
+  const col=COLHEX[S.col]||"#F5F5F2";
+  const stroke=S.col==="ng"?"#000":"#33403D";
+  let g=`<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#CFE1E6"/><stop offset="1" stop-color="#EEF3EA"/></linearGradient>
+  <pattern id="wood" width="14" height="14" patternUnits="userSpaceOnUse"><rect width="14" height="14" fill="#7B4E2F"/><path d="M0 4 Q7 2 14 5 M0 10 Q7 8 14 11" stroke="#6A4127" stroke-width="1.2" fill="none"/></pattern>
+  <marker id="ar" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="#4D6B78"/></marker></defs>`;
+  const fill=S.col==="ma"?"url(#wood)":col;
+  // marco
+  g+=`<rect x="${X}" y="${Y}" width="${W}" height="${H}" fill="${fill}" stroke="${stroke}" stroke-width="1.5"/>`;
+  const ix=X+f, iy=Y+f, iw=W-2*f, ih=H-2*f;
+  let panes=[];
+  const isSlide=["corr","pcorr","elev"].includes(S.ap);
+  let n=1;
+  if(isSlide||S.ap==="pleg")n=S.hojas;
+  else if(S.ap==="abrir"||S.ap==="oscilo"){n=S.w>=110?2:1;}
+  const gap=isSlide?f*0.55:f;
+  const pw=(iw-(n-1)*(isSlide?-f*0.3:gap*0.0))/n;
+  for(let i=0;i<n;i++){
+    const px=ix+i*(iw/n), pW=iw/n;
+    panes.push({x:px,w:pW});
+  }
+  let glassArea=0;
+  panes.forEach((p,i)=>{
+    const sf=(S.ap==="fijo")?0:f*0.85;
+    g+=`<rect x="${p.x}" y="${iy}" width="${p.w}" height="${ih}" fill="${fill}" stroke="${stroke}" stroke-width="1"/>`;
+    const gx=p.x+sf, gy=iy+sf, gw=Math.max(4,p.w-2*sf), gh=Math.max(4,ih-2*sf);
+    glassArea+=gw*gh;
+    g+=landscape("cl"+i,gx,gy,gw,gh);
+    g+=`<rect x="${gx}" y="${gy}" width="${gw}" height="${gh}" fill="none" stroke="${stroke}" stroke-width="1"/>`;
+    // reflejo
+    g+=`<path d="M${gx+gw*.12} ${gy+gh*.1} L${gx+gw*.32} ${gy+gh*.1} L${gx+gw*.12} ${gy+gh*.4}Z" fill="#fff" opacity=".35"/>`;
+    // símbolos de apertura
+    const cx=gx+gw/2, cy=gy+gh/2;
+    if(isSlide){
+      const dir=i%2===0?1:-1;
+      g+=`<line x1="${cx-gw*.18*dir}" y1="${cy}" x2="${cx+gw*.18*dir}" y2="${cy}" stroke="#4D6B78" stroke-width="2" marker-end="url(#ar)"/>`;
+      if(S.ap==="elev")g+=`<line x1="${cx}" y1="${cy+gh*.12}" x2="${cx}" y2="${cy-gh*.12}" stroke="#E07B39" stroke-width="2" marker-end="url(#ar)"/>`;
+    } else if(S.ap==="abrir"||S.ap==="puerta"){
+      const hinge=i%2===0?gx:gx+gw, tip=i%2===0?gx+gw:gx;
+      g+=`<path d="M${tip} ${gy} L${hinge} ${cy} L${tip} ${gy+gh}" fill="none" stroke="#4D6B78" stroke-width="1.4" stroke-dasharray="6 4"/>`;
+    } else if(S.ap==="oscilo"){
+      const hinge=i%2===0?gx:gx+gw, tip=i%2===0?gx+gw:gx;
+      g+=`<path d="M${tip} ${gy} L${hinge} ${cy} L${tip} ${gy+gh}" fill="none" stroke="#4D6B78" stroke-width="1.4" stroke-dasharray="6 4"/><path d="M${gx} ${gy} L${cx} ${gy+gh} L${gx+gw} ${gy}" fill="none" stroke="#E07B39" stroke-width="1.4" stroke-dasharray="6 4"/>`;
+    } else if(S.ap==="proy"){
+      g+=`<path d="M${gx} ${gy+gh} L${cx} ${gy} L${gx+gw} ${gy+gh}" fill="none" stroke="#4D6B78" stroke-width="1.4" stroke-dasharray="6 4"/>`;
+    } else if(S.ap==="pleg"){
+      g+=`<path d="M${gx+4} ${cy} l${gw*.2} -${gh*.06} l${gw*.2} ${gh*.06}" fill="none" stroke="#4D6B78" stroke-width="1.6"/>`;
+    }
+    if(S.ap==="puerta"||S.ap==="pcorr"){g+=`<rect x="${i%2===0?gx+gw-12:gx+6}" y="${cy-14}" width="5" height="28" rx="2" fill="${S.col==='ng'?'#888':'#2A2C2E'}"/>`;}
+  });
+  // cotas
+  const cy2=Y+H+30, cx2=X-30;
+  g+=`<g stroke="#4D6B78" stroke-width="1.2" fill="none"><line x1="${X}" y1="${cy2}" x2="${X+W}" y2="${cy2}" marker-start="url(#ar)" marker-end="url(#ar)"/><line x1="${X}" y1="${Y+H+6}" x2="${X}" y2="${cy2+8}"/><line x1="${X+W}" y1="${Y+H+6}" x2="${X+W}" y2="${cy2+8}"/>
+  <line x1="${cx2}" y1="${Y}" x2="${cx2}" y2="${Y+H}" marker-start="url(#ar)" marker-end="url(#ar)"/><line x1="${X-6}" y1="${Y}" x2="${cx2-8}" y2="${Y}"/><line x1="${X-6}" y1="${Y+H}" x2="${cx2-8}" y2="${Y+H}"/></g>
+  <text x="${X+W/2}" y="${cy2+20}" text-anchor="middle" font-family="Bai Jamjuree" font-weight="600" font-size="16" fill="#16211F">${S.w} cm</text>
+  <text x="${cx2-10}" y="${Y+H/2}" text-anchor="middle" font-family="Bai Jamjuree" font-weight="600" font-size="16" fill="#16211F" transform="rotate(-90 ${cx2-10} ${Y+H/2})">${S.h} cm</text>`;
+  if(s.rpt){g+=`<text x="${X+W}" y="${Y-10}" text-anchor="end" font-family="Radio Canada" font-size="12.5" fill="#B4581F">con ruptura de puente térmico</text>`;}
+  svg.innerHTML=g;
+  return glassArea/(W*H);
+}
+function dial(p){
+  const r=40,c=2*Math.PI*r, v=Math.round(p*100);
+  $("dial").innerHTML=`<circle cx="50" cy="50" r="${r}" fill="none" stroke="#D3DCD8" stroke-width="10"/><circle cx="50" cy="50" r="${r}" fill="none" stroke="#4D6B78" stroke-width="10" stroke-linecap="round" stroke-dasharray="${c*p} ${c}" transform="rotate(-90 50 50)"/><text x="50" y="55" text-anchor="middle" font-family="Bai Jamjuree" font-weight="700" font-size="22" fill="#16211F">${v}%</text>`;
+}
+
+/* ---------- actualizar ---------- */
+function update(){
+  const s=sysObj();
+  const p=calc(S);
+  $("pBig").textContent=fmt(p.total);
+  $("pRng").textContent=`Rango orientativo: ${fmt(p.total*.93)} – ${fmt(p.total*1.07)}`;
+  const vn=VID.find(v=>v.id===S.vid).n, cn=COL[S.mat].find(c=>c.id===S.col).n;
+  const rows=[[`${s.n} · ${p.m2.toFixed(2).replace(".",",")} m²`,p.base],[APS[S.ap]+(["corr","pcorr","elev","pleg"].includes(S.ap)?` · ${S.hojas} hojas`:""),p.apAdj],[vn,p.vid],[cn,p.col]];
+  if(S.mos)rows.push(["Mosquitero",p.mos]);
+  if(S.cort)rows.push(["Cortina de enrollar",p.cort]);
+  if(S.inst)rows.push(["Instalación",p.inst]);
+  $("desg").innerHTML=rows.map(r=>`<li><span>${r[0]}</span><b>${r[1]>=0?"":"− "}${fmt(Math.abs(r[1]))}</b></li>`).join("");
+  $("vTitle").textContent=AP[S.ap];
+  $("vSys").textContent=`${s.n} · ${S.w} × ${S.h} cm`;
+  const lib=draw();dial(lib);
+  const frame=Math.round((1-lib)*100);
+  $("libreTit").textContent=`Vista libre: ${Math.round(lib*100)}% del vano es vidrio`;
+  $("libreTxt").textContent=`En ${s.n} el marco y las hojas ocupan cerca del ${frame}% de esta abertura. Probá otro sistema o menos hojas y mirá cómo cambia el paisaje.`;
+  const dvh=["d9","d12","dl"].includes(S.vid);
+  const ais=Math.min(5,s.ais+(dvh?1:0)-(S.vid==="s4"?1:0));
+  const ac=Math.min(5,s.ac+(S.vid==="dl"||S.vid==="lam"?1:0));
+  $("barras").innerHTML=`<span>Aislación térmica</span><div class="b"><i style="width:${Math.max(1,ais)*20}%"></i></div><span>Aislación acústica</span><div class="b"><i style="width:${Math.max(1,ac)*20}%"></i></div><span style="grid-column:1/-1;font-size:12px;color:var(--tinta-2)">Comparación orientativa entre sistemas y vidrios, no es un ensayo.</span>`;
+  // aviso de línea según su propio catálogo
+  const area=(S.w/100)*(S.h/100);
+  const al=$("avisoLinea");
+  if(!s.big&&(S.w>260||area>4.2)){
+    const alt=s.m==="pvc"?"hds":(s.rpt?"medr":"med");
+    const an=SYS.find(x=>x.id===alt).n;
+    $("avisoTxt").innerHTML=`<b>${s.n}</b> está pensada para medidas convencionales. Para ${S.w} × ${S.h} cm, CEA tiene <b>${an}</b>, para grandes dimensiones.`;
+    $("avisoBtn").textContent="Pasar a "+an;
+    $("avisoBtn").onclick=()=>pickSys(alt);
+    al.hidden=false;
+  } else al.hidden=true;
+}
+
+/* ---------- pedido ---------- */
+function code(st,list){
+  const pref=(st.ap==="puerta"||st.ap==="pcorr")?"P":(st.ap==="fijo"?"F":"V");
+  return pref+(list.filter(x=>x.code[0]===pref).length+1);
+}
+function desc(st){
+  const s=SYS.find(x=>x.id===st.sys);
+  const parts=[s.n,APS[st.ap]+(["corr","pcorr","elev","pleg"].includes(st.ap)?` ${st.hojas} hojas`:""),`${st.w}×${st.h} cm`,VID.find(v=>v.id===st.vid).n,COL[st.mat].find(c=>c.id===st.col).n];
+  if(st.mos)parts.push("mosquitero");if(st.cort)parts.push("cortina");
+  return parts.join(" · ");
+}
+function renum(){const c={V:0,P:0,F:0};pedido.forEach(x=>{const k=x.code[0];c[k]++;x.code=k+c[k];});}
+function renderPedido(){
+  const ul=$("pos");ul.innerHTML="";
+  pedido.forEach((x,i)=>{
+    const li=document.createElement("li");
+    li.innerHTML=`<span class="cod">${x.code}</span><span>${desc(x.st)}<small>${fmt(x.total)}</small></span><button class="x" type="button" aria-label="Quitar ${x.code}">×</button>`;
+    li.querySelector("button").addEventListener("click",()=>{pedido.splice(i,1);renum();renderPedido();});
+    ul.appendChild(li);
+  });
+  const tot=pedido.reduce((a,x)=>a+x.total,0);
+  $("vacio").hidden=pedido.length>0;$("tot").hidden=!pedido.length;
+  $("totV").textContent=fmt(tot);
+  $("cnt").textContent=pedido.length+(pedido.length===1?" posición":" posiciones");
+}
+$("btnAdd").addEventListener("click",()=>{
+  const st=structuredClone(S);const c=code(st,pedido);
+  pedido.push({code:c,st,total:calc(st).total});renderPedido();toast(c+" agregada al pedido");
+});
+function mensaje(){
+  const list=pedido.length?pedido:[{code:code(S,[]),st:structuredClone(S),total:calc(S).total}];
+  const nom=$("nom").value.trim(), bar=$("barrio").value.trim();
+  let m=`Hola CEA, quiero cotizar estas aberturas:\n`;
+  list.forEach(x=>{m+=`\n${x.code}: ${desc(x.st)} — estimado ${fmt(x.total)}`;});
+  m+=`\n\nTotal estimado: ${fmt(list.reduce((a,x)=>a+x.total,0))}`;
+  if(S.inst)m+=` (con instalación)`;
+  if(bar)m+=`\nObra en: ${bar}`;
+  if(nom)m+=`\nSoy ${nom}.`;
+  m+=`\n¿Coordinamos la medición?`;
+  return m;
+}
+$("btnWa").addEventListener("click",()=>window.open(`https://wa.me/${WA}?text=${encodeURIComponent(mensaje())}`,"_blank","noopener"));
+$("btnMail").addEventListener("click",()=>{location.href=`mailto:${MAIL}?subject=${encodeURIComponent("Pedido de cotización desde la web")}&body=${encodeURIComponent(mensaje())}`;});
+
+/* ---------- tabla de precios ---------- */
+function ptab(){
+  const t=$("ptab");let h=`<tr><th colspan="2">Sistemas · $ por m²</th></tr>`;
+  SYS.filter(s=>!s.consultar).forEach(s=>{h+=`<tr><td>${s.n} <small style="color:var(--tinta-2)">${s.m==="pvc"?"PVC":"Aluminio"}</small></td><td style="text-align:right"><input type="number" data-k="m2.${s.id}" value="${P.m2[s.id]}"></td></tr>`;});
+  h+=`<tr><th colspan="2">Vidrios · $ extra por m²</th></tr>`;
+  VID.forEach(v=>{h+=`<tr><td>${v.n}</td><td style="text-align:right"><input type="number" data-k="vid.${v.id}" value="${P.vid[v.id]}"></td></tr>`;});
+  h+=`<tr><th colspan="2">Colores · % de recargo</th></tr>`;
+  [["bl","Blanco"],["ng","Negro"],["an","Anodizado natural"],["ma","Símil madera"]].forEach(([k,n])=>{h+=`<tr><td>${n}</td><td style="text-align:right"><input type="number" data-k="col.${k}" value="${P.col[k]}"></td></tr>`;});
+  h+=`<tr><th colspan="2">Tipo de apertura · % sobre la base</th></tr>`;
+  Object.keys(APS).forEach(k=>{h+=`<tr><td>${APS[k]}</td><td style="text-align:right"><input type="number" data-k="ap.${k}" value="${P.ap[k]}"></td></tr>`;});
+  h+=`<tr><th colspan="2">Otros</th></tr><tr><td>Mosquitero · $ por m²</td><td style="text-align:right"><input type="number" data-k="mos" value="${P.mos}"></td></tr><tr><td>Cortina de enrollar · $ por m²</td><td style="text-align:right"><input type="number" data-k="cort" value="${P.cort}"></td></tr><tr><td>Instalación · % del total</td><td style="text-align:right"><input type="number" data-k="inst" value="${P.inst}"></td></tr><tr><td>Mínimo facturable · m²</td><td style="text-align:right"><input type="number" step="0.1" data-k="minM2" value="${P.minM2}"></td></tr>`;
+  t.innerHTML=h;
+  t.querySelectorAll("input").forEach(inp=>inp.addEventListener("input",()=>{
+    const v=parseFloat(inp.value);if(isNaN(v))return;const ks=inp.dataset.k.split(".");
+    if(ks.length===2)P[ks[0]][ks[1]]=v;else P[ks[0]]=v;save();update();
+    pedido.forEach(x=>x.total=calc(x.st).total);renderPedido();
+  }));
+}
+$("btnPrecios").addEventListener("click",()=>{ptab();$("dlg").showModal();});
+$("btnClose").addEventListener("click",()=>$("dlg").close());
+$("btnReset").addEventListener("click",()=>{P=structuredClone(DEF);save();ptab();update();pedido.forEach(x=>x.total=calc(x.st).total);renderPedido();toast("Precios de ejemplo restaurados");});
+
+let tt;function toast(m){const t=$("toast");t.textContent=m;t.classList.add("on");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("on"),1800);}
+
+/* obras: ocultar fotos que no carguen */
+document.querySelectorAll("#obrasGrid img").forEach(img=>img.addEventListener("error",()=>{img.closest("figure").remove();if(!document.querySelector("#obrasGrid figure"))$("obras").hidden=true;}));
+
+heroCut("pvc");rail();renderCtrls();update();renderPedido();
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="CEA – Cerramientos Especiales y Aberturas"></script>
+</body>
+</html>
