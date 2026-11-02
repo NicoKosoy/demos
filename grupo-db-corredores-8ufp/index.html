@@ -1,0 +1,958 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Grupo DB · Mazo de inmuebles</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Rozha+One&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pano:#1F4A3A; --pano-2:#163628; --pano-3:#2A5C49;
+  --naipe:#FBF8F2; --naipe-2:#F2ECE0; --linea:#E3D9C6;
+  --ink:#1C2026; --ink-2:#4A4F57;
+  --azul:#23395B; --rojo:#C2412D; --oro:#B89146; --oro-claro:#DCC28A;
+  --ok:#2F6B4F;
+  --r:18px;
+  --sombra:0 1px 0 rgba(0,0,0,.04),0 18px 40px -18px rgba(10,25,18,.55);
+  --display:"Rozha One",Georgia,serif;
+  --text:"Be Vietnam Pro",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+section,aside{scroll-margin-top:72px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--naipe);color:var(--ink);font-family:var(--text);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--oro);outline-offset:3px;border-radius:6px}
+.sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrap{max-width:1200px;margin:0 auto;padding:0 32px}
+@media (max-width:760px){.wrap{padding:0 16px}}
+
+/* franja prototipo */
+.proto{background:var(--azul);color:var(--naipe);font-size:13px;text-align:center;padding:7px 16px;letter-spacing:.02em}
+.proto b{color:var(--oro-claro);font-weight:600}
+
+/* cabecera */
+.top{background:var(--naipe);border-bottom:1px solid var(--linea);position:sticky;top:0;z-index:30}
+.top .wrap{display:flex;align-items:center;gap:20px;height:68px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.mono{width:40px;height:54px;border-radius:7px;background:var(--naipe);border:1.5px solid var(--azul);display:grid;place-items:center;position:relative;box-shadow:inset 0 0 0 3px var(--naipe),inset 0 0 0 4px var(--oro);flex:none}
+.mono span{font-family:var(--display);font-size:19px;line-height:1;letter-spacing:-.02em}
+.mono .d{color:var(--azul)} .mono .b{color:var(--rojo)}
+.brand-t{line-height:1.1}
+.brand-t strong{font-family:var(--display);font-weight:400;font-size:21px;color:var(--azul);display:block}
+.brand-t small{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2)}
+.nav{margin-left:auto;display:flex;gap:4px;align-items:center}
+.nav a{text-decoration:none;font-size:14px;font-weight:500;padding:8px 12px;border-radius:999px}
+.nav a:hover{background:var(--naipe-2)}
+.nav .hand-pill{background:var(--azul);color:var(--naipe);display:inline-flex;gap:8px;align-items:center}
+.nav .hand-pill:hover{background:#1a2c47}
+.hand-pill i{font-style:normal;background:var(--oro);color:var(--azul);border-radius:999px;min-width:22px;height:22px;display:grid;place-items:center;font-size:12px;font-weight:700}
+@media (max-width:860px){.nav a:not(.hand-pill){display:none}}
+
+/* mesa (paño) */
+.mesa{background:
+  radial-gradient(1200px 520px at 50% 0%,rgba(255,255,255,.07),transparent 60%),
+  radial-gradient(800px 600px at 80% 110%,rgba(0,0,0,.25),transparent 60%),
+  repeating-linear-gradient(45deg,rgba(255,255,255,.012) 0 2px,transparent 2px 4px),
+  var(--pano);
+  color:var(--naipe);padding:48px 0 56px;position:relative;overflow:hidden}
+.mesa::after{content:"";position:absolute;inset:14px;border:1px solid rgba(220,194,138,.25);border-radius:28px;pointer-events:none}
+.mesa-head{display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:end;position:relative;z-index:1}
+.eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--oro-claro);font-weight:600;margin:0 0 14px;display:flex;gap:10px;align-items:center}
+.eyebrow::before{content:"";width:28px;height:1px;background:var(--oro-claro)}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(34px,5vw,62px);line-height:1.02;margin:0;letter-spacing:-.01em}
+h1 em{font-style:normal;color:var(--oro-claro)}
+.lead{color:#DCE6DF;max-width:56ch;margin:18px 0 0;font-size:17px}
+.socios{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.socio{border:1px solid rgba(220,194,138,.35);border-radius:14px;padding:14px 14px 12px;background:rgba(0,0,0,.12)}
+.socio .l{font-family:var(--display);font-size:40px;line-height:.9;display:block}
+.socio:first-child .l{color:#9FB6DA}.socio:last-child .l{color:#F0A08F}
+.socio b{display:block;font-weight:600;font-size:14.5px;margin-top:6px}
+.socio small{color:#C9D6CE;font-size:12.5px}
+
+/* barra de filtros */
+.baraja{position:relative;z-index:2;margin-top:34px;background:var(--naipe);color:var(--ink);border-radius:16px;padding:14px;display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;box-shadow:var(--sombra)}
+.f{display:flex;flex-direction:column;gap:4px;min-width:130px;flex:1}
+.f label{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);font-weight:600}
+.f select{appearance:none;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%2323395B' stroke-width='1.6'/%3E%3C/svg%3E") no-repeat right 12px center;border:1px solid var(--linea);border-radius:10px;padding:10px 32px 10px 12px;font-size:15px;min-height:44px}
+.dorms{display:flex;gap:4px;background:#fff;border:1px solid var(--linea);border-radius:10px;padding:3px}
+.dorms button{flex:1;border:0;background:transparent;border-radius:7px;padding:8px 6px;font-size:14px;font-weight:600;cursor:pointer;min-height:36px}
+.dorms button[aria-pressed="true"]{background:var(--azul);color:var(--naipe)}
+.baraja-acc{display:flex;gap:8px;align-items:center;margin-left:auto}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:999px;border:1.5px solid var(--azul);background:var(--azul);color:var(--naipe);padding:10px 18px;font-weight:600;font-size:14.5px;cursor:pointer;text-decoration:none;min-height:44px;transition:transform .15s,background .15s}
+.btn:hover{transform:translateY(-1px)}
+.btn.ghost{background:transparent;color:var(--azul)}
+.btn.rojo{background:var(--rojo);border-color:var(--rojo)}
+.btn.oro{background:var(--oro);border-color:var(--oro);color:#1d1708}
+.btn.wa{background:#1F7A4D;border-color:#1F7A4D;color:#fff}
+.btn.sm{padding:7px 13px;min-height:36px;font-size:13.5px}
+.btn[disabled]{opacity:.45;cursor:not-allowed;transform:none}
+.contador{font-size:14px;color:var(--ink-2);white-space:nowrap}
+.contador b{color:var(--ink);font-weight:700}
+.vista{display:flex;background:var(--naipe-2);border-radius:999px;padding:3px}
+.vista button{border:0;background:transparent;border-radius:999px;padding:8px 14px;font-weight:600;font-size:14px;cursor:pointer;min-height:38px}
+.vista button[aria-pressed="true"]{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.12);color:var(--azul)}
+.ftoggle{display:none}
+@media (max-width:760px){
+  .mesa{padding:30px 0 36px}.mesa::after{inset:6px;border-radius:18px}
+  .mesa-head{grid-template-columns:1fr;gap:22px}
+  .lead{font-size:15.5px}
+  .baraja{padding:12px;margin-top:24px}
+  .ftoggle{display:flex;width:100%;justify-content:space-between;align-items:center;gap:8px}
+  .ffields{display:none;width:100%;flex-direction:column;gap:10px}
+  .baraja.open .ffields{display:flex}
+  .f{min-width:0}
+  .baraja-acc{width:100%;margin:0;justify-content:space-between}
+}
+@media (min-width:761px){.ffields{display:contents}}
+
+/* zona de juego */
+.juego{position:relative;z-index:1;margin-top:28px;display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:28px;align-items:start}
+@media (max-width:980px){.juego{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:760px){.stage{height:auto;padding-bottom:6px}.pila{width:330px;height:520px}.frente{padding-left:50px}.c-tit{font-size:20px}.c-precio{font-size:28px}.mando{padding:10px 14px;font-size:14px}.mando kbd{display:none}.brand-t small{display:none}.nav .hand-pill{white-space:nowrap}}
+.stage{position:relative;height:640px;display:flex;flex-direction:column;align-items:center}
+.pila{position:relative;width:390px;height:560px;max-width:100%}
+.fan,.top-card{position:absolute;inset:0}
+.back{position:absolute;inset:0;border-radius:var(--r);background:
+   radial-gradient(circle at 50% 50%,transparent 56px,rgba(184,145,70,.0) 57px),
+   repeating-linear-gradient(45deg,rgba(220,194,138,.28) 0 1px,transparent 1px 14px),
+   repeating-linear-gradient(-45deg,rgba(220,194,138,.28) 0 1px,transparent 1px 14px),
+   var(--azul);
+  border:8px solid var(--naipe);box-shadow:var(--sombra);transition:transform .55s cubic-bezier(.2,.8,.2,1)}
+.back::after{content:"DB";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:118px;height:150px;border-radius:50%;background:var(--azul);border:1.5px solid var(--oro);display:grid;place-items:center;font-family:var(--display);font-size:46px;color:var(--oro-claro);box-shadow:0 0 0 6px var(--azul),0 0 0 7px rgba(220,194,138,.5)}
+.shuffle .back{transform:none!important}
+
+.carta{position:absolute;inset:0;perspective:1600px;touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none;transition:transform .35s cubic-bezier(.2,.8,.2,1),opacity .35s}
+.carta.dragging{transition:none;cursor:grabbing}
+.carta.out-r{transform:translate(140%,-40px) rotate(18deg)!important;opacity:0}
+.carta.out-l{transform:translate(-140%,-40px) rotate(-18deg)!important;opacity:0}
+.carta.enter{animation:deal .5s cubic-bezier(.2,.8,.2,1)}
+@keyframes deal{from{transform:translateY(30px) scale(.96);opacity:0}to{transform:none;opacity:1}}
+.flip{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .7s cubic-bezier(.3,.7,.2,1)}
+.carta.volteada .flip{transform:rotateY(180deg)}
+.cara{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--r);background:var(--naipe);color:var(--ink);box-shadow:var(--sombra);overflow:hidden}
+.cara::before{content:"";position:absolute;inset:7px;border:1px solid var(--oro);border-radius:12px;pointer-events:none;z-index:3}
+.cara.dorso{transform:rotateY(180deg)}
+@media (prefers-reduced-motion:reduce){
+  .flip{transition:none}.carta{transition:opacity .2s}.carta.enter{animation:none}
+  .carta.out-r,.carta.out-l{transform:none!important;opacity:0}
+  .back{transition:none}
+}
+.idx{position:absolute;z-index:4;display:flex;flex-direction:column;align-items:center;gap:2px;line-height:1}
+.idx.tl{top:16px;left:16px}.idx.br{bottom:16px;right:16px;transform:rotate(180deg)}
+.idx .n{font-family:var(--display);font-size:22px}
+.idx .no{font-size:9px;letter-spacing:.12em;font-weight:700}
+.idx svg{width:16px;height:16px}
+.palo-rojo{color:var(--rojo)}.palo-azul{color:var(--azul)}
+.frente{display:flex;flex-direction:column;padding:16px 16px 18px 56px;height:100%}
+.foto{position:relative;border-radius:10px;overflow:hidden;aspect-ratio:4/3.1;background:var(--pano);flex:none}
+.foto img{width:100%;height:100%;object-fit:cover}
+.foto .tag{position:absolute;left:10px;top:10px;background:rgba(251,248,242,.94);color:var(--azul);font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 9px;border-radius:999px}
+.fallback{width:100%;height:100%;display:grid;place-items:center;background:
+   radial-gradient(circle at 30% 20%,rgba(255,255,255,.08),transparent 60%),
+   repeating-linear-gradient(45deg,rgba(255,255,255,.03) 0 2px,transparent 2px 6px),var(--pano);color:var(--oro-claro);text-align:center}
+.fallback svg{width:46%;height:auto;max-height:70%}
+.fallback small{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#C9D6CE;margin-top:6px}
+.cuerpo{padding:14px 2px 0;display:flex;flex-direction:column;flex:1;min-height:0}
+.meta{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--ink-2)}
+.c-tit{font-family:var(--display);font-weight:400;font-size:22px;line-height:1.12;margin:4px 0 0;color:var(--ink)}
+.c-precio{font-family:var(--display);font-size:32px;line-height:1;margin-top:auto;padding-top:10px}
+.datos{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13.5px;color:var(--ink-2);margin-top:8px}
+.frente .datos,.frente .hint{padding-right:34px}
+.datos b{color:var(--ink);font-weight:700}
+.hint{font-size:12px;color:var(--ink-2);margin-top:10px;display:flex;align-items:center;gap:6px}
+.sello{position:absolute;z-index:5;top:38%;font-family:var(--display);font-size:30px;padding:4px 14px;border:3px solid;border-radius:10px;opacity:0;letter-spacing:.04em;pointer-events:none;background:rgba(251,248,242,.85)}
+.sello.si{left:66px;color:var(--ok);transform:rotate(-12deg)}
+.sello.no{right:22px;color:var(--rojo);transform:rotate(12deg)}
+.dorso-in{height:100%;overflow:auto;padding:22px 22px 20px 56px;font-size:14px}
+.dorso-in h3{font-family:var(--display);font-weight:400;font-size:21px;line-height:1.15;margin:4px 0 8px}
+.dl{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:10px 0;font-size:13.5px}
+.dl dt{color:var(--ink-2)}.dl dd{margin:0;font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 12px;padding:0;list-style:none}
+.chips li{font-size:12.5px;background:var(--naipe-2);border:1px solid var(--linea);border-radius:999px;padding:3px 10px}
+.dorso-acc{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;position:sticky;bottom:-20px;background:linear-gradient(rgba(251,248,242,0),var(--naipe) 14px);padding:18px 0 14px}
+
+.mandos{display:flex;gap:10px;align-items:center;justify-content:center;margin-top:22px;flex-wrap:wrap}
+.mando{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:11px 18px;font-weight:600;font-size:15px;cursor:pointer;border:1.5px solid rgba(251,248,242,.7);background:transparent;color:var(--naipe);min-height:46px;transition:transform .15s,background .15s}
+.mando:hover{background:rgba(255,255,255,.08);transform:translateY(-1px)}
+.mando.si{background:var(--naipe);color:var(--pano);border-color:var(--naipe)}
+.mando.si:hover{background:#fff}
+.mando.no{border-color:#F0A08F;color:#F7C3B7}
+.mando kbd{font-family:var(--text);font-size:11px;border:1px solid currentColor;border-radius:4px;padding:0 5px;opacity:.75}
+.teclas{font-size:12.5px;color:#BFD0C6;margin-top:10px;text-align:center}
+.vacio{position:absolute;inset:0;border:2px dashed rgba(220,194,138,.5);border-radius:var(--r);display:grid;place-items:center;text-align:center;padding:28px;color:#DCE6DF}
+.vacio h3{font-family:var(--display);font-weight:400;font-size:28px;margin:0 0 8px;color:var(--naipe)}
+.vacio p{margin:0 0 16px}
+
+/* lista */
+.lista{display:none;background:var(--naipe);color:var(--ink);border-radius:16px;box-shadow:var(--sombra);overflow:hidden}
+.juego.ver-lista .stage{display:none}.juego.ver-lista .lista{display:block}
+.fila{display:grid;grid-template-columns:96px minmax(0,1fr) auto;gap:16px;align-items:center;padding:14px 18px;border-bottom:1px solid var(--linea)}
+.fila:last-child{border-bottom:0}
+.fila .th{width:96px;height:72px;border-radius:8px;overflow:hidden;background:var(--pano)}
+.fila .th img,.fila .th .fallback{width:100%;height:100%;object-fit:cover}
+.fila .th .fallback svg{width:60%}
+.fila .th .fallback small{display:none}
+.fila h3{font-family:var(--display);font-weight:400;font-size:19px;line-height:1.15;margin:2px 0}
+.fila .p{font-family:var(--display);font-size:22px;white-space:nowrap}
+.fila .acc{display:flex;gap:6px;flex-direction:column;align-items:flex-end}
+.fila .acc div{display:flex;gap:6px}
+@media (max-width:620px){
+  .fila{grid-template-columns:72px minmax(0,1fr);padding:12px}
+  .fila .th{width:72px;height:72px}
+  .fila .acc{grid-column:1/-1;flex-direction:row;justify-content:space-between;align-items:center}
+}
+.lista .vacio-l{padding:40px 20px;text-align:center}
+
+/* mano */
+.mano{background:rgba(0,0,0,.18);border:1px solid rgba(220,194,138,.35);border-radius:18px;padding:18px;color:var(--naipe)}
+.mano h2{font-family:var(--display);font-weight:400;font-size:26px;margin:0;display:flex;justify-content:space-between;align-items:baseline}
+.mano h2 small{font-family:var(--text);font-size:13px;color:var(--oro-claro);font-weight:600}
+.mano p.s{margin:4px 0 14px;font-size:13.5px;color:#C9D6CE}
+.slots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.slot{border:1.5px dashed rgba(220,194,138,.45);border-radius:12px;aspect-ratio:5/6.4;display:grid;place-items:center;color:rgba(220,194,138,.7);font-family:var(--display);font-size:26px}
+.mini{position:relative;border-radius:12px;background:var(--naipe);color:var(--ink);aspect-ratio:5/6.4;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 8px 20px -10px rgba(0,0,0,.6);animation:deal .45s cubic-bezier(.2,.8,.2,1)}
+@media (prefers-reduced-motion:reduce){.mini{animation:none}}
+.mini::before{content:"";position:absolute;inset:4px;border:1px solid var(--oro);border-radius:9px;pointer-events:none;z-index:2}
+.mini .mf{height:48%;background:var(--pano)}
+.mini .mf img,.mini .mf .fallback{width:100%;height:100%;object-fit:cover}
+.mini .mf .fallback small{display:none}
+.mini .mb{padding:7px 9px 8px;font-size:11.5px;line-height:1.25;display:flex;flex-direction:column;flex:1}
+.mini .mb b{font-family:var(--display);font-weight:400;font-size:17px}
+.mini .mb span{color:var(--ink-2)}
+.mini .mx{display:flex;gap:4px;margin-top:auto}
+.mini .mx button{flex:1;border:1px solid var(--linea);background:#fff;border-radius:7px;font-size:11.5px;font-weight:600;padding:5px 2px;cursor:pointer;position:relative;z-index:3}
+.mini .mx button:hover{border-color:var(--azul)}
+.mano-acc{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.mano-acc .btn{width:100%}
+.paso{margin-top:12px;font-size:13px;color:#C9D6CE;display:flex;justify-content:space-between;align-items:center;gap:8px;border-top:1px solid rgba(220,194,138,.25);padding-top:12px}
+.paso button{background:none;border:0;color:var(--oro-claro);text-decoration:underline;cursor:pointer;font-weight:600;padding:6px 0;font-size:13px}
+@media (max-width:980px){.slots{grid-template-columns:repeat(4,minmax(0,1fr))}.slot{font-size:20px}}
+@media (max-width:620px){.slots{grid-template-columns:repeat(2,minmax(0,1fr))}.slot{aspect-ratio:5/2.6}.mini{aspect-ratio:auto}.mini .mf{height:96px}}
+@media (max-width:620px){.comp tbody th{width:96px;font-size:11.5px}.comp th,.comp td{padding:10px;font-size:13.5px}}
+
+/* comparar */
+.sec{padding:72px 0}
+.sec-h{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:40px;align-items:end;margin-bottom:28px}
+.sec-h h2{font-family:var(--display);font-weight:400;font-size:clamp(30px,4vw,46px);line-height:1.05;margin:0;color:var(--azul)}
+.sec-h p{margin:0;color:var(--ink-2);max-width:60ch}
+.kicker{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--rojo);font-weight:700;margin:0 0 10px}
+@media (max-width:760px){.sec{padding:52px 0}.sec-h{grid-template-columns:1fr;gap:12px}}
+.comp-vacio{border:1.5px dashed var(--linea);border-radius:16px;padding:34px 22px;text-align:center;color:var(--ink-2);background:#fff}
+.comp-vacio b{font-family:var(--display);font-weight:400;font-size:24px;color:var(--ink);display:block;margin-bottom:6px}
+.tabla-w{position:relative;overflow-x:auto;border-radius:16px;border:1px solid var(--linea);background:#fff;-webkit-overflow-scrolling:touch}
+table.comp{border-collapse:separate;border-spacing:0;width:100%;min-width:560px}
+.comp th,.comp td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--linea);vertical-align:top;font-size:14.5px}
+.comp thead th{background:var(--naipe-2);vertical-align:bottom}
+.comp thead .no{font-size:11px;letter-spacing:.12em;font-weight:700;color:var(--ink-2)}
+.comp thead .t{font-family:var(--display);font-weight:400;font-size:17px;line-height:1.15;display:block;margin-top:2px}
+.comp tbody th{font-weight:600;color:var(--ink-2);font-size:13px;letter-spacing:.06em;text-transform:uppercase;width:150px;position:sticky;left:0;background:#fff;z-index:1}
+.comp td.mejor{background:#F6EEDB;font-weight:700;color:var(--ink)}
+.comp td.mejor::after{content:"Mejor";display:inline-block;margin-left:8px;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;background:var(--oro);color:#1d1708;border-radius:999px;padding:2px 7px;vertical-align:2px}
+.comp td.nd{color:#9A9488}
+.comp tr:last-child th,.comp tr:last-child td{border-bottom:0}
+.comp-pie{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-top:16px}
+.comp-pie small{color:var(--ink-2);max-width:62ch}
+
+/* tasá */
+.tasa{background:var(--naipe-2);border-top:1px solid var(--linea);border-bottom:1px solid var(--linea)}
+.tasa-g{display:grid;grid-template-columns:320px minmax(0,1fr);gap:48px;align-items:start}
+@media (max-width:860px){.tasa-g{grid-template-columns:1fr;gap:28px}}
+.blanca{position:relative;aspect-ratio:5/7;max-width:320px;width:100%;border-radius:var(--r);background:var(--naipe);box-shadow:var(--sombra);padding:22px 22px 22px 54px;display:flex;flex-direction:column;margin:0 auto}
+.blanca::before{content:"";position:absolute;inset:7px;border:1px solid var(--oro);border-radius:12px;pointer-events:none}
+.blanca .ph{flex:1;border-radius:10px;background:repeating-linear-gradient(45deg,var(--naipe-2) 0 6px,#fff 6px 12px);display:grid;place-items:center;color:var(--ink-2);font-size:13px;text-align:center;padding:10px;margin-bottom:12px}
+.blanca .bt{font-family:var(--display);font-size:21px;line-height:1.15}
+.blanca .bd{font-size:13px;color:var(--ink-2);margin-top:6px}
+form.tf{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.tf .full{grid-column:1/-1}
+.tf label{display:flex;flex-direction:column;gap:5px;font-size:13px;font-weight:600;color:var(--ink-2)}
+.tf input,.tf select,.tf textarea{border:1px solid var(--linea);background:#fff;border-radius:10px;padding:11px 12px;font-size:15px;min-height:46px;font-weight:400;color:var(--ink)}
+.tf textarea{min-height:90px;resize:vertical}
+.tf .acc{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.tf .err{color:var(--rojo);font-size:13.5px;font-weight:600}
+@media (max-width:560px){form.tf{grid-template-columns:1fr}}
+
+/* contacto */
+.contacto-g{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+@media (max-width:860px){.contacto-g{grid-template-columns:1fr}}
+.figura{position:relative;border-radius:var(--r);background:#fff;border:1px solid var(--linea);padding:22px 22px 22px 70px;min-height:200px}
+.figura .L{position:absolute;left:18px;top:16px;font-family:var(--display);font-size:44px;line-height:1}
+.figura h3{font-family:var(--display);font-weight:400;font-size:24px;margin:0;line-height:1.1}
+.figura p{margin:8px 0 0;color:var(--ink-2);font-size:14.5px}
+.figura ul{list-style:none;padding:0;margin:10px 0 0;font-size:15px}
+.figura li{padding:5px 0;border-bottom:1px dotted var(--linea)}
+.figura li:last-child{border:0}
+.figura a{text-decoration-color:var(--oro);text-underline-offset:3px}
+
+footer{background:var(--pano-2);color:#C9D6CE;padding:32px 0 40px;font-size:13.5px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:12px 28px;justify-content:space-between}
+footer b{color:var(--naipe)}
+footer p{margin:0;max-width:72ch}
+
+/* hoja / ficha completa */
+.velo{position:fixed;inset:0;background:rgba(12,24,18,.62);z-index:60;opacity:0;pointer-events:none;transition:opacity .25s}
+.velo.on{opacity:1;pointer-events:auto}
+.hoja{position:fixed;z-index:61;left:50%;top:50%;width:min(980px,calc(100vw - 48px));max-height:calc(100vh - 48px);transform:translate(-50%,-46%);opacity:0;pointer-events:none;background:var(--naipe);border-radius:22px;overflow:auto;transition:transform .3s cubic-bezier(.2,.8,.2,1),opacity .25s;box-shadow:0 30px 80px -20px rgba(0,0,0,.6)}
+.hoja.on{opacity:1;transform:translate(-50%,-50%);pointer-events:auto}
+@media (max-width:760px){
+  .hoja{left:0;right:0;top:auto;bottom:0;width:100%;max-height:92vh;border-radius:22px 22px 0 0;transform:translateY(100%)}
+  .hoja.on{transform:none}
+}
+@media (prefers-reduced-motion:reduce){.hoja,.velo{transition:none}}
+.hoja-bar{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px;background:rgba(251,248,242,.96);border-bottom:1px solid var(--linea);backdrop-filter:blur(6px)}
+.hoja-bar .grab{display:none;width:44px;height:5px;border-radius:9px;background:var(--linea);position:absolute;left:50%;top:6px;transform:translateX(-50%)}
+@media (max-width:760px){.hoja-bar .grab{display:block}}
+.hoja-bar span{font-size:12px;letter-spacing:.14em;font-weight:700;color:var(--ink-2);text-transform:uppercase}
+.hoja-in{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:28px;padding:22px 24px 28px}
+@media (max-width:760px){.hoja-in{grid-template-columns:1fr;padding:16px;gap:18px}}
+.gal-main{position:relative;border-radius:14px;overflow:hidden;aspect-ratio:4/3;background:var(--pano)}
+.gal-main img,.gal-main .fallback{width:100%;height:100%;object-fit:cover}
+.gal-nav{position:absolute;top:50%;transform:translateY(-50%);border:0;width:42px;height:42px;border-radius:50%;background:rgba(251,248,242,.92);cursor:pointer;font-size:18px;color:var(--azul);display:grid;place-items:center}
+.gal-nav.p{left:10px}.gal-nav.n{right:10px}
+.gal-c{position:absolute;right:10px;bottom:10px;background:rgba(28,32,38,.75);color:#fff;font-size:12px;border-radius:999px;padding:3px 9px}
+.thumbs{display:flex;gap:8px;margin-top:8px;overflow-x:auto;padding-bottom:2px}
+.thumbs button{flex:none;width:72px;height:54px;border-radius:8px;overflow:hidden;border:2px solid transparent;padding:0;cursor:pointer;background:var(--pano)}
+.thumbs button[aria-current="true"]{border-color:var(--oro)}
+.thumbs img,.thumbs .fallback{width:100%;height:100%;object-fit:cover}
+.thumbs .fallback small{display:none}
+.hoja h2{font-family:var(--display);font-weight:400;font-size:clamp(24px,3vw,32px);line-height:1.08;margin:4px 0 6px;color:var(--ink)}
+.hoja .precio{font-family:var(--display);font-size:36px;line-height:1}
+.hoja .nota{font-size:13px;color:var(--ink-2);margin-top:4px}
+.hoja h4{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-2);margin:18px 0 6px}
+.mapa{border-radius:12px;overflow:hidden;border:1px solid var(--linea);background:var(--naipe-2)}
+.mapa iframe{width:100%;height:230px;border:0;display:block}
+.mapa small{display:block;padding:8px 10px;font-size:12.5px;color:var(--ink-2)}
+.hoja-acc{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+
+.toast{position:fixed;left:16px;right:16px;bottom:24px;margin:0 auto;width:fit-content;max-width:calc(100% - 32px);transform:translateY(20px);background:var(--ink);color:var(--naipe);padding:11px 18px;border-radius:999px;font-size:14px;opacity:0;transition:.25s;z-index:80;text-align:center;pointer-events:none}
+.toast.on{opacity:1;transform:none}
+</style>
+</head>
+<body>
+<div class="proto" role="note">Prototipo de demostración preparado para <b>Grupo DB – Corredores Inmobiliarios</b> · no es el sitio oficial</div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#mesa" aria-label="Grupo DB, inicio">
+      <span class="mono" aria-hidden="true"><span><span class="d">D</span><span class="b">B</span></span></span>
+      <span class="brand-t"><strong>Grupo DB</strong><small>Corredores inmobiliarios · San Juan</small></span>
+    </a>
+    <nav class="nav" aria-label="Secciones">
+      <a href="#mesa">El mazo</a>
+      <a href="#comparar">Comparar</a>
+      <a href="#tasa">Tasá tu propiedad</a>
+      <a href="#contacto">Contacto</a>
+      <a class="hand-pill" href="#mano">Mi mano <i id="handCount">0</i></a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<section class="mesa" id="mesa" aria-labelledby="h1">
+  <div class="wrap">
+    <div class="mesa-head">
+      <div>
+        <p class="eyebrow">Segundino Navarro 601 (Sur) · Capital, San Juan</p>
+        <h1 id="h1">Diez cartas sobre la mesa, de <em>USD&nbsp;22.000</em> a <em>USD&nbsp;120.000</em>.</h1>
+        <p class="lead">Las propiedades más recientes de Grupo DB, repartidas como un mazo. Pasá las cartas: las que te gustan van a tu mano, las otras al costado. Después comparás hasta cuatro, lado a lado.</p>
+      </div>
+      <div class="socios" aria-label="Los dos corredores de Grupo DB">
+        <div class="socio"><span class="l" aria-hidden="true">D</span><b>C.I. Pablo Domínguez</b><small>Matrícula N.º 122 · CPCISJ</small></div>
+        <div class="socio"><span class="l" aria-hidden="true">B</span><b>C.I. Javier Blanco</b><small>Matrícula N.º 137 · CPCISJ</small></div>
+      </div>
+    </div>
+
+    <div class="baraja" id="baraja" role="search" aria-label="Filtrar el mazo">
+      <div class="ftoggle">
+        <button class="btn ghost sm" id="fbtn" aria-expanded="false" aria-controls="ffields">Filtros <span id="factivos"></span></button>
+      </div>
+      <div class="ffields" id="ffields">
+        <div class="f"><label for="fOp">Operación</label>
+          <select id="fOp"><option value="">Todas</option><option>Venta</option><option>Alquiler</option></select></div>
+        <div class="f"><label for="fTipo">Tipo</label><select id="fTipo"></select></div>
+        <div class="f"><label for="fDep">Departamento</label><select id="fDep"></select></div>
+        <div class="f"><label for="fPre">Precio hasta</label>
+          <select id="fPre"><option value="">Sin tope</option><option value="40000">USD 40.000</option><option value="60000">USD 60.000</option><option value="90000">USD 90.000</option><option value="120000">USD 120.000</option></select></div>
+        <div class="f" style="min-width:200px"><label id="lDorm">Dormitorios</label>
+          <div class="dorms" role="group" aria-labelledby="lDorm">
+            <button type="button" data-d="0" aria-pressed="true">Todos</button>
+            <button type="button" data-d="1" aria-pressed="false">1+</button>
+            <button type="button" data-d="2" aria-pressed="false">2+</button>
+            <button type="button" data-d="3" aria-pressed="false">3+</button>
+          </div></div>
+      </div>
+      <div class="baraja-acc">
+        <span class="contador" aria-live="polite" id="contador"><b class="cnt">10</b> cartas coinciden</span>
+        <div class="vista" role="group" aria-label="Forma de ver">
+          <button type="button" id="vMazo" aria-pressed="true">Mazo</button>
+          <button type="button" id="vLista" aria-pressed="false">Lista</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="juego" id="juego">
+      <div class="stage" id="stage">
+        <div class="pila" id="pila" aria-live="polite"></div>
+        <div class="mandos" id="mandos">
+          <button class="mando no" type="button" id="bPaso">← Paso <kbd>←</kbd></button>
+          <button class="mando" type="button" id="bVoltear">Voltear la carta</button>
+          <button class="mando si" type="button" id="bSi">Me interesa → <kbd>→</kbd></button>
+        </div>
+        <p class="teclas">Arrastrá la carta a los costados, o usá las flechas del teclado.</p>
+      </div>
+      <div class="lista" id="lista" aria-label="Todas las propiedades en lista"></div>
+
+      <aside class="mano" id="mano" aria-labelledby="hMano">
+        <h2 id="hMano">Tu mano <small id="handTxt">0 de 4</small></h2>
+        <p class="s">Lo que marcás “Me interesa” queda guardado en este navegador.</p>
+        <div class="slots" id="slots"></div>
+        <div class="mano-acc">
+          <a class="btn oro" href="#comparar" id="bComparar">Comparar mi mano</a>
+          <button class="btn wa" type="button" id="bManoWa">Mandar mi mano por WhatsApp</button>
+        </div>
+        <div class="paso"><span id="pasoTxt">No pasaste ninguna carta.</span><button type="button" id="bDevolver" hidden>Devolverlas al mazo</button></div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="comparar" aria-labelledby="hComp">
+  <div class="wrap">
+    <div class="sec-h">
+      <div><p class="kicker">La jugada</p><h2 id="hComp">Comparar mi mano</h2></div>
+      <p>Las cartas que elegiste, una al lado de la otra: precio, superficie, precio por metro cubierto, dormitorios, baños y barrio. En cada fila se marca el mejor valor. Si un dato no figura en el aviso, queda en blanco: nada se completa a ojo.</p>
+    </div>
+    <div id="compBox"></div>
+  </div>
+</section>
+
+<section class="sec tasa" id="tasa" aria-labelledby="hTasa">
+  <div class="wrap">
+    <div class="sec-h">
+      <div><p class="kicker">Para propietarios</p><h2 id="hTasa">Tasá tu propiedad: sumá tu carta al mazo</h2></div>
+      <p>Contanos qué tenés y Grupo DB te responde con una tasación. El formulario arma un mensaje de WhatsApp (o un mail) con tus datos; nada se envía hasta que vos lo mandás.</p>
+    </div>
+    <div class="tasa-g">
+      <div class="blanca" aria-hidden="true">
+        <div class="idx tl palo-rojo"><span class="no">N.º</span><span class="n">?</span></div>
+        <div class="ph" id="tPh">Así se vería tu propiedad en el mazo</div>
+        <div class="bt" id="tTit">Tu propiedad</div>
+        <div class="bd" id="tDat">Completá el formulario →</div>
+      </div>
+      <form class="tf" id="tf" novalidate>
+        <label>Tu nombre<input name="nombre" id="tNombre" autocomplete="name" required></label>
+        <label>Qué querés hacer<select name="op" id="tOp"><option>Vender</option><option>Alquilar</option><option>Solo saber cuánto vale</option></select></label>
+        <label>Tipo de propiedad<select name="tipo" id="tTipo"><option>Casa</option><option>Departamento</option><option>Terreno / lote</option><option>Local comercial</option><option>Finca</option><option>Cochera</option></select></label>
+        <label>Departamento<select name="dep" id="tDep"><option>Capital</option><option>Rivadavia</option><option>Santa Lucía</option><option>Rawson</option><option>Chimbas</option><option>Pocito</option><option>Zonda</option><option>Ullum</option><option>Albardón</option><option>9 de Julio</option><option>Otro</option></select></label>
+        <label class="full">Barrio o calle (ej. “Laprida Este 50”)<input name="dir" id="tDir" placeholder="Calle y número, o barrio"></label>
+        <label>m² cubiertos<input name="cub" id="tCub" inputmode="numeric" placeholder="ej. 120"></label>
+        <label>m² de terreno<input name="ter" id="tTer" inputmode="numeric" placeholder="ej. 300"></label>
+        <label>Dormitorios<select name="dorm" id="tDorm"><option value="">—</option><option>Monoambiente</option><option>1</option><option>2</option><option>3</option><option>4 o más</option></select></label>
+        <label>Baños<select name="ban" id="tBan"><option value="">—</option><option>1</option><option>2</option><option>3 o más</option></select></label>
+        <label class="full">Algo más (cochera, estado, si está alquilada…)<textarea name="obs" id="tObs"></textarea></label>
+        <div class="acc">
+          <button class="btn wa" type="submit">Pedir tasación por WhatsApp</button>
+          <a class="btn ghost" id="tMail" href="#">Prefiero por mail</a>
+          <span class="err" id="tErr" role="alert"></span>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="contacto" aria-labelledby="hCont">
+  <div class="wrap">
+    <div class="sec-h">
+      <div><p class="kicker">Quiénes reparten</p><h2 id="hCont">Dos socios, dos matrículas</h2></div>
+      <p>DB son Domínguez y Blanco. La inmobiliaria está habilitada por el Colegio Público de Corredores Inmobiliarios de la Provincia de San Juan (CPCISJ).</p>
+    </div>
+    <div class="contacto-g">
+      <div class="figura"><span class="L palo-azul" aria-hidden="true">D</span><h3>C.I. Pablo Domínguez</h3><p>Matrícula profesional N.º 122 · CPCISJ</p></div>
+      <div class="figura"><span class="L palo-rojo" aria-hidden="true">B</span><h3>C.I. Javier Blanco</h3><p>Matrícula profesional N.º 137 · CPCISJ</p></div>
+      <div class="figura"><span class="L" style="color:var(--oro)" aria-hidden="true">✦</span><h3>La oficina</h3>
+        <ul>
+          <li>Segundino Navarro 601 (Sur), piso 1, Capital, San Juan</li>
+          <li><a href="tel:+542645702451">+54 264 570-2451</a></li>
+          <li><a href="mailto:inmobiliaria@grupo-db.com.ar">inmobiliaria@grupo-db.com.ar</a></li>
+          <li><a href="https://www.instagram.com/grupodbcorredoresinmobiliarios/" target="_blank" rel="noopener">Instagram @grupodbcorredoresinmobiliarios</a></li>
+        </ul></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><b>Grupo DB – Corredores Inmobiliarios</b> · Segundino Navarro 601 (Sur), Capital, San Juan.</p>
+    <p>Prototipo de demostración. Propiedades, precios, superficies y fotos tomados de grupo-db.com.ar (noviembre de 2026); las descripciones están resumidas y la ubicación en el mapa es aproximada, por departamento. Confirmá precio y disponibilidad con la inmobiliaria.</p>
+  </div>
+</footer>
+
+<div class="velo" id="velo"></div>
+<div class="hoja" id="hoja" role="dialog" aria-modal="true" aria-labelledby="hojaTit" tabindex="-1">
+  <div class="hoja-bar"><i class="grab" aria-hidden="true"></i><span id="hojaNo">Ficha</span><button class="btn ghost sm" type="button" id="hojaCerrar">Cerrar ✕</button></div>
+  <div id="hojaBody"></div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+'use strict';
+var WA='5492645702451';
+var MAIL='inmobiliaria@grupo-db.com.ar';
+var IMG='https://www.grupo-db.com.ar/gestion/assets/images/inmuebles/';
+function foto(n){return IMG+String(n).padStart(8,'0')+'.jpeg';}
+function ficha(id,p){return 'https://www.grupo-db.com.ar/detalle-inmueble.php?idInmueble='+id+'&operacion=2&propiedad='+p;}
+var BBOX={
+  'Capital':'-68.548,-31.556,-68.502,-31.518',
+  'Rivadavia':'-68.605,-31.552,-68.548,-31.512',
+  'Santa Lucía':'-68.515,-31.560,-68.455,-31.520',
+  'Rawson':'-68.565,-31.600,-68.500,-31.555',
+  'Pocito':'-68.625,-31.670,-68.540,-31.595'
+};
+var P=[
+ {id:147,pr:2,tipo:'Departamento',palo:'depto',op:'Venta',tit:'Departamento de 3 dormitorios con cochera',mon:'USD',precio:35000,dep:'Capital',barrio:'Barrio Manantial',cub:75,tot:75,dorm:3,ban:1,coch:'Sí',f:[1093,1094,1095,1096],
+  res:'Departamento en Barrio Manantial, en una zona residencial tranquila de Capital. Tres dormitorios, un baño, cocina independiente, living comedor amplio y cochera.',
+  car:['Cocina independiente','Living comedor amplio','Cochera'],serv:['Cloacas','Gas natural','Agua corriente','Pavimento']},
+ {id:146,pr:1,tipo:'Casa quinta',palo:'quinta',op:'Venta',tit:'Casa quinta con amplio terreno, pileta y quincho',mon:'USD',precio:78000,dep:'Rawson',barrio:'Rawson',cub:null,tot:2000,dorm:null,ban:null,coch:null,f:[1075],
+  res:'Casa quinta en Rawson sobre un terreno de 2.000 m², con pileta y quincho.',car:['Terreno de 2.000 m²','Pileta','Quincho'],serv:[]},
+ {id:145,pr:2,tipo:'Departamento',palo:'depto',op:'Venta',tit:'Departamento de 2 dormitorios en el Edificio Cinema',mon:'USD',precio:88000,dep:'Capital',barrio:'Calle Mendoza, cerca de Mitre y Santa Fe',cub:75,tot:75,dorm:2,ban:1,coch:'Sí',f:[1054,1055,1056,1057],apto:true,
+  res:'Sexto piso del Edificio Cinema, sobre calle Mendoza, a pasos de comercios, bancos y transporte. Dos dormitorios con placares, living comedor amplio y luminoso, cocina independiente, baño completo, balcón y cochera cubierta en subsuelo. Ascensor. Expensas: $115.000 por mes.',
+  car:['Apto crédito','6.º piso con ascensor','Balcón','Cochera cubierta en subsuelo','Placares'],serv:['Cloacas','Gas natural','Pavimento']},
+ {id:143,pr:1,tipo:'Casa',palo:'casa',op:'Venta',tit:'Casa de 3 dormitorios en barrio privado La Stanza',mon:'USD',precio:120000,dep:'Santa Lucía',barrio:'Barrio privado La Stanza · Juan Manuel de Rosas Sur',cub:110,tot:322,dorm:3,ban:1,coch:'Sí',f:[1041,1042,1043,1044],apto:true,
+  res:'Casa de una planta en el barrio privado La Stanza (calle Juan Manuel de Rosas Sur, lote 16). Tres dormitorios con placares, cocina con desayunador, living comedor con aire acondicionado y calefactor, galería semiabierta, parrillero, parque y despensa. Expensas: $18.000.',
+  car:['Apto crédito','Barrio privado','Galería y parrillero','Aire acondicionado'],serv:['Cloacas','Agua corriente','Pavimento']},
+ {id:141,pr:1,tipo:'Casa',palo:'casa',op:'Venta',tit:'Casa con 2 departamentos independientes',mon:'USD',precio:120000,dep:'Capital',barrio:'Villa Lanteri · calle Rodríguez',cub:129,tot:288,dorm:5,ban:3,coch:'Sí',f:[1024,1025,1026,1027],
+  res:'Sobre calle Rodríguez, entre Av. Rivadavia e Ignacio de la Roza. Casa principal con living, cocina comedor, 2 habitaciones, baño, cochera y terraza, más dos departamentos independientes (uno al fondo y otro sobre la terraza). Para vivir y rentar.',
+  car:['Vivienda + 2 departamentos','Terraza','Ideal renta'],serv:['Cloacas','Gas natural','Pavimento']},
+ {id:140,pr:2,tipo:'Departamento',palo:'depto',op:'Venta',tit:'Departamento de 1 dormitorio, ideal inversión',mon:'USD',precio:42000,dep:'Capital',barrio:'Calle General Acha',cub:null,tot:null,dorm:1,ban:null,coch:null,f:[1014],
+  res:'Departamento de un dormitorio en Capital, sobre calle General Acha, pensado para inversión.',car:['Ideal inversionistas'],serv:[]},
+ {id:139,pr:2,tipo:'Departamento',palo:'depto',op:'Venta',tit:'Monoambientes alquilados, para inversores',mon:'USD',precio:32000,dep:'Rivadavia',barrio:'Rivadavia',cub:35,tot:null,dorm:0,ban:1,coch:'Sí',f:[1004,1005,1006,1007],
+  nota:'Planta alta USD 32.000 · planta baja (con cochera) USD 35.000',
+  res:'Dos monoambientes de unos 35 m² en un complejo de Rivadavia, ambos alquilados: renta inmediata. Baño completo, cocina instalada y termotanque. La unidad de planta baja suma cochera. Expensas: $32.000.',
+  car:['Alquilados hoy','Cocina instalada','Termotanque'],serv:[]},
+ {id:138,pr:1,tipo:'Casa',palo:'casa',op:'Venta',tit:'Casa de 3 dormitorios con quincho',mon:'USD',precio:90000,dep:'Santa Lucía',barrio:'Hipólito Yrigoyen, cerca de Santa María de Oro',cub:150,tot:511,dorm:3,ban:1,coch:null,f:[990,991,992,993],
+  res:'Sobre calle Hipólito Yrigoyen, a metros de Santa María de Oro. Tres dormitorios, baño completo, quincho independiente con baño y un fondo parquizado amplio, en 511 m² de terreno.',
+  car:['Quincho con baño','Fondo parquizado'],serv:[]},
+ {id:132,pr:1,tipo:'Casa',palo:'casa',op:'Venta',tit:'Casa con quincho en 1.590 m²',mon:'USD',precio:110000,dep:'Pocito',barrio:'Calle 10 y Callejón Valverde',cub:160,tot:1590,dorm:3,ban:1,coch:'Sí',f:[937,938,939,940],
+  res:'En Calle 10 y Callejón Valverde, Pocito. Cocina independiente, living comedor amplio, 3 habitaciones, baño con antebaño, patio de luz, cochera con galería, quincho abierto con parrillero y lavadero.',
+  car:['Quincho con parrillero','Galería','Lavadero'],serv:[]},
+ {id:131,pr:6,tipo:'Terreno',palo:'terreno',op:'Venta',tit:'Terrenos de 1.500 m² con financiación',mon:'USD',precio:22000,dep:'Santa Lucía',barrio:'Complejo privado El Nogal · Las Chacritas',cub:null,tot:1500,dorm:null,ban:null,coch:'No',f:[928,929,930,931],
+  nota:'Financiación: entrega de USD 10.000 y saldo en hasta 12 meses, sin banco',
+  res:'Lotes en complejo privado sobre calle Belgrano, Las Chacritas (Santa Lucía), a metros de Ruta 20.',car:['Financiación directa','Complejo privado'],serv:[]}
+];
+var BY={};P.forEach(function(p){BY[p.id]=p;});
+
+/* --- almacenamiento seguro --- */
+var mem={};
+function load(k,d){try{var v=localStorage.getItem(k);if(v!=null)return JSON.parse(v);}catch(e){} return k in mem?mem[k]:d;}
+function save(k,v){mem[k]=v;try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+function valid(a){return Array.isArray(a)?a.filter(function(id,i){return BY[id]&&a.indexOf(id)===i;}):[];}
+var hand=valid(load('gdb-mano',[])).slice(0,4);
+var passed=valid(load('gdb-paso',[])).filter(function(id){return hand.indexOf(id)<0;});
+var MAX=4;
+
+/* --- utilidades --- */
+function $(s,r){return (r||document).querySelector(s);}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function num(n){return n.toLocaleString('es-AR');}
+function precio(p){return p.mon+' '+num(p.precio);}
+function dormTxt(p){if(p.dorm==null)return null;return p.dorm===0?'Monoambiente':p.dorm+(p.dorm===1?' dorm.':' dorm.');}
+function rojo(p){return p.palo==='casa'||p.palo==='quinta';}
+var ICON={
+ casa:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z" fill="currentColor"/></svg>',
+ quinta:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="9" r="6" fill="currentColor"/><rect x="11" y="13" width="2" height="8" fill="currentColor"/></svg>',
+ depto:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18h-5v-4h-2v4H6z" fill="currentColor"/></svg>',
+ terreno:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 21 12 12 21 3 12z" fill="currentColor"/></svg>'
+};
+var ART={
+ casa:'<svg viewBox="0 0 120 90" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 46 60 12l46 34"/><path d="M24 39v41h72V39"/><rect x="50" y="56" width="20" height="24"/><rect x="31" y="50" width="12" height="12"/><rect x="77" y="50" width="12" height="12"/><path d="M4 80h112"/></svg>',
+ quinta:'<svg viewBox="0 0 120 90" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M40 52 62 34l22 18v28H40z"/><rect x="56" y="62" width="11" height="18"/><circle cx="22" cy="40" r="14"/><path d="M22 54v26"/><circle cx="100" cy="46" r="10"/><path d="M100 56v24"/><path d="M4 80h112"/><path d="M8 86h30M52 86h60" stroke-dasharray="3 4"/></svg>',
+ depto:'<svg viewBox="0 0 120 90" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="34" y="8" width="52" height="72"/><path d="M44 20h8M68 20h8M44 32h8M68 32h8M44 44h8M68 44h8M44 56h8M68 56h8"/><rect x="54" y="64" width="12" height="16"/><path d="M4 80h112"/></svg>',
+ terreno:'<svg viewBox="0 0 120 90" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 64 46 40l64 10-36 30z"/><path d="M46 40l28 40M28 52l64 10" stroke-dasharray="3 4"/><path d="M92 30v20M92 30l10 4-10 4"/></svg>'
+};
+window.gdbFb=function(img){
+  var p=BY[+img.getAttribute('data-id')]; if(!p)return;
+  var d=document.createElement('div'); d.className='fallback';
+  d.innerHTML='<div>'+ART[p.palo]+'<small>'+esc(p.tipo)+' · '+esc(p.dep)+'</small></div>';
+  d.setAttribute('role','img'); d.setAttribute('aria-label',p.tipo+' en '+p.dep+' (foto no disponible)');
+  if(img.parentNode)img.parentNode.replaceChild(d,img);
+};
+function imgTag(p,i,alt){
+  return '<img src="'+foto(p.f[i||0])+'" data-id="'+p.id+'" alt="'+esc(alt||(p.tit+' — '+p.dep))+'" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="gdbFb(this)">';
+}
+function waLink(text){return 'https://wa.me/'+WA+'?text='+encodeURIComponent(text);}
+function waProp(p){return waLink('Hola Grupo DB, me interesa el inmueble N.º '+p.id+': '+p.tit+' — '+p.barrio+', '+p.dep+' ('+precio(p)+'). '+ficha(p.id,p.pr));}
+var toastT;
+function toast(m){var t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('on');},2600);}
+var RM=window.matchMedia('(prefers-reduced-motion: reduce)');
+var MOB=window.matchMedia('(max-width: 760px)');
+
+/* --- filtros --- */
+var F={op:'',tipo:'',dep:'',pre:0,dorm:0};
+function fillSel(id,vals,all){var s=$(id);s.innerHTML='<option value="">'+all+'</option>'+vals.map(function(v){return '<option>'+esc(v)+'</option>';}).join('');}
+function uniq(k){var o=[];P.forEach(function(p){if(o.indexOf(p[k])<0)o.push(p[k]);});return o.sort(function(a,b){return a.localeCompare(b,'es');});}
+fillSel('#fTipo',uniq('tipo'),'Todos');
+fillSel('#fDep',uniq('dep'),'Todos');
+function match(p){
+  if(F.op&&p.op!==F.op)return false;
+  if(F.tipo&&p.tipo!==F.tipo)return false;
+  if(F.dep&&p.dep!==F.dep)return false;
+  if(F.pre&&!(p.mon==='USD'&&p.precio<=F.pre))return false;
+  if(F.dorm&&!(p.dorm!=null&&p.dorm>=F.dorm))return false;
+  return true;
+}
+function filtered(){return P.filter(match);}
+function remaining(){return filtered().filter(function(p){return hand.indexOf(p.id)<0&&passed.indexOf(p.id)<0;});}
+function activos(){return ['op','tipo','dep','pre','dorm'].filter(function(k){return F[k];}).length;}
+['#fOp','#fTipo','#fDep','#fPre'].forEach(function(id){
+  $(id).addEventListener('change',function(e){
+    var k={'#fOp':'op','#fTipo':'tipo','#fDep':'dep','#fPre':'pre'}[id];
+    F[k]=k==='pre'?(+e.target.value||0):e.target.value; barajar();
+  });
+});
+Array.prototype.forEach.call(document.querySelectorAll('.dorms button'),function(b){
+  b.addEventListener('click',function(){
+    F.dorm=+b.getAttribute('data-d');
+    Array.prototype.forEach.call(document.querySelectorAll('.dorms button'),function(x){x.setAttribute('aria-pressed',String(x===b));});
+    barajar();
+  });
+});
+function limpiar(){F={op:'',tipo:'',dep:'',pre:0,dorm:0};['#fOp','#fTipo','#fDep','#fPre'].forEach(function(id){$(id).value='';});
+  Array.prototype.forEach.call(document.querySelectorAll('.dorms button'),function(x){x.setAttribute('aria-pressed',String(x.getAttribute('data-d')==='0'));});barajar();}
+$('#fbtn').addEventListener('click',function(){var b=$('#baraja');var o=b.classList.toggle('open');this.setAttribute('aria-expanded',String(o));});
+
+/* --- vista --- */
+var vista='mazo';
+function setVista(v){vista=v;$('#juego').classList.toggle('ver-lista',v==='lista');$('#vMazo').setAttribute('aria-pressed',String(v==='mazo'));$('#vLista').setAttribute('aria-pressed',String(v==='lista'));render();}
+$('#vMazo').addEventListener('click',function(){setVista('mazo');});
+$('#vLista').addEventListener('click',function(){setVista('lista');});
+
+/* --- mazo --- */
+var flipped=false;
+function cardFront(p){
+  var pal=rojo(p)?'palo-rojo':'palo-azul';
+  var d=[];
+  if(p.cub)d.push('<span><b>'+num(p.cub)+'</b> m² cub.</span>');
+  if(p.tot&&p.tot!==p.cub)d.push('<span><b>'+num(p.tot)+'</b> m² '+(p.palo==='terreno'||p.palo==='quinta'?'terreno':'total')+'</span>');
+  if(dormTxt(p))d.push('<span><b>'+dormTxt(p)+'</b></span>');
+  if(p.ban)d.push('<span><b>'+p.ban+'</b> baño'+(p.ban>1?'s':'')+'</span>');
+  var idx='<span class="no">N.º</span><span class="n">'+p.id+'</span>'+ICON[p.palo];
+  return '<div class="idx tl '+pal+'">'+idx+'</div><div class="idx br '+pal+'" aria-hidden="true">'+idx+'</div>'+
+   '<div class="frente"><div class="foto">'+imgTag(p,0)+'<span class="tag">'+esc(p.op)+(p.apto?' · apto crédito':'')+'</span></div>'+
+   '<div class="cuerpo"><div class="meta">'+esc(p.tipo)+' · '+esc(p.dep)+'</div><h2 class="c-tit">'+esc(p.tit)+'</h2>'+
+   '<div class="c-precio '+pal+'">'+precio(p)+'</div><div class="datos">'+d.join('')+'</div>'+
+   '<div class="hint">↻ Volteá la carta para ver la ficha</div></div></div>';
+}
+function dl(p){
+  var r=[['Operación',p.op],['Precio',precio(p)],['Ubicación',p.barrio+', '+p.dep]];
+  if(p.cub)r.push(['Sup. cubierta',num(p.cub)+' m²']);
+  if(p.tot)r.push([p.palo==='terreno'||p.palo==='quinta'?'Terreno':'Sup. total',num(p.tot)+' m²']);
+  if(dormTxt(p))r.push(['Dormitorios',p.dorm===0?'Monoambiente':String(p.dorm)]);
+  if(p.ban)r.push(['Baños',String(p.ban)]);
+  if(p.coch)r.push(['Cochera',p.coch]);
+  return '<dl class="dl">'+r.map(function(x){return '<dt>'+x[0]+'</dt><dd>'+esc(x[1])+'</dd>';}).join('')+'</dl>';
+}
+function cardBack(p){
+  var pal=rojo(p)?'palo-rojo':'palo-azul';
+  return '<div class="idx tl '+pal+'"><span class="no">N.º</span><span class="n">'+p.id+'</span>'+ICON[p.palo]+'</div>'+
+   '<div class="dorso-in"><div class="meta">Ficha · '+esc(p.tipo)+'</div><h3>'+esc(p.tit)+'</h3>'+
+   (p.nota?'<p style="margin:0;font-size:13px;color:var(--ink-2)">'+esc(p.nota)+'</p>':'')+dl(p)+
+   '<ul class="chips">'+p.car.concat(p.serv).map(function(c){return '<li>'+esc(c)+'</li>';}).join('')+'</ul>'+
+   '<p style="margin:0">'+esc(p.res)+'</p>'+
+   '<div class="dorso-acc"><button class="btn sm" type="button" data-full="'+p.id+'">Ficha completa y mapa</button><a class="btn wa sm" href="'+waProp(p)+'" target="_blank" rel="noopener">WhatsApp</a><button class="btn ghost sm" type="button" data-unflip>↻ Volver</button></div></div>';
+}
+function renderDeck(anim){
+  var pila=$('#pila'); var rem=remaining(); var fil=filtered();
+  flipped=false;
+  var html='';
+  if(!fil.length){
+    html='<div class="vacio"><div><h3>Ninguna carta con esos filtros</h3><p>Probá con otro departamento o sacá el tope de precio.</p><button class="btn oro" type="button" data-limpiar>Limpiar filtros</button></div></div>';
+  }else if(!rem.length){
+    html='<div class="vacio"><div><h3>Repartiste todo el mazo</h3><p>'+(hand.length?'Tenés '+hand.length+' en tu mano. ':'')+(passed.length?'Podés volver a mezclar las que pasaste.':'')+'</p>'+
+     (passed.length?'<button class="btn oro" type="button" data-devolver>Volver a mezclar las que pasaste</button> ':'')+
+     (hand.length>=2?'<a class="btn ghost" style="color:var(--naipe);border-color:var(--naipe)" href="#comparar">Comparar mi mano</a>':'')+'</div></div>';
+  }else{
+    var n=Math.min(rem.length-1,4); var fan='';
+    var rot=[-7,5,-3,8], tx=MOB.matches?[-10,9,-4,12]:[-26,22,-10,30];
+    for(var i=n;i>=1;i--){fan+='<div class="back" aria-hidden="true" style="transform:translateX('+tx[i-1]+'px) rotate('+rot[i-1]+'deg)"></div>';}
+    var p=rem[0];
+    html='<div class="fan'+(anim&&!RM.matches?' shuffle':'')+'">'+fan+'</div>'+
+     '<div class="carta'+(anim?' enter':'')+'" id="carta" data-id="'+p.id+'" tabindex="0" role="group" aria-roledescription="carta" aria-label="Carta N.º '+p.id+': '+esc(p.tit)+', '+precio(p)+'. '+rem.length+' por ver.">'+
+     '<span class="sello si" aria-hidden="true">ME INTERESA</span><span class="sello no" aria-hidden="true">PASO</span>'+
+     '<div class="flip"><div class="cara">'+cardFront(p)+'</div><div class="cara dorso" aria-hidden="true">'+cardBack(p)+'</div></div></div>';
+  }
+  pila.innerHTML=html;
+  $('#bVoltear').textContent='Voltear la carta';
+  var dis=!rem.length;
+  ['#bPaso','#bSi','#bVoltear'].forEach(function(id){$(id).disabled=dis;});
+  if(anim&&!RM.matches){requestAnimationFrame(function(){requestAnimationFrame(function(){var f=$('.fan',pila);if(f)f.classList.remove('shuffle');});});}
+  var c=$('#carta'); if(c)bindDrag(c);
+}
+function setFlip(v){
+  var c=$('#carta'); if(!c)return;
+  flipped=v; c.classList.toggle('volteada',v);
+  var faces=c.querySelectorAll('.cara'); faces[0].setAttribute('aria-hidden',String(v)); faces[1].setAttribute('aria-hidden',String(!v));
+  $('#bVoltear').textContent=v?'Ver el frente':'Voltear la carta';
+}
+function voltear(){
+  var c=$('#carta'); if(!c)return;
+  if(MOB.matches){openFicha(+c.getAttribute('data-id'));return;}
+  setFlip(!flipped);
+}
+var busy=false;
+function decide(kind){
+  var c=$('#carta'); if(!c||busy)return;
+  var id=+c.getAttribute('data-id');
+  if(kind==='si'&&hand.length>=MAX){
+    c.style.transform='';toast('Tu mano ya tiene 4 cartas: sacá una para sumar otra.');return;
+  }
+  busy=true;
+  c.classList.add(kind==='si'?'out-r':'out-l');
+  setTimeout(function(){
+    if(kind==='si'){hand.push(id);save('gdb-mano',hand);toast('N.º '+id+' va a tu mano ('+hand.length+' de 4).');}
+    else{passed.push(id);save('gdb-paso',passed);}
+    busy=false; render(true);
+  },RM.matches?120:300);
+}
+function bindDrag(el){
+  var sx=0,sy=0,dx=0,down=false,moved=false,pid=null;
+  var si=$('.sello.si',el),no=$('.sello.no',el);
+  el.addEventListener('pointerdown',function(e){
+    if(e.target.closest('button,a')||flipped)return;
+    if(e.pointerType==='mouse'&&e.button!==0)return;
+    down=true;moved=false;sx=e.clientX;sy=e.clientY;dx=0;pid=e.pointerId;
+  });
+  el.addEventListener('pointermove',function(e){
+    if(!down||e.pointerId!==pid)return;
+    dx=e.clientX-sx; var dy=e.clientY-sy;
+    if(!moved){ if(Math.abs(dx)<6)return; if(Math.abs(dy)>Math.abs(dx)){down=false;return;} moved=true; el.classList.add('dragging'); try{el.setPointerCapture(pid);}catch(_){}}
+    el.style.transform='translate('+dx+'px,'+(dy*0.15)+'px) rotate('+(dx/20)+'deg)';
+    si.style.opacity=Math.max(0,Math.min(1,dx/110)); no.style.opacity=Math.max(0,Math.min(1,-dx/110));
+  });
+  function up(){
+    if(!down)return; down=false;
+    if(!moved)return;
+    el.classList.remove('dragging'); si.style.opacity=0; no.style.opacity=0;
+    if(dx>110)decide('si'); else if(dx<-110)decide('no'); else el.style.transform='';
+  }
+  el.addEventListener('pointerup',up); el.addEventListener('pointercancel',up);
+}
+$('#bPaso').addEventListener('click',function(){decide('no');});
+$('#bSi').addEventListener('click',function(){decide('si');});
+$('#bVoltear').addEventListener('click',voltear);
+$('#pila').addEventListener('click',function(e){
+  var t=e.target;
+  if(t.closest('[data-full]')){openFicha(+t.closest('[data-full]').getAttribute('data-full'));return;}
+  if(t.closest('[data-unflip]')){setFlip(false);return;}
+  if(t.closest('[data-limpiar]')){limpiar();return;}
+  if(t.closest('[data-devolver]')){devolver();return;}
+  if(t.closest('a,button'))return;
+  if(t.closest('.carta')&&!flipped&&!t.closest('.carta').classList.contains('dragging'))voltear();
+});
+document.addEventListener('keydown',function(e){
+  if(hojaOpen){if(e.key==='Escape')closeFicha();return;}
+  if(vista!=='mazo')return;
+  var tg=e.target.tagName; if(/INPUT|SELECT|TEXTAREA/.test(tg))return;
+  if(e.key==='ArrowRight'){e.preventDefault();decide('si');}
+  else if(e.key==='ArrowLeft'){e.preventDefault();decide('no');}
+  else if((e.key==='Enter'||e.key===' ')&&e.target.id==='carta'){e.preventDefault();voltear();}
+});
+function devolver(){passed=[];save('gdb-paso',passed);render(true);toast('Las cartas que pasaste volvieron al mazo.');}
+$('#bDevolver').addEventListener('click',devolver);
+
+/* --- lista --- */
+function renderLista(){
+  var fil=filtered(); var L=$('#lista');
+  if(!fil.length){L.innerHTML='<div class="vacio-l"><h3 style="font-family:var(--display);font-weight:400;font-size:24px;margin:0 0 8px">Ninguna propiedad con esos filtros</h3><button class="btn" type="button" data-limpiar>Limpiar filtros</button></div>';return;}
+  L.innerHTML=fil.map(function(p){
+    var inH=hand.indexOf(p.id)>=0; var pal=rojo(p)?'palo-rojo':'palo-azul';
+    var d=[]; if(p.cub)d.push(num(p.cub)+' m² cub.'); if(p.tot&&p.tot!==p.cub)d.push(num(p.tot)+' m² '+(p.palo==='terreno'||p.palo==='quinta'?'terreno':'total')); if(dormTxt(p))d.push(dormTxt(p)); if(p.ban)d.push(p.ban+' baño'+(p.ban>1?'s':''));
+    return '<article class="fila"><div class="th">'+imgTag(p,0)+'</div><div><div class="meta">N.º '+p.id+' · '+esc(p.tipo)+' · '+esc(p.dep)+'</div><h3>'+esc(p.tit)+'</h3><div class="datos" style="margin-top:2px">'+esc(p.barrio)+(d.length?' · '+d.join(' · '):'')+'</div></div>'+
+     '<div class="acc"><span class="p '+pal+'">'+precio(p)+'</span><div><button class="btn ghost sm" type="button" data-full="'+p.id+'">Ficha</button>'+
+     '<button class="btn sm'+(inH?' oro':'')+'" type="button" data-toggle="'+p.id+'" aria-pressed="'+inH+'">'+(inH?'En tu mano ✓':'Me interesa')+'</button></div></div></article>';
+  }).join('');
+}
+$('#lista').addEventListener('click',function(e){
+  var t=e.target.closest('[data-full],[data-toggle],[data-limpiar]'); if(!t)return;
+  if(t.hasAttribute('data-full'))openFicha(+t.getAttribute('data-full'));
+  else if(t.hasAttribute('data-limpiar'))limpiar();
+  else toggleHand(+t.getAttribute('data-toggle'));
+});
+function toggleHand(id){
+  var i=hand.indexOf(id);
+  if(i>=0){hand.splice(i,1);toast('N.º '+id+' salió de tu mano.');}
+  else{ if(hand.length>=MAX){toast('Tu mano ya tiene 4 cartas: sacá una para sumar otra.');return false;}
+    hand.push(id); var j=passed.indexOf(id); if(j>=0){passed.splice(j,1);save('gdb-paso',passed);} toast('N.º '+id+' va a tu mano ('+hand.length+' de 4).');}
+  save('gdb-mano',hand); render(); return true;
+}
+
+/* --- mano --- */
+function renderMano(){
+  $('#handCount').textContent=hand.length; $('#handTxt').textContent=hand.length+' de 4';
+  var s='';
+  for(var i=0;i<MAX;i++){
+    var p=BY[hand[i]];
+    if(p){s+='<div class="mini"><div class="mf">'+imgTag(p,0)+'</div><div class="mb"><span>N.º '+p.id+' · '+esc(p.dep)+'</span><b class="'+(rojo(p)?'palo-rojo':'palo-azul')+'">'+precio(p)+'</b><span>'+esc(p.tipo)+'</span>'+
+       '<div class="mx"><button type="button" data-full="'+p.id+'" aria-label="Ver ficha N.º '+p.id+'">Ver</button><button type="button" data-quitar="'+p.id+'" aria-label="Sacar N.º '+p.id+' de tu mano">Sacar</button></div></div></div>';}
+    else s+='<div class="slot" aria-hidden="true">'+(i+1)+'</div>';
+  }
+  $('#slots').innerHTML=s;
+  $('#bManoWa').disabled=!hand.length;
+  $('#pasoTxt').textContent=passed.length?('Pasaste '+passed.length+' carta'+(passed.length>1?'s':'')+'.'):'No pasaste ninguna carta.';
+  $('#bDevolver').hidden=!passed.length;
+}
+$('#slots').addEventListener('click',function(e){
+  var t=e.target.closest('[data-full],[data-quitar]'); if(!t)return;
+  if(t.hasAttribute('data-full'))openFicha(+t.getAttribute('data-full'));
+  else{var id=+t.getAttribute('data-quitar');hand.splice(hand.indexOf(id),1);save('gdb-mano',hand);toast('N.º '+id+' volvió al mazo.');render(true);}
+});
+function manoTexto(){
+  var ps=hand.map(function(id){return BY[id];});
+  return 'Hola Grupo DB, armé mi mano en su catálogo y quiero consultar por estas '+ps.length+' propiedades:\n'+
+   ps.map(function(p,i){return (i+1)+') N.º '+p.id+' · '+p.tit+' — '+p.barrio+', '+p.dep+' · '+precio(p)+'\n'+ficha(p.id,p.pr);}).join('\n')+
+   '\n¿Me cuentan disponibilidad y cuándo se pueden visitar? Gracias.';
+}
+function mandarMano(){if(!hand.length){toast('Tu mano está vacía.');return;} window.open(waLink(manoTexto()),'_blank','noopener');}
+$('#bManoWa').addEventListener('click',mandarMano);
+
+/* --- comparar --- */
+var ROWS=[
+ {k:'Precio',v:function(p){return p.mon==='USD'?p.precio:null;},f:function(p){return precio(p);},best:'min'},
+ {k:'m² cubiertos',v:function(p){return p.cub;},f:function(v){return num(v)+' m²';},best:'max'},
+ {k:'m² totales / terreno',v:function(p){return p.tot;},f:function(v){return num(v)+' m²';},best:'max'},
+ {k:'USD por m² cubierto',v:function(p){return (p.mon==='USD'&&p.cub)?Math.round(p.precio/p.cub):null;},f:function(v){return 'USD '+num(v);},best:'min'},
+ {k:'Dormitorios',v:function(p){return p.dorm;},f:function(v){return v===0?'Monoambiente':String(v);},best:'max'},
+ {k:'Baños',v:function(p){return p.ban;},f:function(v){return String(v);},best:'max'},
+ {k:'Cochera',v:function(p){return p.coch==null?null:(p.coch==='Sí'?1:0);},f:function(v){return v?'Sí':'No';},best:'max'},
+ {k:'Barrio',v:function(p){return p.barrio+', '+p.dep;},f:function(v){return v;},best:null}
+];
+function compData(){
+  var ps=hand.map(function(id){return BY[id];});
+  return ROWS.map(function(r){
+    var vals=ps.map(function(p){var v=r.v(p);return v==null?null:v;});
+    var nums=vals.filter(function(v){return typeof v==='number';});
+    var best=null;
+    if(r.best&&nums.length>=2){best=r.best==='min'?Math.min.apply(null,nums):Math.max.apply(null,nums);
+      if(nums.every(function(n){return n===best;}))best=null;}
+    return {r:r,vals:vals,best:best};
+  });
+}
+function renderComp(){
+  var B=$('#compBox');
+  if(hand.length<2){
+    B.innerHTML='<div class="comp-vacio"><b>'+(hand.length?'Te falta una carta más':'Tu mano está vacía')+'</b>Marcá “Me interesa” en '+(hand.length?'al menos una propiedad más':'dos a cuatro propiedades')+' del mazo para compararlas acá.<div style="margin-top:14px"><a class="btn" href="#mesa">Ir al mazo</a></div></div>';return;
+  }
+  var ps=hand.map(function(id){return BY[id];});
+  var rows=compData();
+  var h='<div class="tabla-w"><table class="comp"><caption class="sr">Comparación de las propiedades de tu mano; se marca el mejor valor de cada fila</caption><thead><tr><th scope="col"><span class="sr">Dato</span></th>'+
+   ps.map(function(p){return '<th scope="col"><span class="no">N.º '+p.id+' · '+esc(p.tipo)+'</span><span class="t">'+esc(p.tit)+'</span></th>';}).join('')+'</tr></thead><tbody>';
+  rows.forEach(function(x){
+    h+='<tr><th scope="row">'+x.r.k+'</th>'+x.vals.map(function(v,i){
+      if(v==null)return '<td class="nd" title="No figura en el aviso">—</td>';
+      var txt=x.r.k==='Precio'?x.r.f(ps[i]):x.r.f(v);
+      var m=(x.best!=null&&v===x.best);
+      return '<td'+(m?' class="mejor"':'')+'>'+esc(txt)+(m?'<span class="sr"> (mejor valor)</span>':'')+'</td>';
+    }).join('')+'</tr>';
+  });
+  h+='</tbody></table></div><div class="comp-pie"><small>“Mejor” = menor precio y menor USD/m²; mayor superficie, dormitorios y baños. “—” significa que el dato no figura en el aviso.</small>'+
+   '<button class="btn wa" type="button" data-mano-wa>Mandar mi mano por WhatsApp</button></div>';
+  B.innerHTML=h;
+}
+$('#compBox').addEventListener('click',function(e){if(e.target.closest('[data-mano-wa]'))mandarMano();});
+
+/* --- ficha completa (hoja) --- */
+var hojaOpen=false,lastFocus=null,galI=0,galP=null;
+function galSet(i){
+  var p=galP; galI=(i+p.f.length)%p.f.length;
+  var m=$('#galMain'); m.innerHTML=imgTag(p,galI,p.tit+' — foto '+(galI+1)+' de '+p.f.length)+(p.f.length>1?'<button class="gal-nav p" type="button" data-g="-1" aria-label="Foto anterior">‹</button><button class="gal-nav n" type="button" data-g="1" aria-label="Foto siguiente">›</button>':'')+'<span class="gal-c">'+(galI+1)+' / '+p.f.length+'</span>';
+  Array.prototype.forEach.call(document.querySelectorAll('#thumbs button'),function(b,j){b.setAttribute('aria-current',String(j===galI));});
+}
+function openFicha(id){
+  var p=BY[id]; if(!p)return; galP=p; lastFocus=document.activeElement;
+  var inH=hand.indexOf(p.id)>=0; var pal=rojo(p)?'palo-rojo':'palo-azul';
+  $('#hojaNo').textContent='Carta N.º '+p.id+' · '+p.tipo;
+  $('#hojaBody').innerHTML='<div class="hoja-in"><div><div class="gal-main" id="galMain"></div>'+
+   (p.f.length>1?'<div class="thumbs" id="thumbs">'+p.f.map(function(n,j){return '<button type="button" data-t="'+j+'" aria-label="Ver foto '+(j+1)+'">'+imgTag(p,j,'')+'</button>';}).join('')+'</div>':'')+
+   '</div>'+
+   '<div><div class="meta">'+esc(p.op)+' · '+esc(p.tipo)+' · '+esc(p.dep)+'</div><h2 id="hojaTit">'+esc(p.tit)+'</h2><div class="precio '+pal+'">'+precio(p)+'</div>'+(p.nota?'<p class="nota">'+esc(p.nota)+'</p>':'')+
+   '<h4>Datos</h4>'+dl(p)+'<h4>Características</h4><ul class="chips">'+p.car.map(function(c){return '<li>'+esc(c)+'</li>';}).join('')+'</ul>'+
+   (p.serv.length?'<h4>Servicios</h4><ul class="chips">'+p.serv.map(function(c){return '<li>'+esc(c)+'</li>';}).join('')+'</ul>':'')+
+   '<h4>Del aviso</h4><p style="margin:0">'+esc(p.res)+'</p>'+
+   '<div class="hoja-acc"><a class="btn wa" id="hojaWa" href="'+waProp(p)+'" target="_blank" rel="noopener">Consultar por WhatsApp</a>'+
+   '<button class="btn'+(inH?' oro':' ghost')+'" type="button" data-htoggle="'+p.id+'" aria-pressed="'+inH+'">'+(inH?'En tu mano ✓':'Me interesa')+'</button>'+
+   '<a class="btn ghost" href="'+ficha(p.id,p.pr)+'" target="_blank" rel="noopener">Aviso original</a></div>'+'<h4>Ubicación aproximada</h4><div class="mapa"><iframe title="Mapa aproximado: '+esc(p.dep)+'" loading="lazy" src="https://www.openstreetmap.org/export/embed.html?bbox='+encodeURIComponent(BBOX[p.dep])+'&amp;layer=mapnik"></iframe><small>Ubicación aproximada: departamento '+esc(p.dep)+' ('+esc(p.barrio)+'). La dirección exacta la confirma la inmobiliaria.</small></div>'+'</div></div>';
+  galSet(0);
+  hojaOpen=true; $('#velo').classList.add('on'); var h=$('#hoja'); h.classList.add('on'); h.scrollTop=0;
+  document.body.style.overflow='hidden';
+  setTimeout(function(){$('#hojaCerrar').focus();},30);
+}
+function closeFicha(){
+  if(!hojaOpen)return; hojaOpen=false; $('#velo').classList.remove('on'); $('#hoja').classList.remove('on'); document.body.style.overflow='';
+  if(lastFocus&&lastFocus.focus&&document.contains(lastFocus))lastFocus.focus();
+}
+$('#hojaCerrar').addEventListener('click',closeFicha);
+$('#velo').addEventListener('click',closeFicha);
+$('#hojaBody').addEventListener('click',function(e){
+  var g=e.target.closest('[data-g]'); if(g){galSet(galI+(+g.getAttribute('data-g')));return;}
+  var t=e.target.closest('[data-t]'); if(t){galSet(+t.getAttribute('data-t'));return;}
+  var h=e.target.closest('[data-htoggle]');
+  if(h){var id=+h.getAttribute('data-htoggle'); if(toggleHand(id)!==false){var inH=hand.indexOf(id)>=0;h.className='btn'+(inH?' oro':' ghost');h.textContent=inH?'En tu mano ✓':'Me interesa';h.setAttribute('aria-pressed',String(inH));}}
+});
+$('#hoja').addEventListener('keydown',function(e){
+  if(e.key!=='Tab')return;
+  var f=$('#hoja').querySelectorAll('a[href],button:not([disabled]),iframe');
+  if(!f.length)return; var a=f[0],z=f[f.length-1];
+  if(e.shiftKey&&document.activeElement===a){e.preventDefault();z.focus();}
+  else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus();}
+});
+
+/* --- render --- */
+function render(anim){
+  var n=filtered().length;
+  Array.prototype.forEach.call(document.querySelectorAll('.cnt'),function(c){c.textContent=n;});
+  $('#contador').innerHTML='<b class="cnt">'+n+'</b> carta'+(n===1?' coincide':'s coinciden')+(vista==='mazo'?' · '+remaining().length+' por ver':'');
+  var a=activos(); $('#factivos').textContent=a?'('+a+')':'';
+  renderDeck(anim); renderLista(); renderMano(); renderComp();
+}
+function barajar(){render(true);}
+
+/* --- tasá --- */
+function tVals(){return {nombre:$('#tNombre').value.trim(),op:$('#tOp').value,tipo:$('#tTipo').value,dep:$('#tDep').value,dir:$('#tDir').value.trim(),cub:$('#tCub').value.replace(/\D/g,''),ter:$('#tTer').value.replace(/\D/g,''),dorm:$('#tDorm').value,ban:$('#tBan').value,obs:$('#tObs').value.trim()};}
+function tTexto(v){
+  var l=['Hola Grupo DB, quiero tasar mi propiedad.','Nombre: '+v.nombre,'Quiero: '+v.op,'Tipo: '+v.tipo,'Ubicación: '+(v.dir?v.dir+', ':'')+v.dep];
+  if(v.cub)l.push('Sup. cubierta: '+v.cub+' m²'); if(v.ter)l.push('Terreno: '+v.ter+' m²');
+  if(v.dorm)l.push('Dormitorios: '+v.dorm); if(v.ban)l.push('Baños: '+v.ban); if(v.obs)l.push('Comentario: '+v.obs);
+  return l.join('\n');
+}
+function tPreview(){
+  var v=tVals();
+  $('#tTit').textContent=v.tipo+(v.dir?' en '+v.dir:'')+', '+v.dep;
+  var d=[v.op]; if(v.cub)d.push(v.cub+' m² cub.'); if(v.ter)d.push(v.ter+' m² terreno'); if(v.dorm)d.push(v.dorm+(/^\d/.test(v.dorm)?' dorm.':''));
+  $('#tDat').textContent=d.join(' · ');
+  $('#tPh').innerHTML='<div style="color:var(--azul);width:60%">'+ART[/Depart/.test(v.tipo)?'depto':/Terreno|Finca/.test(v.tipo)?(v.tipo==='Finca'?'quinta':'terreno'):'casa']+'</div>';
+  $('#tMail').href='mailto:'+MAIL+'?subject='+encodeURIComponent('Tasación: '+v.tipo+' en '+v.dep)+'&body='+encodeURIComponent(tTexto(v));
+}
+$('#tf').addEventListener('input',tPreview); $('#tf').addEventListener('change',tPreview);
+$('#tf').addEventListener('submit',function(e){
+  e.preventDefault(); var v=tVals();
+  if(!v.nombre){$('#tErr').textContent='Poné tu nombre para que sepan quién escribe.';$('#tNombre').focus();return;}
+  $('#tErr').textContent='';
+  window.open(waLink(tTexto(v)),'_blank','noopener');
+});
+$('#tMail').addEventListener('click',function(e){if(!$('#tNombre').value.trim()){e.preventDefault();$('#tErr').textContent='Poné tu nombre para que sepan quién escribe.';$('#tNombre').focus();}});
+
+/* exponer para pruebas */
+window.__gdb={P:P,hand:function(){return hand.slice();},compData:compData,manoTexto:manoTexto,waProp:function(id){return waProp(BY[id]);}};
+render(true); tPreview();
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Grupo DB – Corredores Inmobiliarios"></script>
+</body>
+</html>
