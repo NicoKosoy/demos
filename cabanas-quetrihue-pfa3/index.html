@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Quetrihué Cabañas de Montaña · Villa La Angostura</title>
+<meta name="description" content="Prototipo de demostración: cabañas de madera y piedra en la ladera, con ascensor de montaña hasta la playa y el muelle sobre el Nahuel Huapi.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Castoro:ital@0;1&family=Geologica:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --noche:#0E2433;
+  --hondo:#14354A;
+  --lago:#2D6E8E;
+  --espuma:#E9F1F2;
+  --piedra:#B9B1A4;
+  --piedra2:#7E776C;
+  --madera:#B9783F;
+  --brasa:#E08A3C;
+  --texto:#E8EEF0;
+  --suave:#A5BCC8;
+  --papel:#F4F1EB;
+  --tinta:#13212B;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--noche);color:var(--texto);font-family:"Geologica",sans-serif;font-weight:300;font-size:17px;line-height:1.65}
+img{display:block;max-width:100%}
+a{color:inherit}
+h1,h2,h3,.serif{font-family:"Castoro",serif;font-weight:400;line-height:1.08}
+.proto{background:var(--brasa);color:#20140A;font-size:13px;text-align:center;padding:8px 16px;font-weight:500}
+/* shell: rail + content */
+.shell{display:grid;grid-template-columns:150px 1fr}
+.rail{position:sticky;top:0;height:100vh;border-right:1px solid #24465C;display:flex;flex-direction:column;align-items:center;padding:24px 0}
+.rail .logo{font-family:"Castoro";font-style:italic;font-size:22px;color:#fff;margin-bottom:22px;text-align:center;line-height:1}
+.rail .logo small{display:block;font-family:"Geologica";font-style:normal;font-size:10px;letter-spacing:.2em;color:var(--suave);margin-top:6px}
+.shaft{position:relative;flex:1;width:100%;display:flex;justify-content:center}
+.shaft::before{content:"";position:absolute;top:0;bottom:0;left:50%;width:2px;background:repeating-linear-gradient(to bottom,#3C6178 0 6px,transparent 6px 12px)}
+.car{position:absolute;left:50%;transform:translate(-50%,-50%);width:34px;height:44px;border:2px solid var(--brasa);border-radius:4px;background:var(--hondo);transition:top .5s cubic-bezier(.6,.1,.3,1);z-index:2}
+.car::before,.car::after{content:"";position:absolute;left:50%;width:2px;height:12px;background:var(--brasa);transform:translateX(-50%)}
+.car::before{top:-14px}.car::after{bottom:-14px}
+.car i{position:absolute;inset:6px 6px 14px;border:1px solid #5B8199;border-radius:2px}
+.stops{position:absolute;inset:0;list-style:none}
+.stops li{position:absolute;left:0;right:0;transform:translateY(-50%);display:flex;justify-content:center}
+.stops a{display:block;text-decoration:none;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--suave);background:var(--noche);padding:2px 6px;margin-left:96px;white-space:nowrap;position:absolute;left:-30px;opacity:0}
+.stops b{width:12px;height:12px;border-radius:50%;background:var(--noche);border:2px solid #4D7690;display:block;position:relative;z-index:1}
+.stops li.on b{background:var(--brasa);border-color:var(--brasa)}
+.rail .lvl{font-size:12px;color:var(--suave);text-align:center;margin-top:14px;min-height:36px;padding:0 8px}
+.rail .lvl b{display:block;color:#fff;font-weight:500;font-size:13px}
+@media (max-width:900px){
+  .shell{grid-template-columns:1fr}
+  .rail{position:fixed;top:auto;bottom:0;left:0;right:0;height:62px;z-index:40;flex-direction:row;padding:0 14px;border-right:0;border-top:1px solid #24465C;background:rgba(14,36,51,.96);backdrop-filter:blur(8px)}
+  .rail .logo{display:none}
+  .shaft{height:100%}
+  .shaft::before{top:50%;bottom:auto;left:0;right:0;width:auto;height:2px;background:repeating-linear-gradient(to right,#3C6178 0 6px,transparent 6px 12px)}
+  .car{width:30px;height:22px;top:50%!important;transition:left .5s cubic-bezier(.6,.1,.3,1)}
+  .car::before,.car::after{display:none}
+  .stops li{top:50%!important;width:20px;transform:translate(-50%,-50%)}
+  .rail .lvl{margin:0 0 0 12px;min-width:110px;text-align:left;font-size:11px}
+}
+/* hero */
+.hero{min-height:92vh;position:relative;display:flex;align-items:flex-end;overflow:hidden;background:var(--hondo)}
+.hero .ph{position:absolute;inset:0}
+.hero .ph img{width:100%;height:100%;object-fit:cover;opacity:.62}
+.hero .ph svg{position:absolute;inset:0;width:100%;height:100%}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(14,36,51,.96) 8%,rgba(14,36,51,.2) 60%,rgba(14,36,51,.5))}
+.hero .in{position:relative;z-index:2;padding:0 56px 64px;max-width:980px}
+.eyebrow{font-size:12.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--brasa);font-weight:500}
+.hero h1{font-size:clamp(40px,6vw,84px);margin:16px 0 20px;color:#fff}
+.hero h1 i{color:var(--piedra)}
+.hero p{font-size:19px;color:#CFDDE4;max-width:34em}
+.btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.btn{display:inline-block;background:var(--brasa);color:#1D1209;text-decoration:none;font:500 15px "Geologica";padding:13px 22px;border-radius:40px;border:0;cursor:pointer}
+.btn.line{background:transparent;color:#fff;box-shadow:inset 0 0 0 1px #6E93A8}
+@media (max-width:900px){.hero .in{padding:0 20px 48px}.hero{min-height:88vh}}
+/* blocks */
+.blk{padding:96px 56px;border-bottom:1px solid #1F4257}
+.blk.light{background:var(--papel);color:var(--tinta)}
+.blk.light .eyebrow{color:#A4582A}
+.blk h2{font-size:clamp(32px,4vw,54px);margin:12px 0 16px;max-width:16em}
+.blk .intro{max-width:40em;color:var(--suave)}
+.blk.light .intro{color:#55636B}
+@media (max-width:900px){.blk{padding:72px 20px}}
+/* parada */
+.stopline{display:flex;align-items:center;gap:14px;font-size:13px;color:var(--suave);margin-bottom:6px}
+.stopline span{border:1px solid #3C6178;border-radius:30px;padding:3px 12px}
+.blk.light .stopline{color:#55636B}.blk.light .stopline span{border-color:#C9C2B6}
+/* niveles del predio */
+.corte{display:grid;grid-template-columns:1.1fr 1fr;gap:40px;margin-top:48px;align-items:center}
+.corte svg{width:100%;height:auto}
+.corte ol{list-style:none;counter-reset:n}
+.corte li{counter-increment:n;padding:16px 0;border-top:1px solid #24465C;display:grid;grid-template-columns:44px 1fr;gap:12px}
+.corte li::before{content:counter(n,decimal-leading-zero);font-family:"Castoro";font-size:22px;color:var(--brasa)}
+.corte li b{font-weight:500;color:#fff;display:block}
+.corte li span{color:var(--suave);font-size:15px}
+@media (max-width:900px){.corte{grid-template-columns:1fr}}
+/* unidades */
+.tipo{margin-top:56px;padding-top:40px;border-top:1px solid #D8D1C4}
+.tipo .top{display:flex;justify-content:space-between;align-items:baseline;gap:20px;flex-wrap:wrap;margin-bottom:22px}
+.tipo h3{font-size:clamp(30px,3.4vw,44px)}
+.tipo .cap{font-family:"Castoro";font-style:italic;font-size:22px;color:#A4582A}
+.tipo .main{width:100%;height:auto;border-radius:6px;background:#DDD6CA}
+.tipo .rest{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px}
+.tipo .rest img{width:100%;height:auto;border-radius:4px;background:#DDD6CA;cursor:zoom-in}
+.tipo .cols{display:grid;grid-template-columns:1.3fr 1fr;gap:40px;margin-top:26px}
+.tipo ul{list-style:none;columns:2;column-gap:24px;font-size:15px;color:#3B4A53}
+.tipo ul li{padding:6px 0;border-bottom:1px solid #E1DACE;break-inside:avoid}
+.tipo p{color:#3B4A53}
+.fallback{width:100%;aspect-ratio:16/9;border-radius:6px;background:linear-gradient(#9FB7C3,#D9E3E6 55%,#5F7F62 56%,#3E5A45);display:flex;align-items:flex-end;padding:16px;color:#13212B;font-size:13px}
+@media (max-width:900px){.tipo .rest{grid-template-columns:repeat(2,1fr)}.tipo .cols{grid-template-columns:1fr}.tipo ul{columns:1}}
+/* agua */
+.agua{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#24465C;margin-top:44px;border:1px solid #24465C}
+.agua div{background:var(--noche);padding:26px 22px}
+.agua b{font-family:"Castoro";font-size:24px;font-weight:400;color:#fff;display:block;margin-bottom:6px}
+.agua span{font-size:14.5px;color:var(--suave)}
+.agua em{font-style:normal;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--brasa)}
+@media (max-width:900px){.agua{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.agua{grid-template-columns:1fr}}
+/* voces */
+.voces{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px}
+.voces blockquote{border-left:2px solid var(--brasa);padding:4px 0 4px 18px;font-family:"Castoro";font-style:italic;font-size:21px;line-height:1.35;color:#fff}
+.voces cite{display:block;font-family:"Geologica";font-style:normal;font-size:13px;color:var(--suave);margin-top:12px}
+@media (max-width:900px){.voces{grid-template-columns:1fr}}
+/* temporadas */
+.temps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:40px}
+.temps div{border:1px solid #D8D1C4;border-radius:8px;padding:22px;background:#fff}
+.temps .t{font-family:"Castoro";font-size:23px}
+.temps .f{font-size:13.5px;color:#5E6B72;margin:6px 0 16px;min-height:44px}
+.temps .p{font-size:14px;color:#5E6B72}
+.temps .p b{display:block;font-family:"Castoro";font-weight:400;font-size:24px;color:var(--tinta)}
+.temps .hi{background:var(--tinta);color:#fff;border-color:var(--tinta)}
+.temps .hi .f,.temps .hi .p{color:var(--suave)}.temps .hi .p b{color:#fff}
+@media (max-width:900px){.temps{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.temps{grid-template-columns:1fr}}
+/* reserva */
+.res{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:40px}
+.card{background:var(--hondo);border:1px solid #2A5168;border-radius:10px;padding:26px}
+.sync{display:inline-flex;gap:8px;align-items:center;font-size:12.5px;color:#BDE3CB;border:1px solid #2F6B4A;border-radius:30px;padding:4px 12px;margin-bottom:16px}
+.sync i{width:7px;height:7px;border-radius:50%;background:#4CC17D;display:block}
+.calhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.calhead b{font-family:"Castoro";font-weight:400;font-size:22px;text-transform:capitalize}
+.calhead button{background:none;border:1px solid #3C6178;color:#fff;border-radius:50%;width:36px;height:36px;cursor:pointer}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;font-size:14px}
+.cal .dow{font-size:11px;color:var(--suave);text-transform:uppercase}
+.cal .d{padding:9px 0;border-radius:6px;background:#1B4259;cursor:pointer}
+.cal .d.x{background:transparent;color:#4E7084;text-decoration:line-through;cursor:not-allowed}
+.cal .d.p{visibility:hidden}.cal .d.past{opacity:.3;cursor:default}
+.cal .d.sel{background:var(--brasa);color:#1D1209;font-weight:600}.cal .d.rng{background:#7A5A3B}
+label.f{display:block;font-size:12.5px;color:var(--suave);margin:14px 0 6px;letter-spacing:.04em}
+select,input{width:100%;font:400 15.5px "Geologica";padding:11px 12px;border-radius:6px;border:1px solid #3C6178;background:#0F2C3E;color:#fff}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tot{margin-top:18px;border-top:1px solid #3C6178;padding-top:12px}
+.tot .ln{display:flex;justify-content:space-between;padding:4px 0;font-size:15px;gap:10px}
+.tot .big{font-family:"Castoro";font-size:26px}
+.tot .sena{color:var(--brasa);font-weight:500}
+.mp{width:100%;margin-top:16px;background:#009EE3;color:#fff;border-radius:8px;text-align:center}
+.msg{font-size:13.5px;color:#BDE3CB;margin-top:10px;min-height:20px}
+@media (max-width:900px){.res{grid-template-columns:1fr}}
+/* faq */
+.faq{display:grid;grid-template-columns:1fr 1fr;gap:0 48px;margin-top:36px}
+details{border-top:1px solid #D8D1C4;padding:16px 0}
+summary{cursor:pointer;font-family:"Castoro";font-size:20px;list-style:none}
+summary::before{content:"↓ ";color:#A4582A;font-family:"Geologica";font-size:14px}
+details[open] summary::before{content:"↑ "}
+details p{color:#55636B;margin-top:6px;font-size:15.5px}
+@media (max-width:900px){.faq{grid-template-columns:1fr}}
+footer{padding:56px;color:var(--suave);font-size:14.5px}
+footer .cols{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:28px}
+footer b{font-family:"Castoro";font-weight:400;font-size:24px;color:#fff;display:block;margin-bottom:6px}
+footer .legal{margin-top:32px;font-size:12.5px;color:#6F8B99;border-top:1px solid #24465C;padding-top:16px}
+@media (max-width:900px){footer{padding:48px 20px 100px}footer .cols{grid-template-columns:1fr}}
+.lb{position:fixed;inset:0;background:rgba(5,15,22,.94);display:none;align-items:center;justify-content:center;z-index:60;padding:20px}
+.lb.on{display:flex}.lb img{max-height:90vh;width:auto}
+</style>
+</head>
+<body>
+<div class="proto" role="note"><b>Prototipo de demostración</b> preparado para Cabañas Quetrihué · tarifas, disponibilidad y pagos de ejemplo</div>
+<div class="shell">
+<aside class="rail" aria-label="Recorrido">
+  <div class="logo">Quetrihué<small>CABAÑAS DE MONTAÑA</small></div>
+  <div class="shaft">
+    <div class="car" id="car"><i></i></div>
+    <ul class="stops" id="stops"></ul>
+  </div>
+  <div class="lvl" id="lvl"></div>
+</aside>
+<main>
+<header class="hero" id="s0">
+  <div class="ph">
+    <svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <rect width="1200" height="800" fill="#1A4560"/>
+      <path d="M0 330 L160 210 L300 300 L470 140 L640 290 L800 180 L980 300 L1200 200 L1200 800 L0 800Z" fill="#244F68"/>
+      <path d="M470 140 L520 190 L500 200 L470 170 L440 196 L430 186Z" fill="#E9F1F2" opacity=".8"/>
+      <path d="M0 470 L1200 450 L1200 800 L0 800Z" fill="#2D6E8E"/>
+      <path d="M700 800 L760 600 L860 520 L1000 470 L1200 430 L1200 800Z" fill="#3E5A45"/>
+    </svg>
+    <img src="https://www.welcomeargentina.com/plantillas/webp/grandes/41868-00Gr.webp" alt="" onerror="this.remove()">
+  </div>
+  <div class="in">
+    <div class="eyebrow">Río Colorado 78 · Villa La Angostura</div>
+    <h1>De la cabaña a la playa, <i>en ascensor de montaña.</i></h1>
+    <p>Cabañas de madera y piedra escalonadas en la ladera, con vista al Nahuel Huapi y a la cordillera. Abajo esperan la playa privada, el muelle con amarras, la pileta climatizada con jacuzzi y el sauna. Atendidas por Gimena y José.</p>
+    <div class="btns"><a class="btn" href="#s5">Ver disponibilidad</a><a class="btn line" href="#s1">Bajar con el ascensor ↓</a></div>
+  </div>
+</header>
+
+<section class="blk" id="s1">
+  <div class="stopline"><span>Parada 1</span>La ladera</div>
+  <h2>Cada cabaña en su escalón, todas mirando al lago</h2>
+  <p class="intro">El terreno baja en terrazas desde la calle hasta la costa. Por eso cada cabaña tiene su deck privado con parrilla y la vista no se la tapa nadie. Un ascensor externo une las de arriba con las de abajo y con la playa.</p>
+  <div class="corte">
+    <svg viewBox="0 0 520 360" role="img" aria-label="Corte de la ladera">
+      <rect width="520" height="360" fill="#102C3D" rx="8"/>
+      <path d="M0 70 L120 70 L120 120 L230 120 L230 170 L340 170 L340 230 L520 250 L520 360 L0 360Z" fill="#2B4636"/>
+      <path d="M340 250 C420 252 470 262 520 262 L520 360 L300 360Z" fill="#2D6E8E"/>
+      <path d="M330 230 L420 236" stroke="#C9A06A" stroke-width="4"/>
+      <line x1="96" y1="40" x2="96" y2="236" stroke="#E08A3C" stroke-width="2" stroke-dasharray="5 4"/>
+      <rect x="86" y="108" width="20" height="26" rx="2" fill="none" stroke="#E08A3C" stroke-width="2"/>
+      <g fill="#B9783F" stroke="#5A3A1D"><rect x="140" y="92" width="56" height="28"/><rect x="250" y="142" width="56" height="28"/></g>
+      <g fill="#5A3A1D"><path d="M134 92 L168 72 L202 92Z"/><path d="M244 142 L278 122 L312 142Z"/></g>
+      <rect x="350" y="214" width="40" height="12" rx="2" fill="#7FB3CF"/>
+      <text x="16" y="60" fill="#A5BCC8" font-family="Geologica" font-size="12">Río Colorado</text>
+      <text x="138" y="146" fill="#E8EEF0" font-family="Geologica" font-size="12">cabañas altas</text>
+      <text x="248" y="196" fill="#E8EEF0" font-family="Geologica" font-size="12">cabañas bajas</text>
+      <text x="342" y="208" fill="#E8EEF0" font-family="Geologica" font-size="12">pileta · sauna</text>
+      <text x="430" y="228" fill="#E8EEF0" font-family="Geologica" font-size="12">muelle</text>
+      <text x="370" y="320" fill="#CFE3EC" font-family="Castoro" font-style="italic" font-size="16">Nahuel Huapi</text>
+      <text x="40" y="250" fill="#E08A3C" font-family="Geologica" font-size="12">ascensor</text>
+    </svg>
+    <ol>
+      <li><div><b>Llegada por Río Colorado</b><span>A 2 km del centro comercial y a 10 km del Cerro Bayo. Estacionamiento sin cargo.</span></div></li>
+      <li><div><b>Las cabañas</b><span>De 2 y de 3 dormitorios, con hogar a leña (la leña está incluida), cocina completa y deck con parrilla.</span></div></li>
+      <li><div><b>Pileta, jacuzzi y spa</b><span>Pileta exterior climatizada en verano, sauna seco y ducha escocesa.</span></div></li>
+      <li><div><b>Playa privada y muelle</b><span>Con amarras de cortesía para quien llega en lancha o kayak.</span></div></li>
+    </ol>
+  </div>
+</section>
+
+<section class="blk light" id="s2">
+  <div class="stopline"><span>Parada 2</span>Las cabañas</div>
+  <h2>Dos tamaños, la misma vista</h2>
+  <p class="intro">Cada tipo con su foto principal grande y entera, y el resto abajo. Tocá una foto para verla completa.</p>
+  <div id="tipos"></div>
+</section>
+
+<section class="blk" id="s3">
+  <div class="stopline"><span>Parada 3</span>Abajo, el agua</div>
+  <h2>Lo que hay al final del ascensor</h2>
+  <p class="intro">Lo que más nombran los huéspedes: la vista, la playa y que se puede bajar al lago sin salir del complejo.</p>
+  <div class="agua">
+    <div><em>Verano</em><b>Pileta climatizada</b><span>Exterior, con jacuzzi, habilitada en los meses de verano.</span></div>
+    <div><em>Todo el año</em><b>Sauna y ducha escocesa</b><span>Para la vuelta del Cerro Bayo o de una caminata.</span></div>
+    <div><em>Costa propia</em><b>Playa privada</b><span>Sobre la costa del Nahuel Huapi, a pasos de las cabañas.</span></div>
+    <div><em>Navegantes</em><b>Muelle con amarras</b><span>Amarras de cortesía para lanchas y kayaks.</span></div>
+  </div>
+  <div class="voces">
+    <blockquote>“Cabañas amplias con una vista al lago y las montañas inmejorable.”<cite>Reseña en TripAdvisor, octubre 2023</cite></blockquote>
+    <blockquote>“Privilegiada ubicación, vista, esmerada atención.”<cite>Reseña en TripAdvisor, junio 2024</cite></blockquote>
+    <blockquote>“Excelente las instalaciones, vista, ubicación y atención de los propietarios.”<cite>Daniel Q., junio 2025</cite></blockquote>
+  </div>
+</section>
+
+<section class="blk light" id="s4">
+  <div class="stopline"><span>Parada 4</span>Temporadas</div>
+  <h2>Cuánto sale, según cuándo vengan</h2>
+  <p class="intro">El huésped ve el precio antes de escribir. Ustedes cargan sus valores y la web arma el total sola, con la seña.</p>
+  <div class="temps" id="temps"></div>
+  <p style="font-size:13px;color:#5E6B72;margin-top:12px">Valores de ejemplo por noche, cabaña de 2 dormitorios. Se reemplazan por sus tarifas reales.</p>
+</section>
+
+<section class="blk" id="s5">
+  <div class="stopline"><span>Parada 5</span>Reservar</div>
+  <h2>Disponibilidad real y reserva con seña</h2>
+  <p class="intro">El calendario se alimenta de Booking y Airbnb, así que lo que ve el huésped está siempre al día. Elige fechas, cabaña y personas, y deja la seña del 30% por Mercado Pago.</p>
+  <div class="res">
+    <div class="card">
+      <div class="sync"><i></i>Sincronizado con Booking y Airbnb</div>
+      <div class="calhead"><button id="prev" aria-label="Mes anterior">‹</button><b id="mes"></b><button id="next" aria-label="Mes siguiente">›</button></div>
+      <div class="cal" id="cal"></div>
+    </div>
+    <div class="card">
+      <label class="f" for="cab">Cabaña</label><select id="cab"></select>
+      <div class="row2"><div><label class="f" for="pax">Personas</label><select id="pax"></select></div><div><label class="f" for="mas">Mascota</label><select id="mas"><option value="0">No</option><option value="1">Sí, viene con nosotros</option></select></div></div>
+      <div class="row2"><div><label class="f">Llegada</label><input id="in" readonly placeholder="En el calendario"></div><div><label class="f">Salida</label><input id="out" readonly placeholder="—"></div></div>
+      <div class="tot" id="tot"></div>
+      <button class="btn mp" id="pagar">Reservar con seña por Mercado Pago</button>
+      <div class="msg" id="msg"></div>
+    </div>
+  </div>
+</section>
+
+<section class="blk light" id="s6">
+  <div class="stopline"><span>Parada 6</span>Antes de venir</div>
+  <h2>Preguntas frecuentes</h2>
+  <div class="faq">
+    <details open><summary>¿Horarios de ingreso y salida?</summary><p>Check-in a las 15:00 y check-out a las 11:00.</p></details>
+    <details><summary>¿Aceptan mascotas?</summary><p>Sí. Consultanos al reservar por si hay algún adicional.</p></details>
+    <details><summary>¿Hay ropa blanca y limpieza?</summary><p>Sí: ropa de cama incluida y servicio de mucama diario. Lavandería opcional.</p></details>
+    <details><summary>¿Viajamos con un bebé?</summary><p>Tenemos practicunas y un sector de juegos para chicos.</p></details>
+    <details><summary>¿Cuántas personas entran?</summary><p>Las cabañas de 2 dormitorios son para 2 a 5 personas; las de 3 dormitorios, hasta 7.</p></details>
+    <details><summary>¿Cómo se paga?</summary><p>Con seña del 30% por Mercado Pago al reservar; también aceptamos tarjetas de crédito.</p></details>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;margin-top:56px">
+    <div><div class="eyebrow">Cómo llegar</div><p style="margin-top:8px">Río Colorado 78, Villa La Angostura, Neuquén. A 2 km del centro, sobre la costa del lago, dentro del área del Parque Nacional Nahuel Huapi.</p><a class="btn" style="margin-top:14px" href="https://www.google.com/maps/search/?api=1&query=Caba%C3%B1as+Quetrihue+R%C3%ADo+Colorado+78+Villa+La+Angostura" target="_blank" rel="noopener">Abrir en Google Maps</a></div>
+    <div><div class="eyebrow">Cerca</div><p style="margin-top:8px">Cerro Bayo a 10 km · Bosque de Arrayanes en la península de Quetrihué · Ruta de los Siete Lagos · Bariloche por la costa del Nahuel Huapi.</p></div>
+  </div>
+</section>
+
+<footer>
+  <div class="cols">
+    <div><b>Quetrihué Cabañas de Montaña</b>Río Colorado 78 · Villa La Angostura, Neuquén</div>
+    <div>Celular +54 9 2944 55-1088<br>info@quetrihue.com.ar</div>
+    <div>También en Booking.com<br>Calendario sincronizado</div>
+  </div>
+  <div class="legal">Prototipo de demostración preparado para Cabañas Quetrihué por Resolviendo Kos. Fotos tomadas de su ficha pública; tarifas, disponibilidad y pagos de ejemplo.</div>
+</footer>
+</main>
+</div>
+<div class="lb" id="lb"><img alt=""></div>
+<script>
+const WA='https://www.welcomeargentina.com/plantillas/webp/grandes/41868-';
+const ph=n=>WA+String(n).padStart(2,'0')+'Gr.webp';
+const STOPS=[['s0','Calle'],['s1','Ladera'],['s2','Cabañas'],['s3','Lago'],['s4','Tarifas'],['s5','Reservar'],['s6','Info']];
+const LV=['Entrada · Río Colorado','La ladera','Las cabañas','Playa y muelle','Temporadas','Reserva','Antes de venir'];
+const ul=document.getElementById('stops'),car=document.getElementById('car'),lvl=document.getElementById('lvl');
+STOPS.forEach((s,i)=>{const li=document.createElement('li');const pct=6+i*(88/(STOPS.length-1));li.dataset.p=pct;li.style.top=pct+'%';li.style.left='';li.innerHTML=`<a href="#${s[0]}" aria-label="${s[1]}"><b></b></a>`;ul.appendChild(li)});
+const mob=()=>matchMedia('(max-width:900px)').matches;
+function place(){const lis=[...ul.children];lis.forEach(li=>{if(mob()){li.style.left=li.dataset.p+'%';li.style.top='50%'}else{li.style.left='0';li.style.top=li.dataset.p+'%'}})}
+place();addEventListener('resize',()=>{place();spy()});
+ul.addEventListener('click',e=>{const a=e.target.closest('a');if(a){e.preventDefault();document.querySelector(a.getAttribute('href')).scrollIntoView({behavior:'smooth'})}});
+function spy(){let cur=0;STOPS.forEach((s,i)=>{const el=document.getElementById(s[0]);if(el.getBoundingClientRect().top<innerHeight*.45)cur=i});
+  const p=ul.children[cur].dataset.p;if(mob()){car.style.left=p+'%';car.style.top='50%'}else{car.style.top=p+'%';car.style.left='50%'}
+  [...ul.children].forEach((li,i)=>li.classList.toggle('on',i<=cur));lvl.innerHTML=`<b>${LV[cur]}</b>parada ${cur+1} de ${STOPS.length}`}
+addEventListener('scroll',spy,{passive:true});spy();
+// tipos
+const TIPOS=[
+ {id:'d2',n:'Cabaña de 2 dormitorios',cap:'de 2 a 5 personas',max:5,main:1,rest:[2,3,4,5],
+  d:'En dos plantas: living-comedor con chimenea, cocina completa, toilette y baño principal, y dos dormitorios arriba. Deck privado con parrilla mirando al lago.',
+  l:['Vista al lago','Hogar a leña con leña incluida','Cocina completa','Toilette + baño','Deck con parrilla','Smart TV y Wi-Fi','Calefacción','Caja de seguridad']},
+ {id:'d3',n:'Cabaña de 3 dormitorios',cap:'hasta 7 personas',max:7,main:6,rest:[7,8,9,10],
+  d:'Para familias grandes o dos parejas con chicos: tres dormitorios configurables como suites, chimenea y deck con parrilla individual, todo con vista al Nahuel Huapi.',
+  l:['Vista al lago','3 dormitorios configurables','Chimenea','Cocina completa','Deck con parrilla','Smart TV y Wi-Fi','Practicuna a pedido','Mucama diaria']}
+];
+window.fbk=el=>{const d=document.createElement('div');d.className='fallback';d.textContent='Foto de la cabaña';el.replaceWith(d)};
+document.getElementById('tipos').innerHTML=TIPOS.map(t=>`<article class="tipo"><div class="top"><h3>${t.n}</h3><div class="cap">${t.cap}</div></div>
+<img class="main" src="${ph(t.main)}" alt="${t.n}" loading="lazy" onerror="fbk(this)">
+<div class="rest">${t.rest.map(n=>`<img src="${ph(n)}" alt="${t.n}" loading="lazy" onerror="this.remove()">`).join('')}</div>
+<div class="cols"><p>${t.d}</p><ul>${t.l.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+<a class="btn" style="margin-top:22px" href="#s5" onclick="document.getElementById('cab').value='${t.id}';fill();calc()">Ver fechas libres</a></article>`).join('');
+const lb=document.getElementById('lb');
+document.addEventListener('click',e=>{if(e.target.matches('.tipo img')){lb.querySelector('img').src=e.target.src;lb.classList.add('on')}else if(e.target.closest('#lb'))lb.classList.remove('on')});
+// temporadas
+const T=[
+ {t:'Verano',f:'2 de enero al 28 de febrero, con pileta y playa',r:1.5,hi:1},
+ {t:'Semana Santa',f:'25 al 28 de marzo de 2027',r:1.3},
+ {t:'Nieve',f:'Julio y vacaciones de invierno · Cerro Bayo',r:1.35},
+ {t:'Otoño y primavera',f:'Marzo a junio y agosto a diciembre',r:1}
+];
+const BASE=130000,fmt=n=>'$ '+Math.round(n).toLocaleString('es-AR');
+document.getElementById('temps').innerHTML=T.map(s=>`<div class="${s.hi?'hi':''}"><div class="t">${s.t}</div><div class="f">${s.f}</div><div class="p"><b>${fmt(BASE*s.r)}</b>por noche</div></div>`).join('');
+const season=d=>{const m=d.getMonth(),dd=d.getDate();if(m===0&&dd>=2||m===1)return T[0];if(d.getFullYear()===2027&&m===2&&dd>=25&&dd<=28)return T[1];if(m===6)return T[2];return T[3]};
+// reserva
+const sc=document.getElementById('cab'),px=document.getElementById('pax');
+sc.innerHTML=TIPOS.map(t=>`<option value="${t.id}">${t.n} · ${t.cap}</option>`).join('');
+function fill(){const t=TIPOS.find(x=>x.id===sc.value),v=px.value;px.innerHTML='';for(let i=1;i<=t.max;i++)px.innerHTML+=`<option>${i}</option>`;px.value=Math.min(+v||4,t.max)}
+fill();
+const today=new Date();today.setHours(0,0,0,0);let view=new Date(today.getFullYear(),today.getMonth(),1),ci=null,co=null;
+const busy=d=>{const s=d.getFullYear()*372+d.getMonth()*31+d.getDate()+(sc.value==='d3'?11:0);return (s*5)%19<4};
+function draw(){document.getElementById('mes').textContent=view.toLocaleDateString('es-AR',{month:'long',year:'numeric'});
+ let h=['lu','ma','mi','ju','vi','sá','do'].map(x=>`<div class="dow">${x}</div>`).join('');const off=(view.getDay()+6)%7;for(let i=0;i<off;i++)h+='<div class="d p"></div>';
+ const n=new Date(view.getFullYear(),view.getMonth()+1,0).getDate();
+ for(let i=1;i<=n;i++){const d=new Date(view.getFullYear(),view.getMonth(),i);let c='d';if(d<today)c+=' past';else if(busy(d))c+=' x';
+  if(ci&&+d===+ci||co&&+d===+co)c+=' sel';else if(ci&&co&&d>ci&&d<co)c+=' rng';h+=`<div class="${c}" data-t="${+d}">${i}</div>`}
+ document.getElementById('cal').innerHTML=h}
+document.getElementById('cal').onclick=e=>{const el=e.target.closest('.d');if(!el||/ x| past| p/.test(' '+el.className.slice(1)))return;const d=new Date(+el.dataset.t);
+ if(!ci||co||d<=ci){ci=d;co=null}else{for(let x=new Date(ci);x<d;x.setDate(x.getDate()+1))if(busy(x)){msg('Hay noches ocupadas en el medio. Probá otras fechas.');return}co=d}draw();calc()};
+document.getElementById('prev').onclick=()=>{if(view>new Date(today.getFullYear(),today.getMonth(),1)){view.setMonth(view.getMonth()-1);draw()}};
+document.getElementById('next').onclick=()=>{view.setMonth(view.getMonth()+1);draw()};
+sc.onchange=()=>{fill();ci=co=null;draw();calc()};px.onchange=calc;document.getElementById('mas').onchange=calc;
+const msg=t=>document.getElementById('msg').textContent=t;
+function calc(){const t=TIPOS.find(x=>x.id===sc.value),f=d=>d?d.toLocaleDateString('es-AR',{weekday:'short',day:'numeric',month:'short'}):'';
+ document.getElementById('in').value=f(ci);document.getElementById('out').value=f(co);const tot=document.getElementById('tot');
+ if(!ci||!co){tot.innerHTML='<div class="ln" style="color:#A5BCC8">Elegí llegada y salida en el calendario.</div>';return}
+ let n=0,s=0;const k=t.id==='d3'?1.4:1;for(let x=new Date(ci);x<co;x.setDate(x.getDate()+1)){n++;s+=BASE*season(x).r*k}
+ tot.innerHTML=`<div class="ln"><span>${n} noche${n>1?'s':''} · ${t.n} · ${px.value} pers.</span><span>${fmt(s)}</span></div><div class="ln"><span>Leña, ropa blanca y mucama</span><span>incluidos</span></div><div class="ln big"><span>Total</span><span>${fmt(s)}</span></div><div class="ln sena"><span>Seña 30% (Mercado Pago)</span><span>${fmt(s*.3)}</span></div><div class="ln" style="font-size:13.5px;color:#A5BCC8"><span>Saldo al llegar</span><span>${fmt(s*.7)}</span></div>`;msg('')}
+document.getElementById('pagar').onclick=()=>{if(!ci||!co){msg('Primero elegí las fechas.');return}msg('Demo: acá se abre Mercado Pago y a Gimena y José les llega el pedido con los datos del huésped.')};
+draw();calc();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Cabañas Quetrihué"></script>
+</body>
+</html>
