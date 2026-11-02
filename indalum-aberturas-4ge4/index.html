@@ -1,0 +1,812 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Indalum · Cotizador de aberturas</title>
+<meta name="description" content="Prototipo de cotizador online para Indalum, fábrica de aberturas de aluminio en Venado Tuerto.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:ital,wght@0,400;0,600;0,800;1,400&family=Commissioner:wght@400;500;600;700&family=Fragment+Mono&display=swap" rel="stylesheet">
+<style>
+:root{
+  --noche:#10161C; --noche-2:#18222B; --noche-3:#24313C;
+  --luz:#F2B45A; --luz-2:#FFD999; --brasa:#C9682F;
+  --perfil:#BCC3C8; --papel:#F3EFE7; --hoja:#FBF9F5; --tinta:#1A2026; --tinta-2:#55606A;
+  --linea:#DED7CB; --verde:#1F7A4D;
+  --serif:"Noto Serif Display",Georgia,serif; --sans:"Commissioner",system-ui,sans-serif; --mono:"Fragment Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+section[id]{scroll-margin-top:60px}
+body{margin:0;background:var(--papel);color:var(--tinta);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+button,input,select{font:inherit;color:inherit}
+a{color:inherit}
+.mono{font-family:var(--mono);letter-spacing:.02em}
+
+/* aviso */
+.aviso{background:var(--luz);color:#2A1C08;font-size:13.5px}
+.aviso .in{max-width:1320px;margin:0 auto;padding:8px 20px;display:flex;gap:12px;justify-content:space-between;align-items:center;flex-wrap:wrap}
+.aviso button{background:none;border:0;text-decoration:underline;cursor:pointer;padding:0;font-weight:600}
+
+/* header */
+header.top{position:sticky;top:0;z-index:40;background:rgba(16,22,28,.94);backdrop-filter:blur(8px);color:#EDE7DC;border-bottom:1px solid #2A3540}
+header.top .in{max-width:1320px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:20px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo img{height:34px;width:auto;filter:brightness(0) invert(1)}
+.logo .txt{font-family:var(--serif);font-weight:800;font-size:22px;letter-spacing:.14em}
+nav.menu{display:flex;gap:22px;margin-left:auto;font-size:14.5px}
+nav.menu a{text-decoration:none;opacity:.8}
+nav.menu a:hover{opacity:1}
+.btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:999px;padding:11px 18px;font-weight:600;cursor:pointer;text-decoration:none;font-size:15px;transition:transform .15s,background .15s}
+.btn:active{transform:scale(.98)}
+.btn-luz{background:var(--luz);color:#24180A}
+.btn-luz:hover{background:var(--luz-2)}
+.btn-wa{background:#1FA855;color:#fff}
+.btn-wa:hover{background:#178a45}
+.btn-line{background:transparent;border:1.5px solid currentColor}
+.btn-dark{background:var(--tinta);color:#fff}
+@media (max-width:860px){nav.menu{display:none}header.top .btn{margin-left:auto;padding:9px 14px;font-size:14px}}
+
+/* hero */
+.hero{background:var(--noche);color:#EFE9DE;position:relative;overflow:hidden}
+.hero .in{max-width:1320px;margin:0 auto;padding:64px 20px 0;display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:end}
+.kicker{font-family:var(--mono);font-size:12.5px;text-transform:uppercase;letter-spacing:.14em;color:var(--luz)}
+.hero h1{font-family:var(--serif);font-weight:400;font-size:clamp(44px,7.4vw,104px);line-height:.95;letter-spacing:-.02em;margin:14px 0 22px}
+.hero h1 em{font-style:italic;color:var(--luz)}
+.hero p.lead{font-size:clamp(17px,1.6vw,20px);max-width:34em;color:#C9C2B6;margin:0 0 28px}
+.hero .ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:44px}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid #2E3B46;margin-top:8px}
+.trio div{padding:16px 14px 20px 0;font-family:var(--serif);font-size:clamp(17px,1.7vw,22px);line-height:1.15}
+.trio div+div{padding-left:16px;border-left:1px solid #2E3B46}
+.trio small{display:block;font-family:var(--mono);font-size:11px;color:#8E98A1;letter-spacing:.12em;margin-bottom:6px}
+.vitrina{position:relative;align-self:stretch;min-height:480px}
+.vitrina .marco{position:absolute;inset:0 0 0 0;border:14px solid #2B343C;border-bottom:0;background:#0B1015;box-shadow:inset 0 0 0 2px #46525C}
+.vitrina .marco img{width:100%;height:100%;object-fit:cover;opacity:.92}
+.vitrina .marco:after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,rgba(255,255,255,.18) 0,rgba(255,255,255,0) 32%,rgba(255,255,255,0) 60%,rgba(255,255,255,.08) 70%,rgba(255,255,255,0) 78%)}
+.vitrina .parante{position:absolute;top:0;bottom:0;left:50%;width:14px;margin-left:-7px;background:#2B343C;box-shadow:0 0 0 2px #46525C}
+.vitrina .placa{position:absolute;left:-18px;bottom:28px;background:var(--hoja);color:var(--tinta);padding:12px 16px;font-size:13px;box-shadow:0 10px 30px rgba(0,0,0,.35);max-width:240px}
+.vitrina .placa b{font-family:var(--serif);font-size:18px;display:block;font-weight:600}
+.vitrina .fallback{position:absolute;inset:0;display:none;align-items:flex-end;justify-content:flex-start;padding:24px;letter-spacing:.2em;font-family:var(--serif);font-size:40px;color:#3A4651;background:repeating-linear-gradient(90deg,#121A21 0 60px,#141D25 60px 120px)}
+@media (max-width:920px){.hero .in{grid-template-columns:1fr;padding-top:40px;gap:28px}.vitrina{min-height:300px;margin:0 -20px}.vitrina .placa{left:16px}}
+
+/* sección cotizador */
+.cot{max-width:1320px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:0;align-items:start}
+.escenario{position:sticky;top:57px;height:calc(100vh - 57px);background:var(--noche-2);color:#E8E2D6;display:flex;flex-direction:column;overflow:hidden}
+.esc-top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 22px 0}
+.esc-top .titulo{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#9AA5AE}
+.switch{display:inline-flex;background:#0E141A;border-radius:999px;padding:3px;border:1px solid #33404B}
+.switch button{border:0;background:none;padding:6px 12px;border-radius:999px;font-size:13px;cursor:pointer;color:#AEB7BF}
+.switch button.on{background:var(--luz);color:#24180A;font-weight:600}
+.lienzo{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:6px 10px}
+.lienzo svg{width:100%;height:100%;max-height:100%}
+.ficha{display:grid;grid-template-columns:1fr auto;gap:10px 18px;align-items:end;padding:14px 22px 20px;border-top:1px solid #2E3B46;background:#141C24}
+.ficha .spec{font-size:13.5px;color:#B9C1C8;line-height:1.45}
+.ficha .spec b{color:#fff;font-weight:600}
+.ficha .monto{text-align:right}
+.ficha .monto small{display:block;font-family:var(--mono);font-size:11px;color:#8E98A1;letter-spacing:.1em}
+.ficha .monto strong{display:block;font-family:var(--serif);font-weight:600;font-size:clamp(26px,3vw,38px);line-height:1.05;color:var(--luz-2);font-variant-numeric:tabular-nums;white-space:nowrap}
+.ficha .monto span{font-size:12.5px;color:#9AA5AE}
+.ficha .acc{grid-column:1/-1;display:flex;gap:10px;flex-wrap:wrap}
+.capitulos{background:var(--hoja);padding:34px 34px 60px;border-left:1px solid var(--linea)}
+.cap{padding:26px 0 30px;border-bottom:1px solid var(--linea)}
+.cap:first-child{padding-top:0}
+.cap-h{display:flex;align-items:baseline;gap:14px;margin-bottom:14px}
+.cap-h .n{font-family:var(--serif);font-size:44px;line-height:1;color:var(--brasa);font-weight:400;font-style:italic}
+.cap-h h3{font-family:var(--serif);font-size:26px;font-weight:600;margin:0;line-height:1.1}
+.cap p.ayuda{margin:-4px 0 14px;color:var(--tinta-2);font-size:14.5px}
+.op-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.op{position:relative;text-align:left;border:1.5px solid var(--linea);background:#fff;border-radius:12px;padding:12px 14px;cursor:pointer;display:flex;gap:12px;align-items:center;transition:border-color .15s,box-shadow .15s}
+.op:hover{border-color:#B8AE9F}
+.op[aria-pressed="true"]{border-color:var(--tinta);box-shadow:0 0 0 1.5px var(--tinta)}
+.op .ic{flex:none;width:42px;height:42px}
+.op b{display:block;font-size:15px;font-weight:600;line-height:1.2}
+.op small{display:block;color:var(--tinta-2);font-size:12.5px;line-height:1.3;margin-top:2px}
+.lineas{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.lineas .op{flex-direction:column;align-items:flex-start;gap:4px;padding:14px 12px}
+.lineas .op b{font-family:var(--serif);font-size:20px}
+.lineas .op .barra{height:5px;border-radius:3px;background:var(--linea);width:100%;margin-top:6px;overflow:hidden}
+.lineas .op .barra i{display:block;height:100%;background:var(--brasa)}
+.med{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.med label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:var(--tinta-2);text-transform:uppercase;letter-spacing:.06em}
+.med .fila{display:flex;align-items:center;gap:10px}
+.med input[type=number]{width:96px;border:1.5px solid var(--linea);border-radius:10px;padding:9px 10px;font-family:var(--mono);font-size:16px;text-align:right;background:#fff}
+.med input[type=range]{flex:1;accent-color:var(--brasa)}
+.cant{display:flex;align-items:center;gap:10px;margin-top:16px}
+.cant button{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--linea);background:#fff;cursor:pointer;font-size:18px}
+.cant output{font-family:var(--mono);font-size:18px;min-width:2ch;text-align:center}
+.terms{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.terms .op{flex-direction:column;align-items:stretch;padding:8px;gap:8px}
+.terms .muestra{height:56px;border-radius:7px;border:1px solid rgba(0,0,0,.12)}
+.terms .op b{font-size:13px}
+.tonos{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.tono{width:34px;height:34px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1.5px var(--linea);cursor:pointer}
+.tono[aria-pressed="true"]{box-shadow:0 0 0 2.5px var(--tinta)}
+.tono-lbl{font-size:13.5px;color:var(--tinta-2);margin-top:8px}
+.extras{display:grid;gap:10px}
+.chk{display:flex;gap:12px;align-items:flex-start;border:1.5px solid var(--linea);background:#fff;border-radius:12px;padding:12px 14px;cursor:pointer}
+.chk input{margin-top:3px;width:18px;height:18px;accent-color:var(--brasa)}
+.chk b{display:block;font-size:15px}
+.chk small{color:var(--tinta-2);font-size:13px}
+.aviso-linea{margin-top:12px;font-size:13.5px;background:#FFF4E2;border:1px solid #F0D3A4;color:#6A4614;padding:10px 12px;border-radius:10px;display:none}
+.aviso-linea.on{display:block}
+.aviso-linea button{background:none;border:0;padding:0;text-decoration:underline;font-weight:600;cursor:pointer;color:inherit}
+@media (max-width:980px){
+  .cot{grid-template-columns:1fr}
+  .escenario{position:sticky;top:53px;height:auto;z-index:20;box-shadow:0 8px 20px rgba(0,0,0,.25)}
+  .lienzo{height:24vh;min-height:150px;flex:none}
+  .esc-top{padding:10px 16px 0}
+  .ficha{padding:8px 16px 10px;grid-template-columns:1fr}
+  .ficha .spec{display:none}
+  .ficha .monto{text-align:left;display:flex;align-items:baseline;gap:4px 12px;flex-wrap:wrap}
+  .ficha .monto small{display:none}
+  .ficha .monto strong{font-size:26px}
+  .ficha .acc{display:none}
+  .capitulos{padding:24px 16px 40px;border-left:0}
+  .lineas{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .terms{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .agregar-movil{display:flex!important}
+}
+.agregar-movil{display:none;gap:10px;flex-wrap:wrap;margin-top:22px}
+@media (max-width:420px){.med{grid-template-columns:1fr}.op-grid{grid-template-columns:1fr}}
+
+/* pedido */
+.pedido{background:var(--papel);padding:72px 20px}
+.pedido .in{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1.25fr .75fr;gap:32px;align-items:start}
+.sec-h{font-family:var(--serif);font-weight:400;font-size:clamp(34px,4.6vw,58px);line-height:1;margin:8px 0 14px;letter-spacing:-.01em}
+.sec-h em{color:var(--brasa)}
+.tabla{background:var(--hoja);border:1px solid var(--linea);border-radius:16px;overflow:hidden}
+.item{display:grid;grid-template-columns:64px 1fr auto auto;gap:14px;align-items:center;padding:14px 16px;border-top:1px solid var(--linea)}
+.item:first-child{border-top:0}
+.item .pos{font-family:var(--mono);font-size:13px;color:var(--brasa)}
+.item .mini{width:64px;height:52px}
+.item b{font-size:15px}
+.item small{display:block;color:var(--tinta-2);font-size:13px}
+.item .p{font-family:var(--mono);font-size:14px;white-space:nowrap;text-align:right}
+.item .x{border:0;background:none;cursor:pointer;color:#9A8F80;font-size:20px;padding:4px 8px}
+.vacio{padding:34px 20px;text-align:center;color:var(--tinta-2)}
+.ticket{background:var(--noche);color:#E8E2D6;border-radius:16px;padding:24px;position:sticky;top:80px}
+.ticket .cod{font-family:var(--mono);font-size:13px;color:var(--luz);letter-spacing:.12em}
+.ticket .tot{font-family:var(--serif);font-size:clamp(30px,3.4vw,42px);color:#fff;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.1;margin:10px 0 4px}
+.ticket p{font-size:13.5px;color:#A9B3BB;margin:0 0 16px}
+.ticket .acc{display:grid;gap:10px}
+.ticket .btn{justify-content:center}
+.ticket .btn-line{color:#E8E2D6}
+.ticket label{display:block;font-size:12.5px;color:#9AA5AE;margin:14px 0 6px;font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.ticket input{width:100%;background:#0B1116;border:1px solid #34414C;border-radius:10px;padding:10px 12px;color:#fff}
+.link-box{margin-top:14px;font-size:12.5px;color:#8E98A1;word-break:break-all;font-family:var(--mono);display:none}
+.abierto{display:none;max-width:1180px;margin:0 auto 18px;background:#E8F3EC;border:1px solid #B9DCC6;color:#1E5A39;padding:12px 16px;border-radius:12px;font-size:14.5px}
+.abierto.on{display:block}
+@media (max-width:900px){.pedido .in{grid-template-columns:1fr}.ticket{position:static}.item{grid-template-columns:52px 1fr auto;}.item .mini{width:52px}.item .p{grid-column:2;text-align:left}.item .x{grid-row:1;grid-column:3}}
+
+/* obras */
+.obras{background:var(--noche);color:#E8E2D6;padding:72px 0 80px}
+.obras .head{max-width:1320px;margin:0 auto 28px;padding:0 20px;display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap}
+.obras .sec-h em{color:var(--luz)}
+.obras .head p{max-width:30em;color:#A9B3BB;margin:0}
+.mural{max-width:1320px;margin:0 auto;padding:0 20px;columns:4 260px;column-gap:12px}
+.mural figure{margin:0 0 12px;break-inside:avoid;position:relative;cursor:zoom-in;overflow:hidden;border-radius:4px;background:#18222B}
+.mural img{width:100%;height:auto;transition:transform .5s}
+.mural figure:hover img{transform:scale(1.03)}
+.mural figcaption{position:absolute;left:10px;bottom:8px;font-family:var(--mono);font-size:11px;color:#fff;background:rgba(0,0,0,.45);padding:2px 6px;border-radius:3px}
+.lb{position:fixed;inset:0;background:rgba(6,9,12,.92);z-index:90;display:none;align-items:center;justify-content:center;padding:20px}
+.lb.on{display:flex}
+.lb img{max-height:88vh;max-width:92vw;object-fit:contain}
+.lb button{position:absolute;top:16px;right:16px;background:#fff;border:0;border-radius:50%;width:42px;height:42px;font-size:22px;cursor:pointer}
+
+/* terminaciones + fabrica */
+.fabrica{padding:72px 20px;background:var(--hoja)}
+.fabrica .in{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:48px}
+.valores{list-style:none;padding:0;margin:24px 0 0;display:grid;gap:0}
+.valores li{display:flex;gap:16px;align-items:baseline;padding:16px 0;border-top:1px solid var(--linea);font-family:var(--serif);font-size:24px}
+.valores li span{font-family:var(--mono);font-size:12px;color:var(--brasa)}
+.dato{border:1px solid var(--linea);border-radius:16px;padding:22px;background:#fff}
+.dato h4{margin:0 0 6px;font-family:var(--serif);font-size:22px;font-weight:600}
+.dato p{margin:0 0 14px;color:var(--tinta-2)}
+.dato dl{display:grid;grid-template-columns:auto 1fr;gap:8px 16px;margin:0;font-size:15px}
+.dato dt{font-family:var(--mono);font-size:12px;color:var(--tinta-2);text-transform:uppercase;letter-spacing:.08em;padding-top:3px}
+.dato dd{margin:0}
+@media (max-width:860px){.fabrica .in{grid-template-columns:1fr;gap:28px}}
+
+footer{background:#0B1015;color:#8E98A1;font-size:13.5px}
+footer .in{max-width:1320px;margin:0 auto;padding:22px 20px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer button{background:none;border:0;color:var(--luz);text-decoration:underline;cursor:pointer;padding:0}
+
+/* modal precios */
+.modal{position:fixed;inset:0;background:rgba(10,14,18,.6);z-index:95;display:none;align-items:flex-start;justify-content:center;padding:30px 14px;overflow:auto}
+.modal.on{display:flex}
+.modal .box{background:var(--hoja);border-radius:16px;max-width:720px;width:100%;padding:24px}
+.modal h2{font-family:var(--serif);margin:0 0 4px;font-size:28px}
+.modal p{margin:0 0 16px;color:var(--tinta-2);font-size:14px}
+.modal table{width:100%;border-collapse:collapse;font-size:14px;margin-bottom:16px}
+.modal th{text-align:left;padding:10px 4px 6px;font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--brasa);border-bottom:1px solid var(--linea)}
+.modal td{padding:6px 4px;border-bottom:1px solid #EEE8DD}
+.modal input{width:130px;border:1.5px solid var(--linea);border-radius:8px;padding:6px 8px;font-family:var(--mono);text-align:right;background:#fff}
+.modal .acc{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);background:var(--tinta);color:#fff;padding:10px 16px;border-radius:999px;font-size:14px;opacity:0;transition:.25s;z-index:99;pointer-events:none}
+.toast.on{opacity:1;transform:translateX(-50%)}
+
+@media print{
+  .aviso,header.top,.hero,.cot,.obras,.fabrica,footer,.ticket .acc,.ticket label,.ticket input,.item .x{display:none!important}
+  .pedido{padding:0;background:#fff}.pedido .in{grid-template-columns:1fr}.ticket{background:#fff;color:#000;border:1px solid #000}.ticket .tot{color:#000}
+}
+</style>
+</head>
+<body>
+
+<div class="aviso"><div class="in">
+  <span><b>Prototipo de demostración preparado para Indalum.</b> Los precios son de ejemplo, no son una oferta.</span>
+  <button type="button" data-precios>Editar tabla de precios</button>
+</div></div>
+
+<header class="top"><div class="in">
+  <a class="logo" href="#top" aria-label="Indalum">
+    <img src="https://aberturasindalum.com/assets/images/logo-indalum-2.png" alt="Indalum" onerror="this.remove();document.getElementById('logoTxt').hidden=false">
+    <span class="txt" id="logoTxt" hidden>INDALUM</span>
+  </a>
+  <nav class="menu">
+    <a href="#cotizar">Cotizar</a><a href="#pedido">Mi pedido</a><a href="#obras">Obras</a><a href="#fabrica">Nosotros</a>
+  </nav>
+  <a class="btn btn-luz" href="#cotizar">Cotizar ahora</a>
+</div></header>
+
+<section class="hero" id="top"><div class="in">
+  <div>
+    <div class="kicker">Fábrica de aberturas de aluminio · Venado Tuerto</div>
+    <h1>Sabemos cómo hacerlo.<br><em>Ahora, también el precio.</em></h1>
+    <p class="lead">Elegí la abertura, la línea —Modena, Modena 2, A30 New o A40—, la terminación y las medidas. Ves el precio estimado al instante y el pedido nos llega por WhatsApp listo para ir a medir.</p>
+    <div class="ctas">
+      <a class="btn btn-luz" href="#cotizar">Armar mi presupuesto</a>
+      <a class="btn btn-line" href="#obras">Ver obras</a>
+    </div>
+    <div class="trio">
+      <div><small>01</small>Desarrollo y fabricación</div>
+      <div><small>02</small>Venta e instalación</div>
+      <div><small>03</small>Av. Santa Fe 2744</div>
+    </div>
+  </div>
+  <div class="vitrina" aria-hidden="true">
+    <div class="marco">
+      <img src="https://aberturasindalum.com/assets/images/1-bis.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="fallback">INDALUM</div>
+    </div>
+    <div class="parante"></div>
+    <div class="placa"><b>Pyme familiar</b>Desarrollo, fabricación, venta e instalación de aberturas de aluminio de alta prestación.</div>
+  </div>
+</div></section>
+
+<section id="cotizar" class="cot" aria-label="Cotizador">
+  <div class="escenario">
+    <div class="esc-top">
+      <span class="titulo">Tu abertura · <span id="posActual">V1</span></span>
+      <div class="switch" role="group" aria-label="Vista">
+        <button type="button" data-vista="dia" class="on">De día</button>
+        <button type="button" data-vista="noche">De noche</button>
+      </div>
+    </div>
+    <div class="lienzo" id="lienzo"></div>
+    <div class="ficha">
+      <div class="spec" id="spec"></div>
+      <div class="monto"><small>PRECIO ESTIMADO</small><strong id="monto">$0</strong><span id="rango"></span></div>
+      <div class="acc">
+        <button class="btn btn-luz" type="button" data-agregar>+ Sumar al pedido</button>
+        <a class="btn btn-line" href="#pedido"><span>Ver pedido (<span class="nItems">0</span>)</span></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="capitulos">
+    <div class="cap">
+      <div class="cap-h"><span class="n">1</span><h3>¿Qué abertura necesitás?</h3></div>
+      <div class="op-grid" id="tipos"></div>
+    </div>
+    <div class="cap">
+      <div class="cap-h"><span class="n">2</span><h3>Línea</h3></div>
+      <p class="ayuda">Las cuatro líneas que fabrica Indalum. La barra muestra cuánto cambia el precio entre una y otra para la misma medida.</p>
+      <div class="lineas" id="lineas"></div>
+      <div class="aviso-linea" id="avisoLinea"></div>
+    </div>
+    <div class="cap">
+      <div class="cap-h"><span class="n">3</span><h3>Medidas del vano</h3></div>
+      <p class="ayuda">En centímetros. Si no sabés la medida exacta, poné una aproximada: la confirmamos cuando vamos a medir.</p>
+      <div class="med">
+        <div><label for="w">Ancho</label><div class="fila"><input type="range" id="wR" min="40" max="400" step="5" aria-label="Ancho"><input type="number" id="w" min="40" max="400" inputmode="numeric"></div></div>
+        <div><label for="h">Alto</label><div class="fila"><input type="range" id="hR" min="40" max="280" step="5" aria-label="Alto"><input type="number" id="h" min="40" max="280" inputmode="numeric"></div></div>
+      </div>
+      <div class="cant"><span style="font-size:14px;color:var(--tinta-2)">Cantidad iguales</span><button type="button" data-q="-1" aria-label="Menos">−</button><output id="q">1</output><button type="button" data-q="1" aria-label="Más">+</button></div>
+    </div>
+    <div class="cap">
+      <div class="cap-h"><span class="n">4</span><h3>Terminación</h3></div>
+      <p class="ayuda">Las cinco terminaciones que ofrece Indalum. Elegí el tono y mirá cómo queda en el dibujo.</p>
+      <div class="terms" id="terms"></div>
+      <div class="tonos" id="tonos"></div>
+      <div class="tono-lbl" id="tonoLbl"></div>
+    </div>
+    <div class="cap">
+      <div class="cap-h"><span class="n">5</span><h3>Vidrio</h3></div>
+      <div class="op-grid" id="vidrios"></div>
+    </div>
+    <div class="cap" style="border-bottom:0">
+      <div class="cap-h"><span class="n">6</span><h3>Extras</h3></div>
+      <div class="extras">
+        <label class="chk" id="chkMosq"><input type="checkbox" id="mosq"><span><b>Mosquitero</b><small>Fijo o corredizo según la abertura.</small></span></label>
+        <label class="chk" id="chkCort"><input type="checkbox" id="cort"><span><b>Cortina de enrollar</b><small>De aluminio o PVC, con cajón.</small></span></label>
+        <label class="chk"><input type="checkbox" id="inst" checked><span><b>Instalación en obra</b><small>Medición, colocación y sellado. Venado Tuerto y zona.</small></span></label>
+      </div>
+      <div class="agregar-movil">
+        <button class="btn btn-luz" type="button" data-agregar>+ Sumar al pedido</button>
+        <a class="btn btn-line" href="#pedido"><span>Ver pedido (<span class="nItems">0</span>)</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pedido" id="pedido">
+  <div class="abierto" id="abierto"></div>
+  <div class="in">
+    <div>
+      <div class="kicker" style="color:var(--brasa)">Mi pedido</div>
+      <h2 class="sec-h">Una lista, <em>un código</em>, un link.</h2>
+      <p style="color:var(--tinta-2);max-width:36em;margin:0 0 22px">Cada abertura queda con su posición (V1, V2, P1…). El pedido lleva un código y un link que vuelve a abrir exactamente esta lista: para mandárselo al arquitecto, a la familia o para que Indalum lo abra tal cual.</p>
+      <div class="tabla" id="lista"></div>
+    </div>
+    <aside class="ticket">
+      <div class="cod" id="codigo">PEDIDO —</div>
+      <div class="tot" id="total">$0</div>
+      <p id="totSub">Sumá aberturas al pedido para ver el total estimado.</p>
+      <label for="nombre">Tu nombre</label>
+      <input id="nombre" autocomplete="name" placeholder="Ej.: Laura">
+      <label for="zona">Dónde es la obra</label>
+      <input id="zona" placeholder="Ej.: Venado Tuerto, barrio…">
+      <div class="acc" style="margin-top:16px">
+        <a class="btn btn-wa" id="enviar" href="#" target="_blank" rel="noopener">Enviar pedido por WhatsApp</a>
+        <button class="btn btn-line" type="button" id="copiar">Copiar link del pedido</button>
+        <button class="btn btn-line" type="button" id="imprimir">Imprimir</button>
+      </div>
+      <div class="link-box" id="linkBox"></div>
+    </aside>
+  </div>
+</section>
+
+<section class="obras" id="obras">
+  <div class="head">
+    <div><div class="kicker">Obras</div><h2 class="sec-h">La calidad nos caracteriza, <em>en nosotros podés confiar.</em></h2></div>
+    <p>Trabajos de Indalum publicados en su web. Tocá una foto para verla grande.</p>
+  </div>
+  <div class="mural" id="mural"></div>
+</section>
+<div class="lb" id="lb"><img alt="Obra de Indalum"><button type="button" aria-label="Cerrar">×</button></div>
+
+<section class="fabrica" id="fabrica"><div class="in">
+  <div>
+    <div class="kicker" style="color:var(--brasa)">Nosotros</div>
+    <h2 class="sec-h">Una pyme familiar <em>de Venado Tuerto.</em></h2>
+    <p style="color:var(--tinta-2);max-width:32em">Dedicada al desarrollo, fabricación, venta e instalación de aberturas de aluminio de alta prestación.</p>
+    <ul class="valores">
+      <li><span>01</span>Sabemos cómo hacerlo</li>
+      <li><span>02</span>Compromiso y responsabilidad</li>
+      <li><span>03</span>Calidad</li>
+    </ul>
+  </div>
+  <div class="dato">
+    <h4>Visitanos o escribinos</h4>
+    <p>El pedido que armes acá nos llega con las medidas, la línea, el vidrio y la terminación. Coordinamos la medición.</p>
+    <dl>
+      <dt>Dirección</dt><dd>Av. Santa Fe 2744 · Venado Tuerto</dd>
+      <dt>Teléfono</dt><dd><a href="tel:+543462420138">03462 - 420138</a></dd>
+      <dt>WhatsApp</dt><dd><a href="https://wa.me/5493462466101" target="_blank" rel="noopener">3462 46-6101</a></dd>
+      <dt>Instagram</dt><dd><a href="https://www.instagram.com/aberturas_indalum/" target="_blank" rel="noopener">@aberturas_indalum</a></dd>
+      <dt>Líneas</dt><dd>Modena · Modena 2 · A30 New · A40</dd>
+    </dl>
+  </div>
+</div></section>
+
+<footer><div class="in">
+  <span>Prototipo de demostración preparado para Indalum. Precios de ejemplo; el valor final se confirma después de la medición.</span>
+  <span><button type="button" data-precios>Editar tabla de precios</button> · Hecho por Resolviendo Kos · resolviendokos.com</span>
+</div></footer>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTit"><div class="box">
+  <h2 id="mTit">Tabla de precios</h2>
+  <p>Esto lo maneja Indalum. Los cambios se guardan en este navegador y el cotizador los usa al instante.</p>
+  <div id="mBody"></div>
+  <div class="acc">
+    <button class="btn btn-line" type="button" id="mReset">Volver a los de ejemplo</button>
+    <button class="btn btn-dark" type="button" id="mCerrar">Listo</button>
+  </div>
+</div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+const WA = "5493462466101";
+const $ = id => document.getElementById(id);
+const ars = n => "$" + Math.round(n).toLocaleString("es-AR");
+const r1k = n => Math.round(n/1000)*1000;
+
+/* ===== Catálogo ===== */
+const TIPOS = [
+  {id:"corr", n:"Ventana corrediza", d:"2 hojas", hojas:2, mosq:true},
+  {id:"pv",   n:"Puerta-ventana corrediza", d:"Para balcón o galería", hojas:2, mosq:true, puerta:true},
+  {id:"bat",  n:"Ventana de abrir", d:"1 o 2 hojas batientes", mosq:true},
+  {id:"osc",  n:"Oscilobatiente", d:"Abre y bascula", mosq:true},
+  {id:"fijo", n:"Paño fijo", d:"Sin apertura", mosq:false},
+  {id:"band", n:"Banderola", d:"Ventiluz proyectante", mosq:true}
+];
+const LINEAS = [
+  {id:"mod",  n:"Modena"},
+  {id:"mod2", n:"Modena 2"},
+  {id:"a30",  n:"A30 New"},
+  {id:"a40",  n:"A40"}
+];
+const TERMS = [
+  {id:"trad", n:"Pintado tradicional", tonos:[["Blanco","#F3F3EF"],["Negro","#26292C"],["Gris","#8D9296"]]},
+  {id:"esp",  n:"Colores especiales", tonos:[["Verde inglés","#2F4A3A"],["Azul pizarra","#3B4C5E"],["Bordó","#6B2A2C"],["Arena","#CBB99A"]]},
+  {id:"micro",n:"Pintado microtexturado", tonos:[["Negro micro","#2E2F31"],["Gris micro","#5E6266"],["Blanco micro","#E8E7E2"]], textura:true},
+  {id:"mad",  n:"Pintado símil madera", tonos:[["Nogal","#6B4428"],["Cedro","#9A5A33"],["Roble","#B88A5A"]], madera:true},
+  {id:"anod", n:"Anodizado", tonos:[["Natural","#B9BEC1"],["Bronce","#6E5A44"],["Negro","#2B2B2B"]], anod:true}
+];
+const VIDRIOS = [
+  {id:"simple", n:"Vidrio simple", d:"Float transparente"},
+  {id:"lam",    n:"Laminado 3+3", d:"De seguridad"},
+  {id:"dvh",    n:"DVH", d:"Doble vidriado hermético"},
+  {id:"dvhlam", n:"DVH con laminado", d:"Aislación y seguridad"}
+];
+
+/* ===== Precios (de ejemplo) ===== */
+const DEF = {
+  m2:{corr:280000, pv:300000, bat:330000, osc:410000, fijo:190000, band:310000},
+  linea:{mod:1, mod2:1.12, a30:1.38, a40:1.62},
+  vidrio:{simple:0, lam:42000, dvh:98000, dvhlam:135000},
+  term:{trad:0, esp:10, micro:8, mad:20, anod:14},
+  mosqM2:48000, cortM2:95000, instPct:15, minM2:0.8, rangoPct:8
+};
+const KEY = "indalum_precios_v1";
+let P = cargar();
+function cargar(){
+  try{ const s = localStorage.getItem(KEY); if(s){ const o = JSON.parse(s); return {...structuredClone(DEF), ...o, m2:{...DEF.m2,...o.m2}, linea:{...DEF.linea,...o.linea}, vidrio:{...DEF.vidrio,...o.vidrio}, term:{...DEF.term,...o.term}}; } }catch(e){}
+  return structuredClone(DEF);
+}
+function guardar(){ try{ localStorage.setItem(KEY, JSON.stringify(P)); }catch(e){} }
+
+/* ===== Estado ===== */
+const S = {t:"corr", l:"mod", w:150, h:110, q:1, te:"trad", to:0, v:"simple", mosq:false, cort:false, inst:true};
+let items = [];
+let vista = "dia";
+const by = (a,id) => a.find(x=>x.id===id);
+
+function calc(s){
+  const area = Math.max((s.w/100)*(s.h/100), P.minM2);
+  let u = area * P.m2[s.t] * P.linea[s.l];
+  u += area * P.vidrio[s.v];
+  u *= 1 + (P.term[s.te]||0)/100;
+  if(s.mosq && by(TIPOS,s.t).mosq) u += area*P.mosqM2;
+  if(s.cort && s.t!=="fijo") u += (s.w/100)*((s.h+25)/100)*P.cortM2;
+  if(s.inst) u *= 1 + P.instPct/100;
+  const tot = u*s.q, r = P.rangoPct/100;
+  return {area, u, tot:r1k(tot), lo:r1k(tot*(1-r)), hi:r1k(tot*(1+r))};
+}
+function tono(s){ const t = by(TERMS,s.te); return t.tonos[Math.min(s.to,t.tonos.length-1)]; }
+function desc(s){
+  const t=by(TIPOS,s.t), l=by(LINEAS,s.l), v=by(VIDRIOS,s.v), te=by(TERMS,s.te), to=tono(s);
+  const ex=[]; if(s.mosq&&t.mosq) ex.push("mosquitero"); if(s.cort&&s.t!=="fijo") ex.push("cortina de enrollar"); if(!s.inst) ex.push("sin instalación");
+  return {t:t.n, l:l.n, med:`${s.w} × ${s.h} cm`, term:`${te.n} ${to[0].toLowerCase()}`, v:v.n, ex};
+}
+
+/* ===== Dibujo ===== */
+function shade(hex, f){
+  const n = parseInt(hex.slice(1),16); let r=n>>16, g=(n>>8)&255, b=n&255;
+  const k = f<0 ? 0 : 255, p = Math.abs(f);
+  r=Math.round((k-r)*p+r); g=Math.round((k-g)*p+g); b=Math.round((k-b)*p+b);
+  return "#"+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1);
+}
+let uidN = 0;
+function ventana(s, x, y, W, H, o){
+  // o: {uid, noche, mini}
+  const u = o.uid, te = by(TERMS,s.te), col = tono(s)[1], st = shade(col,-.35), hi = shade(col,.25);
+  const mini = !!o.mini;
+  const fr = mini ? Math.max(2, W*.07) : Math.max(7, Math.min(15, Math.min(W,H)*.055)) * ({mod:1, mod2:1.08, a30:1.18, a40:1.3}[s.l]);
+  let fillCol = `url(#perf${u})`;
+  let g = `<defs>
+    <linearGradient id="perf${u}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${hi}"/><stop offset=".5" stop-color="${col}"/><stop offset="1" stop-color="${shade(col,-.12)}"/></linearGradient>
+    <pattern id="mad${u}" width="40" height="7" patternUnits="userSpaceOnUse"><rect width="40" height="7" fill="${col}"/><path d="M0 2.5 Q10 1 20 3 T40 2.5" stroke="${shade(col,-.28)}" stroke-width="1" fill="none" opacity=".7"/><path d="M0 5.5 Q12 4.6 22 6 T40 5.4" stroke="${shade(col,.18)}" stroke-width=".8" fill="none" opacity=".6"/></pattern>
+    <pattern id="mic${u}" width="4" height="4" patternUnits="userSpaceOnUse"><rect width="4" height="4" fill="${col}"/><circle cx="1" cy="1" r=".6" fill="${shade(col,.18)}"/><circle cx="3" cy="3" r=".5" fill="${shade(col,-.2)}"/></pattern>
+    <linearGradient id="vd${u}" x1="0" y1="0" x2="1" y2="1">${o.noche
+      ? `<stop offset="0" stop-color="#FFE3A8"/><stop offset=".55" stop-color="#F2B45A"/><stop offset="1" stop-color="#C9782F"/>`
+      : `<stop offset="0" stop-color="#D6E7EE"/><stop offset=".55" stop-color="#A9C7D3"/><stop offset="1" stop-color="#7FA4B4"/>`}</linearGradient>
+    <linearGradient id="br${u}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="${o.noche?.12:.5}"/><stop offset=".35" stop-color="#fff" stop-opacity="0"/><stop offset=".62" stop-color="#fff" stop-opacity="0"/><stop offset=".7" stop-color="#fff" stop-opacity="${o.noche?.06:.22}"/><stop offset=".78" stop-color="#fff" stop-opacity="0"/></linearGradient>
+    <pattern id="mq${u}" width="4" height="4" patternUnits="userSpaceOnUse"><path d="M0 0H4M0 0V4" stroke="#222" stroke-width=".45" opacity=".5"/></pattern>
+  </defs>`;
+  if(te.madera) fillCol = `url(#mad${u})`; else if(te.textura) fillCol = `url(#mic${u})`;
+  const sw = mini ? .8 : 1.3;
+  const R = (px,py,pw,ph,f) => `<rect x="${px.toFixed(1)}" y="${py.toFixed(1)}" width="${Math.max(pw,0).toFixed(1)}" height="${Math.max(ph,0).toFixed(1)}" fill="${f}" stroke="${st}" stroke-width="${sw}"/>`;
+  const vidrio = (px,py,pw,ph) => {
+    let v = R(px,py,pw,ph,`url(#vd${u})`) + `<rect x="${px}" y="${py}" width="${pw}" height="${ph}" fill="url(#br${u})"/>`;
+    if(!mini && (s.v==="dvh"||s.v==="dvhlam")) v += `<rect x="${px+3.5}" y="${py+3.5}" width="${Math.max(pw-7,0)}" height="${Math.max(ph-7,0)}" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1"/>`;
+    if(!mini && (s.v==="lam"||s.v==="dvhlam")) v += `<path d="M${px+pw*.12} ${py+ph*.9} L${px+pw*.3} ${py+ph*.72}" stroke="#fff" stroke-opacity=".7" stroke-width="2"/>`;
+    if(!mini && o.noche){ // siluetas interiores
+      v += `<g opacity=".28"><rect x="${px+pw*.62}" y="${py+ph*.55}" width="${pw*.22}" height="${ph*.45}" fill="#7A3E12"/><circle cx="${px+pw*.3}" cy="${py+ph*.22}" r="${Math.min(pw,ph)*.06}" fill="#FFF2CF"/><path d="M${px+pw*.3} ${py} V${py+ph*.16}" stroke="#7A3E12" stroke-width="1.2"/></g>`;
+    }
+    if(s.mosq && by(TIPOS,s.t).mosq && !mini) v += `<rect x="${px}" y="${py}" width="${pw}" height="${ph}" fill="url(#mq${u})"/>`;
+    return v;
+  };
+  const tirador = (hx,hy,vert=true) => mini ? "" : (vert ? `<rect x="${hx-2}" y="${hy-11}" width="4" height="22" rx="2" fill="${shade(col,-.5)}"/>` : `<rect x="${hx-11}" y="${hy-2}" width="22" height="4" rx="2" fill="${shade(col,-.5)}"/>`);
+  const linea = pts => `<polyline points="${pts}" fill="none" stroke="${o.noche?'#3a2410':'#1A2026'}" stroke-width="${mini?.7:1.1}" stroke-dasharray="${mini?'2 2':'6 5'}" opacity=".55"/>`;
+
+  // marco
+  g += R(x,y,W,H,fillCol);
+  const ix=x+fr, iy=y+fr, iW=W-2*fr, iH=H-2*fr;
+  const sf = fr*.8;
+  if(s.t==="corr" || s.t==="pv"){
+    const hw = iW/2 + sf*.25;
+    // hoja trasera (izq) y delantera (der)
+    g += R(ix,iy,hw,iH,fillCol) + vidrio(ix+sf,iy+sf,hw-2*sf,iH-2*sf);
+    g += R(ix+iW-hw,iy,hw,iH,fillCol) + vidrio(ix+iW-hw+sf,iy+sf,hw-2*sf,iH-2*sf);
+    g += tirador(ix+iW-hw+sf*.5, iy+iH*(s.t==="pv"?.5:.5));
+    if(!mini){ const ay=iy+iH*.5, ax=ix+iW*.62; g += `<path d="M${ax} ${ay} h${iW*.16} m-7 -5 l7 5 l-7 5" stroke="${o.noche?'#3a2410':'#1A2026'}" stroke-width="1.3" fill="none" opacity=".55"/>`; }
+  } else if(s.t==="bat"){
+    const dos = W > 110 && !mini ? true : (mini ? W>H*1.05 : false);
+    const n = dos?2:1, hw = iW/n;
+    for(let i=0;i<n;i++){
+      const hx = ix+i*hw;
+      g += R(hx,iy,hw,iH,fillCol) + vidrio(hx+sf,iy+sf,hw-2*sf,iH-2*sf);
+      const lado = (n===2 ? (i===0?1:0) : 0); // bisagra
+      g += linea(lado ? `${hx} ${iy} ${hx+hw} ${iy+iH/2} ${hx} ${iy+iH}` : `${hx+hw} ${iy} ${hx} ${iy+iH/2} ${hx+hw} ${iy+iH}`);
+      g += tirador(lado ? hx+hw-sf*.5 : hx+sf*.5, iy+iH/2);
+    }
+  } else if(s.t==="osc"){
+    g += R(ix,iy,iW,iH,fillCol) + vidrio(ix+sf,iy+sf,iW-2*sf,iH-2*sf);
+    g += linea(`${ix+iW} ${iy} ${ix} ${iy+iH/2} ${ix+iW} ${iy+iH}`);
+    g += linea(`${ix} ${iy+iH} ${ix+iW/2} ${iy} ${ix+iW} ${iy+iH}`);
+    g += tirador(ix+sf*.5, iy+iH/2);
+  } else if(s.t==="fijo"){
+    g += vidrio(ix,iy,iW,iH);
+  } else if(s.t==="band"){
+    g += R(ix,iy,iW,iH,fillCol) + vidrio(ix+sf,iy+sf,iW-2*sf,iH-2*sf);
+    g += linea(`${ix} ${iy+iH} ${ix+iW/2} ${iy} ${ix+iW} ${iy+iH}`);
+    g += tirador(ix+iW/2, iy+iH-sf*.5, false);
+  }
+  if(te.anod && !mini) g += `<rect x="${x}" y="${y}" width="${W}" height="${H}" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="1"/>`;
+  return g;
+}
+
+function escena(){
+  const VW=720, VH=520, noche = vista==="noche";
+  const u = "e"+(++uidN);
+  const cort = S.cort && S.t!=="fijo";
+  // escala con persona de 170 cm
+  const piso = VH-60;
+  const maxW = VW-260, maxH = piso-70 - (cort?24:0);
+  const sc = Math.min(maxW/Math.max(S.w,60), maxH/Math.max(S.h, 175), 1.6);
+  const W=S.w*sc, H=S.h*sc;
+  const esPuerta = S.t==="pv";
+  const x = (VW-W)/2 + 40;
+  const sill = esPuerta ? 0 : Math.min(90*sc, piso - 40 - H - (cort?24:0) - 30); // antepecho
+  const y = piso - sill - H;
+  const muro = noche ? "#1E262E" : "#E9E1D3", muro2 = noche ? "#222B34" : "#E2D8C7", junta = noche ? "#29333D" : "#D6CBB7";
+  let g = `<svg viewBox="0 0 ${VW} ${VH}" role="img" aria-label="Dibujo de la abertura elegida" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="rev${u}" width="120" height="60" patternUnits="userSpaceOnUse"><rect width="120" height="60" fill="${muro}"/><path d="M0 30 H120 M60 0 V30 M0 30 V60 M120 30 V60" stroke="${junta}" stroke-width="1" opacity=".55"/></pattern>
+    <radialGradient id="halo${u}" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#F2B45A" stop-opacity=".45"/><stop offset="1" stop-color="#F2B45A" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="${VW}" height="${VH}" fill="url(#rev${u})"/>
+  <rect y="${piso}" width="${VW}" height="${VH-piso}" fill="${noche?'#151C22':'#CFC4B1'}"/>
+  <rect y="${piso}" width="${VW}" height="3" fill="${noche?'#2E3943':'#B8AC97'}"/>`;
+  if(noche) g += `<ellipse cx="${x+W/2}" cy="${y+H/2}" rx="${W*1.1+60}" ry="${H*.9+50}" fill="url(#halo${u})"/>`;
+  if(noche && esPuerta) g += `<path d="M${x} ${y+H} L${x-40} ${piso+ (VH-piso)} L${x+W+40} ${VH} L${x+W} ${y+H} Z" fill="#F2B45A" opacity=".14"/>`;
+  // vano / dintel
+  g += `<rect x="${x-8}" y="${y-8}" width="${W+16}" height="${H+8+(esPuerta?0:8)}" fill="${noche?'#151C22':'#CBBFAA'}"/>`;
+  if(!esPuerta) g += `<rect x="${x-16}" y="${y+H}" width="${W+32}" height="9" fill="${noche?'#2E3943':'#BFB29C'}"/>`;
+  if(cort){
+    g += `<rect x="${x-10}" y="${y-34}" width="${W+20}" height="26" fill="${shade(tono(S)[1],-.05)}" stroke="${shade(tono(S)[1],-.35)}"/>`;
+  }
+  g += `<g>${ventana(S, x, y, W, H, {uid:u, noche})}</g>`;
+  if(cort){ // cortina a medio bajar
+    const ch = H*.32; let lam="";
+    for(let yy=y; yy<y+ch; yy+=6) lam += `<rect x="${x+2}" y="${yy}" width="${W-4}" height="5" fill="${noche?'#3B4651':'#D9DCDD'}" stroke="${noche?'#2A333C':'#B5BABD'}" stroke-width=".6"/>`;
+    g += `<g opacity=".95">${lam}</g>`;
+  }
+  // cotas
+  const ink = noche ? "#E8D6B8" : "#3A3027", red = noche ? "#F2B45A" : "#B4532A";
+  const cy = y - (cort?48:24);
+  g += `<g font-family="Fragment Mono, monospace" font-size="14" fill="${red}">
+    <path d="M${x} ${cy} H${x+W} M${x} ${cy-6} V${cy+6} M${x+W} ${cy-6} V${cy+6}" stroke="${red}" stroke-width="1.2"/>
+    <rect x="${x+W/2-34}" y="${cy-11}" width="68" height="20" fill="${noche?'#1E262E':'#E9E1D3'}"/>
+    <text x="${x+W/2}" y="${cy+4}" text-anchor="middle">${S.w} cm</text>
+    <path d="M${x+W+24} ${y} V${y+H} M${x+W+18} ${y} H${x+W+30} M${x+W+18} ${y+H} H${x+W+30}" stroke="${red}" stroke-width="1.2"/>
+    <text x="${x+W+34}" y="${y+H/2+5}">${S.h} cm</text>
+  </g>`;
+  // persona 170cm
+  const ph = 170*sc, px = x - 70 - Math.max(0, 0);
+  const pX = Math.max(30, x - 26 - ph*.28);
+  g += `<g fill="${noche?'#0B1014':'#5E5548'}" opacity="${noche?.85:.55}" transform="translate(${pX} ${piso-ph}) scale(${ph/170})">
+    <circle cx="22" cy="12" r="11"/><path d="M8 30 Q22 24 36 30 L40 92 L32 92 L30 168 L22 168 L21 104 L20 168 L12 168 L11 92 L4 92 Z"/></g>
+    <text x="${pX}" y="${piso+22}" font-family="Fragment Mono, monospace" font-size="11" fill="${ink}" opacity=".7">1,70 m</text>`;
+  if(sill>36) g += `<text x="${x+W/2}" y="${piso-sill/2+8}" text-anchor="middle" font-family="Fragment Mono, monospace" font-size="11" fill="${ink}" opacity=".6">antepecho ~${Math.round(sill/sc)} cm</text>`;
+  g += `</svg>`;
+  return g;
+}
+function mini(s){
+  const u="m"+(++uidN);
+  const VW=64, VH=52, sc=Math.min((VW-6)/s.w,(VH-6)/s.h), W=s.w*sc, H=s.h*sc;
+  return `<svg class="mini" viewBox="0 0 ${VW} ${VH}" aria-hidden="true">${ventana(s,(VW-W)/2,(VH-H)/2,W,H,{uid:u,mini:true})}</svg>`;
+}
+function icono(t){
+  const s = {...S, t, w: t==="pv"?90:120, h: t==="pv"?150:(t==="band"?60:100), mosq:false, te:"trad", to:2, v:"simple"};
+  const u="i"+(++uidN); const VW=42,VH=42, sc=Math.min(36/s.w,36/s.h), W=s.w*sc, H=s.h*sc;
+  return `<svg class="ic" viewBox="0 0 ${VW} ${VH}" aria-hidden="true">${ventana(s,(VW-W)/2,(VH-H)/2,W,H,{uid:u,mini:true})}</svg>`;
+}
+
+/* ===== Render controles ===== */
+function botones(){
+  $("tipos").innerHTML = TIPOS.map(t=>`<button type="button" class="op" data-t="${t.id}">${icono(t.id)}<span><b>${t.n}</b><small>${t.d}</small></span></button>`).join("");
+  $("vidrios").innerHTML = VIDRIOS.map(v=>`<button type="button" class="op" data-v="${v.id}"><span><b>${v.n}</b><small>${v.d}</small></span></button>`).join("");
+  $("terms").innerHTML = TERMS.map(t=>`<button type="button" class="op" data-te="${t.id}"><span class="muestra" style="${muestraCss(t, 0)}"></span><b>${t.n}</b></button>`).join("");
+}
+function muestraCss(t, i){
+  const c = t.tonos[i][1];
+  if(t.madera) return `background:repeating-linear-gradient(176deg,${c} 0 5px,${shade(c,-.2)} 5px 6px,${shade(c,.1)} 6px 10px)`;
+  if(t.textura) return `background:${c};background-image:radial-gradient(${shade(c,.22)} .7px,transparent .8px);background-size:4px 4px`;
+  if(t.anod) return `background:linear-gradient(135deg,${shade(c,.25)},${c} 45%,${shade(c,-.15)})`;
+  return `background:${c}`;
+}
+function lineasHtml(){
+  const base = {...S, l:"mod"}; const ref = calc({...S,l:"a40"}).tot || 1;
+  $("lineas").innerHTML = LINEAS.map(l=>{
+    const c = calc({...S, l:l.id});
+    return `<button type="button" class="op" data-l="${l.id}" aria-pressed="${S.l===l.id}"><b>${l.n}</b><small class="mono">${ars(c.tot)}</small><span class="barra"><i style="width:${Math.round(c.tot/ref*100)}%"></i></span></button>`;
+  }).join("");
+}
+function tonosHtml(){
+  const t = by(TERMS,S.te);
+  $("tonos").innerHTML = t.tonos.map((x,i)=>`<button type="button" class="tono" data-to="${i}" aria-pressed="${S.to===i}" title="${x[0]}" aria-label="${x[0]}" style="${muestraCss(t,i)}"></button>`).join("");
+  $("tonoLbl").textContent = `${t.n} · ${t.tonos[Math.min(S.to,t.tonos.length-1)][0]}`;
+}
+function avisoLinea(){
+  const el = $("avisoLinea"); const area = S.w*S.h/10000;
+  let msg = "";
+  if((S.l==="mod"||S.l==="mod2") && (S.w>=260 || area>=4.5)) msg = `Para una abertura de ${S.w} × ${S.h} cm, lo habitual es una línea más robusta. <button type="button" data-l="a40">Ver en A40</button> o <button type="button" data-l="a30">en A30 New</button>. Lo confirmamos al medir.`;
+  el.innerHTML = msg; el.classList.toggle("on", !!msg);
+}
+function render(){
+  document.querySelectorAll("[data-t]").forEach(b=>b.setAttribute("aria-pressed", b.dataset.t===S.t));
+  document.querySelectorAll("#vidrios [data-v]").forEach(b=>b.setAttribute("aria-pressed", b.dataset.v===S.v));
+  document.querySelectorAll("#terms [data-te]").forEach(b=>b.setAttribute("aria-pressed", b.dataset.te===S.te));
+  lineasHtml(); tonosHtml(); avisoLinea();
+  $("w").value=S.w; $("wR").value=S.w; $("h").value=S.h; $("hR").value=S.h; $("q").textContent=S.q;
+  $("mosq").checked=S.mosq; $("cort").checked=S.cort; $("inst").checked=S.inst;
+  const tm = by(TIPOS,S.t).mosq; $("mosq").disabled=!tm; $("chkMosq").style.opacity = tm?1:.45;
+  $("cort").disabled = S.t==="fijo"; $("chkCort").style.opacity = S.t==="fijo"?.45:1;
+  $("lienzo").innerHTML = escena();
+  const c = calc(S), d = desc(S);
+  $("monto").textContent = ars(c.tot);
+  $("rango").textContent = `entre ${ars(c.lo)} y ${ars(c.hi)}${S.q>1?` · ${S.q} unidades`:""}`;
+  $("spec").innerHTML = `<b>${d.t}</b> · ${d.l} · ${d.med}<br>${d.term} · ${d.v}${d.ex.length?" · "+d.ex.join(", "):""}`;
+  $("posActual").textContent = posCodigo(items.length, S.t);
+}
+
+/* ===== Pedido ===== */
+function posCodigo(i, t){ const pref = t==="pv" ? "P" : (t==="fijo" ? "F" : "V"); const n = items.slice(0,i).filter(x=>(x.t==="pv"?"P":x.t==="fijo"?"F":"V")===pref).length+1; return pref+n; }
+function codigo(){
+  if(!items.length) return "—";
+  const s = JSON.stringify(items); let h = 2166136261;
+  for(let i=0;i<s.length;i++){ h ^= s.charCodeAt(i); h = Math.imul(h,16777619); }
+  return "IND-" + (h>>>0).toString(36).toUpperCase().slice(0,5).padStart(5,"0");
+}
+const CAMPOS = ["t","l","w","h","q","te","to","v","mosq","cort","inst"];
+function codificar(){
+  const arr = items.map(it=>CAMPOS.map(k=>typeof it[k]==="boolean"?(it[k]?1:0):it[k]));
+  const s = JSON.stringify(arr);
+  return btoa(unescape(encodeURIComponent(s))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+}
+function decodificar(h){
+  try{
+    const b = h.replace(/-/g,"+").replace(/_/g,"/");
+    const arr = JSON.parse(decodeURIComponent(escape(atob(b))));
+    if(!Array.isArray(arr)) return null;
+    return arr.slice(0,40).map(a=>{ const o={}; CAMPOS.forEach((k,i)=>o[k]=a[i]);
+      ["mosq","cort","inst"].forEach(k=>o[k]=!!o[k]);
+      if(!by(TIPOS,o.t)||!by(LINEAS,o.l)||!by(TERMS,o.te)||!by(VIDRIOS,o.v)) throw 0;
+      o.w=Math.min(400,Math.max(40,+o.w||100)); o.h=Math.min(280,Math.max(40,+o.h||100)); o.q=Math.min(50,Math.max(1,+o.q||1)); o.to=Math.max(0,+o.to||0);
+      return o; });
+  }catch(e){ return null; }
+}
+function linkPedido(){ const base = location.href.split("#")[0]; return items.length ? `${base}#p=${codificar()}` : base; }
+function renderPedido(){
+  document.querySelectorAll(".nItems").forEach(e=>e.textContent=items.length);
+  const L = $("lista");
+  if(!items.length){ L.innerHTML = `<div class="vacio">Todavía no sumaste aberturas. Armala arriba y tocá <b>“Sumar al pedido”</b>.</div>`; }
+  else L.innerHTML = items.map((it,i)=>{ const d=desc(it), c=calc(it);
+    return `<div class="item"><div>${mini(it)}</div><div><span class="pos">${posCodigo(i,it.t)}</span> <b>${d.t}</b>${it.q>1?` × ${it.q}`:""}<small>${d.l} · ${d.med} · ${d.term} · ${d.v}${d.ex.length?" · "+d.ex.join(", "):""}</small></div><div class="p">${ars(c.tot)}</div><button class="x" type="button" data-del="${i}" aria-label="Quitar">×</button></div>`;
+  }).join("");
+  const tot = items.reduce((a,it)=>a+calc(it).tot,0), r=P.rangoPct/100;
+  $("total").textContent = ars(tot);
+  $("codigo").textContent = "PEDIDO " + codigo();
+  $("totSub").textContent = items.length ? `Estimado entre ${ars(r1k(tot*(1-r)))} y ${ars(r1k(tot*(1+r)))}. Se confirma después de medir.` : "Sumá aberturas al pedido para ver el total estimado.";
+  $("enviar").href = waLink();
+  try{ history.replaceState(null,"", items.length ? "#p="+codificar() : location.pathname+location.search); }catch(e){}
+  render();
+}
+function waLink(){
+  const nom = $("nombre").value.trim(), zona = $("zona").value.trim();
+  let m = `Hola Indalum${nom?`, soy ${nom}`:""}. Armé este pedido en el cotizador (código ${codigo()}):\n\n`;
+  if(!items.length){ const d=desc(S), c=calc(S); m += `• ${d.t} ${d.l}, ${d.med}, ${d.term}, ${d.v}${d.ex.length?", "+d.ex.join(", "):""}${S.q>1?` (×${S.q})`:""} — ${ars(c.tot)}\n`; }
+  items.forEach((it,i)=>{ const d=desc(it), c=calc(it); m += `${posCodigo(i,it.t)}: ${d.t} ${d.l}, ${d.med}, ${d.term}, ${d.v}${d.ex.length?", "+d.ex.join(", "):""}${it.q>1?` (×${it.q})`:""} — ${ars(c.tot)}\n`; });
+  const tot = items.length ? items.reduce((a,it)=>a+calc(it).tot,0) : calc(S).tot;
+  m += `\nTotal estimado: ${ars(tot)}`;
+  if(zona) m += `\nObra en: ${zona}`;
+  if(items.length) m += `\n\nLink del pedido: ${linkPedido()}`;
+  m += `\n\n¿Cuándo pueden venir a medir?`;
+  return `https://wa.me/${WA}?text=${encodeURIComponent(m)}`;
+}
+function toast(t){ const el=$("toast"); el.textContent=t; el.classList.add("on"); clearTimeout(toast.k); toast.k=setTimeout(()=>el.classList.remove("on"),2200); }
+
+/* ===== Eventos ===== */
+document.addEventListener("click", e=>{
+  const b = e.target.closest("button,a"); if(!b) return;
+  if(b.dataset.t){ S.t=b.dataset.t; if(S.t==="pv"){ if(S.h<190) S.h=210; if(S.w<120) S.w=160; } else if(S.t==="band"){ if(S.h>90) S.h=60; } else if(S.h>180 && S.t!=="fijo"){ S.h=120; } render(); }
+  else if(b.dataset.l){ S.l=b.dataset.l; render(); }
+  else if(b.dataset.v){ S.v=b.dataset.v; render(); }
+  else if(b.dataset.te){ S.te=b.dataset.te; S.to=0; render(); }
+  else if(b.dataset.to!==undefined){ S.to=+b.dataset.to; render(); }
+  else if(b.dataset.q){ S.q=Math.min(50,Math.max(1,S.q+(+b.dataset.q))); render(); }
+  else if(b.dataset.vista){ vista=b.dataset.vista; document.querySelectorAll("[data-vista]").forEach(x=>x.classList.toggle("on",x===b)); render(); }
+  else if(b.hasAttribute("data-agregar")){ items.push({...S}); renderPedido(); toast(`${posCodigo(items.length-1,S.t)} sumada al pedido`); }
+  else if(b.dataset.del!==undefined){ items.splice(+b.dataset.del,1); renderPedido(); }
+  else if(b.hasAttribute("data-precios")){ abrirPrecios(); }
+});
+function medida(id, rid, k, min, max){
+  const set = v => { v = Math.round(+v); if(!isFinite(v)) return; S[k]=Math.min(max,Math.max(min,v)); render(); };
+  $(rid).addEventListener("input", e=>set(e.target.value));
+  $(id).addEventListener("change", e=>set(e.target.value));
+  $(id).addEventListener("keyup", e=>{ if(e.key==="Enter") set(e.target.value); });
+}
+medida("w","wR","w",40,400); medida("h","hR","h",40,280);
+["mosq","cort","inst"].forEach(k=>$(k).addEventListener("change",e=>{ S[k]=e.target.checked; render(); }));
+["nombre","zona"].forEach(k=>$(k).addEventListener("input",()=>{ $("enviar").href=waLink(); }));
+$("enviar").addEventListener("click",()=>{ $("enviar").href=waLink(); });
+$("copiar").addEventListener("click", async ()=>{
+  if(!items.length){ toast("Sumá al menos una abertura"); return; }
+  const l = linkPedido(); const box=$("linkBox"); box.textContent=l; box.style.display="block";
+  try{ await navigator.clipboard.writeText(l); toast("Link copiado"); }catch(e){ toast("Copiá el link de abajo"); }
+});
+$("imprimir").addEventListener("click", ()=>window.print());
+
+/* ===== Obras ===== */
+const FOTOS = ["1-bis.jpg","16.jpeg","2s-1-1600x658.jpg","19.jpeg","17.jpeg","1.jpeg","6.jpeg","22.jpeg","1s-1600x1080.jpg","2.jpeg","28.jpeg","15.jpeg"];
+$("mural").innerHTML = FOTOS.map((f,i)=>`<figure data-src="https://aberturasindalum.com/assets/images/${f}"><img loading="lazy" src="https://aberturasindalum.com/assets/images/${f}" alt="Obra de Indalum ${i+1}" onerror="const m=this.closest('.mural');this.closest('figure').remove();if(m&&!m.children.length)document.getElementById('obras').style.display='none'"><figcaption>OBRA ${String(i+1).padStart(2,"0")}</figcaption></figure>`).join("");
+$("mural").addEventListener("click", e=>{ const f=e.target.closest("figure"); if(!f) return; const lb=$("lb"); lb.querySelector("img").src=f.dataset.src; lb.classList.add("on"); });
+$("lb").addEventListener("click", e=>{ if(e.target.tagName!=="IMG") $("lb").classList.remove("on"); });
+
+/* ===== Tabla de precios ===== */
+function abrirPrecios(){
+  const fila = (lbl, grp, k, suf="") => `<tr><td>${lbl}</td><td style="text-align:right"><input type="number" data-g="${grp}" data-k="${k}" value="${grp?P[grp][k]:P[k]}">${suf}</td></tr>`;
+  let h = `<table><tr><th colspan="2">Precio base por m² (línea Modena, vidrio simple)</th></tr>`;
+  TIPOS.forEach(t=>h+=fila(t.n,"m2",t.id));
+  h += `<tr><th colspan="2">Multiplicador por línea</th></tr>`; LINEAS.forEach(l=>h+=fila(l.n,"linea",l.id," ×"));
+  h += `<tr><th colspan="2">Adicional de vidrio por m²</th></tr>`; VIDRIOS.forEach(v=>h+=fila(v.n,"vidrio",v.id));
+  h += `<tr><th colspan="2">Recargo por terminación (%)</th></tr>`; TERMS.forEach(t=>h+=fila(t.n,"term",t.id," %"));
+  h += `<tr><th colspan="2">Extras</th></tr>` + fila("Mosquitero por m²","", "mosqM2") + fila("Cortina de enrollar por m²","","cortM2") + fila("Instalación (%)","","instPct"," %") + fila("Superficie mínima (m²)","","minM2") + fila("Rango ± (%)","","rangoPct"," %");
+  h += `</table>`;
+  $("mBody").innerHTML = h; $("modal").classList.add("on");
+}
+$("mBody").addEventListener("input", e=>{ const i=e.target; if(!i.dataset.k) return; const v=parseFloat(i.value); if(!isFinite(v)||v<0) return; if(i.dataset.g) P[i.dataset.g][i.dataset.k]=v; else P[i.dataset.k]=v; guardar(); renderPedido(); });
+$("mCerrar").addEventListener("click", ()=>$("modal").classList.remove("on"));
+$("modal").addEventListener("click", e=>{ if(e.target.id==="modal") $("modal").classList.remove("on"); });
+$("mReset").addEventListener("click", ()=>{ P=structuredClone(DEF); guardar(); abrirPrecios(); renderPedido(); toast("Precios de ejemplo restaurados"); });
+document.addEventListener("keydown", e=>{ if(e.key==="Escape"){ $("modal").classList.remove("on"); $("lb").classList.remove("on"); } });
+
+/* ===== Inicio ===== */
+botones();
+const m = location.hash.match(/^#p=([A-Za-z0-9_-]+)/);
+if(m){ const its = decodificar(m[1]); if(its && its.length){ items = its; const ab=$("abierto"); ab.innerHTML=`Abriste un pedido compartido: <b>${its.length} abertura${its.length>1?"s":""}</b>. Podés sumar, quitar o mandarlo por WhatsApp.`; ab.classList.add("on"); } }
+renderPedido();
+if(m && items.length) setTimeout(()=>$("pedido").scrollIntoView(),200);
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Indalum"></script>
+</body>
+</html>
