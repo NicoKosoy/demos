@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Altos del Sur · Cabañas de montaña en el Piltriquitrón</title>
+<meta name="description" content="Prototipo de demostración: web de reservas para Altos del Sur Cabañas de Montaña, El Bolsón.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kreon:wght@400;500;700&family=Archivo+Narrow:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --noche:#1B1A18;
+  --noche2:#262421;
+  --brasa:#C9573A;
+  --brasa2:#E9875F;
+  --lenga:#8A5A3B;
+  --liquen:#9DB0A3;
+  --arroyo:#4E6E6B;
+  --nieve:#F4EFE7;
+  --nieve2:#E8E0D3;
+  --tinta:#1D1C1A;
+  --gris:#6A645C;
+  --linea:#D9CFC0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--nieve);color:var(--tinta);font-family:"Archivo Narrow",system-ui,sans-serif;font-size:18px;line-height:1.6;overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:inherit}
+button{font:inherit;cursor:pointer}
+h1,h2,h3,h4{font-family:"Kreon",Georgia,serif;font-weight:700;line-height:1.05}
+.wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+.proto{background:var(--brasa);color:#fff;font-size:13.5px;text-align:center;padding:8px 16px}
+.k{font-size:13px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;color:var(--brasa)}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--brasa);color:#fff;border:0;border-radius:6px;padding:12px 20px;font-weight:600;font-size:16px;text-decoration:none;letter-spacing:.02em;transition:background .2s}
+.btn:hover{background:#B04A30}
+.btn.line{background:transparent;border:1.5px solid currentColor}
+/* top */
+.top{position:absolute;left:0;right:0;z-index:20;color:var(--nieve)}
+.top .wrap{display:flex;justify-content:space-between;align-items:center;height:76px;gap:16px}
+.brand{text-decoration:none;line-height:1}
+.brand b{font-family:"Kreon",serif;font-size:25px;display:block}
+.brand small{font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;opacity:.8}
+.top nav{display:flex;gap:26px;font-size:16px}
+.top nav a{text-decoration:none;opacity:.85}
+.top nav a:hover{opacity:1}
+/* HERO */
+.hero{position:relative;background:var(--noche);color:var(--nieve);min-height:100vh;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);overflow:hidden}
+.hero-txt{padding:150px 40px 70px max(28px,calc((100vw - 1200px)/2 + 28px));display:flex;flex-direction:column;justify-content:flex-end;position:relative;z-index:2}
+.hero h1{font-size:clamp(40px,5.2vw,78px);letter-spacing:-.01em;margin:16px 0 22px}
+.hero h1 span{color:var(--brasa2)}
+.hero p{font-size:19px;color:#CFC7BA;max-width:520px}
+.hero .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
+.hero-img{position:relative;background:var(--noche2)}
+.hero-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+.hero-img::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--noche) 0,transparent 30%);z-index:2}
+.ph{position:absolute;inset:0;background:
+ radial-gradient(circle at 70% 28%,rgba(233,135,95,.55) 0 6%,transparent 6.5%),
+ linear-gradient(155deg,transparent 40%,#3B4A47 40% 58%,transparent 58%),
+ linear-gradient(205deg,transparent 48%,#2D3836 48%),#47423C}
+.tarja{position:absolute;right:28px;bottom:28px;z-index:3;background:rgba(27,26,24,.82);backdrop-filter:blur(6px);border:1px solid #3A3631;border-radius:10px;padding:16px 18px;min-width:250px}
+.tarja div{display:flex;justify-content:space-between;gap:18px;font-size:15px;padding:5px 0;border-bottom:1px dashed #3F3A34}
+.tarja div:last-child{border:0}
+.tarja span:last-child{color:var(--brasa2);font-weight:600}
+/* promo ribbon */
+.promo{background:var(--noche2);color:var(--nieve);border-top:1px solid #34302B}
+.promo .wrap{display:flex;align-items:center;justify-content:space-between;gap:18px;padding-top:18px;padding-bottom:18px;flex-wrap:wrap}
+.promo b{font-family:"Kreon",serif;font-size:22px;color:var(--brasa2)}
+.promo .dias{display:flex;gap:6px;flex-wrap:wrap}
+.promo .dias span{background:#34302B;border-radius:4px;padding:4px 9px;font-size:14px}
+section{padding:96px 0}
+.head{max-width:760px;margin-bottom:46px}
+.head h2{font-size:clamp(32px,3.8vw,52px);margin:12px 0 14px;color:var(--noche)}
+.head p{color:var(--gris);font-size:19px}
+/* ESCALERA DE TAMAÑOS */
+.escala{display:flex;align-items:flex-end;gap:14px;border-bottom:3px solid var(--noche);padding-bottom:0;margin-bottom:18px;min-height:340px}
+.esc{flex:1 1 0;min-width:0;background:var(--nieve2);border:2px solid var(--noche);border-bottom:0;border-radius:6px 6px 0 0;position:relative;padding:14px;display:flex;flex-direction:column;justify-content:space-between;transition:background .25s,transform .25s;cursor:pointer;text-align:left;color:var(--tinta)}
+.esc:hover,.esc.on{background:var(--brasa);color:#fff;border-color:var(--brasa)}
+.esc .m2{font-family:"Kreon",serif;font-size:clamp(28px,3.4vw,46px);line-height:1}
+.esc .m2 small{font-size:.45em}
+.esc .nm{font-family:"Kreon",serif;font-size:19px;line-height:1.15}
+.esc .px{font-size:14px;opacity:.8}
+.esc .acc em{font-style:normal}
+.esc .acc{position:absolute;top:10px;right:10px;font-size:12px;background:var(--noche);color:#fff;border-radius:4px;padding:2px 7px}
+.escala-n{display:flex;justify-content:space-between;font-size:14px;color:var(--gris)}
+/* ARMÁ TU GRUPO */
+#grupo{background:var(--noche);color:var(--nieve)}
+#grupo .head h2{color:var(--nieve)}
+#grupo .head p{color:#BEB6A9}
+.armador{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:30px;align-items:start}
+.panel{background:var(--noche2);border:1px solid #38332D;border-radius:12px;padding:24px}
+.cnt{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid #38332D}
+.cnt b{font-family:"Kreon",serif;font-size:21px;display:block}
+.cnt small{color:#A9A194;font-size:14px}
+.stp{display:flex;align-items:center;gap:14px}
+.stp button{width:40px;height:40px;border-radius:50%;border:1.5px solid #5A534A;background:none;color:var(--nieve);font-size:20px}
+.stp output{font-family:"Kreon",serif;font-size:26px;min-width:26px;text-align:center}
+.tog{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid #38332D;cursor:pointer}
+.tog:last-child{border:0}
+.tog input{appearance:none;width:48px;height:28px;border-radius:999px;background:#4A443C;position:relative;flex:none;cursor:pointer;transition:background .2s}
+.tog input::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:left .2s}
+.tog input:checked{background:var(--brasa)}
+.tog input:checked::after{left:23px}
+.reco{display:flex;flex-direction:column;gap:12px}
+.rc{display:grid;grid-template-columns:120px 1fr;gap:16px;background:var(--nieve);color:var(--tinta);border-radius:10px;overflow:hidden;align-items:stretch}
+.rc .im{position:relative;background:var(--lenga);min-height:110px}
+.rc .im img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+.rc .tx{padding:14px 14px 14px 0}
+.rc h4{font-size:22px}
+.rc p{font-size:15px;color:var(--gris)}
+.rc a{font-size:15px;color:var(--brasa);font-weight:600}
+.reco .sum{font-size:16px;color:#D8D0C3;background:#2E2A26;border-left:3px solid var(--brasa);padding:12px 14px;border-radius:0 8px 8px 0}
+/* FICHAS */
+.ficha{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:38px;padding:56px 0;border-top:1px solid var(--linea);scroll-margin-top:30px}
+.ficha:first-of-type{border-top:0;padding-top:0}
+.fotos .main{position:relative;background:var(--nieve2);border-radius:8px;overflow:hidden;min-height:200px}
+.fotos .main .ph{z-index:0}
+.fotos .main img{position:relative;z-index:1;width:100%;height:auto}
+.fotos .mas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:10px;align-items:start}
+.fotos .mas img{width:100%;height:auto;border-radius:6px;background:var(--nieve2);cursor:zoom-in}
+.fotos .mas img.gone{display:none}
+.det .num{font-family:"Kreon",serif;font-size:72px;line-height:.9;color:var(--nieve2);-webkit-text-stroke:1.5px var(--lenga)}
+.det h3{font-size:40px;margin:8px 0 4px}
+.det .sub{font-size:15px;letter-spacing:.14em;text-transform:uppercase;color:var(--brasa);font-weight:600}
+.det ul{list-style:none;margin:20px 0}
+.det li{padding:8px 0 8px 22px;border-bottom:1px solid var(--linea);position:relative;font-size:16.5px}
+.det li::before{content:"";position:absolute;left:2px;top:17px;width:9px;height:9px;background:var(--brasa);transform:rotate(45deg)}
+.det .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.det .meta span{background:var(--nieve2);border-radius:4px;padding:4px 10px;font-size:14.5px}
+.det .meta span.a{background:var(--arroyo);color:#fff}
+/* incluye */
+#incluye{background:var(--nieve2)}
+.inc{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border-top:2px solid var(--noche)}
+.inc div{padding:22px 18px 22px 0;border-bottom:1px solid var(--linea)}
+.inc b{font-family:"Kreon",serif;font-size:22px;display:block;margin-bottom:4px}
+.inc p{font-size:15.5px;color:var(--gris)}
+/* reservar */
+#reservar{background:var(--noche);color:var(--nieve)}
+#reservar .head h2{color:var(--nieve)}
+#reservar .head p{color:#BEB6A9}
+.temps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:34px}
+.temps div{border:1px solid #3A3530;border-radius:10px;padding:16px}
+.temps div.alta{border-color:var(--brasa)}
+.temps small{font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--brasa2)}
+.temps b{display:block;font-family:"Kreon",serif;font-size:21px;margin:4px 0}
+.temps span{font-size:15px;color:#BEB6A9}
+.book{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:26px;align-items:start}
+.cal{background:var(--nieve);color:var(--tinta);border-radius:12px;padding:22px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tabs button{border:1.5px solid var(--linea);background:#fff;border-radius:6px;padding:6px 12px;font-size:15px}
+.tabs button.on{background:var(--noche);color:#fff;border-color:var(--noche)}
+.mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.mh h4{font-size:24px}
+.mh button{width:38px;height:38px;border:1.5px solid var(--linea);background:#fff;border-radius:6px;font-size:18px}
+.grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.grid .dw{text-align:center;font-size:12.5px;color:var(--gris);text-transform:uppercase;padding:4px 0}
+.grid button{aspect-ratio:1/1;border:1px solid var(--linea);background:#fff;border-radius:6px;font-size:15.5px;position:relative}
+.grid button.oc{background:#E4DBCD;color:#AA9F8F;border-color:#E4DBCD;cursor:not-allowed}
+.grid button.oc::after{content:"";position:absolute;left:20%;right:20%;top:50%;height:1.5px;background:#AA9F8F;transform:rotate(-35deg)}
+.grid button.past{opacity:.3;cursor:not-allowed}
+.grid button.promo::before{content:"";position:absolute;top:4px;right:4px;width:6px;height:6px;border-radius:50%;background:var(--arroyo)}
+.grid button.sel{background:var(--brasa);border-color:var(--brasa);color:#fff}
+.grid button.rng{background:#F3CDBD;border-color:#F3CDBD}
+.ley{display:flex;gap:14px;flex-wrap:wrap;font-size:14px;color:var(--gris);margin-top:12px}
+.ley i{display:inline-block;width:13px;height:13px;border-radius:3px;margin-right:6px;vertical-align:-1px;border:1px solid var(--linea);background:#fff}
+.ley i.o{background:#E4DBCD}
+.ley i.p{background:var(--arroyo);border-radius:50%;width:9px;height:9px}
+.ley i.s{background:var(--brasa);border:0}
+.sync{margin-top:14px;background:var(--nieve2);border-radius:8px;padding:10px 12px;font-size:14.5px}
+.res{background:var(--noche2);border:1px solid #3A3530;border-radius:12px;padding:22px}
+.res h4{font-size:24px;margin-bottom:12px}
+.res label{display:block;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#A9A194;margin:12px 0 6px}
+.res select{width:100%;background:var(--noche);color:var(--nieve);border:1px solid #4A443C;border-radius:6px;padding:11px;font:inherit}
+.row{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px dashed #433D36;font-size:16px}
+.row.tot{font-size:20px;font-weight:700;border:0}
+.row.sena{background:var(--brasa);color:#fff;border-radius:6px;padding:11px 12px;font-weight:600;border:0}
+.res .btn{width:100%;justify-content:center;margin-top:14px}
+.msg{font-size:15px;color:var(--brasa2);min-height:22px;margin-top:10px}
+.ej{font-size:13.5px;color:#8F877A;margin-top:8px}
+/* zona */
+.zona{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:46px;align-items:start}
+.sendas{list-style:none;counter-reset:s}
+.sendas li{display:grid;grid-template-columns:56px 1fr;gap:14px;padding:16px 0;border-bottom:1px solid var(--linea);counter-increment:s}
+.sendas li::before{content:counter(s,decimal-leading-zero);font-family:"Kreon",serif;font-size:30px;color:var(--brasa);line-height:1}
+.sendas b{font-family:"Kreon",serif;font-size:22px;display:block}
+.sendas span{color:var(--gris);font-size:16px}
+.corte{background:var(--noche);border-radius:12px;padding:20px;color:var(--nieve)}
+.corte svg{width:100%;height:auto;display:block}
+.corte p{font-size:14.5px;color:#BEB6A9;margin-top:10px}
+/* faq */
+.faq{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 46px}
+details{border-bottom:1px solid var(--linea);padding:16px 0}
+summary{font-family:"Kreon",serif;font-size:21px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:10px}
+summary::after{content:"+";color:var(--brasa)}
+details[open] summary::after{content:"−"}
+details p{color:var(--gris);margin-top:6px;font-size:16.5px}
+footer{background:var(--noche);color:#BEB6A9;padding:60px 0 28px;font-size:16px}
+footer .wrap{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:30px}
+footer h4{color:var(--nieve);font-size:24px;margin-bottom:8px}
+footer a{color:var(--nieve)}
+footer .legal{grid-column:1/-1;border-top:1px solid #34302B;padding-top:18px;font-size:13.5px;color:#7F786D}
+.wa{position:fixed;right:18px;bottom:18px;z-index:50;background:#25D366;color:#fff;border-radius:999px;padding:13px 18px;font-weight:600;text-decoration:none;box-shadow:0 8px 24px rgba(0,0,0,.25);font-size:15px}
+.lb{position:fixed;inset:0;background:rgba(15,14,13,.93);z-index:80;display:none;align-items:center;justify-content:center;padding:24px}
+.lb.on{display:flex}
+.lb img{max-width:100%;max-height:90vh;width:auto;height:auto;border-radius:6px}
+.lb button{position:absolute;top:14px;right:20px;background:none;border:0;color:#fff;font-size:36px}
+@media (max-width:960px){
+  .top nav{display:none}
+  .hero{grid-template-columns:1fr;min-height:0}
+  .hero-img{height:70vw;min-height:280px}
+  .hero-img::after{background:linear-gradient(0deg,var(--noche) 0,transparent 35%)}
+  .hero-txt{padding:110px 24px 40px}
+  .tarja{left:16px;right:16px;bottom:16px;min-width:0}
+  .armador,.book,.zona,.faq{grid-template-columns:1fr}
+  .ficha{grid-template-columns:1fr;gap:22px}
+  .inc,.temps{grid-template-columns:1fr 1fr}
+  footer .wrap{grid-template-columns:1fr}
+}
+@media (max-width:560px){
+  .wrap{padding:0 16px}
+  .hero-txt{padding:100px 16px 34px}
+  section{padding:66px 0}
+  .escala{gap:6px;min-height:260px}
+  .esc{padding:8px}
+  .esc .nm{font-size:14px}
+  .esc .px{font-size:12px}
+  .esc .acc{top:6px;right:6px;font-size:12px;padding:1px 5px}
+  .esc .acc em{display:none}
+  .esc .m2{font-size:24px}
+  .esc .m2 small{display:none}
+  .escala-n{flex-direction:column;gap:4px}
+  .inc,.temps{grid-template-columns:1fr}
+  .rc{grid-template-columns:96px 1fr}
+  .fotos .mas{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .det h3{font-size:34px}
+  .wa{padding:12px 15px;font-size:14px}
+}
+</style>
+</head>
+<body>
+<div class="proto">Prototipo de demostración preparado para <b>Altos del Sur Cabañas de Montaña</b> · Resolviendo Kos</div>
+
+<header class="hero" id="top">
+  <div class="top"><div class="wrap">
+    <a class="brand" href="#top"><b>Altos del Sur</b><small>Cabañas de montaña · El Bolsón</small></a>
+    <nav><a href="#cabanas">Cabañas</a><a href="#grupo">Armá tu grupo</a><a href="#reservar">Fechas</a><a href="#zona">El cerro</a></nav>
+    <a class="btn" href="#reservar">Reservar</a>
+  </div></div>
+  <div class="hero-txt">
+    <div class="k">Cóndor 1050 · Villa Turismo</div>
+    <h1>Arriba del Piltriquitrón, con <span>arroyo propio</span> y la leña ya en la puerta.</h1>
+    <p>Cuatro cabañas de montaña de 40 a 100 m², para 2 a 6 personas, en bosque nativo. Dos están adaptadas para personas con movilidad reducida. Las atienden sus dueños.</p>
+    <div class="cta"><a class="btn" href="#reservar">Ver fechas libres</a><a class="btn line" href="#grupo">¿Cuál nos conviene?</a></div>
+  </div>
+  <div class="hero-img">
+    <div class="ph"></div>
+    <img src="https://altosdelsurbolson.com.ar/wp-content/uploads/2020/04/01.jpeg" alt="Altos del Sur, cabañas en el bosque" onerror="this.remove()">
+    <div class="tarja">
+      <div><span>Leña</span><span>incluida</span></div>
+      <div><span>Arroyo de montaña</span><span>propio</span></div>
+      <div><span>Cabañas adaptadas</span><span>2 de 4</span></div>
+      <div><span>Bosque Tallado</span><span>acceso</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="promo"><div class="wrap">
+  <div><b>Promo temporada baja</b> · ahora se ven las fechas libres sin escribir:</div>
+  <div class="dias" id="promoDias"></div>
+  <a class="btn" href="#reservar">Elegir fechas</a>
+</div></div>
+
+<section id="cabanas">
+  <div class="wrap">
+    <div class="head">
+      <div class="k">Las cuatro, a escala</div>
+      <h2>Del monoambiente de 40 m² a la casa de 100 m² con suite y deck privado.</h2>
+      <p>La altura de cada bloque es su superficie real. Tocá una para ver la ficha.</p>
+    </div>
+    <div class="escala" id="escala"></div>
+    <div class="escala-n"><span>Altura proporcional a los m² de cada cabaña</span><span>2 a 6 personas · consultar por pasajeros adicionales</span></div>
+    <div id="fichas" style="margin-top:70px"></div>
+  </div>
+</section>
+
+<section id="grupo">
+  <div class="wrap">
+    <div class="head">
+      <div class="k">Armá tu grupo</div>
+      <h2>Contanos quiénes vienen y te decimos qué cabaña les queda.</h2>
+      <p>Si son más de seis, te armamos la combinación de dos cabañas vecinas.</p>
+    </div>
+    <div class="armador">
+      <div class="panel">
+        <div class="cnt"><div><b>Adultos</b><small>13 años o más</small></div><div class="stp"><button data-d="a" data-v="-1" aria-label="Menos adultos">−</button><output id="oA">2</output><button data-d="a" data-v="1" aria-label="Más adultos">+</button></div></div>
+        <div class="cnt"><div><b>Chicos</b><small>hasta 12 años</small></div><div class="stp"><button data-d="c" data-v="-1" aria-label="Menos chicos">−</button><output id="oC">0</output><button data-d="c" data-v="1" aria-label="Más chicos">+</button></div></div>
+        <label class="tog"><span><b style="font-family:Kreon,serif;font-size:19px">Alguien con movilidad reducida</b><br><small style="color:#A9A194">Te mostramos solo las adaptadas</small></span><input type="checkbox" id="tAcc"></label>
+        <label class="tog"><span><b style="font-family:Kreon,serif;font-size:19px">Queremos una suite con deck privado</b><br><small style="color:#A9A194">Para los que viajan con más gente pero quieren su rincón</small></span><input type="checkbox" id="tSuite"></label>
+        <label class="tog"><span><b style="font-family:Kreon,serif;font-size:19px">Cada pareja con su habitación</b><br><small style="color:#A9A194">Dormitorios separados</small></span><input type="checkbox" id="tSep"></label>
+      </div>
+      <div class="reco" id="reco"></div>
+    </div>
+  </div>
+</section>
+
+<section id="incluye">
+  <div class="wrap">
+    <div class="head"><div class="k">Incluido en todas</div><h2>Lo que no hay que preguntar.</h2></div>
+    <div class="inc">
+      <div><b>Provisión de leña</b><p>Y calefacción en todas las cabañas.</p></div>
+      <div><b>Deck y parrilla</b><p>Independientes, en cada cabaña.</p></div>
+      <div><b>Wi-Fi sin cargo</b><p>Y TV LCD con DirecTV.</p></div>
+      <div><b>Biblioteca</b><p>DVD, películas y juegos de mesa para los días de lluvia.</p></div>
+      <div><b>Servicio de mucama</b><p>Y servicio de lavado y planchado.</p></div>
+      <div><b>Caja de seguridad</b><p>En las habitaciones.</p></div>
+      <div><b>Estacionamiento</b><p>Privado.</p></div>
+      <div><b>Sus dueños</b><p>Atención personalizada, mapas e información turística.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="reservar">
+  <div class="wrap">
+    <div class="head">
+      <div class="k">Temporada 2026–2027</div>
+      <h2>Elegí cabaña, fechas y pedí la reserva con seña.</h2>
+      <p>El calendario se sincroniza con Booking y Airbnb: lo que se ocupa allá aparece tomado acá. Sin dobles reservas y sin ida y vuelta de mensajes.</p>
+    </div>
+    <div class="temps">
+      <div class="alta"><small>Verano</small><b>20 dic 2026 – 28 feb 2027</b><span>Fiesta Nacional del Lúpulo en febrero y Carnaval del 6 al 9.</span></div>
+      <div><small>Otoño</small><b>Marzo – mayo 2027</b><span>Semana Santa del 25 al 28 de marzo. Bosque colorado.</span></div>
+      <div class="alta"><small>Invierno</small><b>Julio 2027</b><span>Vacaciones de invierno y nieve en el Cerro Perito Moreno.</span></div>
+      <div><small>Temporada baja</small><b>Sep – nov · abr – jun</b><span>Fechas con promo marcadas con punto en el calendario.</span></div>
+    </div>
+    <div class="book">
+      <div class="cal">
+        <div class="tabs" id="tabs"></div>
+        <div class="mh"><button id="prev" aria-label="Mes anterior">‹</button><h4 id="mes"></h4><button id="next" aria-label="Mes siguiente">›</button></div>
+        <div class="grid" id="grid"></div>
+        <div class="ley"><span><i></i>Libre</span><span><i class="o"></i>Ocupado</span><span><i class="p"></i>Promo temporada baja</span><span><i class="s"></i>Tu estadía</span></div>
+        <div class="sync">⟳ Disponibilidad de ejemplo · <b>se sincroniza con Booking y Airbnb</b></div>
+      </div>
+      <div class="res">
+        <h4>Tu reserva</h4>
+        <label for="sCab">Cabaña</label><select id="sCab"></select>
+        <label for="sPax">Personas</label><select id="sPax"></select>
+        <div id="det" style="margin-top:14px"></div>
+        <button class="btn" id="pagar">Pedir reserva y pagar seña</button>
+        <div class="msg" id="msg"></div>
+        <p class="ej">Tarifas de ejemplo para el prototipo; con ustedes se cargan las reales, la promo y el recargo por pasajero adicional.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="zona">
+  <div class="wrap zona">
+    <div>
+      <div class="k">Desde la puerta</div>
+      <h2 style="font-size:clamp(32px,3.6vw,48px);margin:12px 0 20px">En la parte alta del cerro, a 10 minutos del centro.</h2>
+      <ol class="sendas">
+        <li><div><b>Bosque Tallado</b><span>Las esculturas en madera del Piltriquitrón, con acceso desde la zona.</span></div></li>
+        <li><div><b>Refugio Piltriquitrón</b><span>Caminata de montaña con vista a todo el valle.</span></div></li>
+        <li><div><b>Feria Regional</b><span>Plaza Pagano: dulces, cerveza artesanal y artesanías.</span></div></li>
+        <li><div><b>Lago Puelo</b><span>Parque nacional, playas y kayak, a unos 20 minutos.</span></div></li>
+        <li><div><b>Cerro Perito Moreno</b><span>Nieve y esquí en invierno.</span></div></li>
+      </ol>
+    </div>
+    <div class="corte">
+      <svg viewBox="0 0 500 320" role="img" aria-label="Corte ilustrado del Cerro Piltriquitrón con la ubicación de Altos del Sur">
+        <rect width="500" height="320" fill="#1B1A18"/>
+        <path d="M0 300 L60 250 L140 200 L230 120 L300 60 L340 40 L380 70 L440 140 L500 190 V320 H0Z" fill="#3B4A47"/>
+        <path d="M300 60 L340 40 L380 70 L360 72 L340 58 L318 72Z" fill="#F4EFE7"/>
+        <path d="M0 300 L60 250 L140 200 L230 120" fill="none" stroke="#9DB0A3" stroke-width="2" stroke-dasharray="4 6"/>
+        <g fill="#4E6E6B"><circle cx="150" cy="205" r="9"/><circle cx="170" cy="190" r="10"/><circle cx="190" cy="176" r="9"/><circle cx="125" cy="222" r="8"/><circle cx="210" cy="160" r="8"/></g>
+        <path d="M150 300 C160 260 175 230 182 200" stroke="#7FA7C9" stroke-width="3" fill="none"/>
+        <text x="96" y="276" font-family="Archivo Narrow" font-size="13" fill="#7FA7C9">arroyo</text>
+        <circle cx="185" cy="178" r="8" fill="#C9573A"/><circle cx="185" cy="178" r="16" fill="none" stroke="#C9573A" stroke-width="2" opacity=".6"/>
+        <text x="200" y="196" font-family="Kreon" font-size="17" font-weight="700" fill="#F4EFE7">Altos del Sur</text>
+        <text x="236" y="114" font-family="Archivo Narrow" font-size="13" fill="#BEB6A9">Bosque Tallado ↗</text>
+        <text x="320" y="30" font-family="Archivo Narrow" font-size="13" fill="#BEB6A9">Piltriquitrón</text>
+        <text x="10" y="292" font-family="Archivo Narrow" font-size="13" fill="#BEB6A9">El Bolsón · 10 min</text>
+      </svg>
+      <p>Ilustración para el prototipo, no a escala. Cóndor 1050, Villa Turismo.</p>
+      <a class="btn" style="margin-top:10px" href="https://www.google.com/maps/search/?api=1&query=Altos+del+Sur+Caba%C3%B1as+de+Monta%C3%B1a+C%C3%B3ndor+1050+El+Bols%C3%B3n" target="_blank" rel="noopener">Abrir en el mapa</a>
+    </div>
+  </div>
+</section>
+
+<section id="faq" style="padding-top:20px">
+  <div class="wrap">
+    <div class="head"><div class="k">Preguntas</div><h2>Antes de viajar</h2></div>
+    <div class="faq">
+      <details open><summary>¿La leña está incluida?</summary><p>Sí, la provisión de leña está incluida.</p></details>
+      <details><summary>¿Qué cabañas están adaptadas?</summary><p>La Cabaña 1 ambiente (2 personas) y la de 3 dormitorios (6 personas) están adaptadas para personas con movilidad reducida.</p></details>
+      <details><summary>¿Hay pasajeros adicionales?</summary><p>Se puede: consultá el precio por pasajero adicional según la cabaña.</p></details>
+      <details><summary>¿Tienen servicio de mucama?</summary><p>Sí, y también lavado y planchado.</p></details>
+      <details><summary>¿Se puede cambiar moneda?</summary><p>Sí, en recepción hay cambio de moneda.</p></details>
+      <details><summary>¿Cómo se paga la seña?</summary><p>Con Mercado Pago, al pedir la reserva. Les llega el pedido a los dueños y te confirman por mail y WhatsApp.</p></details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div><h4>Altos del Sur</h4>Cabañas de Montaña<br>Cóndor 1050, Villa Turismo · El Bolsón · Patagonia Argentina</div>
+    <div><h4>Contacto</h4>Tel. <a href="tel:+542944498730">(0294) 449-8730</a><br><a href="https://altosdelsurbolson.com.ar/" target="_blank" rel="noopener">altosdelsurbolson.com.ar</a></div>
+    <div><h4>Redes</h4><a href="https://www.instagram.com/altos_del_sur_cabanas/" target="_blank" rel="noopener">@altos_del_sur_cabanas</a><br><a href="https://www.facebook.com/altosdelsur" target="_blank" rel="noopener">Facebook</a></div>
+    <div class="legal">Prototipo de demostración preparado para Altos del Sur Cabañas de Montaña por Resolviendo Kos · resolviendokos.com. Fotos y textos de su web pública; disponibilidad y tarifas de ejemplo.</div>
+  </div>
+</footer>
+<a class="wa" href="https://wa.me/5492944110657" target="_blank" rel="noopener">WhatsApp</a>
+<div class="lb" id="lb"><button aria-label="Cerrar">×</button><img alt=""></div>
+
+<script>
+const U='https://altosdelsurbolson.com.ar/wp-content/uploads/';
+const CABS=[
+ {id:'uno',n:'01',name:'Cabaña 1 ambiente',short:'1 ambiente',pax:2,m2:40,acc:true,suite:false,dorm:0,
+  hero:U+'2023/05/01-1.jpeg',fotos:['2023/05/02-1.jpeg','2023/05/04-1.jpeg','2023/05/06-1.jpeg','2023/05/07.jpeg','2023/05/08.jpeg','2021/08/WhatsApp-Image-2021-07-31-at-23.29.17.jpeg'].map(f=>U+f),
+  sub:'Monoambiente para dos',items:['Adaptada para movilidad reducida','Cocina, comedor y living','Cama queen','Baño completo','Deck y parrilla']},
+ {id:'chalet',n:'02',name:'Chalet Rústico',short:'Chalet Rústico',pax:3,m2:52,acc:false,suite:false,dorm:1,
+  hero:U+'2023/05/01-2.jpeg',fotos:['2023/05/02-2.jpeg','2023/05/03-1.jpeg','2023/05/04-2.jpeg','2023/05/05-1.jpeg','2023/05/06-2.jpeg','2023/05/08-1.jpeg'].map(f=>U+f),
+  sub:'1 dormitorio · 1 baño',items:['Cocina, comedor y living','1 habitación','Baño completo','Galería y parrilla']},
+ {id:'dos',n:'03',name:'Cabaña 2 dormitorios',short:'2 dormitorios',pax:4,m2:65,acc:false,suite:false,dorm:2,
+  hero:U+'2023/05/02-3.jpeg',fotos:['2023/05/03-2.jpeg','2023/05/04-3.jpeg','2023/05/05-2.jpeg','2023/05/06-3.jpeg','2023/05/08-2.jpeg','2023/05/09.jpeg'].map(f=>U+f),
+  sub:'2 dormitorios · 1 baño',items:['Cocina, comedor y living','Habitación matrimonial','Habitación con dos sommiers individuales en planta alta','Baño completo','Deck y parrilla']},
+ {id:'tres',n:'04',name:'Cabaña 3 dormitorios',short:'3 dormitorios',pax:6,m2:100,acc:true,suite:true,dorm:3,
+  hero:U+'2022/12/Para-CABA%C3%91A-para-SEIS-PERSONAS.jpeg',fotos:['2022/12/Para-CABA%C3%91A-para-SEIS-PERSONAS-02.jpeg','2022/12/EN-SOLAPA-CABA%C3%91A-PARA-6-PERSONAS-ESTA-REEMPLAZA-OTRA-DEL-BA%C3%91O.jpeg','2023/05/03.jpeg','2023/05/04.jpeg','2023/05/05.jpeg','2023/05/06.jpeg'].map(f=>U+f),
+  sub:'3 dormitorios · 2 baños',items:['Adaptada para movilidad reducida','Habitación superior con baño en suite y deck privado','Habitación matrimonial','Habitación con dos sommiers individuales en planta alta','Cocina, comedor y living','Deck y parrilla']}
+];
+const RATE={uno:58000,chalet:70000,dos:92000,tres:135000}; // ejemplo
+const lb=document.getElementById('lb');lb.onclick=e=>{if(e.target.tagName!=='IMG')lb.classList.remove('on')};
+const zoom=src=>{lb.querySelector('img').src=src;lb.classList.add('on')};
+
+// escala
+const E=document.getElementById('escala');
+CABS.forEach(c=>{const b=document.createElement('button');b.className='esc';b.style.height=(c.m2*3.1)+'px';
+  b.innerHTML=`${c.acc?'<span class="acc">♿<em> adaptada</em></span>':''}<span class="m2">${c.m2}<small> m²</small></span><span><span class="nm">${c.short}</span><br><span class="px">${c.pax} personas</span></span>`;
+  b.onclick=()=>document.getElementById('f-'+c.id).scrollIntoView({behavior:'smooth'});E.appendChild(b)});
+const fit=()=>{const k=innerWidth<560?3.2:3.1;[...E.children].forEach((b,i)=>b.style.height=(CABS[i].m2*k)+'px')};addEventListener('resize',fit);fit();
+
+// fichas
+const F=document.getElementById('fichas');
+CABS.forEach(c=>{const a=document.createElement('article');a.className='ficha';a.id='f-'+c.id;
+  a.innerHTML=`<div class="fotos"><div class="main"><div class="ph"></div><img src="${c.hero}" alt="${c.name}, foto principal" loading="lazy" onerror="this.style.visibility='hidden'"></div>
+  <div class="mas">${c.fotos.map((f,i)=>`<img src="${f}" alt="${c.name}, foto ${i+2}" loading="lazy" onerror="this.classList.add('gone')">`).join('')}</div></div>
+  <div class="det"><div class="num">${c.n}</div><h3>${c.name}</h3><div class="sub">${c.sub}</div>
+  <ul>${c.items.map(i=>`<li>${i}</li>`).join('')}</ul>
+  <div class="meta"><span>${c.pax} personas</span><span>${c.m2} m²</span>${c.acc?'<span class="a">Accesible</span>':''}<span>desde $ ${RATE[c.id].toLocaleString('es-AR')} / noche (ej.)</span></div>
+  <button class="btn" data-c="${c.id}">Ver fechas de esta cabaña</button></div>`;F.appendChild(a)});
+F.addEventListener('click',e=>{const b=e.target.closest('[data-c]');if(b){pickCab(b.dataset.c);document.getElementById('reservar').scrollIntoView({behavior:'smooth'})}
+  const im=e.target.closest('.fotos img');if(im)zoom(im.src)});
+
+// armador
+let A=2,C=0;const oA=document.getElementById('oA'),oC=document.getElementById('oC'),reco=document.getElementById('reco');
+document.querySelectorAll('.stp button').forEach(b=>b.onclick=()=>{if(b.dataset.d==='a')A=Math.max(1,Math.min(14,A+ +b.dataset.v));else C=Math.max(0,Math.min(10,C+ +b.dataset.v));oA.value=A;oC.value=C;arma()});
+['tAcc','tSuite','tSep'].forEach(id=>document.getElementById(id).onchange=arma);
+function card(c,why){return `<div class="rc"><div class="im"><div class="ph"></div><img src="${c.hero}" alt="" onerror="this.remove()"></div><div class="tx"><h4>${c.name}</h4><p>${c.pax} personas · ${c.m2} m²${c.acc?' · adaptada':''}. ${why}</p><a href="#f-${c.id}">Ver ficha →</a></div></div>`}
+function arma(){const n=A+C,acc=tAcc.checked,su=tSuite.checked,sep=tSep.checked;
+  let pool=CABS.filter(c=>(!acc||c.acc)&&(!su||c.suite));
+  let ok=pool.filter(c=>c.pax>=n&&(!sep||c.dorm>=Math.ceil(A/2)));
+  let html='';
+  if(ok.length){ok.sort((x,y)=>x.pax-y.pax);html=`<div class="sum">Para ${n} ${n===1?'persona':'personas'}${acc?', con accesibilidad':''}${su?', con suite':''}: ${ok.length===1?'esta es la que va':'estas son las que les quedan, de la más justa a la más amplia'}.</div>`+ok.map((c,i)=>card(c,i?'Más espacio para el mismo grupo.':'La medida justa.')).join('')}
+  else{const big=pool.sort((x,y)=>y.pax-x.pax);let left=n,combo=[];for(const c of big){if(left<=0)break;combo.push(c);left-=c.pax}
+    if(left<=0&&combo.length>1)html=`<div class="sum">Son ${n}: les proponemos dos cabañas, cada una con su deck y su parrilla, y comparten la mesa larga si quieren.</div>`+combo.map(c=>card(c,'Parte del grupo.')).join('');
+    else html=`<div class="sum">Para ${n} personas con esas condiciones no hay una sola cabaña: escribinos y lo resolvemos con pasajeros adicionales o dos cabañas.</div>`}
+  reco.innerHTML=html}
+arma();
+
+// calendario + simulador
+const MES=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+const today=new Date();today.setHours(0,0,0,0);
+let vm=new Date(today.getFullYear(),today.getMonth(),1),cab=CABS[0],ci=null,co=null;
+const tabs=document.getElementById('tabs'),sCab=document.getElementById('sCab'),sPax=document.getElementById('sPax');
+CABS.forEach(c=>{tabs.insertAdjacentHTML('beforeend',`<button data-c="${c.id}">${c.short}</button>`);sCab.insertAdjacentHTML('beforeend',`<option value="${c.id}">${c.name} · ${c.pax} pers.</option>`)});
+const high=d=>{const m=d.getMonth();return m===0||m===1||(m===11&&d.getDate()>=20)||m===6};
+const low=d=>{const m=d.getMonth();return [3,4,5,8,9,10].includes(m)};
+function busy(d){const k=d.getFullYear()*400+d.getMonth()*31+d.getDate()+cab.m2;const x=Math.sin(k*78.233)*43758.5453;return (x-Math.floor(x))<(high(d)?.55:.2)}
+const promo=d=>low(d)&&d.getDay()>=1&&d.getDay()<=4;
+const factor=d=>high(d)?1:(promo(d)?.75:.85);
+function pickCab(id){cab=CABS.find(c=>c.id===id);sCab.value=id;[...tabs.children].forEach(b=>b.classList.toggle('on',b.dataset.c===id));
+  sPax.innerHTML='';for(let p=1;p<=cab.pax;p++)sPax.insertAdjacentHTML('beforeend',`<option ${p===Math.min(2,cab.pax)?'selected':''}>${p}</option>`);ci=co=null;draw();calc()}
+tabs.onclick=e=>{const b=e.target.closest('button');if(b)pickCab(b.dataset.c)};sCab.onchange=()=>pickCab(sCab.value);sPax.onchange=calc;
+function draw(){const g=document.getElementById('grid');document.getElementById('mes').textContent=MES[vm.getMonth()]+' '+vm.getFullYear();
+  g.innerHTML=['lu','ma','mi','ju','vi','sá','do'].map(d=>`<div class="dw">${d}</div>`).join('');
+  for(let i=0;i<(vm.getDay()+6)%7;i++)g.insertAdjacentHTML('beforeend','<div></div>');
+  const n=new Date(vm.getFullYear(),vm.getMonth()+1,0).getDate();
+  for(let d=1;d<=n;d++){const dt=new Date(vm.getFullYear(),vm.getMonth(),d),b=document.createElement('button');b.textContent=d;
+    if(dt<today){b.className='past';b.disabled=true}else if(busy(dt)){b.className='oc';b.disabled=true}else if(promo(dt))b.classList.add('promo');
+    const t=+dt;if((ci&&t===+ci)||(co&&t===+co))b.classList.add('sel');else if(ci&&co&&t>ci&&t<co)b.classList.add('rng');
+    b.onclick=()=>pick(dt);g.appendChild(b)}}
+function pick(dt){if(!ci||co||dt<=ci){ci=dt;co=null}else{for(let x=new Date(ci);x<dt;x.setDate(x.getDate()+1))if(busy(x)){msg('Hay una noche ocupada en el medio: probá otras fechas u otra cabaña.');ci=dt;co=null;draw();calc();return}co=dt}draw();calc()}
+document.getElementById('prev').onclick=()=>{const p=new Date(vm.getFullYear(),vm.getMonth()-1,1);if(p>=new Date(today.getFullYear(),today.getMonth(),1)){vm=p;draw()}};
+document.getElementById('next').onclick=()=>{vm=new Date(vm.getFullYear(),vm.getMonth()+1,1);draw()};
+const fmt=v=>'$ '+Math.round(v).toLocaleString('es-AR');const msg=t=>document.getElementById('msg').textContent=t;
+function calc(){const det=document.getElementById('det');
+  if(!ci){det.innerHTML='<div class="row"><span>Elegí la llegada en el calendario</span><span></span></div>';return}
+  if(!co){det.innerHTML=`<div class="row"><span>Llegada</span><span>${ci.toLocaleDateString('es-AR')}</span></div><div class="row"><span>Ahora elegí la salida</span><span></span></div>`;return}
+  let s=0,n=0,pr=0;for(let x=new Date(ci);x<co;x.setDate(x.getDate()+1)){s+=RATE[cab.id]*factor(x);n++;if(promo(x))pr++}
+  det.innerHTML=`<div class="row"><span>${cab.name} · ${sPax.value} pers.</span><span>${n} noche${n>1?'s':''}</span></div>${pr?`<div class="row"><span>Noches con promo temporada baja</span><span>${pr}</span></div>`:''}<div class="row tot"><span>Total</span><span>${fmt(s)}</span></div><div class="row sena"><span>Seña 30% por Mercado Pago</span><span>${fmt(s*.3)}</span></div>`;msg('')}
+document.getElementById('pagar').onclick=()=>{if(!ci||!co){msg('Primero elegí llegada y salida.');return}msg('Demo: acá se abre Mercado Pago y a ustedes les llega el pedido con los datos del huésped.')};
+pickCab('uno');
+// promo ribbon: próximas noches con promo libres en alguna cabaña
+(()=>{const out=[];const keep=cab;for(let i=0;out.length<5&&i<60;i++){const d=new Date(today);d.setDate(d.getDate()+i);if(promo(d)){cab=CABS[i%4];if(!busy(d))out.push(d.toLocaleDateString('es-AR',{weekday:'short',day:'numeric',month:'short'}))}}cab=keep;
+document.getElementById('promoDias').innerHTML=out.map(t=>`<span>${t}</span>`).join('')})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Altos del Sur Cabañas de Montaña"></script>
+</body>
+</html>
