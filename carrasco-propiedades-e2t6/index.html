@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Carrasco · Servicios Inmobiliarios · La Rioja (prototipo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Yeseva+One&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --arena:#EFE3CF; --cal:#FAF5EC; --ocre:#C0612B; --talampaya:#8F3B22; --olivo:#6F7A3A; --sierra:#4E5D73; --noche:#22201D; --gris:#75695C; --linea:#DCCDB5;
+  --disp:'Yeseva One',Georgia,serif; --sans:'Plus Jakarta Sans',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--cal);color:var(--noche);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+a{color:inherit}
+button,input,select{font:inherit;color:inherit}
+.demo{background:var(--noche);color:var(--arena);font-size:13px;text-align:center;padding:8px 16px}
+.demo b{color:#F0A46C}
+.wrap{max-width:1200px;margin:0 auto;padding:0 22px}
+header.top{position:absolute;left:0;right:0;z-index:5;color:var(--cal)}
+header.top .wrap{display:flex;justify-content:space-between;align-items:center;padding-top:18px;padding-bottom:18px;gap:14px}
+.logo{text-decoration:none;line-height:1}
+.logo b{font-family:var(--disp);font-weight:400;font-size:28px;display:block;letter-spacing:.02em}
+.logo span{font-size:11px;letter-spacing:.24em;text-transform:uppercase;opacity:.85}
+nav.mn{display:flex;gap:22px;font-weight:600;font-size:14px}
+nav.mn a{text-decoration:none;opacity:.9} nav.mn a:hover{opacity:1;text-decoration:underline}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:999px;padding:12px 20px;font-weight:700;font-size:14px;text-decoration:none;border:2px solid transparent;cursor:pointer}
+.btn.o{background:var(--ocre);color:#fff}
+.btn.l{background:var(--cal);color:var(--noche)}
+.btn.g{border-color:currentColor;background:transparent}
+@media(max-width:780px){nav.mn{display:none}}
+
+/* panorama */
+.pano{position:relative;min-height:92vh;background:linear-gradient(180deg,#E9A46A 0%,#D9784A 38%,#9C4428 70%,#5B2A1C 100%);color:var(--cal);overflow:hidden;display:flex;align-items:flex-end}
+.pano svg{position:absolute;left:0;right:0;bottom:0;width:100%;height:62%}
+.pano .sol{position:absolute;width:240px;height:240px;border-radius:50%;background:#F7D49B;right:16%;top:20%;box-shadow:0 0 120px 40px rgba(247,212,155,.35)}
+.pano .in{position:relative;z-index:2;padding-bottom:64px;width:100%}
+.kick{font-weight:800;font-size:12px;letter-spacing:.24em;text-transform:uppercase}
+h1{font-family:var(--disp);font-weight:400;font-size:clamp(40px,6.2vw,88px);line-height:1;margin:14px 0 18px;max-width:13em}
+h1 em{font-style:normal;color:#F7D49B}
+.pano p{font-size:18px;max-width:34em;margin:0 0 24px;color:#FBE9D8}
+.pano .cta{display:flex;gap:12px;flex-wrap:wrap}
+@media(max-width:700px){.pano{min-height:88vh}.pano .sol{width:150px;height:150px;top:16%}.pano .in{padding-bottom:40px}}
+
+/* barra */
+.bar{position:sticky;top:0;z-index:20;background:rgba(250,245,236,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--linea)}
+.bar .wrap{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding-top:12px;padding-bottom:12px}
+.pill{border:1.5px solid var(--noche);background:transparent;border-radius:999px;padding:7px 14px;font-weight:700;font-size:13px;cursor:pointer}
+.pill.on{background:var(--noche);color:var(--cal)}
+.bar select{border:1.5px solid var(--linea);background:#fff;border-radius:999px;padding:8px 12px;font-weight:600;font-size:14px}
+.bar .ct{margin-left:auto;font-weight:700;color:var(--ocre);font-size:14px}
+@media(max-width:700px){.bar .ct{margin-left:0;width:100%}.bar select{flex:1}}
+
+/* recorrido: una propiedad por pantalla */
+.rec{position:relative}
+.rail{position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:15;display:flex;flex-direction:column;gap:6px}
+.rail a{display:block;font-size:11px;font-weight:800;letter-spacing:.08em;text-decoration:none;color:var(--gris);background:rgba(250,245,236,.9);border:1px solid var(--linea);border-radius:999px;padding:4px 9px;text-align:center}
+.rail a.on{background:var(--ocre);color:#fff;border-color:var(--ocre)}
+.rail.hide{opacity:0;pointer-events:none}
+.esc{min-height:100vh;display:grid;grid-template-columns:58% 42%;border-bottom:1px solid var(--linea)}
+.esc .ph{position:relative;background:var(--arena);overflow:hidden}
+.esc .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.esc .ph .thumbs{position:absolute;left:16px;bottom:16px;display:flex;gap:6px;z-index:2}
+.esc .ph .thumbs button{width:62px;height:46px;border-radius:8px;overflow:hidden;border:2px solid rgba(255,255,255,.6);padding:0;cursor:pointer;background:#444}
+.esc .ph .thumbs button.on{border-color:#fff}
+.esc .ph .thumbs img{position:static;width:100%;height:100%;object-fit:cover}
+.esc .tx{padding:64px 72px 48px 48px;display:flex;flex-direction:column;justify-content:center;gap:12px}
+.esc:nth-of-type(even){grid-template-columns:42% 58%}
+.esc:nth-of-type(even) .ph{order:2}
+.esc:nth-of-type(even) .tx{padding:64px 48px 48px 72px}
+.code{font-family:var(--disp);font-size:clamp(56px,7vw,110px);line-height:.85;color:var(--ocre);letter-spacing:.01em}
+.esc .zona{font-weight:800;letter-spacing:.16em;text-transform:uppercase;font-size:12px;color:var(--gris)}
+.esc h2{font-family:var(--disp);font-weight:400;font-size:clamp(28px,2.8vw,40px);line-height:1.08;margin:0}
+.esc .precio{font-size:28px;font-weight:800}
+.esc .precio small{font-size:14px;font-weight:600;color:var(--gris)}
+.datos{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--linea);border:1px solid var(--linea);border-radius:14px;overflow:hidden}
+.datos div{background:var(--cal);padding:10px 12px}
+.datos b{display:block;font-size:18px}
+.datos span{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gris);font-weight:700}
+.esc ul{margin:0;padding-left:18px;color:#4B4239}
+.esc .acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.tag{display:inline-block;background:var(--olivo);color:#fff;font-size:12px;font-weight:700;border-radius:999px;padding:4px 10px;width:max-content}
+.empty{padding:80px 22px;text-align:center;color:var(--gris);font-weight:600}
+@media(max-width:900px){.esc,.esc:nth-of-type(even){grid-template-columns:1fr;min-height:0}.esc:nth-of-type(even) .ph{order:0}.esc .ph{height:56vh;min-height:280px}.esc .tx,.esc:nth-of-type(even) .tx{padding:28px 22px 40px}.rail{display:none}}
+
+/* permuta */
+.perm{background:var(--noche);color:var(--arena);padding:80px 0}
+.perm h2,.tasa h2{font-family:var(--disp);font-weight:400;font-size:clamp(34px,4.4vw,58px);line-height:1.02;margin:10px 0 14px}
+.perm .grid{display:grid;grid-template-columns:380px minmax(0,1fr);gap:40px;align-items:start}
+.perm .grid>*{min-width:0}
+.perm label{display:block;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:#F0A46C;margin:14px 0 6px}
+.perm select,.perm input{width:100%;padding:11px 12px;border-radius:10px;border:0;background:var(--cal);color:var(--noche);font-weight:600}
+.perm .hint{font-size:14px;color:#BFB3A2}
+.res{display:grid;gap:10px}
+.fila{display:grid;grid-template-columns:90px 1fr auto;gap:14px;align-items:center;background:#2E2B27;border-radius:14px;padding:12px 14px;border:1px solid #3A3631}
+.fila .c{font-family:var(--disp);font-size:24px;color:#F0A46C}
+.fila .n{font-weight:700} .fila .n small{display:block;font-weight:500;color:#BFB3A2}
+.fila .d{text-align:right;font-weight:800;font-size:18px;white-space:nowrap}
+.fila .d small{display:block;font-size:12px;font-weight:600;color:#BFB3A2}
+.fila.ok{border-color:var(--olivo);background:#33361F}
+.fila.ok .d{color:#C9D88A}
+.meter{height:6px;border-radius:6px;background:#3A3631;grid-column:1/-1;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--ocre)}
+@media(max-width:900px){.perm .grid{grid-template-columns:minmax(0,1fr)}.perm{padding:56px 0}}
+@media(max-width:520px){.fila{grid-template-columns:64px 1fr}.fila .d{grid-column:1/-1;text-align:left}}
+
+/* tasación */
+.tasa{display:grid;grid-template-columns:1fr 1fr;gap:44px;padding:80px 0}
+.form{background:#fff;border:1px solid var(--linea);border-radius:22px;padding:26px}
+.form .g{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form label{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gris);display:flex;flex-direction:column;gap:5px}
+.form label.full{grid-column:1/-1}
+.form input,.form select{border:1.5px solid var(--linea);border-radius:10px;padding:10px;font-weight:600;text-transform:none;letter-spacing:0;font-size:15px;background:var(--cal)}
+@media(max-width:860px){.tasa{grid-template-columns:1fr;padding:56px 0}.form .g{grid-template-columns:1fr}}
+
+footer{background:var(--talampaya);color:var(--arena);padding:44px 0 100px}
+footer .g{display:grid;grid-template-columns:2fr 1fr 1fr;gap:24px;font-size:14px}
+footer b{display:block;color:#F7D49B;margin-bottom:6px;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+footer .big{font-family:var(--disp);font-size:clamp(36px,6vw,72px);line-height:1;margin-bottom:24px}
+@media(max-width:800px){footer .g{grid-template-columns:1fr}}
+.note{font-size:12px;opacity:.8}
+.wa{position:fixed;right:16px;bottom:16px;z-index:30;background:#1f7a4d;color:#fff;border-radius:999px;padding:12px 18px;font-weight:800;text-decoration:none;box-shadow:0 8px 22px rgba(0,0,0,.25)}
+</style>
+</head>
+<body>
+<div class="demo">Prototipo de demostración preparado para <b>Servicios Inmobiliarios Carrasco</b> · propiedades reales tomadas de su catálogo publicado, a modo de ejemplo</div>
+
+<header class="top"><div class="wrap">
+  <a class="logo" href="#"><b>Carrasco</b><span>Servicios inmobiliarios · La Rioja</span></a>
+  <nav class="mn"><a href="#recorrido">Propiedades</a><a href="#permuta">Permuta</a><a href="#tasar">Tasar</a><a href="#contacto">Alberdi 1009</a></nav>
+  <a class="btn l" id="waTop" href="#" target="_blank" rel="noopener">WhatsApp</a>
+</div></header>
+
+<section class="pano">
+  <div class="sol" aria-hidden="true"></div>
+  <svg viewBox="0 0 1440 520" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 260 L120 200 L210 230 L330 120 L430 170 L520 90 L640 160 L760 110 L880 190 L1000 140 L1120 210 L1260 160 L1440 230 L1440 520 L0 520Z" fill="#4E5D73" opacity=".85"/>
+    <path d="M0 330 L160 280 L300 320 L420 250 L560 300 L700 240 L860 310 L1000 270 L1160 320 L1300 280 L1440 320 L1440 520 L0 520Z" fill="#6F3424"/>
+    <path d="M0 420 Q 360 380 720 410 T 1440 400 L1440 520 L0 520Z" fill="#3B1D14"/>
+    <g fill="#2A1510"><circle cx="190" cy="420" r="18"/><rect x="186" y="420" width="8" height="30"/><circle cx="260" cy="428" r="14"/><rect x="257" y="428" width="6" height="24"/><circle cx="1180" cy="414" r="20"/><rect x="1176" y="414" width="8" height="34"/></g>
+  </svg>
+  <div class="wrap in">
+    <div class="kick">Servicios Inmobiliarios Carrasco · La Rioja Capital</div>
+    <h1>De US$ 95.000 en B° UPCN a <em>US$ 380.000 en Puerta de la Quebrada</em></h1>
+    <p>Treinta propiedades en venta y alquiler, mostradas una por una, a pantalla completa, con todas sus fotos y sus datos. Encontrá la propiedad que buscás con un simple clic.</p>
+    <div class="cta"><a class="btn o" href="#recorrido">Recorrer las propiedades</a><a class="btn g" href="#permuta">¿Tenés algo para entregar?</a></div>
+  </div>
+</section>
+
+<div class="bar"><div class="wrap">
+  <button class="pill on" data-op="">Todas</button><button class="pill" data-op="venta">Venta</button><button class="pill" data-op="alquiler">Alquiler</button>
+  <select id="fDorm" aria-label="Dormitorios"><option value="0">Dormitorios</option><option value="2">2 o más</option><option value="3">3 o más</option></select>
+  <select id="fMax" aria-label="Precio máximo en venta"><option value="0">Precio (venta)</option><option value="100000">Hasta US$ 100.000</option><option value="150000">Hasta US$ 150.000</option><option value="200000">Hasta US$ 200.000</option></select>
+  <span class="ct" id="ct"></span>
+</div></div>
+
+<main class="rec" id="recorrido"></main>
+<nav class="rail hide" id="rail" aria-label="Índice de propiedades"></nav>
+
+<section class="perm" id="permuta"><div class="wrap grid">
+  <div>
+    <div class="kick" style="color:#F0A46C">Permuta y diferencia</div>
+    <h2>¿Entregás algo como parte de pago?</h2>
+    <p class="hint">La casa de Mis Montañas toma un departamento en Córdoba como parte de pago. Cargá lo que tenés y el valor que estimás, y te mostramos cuánto te faltaría para cada propiedad en venta.</p>
+    <label for="pTipo">Lo que entregás</label>
+    <select id="pTipo"><option>Departamento</option><option>Casa</option><option>Lote</option><option>Vehículo</option><option>Ahorro en dólares</option></select>
+    <label for="pDonde">Dónde está</label><input id="pDonde" value="Córdoba">
+    <label for="pVal">Valor estimado (US$)</label><input id="pVal" type="number" min="0" step="5000" value="70000" inputmode="numeric">
+    <label for="pAh">Ahorro adicional (US$)</label><input id="pAh" type="number" min="0" step="5000" value="20000" inputmode="numeric">
+    <p class="hint">Es una cuenta orientativa: la aceptación de la permuta y el valor que se toma se conversan con la inmobiliaria.</p>
+    <a class="btn o" id="pWa" href="#" target="_blank" rel="noopener" style="margin-top:6px">Consultar permuta por WhatsApp</a>
+  </div>
+  <div class="res" id="pRes"></div>
+</div></section>
+
+<div class="wrap"><section class="tasa" id="tasar">
+  <div>
+    <div class="kick" style="color:var(--ocre)">Para propietarios</div>
+    <h2>¿Querés vender o alquilar?</h2>
+    <p style="font-size:18px">Tasamos tu propiedad y, si la publicamos, sale así: a pantalla completa, con todas sus fotos y un botón para que el interesado te pregunte directo.</p>
+  </div>
+  <form class="form" id="fTasa">
+    <div class="g">
+      <label>Nombre<input name="n" required autocomplete="name"></label>
+      <label>Qué es<select name="t"><option>Casa</option><option>Departamento</option><option>Terreno</option><option>Local</option></select></label>
+      <label class="full">Barrio o dirección<input name="d" required placeholder="Ej.: B° Mis Montañas, calle…"></label>
+      <label>Dormitorios<input name="dm" type="number" min="0"></label>
+      <label>Para<select name="o"><option>Vender</option><option>Alquilar</option><option>Saber cuánto vale</option></select></label>
+    </div>
+    <button class="btn o" style="margin-top:18px">Pedir tasación por WhatsApp</button>
+    <p class="note" style="color:var(--gris)">Se arma un mensaje con tus datos; nada se envía sin que lo confirmes.</p>
+  </form>
+</section></div>
+
+<footer id="contacto"><div class="wrap">
+  <div class="big">Carrasco</div>
+  <div class="g">
+    <div><b>Oficina</b>Alberdi 1009 · Centro · La Rioja<br>Lunes a viernes de 9 a 17 h<br>carrascoinmobiliaria@hotmail.com</div>
+    <div><b>WhatsApp</b>380 427-1720</div>
+    <div><b>Redes</b>Facebook · inmueblescarrasco</div>
+  </div>
+  <p class="note" style="margin-top:26px">Prototipo de demostración preparado para Servicios Inmobiliarios Carrasco por Resolviendo Kos. Datos y fotos tomados de su catálogo publicado en Inmosoft; precios sujetos a confirmación.</p>
+</div></footer>
+<a class="wa" id="waF" href="#" target="_blank" rel="noopener">WhatsApp</a>
+
+<script>
+const WA='5493804271720';
+const B='https://www.inmosoft.com.ar/Inmosoft/ImagenesEmpresas/15463/';
+const P=[
+ {c:'CA115',op:'venta',tipo:'Casa',zona:'Cerrito · Puerta de la Quebrada',t:'Casa con pileta en 2.000 m², a una cuadra de Av. San Francisco',usd:380000,cub:288,semi:88,ter:'≈ 2.000 m²',dorm:3,banos:4,coch:'Para ≈ 4 autos',car:['Pileta y riego por aspersión','Quincho con depósito y dormitorio con baño','Suite con vestidor','Galería'],f:['WhatsApp_Image_2025-05-26_at_13.59.45.jpeg','WhatsApp_Image_2025-05-26_at_13.59.46.jpeg','WhatsApp_Image_2025-05-26_at_13.59.43.jpeg']},
+ {c:'CA105',op:'venta',tipo:'Casa',zona:'B° Mis Montañas · calle Molle',t:'Casa con pileta, galería con parrilla y escritorio independiente',usd:200000,cub:256,ter:'450 m²',dorm:3,banos:null,coch:'Garaje para 3 autos',permuta:true,car:['Pileta','Galería con parrilla','Escritorio con entrada independiente','Suite con vestidor','Porcelanato'],f:['WhatsApp_Image_2024-06-07_at_12.43.58.jpeg','WhatsApp_Image_2024-06-07_at_12.44.03_%281%29.jpeg','WhatsApp_Image_2024-06-07_at_12.43.56.jpeg'],nota:'Toman un departamento en Córdoba como parte de pago.'},
+ {c:'CA112',op:'venta',tipo:'Casa',zona:'Av. Ramírez de Velasco',t:'Casa con departamento independiente y estudio',usd:140000,cub:143,ter:null,dorm:3,banos:2,coch:'Doble',car:['Departamento independiente de 1 dormitorio','Estudio con entrada independiente','Patio'],f:['WhatsApp_Image_2025-04-15_at_09.36.27_%281%29.jpeg','WhatsApp_Image_2025-04-15_at_09.36.29.jpeg']},
+ {c:'CA124',op:'venta',tipo:'Casa',zona:'B° Círculo Policial · zona sur',t:'Casa con quincho, a 4 cuadras del Súper Dobro',usd:100000,cub:null,ter:null,dorm:3,banos:2,coch:'Cubierta amplia',car:['Quincho con parrilla, baño y habitación de servicio','Estar-comedor para terminar a gusto'],f:['WhatsApp_Image_2026-09-04_at_12.40.31_%282%29.jpeg','WhatsApp_Image_2026-09-04_at_12.39.52.jpeg']},
+ {c:'CA113',op:'venta',tipo:'Casa',zona:'B° UPCN · calle América',t:'Casa con patio y galería',usd:95000,cub:null,ter:null,dorm:3,banos:1,coch:'Sí',car:['Cocina-comedor','Estar amplio','Patio con galería'],f:['WhatsApp_Image_2025-04-15_at_09.41.26_%281%29.jpeg','WhatsApp_Image_2025-04-15_at_09.41.19.jpeg']},
+ {c:'DE60',op:'alquiler',tipo:'Departamento',zona:'Av. San Nicolás de Bari esq. El Chacho',t:'Departamento de 2 dormitorios con balcón',ars:440000,cub:null,ter:null,dorm:2,banos:1,coch:null,car:['Dormitorios con balcón','Esquina céntrica'],f:['WhatsApp_Image_2026-04-09_at_09.33.49_%281%29.jpeg','WhatsApp_Image_2026-04-09_at_09.33.56.jpeg']},
+ {c:'DE209',op:'alquiler',tipo:'Departamento',zona:'B° San Martín · calle Tucumán',t:'Departamento de 1 dormitorio con cochera',ars:330000,cub:null,ter:null,dorm:1,banos:1,coch:'Sí',car:['Dormitorio con placard','Estar-comedor','Patio interno'],f:['WhatsApp_Image_2026-06-16_at_09.17.53.jpeg','WhatsApp_Image_2026-06-16_at_09.17.36.jpeg']}
+];
+const img=(p,f)=>B+p.c+'/'+f;
+const fmt=n=>n.toLocaleString('es-AR');
+const precio=p=>p.op==='venta'?'US$ '+fmt(p.usd):'$ '+fmt(p.ars);
+const wa=t=>'https://wa.me/'+WA+'?text='+encodeURIComponent(t);
+const FALL="data:image/svg+xml;utf8,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E9A46A"/><stop offset="1" stop-color="#9C4428"/></linearGradient></defs><rect width="800" height="600" fill="url(#g)"/><circle cx="560" cy="200" r="80" fill="#F7D49B"/><path d="M0 380 L160 300 L320 360 L480 280 L640 350 L800 300 L800 600 L0 600Z" fill="#4E5D73"/><path d="M0 470 Q 400 430 800 460 L800 600 L0 600Z" fill="#3B1D14"/></svg>');
+function onErr(e){e.onerror=null;e.src=FALL}
+waTop.href=waF.href=wa('Hola, quería consultar por una propiedad que vi en la web.');
+
+const st={op:'',dorm:0,max:0};
+document.querySelectorAll('.pill').forEach(b=>b.onclick=()=>{document.querySelectorAll('.pill').forEach(x=>x.classList.remove('on'));b.classList.add('on');st.op=b.dataset.op;render()});
+fDorm.onchange=e=>{st.dorm=+e.target.value;render()};fMax.onchange=e=>{st.max=+e.target.value;render()};
+let io;
+function render(){
+ const L=P.filter(p=>(!st.op||p.op===st.op)&&p.dorm>=st.dorm&&(!st.max||p.op!=='venta'||p.usd<=st.max));
+ ct.textContent=L.length+' de '+P.length+' propiedades';
+ recorrido.innerHTML=L.length?L.map(p=>{
+  const d=[[p.dorm,'Dormitorios'],[p.banos??'a conf.','Baños'],[p.cub?p.cub+' m²':'–','Cubiertos']];
+  return `<section class="esc" id="${p.c}">
+   <div class="ph"><img loading="lazy" src="${img(p,p.f[0])}" alt="${p.t}" onerror="onErr(this)">
+    <div class="thumbs">${p.f.map((f,i)=>`<button class="${i?'':'on'}" data-f="${f}" aria-label="Foto ${i+1}"><img loading="lazy" src="${img(p,f)}" alt="" onerror="onErr(this)"></button>`).join('')}</div></div>
+   <div class="tx">
+    <div class="code">${p.c}</div>
+    <div class="zona">${p.tipo} en ${p.op} · ${p.zona}</div>
+    <h2>${p.t}</h2>
+    <div class="precio">${precio(p)} ${p.op==='alquiler'?'<small>por mes</small>':''}</div>
+    ${p.permuta?'<span class="tag">Acepta permuta</span>':''}
+    <div class="datos">${d.map(x=>`<div><b>${x[0]}</b><span>${x[1]}</span></div>`).join('')}</div>
+    <ul>${[p.ter?'Terreno: '+p.ter:null,p.semi?'Semicubiertos: '+p.semi+' m²':null,p.coch?'Cochera: '+p.coch:null,...p.car].filter(Boolean).map(c=>`<li>${c}</li>`).join('')}</ul>
+    ${p.nota?`<p style="margin:0;color:var(--olivo);font-weight:700">${p.nota}</p>`:''}
+    <div class="acts"><a class="btn o" href="${wa(`Hola, me interesa la propiedad ${p.c}: ${p.t} (${p.zona}), ${precio(p)}. ¿Me pasan más información?`)}" target="_blank" rel="noopener">Consultar ${p.c}</a>
+    <a class="btn g" href="https://maps.google.com/?q=${encodeURIComponent(p.zona.replace(' · ',', ')+', La Rioja, Argentina')}" target="_blank" rel="noopener">Ver zona en el mapa</a></div>
+   </div></section>`}).join(''):'<div class="empty">No hay propiedades con esos filtros. Escribinos y te avisamos cuando entre una.</div>';
+ recorrido.querySelectorAll('.esc').forEach(s=>s.querySelectorAll('.thumbs button').forEach(b=>b.onclick=()=>{const p=P.find(x=>x.c===s.id);s.querySelector('.ph>img').src=img(p,b.dataset.f);s.querySelectorAll('.thumbs button').forEach(x=>x.classList.remove('on'));b.classList.add('on')}));
+ rail.innerHTML=L.map(p=>`<a href="#${p.c}" data-c="${p.c}">${p.c}</a>`).join('');
+ if(io)io.disconnect();
+ io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){rail.querySelectorAll('a').forEach(a=>a.classList.toggle('on',a.dataset.c===e.target.id))}}),{threshold:.5});
+ recorrido.querySelectorAll('.esc').forEach(s=>io.observe(s));
+}
+render();
+new IntersectionObserver(es=>es.forEach(e=>rail.classList.toggle('hide',!e.isIntersecting)),{threshold:0}).observe(recorrido);
+
+/* permuta */
+function perm(){const v=Math.max(0,+pVal.value||0),a=Math.max(0,+pAh.value||0),tot=v+a;
+ const V=P.filter(p=>p.op==='venta').sort((x,y)=>x.usd-y.usd);
+ pRes.innerHTML=V.map(p=>{const dif=p.usd-tot;const ok=dif<=0;const pct=Math.min(100,tot/p.usd*100);
+  return `<div class="fila ${ok?'ok':''}"><div class="c">${p.c}</div><div class="n">${p.zona}<small>${precio(p)}${p.permuta?' · acepta permuta':' · permuta a consultar'}</small></div>
+  <div class="d">${ok?'Te alcanza':'Faltan US$ '+fmt(dif)}<small>${ok?'sobran US$ '+fmt(-dif):'cubrís el '+Math.round(pct)+' %'}</small></div><div class="meter"><i style="width:${pct}%"></i></div></div>`}).join('');
+ pWa.href=wa(`Hola, tengo un/a ${pTipo.value.toLowerCase()} en ${pDonde.value||'—'} que estimo en US$ ${fmt(v)} y US$ ${fmt(a)} de ahorro. ¿Qué propiedades podría ver tomando eso como parte de pago?`)}
+[pTipo,pDonde,pVal,pAh].forEach(e=>e.oninput=perm);perm();
+
+fTasa.onsubmit=e=>{e.preventDefault();const f=new FormData(fTasa);window.open(wa(`Hola, soy ${f.get('n')}. Quiero tasar un/a ${f.get('t').toLowerCase()} en ${f.get('d')}${f.get('dm')?' de '+f.get('dm')+' dormitorios':''}. Para: ${f.get('o').toLowerCase()}.`),'_blank','noopener')};
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Servicios Inmobiliarios Carrasco"></script>
+</body>
+</html>
