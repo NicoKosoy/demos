@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Fletes Neuquén · Pedí tu flete las 24 horas con número de pedido</title>
+<meta name="description" content="Prototipo de demostración: web de pedidos y seguimiento para Fletes Neuquén.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&family=Atkinson+Hyperlegible+Next:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --asfalto:#15171A;
+  --asfalto2:#23262B;
+  --amarillo:#FFC21A;
+  --orig:#FFFFFF;
+  --dup:#F7D9DF;
+  --trip:#FCEFB4;
+  --carbon:#2B3A67;
+  --papel:#EFECE6;
+  --tinta:#16181B;
+  --gris:#5E6168;
+  --linea:#D3CEC4;
+  --ok:#1F8A5B;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--papel);color:var(--tinta);font-family:"Atkinson Hyperlegible Next",system-ui,sans-serif;font-size:17px;line-height:1.55;overflow-x:hidden}
+a{color:inherit}
+button,input,select{font:inherit}
+.mono{font-family:"Rubik Mono One",ui-monospace,monospace;font-weight:400;letter-spacing:.01em;line-height:1.05}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+.proto{background:var(--amarillo);color:var(--asfalto);font-size:13.5px;text-align:center;padding:8px 16px;font-weight:500}
+/* top */
+header.top{background:var(--asfalto);color:#fff}
+header.top .wrap{display:flex;justify-content:space-between;align-items:center;height:68px;gap:16px}
+.marca{display:flex;align-items:center;gap:12px;text-decoration:none}
+.marca .mono{font-size:17px}
+.marca i{display:block;width:34px;height:22px;background:var(--amarillo);border-radius:3px 9px 3px 3px;position:relative}
+.marca i::before,.marca i::after{content:"";position:absolute;bottom:-5px;width:9px;height:9px;border-radius:50%;background:#fff;border:2px solid var(--asfalto)}
+.marca i::before{left:3px}.marca i::after{right:3px}
+header.top nav{display:flex;gap:24px;font-size:15px;color:#C9CCD2}
+header.top nav a{text-decoration:none}
+.abierto{display:flex;align-items:center;gap:8px;font-size:14px;color:#C9CCD2}
+.abierto b{display:inline-block;width:9px;height:9px;border-radius:50%;background:#35D07F;box-shadow:0 0 0 4px rgba(53,208,127,.25);animation:lat 1.6s infinite}
+@keyframes lat{50%{box-shadow:0 0 0 8px rgba(53,208,127,0)}}
+/* hero: reloj 24h */
+.hero{background:var(--asfalto);color:#fff;padding:56px 0 0;overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:40px;align-items:center}
+.hero h1{font-size:clamp(30px,4.2vw,58px);margin:16px 0 22px}
+.hero h1 em{font-style:normal;color:var(--amarillo)}
+.hero p{color:#C9CCD2;font-size:19px;max-width:560px}
+.tag{display:inline-block;border:1.5px solid #474B53;border-radius:4px;padding:5px 10px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#C9CCD2}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin:28px 0 34px}
+.btn{display:inline-flex;align-items:center;gap:10px;background:var(--amarillo);color:var(--asfalto);border:0;border-radius:6px;padding:14px 22px;font-weight:700;font-size:16px;text-decoration:none;cursor:pointer}
+.btn:hover{background:#FFD24F}
+.btn.out{background:transparent;color:#fff;border:1.5px solid #5A5F68}
+.reloj{position:relative;aspect-ratio:1/1;max-width:440px;width:100%;margin-left:auto}
+.reloj svg{width:100%;height:auto;display:block}
+.reloj .ahora{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;pointer-events:none}
+.reloj .ahora .mono{font-size:clamp(26px,4vw,42px);color:#fff}
+.reloj .ahora span{font-size:14px;color:#C9CCD2;margin-top:6px}
+.reloj .ahora small{font-size:13px;color:var(--amarillo);margin-top:8px;letter-spacing:.12em;text-transform:uppercase}
+.cifras{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid #33373E;margin-top:50px}
+.cifras div{padding:22px 20px 26px 0}
+.cifras div+div{border-left:1px solid #33373E;padding-left:20px}
+.cifras .mono{font-size:clamp(22px,2.6vw,34px);color:var(--amarillo);display:block}
+.cifras span{font-size:14.5px;color:#C9CCD2}
+.cifras a{color:#8D929B;font-size:12.5px}
+/* talonario: el pedido en tres copias */
+section{padding:90px 0}
+.h2{font-size:clamp(24px,3vw,40px);margin:12px 0 14px}
+.lead{color:var(--gris);font-size:18.5px;max-width:700px}
+.kicker{font-size:13px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:var(--carbon)}
+.talonario{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:34px;align-items:start;margin-top:40px}
+.remito{background:var(--orig);border:1.5px solid var(--tinta);border-radius:6px;position:relative;box-shadow:8px 8px 0 var(--dup),16px 16px 0 var(--trip),16px 16px 0 1.5px var(--tinta)}
+.remito-h{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:18px 20px;border-bottom:1.5px dashed var(--tinta)}
+.remito-h .mono{font-size:18px}
+.remito-h small{display:block;font-size:12.5px;color:var(--gris);margin-top:4px}
+.nro{text-align:right;font-size:13px;color:var(--gris)}
+.nro b{display:block;font-family:"Rubik Mono One",monospace;font-weight:400;font-size:17px;color:#C33;letter-spacing:.04em}
+.campos{padding:6px 20px 20px}
+.fila{display:grid;grid-template-columns:150px 1fr;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--linea)}
+.fila label{font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--gris);font-weight:700}
+.fila input,.fila select{width:100%;border:0;border-bottom:1.5px solid var(--tinta);background:transparent;padding:6px 2px;font-size:16.5px;color:var(--tinta);border-radius:0}
+.fila input:focus,.fila select:focus{outline:none;border-color:var(--carbon);background:#F4F6FB}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips button{border:1.5px solid var(--tinta);background:#fff;border-radius:999px;padding:7px 14px;font-size:15px;cursor:pointer}
+.chips button.on{background:var(--tinta);color:#fff}
+.dos{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.check{display:flex;gap:8px;align-items:center;font-size:15.5px}
+.fila .check{text-transform:none;letter-spacing:0;font-weight:400;color:var(--tinta);font-size:15.5px}
+.check input{width:18px;height:18px;accent-color:var(--carbon)}
+.total{background:var(--asfalto);color:#fff;border-radius:8px;padding:22px;position:sticky;top:20px}
+.total .mono{font-size:15px;color:var(--amarillo)}
+.linea{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px dashed #3B3F46;font-size:15.5px}
+.linea.big{font-size:22px;font-weight:700;border:0;padding-top:16px}
+.total .btn{width:100%;justify-content:center;margin-top:14px}
+.ej{font-size:13px;color:#8D929B;margin-top:10px}
+.msg{font-size:14.5px;color:var(--amarillo);min-height:20px;margin-top:10px}
+/* copias */
+.copias{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:40px}
+.copia{border:1.5px solid var(--tinta);border-radius:6px;padding:18px;position:relative}
+.copia:nth-child(1){background:var(--orig)}
+.copia:nth-child(2){background:var(--dup)}
+.copia:nth-child(3){background:var(--trip)}
+.copia .mono{font-size:14px}
+.copia h4{font-size:20px;margin:8px 0 6px}
+.copia p{font-size:15.5px;color:#3E4148}
+/* seguimiento */
+#seguimiento{background:var(--asfalto);color:#fff}
+#seguimiento .lead{color:#C9CCD2}
+#seguimiento .kicker{color:var(--amarillo)}
+.track{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:34px;margin-top:40px;align-items:start}
+.buscar{background:var(--asfalto2);border:1px solid #3A3E45;border-radius:8px;padding:22px}
+.buscar label{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:#9CA1AA;font-weight:700}
+.buscar .in{display:flex;gap:8px;margin-top:10px}
+.buscar input{flex:1;min-width:0;background:var(--asfalto);border:1.5px solid #4A4F57;border-radius:6px;padding:12px;color:#fff;font-family:"Rubik Mono One",monospace;font-size:15px;letter-spacing:.04em}
+.buscar p{font-size:14px;color:#9CA1AA;margin-top:12px}
+.ruta{position:relative;padding-left:0}
+.paso{display:grid;grid-template-columns:56px 1fr auto;gap:16px;align-items:center;padding:16px 0;border-bottom:1px solid #33373E;opacity:.4;transition:opacity .4s}
+.paso.ok,.paso.ya{opacity:1}
+.paso .dot{width:44px;height:44px;border-radius:50%;border:2px solid #5A5F68;display:grid;place-items:center;font-family:"Rubik Mono One",monospace;font-size:14px}
+.paso.ok .dot{background:var(--amarillo);border-color:var(--amarillo);color:var(--asfalto)}
+.paso.ya .dot{border-color:var(--amarillo);color:var(--amarillo);animation:lat2 1.4s infinite}
+@keyframes lat2{50%{box-shadow:0 0 0 8px rgba(255,194,26,.18)}}
+.paso h4{font-size:19px}
+.paso p{font-size:14.5px;color:#9CA1AA}
+.paso time{font-size:14px;color:var(--amarillo);font-family:"Rubik Mono One",monospace}
+.camion{height:46px;margin-top:18px;position:relative;border-bottom:3px dashed #4A4F57}
+.camion svg{position:absolute;bottom:2px;left:0;width:74px;transition:left 1.2s ease}
+/* reseñas */
+.estrellas{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:40px;align-items:center;margin-top:30px}
+.score .mono{font-size:clamp(64px,9vw,120px);line-height:.9}
+.score .mono small{font-size:.35em;color:var(--gris)}
+.score p{color:var(--gris);margin-top:10px}
+.barras{display:flex;flex-direction:column;gap:10px}
+.barra{display:grid;grid-template-columns:40px 1fr 60px;gap:12px;align-items:center;font-size:15px}
+.barra div{height:16px;background:#DFDAD0;border-radius:3px;overflow:hidden}
+.barra div i{display:block;height:100%;background:var(--tinta)}
+.fuente{font-size:13px;color:var(--gris);margin-top:14px}
+.fuente a{color:var(--carbon)}
+.idea{margin-top:40px;background:#fff;border:1.5px solid var(--tinta);border-radius:6px;padding:22px;display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center}
+.idea .mono{font-size:30px;color:var(--carbon)}
+/* faq */
+.faq{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 46px;margin-top:30px}
+details{border-bottom:1.5px solid var(--tinta);padding:16px 0}
+summary{font-weight:700;font-size:18.5px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:12px}
+summary::after{content:"+";font-family:"Rubik Mono One",monospace}
+details[open] summary::after{content:"–"}
+details p{color:var(--gris);margin-top:8px}
+footer{background:var(--asfalto);color:#C9CCD2;padding:56px 0 28px}
+footer .wrap{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:30px}
+footer .mono{color:#fff;font-size:18px;margin-bottom:10px;display:block}
+footer .legal{grid-column:1/-1;border-top:1px solid #33373E;padding-top:18px;font-size:13px;color:#7F848D}
+.fab{position:fixed;right:18px;bottom:18px;z-index:40;background:var(--amarillo);color:var(--asfalto);border-radius:999px;padding:13px 18px;font-weight:700;text-decoration:none;box-shadow:0 8px 24px rgba(0,0,0,.25);font-size:15px}
+@media (max-width:960px){
+  header.top nav{display:none}
+  .hero .wrap,.talonario,.track,.estrellas,.faq{grid-template-columns:1fr}
+  .reloj{margin:0 auto;max-width:340px}
+  .cifras{grid-template-columns:1fr 1fr}
+  .cifras div:nth-child(3){border-left:0;padding-left:0}
+  .copias{grid-template-columns:1fr}
+  .total{position:static}
+  footer .wrap{grid-template-columns:1fr}
+}
+@media (max-width:560px){
+  .wrap{padding:0 16px}
+  section{padding:64px 0}
+  .abierto span{display:none}
+  .fila{grid-template-columns:1fr;gap:4px}
+  .dos{grid-template-columns:1fr}
+  .remito{box-shadow:5px 5px 0 var(--dup),10px 10px 0 var(--trip),10px 10px 0 1.5px var(--tinta);margin-right:10px}
+  .remito-h{flex-direction:column}
+  .nro{text-align:left}
+  .paso{grid-template-columns:48px 1fr}
+  .paso time{grid-column:2}
+  .idea{grid-template-columns:1fr}
+  .fab{padding:12px 15px;font-size:14px}
+}
+</style>
+</head>
+<body>
+<div class="proto">Prototipo de demostración preparado para <b>Fletes Neuquén</b> · Resolviendo Kos</div>
+
+<header class="top"><div class="wrap">
+  <a class="marca" href="#top"><i></i><span class="mono">Fletes Neuquén</span></a>
+  <nav><a href="#pedido">Pedir flete</a><a href="#seguimiento">Seguimiento</a><a href="#resenas">Reseñas</a><a href="#preguntas">Preguntas</a></nav>
+  <div class="abierto"><b></b><span>Abierto ahora · 24 h</span></div>
+</div></header>
+
+<section class="hero" id="top" style="padding-bottom:0">
+  <div class="wrap">
+    <div>
+      <span class="tag">Cuerda del Cielo 2510 · Neuquén</span>
+      <h1 class="mono">Abiertos las <em>24 horas</em>. Ahora cada pedido sale con su número.</h1>
+      <p>Pedí tu flete o tu mudanza a cualquier hora, mirá el precio estimado y recibí al instante tu número de pedido. Con ese número seguís el viaje hasta que se descarga lo último.</p>
+      <div class="cta"><a class="btn" href="#pedido">Pedir flete ahora →</a><a class="btn out" href="#seguimiento">Seguir mi pedido</a></div>
+    </div>
+    <div class="reloj" aria-label="Reloj de 24 horas: siempre abierto">
+      <svg viewBox="0 0 400 400" id="dial">
+        <circle cx="200" cy="200" r="186" fill="#1D2024" stroke="#33373E" stroke-width="2"/>
+        <circle cx="200" cy="200" r="160" fill="none" stroke="#FFC21A" stroke-width="22" stroke-dasharray="1005" opacity=".95"/>
+        <g id="marcas"></g>
+        <line id="aguja" x1="200" y1="118" x2="200" y2="58" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
+      </svg>
+      <div class="ahora"><span class="mono" id="hora">--:--</span><span>en Neuquén</span><small>Estamos atendiendo</small></div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="cifras">
+      <div><span class="mono">24/7</span><span>todos los días</span></div>
+      <div><span class="mono">328</span><span>reseñas en Google</span></div>
+      <div><span class="mono">4,8★</span><span>promedio · 91% de 5★</span></div>
+      <div><span class="mono">Nº 2</span><span>de 5 en mudanzas de Neuquén <a href="https://logistica.dir.ar/empresa/fletes-neuquen.html" target="_blank" rel="noopener">(fuente)</a></span></div>
+    </div>
+  </div>
+</section>
+
+<section id="pedido">
+  <div class="wrap">
+    <div class="kicker">Paso 1 · El remito</div>
+    <h2 class="h2 mono">Completá el pedido como si fuera un remito.</h2>
+    <p class="lead">Origen, destino, qué llevás y cuándo. El precio se calcula mientras escribís y, al confirmar, sale el número de pedido.</p>
+    <div class="talonario">
+      <form class="remito" id="form" onsubmit="return false">
+        <div class="remito-h">
+          <div><span class="mono">Pedido de flete</span><small>Fletes Neuquén · Cuerda del Cielo 2510</small></div>
+          <div class="nro">Nº de pedido<b id="nroPrev">FN-·····</b></div>
+        </div>
+        <div class="campos">
+          <div class="fila"><label>Servicio</label><div class="chips" id="tipo">
+            <button type="button" data-t="chico" class="on">Flete chico</button>
+            <button type="button" data-t="dpto">Mudanza depto</button>
+            <button type="button" data-t="casa">Mudanza casa</button>
+            <button type="button" data-t="hora">Por hora</button>
+          </div></div>
+          <div class="fila"><label for="org">Origen</label><input id="org" placeholder="Calle y número, barrio"></div>
+          <div class="fila"><label for="des">Destino</label><input id="des" placeholder="Calle y número, barrio o ciudad"></div>
+          <div class="fila"><label for="km">Distancia</label><select id="km">
+            <option value="5">Dentro de la ciudad (hasta 10 km)</option>
+            <option value="20">Alrededores (10 a 30 km)</option>
+            <option value="60">30 a 80 km</option>
+            <option value="150">Más de 80 km</option>
+          </select></div>
+          <div class="fila"><label for="que">Qué llevás</label><input id="que" placeholder="Ej.: heladera, cama y 10 cajas"></div>
+          <div class="fila"><label>Cuándo</label><div class="dos"><input type="date" id="dia" aria-label="Día"><input type="time" id="hr" value="10:00" aria-label="Hora"></div></div>
+          <div class="fila"><label>Extras</label><div class="dos">
+            <label class="check"><input type="checkbox" id="ayud"> Ayudantes de carga</label>
+            <label class="check"><input type="checkbox" id="esc"> Escaleras sin ascensor</label>
+            <label class="check"><input type="checkbox" id="emb"> Embalaje</label>
+            <label class="check"><input type="checkbox" id="noc"> Horario nocturno</label>
+          </div></div>
+          <div class="fila"><label for="tel">Tu WhatsApp</label><input id="tel" inputmode="tel" placeholder="299 ..."></div>
+        </div>
+      </form>
+      <aside class="total">
+        <div class="mono">Precio estimado</div>
+        <div id="det" style="margin-top:10px"></div>
+        <button class="btn" id="conf">Confirmar y sacar número</button>
+        <div class="msg" id="msg"></div>
+        <p class="ej">Tarifas de ejemplo para el prototipo. Con ustedes se cargan las reales y el precio final lo confirma la empresa.</p>
+      </aside>
+    </div>
+    <div class="copias">
+      <div class="copia"><span class="mono">Original</span><h4>Para vos</h4><p>Te llega por WhatsApp y por mail con el número, el día, la hora y el precio estimado.</p></div>
+      <div class="copia"><span class="mono">Duplicado</span><h4>Para el chofer</h4><p>Con origen, destino, qué se lleva y los extras. Nadie llega sin saber a qué va.</p></div>
+      <div class="copia"><span class="mono">Triplicado</span><h4>Para la oficina</h4><p>Todos los pedidos en una lista, de día o de noche, sin depender del teléfono.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="seguimiento">
+  <div class="wrap">
+    <div class="kicker">Paso 2 · Seguimiento</div>
+    <h2 class="h2 mono">Con el número, ves en qué está tu flete.</h2>
+    <p class="lead">Sin llamar para preguntar. El chofer marca cada paso desde el celular y vos lo ves acá.</p>
+    <div class="track">
+      <div class="buscar">
+        <label for="q">Número de pedido</label>
+        <div class="in"><input id="q" placeholder="FN-0000"><button class="btn" id="ver">Ver</button></div>
+        <p>Probá con el número que sacaste arriba, o tocá <a href="#" id="demo" style="color:#FFC21A">ver un ejemplo</a>.</p>
+      </div>
+      <div>
+        <div class="ruta" id="ruta">
+          <div class="paso"><div class="dot">1</div><div><h4>Pedido recibido</h4><p>Entró a la lista de la oficina.</p></div><time></time></div>
+          <div class="paso"><div class="dot">2</div><div><h4>Confirmado</h4><p>Día, hora y precio confirmados por la empresa.</p></div><time></time></div>
+          <div class="paso"><div class="dot">3</div><div><h4>En camino</h4><p>El chofer salió a buscar la carga.</p></div><time></time></div>
+          <div class="paso"><div class="dot">4</div><div><h4>Entregado</h4><p>Todo descargado. Te llega el comprobante.</p></div><time></time></div>
+        </div>
+        <div class="camion"><svg viewBox="0 0 74 40" id="cam"><rect x="0" y="6" width="46" height="24" rx="2" fill="#FFC21A"/><path d="M46 14h14l10 9v7H46z" fill="#E7E7E7"/><rect x="51" y="16" width="9" height="6" fill="#23262B"/><circle cx="14" cy="32" r="6" fill="#fff" stroke="#15171A" stroke-width="3"/><circle cx="58" cy="32" r="6" fill="#fff" stroke="#15171A" stroke-width="3"/></svg></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="resenas">
+  <div class="wrap">
+    <div class="kicker">Lo que ya dicen los clientes</div>
+    <div class="estrellas">
+      <div class="score"><div class="mono">4,8<small> / 5</small></div><p>328 reseñas en Google. 91% de cinco estrellas.</p></div>
+      <div>
+        <div class="barras">
+          <div class="barra"><span>5★</span><div><i style="width:91%"></i></div><span>91%</span></div>
+        </div>
+        <p class="fuente">Datos de la ficha de Google según <a href="https://logistica.dir.ar/empresa/fletes-neuquen.html" target="_blank" rel="noopener">logistica.dir.ar</a>. Con ustedes se muestran las reseñas reales, actualizadas.</p>
+      </div>
+    </div>
+    <div class="idea"><span class="mono">Nº</span><p>El número de pedido deja por escrito, desde el primer mensaje, el horario, el precio estimado y lo que hay que llevar. El cliente y el chofer ven lo mismo.</p></div>
+  </div>
+</section>
+
+<section id="preguntas" style="padding-top:20px">
+  <div class="wrap">
+    <div class="kicker">Preguntas</div>
+    <div class="faq">
+      <details open><summary>¿Atienden de noche y los domingos?</summary><p>Sí, las 24 horas, los 7 días.</p></details>
+      <details><summary>¿El precio de la web es el final?</summary><p>Es un estimado. La empresa lo confirma con el pedido y queda escrito en tu número.</p></details>
+      <details><summary>¿Cómo sé que me confirmaron?</summary><p>El pedido pasa a "Confirmado" en el seguimiento y te llega el aviso por WhatsApp.</p></details>
+      <details><summary>¿Puedo cambiar el día?</summary><p>Sí: escribí con tu número de pedido y se reprograma sin empezar de cero.</p></details>
+      <details><summary>¿Dónde están?</summary><p>En Cuerda del Cielo 2510, Neuquén.</p></details>
+      <details><summary>¿Cómo se paga?</summary><p>Se puede dejar una seña por Mercado Pago al confirmar y el resto al terminar. Con ustedes se define.</p></details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div><span class="mono">Fletes Neuquén</span>Cuerda del Cielo 2510 · Neuquén<br>Atención 24 horas, todos los días.</div>
+    <div><span class="mono">Contacto</span><a href="tel:+542994130947">+54 299 413-0947</a><br><a href="https://facebook.com/fletes.neuquen" target="_blank" rel="noopener">facebook.com/fletes.neuquen</a></div>
+    <div><span class="mono">Pedidos</span><a href="#pedido">Pedir flete</a><br><a href="#seguimiento">Seguir mi pedido</a></div>
+    <div class="legal">Prototipo de demostración preparado para Fletes Neuquén por Resolviendo Kos · resolviendokos.com. Tarifas, números de pedido y seguimiento son de ejemplo.</div>
+  </div>
+</footer>
+<a class="fab" href="#pedido">Pedir flete</a>
+
+<script>
+// reloj 24 h
+const M=document.getElementById('marcas');
+for(let h=0;h<24;h++){const a=h/24*2*Math.PI-Math.PI/2,r1=128,r2=h%6?138:144,x1=200+r1*Math.cos(a),y1=200+r1*Math.sin(a),x2=200+r2*Math.cos(a),y2=200+r2*Math.sin(a);
+  M.insertAdjacentHTML('beforeend',`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${h%6?'#5A5F68':'#fff'}" stroke-width="${h%6?2:3}"/>`);
+  if(h%6===0){const xt=200+108*Math.cos(a),yt=200+108*Math.sin(a)+5;M.insertAdjacentHTML('beforeend',`<text x="${xt}" y="${yt}" text-anchor="middle" font-family="Rubik Mono One" font-size="14" fill="#C9CCD2">${String(h).padStart(2,'0')}</text>`)}}
+function tick(){const now=new Date(new Date().toLocaleString('en-US',{timeZone:'America/Argentina/Buenos_Aires'}));
+  const m=now.getHours()*60+now.getMinutes();document.getElementById('aguja').setAttribute('transform',`rotate(${m/1440*360} 200 200)`);
+  document.getElementById('hora').textContent=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0')}
+tick();setInterval(tick,30000);
+
+// cotizador (tarifas de ejemplo)
+const BASE={chico:45000,dpto:180000,casa:360000,hora:38000};
+const NOMBRE={chico:'Flete chico',dpto:'Mudanza depto',casa:'Mudanza casa',hora:'Flete por hora (2 h mín.)'};
+let tipo='chico';
+document.getElementById('tipo').onclick=e=>{const b=e.target.closest('button');if(!b)return;tipo=b.dataset.t;[...e.currentTarget.children].forEach(x=>x.classList.toggle('on',x===b));calc()};
+const $=id=>document.getElementById(id);
+['km','ayud','esc','emb','noc','dia','hr'].forEach(id=>$(id).addEventListener('change',calc));
+const fmt=v=>'$ '+Math.round(v).toLocaleString('es-AR');
+const hoy=new Date();$('dia').valueAsDate=new Date(hoy.getFullYear(),hoy.getMonth(),hoy.getDate()+1);
+function calc(){let b=BASE[tipo]*(tipo==='hora'?2:1);const km=+$('km').value;const kmc=km>10?(km-10)*1400:0;
+  const ex=[];if($('ayud').checked)ex.push(['Ayudantes de carga',tipo==='chico'?20000:45000]);if($('esc').checked)ex.push(['Escaleras sin ascensor',tipo==='casa'?40000:20000]);
+  if($('emb').checked)ex.push(['Embalaje',tipo==='chico'?12000:35000]);
+  const h=+($('hr').value||'10:00').split(':')[0];const noc=$('noc').checked||h>=21||h<7;
+  let sub=b+kmc+ex.reduce((s,x)=>s+x[1],0);const rec=noc?sub*.2:0;
+  $('det').innerHTML=`<div class="linea"><span>${NOMBRE[tipo]}</span><span>${fmt(b)}</span></div>${kmc?`<div class="linea"><span>Distancia (~${km} km)</span><span>${fmt(kmc)}</span></div>`:''}${ex.map(x=>`<div class="linea"><span>${x[0]}</span><span>${fmt(x[1])}</span></div>`).join('')}${noc?`<div class="linea"><span>Recargo nocturno 20%</span><span>${fmt(rec)}</span></div>`:''}<div class="linea big"><span>Total estimado</span><span>${fmt(sub+rec)}</span></div>`}
+calc();
+const nro=()=>'FN-'+String(Math.floor(1000+Math.random()*9000));
+let ultimo=null;
+$('conf').onclick=()=>{if(!$('org').value.trim()||!$('des').value.trim()){$('msg').textContent='Completá origen y destino para sacar el número.';return}
+  ultimo=nro();$('nroPrev').textContent=ultimo;$('q').value=ultimo;$('msg').textContent='Listo: pedido '+ultimo+'. Demo: te llega por WhatsApp y a la empresa le entra a la lista.';seguir(ultimo,1)};
+
+// seguimiento (demo)
+function seguir(n,etapa){const pasos=[...document.querySelectorAll('.paso')];const t=new Date();
+  pasos.forEach((p,i)=>{p.classList.toggle('ok',i<etapa-1||(i===etapa-1&&etapa===4));p.classList.toggle('ya',i===etapa-1&&etapa<4);
+    p.querySelector('time').textContent=i<etapa?String(t.getHours()).padStart(2,'0')+':'+String(Math.max(0,t.getMinutes()-((etapa-1-i)*25+0))%60).padStart(2,'0'):''});
+  const k=Math.max(0,etapa-1)/3;document.getElementById('cam').style.left=`calc(${k*100}% - ${k*74}px)`}
+$('ver').onclick=()=>{const v=$('q').value.trim().toUpperCase();if(!/^FN-\d{4}$/.test(v)){$('q').value='';$('q').placeholder='Formato: FN-1234';return}seguir(v,v===ultimo?1:3)};
+$('demo').onclick=e=>{e.preventDefault();$('q').value='FN-2510';let k=1;seguir('FN-2510',1);const iv=setInterval(()=>{k++;seguir('FN-2510',k);if(k>=4)clearInterval(iv)},1100)};
+seguir('',0);
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Fletes Neuquén"></script>
+</body>
+</html>
