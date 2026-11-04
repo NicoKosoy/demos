@@ -1,0 +1,817 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Terrazas de Cruz Chica · Cabañas y Club House en La Cumbre</title>
+<meta name="description" content="Siete cabañas y un Club House en una casona de 1900, en Cruz Chica, La Cumbre (Córdoba). Prototipo de web de reservas.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sorts+Mill+Goudy:ital@0;1&family=Red+Hat+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
+<script>
+/* Fallback digno para fotos que no cargan: lámina propia con el nombre */
+function fb(img){
+  img.onerror=null;
+  var l=(img.getAttribute('data-l')||'Terrazas de Cruz Chica').replace(/&/g,'&amp;').replace(/</g,'&lt;');
+  var tones=[['#22372C','#3B5B48'],['#6E2F20','#A4553A'],['#3E3428','#7A6446'],['#2E4A3B','#8C7A4E']];
+  var h=0;for(var i=0;i<l.length;i++)h=(h*31+l.charCodeAt(i))>>>0;
+  var t=tones[h%tones.length];
+  var svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 560" width="800" height="560">'+
+  '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="'+t[0]+'"/><stop offset="1" stop-color="'+t[1]+'"/></linearGradient>'+
+  '<pattern id="p" width="14" height="14" patternUnits="userSpaceOnUse"><path d="M0 14L14 0" stroke="#fff" stroke-opacity=".05"/></pattern></defs>'+
+  '<rect width="800" height="560" fill="url(#g)"/><rect width="800" height="560" fill="url(#p)"/>'+
+  '<path d="M0 420 C120 360 220 380 320 340 S520 300 620 330 S760 300 800 310 V560 H0Z" fill="#000" fill-opacity=".16"/>'+
+  '<g fill="none" stroke="#F4EEE1" stroke-opacity=".75" stroke-width="3" stroke-linejoin="round">'+
+  '<path d="M250 400 V290 L330 220 L410 290 V400"/><path d="M410 400 V300 H560 V400"/><path d="M400 300 L480 240 L570 300"/>'+
+  '<path d="M300 400 V340 H360 V400"/><rect x="440" y="320" width="34" height="40"/><rect x="500" y="320" width="34" height="40"/>'+
+  '<path d="M360 245 V205 H380 V262"/><path d="M200 400 H620"/></g>'+
+  '<text x="400" y="470" text-anchor="middle" font-family="Georgia,serif" font-style="italic" font-size="34" fill="#F4EEE1">'+l+'</text>'+
+  '<text x="400" y="505" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="14" letter-spacing="4" fill="#F4EEE1" fill-opacity=".7">TERRAZAS DE CRUZ CHICA</text></svg>';
+  img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+  img.classList.add('is-fb');
+}
+</script>
+<style>
+:root{
+  --paper:#F4EEE1;--paper2:#EAE1CD;--card:#FBF7EE;--ink:#26211C;--ink2:#5A5047;
+  --felt:#22372C;--felt2:#2E4A3B;--ox:#8E3A26;--brass:#A9813F;--brass-l:#D6B87C;--rule:#CDBFA3;
+  --serif:"Sorts Mill Goudy",Georgia,"Times New Roman",serif;
+  --sans:"Red Hat Display",system-ui,sans-serif;
+  --r:4px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.55;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--ox);outline-offset:3px;border-radius:2px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+h1,h2,h3{font-family:var(--serif);font-weight:400;line-height:1.08;margin:0}
+.kick{font-family:var(--sans);font-weight:700;font-size:.74rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ox)}
+.btn{appearance:none;border:1.5px solid var(--ink);background:var(--ink);color:var(--paper);font:700 .92rem/1 var(--sans);letter-spacing:.04em;padding:14px 20px;border-radius:var(--r);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:transform .15s,background .15s}
+.btn:hover{transform:translateY(-1px);background:var(--ox);border-color:var(--ox)}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.ghost:hover{background:var(--ink);color:var(--paper)}
+
+/* aviso prototipo */
+.proto{background:var(--ink);color:#E9DFC9;font-size:.78rem;text-align:center;padding:7px 16px;letter-spacing:.03em}
+.proto b{color:var(--brass-l);font-weight:700}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:20;background:rgba(244,238,225,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--rule)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:60px}
+.brand{font-family:var(--serif);font-size:1.3rem;text-decoration:none;white-space:nowrap}
+.brand i{color:var(--ox)}
+.nav ul{display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:.88rem;font-weight:500}
+.nav ul a{text-decoration:none;padding:4px 0;border-bottom:1.5px solid transparent}
+.nav ul a:hover{border-color:var(--ox)}
+.nav .btn{padding:10px 14px;font-size:.82rem}
+
+/* portada: tarjeta de registro sobre paño */
+.desk{background:radial-gradient(120% 90% at 30% 0%,var(--felt2),var(--felt) 60%,#18271F);padding:56px 0 72px;position:relative}
+.desk:before{content:"";position:absolute;inset:0;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.018) 0 2px,transparent 2px 6px);pointer-events:none}
+.rcard{position:relative;background:var(--card);border-radius:6px;box-shadow:0 30px 60px -20px rgba(0,0,0,.55),0 2px 0 rgba(0,0,0,.2);padding:14px;transform:rotate(-.4deg)}
+.rcard-in{border:1.5px solid var(--ink);outline:1px solid var(--ink);outline-offset:-6px;padding:34px 36px 30px;display:grid;grid-template-columns:1.05fr .95fr;gap:36px;align-items:start}
+.rcard-head{grid-column:1/-1;display:flex;justify-content:space-between;align-items:baseline;gap:12px;border-bottom:1.5px solid var(--ink);padding-bottom:12px;font-size:.74rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700}
+.rcard-head span:last-child{color:var(--ox)}
+.rcard h1{font-size:clamp(2.3rem,5.2vw,4.3rem);letter-spacing:-.01em}
+.rcard h1 em{color:var(--ox)}
+.rcard .lede{font-size:1.08rem;color:var(--ink2);margin:18px 0 22px;max-width:34em}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:0 22px;margin:0 0 24px}
+.fields div{border-bottom:1px solid var(--rule);padding:9px 0 6px}
+.fields dt{font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink2);font-weight:700}
+.fields dd{margin:2px 0 0;font-family:var(--serif);font-size:1.12rem}
+.photo-mount{position:relative;background:#fff;padding:10px 10px 12px;box-shadow:0 10px 24px -12px rgba(0,0,0,.4);transform:rotate(1.2deg)}
+.photo-mount img{width:100%;height:auto}
+.photo-mount figcaption{margin-top:8px;font-family:var(--serif);font-style:italic;font-size:.98rem;color:var(--ink2)}
+.corner{position:absolute;width:26px;height:26px;background:var(--ink);opacity:.85}
+.corner.tl{top:-4px;left:-4px;clip-path:polygon(0 0,100% 0,0 100%)}
+.corner.br{bottom:-4px;right:-4px;clip-path:polygon(100% 0,100% 100%,0 100%)}
+.stamp{position:absolute;right:-14px;top:-30px;width:122px;height:122px;border:3px double var(--ox);border-radius:50%;color:var(--ox);display:grid;place-items:center;text-align:center;font:700 .66rem/1.25 var(--sans);letter-spacing:.14em;text-transform:uppercase;transform:rotate(14deg);background:rgba(251,247,238,.82);z-index:2}
+.stamp b{display:block;font-family:var(--serif);font-weight:400;font-size:1.7rem;letter-spacing:0;line-height:1}
+.hole{position:absolute;left:50%;top:-1px;width:56px;height:14px;margin-left:-28px;background:var(--felt);border-radius:0 0 30px 30px}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px}
+
+/* secciones */
+section{padding:84px 0}
+.sec-h{display:grid;grid-template-columns:auto 1fr;gap:6px 28px;align-items:end;margin-bottom:40px}
+.folio{font-family:var(--serif);font-style:italic;font-size:4.2rem;line-height:.8;color:var(--ox);grid-row:span 2}
+.sec-h h2{font-size:clamp(2rem,4vw,3rem)}
+.sec-h p{margin:0;color:var(--ink2);max-width:46em}
+
+/* registro (ledger) */
+.ledger{background:var(--card);border:1px solid var(--rule);box-shadow:0 1px 0 var(--rule),0 14px 30px -24px rgba(0,0,0,.5);position:relative}
+.ledger:before{content:"";position:absolute;top:0;bottom:0;left:84px;width:1.5px;background:rgba(142,58,38,.45)}
+.lg-row{display:grid;grid-template-columns:84px 1.4fr 1fr 1.6fr 150px;align-items:center;border-bottom:1px solid var(--rule);min-height:76px}
+.lg-row>*{padding:14px 18px}
+.lg-head{min-height:0;background:var(--paper2);font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:var(--ink2)}
+.lg-n{font-family:var(--serif);font-style:italic;font-size:1.6rem;color:var(--ox);text-align:center}
+.lg-name{font-family:var(--serif);font-size:1.45rem;line-height:1.15}
+.lg-name small{display:block;font-family:var(--sans);font-size:.78rem;color:var(--ink2);margin-top:3px}
+.lg-cap{font-weight:700}
+.pax{display:inline-flex;gap:3px;vertical-align:middle;margin-left:6px}
+.pax i{width:9px;height:14px;border-radius:5px 5px 2px 2px;background:var(--ink)}
+.pax i.o{background:transparent;border:1.5px solid var(--ink)}
+.lg-inc{font-size:.9rem;color:var(--ink2)}
+.lg-go a{font-weight:700;font-size:.86rem;text-decoration:none;border-bottom:1.5px solid var(--ox);padding-bottom:2px}
+.lg-row:last-child{border-bottom:0}
+.lg-row.common{background:repeating-linear-gradient(-45deg,transparent 0 10px,rgba(169,129,63,.06) 10px 20px)}
+.tally{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin:0 0 22px}
+.tally svg{height:44px;width:auto}
+.tally p{margin:0;font-family:var(--serif);font-size:1.25rem}
+.tally p em{color:var(--ox)}
+.note{font-size:.8rem;color:var(--ink2);margin-top:12px}
+
+/* comparador */
+.picker{background:var(--felt);color:var(--paper);border-radius:6px;padding:40px;position:relative;overflow:hidden}
+.picker .kick{color:var(--brass-l)}
+.picker h2{font-size:clamp(2rem,4vw,3rem);margin:8px 0 6px}
+.picker>p{color:#CFD6CC;margin:0 0 28px;max-width:40em}
+.count{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:30px}
+.count label{font-weight:700;font-size:.9rem}
+.stepper{display:inline-flex;align-items:center;border:1.5px solid var(--brass-l);border-radius:40px}
+.stepper button{appearance:none;background:transparent;border:0;color:var(--paper);width:48px;height:48px;font-size:1.5rem;cursor:pointer;border-radius:40px}
+.stepper button:hover{background:rgba(255,255,255,.08)}
+.stepper output{min-width:70px;text-align:center;font-family:var(--serif);font-size:2rem}
+.dots{display:flex;gap:6px}
+.dots i{width:12px;height:18px;border-radius:7px 7px 3px 3px;background:var(--brass-l);transition:opacity .2s}
+.dots i.off{opacity:.18}
+.opts{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.opt{border:1.5px solid rgba(214,184,124,.35);border-radius:6px;padding:22px;transition:all .25s;position:relative;background:rgba(0,0,0,.08)}
+.opt h3{font-size:1.6rem;margin:4px 0 6px}
+.opt .cap{font-size:.86rem;color:#CFD6CC}
+.opt .from{margin-top:14px;font-size:.84rem;color:#CFD6CC}
+.opt .from b{font-family:var(--serif);font-weight:400;font-size:1.35rem;color:var(--paper)}
+.opt .tag{position:absolute;top:-12px;left:18px;background:var(--brass-l);color:var(--ink);font-size:.68rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;padding:4px 10px;border-radius:20px;opacity:0;transform:translateY(4px);transition:all .25s}
+.opt.rec{background:var(--card);color:var(--ink);border-color:var(--card);transform:translateY(-4px)}
+.opt.rec .cap,.opt.rec .from{color:var(--ink2)}.opt.rec .from b{color:var(--ink)}
+.opt.rec .tag{opacity:1;transform:none}
+.opt.no{opacity:.4}
+.opt .why{font-size:.84rem;margin-top:10px;min-height:2.6em}
+.picker-go{margin-top:26px;display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.picker-go .btn{background:var(--brass-l);color:var(--ink);border-color:var(--brass-l)}
+.picker-go .btn:hover{background:var(--paper);border-color:var(--paper)}
+.picker-go small{color:#CFD6CC}
+
+/* fichas */
+.ficha{display:grid;grid-template-columns:1.25fr 1fr;gap:44px;padding:44px 0;border-top:1.5px solid var(--ink)}
+.ficha:first-of-type{border-top:0}
+.f-main{background:var(--card);border:1px solid var(--rule);padding:10px}
+.f-main img{width:100%;height:auto}
+.thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px;align-items:start}
+.thumbs button{appearance:none;border:1px solid var(--rule);background:var(--card);padding:4px;cursor:pointer;transition:border-color .15s}
+.thumbs button:hover,.thumbs button[aria-pressed=true]{border-color:var(--ox)}
+.thumbs img{width:100%;height:auto}
+.f-meta .kick{display:block;margin-bottom:8px}
+.f-meta h3{font-size:clamp(2rem,3.4vw,2.7rem)}
+.f-meta .cap{font-family:var(--serif);font-style:italic;font-size:1.25rem;color:var(--ox);margin:6px 0 16px}
+.f-meta p{color:var(--ink2);margin:0 0 18px}
+.inv{border-top:1px solid var(--ink);margin:0 0 22px}
+.inv div{display:grid;grid-template-columns:120px 1fr;gap:14px;padding:10px 0;border-bottom:1px dotted var(--rule);font-size:.92rem}
+.inv dt{font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--ink2);padding-top:3px}
+.inv dd{margin:0}
+
+/* club house */
+.club{background:var(--paper2)}
+.club-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:48px;align-items:start}
+.club-text h2{font-size:clamp(2.2rem,4.4vw,3.4rem);margin:10px 0 18px}
+.club-text p{color:var(--ink2)}
+.club-text blockquote{margin:22px 0;padding:0 0 0 20px;border-left:3px solid var(--ox);font-family:var(--serif);font-style:italic;font-size:1.3rem;line-height:1.35}
+.amen{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0;padding:0;list-style:none}
+.amen li{border:1px solid var(--ink);border-radius:30px;padding:6px 13px;font-size:.84rem;font-weight:500}
+.album{columns:2;column-gap:14px}
+.album figure{break-inside:avoid;margin:0 0 14px;background:#fff;padding:8px 8px 30px;box-shadow:0 6px 18px -12px rgba(0,0,0,.4);position:relative}
+.album figure:nth-child(odd){transform:rotate(-.6deg)}.album figure:nth-child(even){transform:rotate(.5deg)}
+.album img{width:100%;height:auto}
+.album figcaption{position:absolute;bottom:7px;left:10px;font-family:var(--serif);font-style:italic;font-size:.92rem;color:var(--ink2)}
+.green{margin-top:28px;display:flex;gap:14px;align-items:flex-start;font-size:.88rem;color:var(--ink2);border-top:1px solid var(--rule);padding-top:18px}
+.green svg{flex:none}
+
+/* tarifas */
+.rates{border:1.5px solid var(--ink);background:var(--card)}
+.rt{display:grid;grid-template-columns:1.7fr repeat(3,1fr);border-bottom:1px solid var(--rule);align-items:center}
+.rt>*{padding:13px 18px}
+.rt:last-child{border-bottom:0}
+.rt-h{background:var(--ink);color:var(--paper);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;font-weight:700}
+.rt-name b{font-family:var(--serif);font-weight:400;font-size:1.18rem;display:block;line-height:1.2}
+.rt-name small{color:var(--ink2);font-size:.8rem}
+.rt-p{font-variant-numeric:tabular-nums;font-weight:500;text-align:right}
+.rt-p span{display:none}
+.rt.hi .rt-name b:after{content:" ●";color:var(--ox);font-size:.7em}
+.disclaimer{display:flex;gap:12px;align-items:center;margin-top:16px;padding:12px 16px;border:1.5px dashed var(--ox);color:var(--ox);font-weight:700;font-size:.9rem;border-radius:var(--r)}
+
+/* reserva */
+.book{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+.panel{background:var(--card);border:1px solid var(--rule);padding:26px;border-radius:var(--r)}
+.panel h3{font-size:1.6rem;margin-bottom:4px}
+.sync{display:flex;gap:10px;align-items:center;background:var(--felt);color:var(--paper);padding:10px 14px;border-radius:var(--r);font-size:.84rem;margin:12px 0 18px}
+.sync i{width:9px;height:9px;border-radius:50%;background:#8FD19E;box-shadow:0 0 0 4px rgba(143,209,158,.25);flex:none}
+.cal-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.cal-h strong{font-family:var(--serif);font-weight:400;font-size:1.4rem;text-transform:capitalize}
+.cal-h button{appearance:none;border:1.5px solid var(--ink);background:transparent;width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:1.1rem;color:var(--ink)}
+.cal-h button:disabled{opacity:.25;cursor:default}
+.cal-type{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.cal-type button{appearance:none;border:1px solid var(--ink);background:transparent;padding:7px 12px;border-radius:30px;font:500 .8rem var(--sans);cursor:pointer;color:var(--ink)}
+.cal-type button[aria-pressed=true]{background:var(--ink);color:var(--paper)}
+.grid7{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.dow{font-size:.68rem;text-align:center;font-weight:700;letter-spacing:.1em;color:var(--ink2);padding-bottom:4px}
+.day{appearance:none;border:1px solid transparent;background:var(--paper);font:500 .92rem var(--sans);color:var(--ink);height:44px;border-radius:3px;cursor:pointer;position:relative;padding:0}
+.day:hover:not(:disabled){border-color:var(--ink)}
+.day.hi{background:#EFD9C9}
+.day.busy{background:repeating-linear-gradient(-45deg,#DCD2BE 0 4px,#E7DECB 4px 8px);color:#8A7E6E;text-decoration:line-through;cursor:not-allowed}
+.day.past{opacity:.3;cursor:default}
+.day.sel{background:var(--ox);color:#fff}
+.day.in{background:#E2BBA9}
+.day.blank{background:transparent;cursor:default}
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:14px;font-size:.78rem;color:var(--ink2)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:14px;height:14px;border-radius:2px;display:inline-block}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form label{display:flex;flex-direction:column;gap:5px;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--ink2)}
+.form .full{grid-column:1/-1}
+.form input,.form select{font:500 1rem var(--sans);color:var(--ink);background:var(--paper);border:1.5px solid var(--ink);border-radius:var(--r);padding:11px 12px;width:100%;min-width:0;letter-spacing:0;text-transform:none}
+.form input:focus,.form select:focus{outline:3px solid rgba(142,58,38,.35);outline-offset:1px}
+.msg{min-height:1.4em;font-size:.88rem;font-weight:500;margin:12px 0 0;color:var(--ox)}
+.receipt{margin-top:16px;border-top:1.5px solid var(--ink);padding-top:12px}
+.receipt .ln span:last-child{white-space:nowrap}
+.receipt .ln{display:flex;justify-content:space-between;gap:10px;padding:5px 0;font-size:.9rem;border-bottom:1px dotted var(--rule);font-variant-numeric:tabular-nums}
+.receipt .ln.tot{font-family:var(--serif);font-size:1.5rem;border-bottom:1.5px solid var(--ink);padding:10px 0}
+.receipt .ln.sena{font-weight:700;color:var(--ox)}
+.mp{width:100%;justify-content:center;margin-top:16px;background:#009EE3;border-color:#009EE3}
+.mp:hover{background:#0080B8;border-color:#0080B8}
+.mp:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.demo{display:none;margin-top:12px;background:var(--felt);color:var(--paper);padding:14px 16px;border-radius:var(--r);font-size:.9rem}
+.demo.on{display:block;animation:pop .3s ease}
+@keyframes pop{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+/* alrededores */
+.around{display:grid;grid-template-columns:repeat(2,1fr);gap:0 48px}
+.place{display:grid;grid-template-columns:76px 1fr;gap:16px;padding:18px 0;border-bottom:1px solid var(--rule)}
+.place .km{font-family:var(--serif);font-size:1.5rem;color:var(--ox);line-height:1}
+.place .km small{display:block;font-family:var(--sans);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2);margin-top:4px}
+.place h3{font-size:1.3rem;margin-bottom:3px}
+.place p{margin:0;font-size:.9rem;color:var(--ink2)}
+
+/* faq */
+.faq{max-width:860px}
+.faq details{border-bottom:1px solid var(--rule)}
+.faq summary{cursor:pointer;list-style:none;padding:18px 40px 18px 0;font-family:var(--serif);font-size:1.3rem;position:relative}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary:after{content:"+";position:absolute;right:6px;top:14px;font-family:var(--sans);font-size:1.5rem;color:var(--ox);transition:transform .2s}
+.faq details[open] summary:after{transform:rotate(45deg)}
+.faq details p{margin:0 0 18px;color:var(--ink2)}
+.tbc{display:inline-block;font-family:var(--sans);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;border:1px solid var(--ox);color:var(--ox);padding:1px 7px;border-radius:20px;margin-left:6px;vertical-align:middle}
+
+/* mapa */
+.map-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:36px;align-items:start}
+.map{position:relative;border:1.5px solid var(--ink);background:var(--felt);aspect-ratio:4/3;overflow:hidden}
+.map .mfb{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:var(--paper);padding:20px;background:radial-gradient(circle at 50% 45%,var(--felt2),var(--felt))}
+.map .mfb b{font-family:var(--serif);font-weight:400;font-size:1.5rem;display:block}
+.map iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.route{counter-reset:r;list-style:none;margin:0;padding:0}
+.route li{position:relative;padding:0 0 18px 44px}
+.route li:before{counter-increment:r;content:counter(r);position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;border:1.5px solid var(--ink);display:grid;place-items:center;font-family:var(--serif);font-size:1rem}
+.route li:not(:last-child):after{content:"";position:absolute;left:15px;top:32px;bottom:2px;width:1px;background:var(--rule)}
+
+/* contacto */
+.contact{background:var(--felt);color:var(--paper)}
+.contact .kick{color:var(--brass-l)}
+.contact h2{font-size:clamp(2.2rem,5vw,3.8rem);margin:10px 0 30px;max-width:16em}
+.c-grid{display:grid;grid-template-columns:1fr 1fr 1.5fr 1.1fr;gap:16px}
+.c-grid a{display:block;text-decoration:none;border:1px solid rgba(214,184,124,.4);padding:18px;border-radius:var(--r);transition:background .15s}
+.c-grid a:hover{background:rgba(255,255,255,.06)}
+.c-grid small{display:block;font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--brass-l);font-weight:700;margin-bottom:6px}
+.c-grid span{font-family:var(--serif);font-size:1.15rem;overflow-wrap:anywhere}
+footer{background:#18271F;color:#B9C2B6;font-size:.82rem;padding:26px 0}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+/* responsive */
+@media (max-width:980px){
+  .nav ul{display:none}
+  .rcard-in{grid-template-columns:1fr;gap:28px}
+  .ficha,.club-grid,.book,.map-grid{grid-template-columns:1fr;gap:28px}
+  .c-grid{grid-template-columns:1fr 1fr}
+  .lg-row{grid-template-columns:56px 1fr;padding:12px 0}
+  .ledger:before{left:56px}
+  .lg-head{display:none}
+  .lg-row>*{grid-column:2;padding:3px 16px}
+  .lg-row .lg-n{grid-column:1;grid-row:1/span 4;align-self:start;padding-top:4px}
+  .lg-row .lg-go{padding-top:8px}
+}
+@media (max-width:640px){
+  body{font-size:16px}
+  .pmore{display:none}
+  .wrap{padding:0 16px}
+  section{padding:60px 0}
+  .desk{padding:34px 0 46px}
+  .rcard{padding:8px;transform:none}
+  .rcard-in{padding:22px 18px 22px}
+  .rcard-head{font-size:.6rem;letter-spacing:.14em;flex-direction:column;gap:4px}
+  .stamp{width:92px;height:92px;right:-6px;top:-22px;font-size:.54rem}
+  .stamp b{font-size:1.3rem}
+  .fields{grid-template-columns:1fr 1fr;gap:0 14px}
+  .fields dd{font-size:1rem}
+  .sec-h{grid-template-columns:1fr;gap:6px}
+  .folio{font-size:2.8rem;grid-row:auto}
+  .picker{padding:28px 18px}
+  .opts{grid-template-columns:1fr}
+  .opt .why{min-height:0}
+  .thumbs{grid-template-columns:repeat(2,1fr)}
+  .inv div{grid-template-columns:1fr;gap:2px}
+  .album{columns:1}
+  .rt{grid-template-columns:repeat(3,1fr)}
+  .rt-h{display:none}
+  .rt-name{grid-column:1/-1;padding-bottom:4px}
+  .rt-p{text-align:left;padding-top:0;font-size:.92rem}
+  .rt-p span{display:block;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink2);font-weight:700}
+  .panel{padding:18px 14px}
+  .day{height:40px;font-size:.86rem}
+  .form{grid-template-columns:1fr 1fr;gap:12px}
+  .around{grid-template-columns:1fr}
+  .c-grid{grid-template-columns:1fr}
+  .tally svg{height:34px}
+  .nav .brand{font-size:1.1rem}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<div class="proto" role="note">Prototipo de demostración preparado para <b>Terrazas de Cruz Chica</b> <span class="pmore">· las tarifas y la disponibilidad son de ejemplo</span></div>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top">Terrazas <i>de</i> Cruz Chica</a>
+    <ul>
+      <li><a href="#registro">Las cabañas</a></li>
+      <li><a href="#clubhouse">Club House</a></li>
+      <li><a href="#tarifas">Tarifas</a></li>
+      <li><a href="#alrededores">Alrededores</a></li>
+      <li><a href="#llegar">Cómo llegar</a></li>
+    </ul>
+    <a class="btn" href="#reservar">Reservar</a>
+  </div>
+</header>
+
+<main id="top">
+<!-- PORTADA -->
+<div class="desk">
+  <div class="wrap">
+    <article class="rcard">
+      <span class="hole" aria-hidden="true"></span>
+      <div class="rcard-in">
+        <div class="rcard-head"><span>Libro de huéspedes · Club House</span><span>Bartolomé Jaime 747 · Cruz Chica</span></div>
+        <div>
+          <p class="kick">Cruz Chica · La Cumbre · Sierras de Córdoba</p>
+          <h1 style="margin-top:12px">Una casona inglesa de 1900 y <em>siete cabañas</em> a su alrededor.</h1>
+          <p class="lede">La construyeron familias británicas hace más de un siglo; hoy es el Club House de un predio arbolado a 15 cuadras del pueblo de La Cumbre, con pileta, solárium y una terraza propia para cada cabaña.</p>
+          <dl class="fields">
+            <div><dt>Unidades</dt><dd>7 cabañas + Club House</dd></div>
+            <div><dt>Capacidad</dt><dd>de 2 a 6 personas</dd></div>
+            <div><dt>Incluye</dt><dd>desayuno en la cabaña</dd></div>
+            <div><dt>Cada cabaña</dt><dd>deck y parrilla propios</dd></div>
+          </dl>
+          <div class="cta-row">
+            <a class="btn" href="#elegi">Elegí tu terraza</a>
+            <a class="btn ghost" href="#reservar">Ver fechas y precios</a>
+          </div>
+        </div>
+        <div style="position:relative">
+          <div class="stamp" aria-hidden="true"><div><b>c.1900</b>Casona<br>británica</div></div>
+          <figure class="photo-mount" style="margin:0">
+            <span class="corner tl"></span><span class="corner br"></span>
+            <img src="https://www.terrazasdecruzchica.com.ar/uf/images/clubhouse/clubhouse1.jpg" data-l="El Club House" alt="La casona de 1900 que hoy es el Club House de Terrazas de Cruz Chica" onerror="fb(this)" width="800" height="560">
+            <figcaption>El Club House, casona de alrededor de 1900</figcaption>
+          </figure>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>
+
+<!-- REGISTRO -->
+<section id="registro">
+  <div class="wrap">
+    <div class="sec-h">
+      <span class="folio">I.</span>
+      <h2>El registro de la casa</h2>
+      <p>Siete cabañas independientes, cada una con su camino de acceso, su deck y su parrilla, y un Club House para todos. Tres formas de quedarse, según cuántos vengan.</p>
+    </div>
+    <div class="tally">
+      <svg viewBox="0 0 330 44" aria-hidden="true">
+        <g fill="none" stroke="#26211C" stroke-width="2" stroke-linejoin="round">
+          <path d="M4 42V24L16 13L28 24V42Z"/><path d="M40 42V24L52 13L64 24V42Z"/><path d="M76 42V24L88 13L100 24V42Z"/><path d="M112 42V24L124 13L136 24V42Z"/><path d="M148 42V24L160 13L172 24V42Z"/><path d="M184 42V24L196 13L208 24V42Z"/><path d="M220 42V24L232 13L244 24V42Z"/>
+        </g>
+        <g fill="#8E3A26"><path d="M262 42V20L282 4L302 20V42Z"/><rect x="300" y="24" width="26" height="18"/><path d="M298 24L313 12L328 24Z"/></g>
+      </svg>
+      <p>Siete cabañas <em>y</em> un Club House.</p>
+    </div>
+    <div class="ledger" role="table" aria-label="Tipos de unidad">
+      <div class="lg-row lg-head" role="row"><span role="columnheader">Folio</span><span role="columnheader">Tipo</span><span role="columnheader">Capacidad</span><span role="columnheader">Incluye</span><span role="columnheader"></span></div>
+      <div class="lg-row" role="row">
+        <span class="lg-n" role="cell">i</span>
+        <span class="lg-name" role="cell">Suites para dos<small>Pax 2 · amplias suites de categoría</small></span>
+        <span class="lg-cap" role="cell">2 personas <span class="pax" aria-hidden="true"><i></i><i></i></span></span>
+        <span class="lg-inc" role="cell">Desayuno en la unidad, mucama, ropa blanca, parrilla</span>
+        <span class="lg-go" role="cell"><a href="#ficha-suite">Ver ficha →</a></span>
+      </div>
+      <div class="lg-row" role="row">
+        <span class="lg-n" role="cell">ii</span>
+        <span class="lg-name" role="cell">Cabañas para 3 y 4<small>Pax 4 · unidad independiente con deck</small></span>
+        <span class="lg-cap" role="cell">3 a 4 personas <span class="pax" aria-hidden="true"><i></i><i></i><i></i><i class="o"></i></span></span>
+        <span class="lg-inc" role="cell">Desayuno en la cabaña, mucama, ropa blanca, deck y parrilla</span>
+        <span class="lg-go" role="cell"><a href="#ficha-c4">Ver ficha →</a></span>
+      </div>
+      <div class="lg-row" role="row">
+        <span class="lg-n" role="cell">iii</span>
+        <span class="lg-name" role="cell">Cabañas para 5 y 6<small>Pax 6 · la más grande del predio</small></span>
+        <span class="lg-cap" role="cell">5 a 6 personas <span class="pax" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i class="o"></i></span></span>
+        <span class="lg-inc" role="cell">Desayuno en la cabaña, mucama, ropa blanca, deck y parrilla</span>
+        <span class="lg-go" role="cell"><a href="#ficha-c6">Ver ficha →</a></span>
+      </div>
+      <div class="lg-row common" role="row">
+        <span class="lg-n" role="cell">iv</span>
+        <span class="lg-name" role="cell">El Club House<small>casona de c. 1900 · espacio común</small></span>
+        <span class="lg-cap" role="cell">para todos los huéspedes</span>
+        <span class="lg-inc" role="cell">TV, Wi-Fi, música, sala de lectura y biblioteca, vista a la pileta</span>
+        <span class="lg-go" role="cell"><a href="#clubhouse">Conocerlo →</a></span>
+      </div>
+    </div>
+    <p class="note">Nota para el prototipo: cuando nos pasen cuántas de las siete unidades son de cada tipo (y sus nombres, si los tienen), cada cabaña pasa a tener su propio asiento en este registro.</p>
+  </div>
+</section>
+
+<!-- ELEGÍ TU TERRAZA -->
+<section id="elegi" style="padding-top:0">
+  <div class="wrap">
+    <div class="picker">
+      <p class="kick">Elegí tu terraza</p>
+      <h2>¿Cuántos vienen?</h2>
+      <p>Contanos cuántas personas son y te decimos qué unidad les queda mejor. Después la llevamos directo al simulador con ese tipo ya elegido.</p>
+      <div class="count">
+        <label id="lblN">Personas</label>
+        <div class="stepper" role="group" aria-labelledby="lblN">
+          <button type="button" id="nMinus" aria-label="Una persona menos">−</button>
+          <output id="nOut" aria-live="polite">2</output>
+          <button type="button" id="nPlus" aria-label="Una persona más">+</button>
+        </div>
+        <div class="dots" id="nDots" aria-hidden="true"></div>
+      </div>
+      <div class="opts" id="opts"></div>
+      <div class="picker-go">
+        <button class="btn" type="button" id="toSim">Llevar al simulador →</button>
+        <small>Cunas y camas adicionales disponibles a pedido.</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FICHAS -->
+<section id="fichas" style="padding-top:20px">
+  <div class="wrap">
+    <div class="sec-h">
+      <span class="folio">II.</span>
+      <h2>Fichas de las unidades</h2>
+      <p>Las fotos van enteras, como son. Tocá cualquiera de abajo para verla grande.</p>
+    </div>
+    <div id="fichaList"></div>
+  </div>
+</section>
+
+<!-- CLUB HOUSE -->
+<section class="club" id="clubhouse">
+  <div class="wrap club-grid">
+    <div class="club-text">
+      <span class="kick">Folio III · Las páginas comunes</span>
+      <h2>El Club House: una casa de familias británicas, de alrededor de 1900.</h2>
+      <p>Cruz Chica es el barrio de las casonas de estilo inglés de La Cumbre. La de Terrazas fue construida por familias británicas a comienzos del siglo XX y hoy es el lugar para descansar del complejo.</p>
+      <blockquote>“Un lugar perfecto para relajarse, con una vista privilegiada a la pileta y a las sierras.”</blockquote>
+      <ul class="amen">
+        <li>TV</li><li>Wi-Fi</li><li>Música</li><li>Sala de lectura</li><li>Biblioteca</li><li>Pileta y solárium</li><li>Parque arbolado</li><li>Cocheras cubiertas</li><li>Alarma y caja de seguridad</li>
+      </ul>
+      <div class="green">
+        <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="16" fill="none" stroke="#2E4A3B" stroke-width="2"/><path d="M10 22c0-8 6-12 14-12-1 8-5 13-12 13" fill="#2E4A3B"/><path d="M11 24l8-8" stroke="#F4EEE1" stroke-width="1.5"/></svg>
+        <span>Parte del programa de certificación en sustentabilidad <b>Hoteles más Verdes</b>, con cestos para separar plástico, papel y cartón, y vidrio. Certificado de Excelencia de Tripadvisor 2017.</span>
+      </div>
+    </div>
+    <div class="album">
+      <figure><img src="https://www.terrazasdecruzchica.com.ar/uf/images/clubhouse/clubhouse2.jpg" data-l="Club House" alt="Interior del Club House" onerror="fb(this)" loading="lazy" width="800" height="560"><figcaption>Club House</figcaption></figure>
+      <figure><img src="https://www.terrazasdecruzchica.com.ar/uf/images/piscina/piscina1.jpg" data-l="Pileta y solárium" alt="Pileta y solárium del complejo" onerror="fb(this)" loading="lazy" width="800" height="560"><figcaption>Pileta y solárium</figcaption></figure>
+      <figure><img src="https://www.terrazasdecruzchica.com.ar/uf/images/clubhouse/IMG_0830.jpg" data-l="Sala de lectura" alt="Sala del Club House" onerror="fb(this)" loading="lazy" width="800" height="560"><figcaption>La casona</figcaption></figure>
+      <figure><img src="https://www.terrazasdecruzchica.com.ar/uf/images/exteriores/deck1.jpg" data-l="Deck de cabaña" alt="Deck de una de las cabañas" onerror="fb(this)" loading="lazy" width="800" height="560"><figcaption>Deck de cabaña</figcaption></figure>
+      <figure><img src="https://www.terrazasdecruzchica.com.ar/uf/images/exteriores/IMG_0644.jpg" data-l="Jardines" alt="Jardines y parque del predio" onerror="fb(this)" loading="lazy" width="800" height="560"><figcaption>Jardines</figcaption></figure>
+      <figure><img src="https://www.terrazasdecruzchica.com.ar/uf/images/piscina/piscina3.jpg" data-l="La pileta" alt="Vista de la pileta" onerror="fb(this)" loading="lazy" width="800" height="560"><figcaption>La pileta</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- TARIFAS -->
+<section id="tarifas">
+  <div class="wrap">
+    <div class="sec-h">
+      <span class="folio">IV.</span>
+      <h2>Tarifas por temporada 2026-2027</h2>
+      <p>Precio por noche y por unidad, con desayuno incluido. El simulador de abajo aplica la tarifa de cada noche según la fecha.</p>
+    </div>
+    <div class="rates" id="rates" role="table" aria-label="Tarifas por temporada"></div>
+    <p class="disclaimer">⚠ Tarifas de ejemplo: se cargan las suyas.</p>
+  </div>
+</section>
+
+<!-- RESERVA -->
+<section id="reservar" style="padding-top:20px">
+  <div class="wrap">
+    <div class="sec-h">
+      <span class="folio">V.</span>
+      <h2>Asentar una estadía</h2>
+      <p>Elegí las fechas en el calendario o en el formulario: el total y la seña se calculan al instante.</p>
+    </div>
+    <div class="book">
+      <div class="panel">
+        <h3>Disponibilidad</h3>
+        <div class="sync"><i></i>Se sincroniza con Booking y Airbnb: sin dobles reservas.</div>
+        <div class="cal-type" id="calType" role="group" aria-label="Tipo de unidad del calendario"></div>
+        <div class="cal-h">
+          <button type="button" id="calPrev" aria-label="Mes anterior">‹</button>
+          <strong id="calTitle" aria-live="polite"></strong>
+          <button type="button" id="calNext" aria-label="Mes siguiente">›</button>
+        </div>
+        <div class="grid7" id="calDow"></div>
+        <div class="grid7" id="calDays"></div>
+        <div class="legend">
+          <span><i style="background:var(--paper);border:1px solid var(--rule)"></i>Libre</span>
+          <span><i style="background:#EFD9C9"></i>Temporada alta / fin de semana largo</span>
+          <span><i style="background:repeating-linear-gradient(-45deg,#DCD2BE 0 3px,#E7DECB 3px 6px)"></i>Ocupado (ejemplo)</span>
+          <span><i style="background:var(--ox)"></i>Tu estadía</span>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>Simulador de reserva</h3>
+        <p style="margin:4px 0 16px;color:var(--ink2);font-size:.9rem">Tocá un día de llegada y otro de salida en el calendario, o completá acá.</p>
+        <form class="form" id="sim" novalidate>
+          <label>Llegada<input type="date" id="fIn" required></label>
+          <label>Salida<input type="date" id="fOut" required></label>
+          <label>Personas
+            <select id="fPax"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select>
+          </label>
+          <label>Unidad<select id="fType"></select></label>
+        </form>
+        <p class="msg" id="msg" role="status" aria-live="polite"></p>
+        <div class="receipt" id="receipt" hidden></div>
+        <button class="btn mp" type="button" id="mpBtn" disabled>Pagar seña con Mercado Pago (demo)</button>
+        <div class="demo" id="demo" role="status"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ALREDEDORES -->
+<section id="alrededores" style="background:var(--paper2)">
+  <div class="wrap">
+    <div class="sec-h">
+      <span class="folio">VI.</span>
+      <h2>Salidas desde la casona</h2>
+      <p>Cruz Chica queda entre La Cumbre y Los Cocos, sobre la ladera de las Sierras Chicas. Distancias aproximadas desde el complejo.</p>
+    </div>
+    <div class="around">
+      <div class="place"><div class="km">a pie<small>Cruz Chica</small></div><div><h3>Casonas inglesas y el Museo Mujica Láinez</h3><p>El barrio de las casonas de estilo inglés. “El Paraíso”, la casa del escritor Manuel Mujica Láinez, hoy es museo.</p></div></div>
+      <div class="place"><div class="km">1,5 km<small>aprox.</small></div><div><h3>Centro de La Cumbre</h3><p>La calle principal y el casco céntrico: confiterías, comercios y la vieja estación.</p></div></div>
+      <div class="place"><div class="km">~3 km<small>aprox.</small></div><div><h3>Golf Club La Cumbre</h3><p>Fundado en 1924, uno de los campos de golf más antiguos del país, entre sierras y arroyos.</p></div></div>
+      <div class="place"><div class="km">~3 km<small>aprox.</small></div><div><h3>Cristo Redentor</h3><p>Subida corta al Cristo de La Cumbre, con vista abierta sobre el valle de Punilla.</p></div></div>
+      <div class="place"><div class="km">3,5 km<small>aprox.</small></div><div><h3>Los Cocos</h3><p>El Descanso y su laberinto de ligustros, y la aerosilla al cerro.</p></div></div>
+      <div class="place"><div class="km">~4 km<small>aprox.</small></div><div><h3>Dique San Jerónimo y El Chorrito</h3><p>Para caminar, hacer picnic y refrescarse en verano, a minutos del pueblo.</p></div></div>
+      <div class="place"><div class="km">~10 km<small>aprox.</small></div><div><h3>Cuchi Corral</h3><p>La rampa de parapente colgada sobre el valle del Río Pinto. Imperdible al atardecer.</p></div></div>
+      <div class="place"><div class="km">~8 km<small>aprox.</small></div><div><h3>Villa Giardino</h3><p>El pueblo vecino hacia el sur, tranquilo y arbolado.</p></div></div>
+      <div class="place"><div class="km">~30 km<small>aprox.</small></div><div><h3>Cerro Uritorco</h3><p>En Capilla del Monte: el cerro más alto de las Sierras Chicas, para el día de trekking.</p></div></div>
+      <div class="place"><div class="km">~95 km<small>por RN38</small></div><div><h3>Córdoba capital</h3><p>Aeropuerto y terminal de ómnibus, a algo más de una hora y media en auto.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="wrap">
+    <div class="sec-h">
+      <span class="folio">VII.</span>
+      <h2>Preguntas de los huéspedes</h2>
+      <p>Lo que figura en su web, tal cual. Lo que no está publicado queda marcado para que ustedes lo confirmen.</p>
+    </div>
+    <div class="faq">
+      <details open><summary>¿El desayuno está incluido?</summary><p>Sí. El desayuno se sirve en la cabaña y está incluido en la estadía.</p></details>
+      <details><summary>¿Hay ropa blanca y limpieza?</summary><p>Sí: se incluyen ropa de cama y toallas de pileta, y hay servicio de mucama.</p></details>
+      <details><summary>¿Qué tiene cada cabaña?</summary><p>Calefacción, agua caliente por termotanque, vajilla completa, microondas, cocina, heladera, cafetera eléctrica, tostadora, pava eléctrica, radio reloj, plancha y tabla, TV LCD con cable, música funcional, deck y parrilla individual.</p></details>
+      <details><summary>¿Viajamos con un bebé: hay cuna?</summary><p>Sí, hay cunas y camas adicionales. Conviene pedirlas al reservar.</p></details>
+      <details><summary>¿Hay estacionamiento y Wi-Fi?</summary><p>Hay cocheras cubiertas dentro del predio. El Wi-Fi está en el Club House.</p></details>
+      <details><summary>¿Se aceptan mascotas? <span class="tbc">a confirmar por ustedes</span></summary><p>Consultanos antes de reservar y te respondemos según la política del complejo.</p></details>
+      <details><summary>¿Horarios de check-in y check-out? <span class="tbc">a confirmar por ustedes</span></summary><p>Los horarios de ingreso y salida se informan al confirmar la reserva.</p></details>
+      <details><summary>¿Cómo se paga y qué pasa si cancelo? <span class="tbc">a confirmar por ustedes</span></summary><p>La reserva se confirma con una seña del 30%. Las condiciones de cancelación se informan al reservar.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- CÓMO LLEGAR -->
+<section id="llegar" style="padding-top:20px">
+  <div class="wrap map-grid">
+    <div class="map">
+      <div class="mfb"><div><b>Bartolomé Jaime 747</b>(5178) Cruz Chica, La Cumbre, Córdoba<br><small>30°57'51.68" S · 64°29'6.05" O</small><br><br><a href="https://www.google.com/maps?q=Bartolom%C3%A9+Jaime+747,+Cruz+Chica,+La+Cumbre,+C%C3%B3rdoba" target="_blank" rel="noopener" style="color:var(--brass-l)">Abrir en Google Maps</a></div></div>
+      <iframe title="Mapa: Terrazas de Cruz Chica" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Bartolom%C3%A9+Jaime+747,+Cruz+Chica,+La+Cumbre,+C%C3%B3rdoba&output=embed"></iframe>
+    </div>
+    <div>
+      <span class="kick">Folio VIII · Cómo llegar</span>
+      <h2 style="font-size:clamp(2rem,4vw,2.8rem);margin:10px 0 24px">Bartolomé Jaime 747, Cruz Chica</h2>
+      <ol class="route">
+        <li><b>Desde Córdoba capital</b>, tomá la RN38 hacia el norte por el valle de Punilla: Villa Carlos Paz, Cosquín, La Falda. Son unos 95 km hasta La Cumbre.</li>
+        <li><b>En La Cumbre</b>, seguí hacia Cruz Chica, el barrio de las casonas inglesas, rumbo a Los Cocos.</li>
+        <li><b>El complejo</b> está a 15 cuadras del pueblo (unos 1.500 m) y a 3.500 m de Los Cocos. Las cocheras son cubiertas y dentro del predio.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section class="contact" id="contacto">
+  <div class="wrap">
+    <span class="kick">Folio IX · Reservas y consultas</span>
+    <h2>Escribinos y te guardamos la terraza.</h2>
+    <div class="c-grid">
+      <a href="https://wa.me/543548567057" target="_blank" rel="noopener"><small>WhatsApp</small><span>+54 3548 56-7057</span></a>
+      <a href="tel:+543548452091"><small>Teléfono</small><span>+54 3548 45-2091</span></a>
+      <a href="mailto:terrazasdecruzchica@gmail.com"><small>Mail</small><span>terrazasdecruzchica@gmail.com</span></a>
+      <a href="https://www.instagram.com/terrazasdecruzchica" target="_blank" rel="noopener"><small>Instagram</small><span>@terrazasdecruzchica</span></a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Terrazas de Cruz Chica · Bartolomé Jaime 747, (5178) Cruz Chica, La Cumbre, Córdoba</span>
+    <span>Prototipo de demostración preparado para Terrazas de Cruz Chica · Resolviendo Kos</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+'use strict';
+var U='https://www.terrazasdecruzchica.com.ar/uf/images/';
+var TYPES={
+  suite:{name:'Suite para dos',short:'Suite (2)',min:1,max:2,cap:'Para 2 personas',kick:'Folio i · Pax 2',
+    desc:'Amplias suites de categoría para dos, dentro del predio arbolado. Desayuno servido en la unidad, mucama y ropa blanca incluidos.',
+    photos:['pax2/suite2.jpg','pax2/suite3.jpg','pax2/suite4.jpg','pax2/suite5.jpg','pax2/suite6.jpg','pax2/IMG_0743.jpg','pax2/IMG_0747.jpg']},
+  c4:{name:'Cabaña para 3 y 4',short:'Cabaña (3-4)',min:1,max:4,cap:'Para 3 o 4 personas',kick:'Folio ii · Pax 4',
+    desc:'Unidad independiente, con camino de acceso, deck y parrilla propios, equipada por completo. La medida justa para una familia o dos parejas.',
+    photos:['pax4/cabana4pax1.jpg','pax4/cabana4pax2.jpg','pax4/cabana4pax3.jpg','pax4/cabana4pax4.jpg','pax4/cabana4pax5.jpg','pax4/cabana4pax6.jpg','pax4/IMG_0694.jpg']},
+  c6:{name:'Cabaña para 5 y 6',short:'Cabaña (5-6)',min:1,max:6,cap:'Para 5 o 6 personas',kick:'Folio iii · Pax 6',
+    desc:'La más grande del complejo: independiente, con deck y parrilla, para familias numerosas o grupos de amigos.',
+    photos:['pax6/cabana6pax1.jpg','pax6/cabana6pax2.jpg','pax6/cabana6pax3.jpg','pax6/cabana6pax4.jpg','pax6/cabana6pax5.jpg','pax6/cabana6pax6.jpg','pax6/IMG_0633.jpg']}
+};
+var ORDER=['suite','c4','c6'];
+
+/* Temporadas 2026-2027: from/to = noches (inclusive) */
+var SEASONS=[
+  {k:'sob',n:'Fin de semana largo de la Soberanía',d:'21 al 23 de noviembre 2026 · lunes 23 feriado',from:'2026-11-21',to:'2026-11-22',hi:1,p:{suite:85000,c4:125000,c6:160000}},
+  {k:'dic',n:'Fin de semana largo de diciembre',d:'5 al 8 de diciembre 2026 · 7 y 8 feriados',from:'2026-12-05',to:'2026-12-07',hi:1,p:{suite:85000,c4:125000,c6:160000}},
+  {k:'fie',n:'Navidad y Año Nuevo',d:'23 de diciembre 2026 al 3 de enero 2027',from:'2026-12-23',to:'2027-01-02',hi:1,p:{suite:100000,c4:150000,c6:190000}},
+  {k:'car',n:'Carnaval',d:'6 al 9 de febrero 2027 · lunes 8 y martes 9',from:'2027-02-06',to:'2027-02-08',hi:1,p:{suite:105000,c4:160000,c6:200000}},
+  {k:'ver',n:'Verano',d:'enero y febrero 2027',from:'2027-01-03',to:'2027-02-28',hi:1,p:{suite:95000,c4:140000,c6:180000}},
+  {k:'ss',n:'Semana Santa',d:'25 al 28 de marzo 2027 · Pascua 28/3',from:'2027-03-25',to:'2027-03-27',hi:1,p:{suite:90000,c4:130000,c6:170000}},
+  {k:'inv',n:'Vacaciones de invierno',d:'julio 2027',from:'2027-07-01',to:'2027-07-31',hi:1,p:{suite:80000,c4:115000,c6:150000}},
+  {k:'baja',n:'Temporada baja / días de semana',d:'el resto del año, hasta octubre 2027',from:null,to:null,hi:0,p:{suite:62000,c4:85000,c6:115000}}
+];
+var LAST='2027-10-31';
+var DAY=86400000;
+function pd(s){var a=s.split('-');return Date.UTC(+a[0],a[1]-1,+a[2]);}
+function fd(t){return new Date(t).toISOString().slice(0,10);}
+function season(s){for(var i=0;i<SEASONS.length-1;i++){var x=SEASONS[i];if(s>=x.from&&s<=x.to)return x;}return SEASONS[SEASONS.length-1];}
+var money=function(n){return '$ '+Math.round(n).toLocaleString('es-AR');};
+var now=new Date();var TODAY=fd(Date.UTC(now.getFullYear(),now.getMonth(),now.getDate()));
+
+/* ocupación de ejemplo, determinística */
+function hash(s){var h=2166136261;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return (h>>>0)/4294967295;}
+function busy(type,s){var se=season(s);var th=se.hi?(se.k==='fie'||se.k==='car'?.5:.3):.12;var d=new Date(pd(s)).getUTCDay();if(!se.hi&&(d===5||d===6))th=.28;return hash(type+'|'+s+'|tcc')<th;}
+
+/* ---------- Fichas ---------- */
+var fl=document.getElementById('fichaList');
+ORDER.forEach(function(k){
+  var t=TYPES[k];var id='ficha-'+k;
+  var th=t.photos.slice(1).map(function(p,i){return '<button type="button" aria-pressed="false" aria-label="Ver foto '+(i+2)+' de '+t.name+'" data-src="'+U+p+'"><img loading="lazy" src="'+U+p+'" data-l="'+t.name+' · '+(i+2)+'" alt="'+t.name+', foto '+(i+2)+'" onerror="fb(this)" width="800" height="560"></button>';}).join('');
+  fl.insertAdjacentHTML('beforeend',
+  '<article class="ficha" id="'+id+'">'+
+   '<div><div class="f-main"><img class="mainimg" src="'+U+t.photos[0]+'" data-l="'+t.name+'" alt="'+t.name+', foto principal" onerror="fb(this)" loading="lazy" width="800" height="560"></div>'+
+   '<div class="thumbs">'+th+'</div></div>'+
+   '<div class="f-meta"><span class="kick">'+t.kick+'</span><h3>'+t.name+'</h3><p class="cap">'+t.cap+'</p><p>'+t.desc+'</p>'+
+   '<dl class="inv">'+
+    '<div><dt>Cocina</dt><dd>Microondas, cocina, heladera, cafetera, tostadora y pava eléctricas, vajilla completa</dd></div>'+
+    '<div><dt>Confort</dt><dd>Calefacción, agua caliente por termotanque, TV LCD con cable, música funcional, radio reloj, plancha</dd></div>'+
+    '<div><dt>Afuera</dt><dd>Parrilla individual'+(k==='suite'?'':', deck propio y camino de acceso')+'</dd></div>'+
+    '<div><dt>Incluido</dt><dd>Desayuno en la unidad, mucama, ropa de cama y toallas de pileta</dd></div>'+
+    '<div><dt>Desde</dt><dd><b>'+money(SEASONS[SEASONS.length-1].p[k])+'</b> la noche en temporada baja <small>(ejemplo)</small></dd></div>'+
+   '</dl><button type="button" class="btn" data-book="'+k+'">Ver fechas para esta unidad →</button></div>'+
+  '</article>');
+});
+fl.addEventListener('click',function(e){
+  var b=e.target.closest('.thumbs button');
+  if(b){var art=b.closest('.ficha');var main=art.querySelector('.mainimg');var im=b.querySelector('img');
+    main.onerror=function(){fb(main);};main.setAttribute('data-l',im.getAttribute('data-l'));
+    main.src=im.classList.contains('is-fb')?im.src:b.getAttribute('data-src');main.alt=im.alt;
+    art.querySelectorAll('.thumbs button').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});
+    main.scrollIntoView({behavior:'smooth',block:'nearest'});return;}
+  var bk=e.target.closest('[data-book]');
+  if(bk){setType(bk.getAttribute('data-book'));go();}
+});
+
+/* ---------- Tarifas ---------- */
+var rates=document.getElementById('rates');
+var rh='<div class="rt rt-h" role="row"><span role="columnheader">Temporada</span><span role="columnheader" style="text-align:right">Suite (2)</span><span role="columnheader" style="text-align:right">Cabaña 3-4</span><span role="columnheader" style="text-align:right">Cabaña 5-6</span></div>';
+var disp=['sob','dic','fie','ver','car','ss','inv','baja'];
+disp.forEach(function(k){var s=SEASONS.filter(function(x){return x.k===k;})[0];
+  rh+='<div class="rt'+(s.hi?' hi':'')+'" role="row"><span class="rt-name" role="cell"><b>'+s.n+'</b><small>'+s.d+'</small></span>'+
+  ORDER.map(function(t){return '<span class="rt-p" role="cell"><span>'+({suite:'Suite',c4:'Cab. 3-4',c6:'Cab. 5-6'})[t]+'</span>'+money(s.p[t])+'</span>';}).join('')+'</div>';});
+rates.innerHTML=rh;
+
+/* ---------- Comparador ---------- */
+var n=2,opts=document.getElementById('opts');
+function recFor(n){return n<=2?'suite':n<=4?'c4':'c6';}
+function renderPicker(){
+  document.getElementById('nOut').textContent=n;
+  document.getElementById('nDots').innerHTML=[1,2,3,4,5,6].map(function(i){return '<i class="'+(i<=n?'':'off')+'"></i>';}).join('');
+  var r=recFor(n);
+  opts.innerHTML=ORDER.map(function(k){var t=TYPES[k];var fits=n<=t.max;
+    var why=k===r?(k==='suite'?'Íntima, para una pareja: la más cómoda para dos.':k==='c4'?'Entran justos y cómodos, con deck y parrilla propios.':'La única donde entran todos juntos.'):(!fits?'No entran: capacidad máxima '+t.max+'.':'Entran, pero les sobra espacio.');
+    return '<div class="opt'+(k===r?' rec':'')+(fits?'':' no')+'"><span class="tag">Recomendada</span><span class="kick" style="color:inherit;opacity:.7">'+t.kick+'</span><h3>'+t.name+'</h3><div class="cap">'+t.cap+'</div><div class="why">'+why+'</div><div class="from">desde <b>'+money(SEASONS[SEASONS.length-1].p[k])+'</b> / noche</div></div>';}).join('');
+  document.getElementById('nMinus').disabled=n<=1;document.getElementById('nPlus').disabled=n>=6;
+}
+document.getElementById('nMinus').onclick=function(){if(n>1){n--;renderPicker();}};
+document.getElementById('nPlus').onclick=function(){if(n<6){n++;renderPicker();}};
+document.getElementById('toSim').onclick=function(){fPax.value=String(n);setType(recFor(n));go();};
+renderPicker();
+
+/* ---------- Calendario + simulador ---------- */
+var fIn=document.getElementById('fIn'),fOut=document.getElementById('fOut'),fPax=document.getElementById('fPax'),fType=document.getElementById('fType');
+var msg=document.getElementById('msg'),rec=document.getElementById('receipt'),mp=document.getElementById('mpBtn'),demo=document.getElementById('demo');
+fType.innerHTML=ORDER.map(function(k){return '<option value="'+k+'">'+TYPES[k].short+' · hasta '+TYPES[k].max+'</option>';}).join('');
+fType.value='c4';
+fIn.min=TODAY;fOut.min=fd(pd(TODAY)+DAY);fIn.max=LAST;fOut.max=fd(pd(LAST)+DAY);
+var calType=document.getElementById('calType');
+calType.innerHTML=ORDER.map(function(k){return '<button type="button" data-t="'+k+'" aria-pressed="false">'+TYPES[k].short+'</button>';}).join('');
+calType.onclick=function(e){var b=e.target.closest('button');if(b){setType(b.getAttribute('data-t'));}};
+function setType(k){fType.value=k;calc();renderCal();}
+function go(){document.getElementById('reservar').scrollIntoView({behavior:'smooth'});}
+
+var tp=TODAY.split('-');var cy=+tp[0],cm=+tp[1]-1;var minY=cy,minM=cm;
+var MONTHS=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+document.getElementById('calDow').innerHTML=['L','M','M','J','V','S','D'].map(function(d){return '<span class="dow">'+d+'</span>';}).join('');
+document.getElementById('calPrev').onclick=function(){cm--;if(cm<0){cm=11;cy--;}renderCal();};
+document.getElementById('calNext').onclick=function(){cm++;if(cm>11){cm=0;cy++;}renderCal();};
+function renderCal(){
+  var k=fType.value;
+  calType.querySelectorAll('button').forEach(function(b){b.setAttribute('aria-pressed',b.getAttribute('data-t')===k?'true':'false');});
+  document.getElementById('calTitle').textContent=MONTHS[cm]+' '+cy;
+  document.getElementById('calPrev').disabled=(cy===minY&&cm===minM);
+  document.getElementById('calNext').disabled=(cy===2027&&cm===9);
+  var first=Date.UTC(cy,cm,1);var off=(new Date(first).getUTCDay()+6)%7;var dim=new Date(Date.UTC(cy,cm+1,0)).getUTCDate();
+  var h='';for(var i=0;i<off;i++)h+='<span class="day blank"></span>';
+  var a=fIn.value,b=fOut.value;
+  for(var d=1;d<=dim;d++){var s=fd(Date.UTC(cy,cm,d));var se=season(s);var past=s<TODAY;var bz=!past&&busy(k,s);
+    var cls='day'+(past?' past':'')+(bz?' busy':'')+(se.hi&&!past&&!bz?' hi':'')+((s===a||s===b)?' sel':'')+(a&&b&&s>a&&s<b?' in':'');
+    var lab=d+' de '+MONTHS[cm]+(bz?', ocupado':past?'':', libre, '+se.n);
+    h+='<button type="button" class="'+cls+'" data-d="'+s+'" aria-label="'+lab+'"'+(past||bz?' disabled':'')+'>'+d+'</button>';}
+  document.getElementById('calDays').innerHTML=h;
+}
+document.getElementById('calDays').onclick=function(e){var b=e.target.closest('button[data-d]');if(!b||b.disabled)return;var s=b.getAttribute('data-d');
+  if(!fIn.value||(fIn.value&&fOut.value)||s<=fIn.value){fIn.value=s;fOut.value='';}else{fOut.value=s;}
+  calc();renderCal();};
+
+function calc(){
+  demo.classList.remove('on');rec.hidden=true;mp.disabled=true;msg.style.color='';
+  var a=fIn.value,b=fOut.value,k=fType.value,p=+fPax.value,t=TYPES[k];
+  if(p>t.max){msg.textContent='La '+t.name.toLowerCase()+' admite hasta '+t.max+' personas. Para '+p+' te conviene la '+TYPES[recFor(p)].name.toLowerCase()+'.';return null;}
+  if(!a){msg.textContent='Elegí la fecha de llegada.';return null;}
+  if(a<TODAY){msg.textContent='La llegada no puede ser anterior a hoy.';return null;}
+  if(!b){msg.textContent='Ahora elegí la fecha de salida.';return null;}
+  if(b<=a){msg.textContent='La salida tiene que ser posterior a la llegada.';return null;}
+  if(a>LAST){msg.textContent='Todavía no hay tarifas cargadas para esas fechas.';return null;}
+  var nights=[],taken=[];
+  for(var x=pd(a);x<pd(b);x+=DAY){var s=fd(x);if(s>LAST){msg.textContent='Las tarifas cargadas llegan hasta el 31 de octubre de 2027.';return null;}nights.push(s);if(busy(k,s))taken.push(s);}
+  if(taken.length){msg.textContent='Hay '+taken.length+(taken.length>1?' noches ocupadas':' noche ocupada')+' en ese rango para este tipo de unidad (desde el '+taken[0].split('-').reverse().join('/')+'). Probá otras fechas u otra unidad.';return null;}
+  var groups={},orderG=[],total=0;
+  nights.forEach(function(s){var se=season(s);if(!groups[se.k]){groups[se.k]={se:se,c:0};orderG.push(se.k);}groups[se.k].c++;total+=se.p[k];});
+  var sena=Math.round(total*.3);
+  var h='<div class="ln"><span>'+t.name+' · '+p+(p>1?' personas':' persona')+'</span><span>'+nights.length+(nights.length>1?' noches':' noche')+'</span></div>';
+  orderG.forEach(function(g){var G=groups[g];h+='<div class="ln"><span>'+G.c+' × '+G.se.n+' ('+money(G.se.p[k])+')</span><span>'+money(G.c*G.se.p[k])+'</span></div>';});
+  h+='<div class="ln tot"><span>Total</span><span id="outTotal">'+money(total)+'</span></div>';
+  h+='<div class="ln sena"><span>Seña 30% para confirmar</span><span id="outSena">'+money(sena)+'</span></div>';
+  h+='<div class="ln"><span>Saldo al llegar</span><span>'+money(total-sena)+'</span></div>';
+  h+='<p class="note" style="margin-top:8px">Desayuno incluido. Tarifas de ejemplo: se cargan las suyas.</p>';
+  rec.innerHTML=h;rec.hidden=false;mp.disabled=false;msg.style.color='var(--felt2)';msg.textContent='Fechas disponibles ✓';
+  return {total:total,sena:sena,nights:nights.length};
+}
+[fIn,fOut,fPax,fType].forEach(function(el){el.addEventListener('change',function(){if(el===fIn&&fOut.value&&fOut.value<=fIn.value)fOut.value='';calc();if(el===fType||el===fIn||el===fOut){var v=fIn.value;if(v&&el!==fType){var q=v.split('-');cy=+q[0];cm=+q[1]-1;}renderCal();}});});
+mp.onclick=function(){var r=calc();if(!r)return;demo.innerHTML='<b>Modo demo.</b> Acá se abriría el checkout de Mercado Pago por '+money(r.sena)+' (seña del 30%). No se cobró nada: en la versión real, al aprobarse el pago la reserva queda confirmada y se bloquea la fecha en Booking y Airbnb.';demo.classList.add('on');};
+window.__sim={calc:calc,setType:setType};
+calc();renderCal();
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Terrazas de Cruz Chica"></script>
+</body>
+</html>
