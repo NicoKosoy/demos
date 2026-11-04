@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Innovar Aberturas · Cómo abre y cuánto sale (prototipo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tektur:wght@400;500;600;700;800&family=Parkinsans:wght@300;400;500;600;700&family=Kode+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pvc:#F5F6F3;
+  --pvc-2:#E8EAE5;
+  --card:#FFFFFF;
+  --ink:#1E2328;
+  --ink-2:#5B636A;
+  --line:#D6D9D3;
+  --ant:#2B3137;        /* antracita */
+  --cob:#2448C9;        /* cobalto */
+  --cob-2:#1B379E;
+  --lime:#D3F36B;
+  --glass:#CFE3EC;
+  --glass-2:#A9CBDA;
+  --display:"Tektur",ui-sans-serif,system-ui,sans-serif;
+  --sans:"Parkinsans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"Kode Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--pvc);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5}
+img{max-width:100%;display:block}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--cob);outline-offset:2px}
+.wrap{max-width:1240px;margin:0 auto;padding:0 20px}
+
+.demo{background:var(--lime);color:#1d2408;font-size:13px;padding:7px 0}
+.demo .wrap{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+
+header.top{border-bottom:1px solid var(--line);background:var(--card)}
+header.top .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-top:14px;padding-bottom:14px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
+.logo img{height:40px;width:auto}
+.wm{font-family:var(--display);font-weight:800;font-size:26px;letter-spacing:.02em;line-height:1}
+.wm small{display:block;font-family:var(--mono);font-weight:400;font-size:11px;letter-spacing:.12em;color:var(--ink-2);margin-top:3px}
+.top nav{display:flex;gap:6px;flex-wrap:wrap}
+.top nav a{font-size:14px;text-decoration:none;color:var(--ink);padding:7px 12px;border-radius:6px}
+.top nav a:hover{background:var(--pvc-2)}
+.top .cta{background:var(--ant);color:#fff}
+.top .cta:hover{background:#000}
+
+/* banco de pruebas */
+.banco{padding:34px 0 0}
+.banco .wrap{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:34px;align-items:stretch}
+@media (max-width:960px){.banco .wrap{grid-template-columns:1fr}}
+.eyebrow{font-family:var(--mono);font-size:13px;color:var(--cob);letter-spacing:.06em;text-transform:uppercase}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(36px,5vw,66px);line-height:1;letter-spacing:-.01em;margin:12px 0 0}
+h1 .hl{background:linear-gradient(transparent 62%,var(--lime) 62%);padding:0 .05em}
+.intro p{color:var(--ink-2);font-size:18px;max-width:46ch;margin:18px 0 0}
+.facts{list-style:none;padding:0;margin:26px 0 0;display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--line)}
+.facts li{padding:12px 10px 12px 0;border-bottom:1px solid var(--line);font-size:14px;color:var(--ink-2)}
+.facts li b{display:block;font-family:var(--display);font-weight:600;color:var(--ink);font-size:17px}
+.stage{background:var(--ant);border-radius:14px;color:#E7EAEC;display:flex;flex-direction:column;overflow:hidden;min-height:520px}
+.stage-h{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid #3d444b;font-family:var(--mono);font-size:13px;gap:10px;flex-wrap:wrap}
+.stage-h .live{display:inline-flex;align-items:center;gap:8px;color:var(--lime)}
+.stage-h .live i{width:8px;height:8px;border-radius:50%;background:var(--lime);display:inline-block;animation:pulse 1.6s infinite}
+@keyframes pulse{50%{opacity:.25}}
+.stage-b{flex:1;display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:0}
+@media (max-width:640px){.stage-b{grid-template-columns:1fr}}
+.vis{display:flex;align-items:center;justify-content:center;padding:18px;background:radial-gradient(ellipse at 50% 40%,#3a424a 0%,#2B3137 70%)}
+.vis svg{width:100%;max-width:520px;height:auto}
+.ficha{border-left:1px solid #3d444b;padding:18px;display:flex;flex-direction:column;gap:12px;font-size:14px}
+@media (max-width:640px){.ficha{border-left:0;border-top:1px solid #3d444b}}
+.ficha .k{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#9AA4AC}
+.ficha .sys{font-family:var(--display);font-weight:700;font-size:22px;color:#fff;line-height:1.1}
+.ficha p{margin:0;color:#C9D0D5}
+.ficha .ctrl{margin-top:auto;display:flex;gap:8px}
+.ficha button{flex:1;border:1px solid #56606a;background:transparent;color:#fff;border-radius:8px;padding:9px 10px;cursor:pointer;font-size:14px}
+.ficha button:hover{border-color:#fff}
+.riel{display:flex;gap:0;overflow-x:auto;border-top:1px solid #3d444b;scrollbar-width:thin}
+.riel button{flex:1 0 auto;min-width:104px;background:transparent;border:0;border-right:1px solid #3d444b;color:#C9D0D5;padding:12px 10px 12px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12.5px;line-height:1.15;text-align:center}
+.riel button:last-child{border-right:0}
+.riel button svg{width:38px;height:30px}
+.riel button[aria-pressed="true"]{background:var(--lime);color:#1d2408}
+.riel button:hover:not([aria-pressed="true"]){background:#353c43}
+
+/* animaciones de apertura */
+.sash{transform-box:fill-box}
+.a-slide .sash.m{animation:slide 3.6s ease-in-out infinite}
+@keyframes slide{0%,12%{transform:translateX(0)}45%,62%{transform:translateX(var(--dx))}95%,100%{transform:translateX(0)}}
+.a-lift .sash.m{animation:lift 3.8s ease-in-out infinite}
+@keyframes lift{0%,8%{transform:translate(0,0)}18%{transform:translate(0,-6px)}48%,62%{transform:translate(var(--dx),-6px)}86%{transform:translate(0,-6px)}96%,100%{transform:translate(0,0)}}
+.a-turn .sash.m{transform-origin:left center;animation:turn 3.4s ease-in-out infinite}
+.a-turn .sash.m.r{transform-origin:right center}
+@keyframes turn{0%,12%{transform:scaleX(1)}45%,62%{transform:scaleX(.32)}95%,100%{transform:scaleX(1)}}
+.a-tilt .sash.m{transform-origin:center bottom;animation:tilt 4.6s ease-in-out infinite}
+@keyframes tilt{0%,8%{transform:none}24%,34%{transform:perspective(500px) rotateX(-14deg)}46%{transform:none}64%,76%{transform:scaleX(.36)}92%,100%{transform:none}}
+.a-tilt .sash.m{transform-origin:left bottom}
+.a-proj .sash.m{transform-origin:center top;animation:proj 3.4s ease-in-out infinite}
+@keyframes proj{0%,12%{transform:none}45%,62%{transform:perspective(500px) rotateX(24deg) scaleY(.86)}95%,100%{transform:none}}
+.a-par .sash.m{animation:par 4.2s ease-in-out infinite}
+@keyframes par{0%,8%{transform:none}22%{transform:scale(1.04)}52%,64%{transform:scale(1.04) translateX(var(--dx))}86%{transform:scale(1.04)}96%,100%{transform:none}}
+.a-fold .sash.f{animation:fold 3.8s ease-in-out infinite;transform-origin:left center}
+@keyframes fold{0%,10%{transform:none}45%,62%{transform:translateX(var(--fx)) scaleX(.18)}95%,100%{transform:none}}
+.a-fix .shine{animation:shine 3.4s ease-in-out infinite}
+@keyframes shine{0%{transform:translateX(-120%)}60%,100%{transform:translateX(220%)}}
+.paused .sash,.paused .shine{animation-play-state:paused}
+
+/* secciones */
+.sec{padding:76px 0}
+.sec-h{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:end;margin-bottom:30px}
+@media (max-width:820px){.sec-h{grid-template-columns:1fr}}
+.sec-h h2{font-family:var(--display);font-weight:700;font-size:clamp(28px,3.4vw,44px);line-height:1.03;margin:8px 0 0;letter-spacing:-.01em}
+.sec-h p{margin:0;color:var(--ink-2);max-width:50ch}
+
+/* orden de fábrica */
+.orden{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:26px;align-items:start}
+@media (max-width:1000px){.orden{grid-template-columns:1fr}}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px}
+.grupo{margin-bottom:22px}
+.grupo:last-child{margin-bottom:0}
+.grupo h3{margin:0 0 10px;font-size:13px;font-family:var(--mono);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+.seg{display:flex;flex-wrap:wrap;gap:8px}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg label{border:1.5px solid var(--line);border-radius:8px;padding:8px 13px;font-size:14px;cursor:pointer;background:#fff;display:inline-flex;align-items:center;gap:8px}
+.seg label:hover{border-color:var(--ink-2)}
+.seg input:checked+label{border-color:var(--cob);background:#EEF2FF;color:var(--cob-2);font-weight:600}
+.seg input:focus-visible+label{outline:3px solid var(--cob);outline-offset:2px}
+.seg input:disabled+label{opacity:.38;cursor:not-allowed}
+.sw{width:16px;height:16px;border-radius:4px;border:1px solid rgba(0,0,0,.2);display:inline-block}
+.dims{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.dims label{font-size:13px;color:var(--ink-2);display:block}
+.dims input{width:100%;margin-top:4px;border:1.5px solid var(--line);border-radius:8px;padding:11px 12px;font-family:var(--mono);font-size:18px;background:#fff}
+.dims input:focus{outline:none;border-color:var(--cob)}
+.dims input[type=range]{padding:0;border:0;accent-color:var(--cob)}
+.chk{display:flex;align-items:center;gap:10px;font-size:15px;padding:4px 0;cursor:pointer}
+.chk input{width:18px;height:18px;accent-color:var(--cob)}
+.plano{margin-top:6px;border:1px dashed var(--line);border-radius:10px;background:#FBFCFA}
+.plano svg{display:block;width:100%;height:auto}
+
+/* etiqueta */
+.side{position:sticky;top:14px;display:flex;flex-direction:column;gap:16px}
+@media (max-width:1000px){.side{position:static}}
+.etq{background:#FFFEF7;border:1px solid #D9D6C4;border-radius:6px;box-shadow:0 1px 0 #d9d6c4,0 12px 26px -16px rgba(0,0,0,.35);padding:16px 18px;font-family:var(--mono);position:relative}
+.etq::before{content:"";position:absolute;left:-1px;right:-1px;top:-1px;height:6px;background:var(--cob);border-radius:6px 6px 0 0}
+.etq .hd{display:flex;justify-content:space-between;font-size:11px;color:#6b6a5c;margin-top:4px;gap:10px}
+.etq .ttl{font-family:var(--display);font-weight:700;font-size:21px;margin:8px 0 2px;line-height:1.1}
+.etq table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
+.etq td{padding:4px 0;border-bottom:1px dotted #cfccb8;vertical-align:top}
+.etq td:last-child{text-align:right}
+.etq .bar{display:flex;align-items:flex-end;gap:12px;margin-top:12px}
+.etq .bar svg{height:42px;width:170px}
+.etq .bar span{font-size:11px;color:#6b6a5c}
+.precio{background:var(--ant);color:#fff;border-radius:14px;padding:18px 20px}
+.precio .k{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:#A9B2B9;text-transform:uppercase}
+.precio .v{font-family:var(--display);font-weight:700;font-size:clamp(26px,3vw,32px);line-height:1.1;margin-top:4px}
+.precio .s{font-size:13px;color:#B9C1C7;margin-top:4px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:10px;padding:13px 18px;font-weight:600;font-size:15px;border:0;cursor:pointer;text-decoration:none}
+.btn-lime{background:var(--lime);color:#1d2408;width:100%;margin-top:14px}
+.btn-lime:hover{background:#c4ea4f}
+.btn-wa{background:#1E7A4C;color:#fff;width:100%}
+.btn-wa:hover{background:#16613b}
+.btn-line{background:transparent;border:1.5px solid var(--line);color:var(--ink)}
+.cola{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.cola h3{margin:0;padding:14px 18px;font-size:15px;display:flex;justify-content:space-between;border-bottom:1px solid var(--line)}
+.cola h3 span{font-family:var(--mono);font-weight:400;color:var(--ink-2)}
+.ci{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;gap:10px;align-items:center;padding:10px 18px;border-bottom:1px solid var(--pvc-2);font-size:14px}
+.ci .cod{font-family:var(--mono);font-size:12px;background:var(--pvc-2);border-radius:4px;padding:2px 6px}
+.ci .p{font-family:var(--mono)}
+.ci .x{background:transparent;border:0;font-size:18px;cursor:pointer;color:var(--ink-2);padding:2px 8px;border-radius:6px}
+.ci .x:hover{background:var(--pvc-2)}
+.empty{padding:16px 18px;color:var(--ink-2);font-size:14px}
+.cola .tot{display:flex;justify-content:space-between;padding:14px 18px;font-weight:600}
+.cola .tot b{font-family:var(--display);font-size:20px}
+.cola .cli{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 18px 12px}
+.cola .cli input{border:1.5px solid var(--line);border-radius:8px;padding:10px;width:100%}
+@media (max-width:480px){.cola .cli{grid-template-columns:1fr}}
+.cola .pad{padding:0 18px 18px}
+
+/* fábrica */
+.fab{background:var(--ant);color:#E7EAEC}
+.fab .sec-h p{color:#B9C1C7}
+.mosaico{display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:220px 220px;gap:10px}
+.mosaico figure{margin:0;position:relative;border-radius:10px;overflow:hidden;background:repeating-linear-gradient(45deg,#343b42 0 12px,#30363c 12px 24px)}
+.mosaico figure:first-child{grid-row:1/3}
+.mosaico img{width:100%;height:100%;object-fit:cover}
+.mosaico figcaption{position:absolute;left:10px;bottom:10px;background:rgba(20,24,28,.82);color:#fff;font-family:var(--mono);font-size:12px;padding:5px 9px;border-radius:6px}
+.mosaico .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:16px;font-family:var(--display);font-size:18px;color:#8E99A2}
+@media (max-width:760px){.mosaico{grid-template-columns:1fr 1fr;grid-template-rows:200px 150px 150px}.mosaico figure:first-child{grid-column:1/3;grid-row:auto}}
+.pasos{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin-top:34px;border-top:1px solid #444c54}
+@media (max-width:760px){.pasos{grid-template-columns:1fr 1fr}}
+.pasos div{padding:18px 16px 0 0}
+.pasos b{font-family:var(--display);font-size:34px;color:var(--lime);display:block;line-height:1}
+.pasos span{font-size:14px;color:#C9D0D5}
+
+/* tabla sistemas */
+.tsis{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.tsis th,.tsis td{padding:14px 16px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;font-size:15px}
+.tsis th{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);background:var(--pvc-2)}
+.tsis td:first-child{font-family:var(--display);font-weight:700;font-size:18px;white-space:nowrap}
+.tsis tr:last-child td{border-bottom:0}
+@media (max-width:700px){.tsis thead{display:none}.tsis tr{display:block;border-bottom:1px solid var(--line)}.tsis td{display:block;border:0;padding:6px 16px}.tsis td:first-child{padding-top:14px}.tsis td:last-child{padding-bottom:14px}}
+
+.precios{margin-top:36px;background:var(--card);border:1px solid var(--line);border-radius:14px}
+.precios summary{cursor:pointer;padding:16px 20px;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.precios summary::-webkit-details-marker{display:none}
+.precios summary span{font-weight:400;color:var(--ink-2);font-size:14px}
+.ptab{padding:0 20px 20px;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px 24px}
+.ptab h4{grid-column:1/-1;margin:14px 0 0;font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--cob)}
+.ptab label{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:14px;border-bottom:1px solid var(--pvc-2);padding:5px 0}
+.ptab input{width:120px;border:1px solid var(--line);border-radius:6px;padding:6px 8px;font-family:var(--mono);text-align:right}
+
+footer{border-top:1px solid var(--line);padding:40px 0 30px;background:var(--card);font-size:14px;color:var(--ink-2)}
+footer .wrap{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:26px}
+@media (max-width:760px){footer .wrap{grid-template-columns:1fr}}
+footer h4{font-family:var(--display);color:var(--ink);margin:0 0 8px;font-size:18px}
+footer a{color:var(--ink)}
+footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:14px;font-size:12px}
+
+dialog{border:0;border-radius:14px;padding:0;max-width:520px;width:calc(100% - 32px)}
+dialog::backdrop{background:rgba(15,18,22,.6)}
+dialog .in{padding:22px}
+dialog h3{margin:0 0 6px;font-family:var(--display);font-size:22px}
+dialog pre{white-space:pre-wrap;font-family:var(--mono);font-size:13px;background:var(--pvc);border:1px solid var(--line);border-radius:8px;padding:12px;max-height:46vh;overflow:auto}
+dialog .acc{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(30px);opacity:0;background:var(--ant);color:#fff;padding:10px 16px;border-radius:999px;font-size:14px;transition:.25s;pointer-events:none;z-index:50}
+.toast.on{opacity:1;transform:translateX(-50%)}
+@media (prefers-reduced-motion:reduce){.sash,.shine{animation:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<div class="demo"><div class="wrap">
+  <span><b>Prototipo de demostración preparado para Innovar Aberturas.</b> Los precios son de ejemplo.</span>
+  <span>Armado por Resolviendo Kos</span>
+</div></div>
+
+<header class="top"><div class="wrap">
+  <a class="logo" href="#">
+    <img src="https://www.innovaraberturas.com.ar/images/logo-innovar-aberturaspvc.png" alt="Innovar Aberturas" onerror="this.remove();document.getElementById('wm').hidden=false">
+    <span class="wm" id="wm" hidden>INNOVAR<small>ABERTURAS DE PVC · PERGAMINO</small></span>
+  </a>
+  <nav aria-label="Secciones">
+    <a href="#banco">Cómo abre</a>
+    <a href="#orden">Cotizar</a>
+    <a href="#fabrica">La fábrica</a>
+    <a href="#sistemas">Sistemas REHAU</a>
+    <a class="cta" href="#orden">Pedir presupuesto</a>
+  </nav>
+</div></header>
+
+<section class="banco" id="banco">
+  <div class="wrap">
+    <div class="intro">
+      <span class="eyebrow">Fábrica y showroom · Urquiza 2231 · Pergamino</span>
+      <h1>Nueve formas de abrir. <span class="hl">Un perfil: REHAU.</span></h1>
+      <p>Elegí cómo querés que abra tu ventana, mirala funcionar y pasá a la cotización con tus medidas. Te decimos qué sistema REHAU le corresponde y el precio estimado al instante.</p>
+      <ul class="facts">
+        <li><b>Fabricantes</b>diseñamos tus aberturas</li>
+        <li><b>Maquinaria alemana</b>en nuestra planta</li>
+        <li><b>5 sistemas REHAU</b>de la ventana al gran paño</li>
+        <li><b>Foliados</b>lisos, maderas y metalizados</li>
+      </ul>
+    </div>
+
+    <div class="stage" aria-label="Simulador de apertura">
+      <div class="stage-h">
+        <span class="live"><i></i> SIMULADOR DE APERTURA</span>
+        <span id="stageCode">INV · OB-01</span>
+      </div>
+      <div class="stage-b">
+        <div class="vis" id="vis"></div>
+        <div class="ficha">
+          <div><div class="k">Tipología</div><div class="sys" id="fTip">—</div></div>
+          <div><div class="k">Sistema REHAU sugerido</div><div class="sys" id="fSys" style="color:var(--lime)">—</div></div>
+          <p id="fTxt"></p>
+          <div class="ctrl">
+            <button type="button" id="pause" aria-pressed="false">Pausar</button>
+            <button type="button" id="goCot">Cotizar esta</button>
+          </div>
+        </div>
+      </div>
+      <div class="riel" id="riel" role="group" aria-label="Elegir tipología"></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="orden">
+  <div class="wrap">
+    <div class="sec-h">
+      <div><span class="eyebrow">Orden de fabricación</span><h2>Cargá la medida y sale la etiqueta</h2></div>
+      <p>Cada abertura que agregás genera la misma etiqueta que lleva el perfil en la planta: sistema, medidas, foliado y vidrio. Nos llega todo junto por WhatsApp.</p>
+    </div>
+    <div class="orden">
+      <form class="panel" id="f" onsubmit="return false">
+        <div class="grupo"><h3>Tipología</h3><div class="seg" id="sTip"></div></div>
+        <div class="grupo" id="gHojas"><h3>Hojas</h3><div class="seg" id="sHojas"></div></div>
+        <div class="grupo"><h3>Medidas del vano</h3>
+          <div class="dims">
+            <label>Ancho (cm)<input type="number" id="w" inputmode="numeric" min="40" max="700" value="150"></label>
+            <label>Alto (cm)<input type="number" id="h" inputmode="numeric" min="30" max="300" value="110"></label>
+            <label>Cantidad<input type="number" id="q" inputmode="numeric" min="1" max="40" value="1"></label>
+          </div>
+          <div class="plano"><svg id="plano" viewBox="0 0 640 300" role="img" aria-label="Plano con medidas"></svg></div>
+        </div>
+        <div class="grupo"><h3>Foliado</h3><div class="seg" id="sCol"></div></div>
+        <div class="grupo"><h3>Vidrio</h3><div class="seg" id="sVid"></div></div>
+        <div class="grupo"><h3>Extras</h3>
+          <label class="chk"><input type="checkbox" id="mosq"> Mosquitero</label>
+          <label class="chk"><input type="checkbox" id="inst" checked> Colocación en Pergamino y zona</label>
+        </div>
+      </form>
+
+      <aside class="side">
+        <div class="etq" aria-live="polite">
+          <div class="hd"><span>INNOVAR ABERTURAS · PVC</span><span id="eCod">OF-0001</span></div>
+          <div class="ttl" id="eTit">—</div>
+          <table>
+            <tr><td>Sistema</td><td id="eSys">—</td></tr>
+            <tr><td>Medida</td><td id="eMed">—</td></tr>
+            <tr><td>Foliado</td><td id="eCol">—</td></tr>
+            <tr><td>Vidrio</td><td id="eVid">—</td></tr>
+            <tr><td>Extras</td><td id="eExt">—</td></tr>
+          </table>
+          <div class="bar"><svg id="eBar" viewBox="0 0 170 42" preserveAspectRatio="none" aria-hidden="true"></svg><span>Urquiza 2231<br>Pergamino</span></div>
+        </div>
+        <div class="precio">
+          <div class="k">Precio estimado</div>
+          <div class="v" id="pv">—</div>
+          <div class="s" id="ps"></div>
+          <button class="btn btn-lime" id="add" type="button">Agregar a la orden</button>
+        </div>
+        <div class="cola">
+          <h3>Tu orden <span id="cnt">0 etiquetas</span></h3>
+          <div id="rows"><div class="empty">Todavía no agregaste aberturas.</div></div>
+          <div class="tot"><span>Total estimado</span><b id="tot">$0</b></div>
+          <div class="cli"><input id="nom" placeholder="Tu nombre" autocomplete="name"><input id="loc" placeholder="Dónde es la obra"></div>
+          <div class="pad"><button class="btn btn-wa" id="send" type="button">Enviar la orden por WhatsApp</button></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section class="sec fab" id="fabrica">
+  <div class="wrap">
+    <div class="sec-h">
+      <div><span class="eyebrow" style="color:var(--lime)">La fábrica</span><h2>Las hacemos acá, en Pergamino</h2></div>
+      <p>Fabricación, diseño y colocación de aberturas de PVC con perfiles REHAU y maquinaria de origen alemán. Pasá por el showroom a ver los foliados en mano.</p>
+    </div>
+    <div class="mosaico">
+      <figure><span class="ph">Showroom Innovar</span><img src="https://www.innovaraberturas.com.ar/images/g7.jpg" alt="Showroom de Innovar Aberturas" loading="lazy" onerror="this.remove()"><figcaption>Showroom · Urquiza 2231</figcaption></figure>
+      <figure><span class="ph">Fábrica</span><img src="https://www.innovaraberturas.com.ar/images/g1.jpg" alt="Fábrica de Innovar Aberturas" loading="lazy" onerror="this.remove()"><figcaption>Fábrica</figcaption></figure>
+      <figure><span class="ph">Fábrica</span><img src="https://www.innovaraberturas.com.ar/images/g3.jpg" alt="Fábrica de Innovar Aberturas" loading="lazy" onerror="this.remove()"><figcaption>Fábrica</figcaption></figure>
+      <figure><span class="ph">Oscilobatiente</span><img src="https://www.innovaraberturas.com.ar/images/g8.jpg" alt="Abertura oscilobatiente" loading="lazy" onerror="this.remove()"><figcaption>Oscilobatiente</figcaption></figure>
+      <figure><span class="ph">Abatibles</span><img src="https://www.innovaraberturas.com.ar/images/g5.jpg" alt="Aberturas abatibles" loading="lazy" onerror="this.remove()"><figcaption>Abatibles</figcaption></figure>
+    </div>
+    <div class="pasos">
+      <div><b>01</b><span>Cotizás acá y nos llega la orden</span></div>
+      <div><b>02</b><span>Vamos a medir a la obra</span></div>
+      <div><b>03</b><span>Fabricamos en Urquiza 2231</span></div>
+      <div><b>04</b><span>Colocamos en Pergamino y zona</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="sistemas">
+  <div class="wrap">
+    <div class="sec-h">
+      <div><span class="eyebrow">Sistemas</span><h2>Los cinco sistemas REHAU que fabricamos</h2></div>
+      <p>El simulador elige uno de estos según cómo abre y qué tan grande es la abertura. En la medición lo confirmamos.</p>
+    </div>
+    <table class="tsis">
+      <thead><tr><th>Sistema</th><th>Para qué</th><th>Aperturas</th></tr></thead>
+      <tbody>
+        <tr><td>Synego</td><td>Puertas correderas elevables.</td><td>Todas las aperturas, incluso 2 y 4 hojas móviles.</td></tr>
+        <tr><td>Euro Design 60</td><td>Paños fijos o de apertura con cierre de doble contacto. Interior y exterior con hojas combinadas.</td><td>Fijas · practicable · proyectantes · oscilobatientes · plegables · abatibles · pivotante</td></tr>
+        <tr><td>Euro Design Slide</td><td>Sistema corredizo de puertas y ventanas.</td><td>Deslizante de 2 y 3 carriles, hasta 6 hojas móviles.</td></tr>
+        <tr><td>High Design Slide</td><td>Elementos deslizantes de grandes dimensiones.</td><td>Deslizante de 2 y 3 carriles, hasta 6 hojas móviles.</td></tr>
+        <tr><td>Exelis</td><td>Ventanas y puertas corredizas para todo tipo de edificios.</td><td>Ventana corrediza · puerta corrediza</td></tr>
+      </tbody>
+    </table>
+
+    <details class="precios">
+      <summary>Tabla de precios (solo para Innovar) <span>Cambiá un valor y el cotizador se actualiza</span></summary>
+      <div class="ptab" id="ptab"></div>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div><h4>Innovar Aberturas</h4><p>Fábrica de aberturas de PVC con perfiles REHAU. Fabricación, diseño y colocación.</p><p>Urquiza 2231, Pergamino, Buenos Aires</p></div>
+    <div><h4>Contacto</h4><p>WhatsApp <a href="https://wa.me/5492477617883">2477 61-7883</a><br><a href="mailto:innovaraberturas@hotmail.com">innovaraberturas@hotmail.com</a></p></div>
+    <div><h4>Redes</h4><p><a href="https://www.instagram.com/innovaraberturas/">Instagram</a> · <a href="https://www.facebook.com/innovaraberturas">Facebook</a></p></div>
+    <p class="legal">Prototipo de demostración preparado para Innovar Aberturas por Resolviendo Kos. Precios de ejemplo, no son una oferta. Fotos y textos tomados de innovaraberturas.com.ar.</p>
+  </div>
+</footer>
+
+<dialog id="dlg"><div class="in">
+  <h3>Así llega la orden</h3>
+  <p style="margin:0 0 10px;color:var(--ink-2);font-size:14px">Este mensaje se abre en WhatsApp con todo cargado.</p>
+  <pre id="msg"></pre>
+  <div class="acc"><button class="btn btn-line" id="dlgClose" type="button">Volver</button><a class="btn btn-wa" style="width:auto" id="waGo" target="_blank" rel="noopener">Abrir WhatsApp</a></div>
+</div></dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const WA = "5492477617883";
+/* Tipologías tomadas de innovaraberturas.com.ar/productos */
+const TIPOS = [
+  {id:"osc",  name:"Oscilobatiente",   anim:"tilt",  hojas:[1,2], mosq:true},
+  {id:"abat", name:"Abatible",         anim:"turn",  hojas:[1,2], mosq:true},
+  {id:"corr", name:"Corrediza",        anim:"slide", hojas:[2,3,4,6], mosq:true},
+  {id:"par",  name:"Oscilo-paralela",  anim:"par",   hojas:[2], mosq:true},
+  {id:"elev", name:"Elevable",         anim:"lift",  hojas:[2,4], mosq:false, door:true},
+  {id:"pleg", name:"Corrediza plegable", anim:"fold", hojas:[3,4,5,6,7], mosq:false, door:true},
+  {id:"prac", name:"Practicable",      anim:"turn",  hojas:[1,2], mosq:false, door:true},
+  {id:"proy", name:"Proyectante",      anim:"proj",  hojas:[1], mosq:true},
+  {id:"fijo", name:"Paño fijo",        anim:"fix",   hojas:[1], mosq:false}
+];
+const COLORES = [
+  {id:"bla", name:"Blanco",          hex:"#F7F7F4", st:"#9AA1A6"},
+  {id:"rob", name:"Foliado roble",   hex:"#9A6B43", st:"#6E4A2C"},
+  {id:"nog", name:"Foliado nogal",   hex:"#5E3D27", st:"#432a1a"},
+  {id:"ant", name:"Gris antracita",  hex:"#3A4045", st:"#262b2f"},
+  {id:"met", name:"Metalizado",      hex:"#A9ADB0", st:"#7a7f83"}
+];
+const VIDRIOS = [
+  {id:"dvh",  name:"DVH 4/9/4"},
+  {id:"dvhl", name:"DVH con laminado 3+3"},
+  {id:"lowe", name:"DVH con baja emisividad"}
+];
+function sistema(st){
+  const t = st.tip;
+  if(t==="elev") return {n:"Synego", d:"Puerta corredera elevable: la hoja sube, se desliza y baja para sellar."};
+  if(t==="corr") return (st.w>=350||st.h>=230) ? {n:"High Design Slide", d:"Para corredizas de grandes dimensiones, hasta 6 hojas móviles."} : {n:"Euro Design Slide", d:"Corrediza de 2 o 3 carriles, hasta 6 hojas móviles. También la resolvemos en Exelis."};
+  if(t==="par") return {n:"A confirmar en la medición", d:"La oscilo-paralela se resuelve según el vano y el herraje."};
+  return {n:"Euro Design 60", d:"Cierre de doble contacto. Resuelve fijas, practicables, proyectantes, oscilobatientes, plegables y abatibles."};
+}
+/* Precios de ejemplo */
+const DEF = {
+  m2:{osc:420000, abat:380000, corr:330000, par:470000, elev:560000, pleg:520000, prac:440000, proy:390000, fijo:230000},
+  vid:{dvh:0, dvhl:46000, lowe:72000},
+  col:{bla:0, rob:18, nog:18, ant:14, met:16},
+  hojaExtra:6, mosqM2:52000, instPct:14, minM2:1, rango:8
+};
+let P = (()=>{ try{const s=localStorage.getItem("innovar_precios"); if(s){const o=JSON.parse(s),b=structuredClone(DEF); for(const k in b){ if(typeof b[k]==="object"&&o[k]) Object.assign(b[k],o[k]); else if(o[k]!=null) b[k]=o[k]; } return b;} }catch(e){} return structuredClone(DEF); })();
+function guardar(){ try{localStorage.setItem("innovar_precios",JSON.stringify(P));}catch(e){} }
+
+const S = {tip:"osc", hojas:1, w:150, h:110, q:1, col:"bla", vid:"dvh", mosq:false, inst:true};
+const items=[];
+let seq=1;
+const $=id=>document.getElementById(id);
+const by=(a,id)=>a.find(x=>x.id===id);
+const ars=n=>"$"+Math.round(n).toLocaleString("es-AR");
+const r1k=n=>Math.round(n/1000)*1000;
+const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+
+function calc(st){
+  const t=by(TIPOS,st.tip);
+  const area=Math.max(st.w/100*st.h/100,P.minM2);
+  let u=area*P.m2[st.tip];
+  u*=1+Math.max(0,st.hojas-t.hojas[0])*P.hojaExtra/100;
+  u+=area*P.vid[st.vid];
+  u*=1+(P.col[st.col]||0)/100;
+  if(st.mosq&&t.mosq) u+=area*P.mosqM2;
+  if(st.inst) u*=1+P.instPct/100;
+  const tot=u*st.q, r=P.rango/100;
+  return {area,lo:r1k(tot*(1-r)),hi:r1k(tot*(1+r)),mid:r1k(tot)};
+}
+
+/* ---- dibujo: sirve para el simulador, el plano y los íconos ---- */
+function ventana(st,o){
+  const VW=o.vw, VH=o.vh, mini=o.mini, anim=o.anim;
+  const c=by(COLORES,st.col), t=by(TIPOS,st.tip);
+  const pad=o.pad;
+  const sc=Math.min((VW-pad*2)/st.w,(VH-pad*2)/st.h);
+  const W=st.w*sc, H=st.h*sc, x=(VW-W)/2+(o.dx||0), y=(VH-H)/2+(o.dy||0);
+  const fr=mini?2:clamp(W*.035,6,16), sw=mini?.7:1.3;
+  const gf=st.vid==="dvh"?"var(--glass)":"var(--glass-2)";
+  const n=st.hojas;
+  let g=`<rect x="${x}" y="${y}" width="${W}" height="${H}" rx="${mini?1:4}" fill="${c.hex}" stroke="${c.st}" stroke-width="${sw}"/>`;
+  const ix=x+fr, iy=y+fr, iw=W-2*fr, ih=H-2*fr;
+  g+=`<rect x="${ix}" y="${iy}" width="${iw}" height="${ih}" fill="#20262b" opacity="${anim?".55":"0"}"/>`;
+  const hoja=(hx,hy,hw,hh,cls,extra="")=>{
+    const f2=mini?1.4:clamp(hw*.07,5,13);
+    let s=`<g class="sash ${cls}" ${extra}><rect x="${hx}" y="${hy}" width="${hw}" height="${hh}" rx="${mini?.5:3}" fill="${c.hex}" stroke="${c.st}" stroke-width="${sw}"/>`;
+    s+=`<rect x="${hx+f2}" y="${hy+f2}" width="${hw-2*f2}" height="${hh-2*f2}" fill="${gf}" stroke="${c.st}" stroke-width="${sw*.6}"/>`;
+    if(!mini) s+=`<path d="M${hx+f2+8} ${hy+hh*.45} l${Math.min(30,hw*.25)} -${Math.min(30,hw*.25)}" stroke="#fff" stroke-opacity=".7" stroke-width="2.5"/>`;
+    if(!mini && cls.includes("m")) s+=`<rect x="${cls.includes("r")?hx+f2+3:hx+hw-f2-7}" y="${hy+hh/2-14}" width="4" height="28" rx="2" fill="#C9CED2" stroke="#7d858b" stroke-width=".6"/>`;
+    return s+`</g>`;
+  };
+  if(t.anim==="slide"||t.anim==="lift"||t.anim==="par"){
+    const ov=mini?.8:8, hw=(iw+ov*(n-1))/n;
+    for(let i=0;i<n;i++){
+      const hx=ix+i*(hw-ov);
+      const moving = (n===2&&i===0)||(n===3&&i!==1)||(n>=4&&(i===0||i===n-1));
+      const dir = i<n/2?1:-1;
+      g+=hoja(hx,iy,hw,ih,moving?"m"+(dir<0?" r":""):"",moving?`style="--dx:${dir*(hw-ov)*.82}px"`:"");
+    }
+  } else if(t.anim==="fold"){
+    const hw=iw/n;
+    for(let i=0;i<n;i++) g+=hoja(ix+i*hw,iy,hw,ih,"f",`style="--fx:${-i*hw*.82}px"`);
+  } else if(t.anim==="fix"){
+    g+=hoja(ix,iy,iw,ih,"");
+    if(anim) g+=`<clipPath id="cp"><rect x="${ix}" y="${iy}" width="${iw}" height="${ih}"/></clipPath><g clip-path="url(#cp)"><rect class="shine" x="${ix}" y="${iy-20}" width="${iw*.25}" height="${ih+40}" fill="#fff" opacity=".22" style="transform-box:fill-box" transform="skewX(-18)"/></g>`;
+  } else {
+    const hw=iw/n;
+    for(let i=0;i<n;i++) g+=hoja(ix+i*hw,iy,hw,ih,"m"+(n===2&&i===1?" r":""));
+  }
+  if(t.door&&!mini) g+=`<line x1="${x-24}" y1="${y+H}" x2="${x+W+24}" y2="${y+H}" stroke="${anim?"#7d868d":"var(--ink)"}" stroke-width="2"/>`;
+  if(o.cotas){
+    const cy=y-22, cx=x+W+22, col="var(--cob)";
+    g+=`<g stroke="${col}" stroke-width="1.2"><line x1="${x}" y1="${cy}" x2="${x+W}" y2="${cy}"/><line x1="${x}" y1="${cy-6}" x2="${x}" y2="${cy+6}"/><line x1="${x+W}" y1="${cy-6}" x2="${x+W}" y2="${cy+6}"/><line x1="${cx}" y1="${y}" x2="${cx}" y2="${y+H}"/><line x1="${cx-6}" y1="${y}" x2="${cx+6}" y2="${y}"/><line x1="${cx-6}" y1="${y+H}" x2="${cx+6}" y2="${y+H}"/></g>`;
+    g+=`<rect x="${x+W/2-36}" y="${cy-11}" width="72" height="22" rx="4" fill="#FBFCFA"/><text x="${x+W/2}" y="${cy+5}" text-anchor="middle" font-family="Kode Mono, monospace" font-size="15" fill="${col}">${st.w} cm</text>`;
+    g+=`<rect x="${cx-11}" y="${y+H/2-36}" width="22" height="72" rx="4" fill="#FBFCFA"/><text x="${cx}" y="${y+H/2}" text-anchor="middle" font-family="Kode Mono, monospace" font-size="15" fill="${col}" transform="rotate(90 ${cx} ${y+H/2})" dy="5">${st.h} cm</text>`;
+  }
+  return g;
+}
+
+/* ---- simulador ---- */
+function demoState(tip){
+  const t=by(TIPOS,tip);
+  const base={osc:[110,130,1],abat:[140,120,2],corr:[220,140,2],par:[200,140,2],elev:[300,220,2],pleg:[360,220,4],prac:[90,210,1],proy:[100,70,1],fijo:[160,140,1]}[tip];
+  return {...S,tip,w:base[0],h:base[1],hojas:t.hojas.includes(S.hojas)&&S.tip===tip?S.hojas:base[2]};
+}
+let simTip="osc";
+function pintarSim(){
+  const st = simTip===S.tip ? {...S} : demoState(simTip);
+  const t=by(TIPOS,simTip);
+  $("vis").innerHTML=`<svg viewBox="0 0 520 380" class="a-${t.anim}${paused?" paused":""}" aria-label="Animación de apertura ${t.name}">${ventana(st,{vw:520,vh:380,pad:48,anim:true})}</svg>`;
+  $("fTip").textContent=t.name;
+  const s=sistema(st); $("fSys").textContent=s.n; $("fTxt").textContent=s.d;
+  $("stageCode").textContent="INV · "+t.id.toUpperCase()+" · "+st.w+"×"+st.h;
+  [...$("riel").children].forEach(b=>b.setAttribute("aria-pressed",b.dataset.t===simTip?"true":"false"));
+}
+function pintarRiel(){
+  $("riel").innerHTML=TIPOS.map(t=>{const st={...demoState(t.id),col:"bla"};return `<button type="button" data-t="${t.id}" aria-pressed="false"><svg viewBox="0 0 38 30">${ventana(st,{vw:38,vh:30,pad:2,mini:true})}</svg>${t.name}</button>`}).join("");
+}
+let paused=false;
+
+/* ---- formulario ---- */
+function seg(el,name,arr,val,lab=o=>o.name){
+  el.innerHTML=arr.map(o=>`<input type="radio" name="${name}" id="${name}-${o.id}" value="${o.id}" ${String(o.id)===String(val)?"checked":""}><label for="${name}-${o.id}">${lab(o)}</label>`).join("");
+}
+function pintarForm(){
+  const t=by(TIPOS,S.tip);
+  seg($("sTip"),"tip",TIPOS,S.tip);
+  seg($("sHojas"),"hojas",t.hojas.map(n=>({id:n,name:n===1?"1 hoja":n+" hojas"})),S.hojas);
+  $("gHojas").hidden=t.hojas.length<2;
+  seg($("sCol"),"col",COLORES,S.col,o=>`<span class="sw" style="background:${o.hex}"></span>${o.name}`);
+  seg($("sVid"),"vid",VIDRIOS,S.vid);
+  $("mosq").disabled=!t.mosq; if(!t.mosq) $("mosq").checked=false;
+  $("w").value=S.w; $("h").value=S.h; $("q").value=S.q;
+}
+function leer(){
+  const f=$("f");
+  S.tip=f.tip.value;
+  const t=by(TIPOS,S.tip);
+  S.hojas=+(f.hojas?f.hojas.value:t.hojas[0]); if(!t.hojas.includes(S.hojas)) S.hojas=t.hojas[0];
+  S.col=f.col.value; S.vid=f.vid.value;
+  S.w=clamp(+$("w").value||0,40,700); S.h=clamp(+$("h").value||0,30,300); S.q=clamp(Math.round(+$("q").value||1),1,40);
+  S.mosq=$("mosq").checked&&t.mosq; S.inst=$("inst").checked;
+}
+function barcode(seed){
+  let s=0; for(const ch of seed) s=(s*31+ch.charCodeAt(0))>>>0;
+  let x=2,g="";
+  while(x<166){ s=(s*1103515245+12345)>>>0; const w=1+(s>>>16)%3; g+=`<rect x="${x}" y="0" width="${w}" height="42" fill="#1E2328"/>`; x+=w+1+((s>>>8)%3); }
+  return g;
+}
+function cod(st){ return `${st.tip.toUpperCase()}-${st.w}${st.h}-${st.hojas}${st.col[0].toUpperCase()}`; }
+function render(){
+  const t=by(TIPOS,S.tip), s=sistema(S), r=calc(S);
+  $("plano").innerHTML=ventana(S,{vw:640,vh:300,pad:52,cotas:true,dx:-8,dy:8});
+  $("eTit").textContent=t.name+(t.hojas.length>1?" · "+S.hojas+(S.hojas===1?" hoja":" hojas"):"");
+  $("eSys").textContent="REHAU "+s.n;
+  $("eMed").textContent=`${S.w} × ${S.h} cm · ${S.q} u.`;
+  $("eCol").textContent=by(COLORES,S.col).name;
+  $("eVid").textContent=by(VIDRIOS,S.vid).name;
+  $("eExt").textContent=[S.mosq?"Mosquitero":"",S.inst?"Colocación":""].filter(Boolean).join(" · ")||"—";
+  $("eCod").textContent="OF-"+String(seq).padStart(4,"0");
+  $("eBar").innerHTML=barcode(cod(S));
+  $("pv").textContent=ars(r.lo)+" – "+ars(r.hi);
+  $("ps").textContent=`${r.area.toFixed(2).replace(".",",")} m² por unidad${S.inst?" · con colocación":""}`;
+}
+function pintarCola(){
+  if(!items.length) $("rows").innerHTML=`<div class="empty">Todavía no agregaste aberturas.</div>`;
+  else $("rows").innerHTML=items.map((it,i)=>`<div class="ci"><span class="cod">${it.of}</span><span><b>${by(TIPOS,it.tip).name}</b> ${it.w}×${it.h} · ${it.q} u.<br><span style="color:var(--ink-2);font-size:13px">${sistema(it).n} · ${by(COLORES,it.col).name}</span></span><span class="p">${ars(calc(it).mid)}</span><button class="x" data-i="${i}" aria-label="Quitar">×</button></div>`).join("");
+  $("tot").textContent=ars(items.reduce((a,it)=>a+calc(it).mid,0));
+  $("cnt").textContent=items.length+(items.length===1?" etiqueta":" etiquetas");
+}
+function toast(t){const e=$("toast");e.textContent=t;e.classList.add("on");clearTimeout(toast.k);toast.k=setTimeout(()=>e.classList.remove("on"),1800);}
+function mensaje(){
+  const L=items.length?items:[{...S,of:"OF-"+String(seq).padStart(4,"0")}];
+  let m="Hola Innovar, armé esta orden en la web:\n";
+  L.forEach(it=>{const r=calc(it),t=by(TIPOS,it.tip); m+=`\n${it.of} · ${t.name}${t.hojas.length>1?" "+it.hojas+" hojas":""}\n  REHAU ${sistema(it).n}\n  ${it.w} x ${it.h} cm · ${it.q} u. · ${by(COLORES,it.col).name}\n  ${by(VIDRIOS,it.vid).name}${it.mosq?" · mosquitero":""}${it.inst?" · con colocación":""}\n  Estimado: ${ars(r.lo)} a ${ars(r.hi)}\n`;});
+  m+=`\nTotal estimado: ${ars(L.reduce((a,it)=>a+calc(it).mid,0))}`;
+  const n=$("nom").value.trim(), l=$("loc").value.trim();
+  if(n) m+=`\nNombre: ${n}`; if(l) m+=`\nObra: ${l}`;
+  return m+"\n¿Cuándo pueden venir a medir?";
+}
+function tabla(){
+  let h="<h4>Precio base por m²</h4>"+TIPOS.map(o=>`<label>${o.name}<input type="number" step="1000" data-k="m2" data-id="${o.id}" value="${P.m2[o.id]}"></label>`).join("");
+  h+="<h4>Vidrio (suma por m²)</h4>"+VIDRIOS.map(o=>`<label>${o.name}<input type="number" step="1000" data-k="vid" data-id="${o.id}" value="${P.vid[o.id]}"></label>`).join("");
+  h+="<h4>Foliado (recargo %)</h4>"+COLORES.map(o=>`<label>${o.name}<input type="number" data-k="col" data-id="${o.id}" value="${P.col[o.id]}"></label>`).join("");
+  h+=`<h4>Otros</h4><label>Hoja extra (%)<input type="number" data-k="hojaExtra" value="${P.hojaExtra}"></label><label>Mosquitero por m²<input type="number" step="1000" data-k="mosqM2" value="${P.mosqM2}"></label><label>Colocación (%)<input type="number" data-k="instPct" value="${P.instPct}"></label><label>Rango (±%)<input type="number" data-k="rango" value="${P.rango}"></label>
+  <div style="grid-column:1/-1;margin-top:8px"><button type="button" class="btn btn-line" id="reset">Volver a precios de ejemplo</button></div>`;
+  $("ptab").innerHTML=h;
+}
+
+/* ---- eventos ---- */
+$("riel").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;simTip=b.dataset.t;pintarSim();});
+$("pause").addEventListener("click",e=>{paused=!paused;e.currentTarget.textContent=paused?"Reanudar":"Pausar";e.currentTarget.setAttribute("aria-pressed",paused);pintarSim();});
+$("goCot").addEventListener("click",()=>{ if(S.tip!==simTip){ Object.assign(S,demoState(simTip)); } pintarForm(); render(); $("orden").scrollIntoView({behavior:"smooth"}); });
+$("f").addEventListener("change",e=>{ leer(); if(e.target.name==="tip"){ const t=by(TIPOS,S.tip); S.hojas=t.hojas[0]; pintarForm(); } render(); if(S.tip===simTip||e.target.name==="tip"){simTip=S.tip;pintarSim();} });
+$("f").addEventListener("input",e=>{ if(e.target.type==="number"){ leer(); render(); if(simTip===S.tip) pintarSim(); } });
+$("add").addEventListener("click",()=>{ items.push({...S,of:"OF-"+String(seq).padStart(4,"0")}); seq++; pintarCola(); render(); toast("Etiqueta agregada a la orden"); });
+$("rows").addEventListener("click",e=>{const b=e.target.closest(".x");if(!b)return;items.splice(+b.dataset.i,1);pintarCola();});
+$("send").addEventListener("click",()=>{const m=mensaje();$("msg").textContent=m;$("waGo").href="https://wa.me/"+WA+"?text="+encodeURIComponent(m);$("dlg").showModal();});
+$("dlgClose").addEventListener("click",()=>$("dlg").close());
+$("ptab").addEventListener("input",e=>{const i=e.target;if(!i.dataset.k)return;const v=parseFloat(i.value);if(isNaN(v))return;if(i.dataset.id)P[i.dataset.k][i.dataset.id]=v;else P[i.dataset.k]=v;guardar();render();pintarCola();});
+$("ptab").addEventListener("click",e=>{if(e.target.id!=="reset")return;P=structuredClone(DEF);guardar();tabla();render();pintarCola();toast("Precios de ejemplo restaurados");});
+
+pintarRiel(); pintarForm(); render(); pintarSim(); pintarCola(); tabla();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Innovar Aberturas"></script>
+</body>
+</html>
