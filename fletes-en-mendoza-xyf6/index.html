@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Fletes en Mendoza · Armá tu flete en un minuto</title>
+<meta name="description" content="Prototipo de demostración: web para pedir fletes y mudanzas en el Gran Mendoza.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Krona+One&family=Lexend+Deca:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --asfalto:#1D1E21;
+  --asfalto2:#2A2C30;
+  --carga:#F2B705;
+  --carga2:#FFD54A;
+  --cordillera:#3D6B8E;
+  --adobe:#C4633A;
+  --papel:#F3EFE6;
+  --papel2:#E7E1D3;
+  --tinta:#1D1E21;
+  --gris:#64656A;
+  --linea:#D6CFBF;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--papel);color:var(--tinta);font-family:"Lexend Deca",system-ui,sans-serif;font-size:16.5px;line-height:1.6;overflow-x:hidden}
+a{color:inherit}
+button{font:inherit;cursor:pointer;color:inherit}
+h1,h2,h3,h4,.kr{font-family:"Krona One",sans-serif;font-weight:400;line-height:1.15;letter-spacing:-.01em}
+.wrap{max-width:1220px;margin:0 auto;padding:0 28px}
+.proto{background:var(--carga);color:var(--asfalto);font-size:13px;text-align:center;padding:7px 16px;font-weight:500}
+/* barra superior tipo cinta de peligro */
+.top{background:var(--asfalto);color:var(--papel)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:66px;gap:16px}
+.marca{display:flex;align-items:center;gap:12px;text-decoration:none}
+.marca .ic{width:40px;height:40px;border-radius:8px;background:var(--carga);display:grid;place-items:center}
+.marca b{font-family:"Krona One";font-size:15px;letter-spacing:.02em}
+.marca small{display:block;font-size:11.5px;color:#A6A7AB;letter-spacing:.08em;text-transform:uppercase}
+.top nav{display:flex;gap:24px;font-size:14.5px;color:#C9CACD}
+.top nav a{text-decoration:none}
+.top nav a:hover{color:var(--carga)}
+.wa{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;border:0;border-radius:8px;padding:10px 16px;font-weight:600;font-size:14.5px;text-decoration:none}
+.cinta{height:10px;background:repeating-linear-gradient(-45deg,var(--carga) 0 16px,var(--asfalto) 16px 32px)}
+/* HERO */
+.hero{background:var(--asfalto);color:var(--papel);padding:54px 0 0;position:relative;overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:40px;align-items:end}
+.hero .k{font-size:12.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--carga);font-weight:600}
+.hero h1{font-size:clamp(28px,3.9vw,52px);margin:16px 0 18px}
+.hero h1 em{font-style:normal;color:var(--carga)}
+.hero p{color:#C9CACD;font-size:18px;max-width:560px}
+.hero .cta{display:flex;gap:12px;flex-wrap:wrap;margin:26px 0 40px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--carga);color:var(--asfalto);border:0;border-radius:8px;padding:13px 20px;font-weight:600;font-size:15.5px;text-decoration:none}
+.btn:hover{background:var(--carga2)}
+.btn.ghost{background:transparent;color:var(--papel);border:1.5px solid #4A4C52}
+.horas{display:flex;gap:0;border-top:1px solid #3A3C41}
+.horas div{flex:1;padding:14px 16px 16px 0}
+.horas b{font-family:"Krona One";font-size:15px;color:var(--carga);display:block}
+.horas span{font-size:13.5px;color:#A6A7AB}
+.camion{align-self:end}
+.camion svg{width:100%;height:auto;display:block}
+/* ARMADOR: tablero de despacho */
+#armar{padding:70px 0 80px}
+.tit{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:28px;flex-wrap:wrap}
+.tit h2{font-size:clamp(24px,2.8vw,36px)}
+.tit p{color:var(--gris);max-width:460px}
+.pasos{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+.pasos span{font-size:13px;border:1.5px solid var(--linea);border-radius:999px;padding:5px 12px;color:var(--gris);background:#fff}
+.pasos span.ok{background:var(--asfalto);border-color:var(--asfalto);color:var(--carga)}
+.tablero>*{min-width:0}
+.tablero{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:22px;align-items:start}
+.bloque{background:#fff;border:1px solid var(--linea);border-radius:14px;padding:22px;margin-bottom:18px}
+.bloque h3{font-size:16px;display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.bloque h3 i{font-style:normal;width:28px;height:28px;border-radius:6px;background:var(--carga);display:grid;place-items:center;font-size:13px}
+.modo{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.modo button{border:1.5px solid var(--linea);background:var(--papel);border-radius:8px;padding:8px 14px;font-size:14px}
+.modo button.on{background:var(--asfalto);border-color:var(--asfalto);color:#fff}
+.modo button.on.d{background:var(--adobe);border-color:var(--adobe)}
+.mapa svg{width:100%;height:auto;display:block}
+.dep{cursor:pointer}
+.dep path{fill:var(--papel2);stroke:#fff;stroke-width:3;transition:fill .2s}
+.dep:hover path{fill:#DCD3BF}
+.dep text{font-family:"Lexend Deca";font-size:14px;font-weight:600;fill:var(--tinta);pointer-events:none}
+.dep.o path{fill:var(--asfalto)}
+.dep.o text{fill:var(--carga)}
+.dep.d path{fill:var(--adobe)}
+.dep.d text{fill:#fff}
+.dep.od path{fill:url(#mix)}
+.dep.od text{fill:#fff}
+.ruta{font-size:14.5px;color:var(--gris);margin-top:10px}
+.ruta b{color:var(--tinta)}
+.items{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.it{display:flex;flex-direction:column;gap:6px;border:1.5px solid var(--linea);border-radius:10px;padding:12px;background:var(--papel)}
+.it.on{border-color:var(--asfalto);background:#fff;box-shadow:inset 0 -4px 0 var(--carga)}
+.it b{font-size:14.5px;font-weight:600}
+.it small{font-size:12.5px;color:var(--gris)}
+.cnt{display:flex;align-items:center;gap:8px;margin-top:auto}
+.cnt button{width:30px;height:30px;border-radius:6px;border:1.5px solid var(--linea);background:#fff;font-size:16px;line-height:1}
+.cnt output{min-width:20px;text-align:center;font-weight:600}
+.presets{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.presets button{border:1.5px dashed var(--gris);background:transparent;border-radius:8px;padding:7px 12px;font-size:13.5px}
+.presets button:hover{border-style:solid;border-color:var(--asfalto)}
+.dias{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:12px}
+.dias button{flex:none;border:1.5px solid var(--linea);background:var(--papel);border-radius:10px;padding:8px 12px;text-align:center;min-width:72px;font-size:13px}
+.dias button b{display:block;font-family:"Krona One";font-size:16px}
+.dias button.on{background:var(--asfalto);color:#fff;border-color:var(--asfalto)}
+.dias button:disabled{opacity:.35;cursor:not-allowed}
+.slots{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+.slots button{border:1.5px solid var(--linea);background:#fff;border-radius:8px;padding:9px 4px;font-size:14px;font-variant-numeric:tabular-nums}
+.slots button.on{background:var(--carga);border-color:var(--carga);font-weight:600}
+.slots button:disabled{background:repeating-linear-gradient(135deg,#EEE9DD 0 5px,#F6F2EA 5px 10px);color:#B1AA9C;text-decoration:line-through;cursor:not-allowed}
+.urg{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px;border-top:1px dashed var(--linea);padding-top:14px;font-size:14.5px}
+.urg small{display:block;color:var(--gris);font-size:12.5px}
+.sw{appearance:none;width:46px;height:26px;border-radius:999px;background:#CFC8B8;position:relative;cursor:pointer;flex:none}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:left .2s}
+.sw:checked{background:var(--adobe)}
+.sw:checked::after{left:23px}
+/* remito */
+.remito{position:sticky;top:16px;background:var(--papel);border:1.5px solid var(--asfalto);border-radius:4px;box-shadow:6px 6px 0 var(--asfalto);font-size:14.5px}
+.remito .rh{background:var(--asfalto);color:var(--papel);padding:14px 18px;display:flex;justify-content:space-between;align-items:center}
+.remito .rh b{font-family:"Krona One";font-size:14px;color:var(--carga)}
+.remito .rh span{font-size:12px;color:#A6A7AB;letter-spacing:.1em}
+.remito .rb{padding:16px 18px}
+.fila{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px dashed #C6BEAC}
+.fila span:first-child{color:var(--gris)}
+.fila span:last-child{text-align:right;font-weight:500}
+.veh{display:flex;gap:12px;align-items:center;background:#fff;border:1px solid var(--linea);border-radius:8px;padding:10px;margin:12px 0}
+.veh svg{width:74px;height:auto;flex:none}
+.veh b{display:block;font-family:"Krona One";font-size:13.5px}
+.veh small{color:var(--gris);font-size:12.5px}
+.carga{height:8px;border-radius:4px;background:var(--papel2);overflow:hidden;margin-top:6px}
+.carga i{display:block;height:100%;background:var(--carga);transition:width .3s}
+.total{display:flex;justify-content:space-between;align-items:baseline;padding:12px 0 4px}
+.total b{font-family:"Krona One";font-size:22px}
+.ej{font-size:12px;color:var(--gris)}
+.remito .wa{width:100%;justify-content:center;margin-top:14px;padding:13px}
+.falta{font-size:13px;color:var(--adobe);margin-top:8px;min-height:18px}
+.perf{height:14px;background:radial-gradient(circle at 7px 0,transparent 6px,var(--papel) 6.5px) repeat-x;background-size:14px 14px;margin-bottom:-1px}
+/* manifiesto de servicios */
+#servicios{background:var(--asfalto);color:var(--papel);padding:80px 0}
+#servicios .tit p{color:#A6A7AB}
+.mani{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border:1px solid #3A3C41}
+.mani div{padding:22px 20px;border-right:1px solid #3A3C41;border-bottom:1px solid #3A3C41}
+.mani div:nth-child(4n){border-right:0}
+.mani .n{font-family:"Krona One";font-size:12px;color:var(--carga)}
+.mani h4{font-size:15px;margin:10px 0 6px;color:#fff}
+.mani p{font-size:14px;color:#A6A7AB}
+/* cobertura */
+#cobertura{padding:80px 0}
+.cob{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+.cob div{background:#fff;border:1px solid var(--linea);border-radius:10px;padding:16px 14px;border-top:5px solid var(--cordillera)}
+.cob b{font-family:"Krona One";font-size:13.5px;display:block}
+.cob span{font-size:13px;color:var(--gris)}
+/* faq */
+#faq{padding:0 0 80px}
+.faq{display:grid;grid-template-columns:1fr 1fr;gap:0 40px}
+details{border-bottom:1px solid var(--linea);padding:15px 0}
+summary{font-weight:600;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:12px}
+summary::after{content:"+";font-family:"Krona One";color:var(--adobe)}
+details[open] summary::after{content:"–"}
+details p{color:var(--gris);font-size:15px;margin-top:6px}
+footer{background:var(--asfalto);color:#A6A7AB;padding:44px 0 26px;font-size:14.5px}
+footer .wrap{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:24px}
+footer h4{color:#fff;font-size:15px;margin-bottom:8px}
+footer a{color:var(--papel)}
+footer .legal{grid-column:1/-1;border-top:1px solid #3A3C41;padding-top:16px;font-size:12.5px;color:#7D7E83}
+.flot{position:fixed;right:16px;bottom:16px;z-index:40;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+@media (max-width:980px){
+  .top nav{display:none}
+  .hero .wrap{grid-template-columns:1fr}
+  .camion{max-width:520px}
+  .tablero{grid-template-columns:1fr}
+  .remito{position:static}
+  .mani{grid-template-columns:1fr 1fr}
+  .mani div:nth-child(4n){border-right:1px solid #3A3C41}
+  .mani div:nth-child(2n){border-right:0}
+  .cob{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .faq{grid-template-columns:1fr}
+  footer .wrap{grid-template-columns:1fr}
+}
+@media (max-width:560px){
+  .wrap{padding:0 16px}
+  .marca small{display:none}
+  .top .wa span{display:none}
+  .hero{padding-top:36px}
+  .horas{flex-wrap:wrap}
+  .horas div{flex:1 1 45%}
+  .items{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .slots{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .bloque{padding:16px}
+  .mani{grid-template-columns:1fr}
+  .mani div{border-right:0!important}
+  .cob{grid-template-columns:1fr 1fr}
+  .flot{padding:11px 14px}
+}
+</style>
+</head>
+<body>
+<div class="proto">Prototipo de demostración preparado para Fletes en Mendoza · Resolviendo Kos</div>
+
+<header class="top"><div class="wrap">
+  <a class="marca" href="#"><span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 6h12v9H2zM14 9h4l3 3v3h-7z" fill="#1D1E21"/><circle cx="6" cy="17" r="2" fill="#1D1E21"/><circle cx="17" cy="17" r="2" fill="#1D1E21"/></svg></span><span><b>FLETES EN MENDOZA</b><small>Gran Mendoza · camioneta o camión</small></span></a>
+  <nav><a href="#armar">Armá tu flete</a><a href="#servicios">Qué llevamos</a><a href="#cobertura">Zonas</a><a href="#faq">Preguntas</a></nav>
+  <a class="wa" href="https://wa.me/5492612539462" target="_blank" rel="noopener">WhatsApp <span>261 253 9462</span></a>
+</div></header>
+<div class="cinta"></div>
+
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <div class="k">Mudanzas · fletes por hora · urgentes</div>
+      <h1>Hoy el flete se pide por WhatsApp. Ahora te llega con <em>origen, destino y qué hay que llevar</em>.</h1>
+      <p>Heladeras, lavarropas, camas, placares, mudanzas completas y materiales de construcción en todo el Gran Mendoza. Elegís zona, cosas y horario, y nos mandás el pedido armado.</p>
+      <div class="cta"><a class="btn" href="#armar">Armar mi flete</a><a class="btn ghost" href="#servicios">Ver qué llevamos</a></div>
+      <div class="horas">
+        <div><b>L a V</b><span>8 a 20 h</span></div>
+        <div><b>Sábados</b><span>8 a 14 h</span></div>
+        <div><b>Urgentes</b><span>según disponibilidad</span></div>
+      </div>
+    </div>
+    <div class="camion">
+      <svg viewBox="0 0 520 300" role="img" aria-label="Ilustración de un camión de fletes frente a la cordillera">
+        <path d="M0 210 L70 120 L120 160 L190 70 L250 140 L300 95 L370 170 L430 110 L520 190 V300 H0Z" fill="#2A2C30"/>
+        <path d="M170 95 L190 70 L210 96 L200 92 L190 100 L180 92Z M410 135 L430 110 L448 133 L438 130 L430 137 L420 131Z" fill="#E7E1D3" opacity=".8"/>
+        <rect x="0" y="262" width="520" height="38" fill="#141517"/>
+        <g fill="#F2B705"><rect x="20" y="279" width="40" height="5"/><rect x="110" y="279" width="40" height="5"/><rect x="200" y="279" width="40" height="5"/><rect x="290" y="279" width="40" height="5"/><rect x="380" y="279" width="40" height="5"/><rect x="470" y="279" width="40" height="5"/></g>
+        <rect x="120" y="140" width="230" height="110" rx="6" fill="#F2B705"/>
+        <text x="138" y="196" font-family="Krona One" font-size="20" fill="#1D1E21">FLETES</text>
+        <text x="138" y="222" font-family="Lexend Deca" font-size="14" font-weight="600" fill="#1D1E21">en Mendoza</text>
+        <path d="M350 170 h62 l38 40 v40 h-100z" fill="#E7E1D3"/>
+        <path d="M362 180 h44 l26 28 h-70z" fill="#3D6B8E"/>
+        <rect x="350" y="246" width="100" height="8" fill="#1D1E21"/>
+        <circle cx="175" cy="256" r="20" fill="#1D1E21"/><circle cx="175" cy="256" r="8" fill="#64656A"/>
+        <circle cx="300" cy="256" r="20" fill="#1D1E21"/><circle cx="300" cy="256" r="8" fill="#64656A"/>
+        <circle cx="408" cy="256" r="20" fill="#1D1E21"/><circle cx="408" cy="256" r="8" fill="#64656A"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section id="armar">
+  <div class="wrap">
+    <div class="tit"><h2>Armá tu flete</h2><p>Lo que hoy se cuenta en audios, acá queda en un remito. Te decimos qué vehículo hace falta y te llega el pedido completo por WhatsApp.</p></div>
+    <div class="pasos" id="pasos"><span data-p="1">1 · Zonas</span><span data-p="2">2 · Qué llevás</span><span data-p="3">3 · Cuándo</span><span data-p="4">4 · Enviar</span></div>
+    <div class="tablero">
+      <div>
+        <div class="bloque">
+          <h3><i>1</i>¿De dónde a dónde?</h3>
+          <div class="modo" id="modo"><button class="on" data-m="o">Marcar origen</button><button class="d" data-m="d">Marcar destino</button></div>
+          <div class="mapa">
+            <svg viewBox="0 0 560 360" role="img" aria-label="Mapa esquemático de los departamentos del Gran Mendoza">
+              <defs><linearGradient id="mix" x1="0" x2="1"><stop offset=".5" stop-color="#1D1E21"/><stop offset=".5" stop-color="#C4633A"/></linearGradient></defs>
+              <g class="dep" data-z="Las Heras"><path d="M30 20 H300 V120 H210 V150 H30Z"/><text x="70" y="85">Las Heras</text></g>
+              <g class="dep" data-z="Capital"><path d="M210 120 H330 V200 H210Z"/><text x="236" y="166">Capital</text></g>
+              <g class="dep" data-z="Guaymallén"><path d="M300 20 H530 V200 H330 V120 H300Z"/><text x="390" y="110">Guaymallén</text></g>
+              <g class="dep" data-z="Godoy Cruz"><path d="M30 150 H210 V200 H250 V250 H30Z"/><text x="62" y="210">Godoy Cruz</text></g>
+              <g class="dep" data-z="Maipú"><path d="M330 200 H530 V340 H350 V250 H330Z"/><text x="418" y="276">Maipú</text></g>
+              <g class="dep" data-z="Luján de Cuyo"><path d="M30 250 H250 V200 H330 V250 H350 V340 H30Z"/><text x="110" y="300">Luján de Cuyo</text></g>
+            </svg>
+          </div>
+          <div class="ruta" id="ruta">Tocá el mapa: primero de dónde sale, después a dónde va.</div>
+        </div>
+        <div class="bloque">
+          <h3><i>2</i>¿Qué hay que llevar?</h3>
+          <div class="presets" id="presets">
+            <button data-p="depto">Mudanza depto</button><button data-p="casa">Mudanza casa</button><button data-p="oficina">Mudanza oficina</button><button data-p="limpiar">Vaciar</button>
+          </div>
+          <div class="items" id="items"></div>
+        </div>
+        <div class="bloque">
+          <h3><i>3</i>¿Cuándo?</h3>
+          <div class="dias" id="dias"></div>
+          <div class="slots" id="slots"></div>
+          <label class="urg"><span>Es urgente (hoy o lo antes posible)<small>Sujeto a disponibilidad: te confirmamos por WhatsApp.</small></span><input type="checkbox" class="sw" id="urg"></label>
+        </div>
+      </div>
+      <aside class="remito" aria-live="polite">
+        <div class="rh"><b>REMITO DE PEDIDO</b><span id="nro">N° 0001</span></div>
+        <div class="rb">
+          <div class="fila"><span>Origen</span><span id="rO">—</span></div>
+          <div class="fila"><span>Destino</span><span id="rD">—</span></div>
+          <div class="fila"><span>Carga</span><span id="rI">—</span></div>
+          <div class="fila"><span>Turno</span><span id="rT">—</span></div>
+          <div class="veh"><svg viewBox="0 0 80 44" id="vIc" aria-hidden="true"></svg><div style="flex:1"><b id="vN">Camioneta</b><small id="vS">Elegí qué llevás</small><div class="carga"><i id="vBar" style="width:0%"></i></div></div></div>
+          <div class="total"><span>Estimado</span><b id="tot">$ 0</b></div>
+          <div class="ej">Tarifas de ejemplo para el prototipo. Con ustedes se cargan las reales por vehículo, hora y zona.</div>
+          <a class="wa" id="enviar" href="#" target="_blank" rel="noopener">Enviar pedido por WhatsApp</a>
+          <div class="falta" id="falta"></div>
+        </div>
+        <div class="perf"></div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section id="servicios">
+  <div class="wrap">
+    <div class="tit"><h2>Qué llevamos</h2><p>Camioneta o camión según el volumen. Lo que publican hoy en su web, ordenado como un manifiesto de carga.</p></div>
+    <div class="mani">
+      <div><span class="n">01</span><h4>Heladeras y freezers</h4><p>Heladeras y freezers de casa a casa.</p></div>
+      <div><span class="n">02</span><h4>Cocinas y lavarropas</h4><p>Electrodomésticos grandes.</p></div>
+      <div><span class="n">03</span><h4>Camas y placares</h4><p>Muebles grandes y voluminosos.</p></div>
+      <div><span class="n">04</span><h4>Mudanzas completas</h4><p>Casa, departamento u oficina.</p></div>
+      <div><span class="n">05</span><h4>Fletes por hora</h4><p>Cuando conviene contratar por tiempo.</p></div>
+      <div><span class="n">06</span><h4>Fletes urgentes</h4><p>Sujetos a disponibilidad del día.</p></div>
+      <div><span class="n">07</span><h4>Materiales de construcción</h4><p>Fletes de materiales para obra.</p></div>
+      <div><span class="n">08</span><h4>Camioneta o camión</h4><p>Según el volumen de lo que llevás.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="cobertura">
+  <div class="wrap">
+    <div class="tit"><h2>Todo el Gran Mendoza</h2><p>Cada departamento con su propia página, como ya tienen hoy: así los encuentran cuando alguien busca "flete en Maipú" o "flete en Las Heras".</p></div>
+    <div class="cob">
+      <div><b>Capital</b><span>Ciudad de Mendoza</span></div>
+      <div><b>Godoy Cruz</b><span>Fletes y mudanzas</span></div>
+      <div><b>Guaymallén</b><span>Fletes y mudanzas</span></div>
+      <div><b>Las Heras</b><span>Fletes y mudanzas</span></div>
+      <div><b>Luján de Cuyo</b><span>Fletes y mudanzas</span></div>
+      <div><b>Maipú</b><span>Fletes y mudanzas</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="tit"><h2>Preguntas</h2></div>
+    <div class="faq">
+      <details open><summary>¿Cómo pido el flete?</summary><p>Armás el pedido acá y lo mandás por WhatsApp con todo cargado. Te respondemos para confirmar precio y horario.</p></details>
+      <details><summary>¿En qué horarios trabajan?</summary><p>De lunes a viernes de 8 a 20 y los sábados de 8 a 14.</p></details>
+      <details><summary>¿Hacen fletes urgentes?</summary><p>Sí, sujetos a la disponibilidad del día. Marcá "urgente" y te avisamos al toque.</p></details>
+      <details><summary>¿Camioneta o camión?</summary><p>Depende del volumen. El armador te sugiere uno según lo que cargás y lo confirmamos al responderte.</p></details>
+      <details><summary>¿El precio es final?</summary><p>El estimado es orientativo. Lo confirmamos con el detalle de pisos, escaleras y distancia.</p></details>
+      <details><summary>¿Llevan materiales de construcción?</summary><p>Sí, también hacemos fletes de materiales.</p></details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div><h4>Fletes en Mendoza</h4>Fletes y mudanzas en todo el Gran Mendoza.<br>L a V 8 a 20 h · sábados 8 a 14 h</div>
+    <div><h4>Contacto</h4><a href="https://wa.me/5492612539462" target="_blank" rel="noopener">WhatsApp 261 253 9462</a><br><a href="https://fletesenmendoza.com" target="_blank" rel="noopener">fletesenmendoza.com</a></div>
+    <div><h4>Zonas</h4>Capital · Godoy Cruz · Guaymallén · Las Heras · Luján de Cuyo · Maipú</div>
+    <div class="legal">Prototipo de demostración preparado para Fletes en Mendoza por Resolviendo Kos · resolviendokos.com. Tarifas, turnos y numeración de remito de ejemplo.</div>
+  </div>
+</footer>
+<a class="wa flot" href="https://wa.me/5492612539462" target="_blank" rel="noopener">WhatsApp</a>
+
+<script>
+const WA='5492612539462';
+const ITEMS=[
+ {id:'heladera',n:'Heladera',s:'o freezer',v:3},{id:'cocina',n:'Cocina',s:'',v:2},{id:'lavarropas',n:'Lavarropas',s:'',v:2},
+ {id:'cama',n:'Cama',s:'con colchón',v:3},{id:'placard',n:'Placard',s:'o ropero',v:4},{id:'mesa',n:'Mesa y sillas',s:'juego',v:3},
+ {id:'sillon',n:'Sillón',s:'',v:3},{id:'cajas',n:'Cajas',s:'de 10 en 10',v:2},{id:'material',n:'Materiales',s:'de construcción',v:5}];
+const PRE={depto:{heladera:1,cocina:1,lavarropas:1,cama:2,placard:1,mesa:1,sillon:1,cajas:2},casa:{heladera:1,cocina:1,lavarropas:1,cama:3,placard:2,mesa:1,sillon:2,cajas:4},oficina:{mesa:3,sillon:2,cajas:3,placard:1},limpiar:{}};
+const POS={'Las Heras':[1,0],'Capital':[1,1],'Guaymallén':[2,0.5],'Godoy Cruz':[0,1.3],'Maipú':[2,2],'Luján de Cuyo':[0.8,2.4]};
+let O=null,D=null,M='o',Q={},day=null,slot=null;
+const $=id=>document.getElementById(id);
+// items
+const IT=$('items');
+ITEMS.forEach(i=>{IT.insertAdjacentHTML('beforeend',`<div class="it" id="it-${i.id}"><b>${i.n}</b><small>${i.s||'&nbsp;'}</small><div class="cnt"><button data-i="${i.id}" data-v="-1" aria-label="Menos ${i.n}">−</button><output id="q-${i.id}">0</output><button data-i="${i.id}" data-v="1" aria-label="Más ${i.n}">+</button></div></div>`)});
+IT.onclick=e=>{const b=e.target.closest('button');if(!b)return;const k=b.dataset.i;Q[k]=Math.max(0,Math.min(20,(Q[k]||0)+ +b.dataset.v));upd()};
+$('presets').onclick=e=>{const b=e.target.closest('button');if(!b)return;Q={...PRE[b.dataset.p]};upd()};
+// mapa
+$('modo').onclick=e=>{const b=e.target.closest('button');if(!b)return;M=b.dataset.m;[...$('modo').children].forEach(x=>x.classList.toggle('on',x===b))};
+document.querySelectorAll('.dep').forEach(g=>g.onclick=()=>{const z=g.dataset.z;if(M==='o'){O=z;M='d';[...$('modo').children].forEach(x=>x.classList.toggle('on',x.dataset.m==='d'))}else{D=z}upd()});
+// días y turnos
+const DN=['dom','lun','mar','mié','jue','vie','sáb'];
+const today=new Date();today.setHours(0,0,0,0);
+const DIAS=[];for(let i=0;DIAS.length<8&&i<12;i++){const d=new Date(today);d.setDate(d.getDate()+i);DIAS.push(d)}
+function hours(d){const w=d.getDay();if(w===0)return[];if(w===6)return[8,10,12];return[8,10,12,14,16,18]}
+function taken(d,h){const x=Math.sin((d.getDate()*31+h)*12.9898)*43758.5453;return (x-Math.floor(x))<.33}
+DIAS.forEach((d,i)=>{const b=document.createElement('button');b.innerHTML=`${DN[d.getDay()]}<b>${d.getDate()}</b>`;if(!hours(d).length){b.disabled=true;b.title='Domingo sin servicio'}b.onclick=()=>{day=d;slot=null;drawDias();drawSlots();upd()};$('dias').appendChild(b)});
+function drawDias(){[...$('dias').children].forEach((b,i)=>b.classList.toggle('on',day&&+DIAS[i]===+day))}
+function drawSlots(){const S=$('slots');S.innerHTML='';if(!day){S.innerHTML='<span class="ej" style="grid-column:1/-1">Elegí un día para ver los horarios.</span>';return}
+  const now=new Date();hours(day).forEach(h=>{const b=document.createElement('button');b.textContent=h+' a '+(h+2)+' h';
+  const past=+day===+today&&now.getHours()>=h;if(past||taken(day,h)){b.disabled=true;b.title='Ocupado'}if(slot===h)b.classList.add('on');b.onclick=()=>{slot=h;drawSlots();upd()};S.appendChild(b)})}
+$('urg').onchange=upd;
+// vehículo
+const VAN='<rect x="2" y="12" width="44" height="22" rx="3" fill="#F2B705"/><path d="M46 18h14l10 10v6H46z" fill="#3D6B8E"/><circle cx="16" cy="36" r="6" fill="#1D1E21"/><circle cx="58" cy="36" r="6" fill="#1D1E21"/>';
+const TRUCK='<rect x="2" y="4" width="54" height="30" rx="3" fill="#F2B705"/><path d="M56 14h12l10 10v10H56z" fill="#3D6B8E"/><circle cx="14" cy="36" r="6" fill="#1D1E21"/><circle cx="34" cy="36" r="6" fill="#1D1E21"/><circle cx="66" cy="36" r="6" fill="#1D1E21"/>';
+function dist(a,b){if(!a||!b)return 0;const p=POS[a],q=POS[b];return Math.hypot(p[0]-q[0],p[1]-q[1])}
+function upd(){
+  ITEMS.forEach(i=>{$('q-'+i.id).value=Q[i.id]||0;$('it-'+i.id).classList.toggle('on',(Q[i.id]||0)>0)});
+  document.querySelectorAll('.dep').forEach(g=>{const z=g.dataset.z;g.classList.remove('o','d','od');if(z===O&&z===D)g.classList.add('od');else if(z===O)g.classList.add('o');else if(z===D)g.classList.add('d')});
+  $('ruta').innerHTML=O||D?`<b>${O||'¿origen?'}</b> → <b>${D||'¿destino?'}</b>${O&&D?(O===D?' · dentro del mismo departamento':' · '+(dist(O,D)<1.2?'departamentos vecinos':'cruzando el Gran Mendoza')):''}`:'Tocá el mapa: primero de dónde sale, después a dónde va.';
+  const vol=ITEMS.reduce((s,i)=>s+(Q[i.id]||0)*i.v,0);const big=vol>22;const cap=big?60:22;
+  $('vIc').innerHTML=big?TRUCK:VAN;$('vN').textContent=big?'Camión':'Camioneta';
+  $('vS').textContent=vol?`Carga estimada ${Math.min(100,Math.round(vol/cap*100))}% de la ${big?'caja del camión':'caja'}`:'Elegí qué llevás';
+  $('vBar').style.width=Math.min(100,vol/cap*100)+'%';
+  const lista=ITEMS.filter(i=>Q[i.id]).map(i=>`${Q[i.id]} ${i.n.toLowerCase()}`);
+  $('rO').textContent=O||'—';$('rD').textContent=D||'—';$('rI').textContent=lista.length?lista.join(', '):'—';
+  const urg=$('urg').checked;
+  $('rT').textContent=urg?'URGENTE · a confirmar':(day&&slot!=null?`${DN[day.getDay()]} ${day.getDate()}/${day.getMonth()+1} · ${slot} a ${slot+2} h`:'—');
+  let t=0;if(vol){t=(big?78000:42000)+vol*1800+dist(O,D)*9000;if(urg)t*=1.2}
+  $('tot').textContent=vol?('$ '+(Math.round(t/500)*500).toLocaleString('es-AR')):'$ 0';
+  const p1=!!(O&&D),p2=vol>0,p3=urg||(day&&slot!=null);
+  [...$('pasos').children].forEach(s=>{const n=+s.dataset.p;s.classList.toggle('ok',n===1?p1:n===2?p2:n===3?p3:(p1&&p2&&p3))});
+  const falta=[!p1&&'origen y destino',!p2&&'qué hay que llevar',!p3&&'día y horario'].filter(Boolean);
+  $('falta').textContent=falta.length?'Falta: '+falta.join(', ')+'.':'';
+  const msg=`Hola, quiero pedir un flete.\nOrigen: ${O||'-'}\nDestino: ${D||'-'}\nCarga: ${lista.join(', ')||'-'}\nVehículo sugerido: ${big?'camión':'camioneta'}\nTurno: ${$('rT').textContent}\nEstimado web: ${$('tot').textContent}`;
+  $('enviar').href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
+  $('nro').textContent='N° '+String(1000+vol*7+(O?O.length:0)).padStart(5,'0');
+}
+$('enviar').addEventListener('click',e=>{if($('falta').textContent){e.preventDefault()}});
+drawSlots();upd();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Fletes en Mendoza"></script>
+</body>
+</html>
