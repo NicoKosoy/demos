@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Cabalgatas La Fragua · Estancia San Ramón, Bariloche</title>
+<meta name="description" content="Prototipo de demostración: reservas online para Cabalgatas La Fragua.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rye&family=Cabin:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --carbon:#211A16;
+  --carbon2:#2E2520;
+  --hierro:#D2552B;
+  --brasa:#F08A4B;
+  --cuero:#8C5A33;
+  --estepa:#C9B37E;
+  --pasto:#9A9A5E;
+  --cielo:#DCE5E2;
+  --hueso:#F5EFE3;
+  --hueso2:#EAE0CD;
+  --tinta:#221C18;
+  --gris:#6C625A;
+  --linea:#D8CBB3;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--hueso);color:var(--tinta);font-family:"Cabin",system-ui,sans-serif;font-size:17px;line-height:1.6;overflow-x:hidden}
+a{color:inherit}
+button,select,input{font:inherit}
+.rye{font-family:"Rye",Georgia,serif;font-weight:400;letter-spacing:.01em}
+.proto{background:var(--carbon);color:var(--estepa);font-size:13px;text-align:center;padding:8px 16px}
+.proto b{color:var(--brasa)}
+.k{font-size:12.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;color:var(--hierro)}
+/* LAYOUT: hoja de ruta a la izquierda + boleto fijo a la derecha */
+.shell{display:grid;grid-template-columns:minmax(0,1fr) 420px;align-items:start;max-width:1320px;margin:0 auto}
+main{min-width:0;border-right:1px solid var(--linea)}
+aside{position:sticky;top:0;height:100vh;overflow:auto;background:var(--carbon);color:var(--hueso);padding:26px 26px 30px}
+/* portada */
+.top{display:flex;justify-content:space-between;align-items:center;padding:20px 40px;border-bottom:1px solid var(--linea)}
+.marca{display:flex;align-items:center;gap:12px;text-decoration:none}
+.marca svg{width:44px;height:44px}
+.marca b{font-family:"Rye",serif;font-weight:400;font-size:22px;line-height:1}
+.marca small{display:block;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gris)}
+.top nav{display:flex;gap:22px;font-size:15px}
+.top nav a{text-decoration:none;color:var(--gris)}
+.portada{padding:56px 40px 0;position:relative}
+.portada h1{font-family:"Rye",serif;font-weight:400;font-size:clamp(36px,5vw,68px);line-height:1.04;color:var(--carbon);margin:16px 0 20px}
+.portada h1 em{font-style:normal;color:var(--hierro)}
+.portada p.lead{font-size:19px;color:var(--gris);max-width:600px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:24px 0 0}
+.chips span{border:1.5px solid var(--carbon);border-radius:999px;padding:5px 13px;font-size:14.5px;font-weight:600}
+.paisaje{display:block;width:100%;height:auto;margin-top:36px}
+/* hoja de ruta */
+section{padding:72px 40px;border-top:1px solid var(--linea)}
+h2{font-family:"Rye",serif;font-weight:400;font-size:clamp(28px,3.2vw,42px);line-height:1.1;color:var(--carbon);margin:10px 0 14px}
+.sub{color:var(--gris);font-size:18px;max-width:640px}
+.ruta{list-style:none;margin-top:38px;position:relative}
+.ruta::before{content:"";position:absolute;left:31px;top:8px;bottom:8px;border-left:3px dotted var(--cuero)}
+.ruta li{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:20px;align-items:start;padding:0 0 30px}
+.ruta .pto{width:64px;height:64px;border-radius:50%;background:var(--hueso);border:3px solid var(--carbon);display:grid;place-items:center;position:relative;z-index:1}
+.ruta .pto svg{width:34px;height:34px}
+.ruta li.fuego .pto{background:var(--hierro);border-color:var(--hierro)}
+.ruta h3{font-family:"Rye",serif;font-weight:400;font-size:24px;line-height:1.15;color:var(--carbon)}
+.ruta p{color:var(--gris);font-size:16px;margin-top:4px}
+.ruta .dato{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--cuero);font-weight:700;padding-top:8px;white-space:nowrap}
+/* reglas */
+.reglas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin-top:34px;border:2px solid var(--carbon)}
+.reglas div{padding:20px;border-right:1px solid var(--linea);border-bottom:1px solid var(--linea)}
+.reglas div:nth-child(3n){border-right:0}
+.reglas div:nth-last-child(-n+3){border-bottom:0}
+.reglas b{display:block;font-family:"Rye",serif;font-weight:400;font-size:26px;color:var(--hierro);line-height:1.1}
+.reglas span{display:block;font-weight:700;margin:6px 0 2px}
+.reglas p{font-size:15px;color:var(--gris)}
+/* comparación de precio */
+.compara{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;margin-top:30px}
+.cmp{border-radius:14px;padding:24px;border:2px solid var(--linea);background:#fff}
+.cmp.directo{background:var(--carbon);color:var(--hueso);border-color:var(--carbon)}
+.cmp small{font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:var(--cuero)}
+.cmp.directo small{color:var(--brasa)}
+.cmp b{display:block;font-family:"Rye",serif;font-weight:400;font-size:34px;margin:8px 0}
+.cmp p{font-size:15.5px;color:var(--gris)}
+.cmp.directo p{color:#CDBFA9}
+/* faq */
+details{border-bottom:1px solid var(--linea);padding:15px 0}
+summary{font-weight:700;font-size:18px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:10px}
+summary::after{content:"+";color:var(--hierro);font-size:22px;line-height:1}
+details[open] summary::after{content:"–"}
+details p{color:var(--gris);margin-top:6px}
+.pie{padding:40px;background:var(--hueso2);font-size:15px;color:var(--gris)}
+.pie b{color:var(--carbon)}
+.pie a{color:var(--carbon)}
+/* BOLETO (aside) */
+.bol-h{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px dashed #5A4B40;padding-bottom:12px;margin-bottom:14px}
+.bol-h b{font-family:"Rye",serif;font-weight:400;font-size:24px;color:var(--hueso)}
+.bol-h span{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--estepa)}
+aside label{display:block;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--estepa);margin:14px 0 6px;font-weight:600}
+.dias{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.dias .dw{font-size:11px;text-align:center;color:#9C8E7E;text-transform:uppercase}
+.dias button{aspect-ratio:1/1;border:1px solid #4A3E35;background:var(--carbon2);color:var(--hueso);border-radius:6px;font-size:14px;cursor:pointer}
+.dias button:disabled{opacity:.28;cursor:not-allowed}
+.dias button.lleno{background:repeating-linear-gradient(135deg,#3A302A 0 4px,#2E2520 4px 8px);color:#7F7266;text-decoration:line-through;opacity:1}
+.dias button.on{background:var(--hierro);border-color:var(--hierro);color:#fff;font-weight:700}
+.mesbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.mesbar button{background:none;border:1px solid #4A3E35;color:var(--hueso);border-radius:6px;width:32px;height:32px;cursor:pointer}
+.mesbar span{font-weight:700}
+.cnt{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #3A302A}
+.cnt div:first-child b{display:block}
+.cnt small{color:#A8998A;font-size:13.5px}
+.stp{display:flex;align-items:center;gap:10px}
+.stp button{width:34px;height:34px;border-radius:50%;border:1px solid #6A5A4D;background:none;color:var(--hueso);font-size:18px;cursor:pointer}
+.stp output{min-width:20px;text-align:center;font-weight:700;font-size:18px}
+aside select{width:100%;background:var(--carbon2);color:var(--hueso);border:1px solid #4A3E35;border-radius:8px;padding:10px}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:14.5px;color:#D8CCBB;margin-top:10px;cursor:pointer}
+.check input{margin-top:4px;accent-color:var(--hierro);width:17px;height:17px;flex:none}
+.tot{margin-top:16px;border-top:1px dashed #5A4B40;padding-top:12px}
+.ln{display:flex;justify-content:space-between;font-size:15px;padding:4px 0;color:#D8CCBB}
+.ln.big{font-size:20px;color:#fff;font-weight:700;padding-top:8px}
+.pagar{width:100%;margin-top:14px;background:var(--hierro);color:#fff;border:0;border-radius:10px;padding:14px;font-weight:700;font-size:16px;cursor:pointer}
+.pagar:hover{background:#B9461F}
+.aviso{font-size:13.5px;color:var(--brasa);min-height:20px;margin-top:8px}
+.nota{font-size:12.5px;color:#958676;margin-top:10px}
+/* voucher */
+.voucher{display:none;position:fixed;inset:0;background:rgba(20,15,12,.82);z-index:90;align-items:center;justify-content:center;padding:20px}
+.voucher.on{display:flex}
+.vou{background:var(--hueso);color:var(--tinta);max-width:460px;width:100%;border-radius:14px;overflow:hidden;position:relative}
+.vou-h{background:var(--carbon);color:var(--hueso);padding:18px 22px;display:flex;justify-content:space-between;align-items:center}
+.vou-h b{font-family:"Rye",serif;font-weight:400;font-size:22px}
+.vou-b{padding:20px 22px 24px;position:relative}
+.vou-b .ln{color:var(--tinta);border-bottom:1px dashed var(--linea);padding:7px 0}
+.sello{position:absolute;right:18px;top:12px;width:110px;height:110px;transform:rotate(-12deg);opacity:.9}
+.vou-b .enc{margin-top:14px;background:var(--hueso2);border-radius:8px;padding:12px;font-size:15px}
+.vou button{margin-top:16px;background:var(--carbon);color:#fff;border:0;border-radius:8px;padding:11px 18px;cursor:pointer}
+.wa{position:fixed;left:18px;bottom:18px;z-index:50;background:#25D366;color:#fff;border-radius:999px;padding:12px 17px;font-weight:700;text-decoration:none;font-size:15px;box-shadow:0 8px 22px rgba(0,0,0,.2)}
+.mob-cta{display:none}
+@media (max-width:1020px){
+  .shell{grid-template-columns:1fr}
+  main{border-right:0}
+  aside{position:static;height:auto;border-radius:0}
+  .top nav{display:none}
+  .mob-cta{display:block;position:fixed;right:16px;bottom:16px;z-index:50;background:var(--hierro);color:#fff;border-radius:999px;padding:12px 18px;font-weight:700;text-decoration:none;box-shadow:0 8px 22px rgba(0,0,0,.25)}
+}
+@media (max-width:600px){
+  .top,.portada,section,.pie{padding-left:16px;padding-right:16px}
+  aside{padding:22px 16px}
+  section{padding-top:56px;padding-bottom:56px}
+  .ruta li{grid-template-columns:52px minmax(0,1fr);gap:14px}
+  .ruta::before{left:25px}
+  .ruta .pto{width:52px;height:52px}
+  .ruta .pto svg{width:28px;height:28px}
+  .ruta .dato{grid-column:2;padding-top:0;margin-top:-14px}
+  .reglas{grid-template-columns:1fr 1fr}
+  .reglas div:nth-child(3n){border-right:1px solid var(--linea)}
+  .reglas div:nth-child(2n){border-right:0}
+  .reglas div:nth-last-child(-n+3){border-bottom:1px solid var(--linea)}
+  .reglas div:nth-last-child(-n+2){border-bottom:0}
+  .compara{grid-template-columns:1fr}
+  .wa{padding:11px 14px;font-size:14px}
+}
+</style>
+</head>
+<body>
+<div class="proto">Prototipo de demostración preparado para <b>Cabalgatas La Fragua</b> · Resolviendo Kos</div>
+
+<div class="shell">
+<main>
+  <header class="top">
+    <a class="marca" href="#top" id="top">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="22" fill="#211A16"/><path d="M14 30c3-8 8-12 10-12s7 4 10 12" fill="none" stroke="#F08A4B" stroke-width="3.5" stroke-linecap="round"/><path d="M24 12v8" stroke="#F08A4B" stroke-width="3.5" stroke-linecap="round"/><circle cx="24" cy="33" r="2.6" fill="#F08A4B"/></svg>
+      <span><b>La Fragua</b><small>Cabalgatas · Bariloche</small></span>
+    </a>
+    <nav><a href="#jornada">La jornada</a><a href="#reglas">Antes de venir</a><a href="#directo">Precio directo</a><a href="#faq">Preguntas</a></nav>
+  </header>
+
+  <div class="portada">
+    <div class="k">Estancia San Ramón · a 34 km de Bariloche</div>
+    <h1>Tortas fritas, dos horas a caballo por la estepa y <em>asado</em> en la estancia.</h1>
+    <p class="lead">Reservá tu lugar acá mismo: elegís el día, cuántos van y el menú, pagás online y te llega el voucher al instante. Sin transferencias ni comprobantes por WhatsApp.</p>
+    <div class="chips"><span>2 hs de cabalgata</span><span>Desayuno criollo</span><span>Asado con bebidas</span><span>Menú vegano o celíaco</span><span>Traslado desde Villegas 222</span></div>
+    <svg class="paisaje" viewBox="0 0 900 260" role="img" aria-label="Ilustración de la estepa patagónica con jinetes">
+      <rect width="900" height="260" fill="#DCE5E2"/>
+      <circle cx="720" cy="70" r="34" fill="#F0C98A"/>
+      <path d="M0 150 L120 80 L190 120 L300 50 L380 110 L470 70 L560 120 L660 60 L760 115 L900 70 V260 H0Z" fill="#9AA6A3"/>
+      <path d="M280 62 L300 50 L320 64 L306 66 L300 60 L292 67Z M645 70 L660 60 L676 72 L664 73 L660 68 L652 74Z" fill="#F5EFE3"/>
+      <path d="M0 175 C150 150 260 190 420 170 S700 150 900 170 V260 H0Z" fill="#C9B37E"/>
+      <path d="M0 205 C180 190 330 225 520 205 S780 195 900 210 V260 H0Z" fill="#B49A62"/>
+      <g fill="#8C7A4E" opacity=".7"><path d="M60 220 l4 -14 l4 14Z"/><path d="M140 232 l4 -12 l4 12Z"/><path d="M300 225 l4 -14 l4 14Z"/><path d="M610 222 l4 -13 l4 13Z"/><path d="M820 230 l4 -14 l4 14Z"/></g>
+      <g fill="#211A16">
+        <g transform="translate(420 160)"><path d="M0 22 q6 -14 26 -14 q10 0 14 -8 l6 2 l-4 10 q2 8 -2 12 l2 18 h-4 l-3 -14 h-18 l-4 14 h-4 l2 -16 q-8 0 -11 -6z"/><path d="M18 8 q-2 -10 4 -16 q6 2 4 10z"/><circle cx="22" cy="-12" r="4"/></g>
+        <g transform="translate(500 168) scale(.85)"><path d="M0 22 q6 -14 26 -14 q10 0 14 -8 l6 2 l-4 10 q2 8 -2 12 l2 18 h-4 l-3 -14 h-18 l-4 14 h-4 l2 -16 q-8 0 -11 -6z"/><path d="M18 8 q-2 -10 4 -16 q6 2 4 10z"/><circle cx="22" cy="-12" r="4"/></g>
+      </g>
+      <path d="M560 215 q10 -26 6 -40" stroke="#6C625A" stroke-width="2" fill="none" opacity=".5"/>
+      <circle cx="566" cy="174" r="7" fill="#D2552B" opacity=".85"/>
+    </svg>
+  </div>
+
+  <section id="jornada">
+    <div class="k">Hoja de ruta</div>
+    <h2>Así es el día, de la ciudad a la estancia.</h2>
+    <p class="sub">Arranca en el punto de encuentro del centro y termina con postre en la estancia.</p>
+    <ol class="ruta">
+      <li><div class="pto"><svg viewBox="0 0 32 32"><path d="M16 4c-5 0-9 4-9 9 0 7 9 15 9 15s9-8 9-15c0-5-4-9-9-9z" fill="none" stroke="#211A16" stroke-width="2.4"/><circle cx="16" cy="13" r="3.2" fill="#D2552B"/></svg></div>
+        <div><h3>Punto de encuentro</h3><p>Villegas 222, en el centro de Bariloche.</p></div><div class="dato">Inicio</div></li>
+      <li><div class="pto"><svg viewBox="0 0 32 32"><rect x="4" y="11" width="20" height="11" rx="2" fill="none" stroke="#211A16" stroke-width="2.4"/><path d="M24 14h3l2 4v4h-5" fill="none" stroke="#211A16" stroke-width="2.4"/><circle cx="10" cy="24" r="2.6" fill="#D2552B"/><circle cx="24" cy="24" r="2.6" fill="#D2552B"/></svg></div>
+        <div><h3>Traslado a la Estancia San Ramón</h3><p>34 km hacia la estepa patagónica.</p></div><div class="dato">34 km</div></li>
+      <li><div class="pto"><svg viewBox="0 0 32 32"><path d="M6 16h20l-2 8H8z" fill="none" stroke="#211A16" stroke-width="2.4"/><path d="M12 12c0-3 3-3 3-6M18 12c0-3 3-3 3-6" stroke="#D2552B" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg></div>
+        <div><h3>Desayuno criollo</h3><p>Con tortas fritas, antes de subir al caballo.</p></div><div class="dato">Mate</div></li>
+      <li class="fuego"><div class="pto"><svg viewBox="0 0 32 32"><path d="M5 20q4-9 12-9q4 0 6-4l3 1l-2 5q1 4-1 6l1 7h-2l-2-6h-8l-2 6H8l1-6q-3 0-4-0z" fill="#fff"/></svg></div>
+        <div><h3>Cabalgata por la estepa</h3><p>Dos horas a caballo por la estepa, con los baqueanos de la estancia.</p></div><div class="dato">2 horas</div></li>
+      <li><div class="pto"><svg viewBox="0 0 32 32"><path d="M6 22h20M9 22l2-8h10l2 8" fill="none" stroke="#211A16" stroke-width="2.4"/><path d="M11 10q2-3 0-6M16 10q2-3 0-6M21 10q2-3 0-6" stroke="#D2552B" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg></div>
+        <div><h3>Asado con bebidas</h3><p>El asado de la estancia, con opción vegana o para celíacos si lo avisás al reservar.</p></div><div class="dato">Almuerzo</div></li>
+      <li><div class="pto"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="9" fill="none" stroke="#211A16" stroke-width="2.4"/><path d="M11 16q5 4 10 0" stroke="#D2552B" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg></div>
+        <div><h3>Panqueques con dulce de leche</h3><p>El postre, y vuelta a Bariloche.</p></div><div class="dato">Final</div></li>
+    </ol>
+  </section>
+
+  <section id="reglas">
+    <div class="k">Antes de venir</div>
+    <h2>Lo que conviene saber, a la vista y antes de pagar.</h2>
+    <p class="sub">El formulario de reserva ya chequea esto, así nadie llega a la estancia con una sorpresa.</p>
+    <div class="reglas">
+      <div><b>24 hs</b><span>Cancelación</span><p>Se puede cancelar con 24 horas de anticipación.</p></div>
+      <div><b>1 día</b><span>Reserva</span><p>Se reserva hasta un día antes, según disponibilidad.</p></div>
+      <div><b>Lluvia</b><span>No se suspende</span><p>La salida se hace igual: traé abrigo y algo impermeable.</p></div>
+      <div><b>120 kg</b><span>Peso máximo</span><p>Por el cuidado de los caballos.</p></div>
+      <div><b>No</b><span>Embarazadas</span><p>Por seguridad, no pueden cabalgar.</p></div>
+      <div><b>Menú</b><span>Vegano o celíaco</span><p>Se elige al reservar.</p></div>
+    </div>
+  </section>
+
+  <section id="directo">
+    <div class="k">Reservar directo</div>
+    <h2>El mismo día de campo, sin intermediarios.</h2>
+    <p class="sub">La salida también se vende en plataformas internacionales, que cobran su comisión. Reservada acá, se paga el precio de La Fragua.</p>
+    <div class="compara">
+      <div class="cmp"><small>En plataformas</small><b>US$ 221,89</b><p>Precio por persona publicado en ByFood (en GetYourGuide figura a € 169).</p></div>
+      <div class="cmp directo"><small>Directo en La Fragua</small><b>$ 190.000</b><p>Adulto, según la tarifa publicada en su web ($ 180.000 menores). Pago online por Mercado Pago, voucher al instante.</p></div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="k">Preguntas</div>
+    <h2>Preguntas frecuentes</h2>
+    <details open><summary>¿Qué pasa si llueve?</summary><p>La cabalgata no se suspende por lluvia. Si querés cancelar, avisá con 24 horas de anticipación.</p></details>
+    <details><summary>¿Hay opciones para vegetarianos o celíacos?</summary><p>Sí: hay menú vegano y menú para celíacos. Se elige en la reserva.</p></details>
+    <details><summary>¿Dónde me pasan a buscar?</summary><p>El punto de encuentro es Villegas 222, en el centro de Bariloche.</p></details>
+    <details><summary>¿Cómo pago?</summary><p>Online con Mercado Pago (tarjeta, débito o dinero en cuenta). Te llega el voucher por mail y WhatsApp en el momento.</p></details>
+  </section>
+
+  <div class="pie">
+    <b>Cabalgatas La Fragua</b> · Estancia San Ramón, a 34 km de Bariloche · Encuentro: Villegas 222<br>
+    <a href="mailto:consultas@cabalgataslafragua.com">consultas@cabalgataslafragua.com</a> · <a href="https://wa.me/5492944800762">+54 9 294 480-0762</a> · Tel. +54 294 443-6215<br><br>
+    Prototipo de demostración preparado para Cabalgatas La Fragua por Resolviendo Kos · resolviendokos.com. Disponibilidad de ejemplo; precios tomados de su web (vigencia publicada 01/07/25 – 30/04/26), a actualizar con ustedes.
+  </div>
+</main>
+
+<aside id="reservar">
+  <div class="bol-h"><b>Tu lugar</b><span>Boleto de estancia</span></div>
+  <label>Día de la salida</label>
+  <div class="mesbar"><button id="prev" aria-label="Mes anterior">‹</button><span id="mes"></span><button id="next" aria-label="Mes siguiente">›</button></div>
+  <div class="dias" id="dias"></div>
+  <label>¿Quiénes van?</label>
+  <div class="cnt"><div><b>Adultos</b><small id="pA"></small></div><div class="stp"><button data-t="a" data-v="-1" aria-label="Menos adultos">−</button><output id="oA">2</output><button data-t="a" data-v="1" aria-label="Más adultos">+</button></div></div>
+  <div class="cnt"><div><b>Menores</b><small id="pM"></small></div><div class="stp"><button data-t="m" data-v="-1" aria-label="Menos menores">−</button><output id="oM">0</output><button data-t="m" data-v="1" aria-label="Más menores">+</button></div></div>
+  <label for="menu">Menú</label>
+  <select id="menu"><option>Asado tradicional</option><option>Vegano</option><option>Para celíacos</option><option>Combinado (lo detallo después)</option></select>
+  <label class="check"><input type="checkbox" id="c1"> Todos pesamos menos de 120 kg.</label>
+  <label class="check"><input type="checkbox" id="c2"> No viaja ninguna persona embarazada que vaya a cabalgar.</label>
+  <div class="tot" id="tot"></div>
+  <button class="pagar" id="pagar">Pagar con Mercado Pago</button>
+  <div class="aviso" id="aviso"></div>
+  <p class="nota">Demo: disponibilidad de ejemplo. Los precios son los publicados en su web y se actualizan con ustedes. Cancelación hasta 24 hs antes.</p>
+</aside>
+</div>
+
+<div class="voucher" id="voucher" role="dialog" aria-modal="true" aria-label="Voucher de reserva">
+  <div class="vou">
+    <div class="vou-h"><b>Voucher · La Fragua</b><span id="vCod"></span></div>
+    <div class="vou-b">
+      <svg class="sello" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="54" fill="none" stroke="#D2552B" stroke-width="4"/><circle cx="60" cy="60" r="44" fill="none" stroke="#D2552B" stroke-width="1.5"/><text x="60" y="56" text-anchor="middle" font-family="Rye" font-size="15" fill="#D2552B">PAGADO</text><text x="60" y="76" text-anchor="middle" font-family="Cabin" font-size="10" fill="#D2552B" letter-spacing="2">LA FRAGUA</text></svg>
+      <div id="vDet"></div>
+      <div class="enc"><b>Encuentro:</b> Villegas 222, Bariloche.<br>Demo: acá va el horario de encuentro que definan ustedes.</div>
+      <button id="cerrar">Listo</button>
+    </div>
+  </div>
+</div>
+<a class="wa" href="https://wa.me/5492944800762" target="_blank" rel="noopener">WhatsApp</a>
+<a class="mob-cta" href="#reservar">Reservar</a>
+
+<script>
+const PA=190000,PM=180000;
+const fmt=v=>'$ '+Math.round(v).toLocaleString('es-AR');
+document.getElementById('pA').textContent=fmt(PA)+' c/u';document.getElementById('pM').textContent=fmt(PM)+' c/u';
+let A=2,M=0,sel=null;
+const today=new Date();today.setHours(0,0,0,0);
+const min=new Date(today);min.setDate(min.getDate()+1);
+let vm=new Date(min.getFullYear(),min.getMonth(),1);
+const MES=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+function lleno(d){const x=Math.sin((d.getFullYear()*400+d.getMonth()*31+d.getDate())*91.7)*43758.5;return (x-Math.floor(x))<.18}
+function draw(){const g=document.getElementById('dias');document.getElementById('mes').textContent=MES[vm.getMonth()]+' '+vm.getFullYear();
+  g.innerHTML=['lu','ma','mi','ju','vi','sá','do'].map(d=>`<div class="dw">${d}</div>`).join('');
+  for(let i=0;i<(vm.getDay()+6)%7;i++)g.insertAdjacentHTML('beforeend','<div></div>');
+  const n=new Date(vm.getFullYear(),vm.getMonth()+1,0).getDate();
+  for(let d=1;d<=n;d++){const dt=new Date(vm.getFullYear(),vm.getMonth(),d),b=document.createElement('button');b.textContent=d;
+    if(dt<min)b.disabled=true;else if(lleno(dt)){b.disabled=true;b.className='lleno';b.title='Sin lugar'}
+    if(sel&&+dt===+sel)b.classList.add('on');b.onclick=()=>{sel=dt;draw();calc()};g.appendChild(b)}}
+document.getElementById('prev').onclick=()=>{const p=new Date(vm.getFullYear(),vm.getMonth()-1,1);if(p>=new Date(min.getFullYear(),min.getMonth(),1)){vm=p;draw()}};
+document.getElementById('next').onclick=()=>{vm=new Date(vm.getFullYear(),vm.getMonth()+1,1);draw()};
+document.querySelectorAll('.stp button').forEach(b=>b.onclick=()=>{if(b.dataset.t==='a')A=Math.max(1,Math.min(20,A+ +b.dataset.v));else M=Math.max(0,Math.min(15,M+ +b.dataset.v));oA.value=A;oM.value=M;calc()});
+const aviso=t=>document.getElementById('aviso').textContent=t;
+function calc(){const t=A*PA+M*PM;
+  document.getElementById('tot').innerHTML=`<div class="ln"><span>Día</span><span>${sel?sel.toLocaleDateString('es-AR',{weekday:'long',day:'numeric',month:'long'}):'elegilo arriba'}</span></div><div class="ln"><span>${A} adulto${A>1?'s':''} × ${fmt(PA)}</span><span>${fmt(A*PA)}</span></div>${M?`<div class="ln"><span>${M} menor${M>1?'es':''} × ${fmt(PM)}</span><span>${fmt(M*PM)}</span></div>`:''}<div class="ln big"><span>Total</span><span>${fmt(t)}</span></div>`;aviso('')}
+document.getElementById('pagar').onclick=()=>{
+  if(!sel)return aviso('Elegí el día de la salida.');
+  if(!c1.checked)return aviso('Por el cuidado de los caballos, el peso máximo es 120 kg.');
+  if(!c2.checked)return aviso('Las personas embarazadas no pueden cabalgar.');
+  const cod='LF-'+(sel.getMonth()+1).toString().padStart(2,'0')+sel.getDate().toString().padStart(2,'0')+'-'+(A*10+M);
+  document.getElementById('vCod').textContent=cod;
+  document.getElementById('vDet').innerHTML=`<div class="ln"><span>Fecha</span><span>${sel.toLocaleDateString('es-AR',{weekday:'long',day:'numeric',month:'long'})}</span></div><div class="ln"><span>Personas</span><span>${A} adulto${A>1?'s':''}${M?' + '+M+' menor'+(M>1?'es':''):''}</span></div><div class="ln"><span>Menú</span><span>${menu.value}</span></div><div class="ln"><span>Pagado (demo)</span><span>${fmt(A*PA+M*PM)}</span></div>`;
+  voucher.classList.add('on')};
+document.getElementById('cerrar').onclick=()=>voucher.classList.remove('on');
+voucher.onclick=e=>{if(e.target===voucher)voucher.classList.remove('on')};
+draw();calc();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Cabalgatas La Fragua"></script>
+</body>
+</html>
