@@ -1,0 +1,680 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Disegno Aberturas · Cotizador de obra (prototipo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inria+Serif:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Fustat:wght@400;500;600;700&family=Xanh+Mono&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F1EEE7;
+  --paper-2:#E6E1D6;
+  --card:#FBFAF6;
+  --graf:#26292B;      /* gris grafito */
+  --graf-2:#3A3E41;
+  --ink:#1F2224;
+  --ink-2:#5D615F;
+  --line:#CFC9BC;
+  --anod:#BDB9AF;      /* anodizado natural */
+  --brass:#9C7A2E;     /* herrajes italianos */
+  --brass-2:#C9A653;
+  --glass:#C9DCD9;
+  --glass-2:#A6C4C0;
+  --cota:#9C7A2E;
+  --serif:"Inria Serif",Georgia,serif;
+  --sans:"Fustat",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"Xanh Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5}
+img{max-width:100%;display:block}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--brass);outline-offset:3px}
+.wrap{max-width:1220px;margin:0 auto;padding:0 20px}
+a{color:inherit}
+
+/* aviso */
+.demo{background:var(--brass);color:#1d1606;font-size:13px;padding:7px 0}
+.demo .wrap{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.demo b{font-weight:700}
+
+/* encabezado */
+.top{background:var(--graf);color:#ECE8DF}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:18px;padding-top:16px;padding-bottom:16px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.logo img{height:34px;width:auto}
+.logo .wm{font-family:var(--serif);font-style:italic;font-size:30px;letter-spacing:-.01em;line-height:1}
+.logo .wm small{font-style:normal;font-family:var(--sans);font-size:11px;letter-spacing:.22em;text-transform:uppercase;display:block;color:var(--anod);margin-top:4px}
+.top nav{display:flex;gap:22px;font-size:14px;flex-wrap:wrap}
+.top nav a{text-decoration:none;color:#D9D4C9}
+.top nav a:hover{color:#fff}
+.top .tel{font-family:var(--mono);font-size:15px;color:var(--brass-2);text-decoration:none}
+
+/* portada: alzada */
+.hero{background:var(--graf);color:#ECE8DF;padding:30px 0 0;overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:36px;align-items:end}
+@media (max-width:920px){.hero .wrap{grid-template-columns:1fr}}
+.kicker{font-family:var(--mono);color:var(--brass-2);font-size:14px;letter-spacing:.04em}
+.hero h1{font-family:var(--serif);font-weight:300;font-size:clamp(38px,5.6vw,76px);line-height:1.02;letter-spacing:-.02em;margin:14px 0 0}
+.hero h1 em{font-style:italic;font-weight:400;color:#fff}
+.hero h1 .dim{color:var(--anod)}
+.hero .lead{max-width:52ch;color:#C9C4B9;font-size:18px;margin:22px 0 0}
+.hero .ctas{display:flex;gap:12px;flex-wrap:wrap;margin:26px 0 34px}
+.btn{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:12px 20px;font-weight:600;font-size:15px;border:1.5px solid transparent;cursor:pointer;text-decoration:none;transition:transform .15s ease,background .15s}
+.btn:active{transform:translateY(1px)}
+.btn-brass{background:var(--brass-2);color:#1d1606}
+.btn-brass:hover{background:#d8b764}
+.btn-ghost{border-color:#5a5f62;color:#ECE8DF;background:transparent}
+.btn-ghost:hover{border-color:#ECE8DF}
+.btn-ink{background:var(--graf);color:#fff}
+.btn-ink:hover{background:#000}
+.alzada{position:relative}
+.alzada svg{width:100%;height:auto;display:block}
+.rotulo{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid #4a4f52;font-size:12px;color:#BDB8AD}
+.rotulo div{padding:10px 12px;border-right:1px solid #4a4f52}
+.rotulo div:last-child{border-right:0}
+.rotulo b{display:block;font-family:var(--mono);font-weight:400;color:#fff;font-size:15px}
+@media (max-width:560px){.rotulo{grid-template-columns:repeat(2,1fr)}.rotulo div:nth-child(2){border-right:0}.rotulo div:nth-child(-n+2){border-bottom:1px solid #4a4f52}}
+
+/* placas de esquina */
+.sec{padding:72px 0}
+.sec-h{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:28px}
+.sec-h h2{font-family:var(--serif);font-weight:400;font-size:clamp(30px,3.6vw,46px);line-height:1.05;margin:0;letter-spacing:-.015em;max-width:20ch}
+.sec-h h2 em{font-style:italic}
+.sec-h p{margin:0;max-width:44ch;color:var(--ink-2)}
+.num{font-family:var(--mono);color:var(--brass);font-size:14px;display:block;margin-bottom:10px}
+.placas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+@media (max-width:920px){.placas{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:600px){.placas{grid-template-columns:1fr}}
+.placa{background:var(--card);border:1px solid var(--line);border-radius:4px;overflow:hidden;display:flex;flex-direction:column}
+.chapa{background:#1E3B5A;color:#fff;margin:14px 14px 0;border-radius:6px;padding:9px 12px;display:flex;justify-content:space-between;align-items:center;gap:10px;border:2px solid #fff;box-shadow:0 0 0 1.5px #1E3B5A}
+.chapa .calle{font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:14px;line-height:1.15}
+.chapa .anio{font-family:var(--mono);font-size:13px;opacity:.85;white-space:nowrap}
+.foto{margin:14px 14px 0;aspect-ratio:4/3;border-radius:2px;overflow:hidden;position:relative;background:
+  repeating-linear-gradient(135deg,var(--paper-2) 0 10px,var(--paper) 10px 20px)}
+.foto img{width:100%;height:100%;object-fit:cover}
+.foto .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-style:italic;color:var(--ink-2);font-size:20px;text-align:center;padding:16px}
+.placa .body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:10px;flex:1}
+.placa h3{margin:0;font-family:var(--serif);font-weight:700;font-size:20px;line-height:1.15}
+.spec{list-style:none;margin:0;padding:0;font-size:14px;color:var(--ink-2)}
+.spec li{display:flex;gap:8px;padding:4px 0;border-bottom:1px dashed var(--line)}
+.spec li span:first-child{font-family:var(--mono);color:var(--ink);min-width:62px}
+.placa .btn{align-self:flex-start;margin-top:auto;padding:9px 16px;font-size:14px}
+
+/* cotizador: pliego */
+.mesa{background:var(--paper-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.pliego-grid{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:26px;align-items:start}
+@media (max-width:980px){.pliego-grid{grid-template-columns:1fr}}
+.pliego{background:var(--card);border:1px solid var(--line);border-radius:4px}
+.it{display:grid;grid-template-columns:64px minmax(0,1fr);border-bottom:1px solid var(--line)}
+.it:last-child{border-bottom:0}
+.it .n{font-family:var(--mono);font-size:13px;color:var(--brass);padding:16px 0 0 16px;border-right:1px solid var(--line)}
+@media (max-width:520px){.it{grid-template-columns:46px minmax(0,1fr)}.it .n{padding:16px 0 0 9px;font-size:11px}.it .c{padding:14px 12px 16px}.medidas{grid-template-columns:1fr 1fr 64px}}
+.it .c{padding:14px 16px 16px}
+.it .t{font-weight:700;font-size:15px;margin:0 0 8px}
+.it .hint{font-size:13px;color:var(--ink-2);margin:-4px 0 10px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips input{position:absolute;opacity:0;pointer-events:none}
+.chips label{border:1.5px solid var(--line);border-radius:999px;padding:7px 13px;font-size:14px;cursor:pointer;background:#fff;display:inline-flex;align-items:center;gap:7px;line-height:1.2}
+.chips label:hover{border-color:var(--ink-2)}
+.chips input:checked+label{background:var(--graf);color:#fff;border-color:var(--graf)}
+.chips input:focus-visible+label{outline:2px solid var(--brass);outline-offset:2px}
+.chips input:disabled+label{opacity:.4;cursor:not-allowed}
+.sw{width:14px;height:14px;border-radius:50%;border:1px solid rgba(0,0,0,.25);display:inline-block}
+.medidas{display:grid;grid-template-columns:1fr 1fr 90px;gap:10px}
+.campo label{display:block;font-size:12px;color:var(--ink-2);margin-bottom:4px}
+.campo input{width:100%;border:1.5px solid var(--line);border-radius:4px;padding:10px 10px;background:#fff;font-family:var(--mono);font-size:17px}
+.campo input:focus{border-color:var(--graf);outline:none}
+.check{display:flex;align-items:center;gap:9px;font-size:14px;padding:4px 0;cursor:pointer}
+.check input{width:18px;height:18px;accent-color:var(--graf)}
+
+.tablero{position:sticky;top:14px;display:flex;flex-direction:column;gap:14px}
+@media (max-width:980px){.tablero{position:static}}
+.plano{background:#FCFBF8;border:1px solid var(--line);border-radius:4px;position:relative;
+  background-image:linear-gradient(var(--paper-2) 1px,transparent 1px),linear-gradient(90deg,var(--paper-2) 1px,transparent 1px);background-size:24px 24px}
+.plano svg{width:100%;height:auto;display:block}
+.plano .tag{position:absolute;left:12px;bottom:8px;font-family:var(--mono);font-size:12px;color:var(--ink-2)}
+.precio{background:var(--graf);color:#ECE8DF;border-radius:4px;padding:18px 20px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:center}
+.precio .lbl{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--anod)}
+.precio .rng{font-family:var(--serif);font-size:clamp(26px,3vw,34px);line-height:1.1;color:#fff}
+.precio .det{font-size:13px;color:#B9B4A9;margin-top:4px}
+@media (max-width:520px){.precio{grid-template-columns:1fr}}
+
+.lista{background:var(--card);border:1px solid var(--line);border-radius:4px}
+.lista h3{margin:0;padding:14px 16px;border-bottom:1px solid var(--line);font-size:15px;display:flex;justify-content:space-between;gap:10px}
+.lista h3 span{font-family:var(--mono);font-weight:400;color:var(--ink-2)}
+.row{display:grid;grid-template-columns:52px minmax(0,1fr) auto auto;gap:12px;align-items:center;padding:10px 16px;border-bottom:1px dashed var(--line);font-size:14px}
+.row svg{width:52px;height:40px}
+.row .x{border:0;background:transparent;cursor:pointer;color:var(--ink-2);font-size:18px;padding:4px 8px;border-radius:4px}
+.row .x:hover{background:var(--paper-2);color:var(--ink)}
+.row .p{font-family:var(--mono);white-space:nowrap}
+.vacio{padding:18px 16px;color:var(--ink-2);font-size:14px}
+.tot{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 16px;flex-wrap:wrap}
+.tot b{font-family:var(--serif);font-size:22px}
+.cliente{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px 16px}
+.cliente input{width:100%;border:1.5px solid var(--line);border-radius:4px;padding:10px;background:#fff}
+@media (max-width:520px){.cliente{grid-template-columns:1fr}}
+.wa{background:#1F6E43;color:#fff;width:calc(100% - 32px);margin:0 16px 16px;justify-content:center}
+.wa:hover{background:#185a36}
+
+/* sistemas */
+.sistemas{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1.5px solid var(--ink)}
+@media (max-width:920px){.sistemas{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:540px){.sistemas{grid-template-columns:1fr}}
+.sis{padding:22px 20px 26px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.sis:last-child{border-right:0}
+.sis .cod{font-family:var(--mono);color:var(--brass);font-size:13px}
+.sis h3{font-family:var(--serif);font-style:italic;font-weight:400;font-size:28px;margin:6px 0 10px}
+.sis p{margin:0 0 12px;color:var(--ink-2);font-size:15px}
+.sis svg{width:100%;height:70px;margin-bottom:12px}
+.sis .tip{font-size:13px;color:var(--ink)}
+
+/* tabla de precios */
+.precios{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:6px 0}
+.precios summary{cursor:pointer;padding:14px 18px;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px}
+.precios summary::-webkit-details-marker{display:none}
+.precios summary span{font-weight:400;color:var(--ink-2);font-size:14px}
+.ptab{padding:0 18px 18px;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px 22px}
+.ptab h4{grid-column:1/-1;margin:14px 0 0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--brass)}
+.ptab label{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:14px;border-bottom:1px dashed var(--line);padding:4px 0}
+.ptab input{width:120px;border:1px solid var(--line);border-radius:4px;padding:6px 8px;font-family:var(--mono);text-align:right;background:#fff}
+.ptab .acc{grid-column:1/-1;display:flex;gap:10px;margin-top:8px;flex-wrap:wrap}
+
+/* pie */
+footer{background:var(--graf);color:#C9C4B9;padding:48px 0 30px;font-size:14px}
+footer .wrap{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:28px}
+@media (max-width:760px){footer .wrap{grid-template-columns:1fr}}
+footer h4{color:#fff;font-family:var(--serif);font-weight:400;font-style:italic;font-size:22px;margin:0 0 10px}
+footer .legal{grid-column:1/-1;border-top:1px solid #45494c;padding-top:16px;font-size:12px;color:#9C978C}
+
+/* modal mensaje */
+dialog{border:0;border-radius:6px;padding:0;max-width:520px;width:calc(100% - 32px);background:var(--card)}
+dialog::backdrop{background:rgba(20,22,23,.6)}
+dialog .in{padding:22px}
+dialog h3{margin:0 0 8px;font-family:var(--serif);font-size:24px;font-weight:400}
+dialog pre{white-space:pre-wrap;font-family:var(--mono);font-size:14px;background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:12px;max-height:46vh;overflow:auto}
+dialog .acc{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(30px);opacity:0;background:var(--graf);color:#fff;padding:10px 16px;border-radius:999px;font-size:14px;transition:.25s;pointer-events:none;z-index:50}
+.toast.on{opacity:1;transform:translateX(-50%)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<div class="demo"><div class="wrap">
+  <span><b>Prototipo de demostración preparado para Disegno Aberturas.</b> Los precios son de ejemplo.</span>
+  <span>Armado por Resolviendo Kos</span>
+</div></div>
+
+<header class="top"><div class="wrap">
+  <a class="logo" href="#">
+    <img src="https://disegnoaberturas.com.ar/images/brand/logo-neg.svg" alt="Disegno Aberturas" onerror="this.remove();document.getElementById('wm').hidden=false">
+    <span class="wm" id="wm" hidden>disegno<small>Aberturas · Pergamino</small></span>
+  </a>
+  <nav aria-label="Secciones">
+    <a href="#obras">Obras</a>
+    <a href="#cotizar">Cotizar</a>
+    <a href="#sistemas">Sistemas</a>
+    <a href="#contacto">Contacto</a>
+  </nav>
+  <a class="tel" href="tel:+542477667724">2477 66-7724</a>
+</div></header>
+
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <span class="kicker">Bv. Marcelino Ugarte 1020 · Pergamino · más de 15 años</span>
+      <h1><span class="dim">Merced y Alsina.</span><br><span class="dim">25 de Mayo y Mitre.</span><br><span class="dim">Estrada al 500.</span><br><em>Ahora, tu casa.</em></h1>
+      <p class="lead">Las mismas líneas A30 New y Modena de los edificios que hicimos en el centro. Elegí la abertura, cargá la medida y mirá un precio estimado en el momento. Nos llega el pedido por WhatsApp con todo anotado.</p>
+      <div class="ctas">
+        <a class="btn btn-brass" href="#cotizar">Cotizar mi abertura</a>
+        <a class="btn btn-ghost" href="#obras">Ver obras en Pergamino</a>
+      </div>
+    </div>
+    <div class="alzada" aria-hidden="true">
+      <svg viewBox="0 0 560 470" id="alzadaSvg"></svg>
+      <div class="rotulo">
+        <div>Sistemas<b>A30 · Modena</b></div>
+        <div>Frentes<b>Integral · Piel</b></div>
+        <div>Vidrios<b>Laminado · DVH</b></div>
+        <div>Atención<b>L a V 8–16</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="obras">
+  <div class="wrap">
+    <div class="sec-h">
+      <div><span class="num">01 — Obras</span><h2>Obras que ya llevan <em>aberturas Disegno</em></h2></div>
+      <p>Cada obra trae su especificación real. Tocá "Cotizar algo así" y el cotizador se carga con ese sistema, ese color y ese vidrio.</p>
+    </div>
+    <div class="placas" id="placas"></div>
+  </div>
+</section>
+
+<section class="sec mesa" id="cotizar">
+  <div class="wrap">
+    <div class="sec-h">
+      <div><span class="num">02 — Pliego</span><h2>Armá tu pliego de <em>aberturas</em></h2></div>
+      <p>Cargá una por una las aberturas de tu obra. El plano se dibuja con tus medidas y el precio se actualiza solo.</p>
+    </div>
+    <div class="pliego-grid">
+      <form class="pliego" id="f" onsubmit="return false">
+        <div class="it"><div class="n">Ítem 1</div><div class="c">
+          <p class="t">Sistema</p>
+          <div class="chips" id="cSis"></div>
+        </div></div>
+        <div class="it"><div class="n">Ítem 2</div><div class="c">
+          <p class="t">Tipología</p>
+          <p class="hint" id="tipHint">Las que fabricamos en A30 New y Modena.</p>
+          <div class="chips" id="cTip"></div>
+        </div></div>
+        <div class="it" id="itHojas"><div class="n">Ítem 3</div><div class="c">
+          <p class="t">Cantidad de hojas</p>
+          <div class="chips" id="cHojas"></div>
+        </div></div>
+        <div class="it"><div class="n">Ítem 4</div><div class="c">
+          <p class="t">Medidas del vano</p>
+          <div class="medidas">
+            <div class="campo"><label for="w">Ancho (cm)</label><input id="w" type="number" inputmode="numeric" min="40" max="900" value="180"></div>
+            <div class="campo"><label for="h">Alto (cm)</label><input id="h" type="number" inputmode="numeric" min="30" max="400" value="120"></div>
+            <div class="campo"><label for="q">Cant.</label><input id="q" type="number" inputmode="numeric" min="1" max="50" value="1"></div>
+          </div>
+        </div></div>
+        <div class="it"><div class="n">Ítem 5</div><div class="c">
+          <p class="t">Color</p>
+          <div class="chips" id="cCol"></div>
+        </div></div>
+        <div class="it"><div class="n">Ítem 6</div><div class="c">
+          <p class="t">Vidrio</p>
+          <div class="chips" id="cVid"></div>
+        </div></div>
+        <div class="it"><div class="n">Ítem 7</div><div class="c">
+          <p class="t">Extras</p>
+          <label class="check"><input type="checkbox" id="mosq"> Mosquitero</label>
+          <label class="check"><input type="checkbox" id="inst" checked> Colocación en obra (Pergamino y zona)</label>
+        </div></div>
+      </form>
+
+      <div class="tablero">
+        <div class="plano">
+          <span class="tag" id="planoTag">Vista interior · escala automática</span>
+          <svg viewBox="0 0 600 430" id="plano" role="img" aria-label="Plano de la abertura"></svg>
+        </div>
+        <div class="precio">
+          <div>
+            <div class="lbl">Precio estimado</div>
+            <div class="rng" id="rng">—</div>
+            <div class="det" id="det"></div>
+          </div>
+          <button class="btn btn-brass" id="add" type="button">Agregar al pliego</button>
+        </div>
+        <div class="lista" id="contacto-pliego">
+          <h3>Tu pliego <span id="cnt">0 ítems</span></h3>
+          <div id="rows"><div class="vacio">Todavía no agregaste aberturas. Configurá una y tocá "Agregar al pliego".</div></div>
+          <div class="tot"><span>Total estimado</span><b id="tot">$0</b></div>
+          <div class="cliente">
+            <input id="nom" placeholder="Tu nombre" autocomplete="name">
+            <input id="loc" placeholder="Barrio o localidad de la obra">
+          </div>
+          <button class="btn wa" id="send" type="button">Enviar pliego por WhatsApp</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="sistemas">
+  <div class="wrap">
+    <div class="sec-h">
+      <div><span class="num">03 — Sistemas</span><h2>Cuatro sistemas, <em>de la ventana al edificio</em></h2></div>
+      <p>Desde una corrediza de dormitorio hasta la envolvente vidriada de un edificio de altura.</p>
+    </div>
+    <div class="sistemas">
+      <div class="sis">
+        <span class="cod">SIS-01</span><h3>A30 New</h3>
+        <svg viewBox="0 0 200 70"><rect x="10" y="8" width="180" height="54" fill="none" stroke="#26292B" stroke-width="5" rx="6"/><line x1="100" y1="8" x2="100" y2="62" stroke="#26292B" stroke-width="5"/><rect x="18" y="16" width="76" height="38" fill="#C9DCD9" rx="3"/><rect x="106" y="16" width="76" height="38" fill="#C9DCD9" rx="3"/></svg>
+        <p>La línea de mayor prestación, estanqueidad y resistencia del aluminio, con formas curvas sobre el diseño tradicional.</p>
+        <span class="tip">Corrediza · banderola · guillotina · oscilobatiente · proyectante · paño fijo · puerta</span>
+      </div>
+      <div class="sis">
+        <span class="cod">SIS-02</span><h3>Modena</h3>
+        <svg viewBox="0 0 200 70"><rect x="10" y="8" width="180" height="54" fill="none" stroke="#26292B" stroke-width="4"/><line x1="100" y1="8" x2="100" y2="62" stroke="#26292B" stroke-width="4"/><rect x="16" y="14" width="80" height="42" fill="#C9DCD9"/><rect x="104" y="14" width="80" height="42" fill="#C9DCD9"/><circle cx="94" cy="35" r="3" fill="#9C7A2E"/></svg>
+        <p>Sistema mediano de estética europea, perfiles rectos o redondeados, accesorios italianos. Simple o doble vidriado.</p>
+        <span class="tip">Mismas tipologías que A30 · resuelve aberturas de ¼ o ½ punto</span>
+      </div>
+      <div class="sis">
+        <span class="cod">SIS-03</span><h3>Frente integral</h3>
+        <svg viewBox="0 0 200 70"><rect x="6" y="6" width="188" height="58" fill="#C9DCD9"/><g stroke="#26292B" stroke-width="4"><rect x="6" y="6" width="188" height="58" fill="none"/><line x1="53" y1="6" x2="53" y2="64"/><line x1="100" y1="6" x2="100" y2="64"/><line x1="147" y1="6" x2="147" y2="64"/><line x1="6" y1="24" x2="194" y2="24"/></g></svg>
+        <p>Columnas y travesaños para grandes paños fijos. Es el frente de nuestro propio local en Bv. Ugarte 1020.</p>
+        <span class="tip">Paños fijos · combina puertas y ventanas de otras líneas</span>
+      </div>
+      <div class="sis">
+        <span class="cod">SIS-04</span><h3>Piel de vidrio</h3>
+        <svg viewBox="0 0 200 70"><g fill="#A6C4C0"><rect x="6" y="6" width="44" height="17"/><rect x="54" y="6" width="44" height="17"/><rect x="102" y="6" width="44" height="17"/><rect x="150" y="6" width="44" height="17"/><rect x="6" y="27" width="44" height="17"/><rect x="54" y="27" width="44" height="17"/><rect x="102" y="27" width="44" height="17"/><rect x="150" y="27" width="44" height="17"/><rect x="6" y="48" width="44" height="17"/><rect x="54" y="48" width="44" height="17"/><rect x="102" y="48" width="44" height="17"/><rect x="150" y="48" width="44" height="17"/></g></svg>
+        <p>Fachada continua para edificios de altura: vidrio simple o DVH, con o sin aluminio a la vista desde afuera.</p>
+        <span class="tip">Paño fijo · ventana desplazable</span>
+      </div>
+    </div>
+
+    <details class="precios" style="margin-top:40px" id="tabla">
+      <summary>Tabla de precios (solo para Disegno) <span>Cambiá un valor y el cotizador se actualiza</span></summary>
+      <div class="ptab" id="ptab"></div>
+    </details>
+  </div>
+</section>
+
+<footer id="contacto">
+  <div class="wrap">
+    <div>
+      <h4>Disegno Aberturas</h4>
+      <p>Aberturas de aluminio y PVC fabricadas para Pergamino y la zona desde hace más de 15 años.</p>
+      <p>Bv. Marcelino Ugarte 1020, Pergamino, Buenos Aires</p>
+    </div>
+    <div>
+      <h4>Hablemos</h4>
+      <p>Tel. <a href="tel:+542477667724">2477 66-7724</a><br>
+      <a href="mailto:disegnoaberturas@yahoo.com.ar">disegnoaberturas@yahoo.com.ar</a><br>
+      Instagram @disegno.aberturas</p>
+    </div>
+    <div>
+      <h4>Horario</h4>
+      <p>Lunes a viernes<br>8:00 a 16:00 hs</p>
+    </div>
+    <p class="legal">Prototipo de demostración preparado para Disegno Aberturas por Resolviendo Kos. Precios de ejemplo, no son una oferta. Fotos y datos de obra tomados de disegnoaberturas.com.ar.</p>
+  </div>
+</footer>
+
+<dialog id="dlg"><div class="in">
+  <h3>Así llega el pedido</h3>
+  <p style="margin:0 0 10px;color:var(--ink-2);font-size:14px">Este es el mensaje que se abre en WhatsApp con tu pliego cargado.</p>
+  <pre id="msg"></pre>
+  <div class="acc">
+    <button class="btn" style="border-color:var(--line)" id="dlgClose" type="button">Volver</button>
+    <a class="btn wa" style="width:auto;margin:0" id="waGo" target="_blank" rel="noopener">Abrir WhatsApp</a>
+  </div>
+</div></dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ======= Datos del negocio ======= */
+const WA = "5492477667724";
+const SISTEMAS = [
+  {id:"a30",  name:"A30 New"},
+  {id:"mod",  name:"Modena"},
+  {id:"pvc",  name:"PVC (perfil alemán)"},
+  {id:"fi",   name:"Frente integral"}
+];
+const TIPOS = [
+  {id:"corr", name:"Corrediza",      sis:["a30","mod","pvc"], hojas:[2,3,4,6], mosq:true},
+  {id:"osc",  name:"Abrir / oscilobatiente", sis:["a30","mod","pvc"], hojas:[1,2], mosq:true},
+  {id:"proy", name:"Proyectante",    sis:["a30","mod","pvc"], hojas:[1], mosq:true},
+  {id:"band", name:"Banderola",      sis:["a30","mod"], hojas:[1], mosq:false},
+  {id:"guil", name:"Guillotina",     sis:["a30","mod"], hojas:[2], mosq:true},
+  {id:"fijo", name:"Paño fijo",      sis:["a30","mod","pvc","fi"], hojas:[1,2,3,4], mosq:false},
+  {id:"puer", name:"Puerta de abrir",sis:["a30","mod","fi"], hojas:[1,2], mosq:false, door:true},
+  {id:"port", name:"Portón",         sis:["mod"], hojas:[2], mosq:false, door:true}
+];
+const COLORES = [
+  {id:"bla", name:"Blanco",            hex:"#F4F3EF", st:"#8F9393"},
+  {id:"nat", name:"Anodizado natural", hex:"#BDB9AF", st:"#7F7B72"},
+  {id:"gra", name:"Gris grafito",      hex:"#3B3F42", st:"#26292B"},
+  {id:"ant", name:"Gris antracita",    hex:"#2F3437", st:"#1E2224"}
+];
+const VIDRIOS = [
+  {id:"sim", name:"Simple 4 mm"},
+  {id:"lam", name:"Laminado de seguridad 3+3"},
+  {id:"dvh", name:"Termopanel con laminado en ambas caras"}
+];
+const OBRAS = [
+  {calle:"Merced y Alsina", anio:"ago 2021", tit:"Edificio Merced y Alsina", img:"https://disegnoaberturas.com.ar/storage/works/PLQDNyYqUa3DdussS5dPRRz6gM00XMMTz7lHSxZN.jpg",
+   spec:[["Sistema","A30 y Modena"],["Color","Aluminio blanco"],["Vidrio","Termopanel, laminado en ambas caras"]], pre:{sis:"a30",tip:"corr",hojas:2,col:"bla",vid:"dvh",w:180,h:120}},
+  {calle:"25 de Mayo y Mitre", anio:"jun 2021", tit:"Edificio 25 de Mayo y Mitre", img:"https://disegnoaberturas.com.ar/storage/works/tKD8XbZLMljmyKarQhVe7hVInPXCuOGpZclyBzcQ.jpg",
+   spec:[["Sistema","Frente integral"],["Color","Gris grafito"],["Vidrio","Laminado de seguridad en PB"]], pre:{sis:"fi",tip:"fijo",hojas:3,col:"gra",vid:"lam",w:420,h:260}},
+  {calle:"Estrada al 500", anio:"oct 2021", tit:"Edificio Estrada al 500", img:"https://disegnoaberturas.com.ar/storage/works/OeqEMPuug0TOY9D1iwHJRwP7XId28oTrOdpq9m08.jpg",
+   spec:[["Sistema","A30, corrediza 3 hojas"],["Color","Aluminio blanco"],["Vidrio","Termopanel, laminado en ambas caras"]], pre:{sis:"a30",tip:"corr",hojas:3,col:"bla",vid:"dvh",w:270,h:140}},
+  {calle:"Bv. Ugarte 1020", anio:"oct 2020", tit:"Nuestro local y showroom", img:"https://disegnoaberturas.com.ar/storage/works/M7EoiGHXDhZgU0RD37YXwhhTLcLgLMiDv2kqQH4u.jpg",
+   spec:[["Sistema","Frente integral"],["Color","Anodizado natural"],["Vidrio","Laminado de seguridad"]], pre:{sis:"fi",tip:"fijo",hojas:4,col:"nat",vid:"lam",w:500,h:280}},
+  {calle:"Barrio Los Molinos", anio:"ene 2022", tit:"Casa quinta, Los Molinos", img:"https://disegnoaberturas.com.ar/storage/works/kbrLCg3PnhwRtIrea79OENHa36kGxWVsKnkYzUGJ.jpg",
+   spec:[["Sistema","A30, corrediza 3 hojas"],["Color","Anodizado natural"],["Vidrio","Termopanel, laminado en ambas caras"]], pre:{sis:"a30",tip:"corr",hojas:3,col:"nat",vid:"dvh",w:300,h:220}},
+  {calle:"Barrio Viajantes", anio:"sep 2021", tit:"Local comercial, B° Viajantes", img:"https://disegnoaberturas.com.ar/storage/works/iqYcYUMWvCloVF3xU6pi2j3YEHBkomTLBHnDEvbu.jpg",
+   spec:[["Sistema","Frente integral + portón Modena"],["Color","Anodizado natural"],["Vidrio","Laminado de seguridad"]], pre:{sis:"mod",tip:"port",hojas:2,col:"nat",vid:"lam",w:300,h:240}}
+];
+
+/* ======= Precios de ejemplo (editables) ======= */
+const DEF = {
+  m2:{corr:265000, osc:330000, proy:300000, band:280000, guil:310000, fijo:190000, puer:360000, port:340000},
+  sis:{a30:1.25, mod:1, pvc:1.6, fi:1.15},
+  vid:{sim:0, lam:42000, dvh:118000},
+  col:{bla:0, nat:6, gra:12, ant:14},
+  hojaExtra:7, mosqM2:48000, instPct:15, minM2:1, rango:8
+};
+let P = cargar();
+function cargar(){ try{const s=localStorage.getItem("disegno_precios"); if(s) return merge(structuredClone(DEF),JSON.parse(s));}catch(e){} return structuredClone(DEF); }
+function merge(a,b){ for(const k in b){ if(b[k]&&typeof b[k]==="object"&&a[k]) merge(a[k],b[k]); else if(k in a) a[k]=b[k]; } return a; }
+function guardar(){ try{localStorage.setItem("disegno_precios",JSON.stringify(P));}catch(e){} }
+
+/* ======= Estado ======= */
+const S = {sis:"a30", tip:"corr", hojas:2, w:180, h:120, q:1, col:"bla", vid:"dvh", mosq:false, inst:true};
+const items = [];
+const $ = id => document.getElementById(id);
+const by = (a,id) => a.find(x=>x.id===id);
+const ars = n => "$" + Math.round(n).toLocaleString("es-AR");
+const r1k = n => Math.round(n/1000)*1000;
+const clamp = (v,a,b) => Math.min(b,Math.max(a,v));
+
+function calc(st){
+  const area = Math.max(st.w/100*st.h/100, P.minM2);
+  const t = by(TIPOS,st.tip);
+  let u = area * P.m2[st.tip] * P.sis[st.sis];
+  const extraH = Math.max(0, st.hojas - t.hojas[0]);
+  u *= 1 + extraH*P.hojaExtra/100;
+  u += area * P.vid[st.vid];
+  u *= 1 + (P.col[st.col]||0)/100;
+  if(st.mosq && t.mosq) u += area*P.mosqM2;
+  if(st.inst) u *= 1 + P.instPct/100;
+  const tot = u*st.q, r = P.rango/100;
+  return {area, u, lo:r1k(tot*(1-r)), hi:r1k(tot*(1+r)), mid:r1k(tot)};
+}
+
+/* ======= Dibujo ======= */
+function dibujo(st, o={}){
+  const VW=o.vw||600, VH=o.vh||430, mini=!!o.mini;
+  const c = by(COLORES,st.col), t = by(TIPOS,st.tip);
+  const pad = mini?3:78;
+  const sc = Math.min((VW-pad*2)/st.w, (VH-pad*2)/st.h);
+  const W=st.w*sc, H=st.h*sc, x=(VW-W)/2+(mini?0:12), y=(VH-H)/2-(mini?0:10);
+  const fr = mini?2.4:clamp(W*.03,7,14), sw = mini?.8:1.4;
+  const gf = st.vid==="dvh"?"var(--glass-2)":"var(--glass)";
+  let g = "";
+  const n = st.hojas;
+  g += `<rect x="${x}" y="${y}" width="${W}" height="${H}" fill="${c.hex}" stroke="${c.st}" stroke-width="${sw}"/>`;
+  const ix=x+fr, iy=y+fr, iw=W-fr*2, ih=H-fr*2;
+  const hoja = (hx,hy,hw,hh,kind,dir) => {
+    const f2 = mini?1.6:clamp(hw*.05,4,9);
+    let s = `<rect x="${hx}" y="${hy}" width="${hw}" height="${hh}" fill="${c.hex}" stroke="${c.st}" stroke-width="${sw}"/>`;
+    s += `<rect x="${hx+f2}" y="${hy+f2}" width="${hw-f2*2}" height="${hh-f2*2}" fill="${gf}" stroke="${c.st}" stroke-width="${sw*.7}"/>`;
+    if(st.vid==="dvh" && !mini) s += `<rect x="${hx+f2+4}" y="${hy+f2+4}" width="${hw-f2*2-8}" height="${hh-f2*2-8}" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1"/>`;
+    if(!mini && st.vid!=="sim") s += `<line x1="${hx+f2+10}" y1="${hy+hh-f2-12}" x2="${hx+f2+34}" y2="${hy+hh-f2-36}" stroke="#fff" stroke-opacity=".7" stroke-width="2"/>`;
+    const L = "stroke=\"var(--ink)\" stroke-width=\""+(mini?.6:1)+"\" stroke-dasharray=\""+(mini?"2 1.5":"6 4")+"\" fill=\"none\"";
+    if(kind==="abrir"){ const ex = dir<0?hx:hx+hw; const op = dir<0?hx+hw:hx; s+=`<polyline points="${ex},${hy+f2} ${op},${hy+hh/2} ${ex},${hy+hh-f2}" ${L}/>`; }
+    if(kind==="osc"){ s+=`<polyline points="${hx+f2},${hy+f2} ${hx+hw/2},${hy+hh-f2} ${hx+hw-f2},${hy+f2}" ${L}/>`; }
+    if(kind==="proy"){ s+=`<polyline points="${hx+f2},${hy+hh-f2} ${hx+hw/2},${hy+f2} ${hx+hw-f2},${hy+hh-f2}" ${L}/>`; }
+    if(kind==="band"){ s+=`<polyline points="${hx+f2},${hy+f2} ${hx+hw/2},${hy+hh-f2} ${hx+hw-f2},${hy+f2}" ${L}/>`; }
+    if(kind==="slide" && !mini){ const ay=hy+hh/2, ax=hx+hw/2; s+=`<path d="M${ax-18} ${ay} H${ax+18} M${ax+(dir>0?18:-18)} ${ay} l${dir>0?-7:7} -5 M${ax+(dir>0?18:-18)} ${ay} l${dir>0?-7:7} 5" stroke="var(--ink)" stroke-width="1.5" fill="none"/>`; }
+    if(kind!=="fijo" && kind!=="slide" && !mini && kind!=="band" && kind!=="proy" && kind!=="osc-n"){ /* manija */
+      const mx = dir<0?hx+hw-f2-4:hx+f2+2; s+=`<rect x="${mx}" y="${hy+hh/2-12}" width="3" height="24" rx="1.5" fill="var(--brass)"/>`; }
+    if(kind==="slide" && !mini){ const mx = dir>0?hx+f2+2:hx+hw-f2-5; s+=`<rect x="${mx}" y="${hy+hh/2-14}" width="3" height="28" rx="1.5" fill="var(--brass)"/>`; }
+    return s;
+  };
+  if(st.tip==="corr"){
+    const ov = mini?1:6, hw = (iw+ov*(n-1))/n;
+    for(let i=0;i<n;i++){ const hx = ix+i*(hw-ov); g+=hoja(hx, iy, hw, ih, "slide", i<n/2?1:-1); }
+  } else if(st.tip==="guil"){
+    g+=hoja(ix,iy,iw,ih/2+3,"fijo"); g+=hoja(ix,iy+ih/2-3,iw,ih/2+3,"fijo");
+    if(!mini) g+=`<path d="M${ix+iw/2} ${iy+ih*.62} v${ih*.22} m0 -${ih*.22} l-6 9 m6 -9 l6 9" stroke="var(--ink)" stroke-width="1.5" fill="none"/>`;
+  } else if(st.tip==="band"){
+    const bh = Math.min(ih*.42, ih); g+=hoja(ix,iy,iw,ih,"band");
+  } else if(st.tip==="port"){
+    const hw=iw/2; g+=hoja(ix,iy,hw,ih,"abrir",-1); g+=hoja(ix+hw,iy,hw,ih,"abrir",1);
+    if(!mini) for(let k=1;k<5;k++){ const yy=iy+ih*k/5; g+=`<line x1="${ix+6}" y1="${yy}" x2="${ix+iw-6}" y2="${yy}" stroke="${c.st}" stroke-width="1"/>`; }
+  } else {
+    const hw=iw/n;
+    for(let i=0;i<n;i++){
+      const kind = st.tip==="fijo"?"fijo":st.tip==="proy"?"proy":st.tip==="puer"?"abrir":(n===1?"osc":"abrir");
+      g+=hoja(ix+i*hw, iy, hw, ih, kind, n===2?(i===0?-1:1):1);
+    }
+  }
+  if(t.door && !mini) g+=`<line x1="${x-30}" y1="${y+H}" x2="${x+W+30}" y2="${y+H}" stroke="var(--ink)" stroke-width="2"/>`;
+  if(!mini){
+    const cy = y-30, cx = x+W+30;
+    g+=`<g stroke="var(--cota)" stroke-width="1" fill="none"><line x1="${x}" y1="${cy}" x2="${x+W}" y2="${cy}"/><line x1="${x}" y1="${cy-7}" x2="${x}" y2="${cy+7}"/><line x1="${x+W}" y1="${cy-7}" x2="${x+W}" y2="${cy+7}"/><line x1="${x-4}" y1="${cy+4}" x2="${x+4}" y2="${cy-4}"/><line x1="${x+W-4}" y1="${cy+4}" x2="${x+W+4}" y2="${cy-4}"/>
+      <line x1="${cx}" y1="${y}" x2="${cx}" y2="${y+H}"/><line x1="${cx-7}" y1="${y}" x2="${cx+7}" y2="${y}"/><line x1="${cx-7}" y1="${y+H}" x2="${cx+7}" y2="${y+H}"/><line x1="${cx-4}" y1="${y+4}" x2="${cx+4}" y2="${y-4}"/><line x1="${cx-4}" y1="${y+H+4}" x2="${cx+4}" y2="${y+H-4}"/></g>`;
+    g+=`<text x="${x+W/2}" y="${cy-9}" text-anchor="middle" font-family="Xanh Mono, monospace" font-size="17" fill="var(--cota)">${st.w} cm</text>`;
+    g+=`<text x="${cx+12}" y="${y+H/2}" font-family="Xanh Mono, monospace" font-size="17" fill="var(--cota)" transform="rotate(90 ${cx+12} ${y+H/2})" text-anchor="middle">${st.h} cm</text>`;
+  }
+  return g;
+}
+
+function alzada(){
+  const s=$("alzadaSvg"); let g="";
+  const bx=70,by0=40,bw=420,bh=430;
+  g+=`<rect x="${bx}" y="${by0}" width="${bw}" height="${bh}" fill="#303437" stroke="#5a5f62"/>`;
+  for(let fl=0;fl<4;fl++){
+    const yy=by0+24+fl*86;
+    g+=`<line x1="${bx}" y1="${yy+76}" x2="${bx+bw}" y2="${yy+76}" stroke="#4a4f52"/>`;
+    for(let k=0;k<3;k++){
+      const wx=bx+26+k*134, ww=112, wh=56;
+      g+=`<rect x="${wx}" y="${yy}" width="${ww}" height="${wh}" fill="#3f6260" fill-opacity=".55" stroke="#BDB9AF" stroke-width="3" class="win" style="--d:${(fl*3+k)*90}ms"/>`;
+      g+=`<line x1="${wx+ww/2}" y1="${yy}" x2="${wx+ww/2}" y2="${yy+wh}" stroke="#BDB9AF" stroke-width="2.4"/>`;
+      g+=`<rect x="${wx-6}" y="${yy+wh}" width="${ww+12}" height="4" fill="#BDB9AF"/>`;
+    }
+  }
+  // planta baja: frente integral
+  const py=by0+24+4*86-6;
+  g+=`<rect x="${bx+14}" y="${py}" width="${bw-28}" height="${bh-(py-by0)-0}" fill="#5c7f7c" fill-opacity=".5" stroke="#C9A653" stroke-width="3"/>`;
+  for(let k=1;k<6;k++) g+=`<line x1="${bx+14+k*(bw-28)/6}" y1="${py}" x2="${bx+14+k*(bw-28)/6}" y2="${by0+bh}" stroke="#C9A653" stroke-width="2.4"/>`;
+  g+=`<line x1="${bx+14}" y1="${py+22}" x2="${bx+bw-14}" y2="${py+22}" stroke="#C9A653" stroke-width="2"/>`;
+  // cota vertical
+  g+=`<g stroke="#C9A653" stroke-width="1"><line x1="${bx+bw+28}" y1="${by0}" x2="${bx+bw+28}" y2="${by0+bh}"/><line x1="${bx+bw+22}" y1="${by0}" x2="${bx+bw+34}" y2="${by0}"/><line x1="${bx+bw+22}" y1="${by0+bh}" x2="${bx+bw+34}" y2="${by0+bh}"/></g>`;
+  g+=`<text x="${bx+bw+44}" y="${by0+bh/2}" fill="#C9A653" font-family="Xanh Mono, monospace" font-size="14" transform="rotate(90 ${bx+bw+44} ${by0+bh/2})" text-anchor="middle">A30 · Modena · Frente integral en PB</text>`;
+  g+=`<text x="${bx}" y="${by0-14}" fill="#BDB9AF" font-family="Xanh Mono, monospace" font-size="13">ALZADA TIPO — EDIFICIO DEL CENTRO</text>`;
+  s.innerHTML=g;
+}
+
+/* ======= UI ======= */
+function chips(el, name, arr, val, label=x=>x.name){
+  el.innerHTML = arr.map(o=>`<input type="radio" name="${name}" id="${name}-${o.id}" value="${o.id}" ${o.id==val?"checked":""} ${o.dis?"disabled":""}><label for="${name}-${o.id}">${label(o)}</label>`).join("");
+}
+function pintarForm(){
+  chips($("cSis"),"sis",SISTEMAS,S.sis);
+  const t=by(TIPOS,S.tip);
+  chips($("cTip"),"tip",TIPOS.map(x=>({...x,dis:!x.sis.includes(S.sis)})),S.tip);
+  chips($("cHojas"),"hojas",t.hojas.map(n=>({id:n,name:n===1?"1 hoja":n+" hojas"})),S.hojas);
+  $("itHojas").hidden = t.hojas.length<2;
+  chips($("cCol"),"col",COLORES,S.col,o=>`<span class="sw" style="background:${o.hex}"></span>${o.name}`);
+  chips($("cVid"),"vid",VIDRIOS,S.vid);
+  $("mosq").disabled=!t.mosq; if(!t.mosq) $("mosq").checked=false;
+  $("tipHint").textContent = S.sis==="fi" ? "El frente integral resuelve paños fijos y puertas de local." : S.sis==="pvc" ? "PVC de perfil alemán, como la obra de Costa Esmeralda." : "Las que fabricamos en A30 New y Modena.";
+}
+function normalizar(){
+  let t=by(TIPOS,S.tip);
+  if(!t.sis.includes(S.sis)){ t=TIPOS.find(x=>x.sis.includes(S.sis)); S.tip=t.id; }
+  if(!t.hojas.includes(S.hojas)) S.hojas=t.hojas[0];
+}
+function leer(){
+  const f=$("f");
+  S.sis=f.sis.value; S.tip=f.tip.value; S.hojas=+((f.hojas&&f.hojas.value)||S.hojas);
+  S.col=f.col.value; S.vid=f.vid.value;
+  S.w=clamp(+$("w").value||0,40,900); S.h=clamp(+$("h").value||0,30,400); S.q=clamp(Math.round(+$("q").value||1),1,50);
+  S.mosq=$("mosq").checked; S.inst=$("inst").checked;
+}
+function render(){
+  $("plano").innerHTML=dibujo(S);
+  const r=calc(S);
+  $("rng").textContent = ars(r.lo)+" – "+ars(r.hi);
+  const t=by(TIPOS,S.tip), s=by(SISTEMAS,S.sis), v=by(VIDRIOS,S.vid);
+  $("det").textContent = `${S.q} × ${t.name} ${s.name}${t.hojas.length>1?" · "+S.hojas+" hojas":""} · ${r.area.toFixed(2).replace(".",",")} m² c/u · ${v.name}${S.inst?" · con colocación":""}`;
+  $("planoTag").textContent = `${s.name} · ${t.name} · ${by(COLORES,S.col).name}`;
+}
+function cambio(e){
+  leer();
+  if(e && (e.target.name==="sis"||e.target.name==="tip")){ normalizar(); pintarForm(); }
+  render();
+}
+function desc(it){ const t=by(TIPOS,it.tip); return `${t.name} ${by(SISTEMAS,it.sis).name}${t.hojas.length>1?" "+it.hojas+" hojas":""}`; }
+function pintarLista(){
+  const rows=$("rows");
+  if(!items.length){ rows.innerHTML=`<div class="vacio">Todavía no agregaste aberturas. Configurá una y tocá "Agregar al pliego".</div>`; }
+  else rows.innerHTML = items.map((it,i)=>{ const r=calc(it); return `<div class="row"><svg viewBox="0 0 52 40">${dibujo(it,{vw:52,vh:40,mini:true})}</svg><div><b>${i+1}. ${desc(it)}</b><br><span style="color:var(--ink-2)">${it.w}×${it.h} cm · ${by(COLORES,it.col).name} · ${it.q} u.</span></div><span class="p">${ars(r.mid)}</span><button class="x" aria-label="Quitar" data-i="${i}">×</button></div>`; }).join("");
+  const tot=items.reduce((a,it)=>a+calc(it).mid,0);
+  $("tot").textContent=ars(tot);
+  $("cnt").textContent=items.length+(items.length===1?" ítem":" ítems");
+}
+function toast(t){ const el=$("toast"); el.textContent=t; el.classList.add("on"); clearTimeout(toast.k); toast.k=setTimeout(()=>el.classList.remove("on"),1800); }
+function mensaje(){
+  const lista = items.length?items:[{...S}];
+  let m = `Hola Disegno, armé este pliego en la web:\n`;
+  lista.forEach((it,i)=>{ const r=calc(it); m+=`\n${i+1}) ${desc(it)}\n   ${it.w} x ${it.h} cm · ${it.q} u. · ${by(COLORES,it.col).name}\n   Vidrio: ${by(VIDRIOS,it.vid).name}${it.mosq?" · con mosquitero":""}${it.inst?" · con colocación":""}\n   Estimado: ${ars(r.lo)} a ${ars(r.hi)}\n`; });
+  const tot=lista.reduce((a,it)=>a+calc(it).mid,0);
+  m+=`\nTotal estimado: ${ars(tot)}`;
+  const n=$("nom").value.trim(), l=$("loc").value.trim();
+  if(n) m+=`\nNombre: ${n}`; if(l) m+=`\nObra en: ${l}`;
+  m+=`\n¿Me confirman precio y cuándo pueden pasar a medir?`;
+  return m;
+}
+function placas(){
+  $("placas").innerHTML = OBRAS.map((o,i)=>`<article class="placa">
+    <div class="chapa"><span class="calle">${o.calle}</span><span class="anio">${o.anio}</span></div>
+    <div class="foto"><span class="ph">${o.tit}</span><img src="${o.img}" alt="${o.tit}" loading="lazy" onerror="this.remove()"></div>
+    <div class="body"><h3>${o.tit}</h3><ul class="spec">${o.spec.map(s=>`<li><span>${s[0]}</span><span>${s[1]}</span></li>`).join("")}</ul>
+    <button class="btn btn-ink" type="button" data-o="${i}">Cotizar algo así</button></div></article>`).join("");
+}
+function tabla(){
+  const L={m2:"Precio base por m²",sis:"Multiplicador por sistema",vid:"Vidrio (suma por m²)",col:"Color (recargo %)"};
+  let h="";
+  for(const k of ["m2","sis","vid","col"]){
+    h+=`<h4>${L[k]}</h4>`;
+    const src = k==="m2"?TIPOS:k==="sis"?SISTEMAS:k==="vid"?VIDRIOS:COLORES;
+    src.forEach(o=>{ h+=`<label>${o.name}<input data-k="${k}" data-id="${o.id}" type="number" step="${k==="sis"?"0.05":"1000"}" value="${P[k][o.id]}"></label>`; });
+  }
+  h+=`<h4>Otros</h4>
+  <label>Recargo por hoja extra (%)<input data-k="hojaExtra" type="number" value="${P.hojaExtra}"></label>
+  <label>Mosquitero (por m²)<input data-k="mosqM2" type="number" step="1000" value="${P.mosqM2}"></label>
+  <label>Colocación (%)<input data-k="instPct" type="number" value="${P.instPct}"></label>
+  <label>Margen del rango (±%)<input data-k="rango" type="number" value="${P.rango}"></label>
+  <div class="acc"><button type="button" class="btn btn-ink" id="reset">Volver a precios de ejemplo</button></div>`;
+  $("ptab").innerHTML=h;
+}
+
+/* ======= Eventos ======= */
+$("f").addEventListener("change",cambio);
+$("f").addEventListener("input",e=>{ if(e.target.type==="number") cambio(e); });
+$("add").addEventListener("click",()=>{ items.push({...S}); pintarLista(); toast("Agregado al pliego"); });
+$("rows").addEventListener("click",e=>{ const b=e.target.closest(".x"); if(!b) return; items.splice(+b.dataset.i,1); pintarLista(); });
+$("send").addEventListener("click",()=>{ const m=mensaje(); $("msg").textContent=m; $("waGo").href="https://wa.me/"+WA+"?text="+encodeURIComponent(m); $("dlg").showModal(); });
+$("dlgClose").addEventListener("click",()=>$("dlg").close());
+$("placas").addEventListener("click",e=>{
+  const b=e.target.closest("[data-o]"); if(!b) return;
+  const p=OBRAS[+b.dataset.o].pre; Object.assign(S,p);
+  normalizar(); pintarForm(); $("w").value=S.w; $("h").value=S.h; render();
+  $("cotizar").scrollIntoView({behavior:"smooth"}); toast("Cargamos la especificación de esa obra");
+});
+$("ptab").addEventListener("input",e=>{
+  const i=e.target; if(!i.dataset.k) return; const v=parseFloat(i.value); if(isNaN(v)) return;
+  if(i.dataset.id) P[i.dataset.k][i.dataset.id]=v; else P[i.dataset.k]=v;
+  guardar(); render(); pintarLista();
+});
+$("ptab").addEventListener("click",e=>{ if(e.target.id!=="reset") return; P=structuredClone(DEF); guardar(); tabla(); render(); pintarLista(); toast("Precios de ejemplo restaurados"); });
+
+alzada(); placas(); pintarForm(); tabla(); render(); pintarLista();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Disegno Aberturas"></script>
+</body>
+</html>
