@@ -1,0 +1,559 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>JRP Motors · Ficha de recepción online</title>
+<meta name="description" content="Prototipo de demostración preparado para JRP Motors, Santiago del Estero.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Squada+One&family=Scada:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --asfalto:#2A2724; --naranja:#EE6A1F; --naranja2:#C9520F; --hoja:#F7F5F0; --hormigon:#D2CBBF;
+  --carbonico:#2F4A8A; --gris:#6B645C; --renglon:#C9C2B6;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--hormigon);color:var(--asfalto);font-family:"Scada",system-ui,sans-serif;font-size:17px;line-height:1.55;overflow-x:hidden}
+button,input{font:inherit;color:inherit}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--carbonico);outline-offset:2px}
+.sq{font-family:"Squada One",Impact,sans-serif;font-weight:400;line-height:.95}
+.w{max-width:1160px;margin:0 auto;padding:0 28px}
+.pe{font-size:11px;color:var(--gris);font-weight:400;white-space:nowrap}
+.firma{background:var(--hoja);font-size:12.5px;color:var(--gris);border-bottom:1px solid var(--renglon)}
+.firma .w{padding-top:7px;padding-bottom:7px;display:flex;gap:2px 14px;flex-wrap:wrap}
+.firma b{color:var(--asfalto)}
+/* barra */
+.barra{background:var(--asfalto);color:var(--hoja)}
+.barra .w{display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:64px;flex-wrap:wrap}
+.marca{font-size:36px;letter-spacing:.02em;display:flex;align-items:baseline;gap:10px}
+.marca small{font-family:"Scada";font-size:14px;color:#BDB5AA;letter-spacing:0}
+.tabs{display:flex;background:#3B3733;border-radius:6px;padding:4px}
+.tabs button{border:0;background:transparent;color:#D9D2C7;padding:8px 14px;border-radius:4px;cursor:pointer;font-weight:700;font-size:14.5px}
+.tabs .t-cli{background:var(--naranja);color:#fff}
+body.is-owner .tabs .t-cli{background:transparent;color:#D9D2C7}
+body.is-owner .tabs .t-own{background:var(--naranja);color:#fff}
+body.is-owner main{display:none}
+/* hero */
+.hero{display:grid;grid-template-columns:1fr 1.05fr;gap:44px;align-items:center;padding:52px 0 64px}
+.hero h1{font-size:clamp(50px,7.4vw,96px)}
+.hero p{font-size:19px;margin:18px 0 0;max-width:28em}
+.hero .datos{list-style:none;margin-top:22px;font-size:15px;display:grid;gap:4px}
+.hero .datos b{display:inline-block;min-width:118px}
+.btn{display:inline-block;margin-top:26px;background:var(--naranja);color:#fff;text-decoration:none;font-weight:700;padding:13px 24px;border-radius:4px;border:0;cursor:pointer}
+.btn:hover{background:var(--naranja2)}
+.ficha{background:var(--hoja);padding:22px 24px 18px;transform:rotate(-1.4deg);box-shadow:0 2px 0 var(--renglon),0 22px 40px -24px rgba(42,39,36,.55);position:relative}
+.ficha:before{content:"";position:absolute;left:0;right:0;top:-8px;height:8px;background:radial-gradient(circle at 6px 8px,transparent 5px,var(--hoja) 5.5px) 0 0/16px 8px repeat-x}
+.f-top{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid var(--asfalto);padding-bottom:6px;margin-bottom:12px}
+.f-top .sq{font-size:30px}
+.f-top span{font-size:13px;color:var(--gris)}
+.f-top b{font-family:"Squada One";font-size:24px;color:var(--naranja);font-weight:400}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:4px 18px;font-size:13.5px;margin-bottom:10px}
+.f-row div{border-bottom:1px solid var(--renglon);padding:3px 0}
+.f-row em{font-style:normal;color:var(--carbonico);font-size:15px;margin-left:6px}
+.ficha svg{width:100%;height:auto;display:block}
+.sello{position:absolute;right:20px;bottom:12px;border:3px solid var(--naranja);color:var(--naranja);padding:4px 10px;transform:rotate(-12deg);font-family:"Squada One";font-size:22px;border-radius:4px;opacity:.88;background:rgba(247,245,240,.7)}
+.f-pie{padding-right:120px;font-size:12.5px;color:var(--gris);border-top:1px dashed var(--renglon);padding-top:6px}
+/* turno = talonario duplicado */
+.sec{padding:60px 0}
+.h2{font-size:clamp(42px,5.4vw,66px)}
+.sub{max-width:36em;margin:6px 0 26px;color:#4A443E}
+.talon{display:grid;grid-template-columns:1.35fr 1fr;background:var(--hoja);box-shadow:0 22px 40px -28px rgba(42,39,36,.6)}
+.orig{padding:26px 28px;border-right:2px dashed var(--renglon)}
+.dup{padding:26px 24px;background:#E9EDF6;position:relative}
+.cab{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;color:var(--gris);border-bottom:2px solid var(--asfalto);padding-bottom:6px;margin-bottom:16px}
+.cab .sq{font-size:24px;color:var(--asfalto)}
+.dup .cab{border-color:var(--carbonico);color:var(--carbonico)}
+.dup .cab .sq{color:var(--carbonico)}
+fieldset{border:0;margin-bottom:22px}
+legend{font-weight:700;font-size:15px;margin-bottom:8px;display:flex;gap:8px;align-items:center}
+legend i{font-style:normal;font-family:"Squada One";background:var(--asfalto);color:var(--hoja);width:24px;height:24px;border-radius:50%;display:inline-grid;place-items:center;font-size:16px}
+.svcs{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}
+.svc{display:flex;gap:10px;align-items:flex-start;text-align:left;background:none;border:0;border-bottom:1px solid var(--renglon);padding:9px 0;cursor:pointer}
+.svc:before{content:"";flex:none;width:18px;height:18px;border:2px solid var(--asfalto);margin-top:3px;border-radius:2px}
+.svc[aria-pressed=true]:before{background:var(--naranja);border-color:var(--naranja);box-shadow:inset 0 0 0 3px var(--hoja)}
+.svc span{display:flex;flex-direction:column;line-height:1.3}
+.svc small{font-size:13px;color:var(--gris)}
+.lin{display:grid;grid-template-columns:1.6fr 1fr;gap:16px}
+.lin label,.nom label{font-size:13px;color:var(--gris);display:block}
+.lin input,.nom input{width:100%;border:0;border-bottom:2px solid var(--asfalto);background:transparent;padding:6px 2px;font-size:17px;color:var(--carbonico);border-radius:0}
+.lin input:focus,.nom input:focus{outline:none;border-color:var(--naranja);background:#FFF7EF}
+[data-days]{display:grid;grid-template-columns:repeat(8,1fr);border:2px solid var(--asfalto)}
+.dia{background:none;border:0;border-right:1px solid var(--renglon);padding:6px 0;cursor:pointer;display:flex;flex-direction:column;align-items:center;line-height:1.1}
+.dia:last-child{border-right:0}
+.dia .d-n{font-family:"Squada One";font-size:28px}
+.dia .d-w,.dia .d-m{font-size:12px;color:var(--gris)}
+.dia[aria-pressed=true]{background:var(--asfalto);color:var(--hoja)}
+.dia[aria-pressed=true] span{color:inherit}
+[data-slots]{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.hora{border:2px solid var(--asfalto);background:none;padding:6px 12px;border-radius:30px;cursor:pointer;display:flex;gap:8px;align-items:baseline}
+.hora .s-c{font-size:12.5px;color:var(--naranja2)}
+.hora:disabled{border-style:dashed;opacity:.5;cursor:not-allowed}
+.hora:disabled .s-c{color:var(--gris)}
+.hora[aria-pressed=true]{background:var(--naranja);border-color:var(--naranja);color:#fff}
+.hora[aria-pressed=true] .s-c{color:#fff}
+.s-empty{font-size:14px;color:var(--gris)}
+.chat{background:#E5DDD5;border-radius:10px;padding:14px 10px;border:1px solid #C9D2E6}
+.burb{background:#DCF8C6;color:#1A1A1A;border-radius:8px 0 8px 8px;padding:9px 12px 20px;white-space:pre-wrap;font-size:14.5px;line-height:1.45;position:relative;margin-left:auto;max-width:96%;box-shadow:0 1px 1px rgba(0,0,0,.12)}
+.burb small{position:absolute;right:8px;bottom:3px;font-size:11px;color:#7A8A80}
+.dup .send{display:block;text-align:center;margin-top:14px;background:#1FAF5A;color:#fff;font-weight:700;text-decoration:none;padding:12px;border-radius:4px}
+.dup .send[aria-disabled=true]{background:#A9B2C4;cursor:not-allowed}
+.falta{font-size:13px;color:var(--carbonico);margin-top:8px;min-height:1.2em}
+.shake{animation:sh .35s}@keyframes sh{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.sena{font-size:13.5px;margin-top:14px;color:var(--carbonico);list-style:none}
+.sena li{padding:3px 0 3px 16px;position:relative}
+.sena li:before{content:"";position:absolute;left:0;top:11px;width:8px;height:8px;background:var(--carbonico)}
+/* seguimiento */
+.seg{background:var(--asfalto);color:var(--hoja)}
+.seg .sub{color:#BDB5AA}
+.seg-g{display:grid;grid-template-columns:.8fr 1.2fr;gap:44px;align-items:start}
+.busca label{display:block;font-size:14px;color:#BDB5AA;margin-bottom:6px}
+.busca input{width:100%;font-family:"Squada One";font-size:34px;letter-spacing:.06em;background:transparent;border:0;border-bottom:3px solid var(--naranja);color:var(--hoja);padding:4px 0;text-transform:uppercase;border-radius:0}
+.busca input:focus{outline:none;border-color:#fff}
+.busca .btn{margin-top:16px}
+.busca p{font-size:13.5px;color:#BDB5AA;margin-top:12px}
+.busca p b{color:var(--naranja)}
+.ord-head{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-bottom:18px}
+.ord-n{font-family:"Squada One";font-weight:400;font-size:30px;color:var(--naranja)}
+.ord-k{color:#BDB5AA}
+.ord-steps{list-style:none;border-left:3px solid #4C4640;margin-left:8px;margin-bottom:24px}
+.ord-steps li{position:relative;padding:0 0 18px 26px;display:flex;flex-direction:column}
+.ord-dot{position:absolute;left:-11px;top:4px;width:19px;height:19px;border-radius:50%;background:var(--asfalto);border:3px solid #6E665D}
+.ord-steps li.is-done .ord-dot{background:#9FD08A;border-color:#9FD08A}
+.ord-steps li.is-now .ord-dot{background:var(--naranja);border-color:var(--naranja);box-shadow:0 0 0 5px rgba(238,106,31,.25)}
+.ord-steps li:not(.is-done):not(.is-now){color:#8E867C}
+.ord-e{font-weight:700;font-size:17px}
+.ord-note{font-size:14px;color:#CFC7BB}
+.ord-budget{background:var(--hoja);color:var(--asfalto);padding:18px 20px;border-top:6px solid var(--naranja)}
+.ord-bt{font-family:"Squada One";font-size:26px;margin-bottom:6px}
+.ord-budget table{width:100%;border-collapse:collapse;font-size:15px}
+.ord-budget td{border-bottom:1px solid var(--renglon);padding:7px 0;vertical-align:top}
+.ord-budget .num{text-align:right}
+.ord-budget tfoot td{font-weight:700;border:0}
+.ord-ok,.ord-adv{margin-top:12px;border:0;background:var(--naranja);color:#fff;font-weight:700;padding:12px 18px;border-radius:4px;cursor:pointer}
+.ord-adv{background:var(--asfalto)}
+.ord-sub{font-size:13.5px;color:var(--gris);margin-top:8px}
+.ord-done{font-weight:700;color:#2C7A3A;margin-top:10px}
+.ord-err{color:#FFC3A0}
+/* banda recordatorio */
+.banda{background:var(--hoja)}
+.banda .w{display:grid;grid-template-columns:1fr 1fr;gap:44px;padding-top:56px;padding-bottom:56px;align-items:start}
+.notif{background:#fff;border:1px solid var(--renglon);border-radius:14px;padding:14px 16px;box-shadow:0 10px 24px -18px rgba(0,0,0,.4);max-width:430px}
+.notif .nh{display:flex;justify-content:space-between;font-size:13px;color:var(--gris);margin-bottom:6px}
+.notif p{white-space:pre-wrap;font-size:15px}
+.cond{list-style:none;margin-top:18px;font-size:15px}
+.cond li{display:flex;gap:10px;padding:6px 0;border-bottom:1px solid var(--renglon)}
+.cond li b{min-width:92px;color:var(--naranja2)}
+.vos{background:var(--naranja);color:#fff}
+.vos .w{padding-top:48px;padding-bottom:52px}
+.vos ul{list-style:none;display:grid;grid-template-columns:repeat(2,1fr);gap:0 36px;margin-top:18px}
+.vos li{border-top:2px solid rgba(255,255,255,.6);padding:12px 0 16px;font-size:16px}
+.vos li b{display:block;font-size:19px}
+/* panel dueño */
+.owner{padding:40px 0 60px}
+.tag{display:inline-block;background:var(--asfalto);color:var(--hoja);font-size:13px;font-weight:700;padding:3px 10px;border-radius:3px}
+.o-g{display:grid;grid-template-columns:repeat(12,1fr);gap:18px;margin-top:18px}
+.box{background:var(--hoja);padding:18px 20px}
+.box h3{font-family:"Squada One";font-weight:400;font-size:26px;margin-bottom:8px}
+.c12{grid-column:span 12}.c7{grid-column:span 7}.c5{grid-column:span 5}.c4{grid-column:span 4}
+.grilla{width:100%;border-collapse:collapse;font-size:13.5px;table-layout:fixed}
+.grilla th,.grilla td{border:1px solid var(--renglon);padding:6px;text-align:left;vertical-align:top}
+.grilla th{background:#EDE8DF}
+.grilla td b{display:block;font-weight:700}
+.grilla td.lv{background:repeating-linear-gradient(45deg,#F7F5F0,#F7F5F0 6px,#EFEAE1 6px,#EFEAE1 12px);color:var(--gris)}
+.scroll{overflow-x:auto}
+.li{list-style:none;font-size:14.5px}
+.li li{padding:8px 0;border-bottom:1px solid var(--renglon);display:flex;justify-content:space-between;gap:10px}
+.li li span:last-child{color:var(--gris);font-size:13px;text-align:right}
+.est{font-size:12.5px;padding:2px 8px;border-radius:3px;background:#EDE8DF;white-space:nowrap}
+.est.o{background:#FCD9C2}.est.v{background:#D3EBCB}
+.big{font-family:"Squada One";font-size:54px;line-height:1;color:var(--naranja)}
+footer{background:var(--asfalto);color:#BDB5AA;font-size:13.5px;padding:24px 0 36px}
+footer p+p{margin-top:6px}
+.hero>*,.talon>*,.seg-g>*,.banda .w>*,.o-g>*{min-width:0}
+@media (max-width:900px){
+  .hero,.talon,.seg-g,.banda .w{grid-template-columns:1fr}
+  .orig{border-right:0;border-bottom:2px dashed var(--renglon)}
+  .vos ul{grid-template-columns:1fr}
+  .c7,.c5,.c4{grid-column:span 12}
+  .ficha{transform:none}
+}
+@media (max-width:600px){
+  .w{padding:0 16px}
+  .marca{font-size:30px}.marca small{display:none}
+  .orig,.dup{padding:20px 16px}
+  .svcs,.lin{grid-template-columns:1fr}
+  [data-days]{grid-template-columns:repeat(4,1fr)}
+  .dia{border-bottom:1px solid var(--renglon)}
+  .grilla{min-width:620px}
+  .f-row{grid-template-columns:1fr}
+  .tabs button{padding:7px 10px;font-size:13.5px}
+}
+</style>
+</head>
+<body>
+<div class="firma"><div class="w"><span>Prototipo preparado para <b>JRP Motors</b> · 4 de noviembre de 2026</span><span>4,9 ★ en Google · 335 reseñas</span></div></div>
+<header class="barra">
+  <div class="w">
+    <div class="marca sq">JRP Motors <small>Paris 147 · Santiago del Estero</small></div>
+    <div class="tabs" role="group" aria-label="Cambiar vista">
+      <button class="t-cli" type="button" onclick="if(document.body.classList.contains('is-owner'))document.querySelector('.t-own').click()">Vista cliente</button>
+      <button class="t-own" type="button" data-owner-toggle>Ver como dueño</button>
+    </div>
+  </div>
+</header>
+
+<section class="owner" data-owner hidden aria-label="Panel de ejemplo del dueño">
+  <div class="w">
+    <span class="tag">Panel de ejemplo</span>
+    <h2 class="h2 sq" style="margin-top:8px">La semana del taller, Jonas</h2>
+    <div class="o-g">
+      <div class="box c12">
+        <h3>Agenda por elevador</h3>
+        <div class="scroll">
+        <table class="grilla">
+          <thead><tr><th style="width:120px"></th><th>Lunes 9</th><th>Martes 10</th><th>Miércoles 11</th><th>Jueves 12</th><th>Viernes 13</th><th>Sábado 14</th></tr></thead>
+          <tbody>
+            <tr><th>Elevador 1</th><td><b>8:00 Uno Fire</b>pérdida de aceite</td><td><b>8:00 Corolla</b>service</td><td><b>8:00 Ka</b>frenos</td><td><b>8:00 Gol</b>refrigerante</td><td><b>8:00 Hilux</b>diagnóstico</td><td><b>8:00 208</b>service</td></tr>
+            <tr><th>Elevador 2</th><td><b>10:30 Cronos</b>freno de mano</td><td class="lv">libre</td><td><b>10:30 Onix</b>service</td><td><b>10:30 Sandero</b>tren delantero</td><td class="lv">libre</td><td class="lv">libre</td></tr>
+            <tr><th>Lavado</th><td><b>16:30 Amarok</b>lavado premium</td><td><b>13:30 Etios</b>limpieza de motor</td><td><b>16:30 Focus</b>lavado premium</td><td><b>13:30 Uno</b>limpieza de motor</td><td><b>13:30 Toro</b>lavado premium</td><td><b>9:00 S10</b>lavado premium</td></tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+      <div class="box c7">
+        <h3>Autos en el taller</h3>
+        <ul class="li">
+          <li><span>JR-0318 · Fiat Uno Fire · pérdidas</span><span class="est o">presupuesto enviado</span></li>
+          <li><span>JR-0316 · Corolla · service</span><span class="est">en reparación</span></li>
+          <li><span>JR-0315 · Cronos · freno de mano</span><span class="est">esperando repuesto</span></li>
+          <li><span>JR-0312 · Amarok · lavado premium</span><span class="est v">listo para retirar</span></li>
+        </ul>
+        <h3 style="margin-top:18px">Presupuestos sin aprobar</h3>
+        <ul class="li">
+          <li><span>Uno Fire · $187.000 <small class="pe">precio de ejemplo</small></span><span>enviado hoy 10:12</span></li>
+          <li><span>Hilux · $520.000 <small class="pe">precio de ejemplo</small></span><span>visto, sin respuesta</span></li>
+        </ul>
+      </div>
+      <div class="box c5">
+        <h3>Señas de la semana</h3>
+        <p class="big">$110.000</p><p class="pe" style="font-size:12.5px;white-space:normal">11 turnos con seña de $10.000 · precio de ejemplo</p>
+        <h3 style="margin-top:18px">Recordatorios que salen</h3>
+        <ul class="li">
+          <li><span>Carlos · Gol · service 6 meses</span><span>martes</span></li>
+          <li><span>Mariela · Etios · 10.000 km</span><span>jueves</span></li>
+          <li><span>Hugo · Amarok · lavado premium mensual</span><span>viernes</span></li>
+        </ul>
+        <h3 style="margin-top:18px">Clientes que vuelven</h3>
+        <ul class="li"><li><span>Volvieron por el recordatorio</span><span>7 este mes</span></li><li><span>Turnos que no faltaron gracias a la seña</span><span>11 de 11</span></li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<main>
+<div class="w">
+  <div class="hero">
+    <div>
+      <h1 class="sq">Dejá el auto con turno. Te avisamos cuando está.</h1>
+      <p>La ficha de recepción de JRP Motors, ahora desde el celular: elegís qué necesita, reservás el lugar y seguís el arreglo sin llamar.</p>
+      <ul class="datos">
+        <li><b>Mecánica</b>pérdidas, frenos, service, diagnóstico</li>
+        <li><b>Lavado</b>premium y limpieza de motor</li>
+        <li><b>Horario</b>lunes a viernes desde las 8 · sábados 8 a 13</li>
+      </ul>
+      <a class="btn" href="#turno">Completar mi ficha</a>
+    </div>
+    <div class="ficha" aria-hidden="true">
+      <div class="f-top"><span class="sq">Ficha de recepción</span><span>N.º <b>JR-0318</b></span></div>
+      <div class="f-row"><div>Vehículo <em>Fiat Uno Fire 2009</em></div><div>Kilometraje <em>135.000</em></div><div>Ingreso <em>lun 9/11, 8:00</em></div><div>Nivel de nafta <em>¼</em></div></div>
+      <svg viewBox="0 0 520 220">
+        <g fill="none" stroke="#2A2724" stroke-width="2.5" stroke-linejoin="round">
+          <path d="M70 110 C70 60 100 46 150 44 H360 C420 44 462 62 470 110 C462 158 420 176 360 176 H150 C100 174 70 160 70 110Z"/>
+          <path d="M190 52 C210 70 210 150 190 168 M330 52 C312 70 312 150 330 168"/>
+          <path d="M190 52 H330 M190 168 H330"/>
+          <path d="M120 60 C108 80 108 140 120 160 M440 74 C452 92 452 128 440 146" stroke="#6B645C"/>
+          <rect x="120" y="30" width="44" height="14" rx="4"/><rect x="360" y="30" width="44" height="14" rx="4"/>
+          <rect x="120" y="176" width="44" height="14" rx="4"/><rect x="360" y="176" width="44" height="14" rx="4"/>
+        </g>
+        <g stroke="#2F4A8A" stroke-width="2.5" fill="none">
+          <circle cx="420" cy="88" r="14"/><path d="M434 88 L490 70"/>
+          <path d="M240 158 l12 -10 M246 162 l12 -10"/><path d="M252 170 L262 205"/>
+        </g>
+        <g font-family="Scada, sans-serif" font-size="14" fill="#2F4A8A">
+          <text x="440" y="64">pierde aceite</text>
+          <text x="268" y="210">rayón puerta</text>
+          <text x="6" y="114" fill="#6B645C" font-size="12">trasera</text>
+          <text x="478" y="114" fill="#6B645C" font-size="12">frente</text>
+        </g>
+      </svg>
+      <div class="sello">Recibido</div>
+      <p class="f-pie">Firma del cliente y presupuesto aprobado quedan guardados en la orden.</p>
+    </div>
+  </div>
+</div>
+
+<section class="sec" id="turno">
+  <div class="w">
+    <h2 class="h2 sq">Tu ficha, antes de llegar</h2>
+    <p class="sub">Completás el original. A la derecha, el duplicado: el mensaje exacto que le llega al taller por WhatsApp.</p>
+    <div class="talon">
+      <div class="orig">
+        <div class="cab"><span class="sq">Original · cliente</span><span>JRP Motors</span></div>
+        <fieldset><legend><i>1</i>Qué necesita</legend>
+          <div class="svcs">
+            <button class="svc" data-set="servicio" data-val="perd"><span>Pérdida de aceite o refrigerante<small>desde $40.000 <span class="pe">precio de ejemplo</span></small></span></button>
+            <button class="svc" data-set="servicio" data-val="fren"><span>Frenos y freno de mano<small>desde $45.000 <span class="pe">precio de ejemplo</span></small></span></button>
+            <button class="svc" data-set="servicio" data-val="srv"><span>Service de aceite y filtros<small>desde $65.000 <span class="pe">precio de ejemplo</span></small></span></button>
+            <button class="svc" data-set="servicio" data-val="diag"><span>Diagnóstico general<small>desde $25.000 <span class="pe">precio de ejemplo</span></small></span></button>
+            <button class="svc" data-set="servicio" data-val="mot"><span>Limpieza de motor<small>desde $20.000 <span class="pe">precio de ejemplo</span></small></span></button>
+            <button class="svc" data-set="servicio" data-val="lav"><span>Lavado premium, interior y exterior<small>desde $30.000 <span class="pe">precio de ejemplo</span></small></span></button>
+          </div>
+        </fieldset>
+        <fieldset><legend><i>2</i>Vehículo</legend>
+          <div class="lin">
+            <div><label for="m2">Marca, modelo y año</label><input id="m2" data-field="marca" placeholder="Fiat Uno Fire 2009" autocomplete="off"></div>
+            <div><label for="k2">Kilometraje</label><input id="k2" data-field="km" inputmode="numeric" placeholder="135000"></div>
+          </div>
+        </fieldset>
+        <fieldset><legend><i>3</i>Día y horario de ingreso</legend>
+          <div data-days data-cls="dia"></div>
+          <div data-slots data-cls="hora"></div>
+        </fieldset>
+        <fieldset class="nom" style="margin-bottom:0"><legend><i>4</i>Nombre</legend>
+          <label for="n2">A nombre de</label><input id="n2" data-field="nombre" placeholder="Tu nombre" autocomplete="given-name" style="max-width:320px">
+        </fieldset>
+      </div>
+      <div class="dup">
+        <div class="cab"><span class="sq">Duplicado · taller</span><span>WhatsApp</span></div>
+        <div class="chat"><div class="burb" aria-live="polite"><span data-bubble></span><small data-hora></small></div></div>
+        <a class="send" data-send target="_blank" rel="noopener">Enviar por WhatsApp</a>
+        <p class="falta" data-falta></p>
+        <ul class="sena">
+          <li>La seña reserva el elevador y se descuenta del total</li>
+          <li>Si cancelás con 24 h de aviso, se reprograma</li>
+          <li>El presupuesto lo aprobás por escrito antes de que arranquen</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec seg" id="seguimiento">
+  <div class="w seg-g">
+    <div class="busca">
+      <h2 class="h2 sq">¿Cómo va mi auto?</h2>
+      <p class="sub">Con el número de tu ficha ves la etapa y aprobás el presupuesto.</p>
+      <label for="o2">Número de ficha</label>
+      <input id="o2" data-orden-input placeholder="JR-0318">
+      <button class="btn" type="button" data-orden-btn>Ver estado</button>
+      <p>Para probar usá la ficha de ejemplo <b>JR-0318</b>, o tocá "Ver estado" con el campo vacío.</p>
+    </div>
+    <div data-orden-out hidden aria-live="polite"></div>
+  </div>
+</section>
+
+<section class="banda">
+  <div class="w">
+    <div>
+      <h2 class="h2 sq">Y a los 6 meses, le escribe el taller</h2>
+      <p class="sub">Cuando se entrega el auto, queda programado el aviso. Así le llega al cliente:</p>
+      <div class="notif">
+        <div class="nh"><b>JRP Motors</b><span>WhatsApp · ahora</span></div>
+        <p>Hola Carlos, te escribimos de JRP Motors. Tu Gol hizo el service en mayo con 88.000 km y ya le toca el próximo. ¿Te reservo un lugar? El sábado a las 8 hay elevador libre.</p>
+      </div>
+      <ul class="cond">
+        <li><b>Service</b>a los 6 meses o 10.000 km</li>
+        <li><b>Frenos</b>revisión a los 12 meses</li>
+        <li><b>Lavado</b>aviso mensual si lo pidió</li>
+      </ul>
+    </div>
+    <div>
+      <svg viewBox="0 0 420 300" style="width:100%;height:auto" role="img" aria-label="Dibujo de un elevador de taller con un auto levantado">
+        <g fill="none" stroke="#2A2724" stroke-width="3" stroke-linejoin="round">
+          <path d="M40 280 H380"/>
+          <rect x="70" y="60" width="18" height="220" fill="#EE6A1F" stroke="none"/><rect x="332" y="60" width="18" height="220" fill="#EE6A1F" stroke="none"/>
+          <path d="M88 150 H332" stroke-width="6"/>
+          <path d="M110 150 C110 110 140 96 180 94 H260 C300 96 316 112 318 150"/>
+          <path d="M150 96 L170 66 H250 L276 96"/>
+          <circle cx="140" cy="160" r="22" fill="#F7F5F0"/><circle cx="290" cy="160" r="22" fill="#F7F5F0"/>
+          <circle cx="140" cy="160" r="8"/><circle cx="290" cy="160" r="8"/>
+        </g>
+        <text x="40" y="40" font-family="Squada One, Impact" font-size="26" fill="#2A2724">Elevador 1 · libre sábado 8:00</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="vos">
+  <div class="w">
+    <h2 class="h2 sq">Para vos, Jonas</h2>
+    <ul>
+      <li><b>Dejás de atender el teléfono con las manos engrasadas</b>La ficha llega completa por WhatsApp.</li>
+      <li><b>El cliente sabe el estado sin llamar</b>Recepción no repite cinco veces "todavía no está".</li>
+      <li><b>El que hizo el service vuelve solo</b>El aviso sale a los meses o km que definas.</li>
+      <li><b>Presupuestos aprobados por escrito</b>Lo que se aprobó queda en la ficha: menos discusiones al retirar.</li>
+    </ul>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="w">
+    <p>JRP Motors · Paris 147, Santiago del Estero · +54 385 581-4187</p>
+    <p>Prototipo de demostración preparado para JRP Motors por Resolviendo Kos · No es la web oficial</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var a=["8:00 a 10:30","10:30 a 13:00"], b=a.concat(["16:30 a 18:30","18:30 a 20:00"]), c=a.concat(["13:30 a 16:30"]);
+  window.TALLER={
+    negocio:"JRP Motors", wa:"5493855814187", hoy:[2026,11,4], semilla:7, sena:10000, cantDias:8,
+    servicios:[{id:"perd",nombre:"Pérdida de aceite o refrigerante",desde:40000},{id:"fren",nombre:"Frenos y freno de mano",desde:45000},{id:"srv",nombre:"Service de aceite y filtros",desde:65000},{id:"diag",nombre:"Diagnóstico general",desde:25000},{id:"mot",nombre:"Limpieza de motor",desde:20000},{id:"lav",nombre:"Lavado premium",desde:30000}],
+    franjas:{0:null,1:b,2:c,3:b,4:c,5:c,6:["8:00 a 10:30","10:30 a 13:00"]},
+    orden:{num:"JR-0318",auto:"Fiat Uno Fire 2009 · 135.000 km",etapa:1,
+      notas:["Lunes 8:00, con seña","Pérdida en junta de tapa de válvulas y manguera de refrigerante","Junta y manguera pedidas al proveedor","",""],
+      items:[["Junta de tapa de válvulas",38000],["Manguera de refrigerante",27000],["Ajuste de freno de mano",22000],["Mano de obra",100000]]}
+  };
+})();
+(function(){
+"use strict";
+var C=window.TALLER; if(!C) return;
+var $=function(s,r){return (r||document).querySelector(s)};
+var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+var DIAS=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
+var DCORTO=["dom","lun","mar","mié","jue","vie","sáb"];
+var MES=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+var S={servicio:null,dia:null,franja:null,marca:"",km:"",nombre:"",extra:null};
+function money(n){return "$"+Math.round(n).toLocaleString("es-AR")}
+function svc(){for(var i=0;i<C.servicios.length;i++){if(C.servicios[i].id===S.servicio)return C.servicios[i]}return null}
+function seed(n){var x=Math.sin(n*9301+49297)*233280;return x-Math.floor(x)}
+/* ---------- picks ---------- */
+$$("[data-set]").forEach(function(b){
+  b.setAttribute("type","button");
+  b.setAttribute("aria-pressed","false");
+  b.addEventListener("click",function(){
+    var k=b.getAttribute("data-set");
+    S[k]=b.getAttribute("data-val");
+    $$('[data-set="'+k+'"]').forEach(function(o){o.setAttribute("aria-pressed",o===b?"true":"false")});
+    if(k==="servicio" && C.onServicio) C.onServicio(svc());
+    render();
+  });
+});
+$$("[data-field]").forEach(function(i){
+  i.addEventListener("input",function(){S[i.getAttribute("data-field")]=i.value.trim();render()});
+});
+/* ---------- días y franjas ---------- */
+var today=new Date(C.hoy[0],C.hoy[1]-1,C.hoy[2]);
+var days=[];
+for(var d=1;days.length<(C.cantDias||8)&&d<30;d++){
+  var dt=new Date(today.getTime()+d*864e5);
+  var fr=C.franjas[dt.getDay()];
+  if(fr&&fr.length) days.push({dt:dt,fr:fr,key:dt.getFullYear()+"-"+(dt.getMonth()+1)+"-"+dt.getDate()});
+}
+function cupos(di,fi){var v=Math.floor(seed(di*7+fi*3+(C.semilla||1))*(C.maxCupo||4));return (di===0&&fi===0)?0:v}
+var dWrap=$("[data-days]"), sWrap=$("[data-slots]");
+if(dWrap){
+  days.forEach(function(x,i){
+    var b=document.createElement("button");b.type="button";b.className=dWrap.getAttribute("data-cls")||"day";
+    b.innerHTML='<span class="d-w">'+DCORTO[x.dt.getDay()]+'</span><span class="d-n">'+x.dt.getDate()+'</span><span class="d-m">'+MES[x.dt.getMonth()]+'</span>';
+    b.setAttribute("aria-pressed","false");b.setAttribute("aria-label",DIAS[x.dt.getDay()]+" "+x.dt.getDate()+" de "+MES[x.dt.getMonth()]);
+    b.addEventListener("click",function(){S.dia=i;S.franja=null;$$("button",dWrap).forEach(function(o){o.setAttribute("aria-pressed",o===b?"true":"false")});slots();render()});
+    dWrap.appendChild(b);
+  });
+}
+function slots(){
+  if(!sWrap)return; sWrap.innerHTML="";
+  if(S.dia===null){sWrap.innerHTML='<p class="s-empty">'+(C.txtSinDia||"Elegí un día para ver los horarios.")+'</p>';return}
+  days[S.dia].fr.forEach(function(f,fi){
+    var c=cupos(S.dia,fi);var b=document.createElement("button");b.type="button";b.className=sWrap.getAttribute("data-cls")||"slot";
+    b.innerHTML='<span class="s-h">'+f+'</span><span class="s-c">'+(c?c+(c===1?" lugar":" lugares"):"completo")+'</span>';
+    b.disabled=!c;b.setAttribute("aria-pressed","false");
+    b.addEventListener("click",function(){S.franja=fi;$$("button",sWrap).forEach(function(o){o.setAttribute("aria-pressed",o===b?"true":"false")});render()});
+    sWrap.appendChild(b);
+  });
+}
+slots();
+/* ---------- burbuja ---------- */
+function diaTxt(){if(S.dia===null)return null;var x=days[S.dia].dt;return DIAS[x.getDay()]+" "+x.getDate()+"/"+(x.getMonth()+1)}
+function texto(){
+  var s=svc(),L=[];
+  L.push(C.saludo||("Hola "+C.negocio+", quiero sacar turno."));
+  L.push("• Servicio: "+(s?s.nombre:"…"));
+  if(C.extraLabel) L.push("• "+C.extraLabel+": "+(S.extra||"…"));
+  L.push("• Auto: "+(S.marca||"…")+(S.km?" · "+Number(S.km.replace(/\D/g,"")||0).toLocaleString("es-AR")+" km":""));
+  L.push("• Día: "+(S.dia!==null?diaTxt()+(S.franja!==null?", "+days[S.dia].fr[S.franja]:""):"…"));
+  if(s&&s.desde) L.push("• Precio de ejemplo: desde "+money(s.desde));
+  if(C.sena&&s) L.push("• Seña para reservar el lugar: "+money(C.sena)+" (precio de ejemplo)");
+  L.push("• Nombre: "+(S.nombre||"…"));
+  return L.join("\n");
+}
+function render(){
+  var t=texto();
+  $$("[data-bubble]").forEach(function(b){b.textContent=t});
+  var listo=svc()&&S.dia!==null&&S.franja!==null&&S.marca&&S.nombre;
+  $$("[data-send]").forEach(function(a){
+    a.href="https://wa.me/"+C.wa+"?text="+encodeURIComponent(t);
+    a.setAttribute("aria-disabled",listo?"false":"true");
+    a.classList.toggle("is-ready",!!listo);
+  });
+  $$("[data-falta]").forEach(function(f){
+    var falta=[];if(!svc())falta.push("servicio");if(!S.marca)falta.push("auto");if(S.dia===null)falta.push("día");else if(S.franja===null)falta.push("horario");if(!S.nombre)falta.push("nombre");
+    f.textContent=falta.length?"Falta: "+falta.join(", "):(C.txtListo||"Listo. Se abre WhatsApp con este mensaje.");
+  });
+  var hh=new Date();$$("[data-hora]").forEach(function(h){h.textContent=String(hh.getHours()).padStart(2,"0")+":"+String(hh.getMinutes()).padStart(2,"0")});
+  if(C.onRender) C.onRender(S,svc());
+}
+$$("[data-send]").forEach(function(a){a.addEventListener("click",function(e){if(a.getAttribute("aria-disabled")==="true"){e.preventDefault();var f=$("[data-falta]");if(f){f.classList.remove("shake");void f.offsetWidth;f.classList.add("shake")}}})});
+render();
+/* ---------- seguimiento de orden ---------- */
+var O=C.orden, etapa=O.etapa, aprobado=false;
+var ETAPAS=["Recibido","En diagnóstico","Esperando repuesto","En reparación","Listo para retirar"];
+function ordHTML(){
+  var h='<div class="ord-head"><div><span class="ord-k">Orden</span> <b class="ord-n">'+O.num+'</b></div><div class="ord-auto">'+O.auto+'</div></div>';
+  h+='<ol class="ord-steps">';
+  ETAPAS.forEach(function(e,i){h+='<li class="'+(i<etapa?"is-done":i===etapa?"is-now":"")+'"><span class="ord-dot" aria-hidden="true"></span><span class="ord-e">'+e+'</span>'+(O.notas[i]&&i<=etapa?'<span class="ord-note">'+O.notas[i]+'</span>':'')+'</li>'});
+  h+='</ol>';
+  var tot=0;h+='<div class="ord-budget"><p class="ord-bt">Presupuesto para aprobar</p><table><tbody>';
+  O.items.forEach(function(it){tot+=it[1];h+='<tr><td>'+it[0]+'</td><td class="num">'+money(it[1])+' <small class="pe">precio de ejemplo</small></td></tr>'});
+  h+='</tbody><tfoot><tr><td>Total</td><td class="num">'+money(tot)+' <small class="pe">precio de ejemplo</small></td></tr></tfoot></table>';
+  if(!aprobado) h+='<button type="button" class="ord-ok" data-aprobar>Aprobar presupuesto</button><p class="ord-sub">Queda registrado por escrito con fecha y hora. El taller arranca cuando lo aprobás.</p>';
+  else h+='<p class="ord-done" role="status">Aprobado por escrito el '+fechaHoy()+'. El taller ya lo recibió.</p><button type="button" class="ord-adv" data-avanzar>'+(etapa<4?"Ver cómo avanza (demo)":"Volver a empezar la demo")+'</button>';
+  h+='</div>';
+  return h;
+}
+function fechaHoy(){var x=new Date();return x.getDate()+"/"+(x.getMonth()+1)+" a las "+String(x.getHours()).padStart(2,"0")+":"+String(x.getMinutes()).padStart(2,"0")}
+var oOut=$("[data-orden-out]"), oIn=$("[data-orden-input]"), oBtn=$("[data-orden-btn]");
+function showOrden(){
+  if(!oOut)return;
+  var v=(oIn&&oIn.value||"").trim().toUpperCase().replace(/\s/g,"");
+  if(v && v!==O.num.replace(/\s/g,"")){oOut.innerHTML='<p class="ord-err" role="alert">No encontramos la orden '+v.replace(/[<>&"]/g,"")+'. Probá con la de ejemplo: <b>'+O.num+'</b>.</p>';return}
+  if(oIn&&!v)oIn.value=O.num;
+  oOut.innerHTML=ordHTML();oOut.hidden=false;
+  var a=$("[data-aprobar]",oOut);if(a)a.addEventListener("click",function(){aprobado=true;if(etapa<2)etapa=2;showOrden();if(C.onOrden)C.onOrden(etapa,aprobado)});
+  var b=$("[data-avanzar]",oOut);if(b)b.addEventListener("click",function(){if(etapa<4)etapa++;else{etapa=O.etapa;aprobado=false}showOrden();if(C.onOrden)C.onOrden(etapa,aprobado)});
+  if(C.onOrden)C.onOrden(etapa,aprobado);
+}
+if(oBtn)oBtn.addEventListener("click",showOrden);
+if(oIn)oIn.addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();showOrden()}});
+/* ---------- ver como dueño ---------- */
+var panel=$("[data-owner]");
+$$("[data-owner-toggle]").forEach(function(t){
+  t.setAttribute("aria-expanded","false");
+  t.addEventListener("click",function(){
+    var open=document.body.classList.toggle("is-owner");
+    $$("[data-owner-toggle]").forEach(function(o){o.setAttribute("aria-expanded",open?"true":"false")});
+    if(panel){panel.hidden=!open;if(open){panel.setAttribute("tabindex","-1");panel.focus({preventScroll:true});panel.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"})}}
+    if(C.onOwner)C.onOwner(open);
+  });
+});
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&document.body.classList.contains("is-owner")&&C.ownerModal){$("[data-owner-toggle]").click()}});
+})();
+
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="JRP Motors"></script>
+</body>
+</html>
