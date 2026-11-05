@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Cabañas Arroyo Escondido · Trevelin · Prototipo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bellefair&family=Atkinson+Hyperlegible+Next:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#14211F; --ink2:#3C4A47; --lago:#2E7F7B; --lago2:#1E5C59; --lagoc:#CFE5E1;
+  --alerce:#7A3B26; --arrayan:#C27A43; --niebla:#EEF1EE; --papel:#F7F5EF; --linea:#D5DAD4;
+  --wa:#DCF8C6; --wabg:#ECE5DD;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--papel);color:var(--ink);font-family:"Atkinson Hyperlegible Next",system-ui,sans-serif;font-size:16px;line-height:1.5;overflow-x:hidden}
+h1,h2,h3,.disp{font-family:"Bellefair",Georgia,serif;font-weight:400;letter-spacing:.005em}
+a{color:inherit}
+img{display:block;max-width:100%}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+.chico{font-size:.78rem;color:var(--ink2)}
+.ej{font-size:.7rem;color:var(--alerce);font-weight:500;white-space:nowrap}
+button{font:inherit;cursor:pointer}
+
+/* firma */
+.firma{border-bottom:1px solid var(--linea);font-size:.78rem;color:var(--ink2)}
+.firma .wrap{display:flex;gap:14px;align-items:center;justify-content:space-between;padding-top:8px;padding-bottom:8px;flex-wrap:wrap}
+.firma b{color:var(--ink);font-weight:500}
+.duenio-btn{border:1px solid var(--ink);background:transparent;border-radius:999px;padding:5px 14px;font-size:.78rem;font-weight:500}
+.duenio-btn[aria-pressed=true]{background:var(--ink);color:var(--papel)}
+
+/* nav */
+nav.top{position:sticky;top:0;z-index:20;background:rgba(247,245,239,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--linea)}
+nav.top .wrap{display:flex;align-items:center;gap:22px;height:56px}
+.marca{font-family:"Bellefair",serif;font-size:1.35rem;line-height:1;text-decoration:none;white-space:nowrap}
+.marca small{display:block;font-family:"Atkinson Hyperlegible Next";font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--lago2)}
+nav.top ul{display:flex;gap:20px;list-style:none;margin-left:auto;font-size:.88rem}
+nav.top ul a{text-decoration:none}
+nav.top ul a:hover{color:var(--lago)}
+.cta{background:var(--lago2);color:#fff;border:0;border-radius:4px;padding:9px 16px;font-weight:500;text-decoration:none;font-size:.88rem;white-space:nowrap}
+@media(max-width:860px){nav.top ul{display:none}nav.top .cta{margin-left:auto}}
+
+/* hero: mapa primero */
+.hero{display:grid;grid-template-columns:5fr 7fr;gap:0;border-bottom:1px solid var(--linea)}
+.hero-txt{padding:56px 40px 40px 0;display:flex;flex-direction:column;gap:22px}
+.km{display:inline-flex;align-items:center;gap:10px;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--lago2);font-weight:500}
+.mojon{display:inline-grid;place-items:center;width:42px;height:50px;border:1.5px solid var(--lago2);border-radius:20px 20px 4px 4px;font-family:"Bellefair";font-size:1.05rem;letter-spacing:0;color:var(--ink)}
+.hero h1{font-size:clamp(2.3rem,4.6vw,3.9rem);line-height:1.02}
+.hero h1 em{font-style:normal;color:var(--lago)}
+.hero ul{list-style:none;display:grid;gap:8px;font-size:.95rem}
+.hero li{display:flex;gap:10px;align-items:baseline}
+.hero li::before{content:"";flex:0 0 8px;height:8px;border-radius:50%;background:var(--lago);transform:translateY(-1px)}
+.hero-acc{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.btn2{border:1px solid var(--ink);background:transparent;border-radius:4px;padding:9px 16px;font-weight:500;text-decoration:none;font-size:.88rem}
+.cita{border-left:2px solid var(--arrayan);padding-left:14px;font-size:.92rem}
+.cita q{font-family:"Bellefair";font-size:1.2rem;line-height:1.25;display:block}
+.mapa{position:relative;background:var(--lago2);color:#fff;min-height:540px;overflow:hidden}
+.mapa svg{position:absolute;inset:0;width:100%;height:100%}
+.mapa .rot{position:absolute;left:22px;top:18px;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;opacity:.85}
+.mapa .ley{position:absolute;left:22px;bottom:18px;right:22px;display:flex;justify-content:space-between;gap:12px;font-size:.78rem;flex-wrap:wrap}
+.mapa .sel{background:rgba(20,33,31,.55);padding:10px 14px;border-radius:6px;max-width:330px}
+.mapa .sel b{font-family:"Bellefair";font-weight:400;font-size:1.3rem;display:block;line-height:1.1}
+.agua{cursor:pointer}
+.agua text{font-family:"Atkinson Hyperlegible Next";font-size:13px;fill:#fff}
+.agua .pt{fill:var(--papel);stroke:var(--lago2);stroke-width:3}
+.agua:hover .pt,.agua.on .pt{fill:var(--arrayan)}
+.agua.on text{font-weight:700}
+@media(max-width:600px){.agua text{font-size:19px}}
+@media(max-width:900px){.hero{grid-template-columns:1fr}.hero-txt{padding:36px 0 28px}.mapa{min-height:420px;margin:0 -20px}}
+
+section{padding:72px 0;border-bottom:1px solid var(--linea)}
+.sec-h{display:flex;gap:18px;align-items:flex-end;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap}
+.sec-h h2{font-size:clamp(1.9rem,3.4vw,2.7rem);line-height:1.05}
+.sec-h p{max-width:420px;color:var(--ink2);font-size:.95rem}
+.num{font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:var(--lago2);font-weight:500;margin-bottom:6px;display:block}
+
+/* unidades como ficha técnica */
+.filtros{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.chip{border:1px solid var(--linea);background:#fff;border-radius:999px;padding:6px 14px;font-size:.85rem}
+.chip[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.tabla-u{border-top:2px solid var(--ink)}
+.u{display:grid;grid-template-columns:70px 1.3fr 90px 2fr 130px;gap:18px;align-items:center;padding:18px 0;border-bottom:1px solid var(--linea);transition:opacity .25s,background .25s}
+.u.off{opacity:.28}
+.u.on{background:linear-gradient(90deg,var(--lagoc),transparent 70%)}
+.u .g{width:56px;height:56px}
+.u h3{font-size:1.55rem;line-height:1.05}
+.u .tipo{font-size:.78rem;color:var(--ink2)}
+.u .cap{font-family:"Bellefair";font-size:2rem;line-height:1}
+.u .cap small{font-family:"Atkinson Hyperlegible Next";font-size:.72rem;display:block;color:var(--ink2)}
+.u ul{list-style:none;display:flex;flex-wrap:wrap;gap:4px 14px;font-size:.86rem}
+.u ul li::before{content:"· ";color:var(--lago)}
+.u .elige{border:1px solid var(--lago2);color:var(--lago2);background:#fff;border-radius:4px;padding:8px 10px;font-size:.85rem;font-weight:500}
+.u.on .elige{background:var(--lago2);color:#fff}
+.u .desde{font-size:.8rem;margin-top:6px}
+@media(max-width:860px){.u{grid-template-columns:56px 1fr auto;gap:10px 14px}.u ul{grid-column:1/-1}.u .accion{grid-column:1/-1;display:flex;gap:12px;align-items:center;justify-content:space-between}.u .g{width:48px;height:48px}}
+
+/* galería */
+.gal-main{background:var(--niebla);border:1px solid var(--linea);display:grid;place-items:center;min-height:240px}
+.gal-main img{width:100%;height:auto;max-height:640px;object-fit:contain}
+.gal-thumbs{display:grid;grid-template-columns:repeat(8,1fr);gap:8px;margin-top:8px}
+.gal-thumbs button{border:1px solid var(--linea);background:var(--niebla);padding:0;display:grid;place-items:center;aspect-ratio:4/3;overflow:hidden}
+.gal-thumbs button img{width:100%;height:100%;object-fit:contain}
+.gal-thumbs button.on{outline:2px solid var(--lago2);outline-offset:1px}
+@media(max-width:700px){.gal-thumbs{grid-template-columns:repeat(4,1fr)}}
+
+/* temporadas */
+.temp{display:grid;grid-template-columns:1fr 1.4fr;gap:40px}
+.periodos{list-style:none;border-top:2px solid var(--ink)}
+.periodos li{display:grid;grid-template-columns:14px 1fr auto;gap:12px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--linea);font-size:.92rem}
+.periodos .dot{width:10px;height:10px;border-radius:50%}
+.periodos b{font-weight:500}
+.t-alta{background:var(--alerce)}.t-media{background:var(--arrayan)}.t-baja{background:var(--lago)}
+table.tar{width:100%;border-collapse:collapse;font-size:.9rem}
+table.tar th,table.tar td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--linea);vertical-align:top}
+table.tar thead th{border-bottom:2px solid var(--ink);font-weight:500;font-size:.8rem}
+table.tar td .ej{display:block;white-space:normal}
+.temp>*,.reserva>*,.d-grid>*{min-width:0}
+.tar-wrap{overflow-x:auto}
+@media(max-width:860px){.temp{grid-template-columns:1fr}}
+
+/* reserva */
+.reserva{display:grid;grid-template-columns:1.25fr 1fr;gap:40px;align-items:start}
+.panel{background:#fff;border:1px solid var(--linea);border-radius:6px;padding:22px}
+.campos{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.campos label{display:flex;flex-direction:column;gap:5px;font-size:.8rem;font-weight:500}
+.campos input,.campos select{font:inherit;font-size:.95rem;padding:9px 10px;border:1px solid var(--linea);border-radius:4px;background:var(--papel);color:var(--ink);width:100%;min-width:0}
+.campos .full{grid-column:1/-1}
+.extras{display:grid;gap:8px;margin-top:14px;font-size:.9rem}
+.extras label{display:flex;gap:10px;align-items:center}
+.cal{margin-top:20px}
+.cal-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.cal-h button{border:1px solid var(--linea);background:#fff;border-radius:4px;width:34px;height:30px}
+.cal-h b{font-family:"Bellefair";font-weight:400;font-size:1.3rem}
+.grid7{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;font-size:.8rem;text-align:center}
+.grid7 .d{padding:7px 0;border-radius:3px;background:var(--niebla)}
+.grid7 .d.oc{background:repeating-linear-gradient(135deg,#e2ddd5 0 4px,#ece8e1 4px 8px);color:#9a948c;text-decoration:line-through}
+.grid7 .d.in{background:var(--lago);color:#fff}
+.grid7 .d.x{background:transparent}
+.grid7 .wd{font-size:.7rem;color:var(--ink2);padding-bottom:2px}
+.sync{display:flex;gap:8px;align-items:center;font-size:.78rem;color:var(--ink2);margin-top:10px}
+.sync i{width:8px;height:8px;border-radius:50%;background:#3aa45b;display:inline-block}
+.resumen{margin-top:18px;border-top:1px solid var(--linea);padding-top:14px;display:grid;gap:6px;font-size:.92rem}
+.resumen div{display:flex;justify-content:space-between;gap:10px}
+.resumen .tot{font-family:"Bellefair";font-size:1.5rem}
+.aviso{font-size:.82rem;color:var(--alerce);margin-top:8px}
+
+/* burbuja whatsapp */
+.chat{position:sticky;top:76px;background:var(--wabg);border-radius:10px;overflow:hidden;border:1px solid #d7cfc4}
+.chat-h{background:#075E54;color:#fff;padding:10px 14px;display:flex;gap:10px;align-items:center;font-size:.9rem}
+.chat-h .av{width:34px;height:34px;border-radius:50%;background:var(--lagoc);color:var(--lago2);display:grid;place-items:center;font-family:"Bellefair";font-size:1.1rem}
+.chat-h small{display:block;font-size:.72rem;opacity:.8}
+.chat-b{padding:16px 14px 10px;min-height:260px}
+.burb{background:var(--wa);border-radius:8px 0 8px 8px;padding:10px 12px 18px;margin-left:auto;max-width:94%;position:relative;font-size:.88rem;white-space:pre-wrap;box-shadow:0 1px 1px rgba(0,0,0,.08);word-wrap:break-word}
+.burb .hora{position:absolute;right:8px;bottom:3px;font-size:.66rem;color:#5b7a64}
+.burb .vivo{background:#fff6a8;border-radius:2px;transition:background 1s}
+.escribe{font-size:.75rem;color:#5b6b66;padding:0 14px 8px;min-height:18px}
+.chat-f{padding:12px 14px;background:#f0ece6;display:grid;gap:8px}
+.wa-btn{background:#25D366;color:#073b23;border:0;border-radius:999px;padding:12px 16px;font-weight:700;text-align:center;text-decoration:none;display:block}
+@media(max-width:900px){.reserva{grid-template-columns:1fr}.chat{position:static}}
+@media(max-width:480px){.campos{grid-template-columns:1fr}}
+
+/* cómo funciona / reglas */
+.cols{display:grid;grid-template-columns:repeat(2,1fr);gap:40px}
+.lista{list-style:none;border-top:2px solid var(--ink)}
+.lista li{padding:11px 0;border-bottom:1px solid var(--linea);display:grid;grid-template-columns:28px 1fr;gap:8px;font-size:.93rem}
+.lista li span{font-family:"Bellefair";font-size:1.15rem;color:var(--lago2);line-height:1.3}
+.lista small{display:block;color:var(--ink2);font-size:.78rem}
+@media(max-width:800px){.cols{grid-template-columns:1fr}}
+
+/* ruta 71 */
+.ruta{position:relative;padding-left:0}
+.ruta ol{list-style:none;display:grid;grid-template-columns:repeat(6,1fr);gap:0;position:relative}
+.ruta ol::before{content:"";position:absolute;left:0;right:0;top:25px;height:2px;background:repeating-linear-gradient(90deg,var(--ink) 0 14px,transparent 14px 24px)}
+.ruta li{position:relative;padding-right:14px}
+.ruta li .mojon{background:var(--papel);position:relative;z-index:1;margin-bottom:12px}
+.ruta li.aqui .mojon{background:var(--lago2);color:#fff;border-color:var(--lago2)}
+.ruta h3{font-size:1.25rem;line-height:1.1;margin-bottom:4px}
+.ruta p{font-size:.85rem;color:var(--ink2)}
+@media(max-width:860px){.ruta ol{grid-template-columns:1fr;gap:18px}.ruta ol::before{left:21px;right:auto;top:0;bottom:0;width:2px;height:auto;background:repeating-linear-gradient(180deg,var(--ink) 0 14px,transparent 14px 24px)}.ruta li{display:grid;grid-template-columns:56px 1fr;gap:12px}.ruta li .mojon{margin:0}}
+
+.mapa-g iframe{width:100%;height:340px;border:1px solid var(--linea);filter:saturate(.8)}
+.mapa-g .dir{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:20px}
+@media(max-width:700px){.mapa-g .dir{grid-template-columns:1fr}}
+
+/* vista dueño */
+#duenio{display:none;background:var(--ink);color:#EAF0EE}
+body.modo-duenio #duenio{display:block}
+body.modo-duenio main{display:none}
+#duenio section{border-color:#2c3a37}
+#duenio .num{color:#8fc9c3}
+.pe{display:inline-block;border:1px dashed #8fc9c3;color:#8fc9c3;border-radius:3px;padding:2px 8px;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#2c3a37;border:1px solid #2c3a37;margin:24px 0}
+.kpis div{background:var(--ink);padding:18px}
+.kpis b{font-family:"Bellefair";font-weight:400;font-size:2.1rem;display:block;line-height:1.05}
+.kpis span{font-size:.8rem;color:#a9bab6}
+@media(max-width:800px){.kpis{grid-template-columns:1fr 1fr}}
+.d-grid{display:grid;grid-template-columns:1fr 1.3fr;gap:30px}
+@media(max-width:900px){.d-grid{grid-template-columns:1fr}}
+.consultas{display:grid;gap:10px;background:#0f1a18;padding:14px;border-radius:8px}
+.consultas .burb{color:var(--ink);margin-left:0;border-radius:0 8px 8px 8px;max-width:100%}
+.consultas .meta{font-size:.72rem;color:#a9bab6;margin-bottom:-4px}
+.agenda{overflow-x:auto}
+.agenda table{border-collapse:collapse;width:100%;min-width:520px;font-size:.8rem}
+.agenda th,.agenda td{border:1px solid #2c3a37;padding:7px 6px;text-align:center}
+.agenda th:first-child,.agenda td:first-child{text-align:left;white-space:nowrap}
+.agenda .r{background:var(--lago);color:#fff}
+.agenda .b{background:#3d4a47;color:#c9d3d0}
+.agenda .s{background:var(--arrayan);color:#fff}
+.paravos{list-style:none;display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:#2c3a37;border:1px solid #2c3a37}
+.paravos li{background:var(--ink);padding:18px;font-size:.95rem}
+.paravos li b{display:block;font-family:"Bellefair";font-weight:400;font-size:1.35rem;color:#fff;margin-bottom:4px}
+@media(max-width:700px){.paravos{grid-template-columns:1fr}}
+.ahorro{width:100%;border-collapse:collapse;font-size:.9rem;margin-top:10px}
+.ahorro td{padding:9px 0;border-bottom:1px solid #2c3a37}
+.ahorro td:last-child{text-align:right}
+
+footer{padding:36px 0 48px;font-size:.8rem;color:var(--ink2)}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+</style>
+</head>
+<body>
+
+<div class="firma">
+  <div class="wrap">
+    <span>Prototipo preparado para <b>Cabañas Arroyo Escondido</b> · 5 de noviembre de 2026 · <b>4,7 ★ en Tripadvisor</b> · 79 reseñas</span>
+    <button class="duenio-btn" id="btnDuenio" aria-pressed="false">Ver como dueño</button>
+  </div>
+</div>
+
+<nav class="top">
+  <div class="wrap">
+    <a href="#inicio" class="marca">Arroyo Escondido<small>Cabañas · Trevelin</small></a>
+    <ul>
+      <li><a href="#cabanas">Cabañas</a></li>
+      <li><a href="#fotos">Fotos</a></li>
+      <li><a href="#tarifas">Tarifas</a></li>
+      <li><a href="#reglas">Reglas</a></li>
+      <li><a href="#ruta">Ruta 71</a></li>
+    </ul>
+    <a href="#reservar" class="cta">Ver disponibilidad</a>
+  </div>
+</nav>
+
+<main>
+<div class="wrap" id="inicio">
+  <div class="hero">
+    <div class="hero-txt">
+      <span class="km"><span class="mojon">5,5</span>Ruta 71 · camino al Parque Los Alerces</span>
+      <h1>Seis cabañas con nombre de agua, a <em>5,5 km</em> de Trevelin.</h1>
+      <ul>
+        <li>Pileta cubierta climatizada para todo el complejo</li>
+        <li>Hidromasaje o jacuzzi doble en cinco de las seis unidades</li>
+        <li>Lago Verde: planta baja y baño adaptado</li>
+        <li>Parrilla y cochera en cada cabaña · masajes con turno</li>
+      </ul>
+      <div class="hero-acc">
+        <a href="#reservar" class="cta">Elegir fechas</a>
+        <a href="#cabanas" class="btn2">Comparar las 6</a>
+      </div>
+      <p class="cita"><q>Hermosas cabañas con una vista increíble, pileta climatizada espectacular</q>
+      <span class="chico">Leticia T · reseña en Tripadvisor · octubre de 2025</span></p>
+    </div>
+    <div class="mapa" aria-label="Mapa ilustrado de las cabañas">
+      <svg viewBox="0 0 700 560" preserveAspectRatio="xMidYMid meet" id="mapaSvg">
+        <defs>
+          <pattern id="bosque" width="22" height="22" patternUnits="userSpaceOnUse"><path d="M11 4 L16 14 L6 14 Z" fill="#2a6b67" opacity=".55"/></pattern>
+        </defs>
+        <rect width="700" height="560" fill="#1E5C59"/>
+        <path d="M0 360 C120 330 180 420 300 380 S520 300 700 340 L700 560 L0 560 Z" fill="url(#bosque)"/>
+        <path d="M0 120 L90 40 L150 95 L230 20 L310 110 L380 60 L460 130 L540 50 L620 110 L700 70 L700 0 L0 0Z" fill="#17423f"/>
+        <path d="M0 120 L90 40 L150 95 L230 20 L310 110 L380 60 L460 130 L540 50 L620 110 L700 70" fill="none" stroke="#EEF1EE" stroke-width="1.2" opacity=".5"/>
+        <!-- ruta 71 -->
+        <path d="M-10 470 C160 455 260 500 380 470 S600 410 720 430" fill="none" stroke="#F7F5EF" stroke-width="3" stroke-dasharray="14 10" opacity=".75"/>
+        <text x="600" y="405" fill="#F7F5EF" font-size="12" opacity=".8" font-family="Atkinson Hyperlegible Next">RP 71 → Los Alerces</text>
+        <text x="16" y="500" fill="#F7F5EF" font-size="12" opacity=".8" font-family="Atkinson Hyperlegible Next">← Trevelin 5,5 km</text>
+        <!-- aguas -->
+        <g class="agua" data-u="lagoverde"><path d="M380 170 C430 140 520 150 540 200 C560 250 480 280 420 260 C370 245 340 200 380 170Z" fill="#5FB3A9" opacity=".9"/><circle class="pt" cx="455" cy="210" r="9"/><text x="470" y="215">Lago Verde · 6</text></g>
+        <g class="agua" data-u="riogrande"><path d="M40 300 C140 270 200 320 290 290 S430 300 520 330" fill="none" stroke="#8fd0c6" stroke-width="12" stroke-linecap="round"/><circle class="pt" cx="200" cy="300" r="9"/><text x="150" y="335">Río Grande · 6</text></g>
+        <g class="agua" data-u="arrayanes"><path d="M120 150 C150 190 140 230 190 260 S240 290 230 300" fill="none" stroke="#8fd0c6" stroke-width="7" stroke-linecap="round"/><circle class="pt" cx="140" cy="200" r="9"/><text x="40" y="180">Río Arrayanes · 3</text></g>
+        <g class="agua" data-u="arroyoblanco"><path d="M600 160 C590 210 610 250 570 300 S540 320 520 330" fill="none" stroke="#EEF1EE" stroke-width="5" stroke-linecap="round"/><circle class="pt" cx="596" cy="235" r="9"/><text x="560" y="275" text-anchor="middle">Arroyo Blanco · 2</text></g>
+        <g class="agua" data-u="cipreses"><circle cx="300" cy="400" r="46" fill="url(#bosque)" stroke="#8fd0c6" stroke-dasharray="3 5"/><circle class="pt" cx="300" cy="400" r="9"/><text x="255" y="372" text-anchor="end">Bosque de Cipreses · 5</text></g>
+        <g class="agua" data-u="suite"><path d="M440 380 C455 400 470 420 465 445" fill="none" stroke="#EEF1EE" stroke-width="4" stroke-linecap="round"/><circle class="pt" cx="452" cy="405" r="9"/><text x="472" y="400">Suite Arroyo · 2</text></g>
+      </svg>
+      <span class="rot">Mapa ilustrado · tocá un agua para elegir cabaña</span>
+      <div class="ley"><div class="sel" id="mapaSel"><b>Lago Verde</b>6 personas · planta baja, accesible</div></div>
+    </div>
+  </div>
+</div>
+
+<section id="cabanas">
+  <div class="wrap">
+    <div class="sec-h">
+      <div><span class="num">01 · Las cabañas</span><h2>Cada una lleva un agua del Valle 16 de Octubre</h2></div>
+      <p>Filtrá por grupo y lo que necesitan. La elegida pasa sola al pedido de reserva.</p>
+    </div>
+    <div class="filtros" id="filtros">
+      <button class="chip" data-f="2" aria-pressed="false">Somos 2</button>
+      <button class="chip" data-f="3" aria-pressed="false">Somos 3</button>
+      <button class="chip" data-f="5" aria-pressed="false">Somos 5 o 6</button>
+      <button class="chip" data-f="hidro" aria-pressed="false">Con hidromasaje</button>
+      <button class="chip" data-f="acc" aria-pressed="false">Planta baja accesible</button>
+    </div>
+    <div class="tabla-u" id="tablaU"></div>
+    <p class="chico" style="margin-top:12px">Datos de unidades según su ficha publicada. Metros y camas exactos, a confirmar con ustedes.</p>
+  </div>
+</section>
+
+<section id="fotos">
+  <div class="wrap">
+    <div class="sec-h">
+      <div><span class="num">02 · Fotos</span><h2>El complejo, tal cual</h2></div>
+      <p>Fotos publicadas del complejo. Al dejarla andando, las ordenamos por cabaña.</p>
+    </div>
+    <div class="gal-main"><img id="galMain" alt="Cabañas Arroyo Escondido, Trevelin"></div>
+    <div class="gal-thumbs" id="galThumbs"></div>
+  </div>
+</section>
+
+<section id="tarifas">
+  <div class="wrap">
+    <div class="sec-h">
+      <div><span class="num">03 · Temporadas</span><h2>Tarifa por noche, por cabaña</h2></div>
+      <p>Las fechas de cada temporada se cargan una vez y el simulador las usa solo.</p>
+    </div>
+    <div class="temp">
+      <ul class="periodos">
+        <li><i class="dot t-alta"></i><span><b>Verano</b><br><span class="chico">26 dic 2026 – 28 feb 2027 · mínimo 3 noches</span></span><span class="chico">Alta</span></li>
+        <li><i class="dot t-alta"></i><span><b>Semana Santa</b><br><span class="chico">25 – 28 mar 2027 (Pascua: dom 28)</span></span><span class="chico">Alta</span></li>
+        <li><i class="dot t-media"></i><span><b>Otoño</b><br><span class="chico">1 mar – 30 abr 2027 (fuera de Semana Santa)</span></span><span class="chico">Media</span></li>
+        <li><i class="dot t-media"></i><span><b>Invierno · nieve en La Hoya</b><br><span class="chico">1 – 31 jul 2027</span></span><span class="chico">Media</span></li>
+        <li><i class="dot t-media"></i><span><b>Primavera · campos de tulipanes</b><br><span class="chico">1 oct – 25 dic 2026</span></span><span class="chico">Media</span></li>
+        <li><i class="dot t-baja"></i><span><b>Resto del año</b><br><span class="chico">may, jun, ago, sep</span></span><span class="chico">Baja</span></li>
+      </ul>
+      <div class="tar-wrap">
+        <table class="tar">
+          <thead><tr><th>Cabaña</th><th>Alta</th><th>Media</th><th>Baja</th></tr></thead>
+          <tbody id="tarBody"></tbody>
+        </table>
+        <p class="chico" style="margin-top:10px">Extras: desayuno <b>$ 9.000</b> <span class="ej">Precio de ejemplo</span> por persona y día · masaje <b>$ 35.000</b> <span class="ej">Precio de ejemplo</span> por sesión.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="reservar">
+  <div class="wrap">
+    <div class="sec-h">
+      <div><span class="num">04 · Reservar</span><h2>Elegí fechas y mirá el mensaje que nos llega</h2></div>
+      <p>Disponibilidad de ejemplo. Al confirmar, la seña del 30% se paga por Mercado Pago.</p>
+    </div>
+    <div class="reserva">
+      <div class="panel">
+        <div class="campos">
+          <label>Llegada<input type="date" id="fIn" value="2027-01-15" min="2026-11-05"></label>
+          <label>Salida<input type="date" id="fOut" value="2027-01-19" min="2026-11-06"></label>
+          <label>Adultos<select id="fAd"></select></label>
+          <label>Menores<select id="fMe"></select></label>
+          <label class="full">Cabaña<select id="fU"></select></label>
+          <label class="full">Tu nombre<input type="text" id="fNom" placeholder="Ej.: Laura" autocomplete="off"></label>
+        </div>
+        <div class="extras">
+          <label><input type="checkbox" id="xDes"> Desayuno <span class="ej">Precio de ejemplo</span></label>
+          <label><input type="checkbox" id="xMas"> Turno de masaje
+            <select id="xMasT" style="font:inherit;font-size:.85rem;padding:3px 6px;border:1px solid var(--linea);border-radius:3px;background:var(--papel)"><option>descontracturante</option><option>holístico</option></select>
+            <span class="ej">Precio de ejemplo</span></label>
+        </div>
+        <div class="cal">
+          <div class="cal-h"><button id="calPrev" aria-label="Mes anterior">‹</button><b id="calMes"></b><button id="calNext" aria-label="Mes siguiente">›</button></div>
+          <div class="grid7" id="calGrid"></div>
+          <div class="sync"><i></i>Se sincroniza con Booking y Airbnb: un día ocupado allá aparece ocupado acá.</div>
+        </div>
+        <div class="resumen" id="resumen"></div>
+        <div class="aviso" id="aviso"></div>
+      </div>
+      <div class="chat">
+        <div class="chat-h"><span class="av">AE</span><div>Arroyo Escondido<small>Nancy y José · en línea</small></div></div>
+        <div class="chat-b"><div class="burb" id="burb"></div></div>
+        <div class="escribe" id="escribe"></div>
+        <div class="chat-f">
+          <a class="wa-btn" id="waBtn" href="#" target="_blank" rel="noopener">Enviar pedido por WhatsApp</a>
+          <span class="chico" style="text-align:center">Pagar seña con Mercado Pago (demo, no cobra)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="reglas">
+  <div class="wrap cols">
+    <div>
+      <span class="num">05 · Cómo funciona</span>
+      <h2 style="font-size:2rem;margin-bottom:18px">Del pedido a la llave</h2>
+      <ol class="lista">
+        <li><span>1</span><div>Elegís cabaña y fechas con la disponibilidad a la vista</div></li>
+        <li><span>2</span><div>Mandás el pedido por WhatsApp con el total calculado</div></li>
+        <li><span>3</span><div>Pagás la seña del 30% por Mercado Pago<small>La fecha queda tomada recién con la seña</small></div></li>
+        <li><span>4</span><div>Avisás tu hora de llegada y te esperamos desde las 14 h</div></li>
+      </ol>
+    </div>
+    <div>
+      <span class="num">06 · Reglas de la casa</span>
+      <h2 style="font-size:2rem;margin-bottom:18px">Lo que conviene saber</h2>
+      <ul class="lista">
+        <li><span>·</span><div>Entrada desde las 14 h · salida hasta las 10 h<small>Entrada temprano o salida tarde: a consultar</small></div></li>
+        <li><span>·</span><div>Pileta: con ojotas y gorro</div></li>
+        <li><span>·</span><div>Limpieza diaria, salvo los domingos</div></li>
+        <li><span>·</span><div>No se reciben despedidas de soltero/a</div></li>
+        <li><span>·</span><div>Mascotas: consultar antes de reservar</div></li>
+        <li><span>·</span><div>Wifi satelital y generador propio: no se corta la luz</div></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="ruta">
+  <div class="wrap">
+    <div class="sec-h">
+      <div><span class="num">07 · Alrededores</span><h2>Por la Ruta 71, mojón por mojón</h2></div>
+      <p>Nancy y José asesoran rafting, esquí, pesca, vuelos de bautismo y excursiones al Parque.</p>
+    </div>
+    <div class="ruta">
+      <ol>
+        <li><span class="mojon">0</span><div><h3>Trevelin</h3><p>Plaza Coronel Fontana, casas de té galesas · unos 5 km</p></div></li>
+        <li><span class="mojon">~6</span><div><h3>Molino Nant Fach</h3><p>Museo del molino harinero · unos 6 km</p></div></li>
+        <li class="aqui"><span class="mojon">5,5</span><div><h3>Arroyo Escondido</h3><p>Ustedes están acá</p></div></li>
+        <li><span class="mojon">→</span><div><h3>P. N. Los Alerces</h3><p>Por la misma ruta · lagos, alerces milenarios, pesca</p></div></li>
+        <li><span class="mojon">◇</span><div><h3>Aeropuerto Esquel</h3><p>Traslados pagos a pedido</p></div></li>
+        <li><span class="mojon">~47</span><div><h3>Cerro La Hoya</h3><p>Esquí en invierno · unos 47 km</p></div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="mapa-g">
+  <div class="wrap">
+    <span class="num">08 · Cómo llegar</span>
+    <iframe loading="lazy" title="Mapa" src="https://www.google.com/maps?q=Arroyo%20Escondido%20Caba%C3%B1as%20Trevelin%20Ruta%2071&output=embed"></iframe>
+    <div class="dir">
+      <ul class="lista">
+        <li><span>·</span><div>Ruta Provincial 71, km 5,5<small>Camino al Parque Nacional Los Alerces, Trevelin, Chubut</small></div></li>
+        <li><span>·</span><div>Teléfono: +54 9 2945 50-5000</div></li>
+      </ul>
+      <ul class="lista">
+        <li><span>·</span><div>Desde Trevelin: salir por la RP 71 hacia Los Alerces</div></li>
+        <li><span>·</span><div>Cochera cubierta en cada cabaña</div></li>
+      </ul>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- VISTA DEL DUEÑO -->
+<div id="duenio">
+  <section>
+    <div class="wrap">
+      <span class="pe">Panel de ejemplo</span>
+      <h2 style="font-size:clamp(2rem,4vw,3rem);margin-top:12px">Así lo ven Nancy y José</h2>
+      <div class="kpis">
+        <div><b>28 de 42</b><span>noches ocupadas esta semana</span></div>
+        <div><b>7</b><span>pedidos nuevos por WhatsApp</span></div>
+        <div><b>$ 1.236.000</b><span>en señas cobradas este mes</span></div>
+        <div><b>$ 618.000</b><span>de comisión que no se pagó</span></div>
+      </div>
+      <div class="d-grid">
+        <div>
+          <span class="num">Consultas que entraron</span>
+          <div class="consultas" id="consultas"></div>
+        </div>
+        <div>
+          <span class="num">Agenda de la semana</span>
+          <div class="agenda"><table id="agenda"></table></div>
+          <p style="font-size:.78rem;color:#a9bab6;margin-top:8px"><span style="color:#8fc9c3">■</span> reserva directa · <span style="color:#d79a6a">■</span> seña pendiente · <span style="color:#9aa7a4">■</span> Booking / Airbnb</p>
+          <span class="num" style="margin-top:22px">Lo que se ahorra frente al intermediario</span>
+          <table class="ahorro">
+            <tr><td>Reservas directas del mes</td><td>6</td></tr>
+            <tr><td>Facturado directo</td><td>$ 4.120.000</td></tr>
+            <tr><td>Comisión que hubiera cobrado Booking (~15%)</td><td>$ 618.000</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="wrap">
+      <span class="num">Para vos, Nancy y José</span>
+      <ul class="paravos">
+        <li><b>Menos «¿tenés libre del 10 al 15?»</b>El huésped ve qué cabaña está libre antes de escribir.</li>
+        <li><b>Seis cabañas, una agenda</b>Cada cabaña con su calendario, sincronizado con Booking, en una sola pantalla.</li>
+        <li><b>La seña entra antes de confirmar</b>Mercado Pago en vez de esperar la transferencia.</li>
+        <li><b>Sin comisión por reserva</b>Siguen en Booking, pero lo directo es todo para ustedes.</li>
+      </ul>
+      <p style="margin-top:22px"><button class="duenio-btn" style="border-color:#EAF0EE;color:#EAF0EE" id="btnVolver">Volver a la vista del huésped</button></p>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="wrap">
+    <span>Prototipo de demostración preparado para Cabañas Arroyo Escondido por Resolviendo Kos · No es la web oficial</span>
+    <span>Precios, disponibilidad y panel: de ejemplo</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var U=[
+    {id:"lagoverde",n:"Lago Verde",t:"Cabaña en planta baja",cap:6,hidro:false,acc:true,f:["Dormitorio accesible","Baño adaptado","Deck","Cocina equipada","Parrilla y cochera"],p:[170000,135000,105000]},
+    {id:"riogrande",n:"Río Grande",t:"Cabaña de 2 dormitorios y 2 baños",cap:6,hidro:true,acc:false,f:["2 dormitorios","2 baños, uno con hidromasaje","Living-comedor amplio","Parrilla y cochera"],p:[175000,140000,108000]},
+    {id:"cipreses",n:"Bosque de Cipreses",t:"Cabaña de 2 dormitorios",cap:5,hidro:true,acc:false,f:["2 dormitorios","Bañera de hidromasaje","Cocina integrada","Parrilla junto a la cabaña"],p:[150000,120000,95000]},
+    {id:"arrayanes",n:"Río Arrayanes",t:"Cabaña",cap:3,hidro:true,acc:false,f:["Cama king separable","Bañera de hidromasaje","Cocina equipada","Parrilla y cochera"],p:[115000,90000,72000]},
+    {id:"arroyoblanco",n:"Arroyo Blanco",t:"Cabaña para pareja",cap:2,hidro:true,acc:false,f:["Cama king separable","Jacuzzi doble","Baño calefaccionado","Parrilla y cochera"],p:[110000,88000,70000]},
+    {id:"suite",n:"Suite Arroyo",t:"Suite",cap:2,hidro:true,acc:false,f:["Cama king","Aislación acústica","Hidromasaje","Sector de cocina"],p:[95000,76000,60000]}
+  ];
+  var byId={};U.forEach(function(u){byId[u.id]=u});
+  var $=function(s){return document.querySelector(s)};
+  var fmt=function(n){return "$ "+Math.round(n).toLocaleString("es-AR")};
+  var EJ='<span class="ej">Precio de ejemplo</span>';
+  var sel="lagoverde";
+
+  function glyph(u){
+    var c="#2E7F7B";
+    if(u.id==="lagoverde")return '<svg class="g" viewBox="0 0 56 56"><path d="M10 30 C14 18 40 16 46 27 C52 38 30 44 18 40 C12 38 8 35 10 30Z" fill="'+c+'"/></svg>';
+    if(u.id==="cipreses")return '<svg class="g" viewBox="0 0 56 56"><path d="M18 46 L24 12 L30 46Z M30 46 L36 18 L42 46Z" fill="'+c+'"/></svg>';
+    var w=u.id==="riogrande"?7:u.id==="arrayanes"?5:3;
+    return '<svg class="g" viewBox="0 0 56 56"><path d="M6 20 C18 12 22 30 32 24 S46 16 50 22 M6 36 C18 28 22 46 32 40 S46 32 50 38" fill="none" stroke="'+c+'" stroke-width="'+w+'" stroke-linecap="round"/></svg>';
+  }
+  function drawUnits(){
+    $("#tablaU").innerHTML=U.map(function(u){
+      return '<div class="u" data-id="'+u.id+'">'+glyph(u)+
+        '<div><h3>'+u.n+'</h3><span class="tipo">'+u.t+'</span></div>'+
+        '<div class="cap">'+u.cap+'<small>personas</small></div>'+
+        '<ul>'+u.f.map(function(x){return "<li>"+x+"</li>"}).join("")+'</ul>'+
+        '<div class="accion"><button class="elige" data-id="'+u.id+'">Elegir</button><div class="desde">desde '+fmt(u.p[2])+' / noche '+EJ+'</div></div></div>';
+    }).join("");
+    $("#tarBody").innerHTML=U.map(function(u){
+      return "<tr><td><b>"+u.n+"</b><br><span class='chico'>"+u.cap+" personas</span></td>"+u.p.map(function(p){return "<td>"+fmt(p)+EJ+"</td>"}).join("")+"</tr>";
+    }).join("");
+  }
+  drawUnits();
+
+  // filtros
+  var filtro=null;
+  document.querySelectorAll("#filtros .chip").forEach(function(b){
+    b.addEventListener("click",function(){
+      var f=b.dataset.f; filtro=(filtro===f)?null:f;
+      document.querySelectorAll("#filtros .chip").forEach(function(x){x.setAttribute("aria-pressed",x.dataset.f===filtro)});
+      document.querySelectorAll(".u").forEach(function(r){
+        var u=byId[r.dataset.id],ok=true;
+        if(filtro==="2")ok=u.cap>=2&&u.cap<=3;
+        if(filtro==="3")ok=u.cap>=3&&u.cap<=5;
+        if(filtro==="5")ok=u.cap>=5;
+        if(filtro==="hidro")ok=u.hidro;
+        if(filtro==="acc")ok=u.acc;
+        r.classList.toggle("off",!ok);
+      });
+    });
+  });
+
+  // galería
+  var fotos=[];for(var i=0;i<16;i++){fotos.push("https://www.welcomeargentina.com/plantillas/webp/grandes/29849-"+(i<10?"0":"")+i+"Gr.webp")}
+  var ILU="data:image/svg+xml;utf8,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520"><rect width="800" height="520" fill="#1E5C59"/><path d="M0 230 L120 120 L200 190 L320 80 L430 200 L520 130 L640 210 L800 140 L800 520 L0 520Z" fill="#17423f"/><path d="M0 330 C200 300 300 360 480 330 S700 300 800 320 L800 520 L0 520Z" fill="#5FB3A9" opacity=".8"/><path d="M80 440 L110 360 L140 440Z M150 450 L185 350 L220 450Z M600 450 L630 370 L660 450Z" fill="#14211F" opacity=".7"/><text x="400" y="495" text-anchor="middle" font-family="Georgia" font-size="22" fill="#F7F5EF">Arroyo Escondido · Trevelin</text></svg>');
+  function safe(img){img.onerror=function(){this.onerror=null;this.src=ILU;this.closest&&this.closest("button")&&this.closest("button").classList.add("ilu")}}
+  var gm=$("#galMain");safe(gm);gm.src=fotos[0];
+  $("#galThumbs").innerHTML=fotos.map(function(f,i){return '<button data-i="'+i+'" class="'+(i===0?"on":"")+'" aria-label="Foto '+(i+1)+'"><img loading="lazy" alt="Foto '+(i+1)+' de Arroyo Escondido"></button>'}).join("");
+  document.querySelectorAll("#galThumbs button").forEach(function(b){
+    var im=b.querySelector("img");safe(im);im.src=fotos[+b.dataset.i];
+    b.addEventListener("click",function(){
+      document.querySelectorAll("#galThumbs button").forEach(function(x){x.classList.remove("on")});
+      b.classList.add("on");gm.onerror=null;safe(gm);gm.src=fotos[+b.dataset.i];
+    });
+  });
+
+  // selects
+  for(var a=1;a<=6;a++)$("#fAd").insertAdjacentHTML("beforeend","<option"+(a===2?" selected":"")+">"+a+"</option>");
+  for(var m=0;m<=4;m++)$("#fMe").insertAdjacentHTML("beforeend","<option>"+m+"</option>");
+  $("#fU").innerHTML=U.map(function(u){return '<option value="'+u.id+'">'+u.n+' · hasta '+u.cap+' personas</option>'}).join("");
+
+  // temporada
+  function d(s){var p=s.split("-");return new Date(+p[0],+p[1]-1,+p[2])}
+  function iso(dt){return dt.getFullYear()+"-"+String(dt.getMonth()+1).padStart(2,"0")+"-"+String(dt.getDate()).padStart(2,"0")}
+  function tier(dt){
+    var m=dt.getMonth()+1,day=dt.getDate(),y=dt.getFullYear();
+    if((m===12&&day>=26)||m===1||m===2)return 0;
+    if(y===2027&&m===3&&day>=25&&day<=28)return 0;
+    if(m===3||m===4||m===7||m===10||m===11||(m===12&&day<26))return 1;
+    return 2;
+  }
+  var TN=["alta","media","baja"];
+
+  // ocupación de ejemplo determinística
+  function ocupado(uid,dt){
+    var ui=U.indexOf(byId[uid])+1;
+    var blk=Math.floor((dt-new Date(2026,0,1))/864e5/3);
+    var r=Math.sin(ui*127.1+blk*311.7)*43758.5453;r=r-Math.floor(r);
+    var base=(dt.getMonth()<2)?0.38:0.2;
+    return r<base;
+  }
+
+  var calRef=null;
+  function setUnit(id,scroll){
+    sel=id;$("#fU").value=id;
+    document.querySelectorAll(".u").forEach(function(r){r.classList.toggle("on",r.dataset.id===id)});
+    document.querySelectorAll(".agua").forEach(function(g){g.classList.toggle("on",g.dataset.u===id)});
+    var u=byId[id];
+    $("#mapaSel").innerHTML="<b>"+u.n+"</b>"+u.cap+" personas · "+u.f.slice(0,2).join(" · ").toLowerCase();
+    update(true);
+    if(scroll)document.getElementById("reservar").scrollIntoView({behavior:"smooth"});
+  }
+  document.querySelectorAll(".agua").forEach(function(g){g.addEventListener("click",function(){setUnit(g.dataset.u,false)})});
+  document.getElementById("tablaU").addEventListener("click",function(e){var b=e.target.closest(".elige");if(b)setUnit(b.dataset.id,true)});
+
+  var MESES=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+  function drawCal(){
+    var fin=d($("#fIn").value),fout=d($("#fOut").value);
+    if(!calRef)calRef=new Date(fin.getFullYear(),fin.getMonth(),1);
+    $("#calMes").textContent=MESES[calRef.getMonth()]+" "+calRef.getFullYear()+" · "+byId[sel].n;
+    var h=["lu","ma","mi","ju","vi","sá","do"].map(function(x){return '<div class="wd">'+x+'</div>'}).join("");
+    var first=(calRef.getDay()+6)%7,days=new Date(calRef.getFullYear(),calRef.getMonth()+1,0).getDate();
+    for(var i=0;i<first;i++)h+='<div class="d x"></div>';
+    for(var k=1;k<=days;k++){
+      var dt=new Date(calRef.getFullYear(),calRef.getMonth(),k),cl="d";
+      if(dt>=fin&&dt<fout)cl+=" in";else if(ocupado(sel,dt))cl+=" oc";
+      h+='<div class="'+cl+'" data-iso="'+iso(dt)+'">'+k+'</div>';
+    }
+    $("#calGrid").innerHTML=h;
+  }
+  $("#calPrev").onclick=function(){calRef=new Date(calRef.getFullYear(),calRef.getMonth()-1,1);drawCal()};
+  $("#calNext").onclick=function(){calRef=new Date(calRef.getFullYear(),calRef.getMonth()+1,1);drawCal()};
+  $("#calGrid").addEventListener("click",function(e){
+    var c=e.target.closest(".d");if(!c||!c.dataset.iso||c.classList.contains("oc"))return;
+    var dt=d(c.dataset.iso);$("#fIn").value=iso(dt);
+    var o=new Date(dt);o.setDate(o.getDate()+(tier(dt)===0?3:2));$("#fOut").value=iso(o);update(true);
+  });
+
+  function fechaLarga(dt){return ["dom","lun","mar","mié","jue","vie","sáb"][dt.getDay()]+" "+dt.getDate()+" de "+MESES[dt.getMonth()]}
+  var lastTxt="",tEsc;
+  function update(keepCal){
+    var fin=d($("#fIn").value),fout=d($("#fOut").value),u=byId[sel];
+    var ad=+$("#fAd").value,me=+$("#fMe").value,per=ad+me,nom=$("#fNom").value.trim();
+    var aviso=[],n=Math.round((fout-fin)/864e5);
+    if(!(n>0)){n=0;aviso.push("La salida tiene que ser después de la llegada.")}
+    if(per>u.cap){var alt=U.filter(function(x){return x.cap>=per}).map(function(x){return x.n});aviso.push(u.n+" es para "+u.cap+" personas."+(alt.length?" Para "+per+": "+alt.join(" o ")+".":" Para "+per+" conviene sumar dos cabañas."))}
+    var tot=0,occ=0,alta=false,cnt=[0,0,0];
+    for(var i=0;i<n;i++){var x=new Date(fin);x.setDate(x.getDate()+i);var t=tier(x);cnt[t]++;if(t===0)alta=true;tot+=u.p[t];if(ocupado(u.id,x))occ++}
+    if(alta&&n<3&&n>0)aviso.push("En temporada alta el mínimo es de 3 noches.");
+    if(occ)aviso.push("Hay "+occ+" noche(s) ocupada(s) en "+u.n+" en esas fechas. Probá otra cabaña o corré las fechas.");
+    var des=$("#xDes").checked?9000*per*n:0,mas=$("#xMas").checked?35000:0;
+    var total=tot+des+mas,sena=total*0.3;
+    var tl=cnt.map(function(c,i){return c?c+" "+(c===1?"noche":"noches")+" "+TN[i]:null}).filter(Boolean).join(" + ");
+    $("#resumen").innerHTML='<div><span>'+u.n+' · '+n+' noches'+(tl?' ('+tl+')':'')+'</span><span>'+fmt(tot)+' '+EJ+'</span></div>'+
+      (des?'<div><span>Desayuno · '+per+' pers. × '+n+' días</span><span>'+fmt(des)+' '+EJ+'</span></div>':'')+
+      (mas?'<div><span>Masaje '+$("#xMasT").value+'</span><span>'+fmt(mas)+' '+EJ+'</span></div>':'')+
+      '<div><span>Total</span><span class="tot">'+fmt(total)+'</span></div><div><span>Seña 30% por Mercado Pago</span><span><b>'+fmt(sena)+'</b> '+EJ+'</span></div>';
+    $("#aviso").innerHTML=aviso.join("<br>");
+    var txt="Hola Nancy y José! Soy "+(nom||"___")+".\n"+
+      "Quiero reservar "+u.n+" en Arroyo Escondido.\n"+
+      "📅 "+(n?fechaLarga(fin)+" al "+fechaLarga(fout)+" ("+n+" noches)":"fechas a definir")+"\n"+
+      "👥 "+ad+" adulto"+(ad>1?"s":"")+(me?" y "+me+" menor"+(me>1?"es":""):"")+"\n"+
+      (des?"☕ Con desayuno\n":"")+(mas?"💆 Turno de masaje "+$("#xMasT").value+"\n":"")+
+      "💲 Total: "+fmt(total)+"\n"+
+      "Seña 30%: "+fmt(sena)+" por Mercado Pago\n"+
+      "¿Me confirman disponibilidad?";
+    var html=txt.replace(/&/g,"&amp;").replace(/</g,"&lt;");
+    if(lastTxt&&txt!==lastTxt){
+      var a=lastTxt.split("\n"),b=html.split("\n"),bt=txt.split("\n");
+      html=bt.map(function(l,i){var e=l.replace(/&/g,"&amp;").replace(/</g,"&lt;");return a[i]!==l?'<span class="vivo">'+e+'</span>':e}).join("\n");
+      $("#escribe").textContent="Actualizando el mensaje…";clearTimeout(tEsc);tEsc=setTimeout(function(){$("#escribe").textContent="";document.querySelectorAll(".burb .vivo").forEach(function(s){s.style.background="transparent"})},1100);
+    }
+    lastTxt=txt;
+    var now=new Date();
+    $("#burb").innerHTML=html+'<span class="hora">'+String(now.getHours()).padStart(2,"0")+":"+String(now.getMinutes()).padStart(2,"0")+' ✓✓</span>';
+    $("#waBtn").href="https://wa.me/5492945505000?text="+encodeURIComponent(txt);
+    if(keepCal){calRef=new Date(fin.getFullYear(),fin.getMonth(),1)}
+    drawCal();
+  }
+  ["#fIn","#fOut","#fAd","#fMe","#xDes","#xMas","#xMasT"].forEach(function(s){$(s).addEventListener("change",function(){update(s==="#fIn")})});
+  $("#fNom").addEventListener("input",function(){update(false)});
+  $("#fU").addEventListener("change",function(){setUnit(this.value,false)});
+  setUnit("lagoverde",false);
+
+  // dueño
+  var CONS=[
+    ["hace 12 min","Hola Nancy y José! Soy Martina.\nQuiero reservar Río Grande en Arroyo Escondido.\n📅 lun 4 de enero al vie 8 de enero (4 noches)\n👥 4 adultos y 2 menores\n💲 Total: $ 700.000\nSeña 30%: $ 210.000 por Mercado Pago"],
+    ["hace 1 h","Hola Nancy y José! Soy Gustavo.\nQuiero reservar Arroyo Blanco en Arroyo Escondido.\n📅 jue 25 de marzo al dom 28 de marzo (3 noches)\n👥 2 adultos\n💆 Turno de masaje descontracturante\n💲 Total: $ 365.000\nSeña 30%: $ 109.500 por Mercado Pago"],
+    ["ayer","Hola Nancy y José! Soy Carla.\nQuiero reservar Lago Verde en Arroyo Escondido.\n📅 sáb 10 de julio al mié 14 de julio (4 noches)\n👥 5 adultos\n☕ Con desayuno\n💲 Total: $ 720.000\nSeña 30%: $ 216.000 por Mercado Pago"]
+  ];
+  $("#consultas").innerHTML=CONS.map(function(c){return '<div class="meta">'+c[0]+' · seña '+(c[0]==="ayer"?"cobrada":"pendiente")+'</div><div class="burb">'+c[1]+'</div>'}).join("");
+  var dias=["lun 9","mar 10","mié 11","jue 12","vie 13","sáb 14","dom 15"];
+  var AG={lagoverde:"bbrrrrr",riogrande:"..sssrr",cipreses:"rrr..bb",arrayanes:"...rrrr",arroyoblanco:"bb..rr.",suite:"....bbb"};
+  var ag="<tr><th>Cabaña</th>"+dias.map(function(x){return "<th>"+x+"</th>"}).join("")+"</tr>";
+  U.forEach(function(u){ag+="<tr><td>"+u.n+"</td>"+AG[u.id].split("").map(function(c){return c==="r"?'<td class="r">directa</td>':c==="s"?'<td class="s">seña</td>':c==="b"?'<td class="b">Booking</td>':"<td></td>"}).join("")+"</tr>"});
+  $("#agenda").innerHTML=ag;
+  function modo(on){document.body.classList.toggle("modo-duenio",on);$("#btnDuenio").setAttribute("aria-pressed",on);$("#btnDuenio").textContent=on?"Ver como huésped":"Ver como dueño";window.scrollTo(0,0)}
+  $("#btnDuenio").onclick=function(){modo(!document.body.classList.contains("modo-duenio"))};
+  $("#btnVolver").onclick=function(){modo(false)};
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Cabañas Arroyo Escondido"></script>
+</body>
+</html>
