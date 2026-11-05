@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Taller Mecánico Técnico Automotriz · Salta · Orden de trabajo online</title>
+<meta name="description" content="Prototipo de demostración: turnos, seguimiento y presupuestos online para el Taller Mecánico Técnico Automotriz de La Rioja 934, Salta.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@400;500;600;700;800&family=PT+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --mesa:#D9DFE5; --hoja:#FFFFFF; --rosa:#F7D9DF; --amar:#F8EBA9; --tinta:#1D3F8F; --tinta2:#5B76B8; --rojo:#C8102E; --grafito:#2B2C30; --gris:#646A73; --raya:#C9D3E8;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--mesa);color:var(--grafito);font-family:"PT Sans",system-ui,sans-serif;font-size:17px;line-height:1.55;overflow-x:hidden}
+a{color:inherit}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--rojo);outline-offset:2px}
+.fx{font-family:"Fira Sans Extra Condensed","Arial Narrow",sans-serif}
+.pe{display:inline-block;font-family:"PT Sans",sans-serif;font-style:italic;font-size:11.5px;color:var(--gris);font-weight:400;white-space:nowrap}
+.firma{max-width:1120px;margin:0 auto;padding:10px 24px;font-size:13px;color:var(--gris);display:flex;flex-wrap:wrap;gap:2px 14px}
+.firma b{color:var(--grafito)}
+
+.pila{max-width:1120px;margin:14px auto 0;padding:0 24px;position:relative}
+.hoja{background:var(--hoja);position:relative;box-shadow:0 1px 0 #b9c1ca,0 14px 30px -24px rgba(20,30,50,.6)}
+.hoja--atras{position:absolute;inset:0 24px;transform:translate(10px,10px);background:var(--amar);z-index:0}
+.hoja--atras2{position:absolute;inset:0 24px;transform:translate(20px,20px);background:var(--rosa);z-index:-1}
+.hoja--front{z-index:1;display:grid;grid-template-columns:120px 1fr}
+.talon{border-right:2px dashed var(--raya);padding:26px 14px;display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--tinta)}
+.talon .n{font-family:"Fira Sans Extra Condensed",sans-serif;font-weight:700;color:var(--rojo);font-size:26px;writing-mode:vertical-rl;transform:rotate(180deg);letter-spacing:.06em;margin-top:8px}
+.talon small{font-size:12px;text-align:center;line-height:1.2}
+.cuerpo{padding:30px 40px 36px}
+
+/* membrete */
+.membrete{display:grid;grid-template-columns:1fr auto;gap:20px;border-bottom:3px double var(--tinta);padding-bottom:20px;color:var(--tinta)}
+.membrete h1{font-family:"Fira Sans Extra Condensed",sans-serif;font-weight:800;font-size:clamp(46px,7vw,92px);line-height:.88;letter-spacing:-.005em}
+.membrete h1 span{display:block;font-weight:500;font-size:.42em;letter-spacing:.01em;margin-top:8px}
+.membrete p{margin-top:12px;font-size:15.5px;color:var(--tinta2)}
+.nro{text-align:right;font-family:"Fira Sans Extra Condensed",sans-serif}
+.nro b{display:block;font-size:20px;font-weight:600;color:var(--tinta)}
+.nro em{font-style:normal;display:block;font-size:54px;font-weight:700;color:var(--rojo);line-height:1}
+.sello{position:absolute;right:56px;top:150px;transform:rotate(-9deg);border:4px solid var(--rojo);color:var(--rojo);border-radius:10px;padding:8px 18px;font-family:"Fira Sans Extra Condensed",sans-serif;font-weight:800;font-size:32px;line-height:1;text-align:center;opacity:.85;mix-blend-mode:multiply;pointer-events:none}
+.sello small{display:block;font-size:15px;font-weight:600;margin-top:2px}
+.intro{display:grid;grid-template-columns:1.2fr 1fr;gap:30px;margin-top:22px;align-items:start}
+.intro p.big{font-size:22px;line-height:1.4;max-width:30em}
+.intro ul{list-style:none;font-size:15.5px;border-left:3px solid var(--tinta);padding-left:16px;color:var(--tinta)}
+.intro li{padding:2px 0}
+.accesos{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.acc{border:2px solid var(--tinta);color:var(--tinta);background:#fff;text-decoration:none;padding:9px 16px;border-radius:4px;font-weight:700;font-size:15.5px;cursor:pointer}
+.acc--r{background:var(--tinta);color:#fff}
+
+/* bloques del formulario */
+.renglon{margin-top:34px}
+.lbl{display:flex;align-items:baseline;gap:12px;color:var(--tinta);border-bottom:1.5px solid var(--tinta);padding-bottom:4px;margin-bottom:14px}
+.lbl b{font-family:"Fira Sans Extra Condensed",sans-serif;font-size:30px;font-weight:700;line-height:1}
+.lbl span{font-size:14px;color:var(--tinta2)}
+.form2{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:40px;align-items:start}
+[data-k=servicios]{display:flex;flex-direction:column}
+.e-serv{display:grid;grid-template-columns:28px 1fr auto;column-gap:12px;align-items:start;text-align:left;background:none;border:0;border-bottom:1px solid var(--raya);padding:11px 2px;cursor:pointer}
+.e-serv:before{content:"";grid-row:span 2;width:22px;height:22px;border:2px solid var(--tinta);margin-top:2px;background:#fff}
+.e-serv[aria-pressed=true]:before{background:linear-gradient(45deg,transparent 44%,var(--grafito) 44% 56%,transparent 56%),linear-gradient(-45deg,transparent 44%,var(--grafito) 44% 56%,transparent 56%),#fff}
+.e-serv__n{font-weight:700;font-size:17.5px}
+.e-serv__d{grid-column:2;font-size:14.5px;color:var(--gris)}
+.e-serv__p{grid-column:3;grid-row:1/span 2;text-align:right;font-weight:700;color:var(--tinta);font-size:15px;max-width:170px}
+.e-serv__p .pe{display:block}
+.e-serv__p--q{font-weight:400;font-size:13.5px;color:var(--gris)}
+.e-serv[aria-pressed=true] .e-serv__n{color:var(--tinta)}
+.casillas{display:grid;grid-template-columns:1fr 1.3fr 140px;border:1.5px solid var(--tinta)}
+.casillas label{display:flex;flex-direction:column;padding:6px 10px 4px;font-size:12.5px;color:var(--tinta);font-weight:700;border-right:1.5px solid var(--tinta)}
+.casillas label:last-child{border-right:0}
+.casillas.dos{grid-template-columns:1fr 1.5fr;border-top:0}
+input{border:0;background:transparent;font-size:17px;padding:4px 0;width:100%;font-weight:400;color:var(--grafito)}
+input:focus{outline:none;background:#F2F5FB}
+[data-k=dias]{display:grid;grid-template-columns:repeat(7,1fr);border:1.5px solid var(--tinta)}
+.e-dia{background:#fff;border:0;border-right:1px solid var(--raya);padding:8px 0 6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;line-height:1.1}
+.e-dia:last-child{border-right:0}
+.e-dia__w{font-size:13px;color:var(--tinta2);font-weight:700}
+.e-dia__n{font-family:"Fira Sans Extra Condensed",sans-serif;font-size:32px;font-weight:600;color:var(--tinta)}
+.e-dia__m{font-size:12px;color:var(--gris)}
+.e-dia[aria-pressed=true]{background:var(--tinta)}
+.e-dia[aria-pressed=true] span{color:#fff}
+[data-k=horas]{display:flex;flex-wrap:wrap;gap:0;margin-top:10px;border-top:1px solid var(--raya)}
+.e-hora{background:none;border:0;border-bottom:1px solid var(--raya);width:25%;padding:8px 6px;text-align:left;cursor:pointer;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.e-hora__t{font-family:"Fira Sans Extra Condensed",sans-serif;font-size:22px;font-weight:600;color:var(--tinta)}
+.e-hora__c{font-size:12.5px;color:var(--gris)}
+.e-hora.is-full{cursor:not-allowed}.e-hora.is-full .e-hora__t{text-decoration:line-through;color:#9aa3b5}
+.e-hora[aria-pressed=true]{background:#F2F5FB;box-shadow:inset 0 -3px 0 var(--rojo)}
+.e-hora__sep{width:100%;font-size:12.5px;color:var(--gris);padding:4px 0}
+.e-hint{color:var(--gris);font-size:15px;padding:8px 0}
+.e-hint--err{color:var(--rojo);font-weight:700}
+
+/* duplicado amarillo con chat */
+.dupl{background:var(--amar);padding:16px 16px 18px;position:sticky;top:16px;box-shadow:0 10px 24px -18px rgba(70,60,10,.6)}
+.dupl h3{font-family:"Fira Sans Extra Condensed",sans-serif;color:var(--tinta);font-size:22px;font-weight:600;line-height:1.1;border-bottom:1.5px solid var(--tinta);padding-bottom:6px}
+.dupl h3 small{display:block;font-family:"PT Sans",sans-serif;font-size:13px;font-weight:400;color:#6d6224}
+.wa{background:#ECE5DD;margin-top:12px;border-radius:6px;padding:10px;min-height:250px}
+.wa__h{font-size:13px;color:#4e5a52;margin-bottom:8px;display:flex;justify-content:space-between}
+.bub{background:#DCF8C6;border-radius:8px 0 8px 8px;padding:9px 11px 18px;white-space:pre-wrap;font-size:14.5px;line-height:1.45;position:relative;margin-left:18px;color:#1b2a1d}
+.bub small{position:absolute;right:8px;bottom:3px;font-size:11px;color:#62806a}
+.e-pulse{animation:pl .35s}
+@keyframes pl{from{background:#bdf0a3}}
+.btnwa{display:block;margin-top:12px;background:#128C7E;color:#fff;text-align:center;text-decoration:none;padding:12px;font-weight:700;border-radius:4px}
+.btnwa[aria-disabled=true]{background:#7fa9a3}
+.falta{font-size:13px;color:#5c5420;margin-top:6px;text-align:center}
+.e-shake{animation:sh .3s}
+@keyframes sh{30%{transform:translateX(-4px)}70%{transform:translateX(4px)}}
+
+/* triplicado rosa: seguimiento */
+.trip{max-width:1120px;margin:60px auto 0;padding:0 24px}
+.trip__h{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:10px}
+.trip h2,.secc h2{font-family:"Fira Sans Extra Condensed",sans-serif;font-weight:700;font-size:clamp(40px,5vw,60px);line-height:.95;color:var(--tinta)}
+.trip__h p{max-width:30em;color:var(--gris)}
+.rosa{background:var(--rosa);margin-top:18px;padding:26px 30px 30px;display:grid;grid-template-columns:300px 1fr;gap:34px}
+.buscar label{font-size:13px;font-weight:700;color:var(--tinta)}
+.buscar div{display:flex;border:1.5px solid var(--tinta);background:#fff;margin-top:4px}
+.buscar input{padding:10px}
+.buscar button{border:0;background:var(--tinta);color:#fff;padding:0 16px;font-weight:700;cursor:pointer;white-space:nowrap}
+.linkej{margin-top:10px;background:none;border:0;color:var(--tinta);text-decoration:underline;cursor:pointer;font-size:15px;text-align:left}
+.e-ord__head{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline;border-bottom:1.5px solid var(--tinta);padding-bottom:6px}
+.e-ord__num{font-family:"Fira Sans Extra Condensed",sans-serif;font-size:30px;font-weight:700;color:var(--rojo)}
+.e-ord__auto{font-weight:700}
+.e-ord__ej{margin-left:auto;font-size:12.5px;font-style:italic;color:var(--gris)}
+.e-etapas{list-style:none;margin:12px 0}
+.e-etapa{display:grid;grid-template-columns:26px 1fr auto;gap:10px;padding:6px 0;border-bottom:1px solid rgba(29,63,143,.18);align-items:center}
+.e-etapa:before{content:"";width:18px;height:18px;border:2px solid var(--tinta);background:#fff}
+.e-etapa.is-done:before{background:var(--tinta)}
+.e-etapa.is-now:before{background:var(--rojo);border-color:var(--rojo)}
+.e-etapa.is-now .e-etapa__n{font-weight:700;color:var(--rojo)}
+.e-etapa:not(.is-done):not(.is-now){color:#8d8f9a}
+.e-etapa__t{font-size:13px;color:var(--gris)}
+.e-ord__nota{background:#fff;padding:10px 12px;border-left:4px solid var(--tinta);font-size:15.5px}
+.e-presu{margin-top:14px}
+.e-presu__t{font-family:"Fira Sans Extra Condensed",sans-serif;font-size:24px;font-weight:600;color:var(--tinta)}
+.e-presu table{width:100%;border-collapse:collapse;background:#fff;margin-top:6px}
+.e-presu td{padding:8px 10px;border:1px solid var(--raya)}
+.e-num{text-align:right;font-weight:700;white-space:nowrap}
+td.e-num .pe{display:block}
+.e-presu__tot td{font-weight:800;font-size:18px}
+.e-presu__acc{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;align-items:center}
+.e-aprobar{background:var(--rojo);color:#fff;border:0;padding:11px 20px;font-weight:700;border-radius:4px;cursor:pointer}
+.e-consultar{font-weight:700;color:var(--tinta)}
+.e-aprobado{margin-top:12px;background:#fff;padding:10px 12px;border:2px solid var(--rojo);color:var(--grafito)}
+
+.secc{max-width:1120px;margin:64px auto 0;padding:0 24px}
+.reco{display:grid;grid-template-columns:1fr 1fr;gap:34px;margin-top:18px;align-items:start}
+.recmsg{background:#DCF8C6;padding:14px 16px;border-radius:0 10px 10px 10px;white-space:pre-wrap;box-shadow:0 1px 0 #a9c79c}
+.reco ul{list-style:none}
+.reco li{padding:8px 0;border-bottom:1px solid #bcc5cf}
+.reco li b{color:var(--tinta)}
+.pv{background:#fff;padding:30px 34px;margin-top:18px;border-top:6px solid var(--tinta)}
+.pv ul{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:12px 36px}
+.pv li{padding-left:34px;position:relative;font-size:18px;line-height:1.4}
+.pv li:before{content:"";position:absolute;left:0;top:3px;width:20px;height:20px;border:2px solid var(--tinta);background:linear-gradient(45deg,transparent 44%,var(--tinta) 44% 56%,transparent 56%),linear-gradient(-45deg,transparent 44%,var(--tinta) 44% 56%,transparent 56%)}
+
+/* panel */
+.owner{max-width:1120px;margin:40px auto 0;padding:0 24px}
+.owner__in{background:#fff;padding:26px 30px 30px;background-image:repeating-linear-gradient(#fff 0 31px,var(--raya) 31px 32px);border-left:4px double var(--rojo)}
+.owner__h{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;border-bottom:3px double var(--tinta);padding-bottom:8px;background:#fff}
+.owner__h h2{font-family:"Fira Sans Extra Condensed",sans-serif;font-size:44px;font-weight:700;color:var(--tinta);line-height:1}
+.tag{color:var(--rojo);border:2px solid var(--rojo);padding:2px 10px;font-weight:700;font-size:14px;transform:rotate(-3deg)}
+[data-k=ownerbody]{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 30px;margin-top:16px}
+.o-blk{min-width:0;background:#fff;padding:4px 0}
+.o-agenda{grid-column:1/-1}
+.o-blk h4{font-family:"Fira Sans Extra Condensed",sans-serif;font-size:24px;font-weight:600;color:var(--tinta);border-bottom:1.5px solid var(--tinta);margin-bottom:6px}
+.o-scroll{overflow-x:auto}
+.o-grid{border-collapse:collapse;width:100%;min-width:620px;font-size:14.5px}
+.o-grid th,.o-grid td{border:1px solid var(--raya);padding:7px 8px;text-align:left}
+.o-grid thead th{color:var(--tinta);font-weight:700}
+.o-grid tbody th{color:var(--tinta);white-space:nowrap}
+.o-libre{color:#a4abba;font-style:italic}
+.o-blk ul{list-style:none}
+.o-blk li{display:flex;flex-wrap:wrap;justify-content:space-between;gap:2px 10px;padding:7px 0;border-bottom:1px solid var(--raya)}
+.o-d{width:100%;font-size:13.5px;color:var(--gris)}
+.o-e{font-size:13px;font-weight:700;color:var(--tinta)}
+.o-e--4{color:#1c7a45}.o-e--2{color:var(--rojo)}
+.o-bub{background:#DCF8C6;border-radius:8px 0 8px 8px;padding:8px 10px;font-size:13.5px;white-space:pre-wrap;margin-bottom:8px}
+.o-kpi ul{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}
+.o-kpi li{flex-direction:column}
+.o-kpi b{font-family:"Fira Sans Extra Condensed",sans-serif;font-size:38px;color:var(--rojo);line-height:1}
+.o-kpi span{font-size:14px}
+
+footer{max-width:1120px;margin:56px auto 0;padding:18px 24px 40px;border-top:1px solid #bcc5cf;font-size:13.5px;color:var(--gris);display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
+
+@media (max-width:900px){
+  .hoja--front{grid-template-columns:1fr}
+  .talon{flex-direction:row;border-right:0;border-bottom:2px dashed var(--raya);padding:10px 18px;justify-content:space-between}
+  .talon .n{writing-mode:horizontal-tb;transform:none;margin:0}
+  .cuerpo{padding:22px 18px 26px}
+  .membrete{grid-template-columns:1fr}
+  .nro{text-align:left}
+  .sello{top:auto;bottom:auto;right:14px;top:96px;font-size:22px;padding:6px 10px}
+  .intro,.form2,.rosa,.reco{grid-template-columns:1fr}
+  .dupl{position:static}
+  .pv ul{grid-template-columns:1fr}
+  [data-k=ownerbody]{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:560px){
+  .firma,.pila,.trip,.secc,.owner{padding-left:16px;padding-right:16px}
+  .hoja--atras,.hoja--atras2{inset:0 16px}
+  .hoja--atras{transform:translate(4px,6px)}.hoja--atras2{transform:translate(8px,12px)}
+  .pila{padding-right:24px}
+  .casillas,.casillas.dos{grid-template-columns:1fr}
+  .casillas label{border-right:0;border-bottom:1.5px solid var(--tinta)}
+  .casillas label:last-child{border-bottom:0}
+  [data-k=dias]{grid-template-columns:repeat(4,1fr)}
+  .e-dia{border-bottom:1px solid var(--raya)}
+  .e-hora{width:50%}
+  .rosa{padding:20px 14px}
+  .owner__in{padding:18px 14px}
+  .pv{padding:22px 16px}
+  .e-serv{grid-template-columns:28px 1fr}
+  .e-serv__p{grid-column:2;grid-row:auto;text-align:left;max-width:none}
+  .e-serv__p .pe{display:inline}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<div class="firma"><span>Prototipo preparado para <b>Taller Mecánico Técnico Automotriz</b> · 4 de noviembre de 2026</span><span>4,9 ★ en Google · 164 reseñas</span></div>
+
+<div class="pila">
+  <div class="hoja hoja--atras" aria-hidden="true"></div>
+  <div class="hoja hoja--atras2" aria-hidden="true"></div>
+  <div class="hoja hoja--front">
+    <div class="talon" aria-hidden="true"><small>Original<br>cliente</small><span class="n">N° 0004417</span><small>Salta</small></div>
+    <div class="cuerpo">
+      <header class="membrete">
+        <div>
+          <h1>Taller Mecánico<span>Técnico Automotriz · La Rioja 934, Salta</span></h1>
+          <p>Lunes a viernes de 9 a 19 · Sábados de 9 a 13 · 387 605-2922</p>
+        </div>
+        <div class="nro"><b>Orden de trabajo</b><em>N° 4417</em></div>
+      </header>
+      <div class="sello" aria-hidden="true">Turno online<small>sin llamar</small></div>
+      <div class="intro">
+        <p class="big">Para el salteño que trae el auto de siempre y para el viajero que llega de paso con la correa cortada o el gasoil de mala calidad.</p>
+        <ul>
+          <li>Sacás turno con día y franja con lugar.</li>
+          <li>Seguís la orden desde el celular.</li>
+          <li>Aprobás el presupuesto con un botón.</li>
+        </ul>
+      </div>
+      <nav class="accesos" aria-label="Accesos">
+        <a class="acc acc--r" href="#turno">Sacar turno</a>
+        <a class="acc" href="#seguimiento">¿Cómo va mi auto?</a>
+        <button class="acc" type="button" data-k="ownerbtn" aria-expanded="false">Ver como dueño</button>
+      </nav>
+
+      <div class="form2" id="turno">
+        <div>
+          <div class="renglon"><div class="lbl"><b>Trabajo solicitado</b><span>Marcá uno</span></div><div data-k="servicios"></div></div>
+          <div class="renglon"><div class="lbl"><b>Vehículo</b><span>Nafta o diésel, también camionetas</span></div>
+            <div class="casillas">
+              <label>Marca<input data-f="marca" list="e-marcas" autocomplete="off" placeholder="Toyota"></label>
+              <label>Modelo y año<input data-f="modelo" placeholder="Hilux 2016"></label>
+              <label>Km<input data-f="km" inputmode="numeric" placeholder="180.000"></label>
+            </div>
+            <div class="casillas dos">
+              <label>Nombre<input data-f="nombre" autocomplete="given-name" placeholder="Julián"></label>
+              <label>Síntoma (opcional)<input data-f="nota" placeholder="Humo negro y falta de fuerza"></label>
+            </div>
+          </div>
+          <div class="renglon"><div class="lbl"><b>Fecha de ingreso</b><span>Se ven los lugares libres por franja</span></div><div data-k="dias"></div><div data-k="horas"></div></div>
+        </div>
+        <aside class="dupl" aria-label="Mensaje que le llega al taller">
+          <h3>Duplicado para el taller<small>Esto le llega por WhatsApp, tal cual</small></h3>
+          <div class="wa"><div class="wa__h"><span>Taller Técnico Automotriz</span><span>en línea</span></div><div class="bub"><span data-k="burbuja"></span><small data-k="btime"></small></div></div>
+          <a class="btnwa" data-k="wa" href="#" target="_blank" rel="noopener">Enviar por WhatsApp</a>
+          <p class="falta" data-k="falta"></p>
+        </aside>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="trip" id="seguimiento">
+  <div class="trip__h"><h2>¿Cómo va mi auto?</h2><p>El triplicado ya no se pierde en la guantera: el cliente pone su número de orden y ve la etapa y el presupuesto.</p></div>
+  <div class="rosa">
+    <div class="buscar">
+      <label for="ord">Número de orden</label>
+      <div><input id="ord" data-k="ordin" placeholder="Ej: OT-4417"><button type="button" data-k="ordbtn">Consultar</button></div>
+      <button type="button" class="linkej" data-k="ordej">Ver la orden de ejemplo OT-4417</button>
+    </div>
+    <div data-k="ordout"><p class="e-hint">Acá aparece la orden: etapa, nota del mecánico y presupuesto para aprobar.</p></div>
+  </div>
+</section>
+
+<section class="secc">
+  <h2>Recordatorio del próximo service</h2>
+  <div class="reco">
+    <div class="recmsg" data-k="record"></div>
+    <ul>
+      <li><b>Cuándo sale:</b> a los 6 meses o 10.000 km.</li>
+      <li><b>A quién:</b> a todo auto que pasó por el taller.</li>
+      <li><b>Qué hace el cliente:</b> responde SÍ y elige día.</li>
+      <li><b>Para el viajero:</b> le recuerda revisar el arreglo cuando vuelve a su país.</li>
+    </ul>
+  </div>
+  <div class="pv">
+    <h2>Para el taller de La Rioja 934</h2>
+    <ul style="margin-top:14px">
+      <li>Dejás de atender el teléfono con las manos engrasadas.</li>
+      <li>El cliente sabe el estado sin llamar, aunque esté de viaje.</li>
+      <li>El que hizo el service vuelve solo con el recordatorio.</li>
+      <li>Presupuestos aprobados por escrito: se terminan las discusiones.</li>
+    </ul>
+    <div class="accesos"><button class="acc acc--r" type="button" data-k="ownerbtn" aria-expanded="false">Ver como dueño</button></div>
+  </div>
+</section>
+
+<section class="owner" data-k="owner" hidden>
+  <div class="owner__in">
+    <div class="owner__h"><h2>Planilla del taller</h2><span class="tag">Panel de ejemplo</span></div>
+    <div data-k="ownerbody"></div>
+  </div>
+</section>
+
+<footer><span>Prototipo de demostración preparado para Taller Mecánico Técnico Automotriz por Resolviendo Kos · No es la web oficial</span><span>La Rioja 934, Salta</span></footer>
+
+<script>
+window.TALLER={
+  negocio:"Taller Mecánico Técnico Automotriz", waIntl:"5493876052922", saludo:"",
+  horarios:{0:[],1:[[9,19]],2:[[9,19]],3:[[9,19]],4:[[9,19]],5:[[9,19]],6:[[9,13]]},
+  paso:1, boxes:["Box 1","Box 2","Box 3"], boxNombre:"box",
+  servicios:[
+    {n:"Correa de distribución",d:"Cambio preventivo o correa cortada",p:260000,desde:1},
+    {n:"Diésel e inyección",d:"Falta de fuerza, humo o gasoil en mal estado",p:0},
+    {n:"Suspensión y tren delantero",d:"Golpes, ruidos o desgaste desparejo",p:120000,desde:1},
+    {n:"Diagnóstico con escáner",d:"Testigo encendido o falla que va y viene",p:30000},
+    {n:"Service de aceite y filtros",d:"Según kilometraje y tipo de motor",p:75000,desde:1},
+    {n:"Revisión antes de seguir viaje",d:"Para el que viene de lejos o va a cruzar a Bolivia o Chile",p:40000}
+  ],
+  orden:{num:"OT-4417",auto:"Toyota Hilux 2.8 diésel 2017",cliente:"Julián M. (cliente de ejemplo)",etapa:1,
+    tiempos:["Lun 9:20","Lun 12:40","","",""],
+    nota:"Filtro de gasoil saturado y dos inyectores con retorno alto. Recomendamos limpiar el tanque para que no se repita.",
+    notaAprobado:"Gracias. Los inyectores salen del banco mañana a primera hora y la entregamos al mediodía.",
+    items:[{d:"Limpieza y prueba de inyectores en banco",p:190000},{d:"Filtro de gasoil y purga del sistema",p:45000},{d:"Limpieza de tanque",p:80000},{d:"Mano de obra",p:110000}]},
+  recordatorio:"Hola Julián, te escribimos del taller de La Rioja 934, Salta.\nYa pasaron 6 meses desde la limpieza de inyectores de la Hilux.\nSi estás por la zona, ¿te reservamos un turno para el service? Respondé SÍ y te pasamos los días.",
+  panel:{
+    trabajos:["Distribución","Inyección","Tren delantero","Escáner","Service","Revisión de viaje"],
+    autos:[["Toyota Hilux 2017","Inyección · Julián M.",1],["VW Amarok 2014","Correa de distribución · viajeros de Francia",3],["Fiat Cronos 2021","Service 40.000 km",4],["Renault Duster 2016","Rótulas · espera repuesto",2]],
+    presus:[["Hilux 2017 · inyección",425000,"Enviado lunes 12:40"],["Corolla 2013 · amortiguadores",310000,"Enviado hoy 10:15"],["Partner 2012 · embrague",280000,"Enviado ayer, sin respuesta"]],
+    recs:[["Gabriela L. · Etios 2019","Service 50.000 km · sale el jueves"],["Ramiro T. · Ranger 2018","6 meses del último service · sale el viernes"],["Cecilia V. · Kangoo 2015","Correa a los 60.000 km · sale el sábado"]],
+    consultas:["Hola, quiero sacar turno.\nServicio: Correa de distribución\nAuto: Peugeot 208 · 92.000 km\nDía: jueves a las 09:00\nNombre: Lucía","Hola, quiero sacar turno.\nServicio: Revisión antes de seguir viaje\nAuto: Land Rover Defender · 240.000 km\nDía: viernes a las 10:00\nNombre: Tom"],
+    kpis:[["41","turnos que entraron sin llamada"],["9","clientes que volvieron por el recordatorio"],["17","presupuestos aprobados por escrito"],["0 %","de comisión por turno"]]
+  }
+};
+</script>
+<script>
+(function(){
+"use strict";
+var C = window.TALLER;
+var $ = function(s,r){return (r||document).querySelector(s);};
+var $$ = function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));};
+var DIAS=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
+var DCORTO=["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"];
+var MES=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+var PE='<span class="pe">precio de ejemplo</span>';
+function money(n){return "$ "+Math.round(n).toLocaleString("es-AR");}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function hh(x){var h=Math.floor(x),m=Math.round((x-h)*60);return (h<10?"0":"")+h+":"+(m<10?"0":"")+m;}
+function hash(s){var h=7;for(var i=0;i<s.length;i++){h=(h*31+s.charCodeAt(i))%9973;}return h;}
+
+var st={serv:null,dia:null,hora:null,marca:"",modelo:"",km:"",nombre:"",nota:""};
+
+/* ---------- servicios ---------- */
+var sv=$("[data-k=servicios]");
+if(sv){
+  sv.innerHTML=C.servicios.map(function(s,i){
+    return '<button type="button" class="e-serv" data-i="'+i+'" aria-pressed="false">'+
+      '<span class="e-serv__n">'+esc(s.n)+'</span>'+
+      (s.d?'<span class="e-serv__d">'+esc(s.d)+'</span>':'')+
+      (s.p?'<span class="e-serv__p">'+(s.desde?'desde ':'')+money(s.p)+' '+PE+'</span>':'<span class="e-serv__p e-serv__p--q">Se presupuesta con el auto en el taller</span>')+
+      '</button>';
+  }).join("");
+  sv.addEventListener("click",function(e){
+    var b=e.target.closest(".e-serv"); if(!b) return;
+    $$(".e-serv",sv).forEach(function(x){x.setAttribute("aria-pressed","false");});
+    b.setAttribute("aria-pressed","true"); st.serv=C.servicios[+b.dataset.i]; upd();
+  });
+}
+
+/* ---------- días ---------- */
+var hoy=new Date(); hoy.setHours(0,0,0,0);
+var dias=[];
+for(var i=0;i<21 && dias.length<(C.nDias||7);i++){
+  var d=new Date(hoy.getTime()+i*864e5);
+  var r=C.horarios[d.getDay()];
+  if(r && r.length){ if(i===0){var now=new Date(); var last=r[r.length-1][1]; if(now.getHours()+now.getMinutes()/60>last-1.5) continue;} dias.push(d); }
+}
+var dv=$("[data-k=dias]");
+function diaLabel(d){return DIAS[d.getDay()]+" "+d.getDate()+"/"+(d.getMonth()+1);}
+if(dv){
+  dv.innerHTML=dias.map(function(d,i){
+    return '<button type="button" class="e-dia" data-i="'+i+'" aria-pressed="false"><span class="e-dia__w">'+DCORTO[d.getDay()]+'</span><span class="e-dia__n">'+d.getDate()+'</span><span class="e-dia__m">'+MES[d.getMonth()]+'</span></button>';
+  }).join("");
+  dv.addEventListener("click",function(e){
+    var b=e.target.closest(".e-dia"); if(!b) return;
+    $$(".e-dia",dv).forEach(function(x){x.setAttribute("aria-pressed","false");});
+    b.setAttribute("aria-pressed","true"); st.dia=dias[+b.dataset.i]; st.hora=null; horas(); upd();
+  });
+}
+var hv=$("[data-k=horas]");
+function horas(){
+  if(!hv) return;
+  if(!st.dia){hv.innerHTML='<p class="e-hint">Elegí un día para ver las franjas.</p>';return;}
+  var r=C.horarios[st.dia.getDay()], out=[], cap=C.boxes.length;
+  var now=new Date(), esHoy=st.dia.getTime()===hoy.getTime();
+  r.forEach(function(rg,ri){
+    for(var h=rg[0];h<=rg[1]-1;h+=(C.paso||1)){
+      if(esHoy && h<=now.getHours()+now.getMinutes()/60+1) continue;
+      var libres=Math.min(cap,hash(st.dia.toDateString()+h)%(cap+2));
+      if(h===rg[0] && libres===0) libres=1;
+      out.push('<button type="button" class="e-hora'+(libres===0?' is-full':'')+'" data-h="'+h+'" aria-pressed="false" '+(libres===0?'disabled':'')+'><span class="e-hora__t">'+hh(h)+'</span><span class="e-hora__c">'+(libres===0?'completo':(libres===1?'queda 1 lugar':'quedan '+libres+' lugares'))+'</span></button>');
+    }
+    if(ri<r.length-1) out.push('<span class="e-hora__sep">'+(C.cortaTxt||'mediodía')+'</span>');
+  });
+  hv.innerHTML=out.join("")||'<p class="e-hint">No quedan franjas hoy. Probá otro día.</p>';
+}
+if(hv){
+  horas();
+  hv.addEventListener("click",function(e){
+    var b=e.target.closest(".e-hora"); if(!b||b.disabled) return;
+    $$(".e-hora",hv).forEach(function(x){x.setAttribute("aria-pressed","false");});
+    b.setAttribute("aria-pressed","true"); st.hora=+b.dataset.h; upd();
+  });
+}
+/* ---------- campos ---------- */
+var ml=$("#e-marcas");
+if(!ml){ml=document.createElement("datalist");ml.id="e-marcas";document.body.appendChild(ml);}
+ml.innerHTML=(C.marcas||["Volkswagen","Chevrolet","Ford","Fiat","Renault","Peugeot","Toyota","Citroën","Honda","Nissan","Jeep","Hyundai","Kia","Mercedes-Benz","Chery"]).map(function(m){return '<option value="'+m+'">';}).join("");
+$$("[data-f]").forEach(function(inp){
+  inp.addEventListener("input",function(){st[inp.dataset.f]=inp.value.trim();upd();});
+});
+
+/* ---------- burbuja ---------- */
+function texto(){
+  var L=["Hola"+(C.saludo?" "+C.saludo:"")+", quiero sacar turno."];
+  L.push("Servicio: "+(st.serv?st.serv.n:"…"));
+  var auto=[st.marca,st.modelo].filter(Boolean).join(" ");
+  L.push("Auto: "+(auto||"…")+(st.km?" · "+st.km.replace(/\D/g,"").replace(/\B(?=(\d{3})+(?!\d))/g,".")+" km":""));
+  L.push("Día: "+(st.dia?diaLabel(st.dia):"…")+(st.hora!==null?" a las "+hh(st.hora):""));
+  if(st.nota) L.push("Qué le pasa: "+st.nota);
+  if(st.serv&&st.serv.p) L.push("Referencia: "+(st.serv.desde?"desde ":"")+money(st.serv.p)+" (precio de ejemplo)");
+  L.push("Nombre: "+(st.nombre||"…"));
+  return L.join("\n");
+}
+var bub=$("[data-k=burbuja]"), wa=$("[data-k=wa]"), bt=$("[data-k=btime]");
+var falta=$("[data-k=falta]");
+function upd(){
+  var t=texto();
+  if(bub){bub.textContent=t; bub.classList.remove("e-pulse"); void bub.offsetWidth; bub.classList.add("e-pulse");}
+  if(bt){var n=new Date();bt.textContent=hh(n.getHours()+n.getMinutes()/60);}
+  var ok=st.serv&&st.dia&&st.hora!==null&&st.nombre&&(st.marca||st.modelo);
+  if(wa){
+    wa.href="https://wa.me/"+C.waIntl+"?text="+encodeURIComponent(t);
+    wa.setAttribute("aria-disabled",ok?"false":"true");
+    wa.classList.toggle("is-ready",!!ok);
+  }
+  if(falta){
+    var f=[];if(!st.serv)f.push("servicio");if(!(st.marca||st.modelo))f.push("auto");if(!st.dia)f.push("día");if(st.hora===null)f.push("horario");if(!st.nombre)f.push("nombre");
+    falta.textContent=f.length?"Falta: "+f.join(", "):"Listo. Se abre WhatsApp con este mensaje.";
+  }
+}
+if(wa) wa.addEventListener("click",function(e){ if(wa.getAttribute("aria-disabled")==="true"){e.preventDefault(); if(falta){falta.classList.remove("e-shake");void falta.offsetWidth;falta.classList.add("e-shake");}}});
+upd();
+
+/* ---------- seguimiento ---------- */
+var O=C.orden, ETAPAS=["Recibido","En diagnóstico","Esperando repuesto","En reparación","Listo para retirar"];
+var oi=$("[data-k=ordin]"), ob=$("[data-k=ordbtn]"), oo=$("[data-k=ordout]"), oe=$("[data-k=ordej]");
+var aprob=false;
+function total(){return O.items.reduce(function(a,x){return a+x.p;},0);}
+function renderOrden(){
+  var etapa=aprob?3:O.etapa;
+  var h='<div class="e-ord">';
+  h+='<div class="e-ord__head"><span class="e-ord__num">Orden '+esc(O.num)+'</span><span class="e-ord__auto">'+esc(O.auto)+'</span><span class="e-ord__ej">Orden de ejemplo</span></div>';
+  h+='<ol class="e-etapas">'+ETAPAS.map(function(n,i){
+    var c=i<etapa?"is-done":(i===etapa?"is-now":"");
+    return '<li class="e-etapa '+c+'"><span class="e-etapa__n">'+n+'</span><span class="e-etapa__t">'+(O.tiempos[i]&&i<=etapa?O.tiempos[i]:"")+'</span></li>';
+  }).join("")+'</ol>';
+  h+='<p class="e-ord__nota">'+esc(aprob?O.notaAprobado:O.nota)+'</p>';
+  h+='<div class="e-presu"><div class="e-presu__t">Presupuesto '+(aprob?'aprobado':'para aprobar')+'</div><table>'+O.items.map(function(x){
+    return '<tr><td>'+esc(x.d)+'</td><td class="e-num">'+money(x.p)+' '+PE+'</td></tr>';
+  }).join("")+'<tr class="e-presu__tot"><td>Total</td><td class="e-num">'+money(total())+' '+PE+'</td></tr></table>';
+  if(!aprob) h+='<div class="e-presu__acc"><button type="button" class="e-aprobar" data-k="aprobar">Aprobar presupuesto</button><a class="e-consultar" target="_blank" rel="noopener" href="https://wa.me/'+C.waIntl+'?text='+encodeURIComponent("Hola, tengo una consulta sobre el presupuesto de la orden "+O.num+".")+'">Tengo una duda</a></div>';
+  else h+='<div class="e-aprobado"><b>Aprobado por escrito.</b> Al taller le llega: <q>Apruebo el presupuesto de la orden '+esc(O.num)+' por '+money(total())+'. — '+esc(O.cliente)+'</q></div>';
+  h+='</div></div>';
+  oo.innerHTML=h;
+  var ab=$("[data-k=aprobar]",oo);
+  if(ab) ab.addEventListener("click",function(){aprob=true;renderOrden();});
+}
+function buscar(){
+  var v=(oi.value||"").trim().toUpperCase().replace(/\s/g,"");
+  if(!v || v===O.num.toUpperCase().replace(/\s/g,"") || v===O.num.replace(/\D/g,"")){ if(!v) oi.value=O.num; renderOrden(); }
+  else oo.innerHTML='<p class="e-hint e-hint--err">No encontramos la orden '+esc(v)+'. En esta demo probá con '+esc(O.num)+'.</p>';
+}
+if(ob){ ob.addEventListener("click",buscar); oi.addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();buscar();}}); }
+if(oe){ oe.addEventListener("click",function(){oi.value=O.num;buscar();}); }
+
+/* ---------- recordatorio ---------- */
+var rc=$("[data-k=record]");
+if(rc) rc.textContent=C.recordatorio;
+
+/* ---------- panel dueño ---------- */
+var pb=$$("[data-k=ownerbtn]"), pw=$("[data-k=owner]"), pbody=$("[data-k=ownerbody]");
+function panel(){
+  var P=C.panel, h='';
+  // agenda
+  var semana=[];for(var i=0;i<14&&semana.length<(C.panelDias||6);i++){var d=new Date(hoy.getTime()+i*864e5);if(C.horarios[d.getDay()]&&C.horarios[d.getDay()].length)semana.push(d);}
+  h+='<section class="o-blk o-agenda"><h4>Agenda de la semana por '+(C.boxNombre||'box')+'</h4><div class="o-scroll"><table class="o-grid"><thead><tr><th></th>'+semana.map(function(d){return '<th>'+DCORTO[d.getDay()]+' '+d.getDate()+'</th>';}).join("")+'</tr></thead><tbody>'+
+    C.boxes.map(function(b,bi){return '<tr><th>'+esc(b)+'</th>'+semana.map(function(d,di){
+      var k=hash(b+d.toDateString()), n=P.trabajos[(k+bi)%P.trabajos.length];
+      var lleno=(k%5)!==0;
+      return '<td>'+(lleno?'<span class="o-t">'+esc(n)+'</span>':'<span class="o-libre">libre</span>')+'</td>';
+    }).join("")+'</tr>';}).join("")+'</tbody></table></div></section>';
+  h+='<section class="o-blk o-autos"><h4>Autos en el taller ahora</h4><ul>'+P.autos.map(function(a){return '<li><span class="o-a">'+esc(a[0])+'</span><span class="o-e o-e--'+a[2]+'">'+ETAPAS[a[2]]+'</span><span class="o-d">'+esc(a[1])+'</span></li>';}).join("")+'</ul></section>';
+  h+='<section class="o-blk o-pres"><h4>Presupuestos esperando aprobación</h4><ul>'+P.presus.map(function(a){return '<li><span>'+esc(a[0])+'</span><span class="e-num">'+money(a[1])+' '+PE+'</span><span class="o-d">'+esc(a[2])+'</span></li>';}).join("")+'</ul></section>';
+  h+='<section class="o-blk o-rec"><h4>Recordatorios que salen esta semana</h4><ul>'+P.recs.map(function(a){return '<li><span>'+esc(a[0])+'</span><span class="o-d">'+esc(a[1])+'</span></li>';}).join("")+'</ul></section>';
+  h+='<section class="o-blk o-consultas"><h4>Consultas que entraron hoy</h4>'+P.consultas.map(function(t){return '<div class="o-bub">'+esc(t)+'</div>';}).join("")+'</section>';
+  h+='<section class="o-blk o-kpi"><h4>Este mes</h4><ul>'+P.kpis.map(function(a){return '<li><b>'+esc(a[0])+'</b><span>'+esc(a[1])+'</span></li>';}).join("")+'</ul></section>';
+  pbody.innerHTML=h;
+}
+if(pw&&pbody){ panel();
+  pb.forEach(function(b){b.addEventListener("click",function(){
+    var open=pw.hidden; pw.hidden=!open; pb.forEach(function(x){x.setAttribute("aria-expanded",open?"true":"false");});
+    if(open){ pw.scrollIntoView({behavior:"smooth",block:"start"}); }
+  });});
+}
+})();
+
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Taller Mecánico Técnico Automotriz"></script>
+</body>
+</html>
