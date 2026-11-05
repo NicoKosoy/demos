@@ -1,0 +1,548 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Mecánica Maxi · Turnos y seguimiento</title>
+<meta name="description" content="Prototipo de demostración preparado para Mecánica Maxi, Neuquén.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Staatliches&family=Istok+Web:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --papel:#E3EBE5; --papel2:#D3DED6; --grafito:#1F2B2C; --grafito2:#3C4A4B;
+  --rojo:#C7331F; --amarillo:#E5B21A; --azul:#2459A8; --blanco:#F7FAF8; --linea:#AFC0B5;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{background:var(--papel);color:var(--grafito);font-family:"Istok Web",system-ui,sans-serif;font-size:17px;line-height:1.55;overflow-x:hidden;
+  background-image:linear-gradient(var(--papel2) 1px,transparent 1px),linear-gradient(90deg,var(--papel2) 1px,transparent 1px);background-size:24px 24px}
+button,input,select{font:inherit;color:inherit}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--azul);outline-offset:2px}
+.st{font-family:"Staatliches",Impact,sans-serif;font-weight:400;letter-spacing:.02em;line-height:.95}
+.wrap{max-width:1180px;margin:0 auto;padding:0 32px}
+.firma{font-size:12.5px;color:var(--grafito2);padding:8px 0;display:flex;flex-wrap:wrap;gap:2px 12px}
+.firma b{font-weight:700;color:var(--grafito)}
+.pe{font-size:11px;font-weight:400;color:var(--grafito2);white-space:nowrap;letter-spacing:0}
+/* header */
+.top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0 10px;border-top:2px solid var(--grafito)}
+.logo{font-size:34px;display:flex;align-items:center;gap:10px}
+.logo svg{flex:none}
+.nav{display:flex;gap:18px;align-items:center;font-size:15px}
+.nav a{text-decoration:none;border-bottom:2px solid transparent}
+.nav a:hover{border-color:var(--rojo)}
+.llave{display:inline-flex;align-items:center;gap:10px;background:var(--grafito);color:var(--blanco);border:0;border-radius:40px;padding:8px 16px 8px 8px;cursor:pointer;font-weight:700;font-size:14.5px}
+.llave i{width:34px;height:20px;border-radius:20px;background:var(--grafito2);position:relative;flex:none}
+.llave i:after{content:"";position:absolute;left:3px;top:3px;width:14px;height:14px;border-radius:50%;background:var(--amarillo);transition:left .2s}
+body.is-owner .llave i:after{left:17px;background:#7BD389}
+/* hero */
+.hero{display:grid;grid-template-columns:1fr 1.15fr;gap:40px;align-items:center;padding:38px 0 56px}
+.hero h1{font-size:clamp(46px,7vw,92px)}
+.hero h1 span{display:block}
+.hero .bajada{font-size:19px;max-width:30em;margin:18px 0 22px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;list-style:none}
+.chips li{border:1.5px solid var(--grafito);padding:4px 11px;border-radius:3px;font-size:14.5px;background:var(--blanco)}
+.cta{display:inline-block;margin-top:26px;background:var(--rojo);color:#fff;text-decoration:none;font-weight:700;padding:13px 22px;border-radius:3px}
+.cta:hover{background:#A82815}
+.esq{background:var(--blanco);border:2px solid var(--grafito);padding:14px;position:relative}
+.esq svg{display:block;width:100%;height:auto}
+.esq figcaption{font-size:13px;color:var(--grafito2);border-top:1px solid var(--linea);padding-top:8px;margin-top:8px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.pulse{stroke-dasharray:14 400;animation:corr 3.2s linear 1s 2 both}
+@keyframes corr{from{stroke-dashoffset:414}to{stroke-dashoffset:0}}
+@media (prefers-reduced-motion:reduce){.pulse{animation:none;opacity:0}}
+/* secciones */
+section{padding:56px 0}
+.h2{font-size:clamp(38px,5vw,60px);margin-bottom:8px}
+.lead{max-width:36em;color:var(--grafito2);margin-bottom:28px}
+/* turnos */
+.turno{display:grid;grid-template-columns:1.25fr .9fr;gap:36px;align-items:start}
+.pasos{list-style:none;position:relative;padding-left:44px}
+.pasos:before{content:"";position:absolute;left:13px;top:10px;bottom:10px;width:3px;background:var(--rojo)}
+.paso{position:relative;margin-bottom:26px}
+.paso:before{content:attr(data-n);position:absolute;left:-44px;top:0;width:29px;height:29px;border-radius:50%;background:var(--papel);border:3px solid var(--rojo);font:700 14px/23px "Istok Web",sans-serif;text-align:center}
+.paso h3{font-family:"Staatliches";font-weight:400;font-size:26px;letter-spacing:.02em;margin-bottom:10px;line-height:1}
+.svcs{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px}
+.svc{text-align:left;background:var(--blanco);border:1.5px solid var(--linea);border-radius:3px;padding:10px 12px;cursor:pointer;display:flex;flex-direction:column;gap:2px}
+.svc b{font-size:15.5px}
+.svc span{font-size:13.5px;color:var(--grafito2)}
+.svc[aria-pressed=true]{border-color:var(--grafito);box-shadow:inset 4px 0 0 var(--rojo);background:#fff}
+.campos{display:grid;grid-template-columns:1.6fr 1fr;gap:10px}
+label{display:block;font-size:13.5px;font-weight:700;margin-bottom:4px}
+input{width:100%;padding:10px 12px;border:1.5px solid var(--grafito2);border-radius:3px;background:var(--blanco)}
+input::placeholder{color:#7A8A85}
+[data-days]{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px}
+.day{flex:none;width:66px;padding:8px 0;border:1.5px solid var(--linea);background:var(--blanco);border-radius:3px;cursor:pointer;display:flex;flex-direction:column;align-items:center;line-height:1.15}
+.day .d-n{font-family:"Staatliches";font-size:28px}
+.day .d-w,.day .d-m{font-size:12.5px;color:var(--grafito2)}
+.day[aria-pressed=true]{background:var(--grafito);color:var(--blanco);border-color:var(--grafito)}
+.day[aria-pressed=true] span{color:inherit}
+[data-slots]{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.slot{padding:10px;border:1.5px solid var(--linea);background:var(--blanco);border-radius:3px;cursor:pointer;display:flex;flex-direction:column;align-items:flex-start}
+.slot .s-h{font-weight:700}.slot .s-c{font-size:13px;color:var(--azul)}
+.slot:disabled{opacity:.5;cursor:not-allowed;text-decoration:line-through}
+.slot:disabled .s-c{color:var(--grafito2)}
+.slot[aria-pressed=true]{border-color:var(--azul);box-shadow:inset 0 -4px 0 var(--azul)}
+.s-empty{font-size:14.5px;color:var(--grafito2)}
+/* telefono */
+.tel{position:sticky;top:16px;background:var(--grafito);border-radius:26px;padding:12px;box-shadow:0 18px 40px -20px rgba(31,43,44,.6)}
+.tel-h{display:flex;align-items:center;gap:10px;color:#E9EFEC;padding:6px 8px 12px;font-size:14px}
+.tel-h i{width:34px;height:34px;border-radius:50%;background:var(--amarillo);display:grid;place-items:center;font-style:normal;color:var(--grafito);font-family:"Staatliches";font-size:17px}
+.chat{background:#E8DFD3;border-radius:16px;padding:16px 12px;min-height:300px;display:flex;flex-direction:column;justify-content:flex-end}
+.burb{background:#D9FDD3;color:#111B21;border-radius:10px 2px 10px 10px;padding:9px 11px 20px;font-size:14.5px;line-height:1.45;white-space:pre-wrap;position:relative;align-self:flex-end;max-width:94%;box-shadow:0 1px 0 rgba(0,0,0,.12)}
+.burb small{position:absolute;right:8px;bottom:4px;font-size:11px;color:#667781}
+.tel .enviar{display:block;text-align:center;margin-top:12px;background:#25D366;color:#0B2E1A;font-weight:700;text-decoration:none;padding:12px;border-radius:30px}
+.tel .enviar[aria-disabled=true]{background:#56625F;color:#C9D3CF;cursor:not-allowed}
+.falta{color:#C9D3CF;font-size:13px;text-align:center;margin-top:8px;min-height:1.2em}
+.shake{animation:sh .35s}
+@keyframes sh{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+/* seguimiento */
+.seg{background:var(--grafito);color:var(--blanco);background-image:none}
+.seg .lead{color:#BFCBC6}
+.buscar{display:flex;gap:8px;max-width:460px;margin-bottom:26px}
+.buscar input{background:#2C3A3B;border-color:#5C6D6C;color:#fff;text-transform:uppercase}
+.buscar button{background:var(--amarillo);color:var(--grafito);border:0;font-weight:700;padding:0 18px;border-radius:3px;cursor:pointer;white-space:nowrap}
+.hint{font-size:13.5px;color:#BFCBC6;margin:-16px 0 24px}
+.hint b{color:var(--amarillo)}
+.ord-head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:1px solid #4A5A59;padding-bottom:12px;margin-bottom:20px}
+.ord-n{font-family:"Staatliches";font-size:30px;font-weight:400;letter-spacing:.04em;color:var(--amarillo)}
+.ord-k{color:#BFCBC6;font-size:14px}
+.ord-auto{color:#DCE5E1}
+.ord-steps{list-style:none;display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:26px}
+.ord-steps li{background:#2C3A3B;border-radius:4px;padding:30px 10px 12px;position:relative;min-height:112px;display:flex;flex-direction:column;gap:6px}
+.ord-dot{position:absolute;top:0;left:0;right:0;height:16px;border-radius:4px 4px 0 0;background:#4A5A59}
+.ord-steps li.is-done .ord-dot{background:#7BD389}
+.ord-steps li.is-now .ord-dot{background:var(--amarillo)}
+.ord-steps li.is-now{outline:2px solid var(--amarillo)}
+.ord-e{font-weight:700;font-size:15px}
+.ord-note{font-size:13px;color:#BFCBC6}
+.ord-budget{background:var(--blanco);color:var(--grafito);border-radius:4px;padding:18px 20px;max-width:640px}
+.ord-bt{font-family:"Staatliches";font-size:24px;margin-bottom:8px}
+.ord-budget table{width:100%;border-collapse:collapse;font-size:15px}
+.ord-budget td{padding:7px 0;border-bottom:1px solid #D7E0DB;vertical-align:top}
+.ord-budget .num{text-align:right}
+.ord-budget tfoot td{font-weight:700;border-bottom:0;padding-top:10px}
+.ord-ok,.ord-adv{margin-top:14px;background:var(--rojo);color:#fff;border:0;border-radius:3px;padding:12px 20px;font-weight:700;cursor:pointer}
+.ord-adv{background:var(--grafito)}
+.ord-sub{font-size:13.5px;color:var(--grafito2);margin-top:8px}
+.ord-done{margin-top:12px;font-weight:700;color:#1D7A3A}
+.ord-err{color:#FFB4A8}
+.ord-err b{color:var(--amarillo)}
+/* recordatorio + para vos */
+.dos{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.reco{background:#E8DFD3;border-radius:14px;padding:18px;border:2px solid var(--grafito)}
+.reco .in{background:#fff;color:#111B21;border-radius:2px 10px 10px 10px;padding:10px 12px 20px;font-size:15px;position:relative;white-space:pre-wrap;max-width:92%}
+.reco .in small{position:absolute;right:8px;bottom:4px;font-size:11px;color:#667781}
+.reco p.q{font-size:13px;color:#5B5146;margin-bottom:10px}
+.reglas{list-style:none;margin-top:16px;font-size:15px}
+.reglas li{padding:6px 0 6px 22px;position:relative;border-bottom:1px dashed var(--linea)}
+.reglas li:before{content:"";position:absolute;left:0;top:14px;width:12px;height:3px;background:var(--azul)}
+.vos ul{list-style:none}
+.vos li{padding:14px 0 14px 46px;border-bottom:1.5px solid var(--grafito);position:relative;font-size:17px}
+.vos li svg{position:absolute;left:0;top:13px}
+.vos li b{display:block}
+/* panel dueño */
+.owner{background:var(--blanco);border-top:6px solid var(--amarillo);border-bottom:2px solid var(--grafito);padding:40px 0 56px;background-image:none}
+.owner-tag{display:inline-block;background:var(--amarillo);font-weight:700;font-size:13px;padding:3px 10px;border-radius:3px;margin-bottom:10px}
+.kpis{display:flex;flex-wrap:wrap;gap:0;border:2px solid var(--grafito);margin:18px 0 28px}
+.kpis div{flex:1 1 150px;padding:12px 16px;border-right:1px solid var(--linea)}
+.kpis div:last-child{border-right:0}
+.kpis b{font-family:"Staatliches";font-size:38px;font-weight:400;display:block;line-height:1}
+.kpis span{font-size:13.5px;color:var(--grafito2)}
+.og{display:grid;grid-template-columns:1.4fr 1fr;gap:28px}
+.og h3{font-family:"Staatliches";font-weight:400;font-size:26px;margin-bottom:10px}
+.agenda{width:100%;border-collapse:collapse;font-size:13.5px;table-layout:fixed}
+.agenda th,.agenda td{border:1px solid var(--linea);padding:6px;vertical-align:top;text-align:left}
+.agenda th{background:var(--papel);font-weight:700}
+.agenda td span{display:block;border-left:3px solid var(--azul);padding-left:5px;margin-bottom:3px;line-height:1.25}
+.agenda td span.r{border-color:var(--rojo)}
+.lista{list-style:none;font-size:14.5px;margin-bottom:24px}
+.lista li{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--linea)}
+.lista em{font-style:normal;font-size:12.5px;padding:2px 8px;border-radius:20px;background:var(--papel);white-space:nowrap;align-self:flex-start}
+.lista em.y{background:#F6E3A6}.lista em.g{background:#CDEBD3}.lista em.r{background:#F4C9C1}
+.tabla-scroll{overflow-x:auto}
+.og>*,.turno>*,.hero>*,.dos>*,.pasos,.paso{min-width:0}
+footer{padding:28px 0 40px;font-size:13.5px;color:var(--grafito2);border-top:2px solid var(--grafito)}
+footer p+p{margin-top:6px}
+@media (max-width:900px){
+  .hero,.turno,.dos,.og{grid-template-columns:1fr}
+  .tel{position:static}
+  .ord-steps{grid-template-columns:1fr;gap:6px}
+  .ord-steps li{min-height:0;padding:10px 12px 10px 30px}
+  .ord-dot{top:0;bottom:0;right:auto;width:14px;height:auto;border-radius:4px 0 0 4px}
+}
+@media (max-width:600px){
+  .wrap{padding:0 16px}
+  .nav a{display:none}
+  .logo{font-size:26px}
+  .campos{grid-template-columns:1fr}
+  .agenda{min-width:560px}
+  .llave{font-size:13px;padding:6px 12px 6px 6px}
+  .buscar{flex-direction:column}
+  .buscar button{padding:12px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="firma"><span>Prototipo preparado para <b>Mecánica Maxi</b> · 4 de noviembre de 2026</span><span>4,9 ★ en Google · 390 reseñas</span></p>
+  <header class="top">
+    <div class="logo st">
+      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><rect x="3" y="9" width="28" height="19" rx="2" fill="none" stroke="#1F2B2C" stroke-width="2.5"/><rect x="8" y="5" width="5" height="4" fill="#C7331F"/><rect x="21" y="5" width="5" height="4" fill="#1F2B2C"/><path d="M8 18h5M10.5 15.5v5M21 18h5" stroke="#1F2B2C" stroke-width="2.2"/></svg>
+      Mecánica Maxi
+    </div>
+    <nav class="nav" aria-label="Secciones">
+      <a href="#turno">Turnos</a><a href="#seguimiento">¿Cómo va mi auto?</a>
+      <button class="llave" data-owner-toggle><i aria-hidden="true"></i>Ver como dueño</button>
+    </nav>
+  </header>
+</div>
+
+<div class="owner" data-owner hidden aria-label="Panel de ejemplo del dueño">
+  <div class="wrap">
+    <span class="owner-tag">Panel de ejemplo</span>
+    <h2 class="h2 st">Lo que ves desde el celular</h2>
+    <div class="kpis">
+      <div><b>23</b><span>turnos esta semana</span></div>
+      <div><b>6</b><span>autos en el taller</span></div>
+      <div><b>3</b><span>presupuestos sin aprobar</span></div>
+      <div><b>14</b><span>recordatorios de service que salen</span></div>
+      <div><b>41</b><span>llamadas que no tuviste que atender</span></div>
+    </div>
+    <div class="og">
+      <div>
+        <h3>Agenda de la semana por box</h3>
+        <div class="tabla-scroll">
+        <table class="agenda">
+          <thead><tr><th>Box</th><th>Lun 9</th><th>Mar 10</th><th>Mié 11</th><th>Jue 12</th><th>Vie 13</th></tr></thead>
+          <tbody>
+            <tr><th>Box 1 · eléctrico</th><td><span class="r">Gol Trend · arranque</span><span>Corsa · escáner</span></td><td><span class="r">Fun 1.4 · encendido</span></td><td><span>Clio · luces</span><span>Hilux · alternador</span></td><td><span class="r">Palio · inyección</span></td><td><span>Etios · batería</span></td></tr>
+            <tr><th>Box 2 · mecánica</th><td><span>Onix · service</span></td><td><span>208 · frenos</span><span>Ka · aceite</span></td><td><span>Sandero · tren del.</span></td><td><span>Cronos · service</span><span>Fiesta · embrague</span></td><td><span>Amarok · service</span></td></tr>
+            <tr><th>Elevador</th><td><span>Kangoo · escape</span></td><td><span>Ranger · diagnóstico</span></td><td><span class="r">Up · bomba nafta</span></td><td><span>Partner · frenos</span></td><td><span>Libre</span></td></tr>
+          </tbody>
+        </table>
+        </div>
+        <h3 style="margin-top:26px">Autos en el taller</h3>
+        <ul class="lista">
+          <li>MX-2611 · Corsa Classic · bobina de encendido <em class="y">esperando aprobación</em></li>
+          <li>MX-2608 · Gol Trend · falla eléctrica <em class="g">listo para retirar</em></li>
+          <li>MX-2605 · Suzuki Fun · inyección <em>en reparación</em></li>
+          <li>MX-2604 · Hilux · alternador <em class="r">esperando repuesto</em></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Presupuestos pendientes</h3>
+        <ul class="lista">
+          <li>Corsa Classic · $133.000 <span class="pe">precio de ejemplo</span><em class="y">enviado hace 2 h</em></li>
+          <li>Ranger · $410.000 <span class="pe">precio de ejemplo</span><em class="y">visto, sin responder</em></li>
+          <li>Clio · $58.000 <span class="pe">precio de ejemplo</span><em class="y">enviado ayer</em></li>
+        </ul>
+        <h3>Recordatorios que salen esta semana</h3>
+        <ul class="lista">
+          <li>Laura P. · Gol Trend · service 6 meses <em>martes</em></li>
+          <li>Diego R. · Etios · cambio de aceite 10.000 km <em>miércoles</em></li>
+          <li>Andrea M. · Palio · revisión de batería <em>viernes</em></li>
+        </ul>
+        <h3>Clientes que vuelven</h3>
+        <ul class="lista">
+          <li>Volvieron por el recordatorio este mes <em class="g">9 clientes</em></li>
+          <li>Clientes con 3 visitas o más <em class="g">27</em></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main>
+<div class="wrap">
+  <div class="hero">
+    <div>
+      <h1 class="st"><span>Electricidad,</span><span>inyección</span><span>y mecánica.</span></h1>
+      <p class="bajada">Sacá turno en Mecánica Maxi sin llamar, seguí el estado de tu auto desde el celular y aprobá el presupuesto por escrito.</p>
+      <ul class="chips" aria-label="Lo que hace el taller">
+        <li>Fallas eléctricas</li><li>Inyección y carburación</li><li>Encendido</li><li>Diagnóstico con escáner</li><li>Service</li>
+      </ul>
+      <a class="cta" href="#turno">Sacar turno</a>
+    </div>
+    <figure class="esq">
+      <svg viewBox="0 0 560 360" role="img" aria-label="Esquema eléctrico del auto: batería, fusibles, llave de contacto, bobina, inyectores y motor de arranque">
+        <defs><pattern id="p" width="8" height="8" patternUnits="userSpaceOnUse"><path d="M0 8L8 0" stroke="#AFC0B5" stroke-width="1"/></pattern></defs>
+        <g fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+          <path id="w1" d="M90 210 V110 H230 V70 H420 V140" stroke="#C7331F"/>
+          <path d="M230 110 V200 H330" stroke="#E5B21A"/>
+          <path d="M420 200 V280 H130 V250" stroke="#2459A8"/>
+          <path d="M330 200 H420" stroke="#E5B21A"/>
+          <path d="M90 250 V300" stroke="#1F2B2C"/>
+          <path class="pulse" d="M90 210 V110 H230 V70 H420 V140" stroke="#FFF2B0" stroke-width="4"/>
+        </g>
+        <g font-family="Staatliches, Impact, sans-serif" font-size="17" fill="#1F2B2C">
+          <rect x="50" y="210" width="80" height="40" fill="url(#p)" stroke="#1F2B2C" stroke-width="2.5"/>
+          <rect x="62" y="202" width="14" height="8" fill="#C7331F"/><rect x="104" y="202" width="14" height="8" fill="#1F2B2C"/>
+          <text x="20" y="196">Batería 12V</text>
+          <path d="M70 300 h40 M78 308 h24 M86 316 h8" stroke="#1F2B2C" stroke-width="2.5"/>
+          <rect x="200" y="96" width="60" height="28" rx="3" fill="#F7FAF8" stroke="#1F2B2C" stroke-width="2.5"/>
+          <path d="M212 110 h36" stroke="#C7331F" stroke-width="2.5"/>
+          <text x="196" y="146">Fusible 15A</text>
+          <circle cx="320" cy="70" r="20" fill="#F7FAF8" stroke="#1F2B2C" stroke-width="2.5"/>
+          <path d="M310 70 h20 M320 60 v4" stroke="#1F2B2C" stroke-width="2.5"/>
+          <text x="290" y="40">Contacto</text>
+          <rect x="390" y="140" width="60" height="60" fill="#F7FAF8" stroke="#1F2B2C" stroke-width="2.5"/>
+          <path d="M398 152 c8 0 8 12 16 12 s8 -12 16 -12 s8 12 16 12 M398 186 c8 0 8 -12 16 -12 s8 12 16 12 s8 -12 16 -12" stroke="#1F2B2C" stroke-width="2"/>
+          <text x="462" y="166">Bobina</text>
+          <rect x="300" y="186" width="30" height="28" fill="#F7FAF8" stroke="#1F2B2C" stroke-width="2.5"/>
+          <path d="M315 214 v14 l-5 10 M315 228 l5 10" stroke="#1F2B2C" stroke-width="2"/>
+          <text x="262" y="258">Inyectores</text>
+          <circle cx="130" cy="232" r="0"/>
+          <g transform="translate(150 290)"><circle r="18" fill="#F7FAF8" stroke="#1F2B2C" stroke-width="2.5"/><text x="-7" y="6" font-size="18">M</text></g>
+          <text x="176" y="330">Arranque</text>
+        </g>
+        <g font-family="Istok Web, sans-serif" font-size="12" fill="#3C4A4B">
+          <text x="440" y="96">+ 12V</text><text x="436" y="300">Masa</text>
+        </g>
+      </svg>
+      <figcaption><span>Cornelio Saavedra 844, Neuquén</span><span>Lunes a viernes de 8:30 a 19</span></figcaption>
+    </figure>
+  </div>
+</div>
+
+<section id="turno">
+  <div class="wrap">
+    <h2 class="h2 st">Sacá turno</h2>
+    <p class="lead">Elegís qué le pasa al auto, el día y el horario. Mientras completás, a la derecha ves el mensaje exacto que le llega al taller.</p>
+    <div class="turno">
+      <ol class="pasos">
+        <li class="paso" data-n="1"><h3>¿Qué necesita el auto?</h3>
+          <div class="svcs">
+            <button class="svc" data-set="servicio" data-val="elec"><b>Falla eléctrica</b><span>No arranca, luces, alternador · desde $35.000 <small class="pe">precio de ejemplo</small></span></button>
+            <button class="svc" data-set="servicio" data-val="iny"><b>Inyección y carburación</b><span>Tironea, consume de más · desde $45.000 <small class="pe">precio de ejemplo</small></span></button>
+            <button class="svc" data-set="servicio" data-val="enc"><b>Encendido</b><span>Bobina, bujías, cables · desde $30.000 <small class="pe">precio de ejemplo</small></span></button>
+            <button class="svc" data-set="servicio" data-val="esc"><b>Diagnóstico con escáner</b><span>Luz de check encendida · desde $25.000 <small class="pe">precio de ejemplo</small></span></button>
+            <button class="svc" data-set="servicio" data-val="srv"><b>Service de aceite y filtros</b><span>Con revisión general · desde $60.000 <small class="pe">precio de ejemplo</small></span></button>
+            <button class="svc" data-set="servicio" data-val="mec"><b>Mecánica general</b><span>Contanos qué notás · se presupuesta</span></button>
+          </div>
+        </li>
+        <li class="paso" data-n="2"><h3>Tu auto</h3>
+          <div class="campos">
+            <div><label for="m1">Marca, modelo y año</label><input id="m1" data-field="marca" placeholder="Ej.: Chevrolet Corsa 2011" list="autos" autocomplete="off"></div>
+            <div><label for="k1">Kilometraje</label><input id="k1" data-field="km" inputmode="numeric" placeholder="Ej.: 120000"></div>
+          </div>
+        </li>
+        <li class="paso" data-n="3"><h3>Día</h3><div data-days data-cls="day"></div></li>
+        <li class="paso" data-n="4"><h3>Horario de entrega</h3><div data-slots data-cls="slot"></div></li>
+        <li class="paso" data-n="5"><h3>¿A nombre de quién?</h3><label for="n1">Nombre</label><input id="n1" data-field="nombre" placeholder="Tu nombre" autocomplete="given-name" style="max-width:340px"></li>
+      </ol>
+      <aside class="tel" aria-label="Vista previa del mensaje de WhatsApp">
+        <div class="tel-h"><i aria-hidden="true">MM</i><div><b>Mecánica Maxi</b><br><span style="opacity:.7">WhatsApp</span></div></div>
+        <div class="chat"><div class="burb" aria-live="polite"><span data-bubble></span><small data-hora></small></div></div>
+        <a class="enviar" data-send target="_blank" rel="noopener">Enviar por WhatsApp</a>
+        <p class="falta" data-falta></p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section id="seguimiento" class="seg">
+  <div class="wrap">
+    <h2 class="h2 st">¿Cómo va mi auto?</h2>
+    <p class="lead">Con el número de orden que te damos al dejar el auto ves en qué etapa está y aprobás el presupuesto sin llamar.</p>
+    <div class="buscar">
+      <label for="o1" class="sr" style="position:absolute;left:-9999px">Número de orden</label>
+      <input id="o1" data-orden-input placeholder="Número de orden">
+      <button data-orden-btn>Ver mi auto</button>
+    </div>
+    <p class="hint">Para probar, usá la orden de ejemplo <b>MX-2611</b> o tocá el botón con el campo vacío.</p>
+    <div data-orden-out hidden aria-live="polite"></div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap dos">
+    <div>
+      <h2 class="h2 st">El service te avisa solo</h2>
+      <p class="lead" style="margin-bottom:16px">Cuando entregás el auto, el sistema agenda el próximo aviso. Al cliente le llega esto:</p>
+      <div class="reco">
+        <p class="q">Mensaje de ejemplo, 6 meses después</p>
+        <div class="in">Hola Laura, te escribimos de Mecánica Maxi. En mayo le hicimos el service a tu Gol Trend con 98.000 km. Ya le toca el próximo (o los 108.000 km, lo que llegue primero).
+¿Te reservo un turno? Esta semana hay lugar el jueves a la mañana.<small>9:12</small></div>
+      </div>
+      <ul class="reglas">
+        <li>Se manda a los meses o kilómetros que elijas por servicio</li>
+        <li>Sale con el nombre del cliente y el auto que trajo</li>
+        <li>Si responde, el turno cae directo en la agenda</li>
+      </ul>
+    </div>
+    <div class="vos">
+      <h2 class="h2 st">Para vos, Mecánica Maxi</h2>
+      <ul>
+        <li><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><rect x="8" y="3" width="14" height="24" rx="3" fill="none" stroke="#C7331F" stroke-width="2.5"/><path d="M4 4l22 22" stroke="#C7331F" stroke-width="2.5"/></svg><b>Dejás de atender el teléfono con las manos engrasadas</b>El turno entra escrito, con auto, kilometraje y horario.</li>
+        <li><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="11" fill="none" stroke="#2459A8" stroke-width="2.5"/><path d="M15 8v8l5 3" stroke="#2459A8" stroke-width="2.5" fill="none"/></svg><b>El cliente sabe el estado sin llamar</b>Recibido, diagnóstico, repuesto, reparación, listo.</li>
+        <li><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path d="M6 15a9 9 0 1 0 3-6.7M6 4v6h6" fill="none" stroke="#1F2B2C" stroke-width="2.5"/></svg><b>El que hizo el service vuelve solo</b>El recordatorio sale sin que tengas que acordarte.</li>
+        <li><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path d="M7 3h12l5 5v19H7z" fill="none" stroke="#E5B21A" stroke-width="2.5"/><path d="M11 17l3 3 6-7" stroke="#1F2B2C" stroke-width="2.5" fill="none"/></svg><b>Presupuestos aprobados por escrito</b>Con fecha y hora, sin malentendidos al retirar.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Mecánica Maxi · Cornelio Saavedra 844, Neuquén · +54 299 597-0883</p>
+    <p>Prototipo de demostración preparado para Mecánica Maxi por Resolviendo Kos · No es la web oficial</p>
+  </div>
+</footer>
+
+<datalist id="autos"><option>Volkswagen Gol Trend</option><option>Chevrolet Corsa Classic</option><option>Fiat Palio</option><option>Toyota Etios</option><option>Toyota Hilux</option><option>Ford Ranger</option><option>Renault Sandero</option><option>Peugeot 208</option><option>Fiat Cronos</option><option>Chevrolet Onix</option></datalist>
+
+<script>
+window.TALLER={
+  negocio:"Mecánica Maxi", wa:"5492995970883", hoy:[2026,11,4], semilla:3,
+  servicios:[
+    {id:"elec",nombre:"Falla eléctrica",desde:35000},{id:"iny",nombre:"Inyección y carburación",desde:45000},
+    {id:"enc",nombre:"Encendido",desde:30000},{id:"esc",nombre:"Diagnóstico con escáner",desde:25000},
+    {id:"srv",nombre:"Service de aceite y filtros",desde:60000},{id:"mec",nombre:"Mecánica general (a presupuestar)"}
+  ],
+  franjas:{0:null,1:["8:30 a 10:30","10:30 a 12:30","14:00 a 16:00","16:00 a 19:00"],2:["8:30 a 10:30","10:30 a 12:30","14:00 a 16:00","16:00 a 19:00"],3:["8:30 a 10:30","10:30 a 12:30","14:00 a 16:00","16:00 a 19:00"],4:["8:30 a 10:30","10:30 a 12:30","14:00 a 16:00","16:00 a 19:00"],5:["8:30 a 10:30","10:30 a 12:30","14:00 a 16:00","16:00 a 19:00"],6:null},
+  orden:{num:"MX-2611",auto:"Chevrolet Corsa Classic 2011 · patente de ejemplo",etapa:1,
+    notas:["Lunes 9:05, con 142.300 km","Escáner: falla en bobina de encendido, cilindro 3","Bobina pedida, llega mañana","",""],
+    items:[["Diagnóstico con escáner",25000],["Bobina de encendido",68000],["Mano de obra",40000]]}
+};
+(function(){
+"use strict";
+var C=window.TALLER; if(!C) return;
+var $=function(s,r){return (r||document).querySelector(s)};
+var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+var DIAS=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
+var DCORTO=["dom","lun","mar","mié","jue","vie","sáb"];
+var MES=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+var S={servicio:null,dia:null,franja:null,marca:"",km:"",nombre:"",extra:null};
+function money(n){return "$"+Math.round(n).toLocaleString("es-AR")}
+function svc(){for(var i=0;i<C.servicios.length;i++){if(C.servicios[i].id===S.servicio)return C.servicios[i]}return null}
+function seed(n){var x=Math.sin(n*9301+49297)*233280;return x-Math.floor(x)}
+/* ---------- picks ---------- */
+$$("[data-set]").forEach(function(b){
+  b.setAttribute("type","button");
+  b.setAttribute("aria-pressed","false");
+  b.addEventListener("click",function(){
+    var k=b.getAttribute("data-set");
+    S[k]=b.getAttribute("data-val");
+    $$('[data-set="'+k+'"]').forEach(function(o){o.setAttribute("aria-pressed",o===b?"true":"false")});
+    if(k==="servicio" && C.onServicio) C.onServicio(svc());
+    render();
+  });
+});
+$$("[data-field]").forEach(function(i){
+  i.addEventListener("input",function(){S[i.getAttribute("data-field")]=i.value.trim();render()});
+});
+/* ---------- días y franjas ---------- */
+var today=new Date(C.hoy[0],C.hoy[1]-1,C.hoy[2]);
+var days=[];
+for(var d=1;days.length<(C.cantDias||8)&&d<30;d++){
+  var dt=new Date(today.getTime()+d*864e5);
+  var fr=C.franjas[dt.getDay()];
+  if(fr&&fr.length) days.push({dt:dt,fr:fr,key:dt.getFullYear()+"-"+(dt.getMonth()+1)+"-"+dt.getDate()});
+}
+function cupos(di,fi){var v=Math.floor(seed(di*7+fi*3+(C.semilla||1))*(C.maxCupo||4));return (di===0&&fi===0)?0:v}
+var dWrap=$("[data-days]"), sWrap=$("[data-slots]");
+if(dWrap){
+  days.forEach(function(x,i){
+    var b=document.createElement("button");b.type="button";b.className=dWrap.getAttribute("data-cls")||"day";
+    b.innerHTML='<span class="d-w">'+DCORTO[x.dt.getDay()]+'</span><span class="d-n">'+x.dt.getDate()+'</span><span class="d-m">'+MES[x.dt.getMonth()]+'</span>';
+    b.setAttribute("aria-pressed","false");b.setAttribute("aria-label",DIAS[x.dt.getDay()]+" "+x.dt.getDate()+" de "+MES[x.dt.getMonth()]);
+    b.addEventListener("click",function(){S.dia=i;S.franja=null;$$("button",dWrap).forEach(function(o){o.setAttribute("aria-pressed",o===b?"true":"false")});slots();render()});
+    dWrap.appendChild(b);
+  });
+}
+function slots(){
+  if(!sWrap)return; sWrap.innerHTML="";
+  if(S.dia===null){sWrap.innerHTML='<p class="s-empty">'+(C.txtSinDia||"Elegí un día para ver los horarios.")+'</p>';return}
+  days[S.dia].fr.forEach(function(f,fi){
+    var c=cupos(S.dia,fi);var b=document.createElement("button");b.type="button";b.className=sWrap.getAttribute("data-cls")||"slot";
+    b.innerHTML='<span class="s-h">'+f+'</span><span class="s-c">'+(c?c+(c===1?" lugar":" lugares"):"completo")+'</span>';
+    b.disabled=!c;b.setAttribute("aria-pressed","false");
+    b.addEventListener("click",function(){S.franja=fi;$$("button",sWrap).forEach(function(o){o.setAttribute("aria-pressed",o===b?"true":"false")});render()});
+    sWrap.appendChild(b);
+  });
+}
+slots();
+/* ---------- burbuja ---------- */
+function diaTxt(){if(S.dia===null)return null;var x=days[S.dia].dt;return DIAS[x.getDay()]+" "+x.getDate()+"/"+(x.getMonth()+1)}
+function texto(){
+  var s=svc(),L=[];
+  L.push(C.saludo||("Hola "+C.negocio+", quiero sacar turno."));
+  L.push("• Servicio: "+(s?s.nombre:"…"));
+  if(C.extraLabel) L.push("• "+C.extraLabel+": "+(S.extra||"…"));
+  L.push("• Auto: "+(S.marca||"…")+(S.km?" · "+Number(S.km.replace(/\D/g,"")||0).toLocaleString("es-AR")+" km":""));
+  L.push("• Día: "+(S.dia!==null?diaTxt()+(S.franja!==null?", "+days[S.dia].fr[S.franja]:""):"…"));
+  if(s&&s.desde) L.push("• Precio de ejemplo: desde "+money(s.desde));
+  if(C.sena&&s) L.push("• Seña para reservar el lugar: "+money(C.sena)+" (precio de ejemplo)");
+  L.push("• Nombre: "+(S.nombre||"…"));
+  return L.join("\n");
+}
+function render(){
+  var t=texto();
+  $$("[data-bubble]").forEach(function(b){b.textContent=t});
+  var listo=svc()&&S.dia!==null&&S.franja!==null&&S.marca&&S.nombre;
+  $$("[data-send]").forEach(function(a){
+    a.href="https://wa.me/"+C.wa+"?text="+encodeURIComponent(t);
+    a.setAttribute("aria-disabled",listo?"false":"true");
+    a.classList.toggle("is-ready",!!listo);
+  });
+  $$("[data-falta]").forEach(function(f){
+    var falta=[];if(!svc())falta.push("servicio");if(!S.marca)falta.push("auto");if(S.dia===null)falta.push("día");else if(S.franja===null)falta.push("horario");if(!S.nombre)falta.push("nombre");
+    f.textContent=falta.length?"Falta: "+falta.join(", "):(C.txtListo||"Listo. Se abre WhatsApp con este mensaje.");
+  });
+  var hh=new Date();$$("[data-hora]").forEach(function(h){h.textContent=String(hh.getHours()).padStart(2,"0")+":"+String(hh.getMinutes()).padStart(2,"0")});
+  if(C.onRender) C.onRender(S,svc());
+}
+$$("[data-send]").forEach(function(a){a.addEventListener("click",function(e){if(a.getAttribute("aria-disabled")==="true"){e.preventDefault();var f=$("[data-falta]");if(f){f.classList.remove("shake");void f.offsetWidth;f.classList.add("shake")}}})});
+render();
+/* ---------- seguimiento de orden ---------- */
+var O=C.orden, etapa=O.etapa, aprobado=false;
+var ETAPAS=["Recibido","En diagnóstico","Esperando repuesto","En reparación","Listo para retirar"];
+function ordHTML(){
+  var h='<div class="ord-head"><div><span class="ord-k">Orden</span> <b class="ord-n">'+O.num+'</b></div><div class="ord-auto">'+O.auto+'</div></div>';
+  h+='<ol class="ord-steps">';
+  ETAPAS.forEach(function(e,i){h+='<li class="'+(i<etapa?"is-done":i===etapa?"is-now":"")+'"><span class="ord-dot" aria-hidden="true"></span><span class="ord-e">'+e+'</span>'+(O.notas[i]&&i<=etapa?'<span class="ord-note">'+O.notas[i]+'</span>':'')+'</li>'});
+  h+='</ol>';
+  var tot=0;h+='<div class="ord-budget"><p class="ord-bt">Presupuesto para aprobar</p><table><tbody>';
+  O.items.forEach(function(it){tot+=it[1];h+='<tr><td>'+it[0]+'</td><td class="num">'+money(it[1])+' <small class="pe">precio de ejemplo</small></td></tr>'});
+  h+='</tbody><tfoot><tr><td>Total</td><td class="num">'+money(tot)+' <small class="pe">precio de ejemplo</small></td></tr></tfoot></table>';
+  if(!aprobado) h+='<button type="button" class="ord-ok" data-aprobar>Aprobar presupuesto</button><p class="ord-sub">Queda registrado por escrito con fecha y hora. El taller arranca cuando lo aprobás.</p>';
+  else h+='<p class="ord-done" role="status">Aprobado por escrito el '+fechaHoy()+'. El taller ya lo recibió.</p><button type="button" class="ord-adv" data-avanzar>'+(etapa<4?"Ver cómo avanza (demo)":"Volver a empezar la demo")+'</button>';
+  h+='</div>';
+  return h;
+}
+function fechaHoy(){var x=new Date();return x.getDate()+"/"+(x.getMonth()+1)+" a las "+String(x.getHours()).padStart(2,"0")+":"+String(x.getMinutes()).padStart(2,"0")}
+var oOut=$("[data-orden-out]"), oIn=$("[data-orden-input]"), oBtn=$("[data-orden-btn]");
+function showOrden(){
+  if(!oOut)return;
+  var v=(oIn&&oIn.value||"").trim().toUpperCase().replace(/\s/g,"");
+  if(v && v!==O.num.replace(/\s/g,"")){oOut.innerHTML='<p class="ord-err" role="alert">No encontramos la orden '+v.replace(/[<>&"]/g,"")+'. Probá con la de ejemplo: <b>'+O.num+'</b>.</p>';return}
+  if(oIn&&!v)oIn.value=O.num;
+  oOut.innerHTML=ordHTML();oOut.hidden=false;
+  var a=$("[data-aprobar]",oOut);if(a)a.addEventListener("click",function(){aprobado=true;if(etapa<2)etapa=2;showOrden();if(C.onOrden)C.onOrden(etapa,aprobado)});
+  var b=$("[data-avanzar]",oOut);if(b)b.addEventListener("click",function(){if(etapa<4)etapa++;else{etapa=O.etapa;aprobado=false}showOrden();if(C.onOrden)C.onOrden(etapa,aprobado)});
+  if(C.onOrden)C.onOrden(etapa,aprobado);
+}
+if(oBtn)oBtn.addEventListener("click",showOrden);
+if(oIn)oIn.addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();showOrden()}});
+/* ---------- ver como dueño ---------- */
+var panel=$("[data-owner]");
+$$("[data-owner-toggle]").forEach(function(t){
+  t.setAttribute("aria-expanded","false");
+  t.addEventListener("click",function(){
+    var open=document.body.classList.toggle("is-owner");
+    $$("[data-owner-toggle]").forEach(function(o){o.setAttribute("aria-expanded",open?"true":"false")});
+    if(panel){panel.hidden=!open;if(open){panel.setAttribute("tabindex","-1");panel.focus({preventScroll:true});panel.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"})}}
+    if(C.onOwner)C.onOwner(open);
+  });
+});
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&document.body.classList.contains("is-owner")&&C.ownerModal){$("[data-owner-toggle]").click()}});
+})();
+
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Mecánica Maxi"></script>
+</body>
+</html>
