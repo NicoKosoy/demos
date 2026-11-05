@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Taller ADM · Mar del Plata · Turnos y seguimiento</title>
+<meta name="description" content="Prototipo de demostración: turnos online y seguimiento de autos para Taller ADM, Mar del Plata.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Extra+Condensed:wght@500;600;700;800&family=Maven+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --vial:#0E5B3E; --vial2:#0A4630; --senal:#F5F7F2; --ruta:#F2C230; --asfalto:#2A2E31; --asfalto2:#363B3F;
+  --banquina:#C7CCC6; --tinta:#1E2326; --gris:#5D6660; --linea:#D6DAD4; --fondo:#ECEFEA;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--fondo);color:var(--tinta);font-family:"Maven Pro",system-ui,sans-serif;font-size:17px;line-height:1.55;overflow-x:hidden}
+a{color:inherit}
+button,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--ruta);outline-offset:2px}
+.sx{font-family:"Saira Extra Condensed","Arial Narrow",sans-serif;letter-spacing:.005em}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+.pe{display:inline-block;font-family:"Maven Pro",sans-serif;font-size:11px;font-weight:500;letter-spacing:0;color:var(--gris);white-space:nowrap;vertical-align:middle}
+.firma{font-size:12.5px;color:var(--gris);padding:8px 0;border-bottom:1px solid var(--linea)}
+.firma .wrap{display:flex;flex-wrap:wrap;gap:2px 16px}
+.firma b{color:var(--tinta);font-weight:600}
+
+/* HERO: cartel vial */
+.hero{padding:34px 0 0}
+.cartel{background:var(--vial);color:var(--senal);border-radius:18px;padding:10px;box-shadow:0 2px 0 var(--vial2)}
+.cartel__in{border:3px solid var(--senal);border-radius:12px;padding:34px 40px 30px;display:grid;grid-template-columns:1.35fr 1fr;gap:28px 48px;align-items:end}
+.cartel h1{font-size:clamp(76px,12vw,168px);line-height:.82;font-weight:800;text-transform:none}
+.cartel h1 small{display:block;font-size:.34em;font-weight:600;line-height:1;margin-top:14px;opacity:.95}
+.cartel p.lead{font-size:19px;max-width:30em;margin-top:18px;color:#DCE8E0}
+.abierto{border-left:3px solid var(--senal);padding-left:26px}
+.abierto h2{font-size:22px;font-weight:600;color:#BFD6C8}
+.abierto ul{list-style:none;margin-top:6px}
+.abierto li{display:flex;justify-content:space-between;gap:12px;font-family:"Saira Extra Condensed",sans-serif;font-size:30px;font-weight:600;line-height:1.25;border-bottom:1px dashed rgba(245,247,242,.28)}
+.abierto li.hoy{color:var(--ruta)}
+.abierto li span:last-child{font-weight:700}
+.postes{display:flex;justify-content:space-around;height:46px;margin:0 18%}
+.postes i{display:block;width:16px;background:linear-gradient(90deg,#8C9590,#C6CCC8 45%,#7D8681);height:100%}
+.salidas{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:-6px}
+.salida{display:flex;align-items:center;gap:14px;background:var(--vial);color:var(--senal);border-radius:12px;padding:14px 18px;text-decoration:none;border:3px solid var(--vial);box-shadow:inset 0 0 0 2px var(--senal)}
+.salida svg{flex:none}
+.salida b{font-family:"Saira Extra Condensed",sans-serif;font-size:30px;font-weight:700;line-height:1}
+.salida span{display:block;font-size:13.5px;color:#CFE0D6}
+.salida--ama{background:var(--ruta);color:var(--asfalto);border-color:var(--ruta);box-shadow:inset 0 0 0 2px var(--asfalto)}
+.salida--ama span{color:#4B4320}
+.salida:hover{filter:brightness(1.07)}
+
+/* franja km */
+.km{margin-top:42px;background:var(--asfalto);color:var(--senal);overflow:hidden}
+.km ul{list-style:none;display:flex;flex-wrap:wrap;gap:0;justify-content:center}
+.km li{padding:14px 26px;font-family:"Saira Extra Condensed",sans-serif;font-size:24px;font-weight:600;border-right:2px dashed var(--ruta)}
+.km li:last-child{border-right:0}
+
+section.s{padding:72px 0}
+.s h2.t{font-family:"Saira Extra Condensed",sans-serif;font-size:clamp(46px,6vw,72px);line-height:.95;font-weight:700;color:var(--vial2)}
+.s p.sub{color:var(--gris);max-width:40em;margin-top:10px}
+
+/* turnos */
+.turno{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:44px;margin-top:36px;align-items:start}
+.paso{margin-bottom:30px}
+.paso h3{font-family:"Saira Extra Condensed",sans-serif;font-size:30px;font-weight:700;display:flex;gap:12px;align-items:center;margin-bottom:12px}
+.paso h3 i{font-style:normal;display:inline-grid;place-items:center;width:38px;height:38px;border-radius:50%;background:var(--vial);color:var(--senal);font-size:24px}
+[data-k=servicios]{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.e-serv{text-align:left;background:#fff;border:2px solid var(--linea);border-radius:10px;padding:13px 15px;cursor:pointer;display:flex;flex-direction:column;gap:3px}
+.e-serv__n{font-weight:700;font-size:17px}
+.e-serv__d{font-size:14px;color:var(--gris);line-height:1.35}
+.e-serv__p{font-size:14px;font-weight:600;color:var(--vial)}
+.e-serv__p--q{font-weight:500;color:var(--gris)}
+.e-serv[aria-pressed=true]{border-color:var(--vial);background:var(--vial);color:var(--senal)}
+.e-serv[aria-pressed=true] .e-serv__d,.e-serv[aria-pressed=true] .e-serv__p,.e-serv[aria-pressed=true] .pe{color:#D5E6DC}
+.campos{display:grid;grid-template-columns:1fr 1fr 150px;gap:10px}
+.campos label,.campos2 label{display:flex;flex-direction:column;font-size:13.5px;font-weight:600;color:var(--gris);gap:4px}
+input,textarea{background:#fff;border:2px solid var(--linea);border-radius:8px;padding:11px 12px;font-size:16px;width:100%}
+input:focus,textarea:focus{border-color:var(--vial);outline:none}
+.campos2{display:grid;grid-template-columns:1fr 1.4fr;gap:10px}
+[data-k=dias]{display:flex;gap:8px;flex-wrap:wrap}
+.e-dia{background:#fff;border:2px solid var(--linea);border-radius:10px;padding:8px 0;width:74px;display:flex;flex-direction:column;align-items:center;cursor:pointer;line-height:1.1}
+.e-dia__w{font-size:13px;color:var(--gris);font-weight:600}
+.e-dia__n{font-family:"Saira Extra Condensed",sans-serif;font-size:34px;font-weight:700}
+.e-dia__m{font-size:12px;color:var(--gris)}
+.e-dia[aria-pressed=true]{background:var(--ruta);border-color:var(--asfalto)}
+[data-k=horas]{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;align-items:center}
+.e-hora{background:#fff;border:2px solid var(--linea);border-radius:8px;padding:6px 12px;cursor:pointer;display:flex;flex-direction:column;align-items:flex-start;line-height:1.15}
+.e-hora__t{font-family:"Saira Extra Condensed",sans-serif;font-size:24px;font-weight:700}
+.e-hora__c{font-size:12px;color:var(--gris)}
+.e-hora.is-full{opacity:.45;cursor:not-allowed;text-decoration:line-through}
+.e-hora[aria-pressed=true]{background:var(--vial);color:var(--senal);border-color:var(--vial)}
+.e-hora[aria-pressed=true] .e-hora__c{color:#CFE0D6}
+.e-hint{color:var(--gris);font-size:15px}
+.e-hint--err{color:#9B2C1B;font-weight:600}
+
+/* teléfono */
+.tel{position:sticky;top:18px;background:var(--asfalto);border-radius:34px;padding:12px;box-shadow:0 18px 40px -22px rgba(20,30,25,.55)}
+.tel__scr{background:#E6DDD3;border-radius:24px;overflow:hidden;min-height:470px;display:flex;flex-direction:column}
+.tel__top{background:#1F5F4A;color:#fff;padding:14px 16px;display:flex;align-items:center;gap:10px}
+.tel__av{width:36px;height:36px;border-radius:50%;background:var(--ruta);color:var(--asfalto);display:grid;place-items:center;font-family:"Saira Extra Condensed",sans-serif;font-weight:800;font-size:17px}
+.tel__top b{display:block;font-size:15px}
+.tel__top span{font-size:12px;opacity:.85}
+.tel__chat{flex:1;padding:16px 12px}
+.bub{background:#D9FDD3;border-radius:10px 2px 10px 10px;padding:10px 12px 18px;margin-left:24px;white-space:pre-wrap;font-size:14.5px;line-height:1.45;position:relative;color:#162019}
+.bub small{position:absolute;right:10px;bottom:4px;font-size:11px;color:#5d7464}
+.e-pulse{animation:pl .35s ease}
+@keyframes pl{from{background:#c2f5b8}to{background:#D9FDD3}}
+.tel__send{padding:12px}
+.btnwa{display:block;text-align:center;background:#1F8F5A;color:#fff;text-decoration:none;font-weight:700;border-radius:999px;padding:13px}
+.btnwa[aria-disabled=true]{background:#8BA597}
+.falta{font-size:13px;color:#4e5a52;text-align:center;margin-top:8px}
+.e-shake{animation:sh .35s}
+@keyframes sh{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+
+/* seguimiento */
+.seg{background:var(--senal);border-top:6px solid var(--ruta)}
+.buscar{display:flex;gap:10px;max-width:520px;margin-top:22px}
+.buscar button{white-space:nowrap;background:var(--vial);color:var(--senal);border:0;border-radius:8px;padding:0 22px;font-weight:700;cursor:pointer}
+.linkej{background:none;border:0;color:var(--vial);text-decoration:underline;cursor:pointer;margin-top:8px;font-size:15px}
+.e-ord{margin-top:28px;background:#fff;border:2px solid var(--linea);border-radius:14px;padding:24px}
+.e-ord__head{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:baseline}
+.e-ord__num{font-family:"Saira Extra Condensed",sans-serif;font-size:36px;font-weight:700;color:var(--vial2)}
+.e-ord__auto{font-weight:600}
+.e-ord__ej{font-size:12px;color:var(--gris);margin-left:auto}
+.e-etapas{list-style:none;display:grid;grid-template-columns:repeat(5,1fr);margin:26px 0 8px;position:relative}
+.e-etapas:before{content:"";position:absolute;left:0;right:0;top:15px;height:10px;background:var(--asfalto);border-radius:2px}
+.e-etapas:after{content:"";position:absolute;left:0;right:0;top:19px;border-top:2px dashed var(--ruta)}
+.e-etapa{position:relative;z-index:1;padding-top:44px;font-size:14px;text-align:center}
+.e-etapa:before{content:"";position:absolute;top:4px;left:50%;transform:translateX(-50%);width:20px;height:30px;border-radius:4px 4px 2px 2px;background:#fff;border:2px solid var(--banquina)}
+.e-etapa.is-done:before{background:var(--vial);border-color:var(--vial)}
+.e-etapa.is-now:before{background:var(--ruta);border-color:var(--asfalto)}
+.e-etapa__n{display:block;font-weight:600}
+.e-etapa.is-now .e-etapa__n{font-weight:800}
+.e-etapa__t{display:block;font-size:12px;color:var(--gris)}
+.e-ord__nota{margin:14px 0;padding:12px 14px;background:var(--fondo);border-radius:8px}
+.e-presu__t{font-family:"Saira Extra Condensed",sans-serif;font-size:26px;font-weight:700;margin-top:6px}
+.e-presu table{width:100%;border-collapse:collapse;margin-top:6px}
+.e-presu td{padding:9px 0;border-bottom:1px solid var(--linea)}
+.e-num{text-align:right;font-weight:600;white-space:nowrap}
+td.e-num .pe{display:block}
+.e-presu__tot td{font-weight:800;border-bottom:0;font-size:18px}
+.e-presu__acc{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}
+.e-aprobar{background:var(--ruta);border:2px solid var(--asfalto);color:var(--asfalto);font-weight:800;border-radius:8px;padding:11px 22px;cursor:pointer}
+.e-consultar{padding:11px 4px;font-weight:600}
+.e-aprobado{margin-top:14px;padding:12px 14px;border-left:5px solid var(--vial);background:#E3EFE7}
+
+/* recordatorio */
+.rec{display:grid;grid-template-columns:240px 1fr;gap:48px;align-items:center;margin-top:30px}
+.rombo{width:200px;height:200px;margin:20px;transform:rotate(45deg);background:var(--ruta);border:6px solid var(--asfalto);border-radius:16px;display:grid;place-items:center;box-shadow:0 0 0 6px var(--ruta)}
+.rombo div{transform:rotate(-45deg);text-align:center;font-family:"Saira Extra Condensed",sans-serif;color:var(--asfalto);line-height:.9;font-weight:800;font-size:40px}
+.rombo div small{display:block;font-size:20px;font-weight:600;margin-top:4px}
+.recmsg{background:#D9FDD3;border-radius:2px 12px 12px 12px;padding:14px 16px;max-width:520px;white-space:pre-wrap;box-shadow:0 1px 0 #b7d4b0}
+.rec ul{margin-top:16px;padding-left:20px;color:var(--gris)}
+
+/* para vos */
+.pv{background:var(--vial);color:var(--senal)}
+.pv h2.t{color:var(--senal)}
+.pv ul{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:16px 40px;margin-top:30px}
+.pv li{font-size:19px;padding-left:44px;position:relative;line-height:1.4}
+.pv li:before{content:"";position:absolute;left:0;top:2px;width:26px;height:26px;background:var(--ruta);clip-path:polygon(0 35%,55% 35%,55% 0,100% 50%,55% 100%,55% 65%,0 65%)}
+.btndueno{margin-top:34px;background:var(--senal);color:var(--vial2);border:0;border-radius:10px;padding:15px 26px;font-weight:800;font-size:17px;cursor:pointer}
+
+/* panel */
+.owner{background:var(--asfalto);color:#E9ECE8;padding:56px 0 64px;position:relative}
+.owner:before{content:"";position:absolute;left:0;right:0;top:0;height:6px;background:repeating-linear-gradient(90deg,var(--ruta) 0 60px,transparent 60px 100px)}
+.owner__h{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:10px}
+.owner__h h2{font-family:"Saira Extra Condensed",sans-serif;font-size:56px;font-weight:700;color:#fff}
+.tag{border:2px solid var(--ruta);color:var(--ruta);border-radius:6px;padding:2px 10px;font-weight:700;font-size:14px}
+[data-k=ownerbody]{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;margin-top:24px}
+.o-blk{min-width:0;background:var(--asfalto2);border-radius:12px;padding:18px 18px 14px;grid-column:span 2}
+.o-agenda{grid-column:span 6}
+.o-blk h4{font-family:"Saira Extra Condensed",sans-serif;font-size:26px;font-weight:600;color:var(--ruta);margin-bottom:8px}
+.o-scroll{overflow-x:auto}
+.o-grid{border-collapse:separate;border-spacing:4px;width:100%;min-width:640px;font-size:14px}
+.o-grid th{text-align:left;color:#AEB6B1;font-weight:600;padding:2px 6px}
+.o-grid td{background:#444A4E;border-radius:6px;padding:8px}
+.o-t{font-weight:600}
+.o-libre{color:#8E978F}
+.o-blk ul{list-style:none}
+.o-blk li{display:flex;flex-wrap:wrap;justify-content:space-between;gap:2px 10px;padding:8px 0;border-bottom:1px solid #4A5054;font-size:15px}
+.o-blk li:last-child{border-bottom:0}
+.o-d{width:100%;font-size:13px;color:#AEB6B1}
+.o-e{font-size:12.5px;font-weight:700;border-radius:4px;padding:1px 7px;background:#4F575B}
+.o-e--4{background:var(--vial);color:#fff}.o-e--3{background:var(--ruta);color:var(--asfalto)}
+.o-blk .pe{color:#AEB6B1}
+.o-bub{background:#DCF8C6;color:#1c261e;border-radius:10px 2px 10px 10px;padding:8px 10px;font-size:13.5px;margin-bottom:8px;white-space:pre-wrap}
+.o-consultas{grid-column:span 3}.o-kpi{grid-column:span 3}
+.o-kpi ul{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.o-kpi li{flex-direction:column;border:0;background:#444A4E;border-radius:8px;padding:10px 12px}
+.o-kpi b{font-family:"Saira Extra Condensed",sans-serif;font-size:40px;line-height:1;color:#fff}
+.o-kpi span{font-size:13.5px;color:#C2C9C4}
+
+footer{padding:34px 0 46px;font-size:13.5px;color:var(--gris)}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px}
+
+@media (max-width:900px){
+  .cartel__in{grid-template-columns:1fr;padding:26px 22px}
+  .abierto{border-left:0;border-top:3px solid var(--senal);padding:16px 0 0}
+  .salidas{grid-template-columns:1fr}
+  .turno{grid-template-columns:1fr}
+  .tel{position:static}
+  .rec{grid-template-columns:1fr;gap:10px}
+  .rombo{width:140px;height:140px;margin:24px}
+  .rombo div{font-size:28px}.rombo div small{font-size:15px}
+  .pv ul{grid-template-columns:1fr}
+  [data-k=ownerbody]{grid-template-columns:1fr}
+  .o-blk,.o-agenda,.o-consultas,.o-kpi{grid-column:auto}
+}
+@media (max-width:560px){
+  .wrap{padding:0 16px}
+  .campos,.campos2{grid-template-columns:1fr}
+  .e-dia{width:calc((100% - 24px)/4)}
+  .abierto li{font-size:24px}
+  .km li{padding:10px 14px;font-size:20px}
+  .e-etapas{grid-template-columns:1fr;margin-left:10px}
+  .e-etapas:before{left:6px;right:auto;top:0;bottom:0;width:10px;height:auto}
+  .e-etapas:after{left:10px;right:auto;top:0;bottom:0;border-top:0;border-left:2px dashed var(--ruta)}
+  .e-etapa{padding:6px 0 14px 44px;text-align:left}
+  .e-etapa:before{left:1px;transform:none;top:4px;width:20px;height:24px}
+  .owner__h h2{font-size:42px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="firma"><div class="wrap"><span>Prototipo preparado para <b>Taller ADM</b> · 4 de noviembre de 2026</span><span>4,9 ★ en Google · 172 reseñas</span></div></div>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="cartel">
+      <div class="cartel__in">
+        <div>
+          <h1 class="sx">Taller ADM<small>Mar del Plata · Nápoles 5046</small></h1>
+          <p class="lead">Mecánica con Daniel y su hijo, abierto los siete días. Sacá turno, seguí tu auto y aprobá el presupuesto desde el celular.</p>
+        </div>
+        <div class="abierto">
+          <h2>Horario</h2>
+          <ul id="horario">
+            <li data-d="1"><span>Lunes a viernes</span><span>9 a 21:30</span></li>
+            <li data-d="6"><span>Sábado</span><span>9:30 a 20</span></li>
+            <li data-d="0"><span>Domingo</span><span>11 a 19</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="postes" aria-hidden="true"><i></i><i></i></div>
+    <nav class="salidas" aria-label="Accesos">
+      <a class="salida" href="#turno"><svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><path d="M8 32V14h14V7l12 12-12 12v-7h-8v8z" fill="#F5F7F2"/></svg><div><b>Sacar turno</b><span>Elegís día y hora con lugar</span></div></a>
+      <a class="salida" href="#seguimiento"><svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 4v14M20 18l10 6M20 18l-10 6" stroke="#F5F7F2" stroke-width="4" fill="none"/><circle cx="20" cy="22" r="14" stroke="#F5F7F2" stroke-width="3" fill="none"/></svg><div><b>¿Cómo va mi auto?</b><span>Con tu número de orden</span></div></a>
+      <button class="salida salida--ama" type="button" data-k="ownerbtn" aria-expanded="false" style="font:inherit;text-align:left;cursor:pointer"><svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><rect x="5" y="9" width="30" height="22" rx="3" fill="none" stroke="#2A2E31" stroke-width="3"/><path d="M11 25v-6M18 25v-10M25 25v-4M31 25" stroke="#2A2E31" stroke-width="3"/></svg><div><b>Ver como dueño</b><span>El panel que ve Daniel</span></div></button>
+    </nav>
+  </div>
+  <div class="km" aria-label="Trabajos que más piden"><ul>
+    <li>Embrague</li><li>Escaneo</li><li>Puesta a punto</li><li>No arranca</li><li>Ruidos raros</li><li>Service</li>
+  </ul></div>
+</header>
+
+<main>
+<section class="s" id="turno">
+  <div class="wrap">
+    <h2 class="t">Turno sin llamar</h2>
+    <p class="sub">Completás cuatro datos y a Daniel le llega el mensaje armado. Sin esperar que atienda con las manos en el motor.</p>
+    <div class="turno">
+      <div>
+        <div class="paso"><h3><i>1</i>¿Qué necesita el auto?</h3><div data-k="servicios"></div></div>
+        <div class="paso"><h3><i>2</i>Tu auto</h3>
+          <div class="campos">
+            <label>Marca<input data-f="marca" list="e-marcas" autocomplete="off" placeholder="Renault"></label>
+            <label>Modelo y año<input data-f="modelo" placeholder="Clio 2012"></label>
+            <label>Kilómetros<input data-f="km" inputmode="numeric" placeholder="98.000"></label>
+          </div>
+        </div>
+        <div class="paso"><h3><i>3</i>Día y franja</h3><div data-k="dias"></div><div data-k="horas"></div></div>
+        <div class="paso"><h3><i>4</i>Tus datos</h3>
+          <div class="campos2">
+            <label>Nombre<input data-f="nombre" autocomplete="given-name" placeholder="Laura"></label>
+            <label>¿Qué le pasa? (opcional)<input data-f="nota" placeholder="Hace ruido al frenar"></label>
+          </div>
+        </div>
+      </div>
+      <aside class="tel" aria-label="Mensaje que le llega al taller">
+        <div class="tel__scr">
+          <div class="tel__top"><div class="tel__av">ADM</div><div><b>Taller ADM</b><span>223 564-2904</span></div></div>
+          <div class="tel__chat"><div class="bub"><span data-k="burbuja"></span><small data-k="btime"></small></div></div>
+          <div class="tel__send"><a class="btnwa" data-k="wa" target="_blank" rel="noopener" href="#">Enviar por WhatsApp</a><p class="falta" data-k="falta"></p></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section class="s seg" id="seguimiento">
+  <div class="wrap">
+    <h2 class="t">¿Cómo va mi auto?</h2>
+    <p class="sub">Cada auto que entra recibe un número de orden. El cliente ve en qué etapa está y aprueba el presupuesto con un botón.</p>
+    <div class="buscar"><input data-k="ordin" placeholder="Ej: ADM-1104" aria-label="Número de orden"><button type="button" data-k="ordbtn">Ver estado</button></div>
+    <button type="button" class="linkej" data-k="ordej">Probar con la orden de ejemplo ADM-1104</button>
+    <div data-k="ordout"></div>
+  </div>
+</section>
+
+<section class="s">
+  <div class="wrap">
+    <h2 class="t">El que hizo el service vuelve solo</h2>
+    <div class="rec">
+      <div class="rombo" aria-hidden="true"><div>Próximo<small>service</small></div></div>
+      <div>
+        <div class="recmsg" data-k="record"></div>
+        <ul>
+          <li>Sale solo a los 6 meses o 10.000 km, lo que llegue primero.</li>
+          <li>Sirve también para el turista: le recuerda revisar el arreglo provisorio en su ciudad.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="s pv">
+  <div class="wrap">
+    <h2 class="t">Para vos, Daniel</h2>
+    <ul>
+      <li>Dejás de atender el teléfono con las manos engrasadas: el turno llega escrito.</li>
+      <li>El cliente sabe el estado del auto sin llamar, y el turista varado también.</li>
+      <li>El que hizo el service vuelve solo con el recordatorio.</li>
+      <li>Presupuestos aprobados por escrito, con monto y fecha.</li>
+    </ul>
+    <button type="button" class="btndueno" data-k="ownerbtn" aria-expanded="false">Ver como dueño</button>
+  </div>
+</section>
+
+<section class="owner" data-k="owner" hidden id="panel">
+  <div class="wrap">
+    <div class="owner__h"><h2>Panel del taller</h2><span class="tag">Panel de ejemplo</span></div>
+    <div data-k="ownerbody"></div>
+  </div>
+</section>
+</main>
+
+<footer><div class="wrap"><span>Prototipo de demostración preparado para Taller ADM por Resolviendo Kos · No es la web oficial</span><span>Nápoles 5046, Mar del Plata</span></div></footer>
+
+<script>
+window.TALLER={
+  negocio:"Taller ADM", waIntl:"5492235642904", saludo:"Daniel",
+  horarios:{0:[[11,19]],1:[[9,21.5]],2:[[9,21.5]],3:[[9,21.5]],4:[[9,21.5]],5:[[9,21.5]],6:[[9.5,20]]},
+  paso:1.5, boxes:["Elevador 1","Elevador 2"], boxNombre:"elevador",
+  servicios:[
+    {n:"Embrague",d:"Patina, cuesta pasar cambios o hace ruido",p:180000,desde:1},
+    {n:"Escaneo computarizado",d:"Testigo encendido o falla intermitente",p:35000},
+    {n:"Puesta a punto",d:"Bujías, filtros y control general",p:90000,desde:1},
+    {n:"Service de aceite y filtros",d:"Según el kilometraje del auto",p:70000,desde:1},
+    {n:"No arranca / auxilio",d:"Te ayudamos a traerlo al taller",p:0},
+    {n:"Ruidos y diagnóstico",d:"Lo revisamos y te explicamos qué tiene",p:25000}
+  ],
+  orden:{num:"ADM-1104",auto:"Renault Clio 2012",cliente:"Laura G. (cliente de ejemplo)",etapa:1,
+    tiempos:["Hoy 9:40","Hoy 11:15","","",""],
+    nota:"Diagnóstico listo: disco y placa gastados y el rulemán hace ruido. Te dejamos el presupuesto abajo.",
+    notaAprobado:"Gracias, Laura. Pedimos el kit y el auto queda listo mañana a la tarde.",
+    items:[{d:"Kit de embrague (disco, placa y rulemán)",p:210000},{d:"Mano de obra",p:120000},{d:"Líquido de embrague y prueba en calle",p:18000}]},
+  recordatorio:"Hola Laura, ¿cómo andás? Te escribimos de Taller ADM.\nHace 6 meses le cambiamos el embrague al Clio y ya estás cerca de los 10.000 km del service.\n¿Te reservo un turno? Respondé SÍ y te paso los días con lugar.",
+  panel:{
+    trabajos:["Service","Embrague","Escaneo","Puesta a punto","Frenos","Diagnóstico"],
+    autos:[["Renault Clio 2012","Embrague · Laura G.",1],["VW Gol Trend 2016","No arrancaba · viene de Rosario",3],["Chevrolet Corsa 2009","Escaneo y bujías",4],["Toyota Etios 2019","Service 60.000 km · espera filtro",2]],
+    presus:[["Clio 2012 · embrague",330000,"Enviado hoy 11:15"],["Fiesta 2014 · tren delantero",240000,"Enviado ayer, sin respuesta"],["Palio 2011 · bomba de agua",150000,"Enviado hoy 10:02"]],
+    recs:[["Martín R. · Cronos 2020","Service 30.000 km · sale el jueves"],["Sofía P. · 208 2018","6 meses del último service · sale el viernes"],["Claudio B. · Hilux 2017","Cambio de correa · sale el sábado"]],
+    consultas:["Hola Daniel, quiero sacar turno.\nServicio: Escaneo computarizado\nAuto: Ford Ka 2015 · 120.000 km\nDía: viernes a las 10:30\nNombre: Pablo","Hola Daniel, quiero sacar turno.\nServicio: No arranca / auxilio\nAuto: Peugeot 207 · 140.000 km\nDía: domingo a las 11:00\nNombre: Andrea"],
+    kpis:[["38","turnos que entraron sin llamada"],["11","clientes que volvieron por el recordatorio"],["14","presupuestos aprobados por escrito"],["0 %","de comisión por turno"]]
+  }
+};
+(function(){var d=new Date().getDay();var k=d===0?"0":(d===6?"6":"1");var li=document.querySelector('#horario li[data-d="'+k+'"]');if(li){li.classList.add("hoy");li.firstChild.textContent+=" (hoy)";}})();
+</script>
+<script>
+(function(){
+"use strict";
+var C = window.TALLER;
+var $ = function(s,r){return (r||document).querySelector(s);};
+var $$ = function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));};
+var DIAS=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
+var DCORTO=["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"];
+var MES=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+var PE='<span class="pe">precio de ejemplo</span>';
+function money(n){return "$ "+Math.round(n).toLocaleString("es-AR");}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function hh(x){var h=Math.floor(x),m=Math.round((x-h)*60);return (h<10?"0":"")+h+":"+(m<10?"0":"")+m;}
+function hash(s){var h=7;for(var i=0;i<s.length;i++){h=(h*31+s.charCodeAt(i))%9973;}return h;}
+
+var st={serv:null,dia:null,hora:null,marca:"",modelo:"",km:"",nombre:"",nota:""};
+
+/* ---------- servicios ---------- */
+var sv=$("[data-k=servicios]");
+if(sv){
+  sv.innerHTML=C.servicios.map(function(s,i){
+    return '<button type="button" class="e-serv" data-i="'+i+'" aria-pressed="false">'+
+      '<span class="e-serv__n">'+esc(s.n)+'</span>'+
+      (s.d?'<span class="e-serv__d">'+esc(s.d)+'</span>':'')+
+      (s.p?'<span class="e-serv__p">'+(s.desde?'desde ':'')+money(s.p)+' '+PE+'</span>':'<span class="e-serv__p e-serv__p--q">Se presupuesta con el auto en el taller</span>')+
+      '</button>';
+  }).join("");
+  sv.addEventListener("click",function(e){
+    var b=e.target.closest(".e-serv"); if(!b) return;
+    $$(".e-serv",sv).forEach(function(x){x.setAttribute("aria-pressed","false");});
+    b.setAttribute("aria-pressed","true"); st.serv=C.servicios[+b.dataset.i]; upd();
+  });
+}
+
+/* ---------- días ---------- */
+var hoy=new Date(); hoy.setHours(0,0,0,0);
+var dias=[];
+for(var i=0;i<21 && dias.length<(C.nDias||7);i++){
+  var d=new Date(hoy.getTime()+i*864e5);
+  var r=C.horarios[d.getDay()];
+  if(r && r.length){ if(i===0){var now=new Date(); var last=r[r.length-1][1]; if(now.getHours()+now.getMinutes()/60>last-1.5) continue;} dias.push(d); }
+}
+var dv=$("[data-k=dias]");
+function diaLabel(d){return DIAS[d.getDay()]+" "+d.getDate()+"/"+(d.getMonth()+1);}
+if(dv){
+  dv.innerHTML=dias.map(function(d,i){
+    return '<button type="button" class="e-dia" data-i="'+i+'" aria-pressed="false"><span class="e-dia__w">'+DCORTO[d.getDay()]+'</span><span class="e-dia__n">'+d.getDate()+'</span><span class="e-dia__m">'+MES[d.getMonth()]+'</span></button>';
+  }).join("");
+  dv.addEventListener("click",function(e){
+    var b=e.target.closest(".e-dia"); if(!b) return;
+    $$(".e-dia",dv).forEach(function(x){x.setAttribute("aria-pressed","false");});
+    b.setAttribute("aria-pressed","true"); st.dia=dias[+b.dataset.i]; st.hora=null; horas(); upd();
+  });
+}
+var hv=$("[data-k=horas]");
+function horas(){
+  if(!hv) return;
+  if(!st.dia){hv.innerHTML='<p class="e-hint">Elegí un día para ver las franjas.</p>';return;}
+  var r=C.horarios[st.dia.getDay()], out=[], cap=C.boxes.length;
+  var now=new Date(), esHoy=st.dia.getTime()===hoy.getTime();
+  r.forEach(function(rg,ri){
+    for(var h=rg[0];h<=rg[1]-1;h+=(C.paso||1)){
+      if(esHoy && h<=now.getHours()+now.getMinutes()/60+1) continue;
+      var libres=Math.min(cap,hash(st.dia.toDateString()+h)%(cap+2));
+      if(h===rg[0] && libres===0) libres=1;
+      out.push('<button type="button" class="e-hora'+(libres===0?' is-full':'')+'" data-h="'+h+'" aria-pressed="false" '+(libres===0?'disabled':'')+'><span class="e-hora__t">'+hh(h)+'</span><span class="e-hora__c">'+(libres===0?'completo':(libres===1?'queda 1 lugar':'quedan '+libres+' lugares'))+'</span></button>');
+    }
+    if(ri<r.length-1) out.push('<span class="e-hora__sep">'+(C.cortaTxt||'mediodía')+'</span>');
+  });
+  hv.innerHTML=out.join("")||'<p class="e-hint">No quedan franjas hoy. Probá otro día.</p>';
+}
+if(hv){
+  horas();
+  hv.addEventListener("click",function(e){
+    var b=e.target.closest(".e-hora"); if(!b||b.disabled) return;
+    $$(".e-hora",hv).forEach(function(x){x.setAttribute("aria-pressed","false");});
+    b.setAttribute("aria-pressed","true"); st.hora=+b.dataset.h; upd();
+  });
+}
+/* ---------- campos ---------- */
+var ml=$("#e-marcas");
+if(!ml){ml=document.createElement("datalist");ml.id="e-marcas";document.body.appendChild(ml);}
+ml.innerHTML=(C.marcas||["Volkswagen","Chevrolet","Ford","Fiat","Renault","Peugeot","Toyota","Citroën","Honda","Nissan","Jeep","Hyundai","Kia","Mercedes-Benz","Chery"]).map(function(m){return '<option value="'+m+'">';}).join("");
+$$("[data-f]").forEach(function(inp){
+  inp.addEventListener("input",function(){st[inp.dataset.f]=inp.value.trim();upd();});
+});
+
+/* ---------- burbuja ---------- */
+function texto(){
+  var L=["Hola"+(C.saludo?" "+C.saludo:"")+", quiero sacar turno."];
+  L.push("Servicio: "+(st.serv?st.serv.n:"…"));
+  var auto=[st.marca,st.modelo].filter(Boolean).join(" ");
+  L.push("Auto: "+(auto||"…")+(st.km?" · "+st.km.replace(/\D/g,"").replace(/\B(?=(\d{3})+(?!\d))/g,".")+" km":""));
+  L.push("Día: "+(st.dia?diaLabel(st.dia):"…")+(st.hora!==null?" a las "+hh(st.hora):""));
+  if(st.nota) L.push("Qué le pasa: "+st.nota);
+  if(st.serv&&st.serv.p) L.push("Referencia: "+(st.serv.desde?"desde ":"")+money(st.serv.p)+" (precio de ejemplo)");
+  L.push("Nombre: "+(st.nombre||"…"));
+  return L.join("\n");
+}
+var bub=$("[data-k=burbuja]"), wa=$("[data-k=wa]"), bt=$("[data-k=btime]");
+var falta=$("[data-k=falta]");
+function upd(){
+  var t=texto();
+  if(bub){bub.textContent=t; bub.classList.remove("e-pulse"); void bub.offsetWidth; bub.classList.add("e-pulse");}
+  if(bt){var n=new Date();bt.textContent=hh(n.getHours()+n.getMinutes()/60);}
+  var ok=st.serv&&st.dia&&st.hora!==null&&st.nombre&&(st.marca||st.modelo);
+  if(wa){
+    wa.href="https://wa.me/"+C.waIntl+"?text="+encodeURIComponent(t);
+    wa.setAttribute("aria-disabled",ok?"false":"true");
+    wa.classList.toggle("is-ready",!!ok);
+  }
+  if(falta){
+    var f=[];if(!st.serv)f.push("servicio");if(!(st.marca||st.modelo))f.push("auto");if(!st.dia)f.push("día");if(st.hora===null)f.push("horario");if(!st.nombre)f.push("nombre");
+    falta.textContent=f.length?"Falta: "+f.join(", "):"Listo. Se abre WhatsApp con este mensaje.";
+  }
+}
+if(wa) wa.addEventListener("click",function(e){ if(wa.getAttribute("aria-disabled")==="true"){e.preventDefault(); if(falta){falta.classList.remove("e-shake");void falta.offsetWidth;falta.classList.add("e-shake");}}});
+upd();
+
+/* ---------- seguimiento ---------- */
+var O=C.orden, ETAPAS=["Recibido","En diagnóstico","Esperando repuesto","En reparación","Listo para retirar"];
+var oi=$("[data-k=ordin]"), ob=$("[data-k=ordbtn]"), oo=$("[data-k=ordout]"), oe=$("[data-k=ordej]");
+var aprob=false;
+function total(){return O.items.reduce(function(a,x){return a+x.p;},0);}
+function renderOrden(){
+  var etapa=aprob?3:O.etapa;
+  var h='<div class="e-ord">';
+  h+='<div class="e-ord__head"><span class="e-ord__num">Orden '+esc(O.num)+'</span><span class="e-ord__auto">'+esc(O.auto)+'</span><span class="e-ord__ej">Orden de ejemplo</span></div>';
+  h+='<ol class="e-etapas">'+ETAPAS.map(function(n,i){
+    var c=i<etapa?"is-done":(i===etapa?"is-now":"");
+    return '<li class="e-etapa '+c+'"><span class="e-etapa__n">'+n+'</span><span class="e-etapa__t">'+(O.tiempos[i]&&i<=etapa?O.tiempos[i]:"")+'</span></li>';
+  }).join("")+'</ol>';
+  h+='<p class="e-ord__nota">'+esc(aprob?O.notaAprobado:O.nota)+'</p>';
+  h+='<div class="e-presu"><div class="e-presu__t">Presupuesto '+(aprob?'aprobado':'para aprobar')+'</div><table>'+O.items.map(function(x){
+    return '<tr><td>'+esc(x.d)+'</td><td class="e-num">'+money(x.p)+' '+PE+'</td></tr>';
+  }).join("")+'<tr class="e-presu__tot"><td>Total</td><td class="e-num">'+money(total())+' '+PE+'</td></tr></table>';
+  if(!aprob) h+='<div class="e-presu__acc"><button type="button" class="e-aprobar" data-k="aprobar">Aprobar presupuesto</button><a class="e-consultar" target="_blank" rel="noopener" href="https://wa.me/'+C.waIntl+'?text='+encodeURIComponent("Hola, tengo una consulta sobre el presupuesto de la orden "+O.num+".")+'">Tengo una duda</a></div>';
+  else h+='<div class="e-aprobado"><b>Aprobado por escrito.</b> Al taller le llega: <q>Apruebo el presupuesto de la orden '+esc(O.num)+' por '+money(total())+'. — '+esc(O.cliente)+'</q></div>';
+  h+='</div></div>';
+  oo.innerHTML=h;
+  var ab=$("[data-k=aprobar]",oo);
+  if(ab) ab.addEventListener("click",function(){aprob=true;renderOrden();});
+}
+function buscar(){
+  var v=(oi.value||"").trim().toUpperCase().replace(/\s/g,"");
+  if(!v || v===O.num.toUpperCase().replace(/\s/g,"") || v===O.num.replace(/\D/g,"")){ if(!v) oi.value=O.num; renderOrden(); }
+  else oo.innerHTML='<p class="e-hint e-hint--err">No encontramos la orden '+esc(v)+'. En esta demo probá con '+esc(O.num)+'.</p>';
+}
+if(ob){ ob.addEventListener("click",buscar); oi.addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();buscar();}}); }
+if(oe){ oe.addEventListener("click",function(){oi.value=O.num;buscar();}); }
+
+/* ---------- recordatorio ---------- */
+var rc=$("[data-k=record]");
+if(rc) rc.textContent=C.recordatorio;
+
+/* ---------- panel dueño ---------- */
+var pb=$$("[data-k=ownerbtn]"), pw=$("[data-k=owner]"), pbody=$("[data-k=ownerbody]");
+function panel(){
+  var P=C.panel, h='';
+  // agenda
+  var semana=[];for(var i=0;i<14&&semana.length<(C.panelDias||6);i++){var d=new Date(hoy.getTime()+i*864e5);if(C.horarios[d.getDay()]&&C.horarios[d.getDay()].length)semana.push(d);}
+  h+='<section class="o-blk o-agenda"><h4>Agenda de la semana por '+(C.boxNombre||'box')+'</h4><div class="o-scroll"><table class="o-grid"><thead><tr><th></th>'+semana.map(function(d){return '<th>'+DCORTO[d.getDay()]+' '+d.getDate()+'</th>';}).join("")+'</tr></thead><tbody>'+
+    C.boxes.map(function(b,bi){return '<tr><th>'+esc(b)+'</th>'+semana.map(function(d,di){
+      var k=hash(b+d.toDateString()), n=P.trabajos[(k+bi)%P.trabajos.length];
+      var lleno=(k%5)!==0;
+      return '<td>'+(lleno?'<span class="o-t">'+esc(n)+'</span>':'<span class="o-libre">libre</span>')+'</td>';
+    }).join("")+'</tr>';}).join("")+'</tbody></table></div></section>';
+  h+='<section class="o-blk o-autos"><h4>Autos en el taller ahora</h4><ul>'+P.autos.map(function(a){return '<li><span class="o-a">'+esc(a[0])+'</span><span class="o-e o-e--'+a[2]+'">'+ETAPAS[a[2]]+'</span><span class="o-d">'+esc(a[1])+'</span></li>';}).join("")+'</ul></section>';
+  h+='<section class="o-blk o-pres"><h4>Presupuestos esperando aprobación</h4><ul>'+P.presus.map(function(a){return '<li><span>'+esc(a[0])+'</span><span class="e-num">'+money(a[1])+' '+PE+'</span><span class="o-d">'+esc(a[2])+'</span></li>';}).join("")+'</ul></section>';
+  h+='<section class="o-blk o-rec"><h4>Recordatorios que salen esta semana</h4><ul>'+P.recs.map(function(a){return '<li><span>'+esc(a[0])+'</span><span class="o-d">'+esc(a[1])+'</span></li>';}).join("")+'</ul></section>';
+  h+='<section class="o-blk o-consultas"><h4>Consultas que entraron hoy</h4>'+P.consultas.map(function(t){return '<div class="o-bub">'+esc(t)+'</div>';}).join("")+'</section>';
+  h+='<section class="o-blk o-kpi"><h4>Este mes</h4><ul>'+P.kpis.map(function(a){return '<li><b>'+esc(a[0])+'</b><span>'+esc(a[1])+'</span></li>';}).join("")+'</ul></section>';
+  pbody.innerHTML=h;
+}
+if(pw&&pbody){ panel();
+  pb.forEach(function(b){b.addEventListener("click",function(){
+    var open=pw.hidden; pw.hidden=!open; pb.forEach(function(x){x.setAttribute("aria-expanded",open?"true":"false");});
+    if(open){ pw.scrollIntoView({behavior:"smooth",block:"start"}); }
+  });});
+}
+})();
+
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Taller ADM"></script>
+</body>
+</html>
