@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Mecánica Lorenzatti · Villa Carlos Paz</title>
+<meta name="description" content="Prototipo de demostración: turnos, seguimiento y recordatorio de service para Mecánica Lorenzatti, Villa Carlos Paz.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Changa+One&family=Roboto+Slab:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--cobalto:#1F3FA6;--cob2:#16307F;--sol:#FFC93C;--vidrio:#BFD5D9;--vidrio2:#E3EEF0;--blanco:#fff;--tinta:#17203A;--gris:#56607A;--linea:#C9D6DA}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--vidrio2);color:var(--tinta);font-family:"Roboto Slab",Georgia,serif;font-size:16.5px;line-height:1.65;overflow-x:hidden}
+a{color:inherit}button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--sol);outline-offset:2px}
+.ch{font-family:"Changa One",Impact,sans-serif;font-weight:400}
+.pe{display:inline-block;font-family:"Roboto Slab",serif;font-size:11px;font-weight:400;color:var(--gris);white-space:nowrap}
+.w{max-width:1140px;margin:0 auto;padding:0 28px}
+.firma{font-size:12.5px;color:var(--gris);padding:9px 0}
+.firma .w{display:flex;flex-wrap:wrap;gap:2px 16px}.firma b{color:var(--tinta)}
+
+/* parabrisas */
+.hero{padding:20px 0 50px}
+.para{position:relative;background:linear-gradient(170deg,#9DBFC6 0%,#C8DDE1 45%,#A9C8CE 100%);clip-path:polygon(7% 0,93% 0,100% 100%,0 100%);border-radius:30px 30px 8px 8px;padding:46px 9% 54px;min-height:440px;display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:center;overflow:hidden}
+.para:after{content:"";position:absolute;right:-10%;top:-30%;width:60%;height:160%;background:linear-gradient(100deg,transparent 40%,rgba(255,255,255,.35) 48%,transparent 56%);pointer-events:none}
+.oblea{width:300px;aspect-ratio:1;border-radius:22px;background:#fff;box-shadow:0 2px 0 rgba(0,0,0,.08),0 18px 30px -18px rgba(20,40,60,.5);padding:20px 22px;position:relative;transform:rotate(-3deg);border:6px solid var(--cobalto);z-index:1}
+.oblea:before{content:"";position:absolute;inset:6px;border:2px dashed var(--cobalto);border-radius:12px;opacity:.35;pointer-events:none}
+.oblea .tit{font-family:"Changa One",sans-serif;color:var(--cobalto);font-size:40px;line-height:.92}
+.oblea .sub{font-size:12.5px;color:var(--gris);margin-top:2px}
+.oblea dl{margin-top:12px}
+.oblea dt{font-size:11.5px;font-weight:600;color:var(--gris)}
+.oblea dd{font-family:"Changa One",sans-serif;font-size:28px;line-height:1.1;border-bottom:2px solid var(--tinta);margin-bottom:6px;color:var(--tinta);min-height:32px}
+.oblea .sol{position:absolute;right:-18px;top:-18px;width:66px;height:66px;border-radius:50%;background:var(--sol);display:grid;place-items:center;font-family:"Changa One",sans-serif;font-size:13px;line-height:1;text-align:center;color:var(--tinta);transform:rotate(12deg)}
+.hero__txt{position:relative;z-index:1}
+.hero__txt h1{font-family:"Changa One",sans-serif;font-size:clamp(50px,7vw,96px);line-height:.88;color:var(--cob2)}
+.hero__txt p{font-size:19px;margin-top:16px;max-width:24em}
+.acc{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.bt{border:0;border-radius:999px;padding:12px 22px;font-weight:700;cursor:pointer;text-decoration:none;background:#fff;color:var(--cobalto);font-size:15.5px}
+.bt--a{background:var(--cobalto);color:#fff}
+.bt--s{background:var(--sol);color:var(--tinta)}
+.tablero{display:flex;justify-content:center;gap:0;margin-top:-1px}
+.tablero div{background:var(--tinta);color:#fff;padding:12px 26px;font-size:14.5px;text-align:center}
+.tablero div:first-child{border-radius:0 0 0 16px}.tablero div:last-child{border-radius:0 0 16px 0}
+.tablero b{display:block;font-family:"Changa One",sans-serif;font-size:22px;font-weight:400;color:var(--sol)}
+
+/* turnos */
+.sec{padding:64px 0}
+.h2{font-family:"Changa One",sans-serif;font-size:clamp(40px,5vw,62px);line-height:.95;color:var(--cob2)}
+.lead{color:var(--gris);margin-top:6px;max-width:40em}
+[data-k=servicios]{display:flex;flex-wrap:wrap;gap:14px;margin-top:26px}
+.e-serv{width:160px;height:160px;border-radius:50%;background:#fff;border:4px solid #fff;box-shadow:0 0 0 2px var(--linea);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:14px;cursor:pointer;line-height:1.2}
+.e-serv__n{font-family:"Changa One",sans-serif;font-size:19px;color:var(--cobalto);line-height:1.05}
+.e-serv__d{display:none}
+.e-serv__p{font-size:13px;font-weight:600;margin-top:6px}
+.e-serv__p .pe{display:block;font-size:10px}
+.e-serv__p--q{font-size:11px;font-weight:400;color:var(--gris)}
+.e-serv:hover{transform:rotate(-4deg)}
+.e-serv[aria-pressed=true]{background:var(--sol);box-shadow:0 0 0 3px var(--tinta)}
+.e-serv[aria-pressed=true] .e-serv__n{color:var(--tinta)}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) 350px;gap:36px;margin-top:34px;align-items:start}
+.ficha{background:#fff;border-radius:22px;padding:24px 26px}
+.ficha h3{font-family:"Changa One",sans-serif;font-size:24px;color:var(--cobalto);margin:16px 0 8px}
+.ficha h3:first-child{margin-top:0}
+.cmp{display:grid;grid-template-columns:1fr 1.2fr .8fr;gap:10px}
+.cmp.dos{grid-template-columns:1fr 1.5fr}
+.cmp label{font-size:12.5px;font-weight:600;color:var(--gris);display:flex;flex-direction:column;gap:3px}
+input{border:2px solid var(--linea);border-radius:12px;padding:9px 12px;font-size:16px;background:var(--vidrio2);width:100%}
+input:focus{outline:none;border-color:var(--cobalto);background:#fff}
+[data-k=dias]{display:flex;gap:8px;flex-wrap:wrap}
+.e-dia{border:0;background:var(--vidrio2);border-radius:14px;width:64px;padding:6px 0;cursor:pointer;display:flex;flex-direction:column;align-items:center;line-height:1.1}
+.e-dia__w{font-size:12px;font-weight:600;color:var(--gris)}
+.e-dia__n{font-family:"Changa One",sans-serif;font-size:28px;color:var(--cobalto)}
+.e-dia__m{font-size:11.5px;color:var(--gris)}
+.e-dia[aria-pressed=true]{background:var(--cobalto)}.e-dia[aria-pressed=true] span{color:#fff}
+[data-k=horas]{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;align-items:center}
+.e-hora{border:2px solid var(--linea);background:#fff;border-radius:999px;padding:5px 14px;cursor:pointer;display:flex;gap:8px;align-items:baseline}
+.e-hora__t{font-family:"Changa One",sans-serif;font-size:19px;color:var(--tinta)}
+.e-hora__c{font-size:11.5px;color:var(--gris)}
+.e-hora.is-full{opacity:.4;cursor:not-allowed}
+.e-hora[aria-pressed=true]{background:var(--sol);border-color:var(--tinta)}
+.e-hora__sep{width:100%;font-size:12.5px;font-weight:600;color:var(--gris);margin:4px 0}
+.e-hint{color:var(--gris);font-size:14.5px}
+.e-hint--err{color:#B02020;font-weight:600}
+.cel{position:sticky;top:20px;background:var(--tinta);border-radius:30px;padding:10px}
+.cel__s{background:#ECE5DD;border-radius:22px;overflow:hidden}
+.cel__h{background:var(--cobalto);color:#fff;padding:12px 14px;font-size:14px;display:flex;gap:10px;align-items:center}
+.cel__h i{width:32px;height:32px;border-radius:50%;background:var(--sol);color:var(--tinta);display:grid;place-items:center;font-style:normal;font-family:"Changa One",sans-serif}
+.cel__c{padding:14px 10px;min-height:280px}
+.bub{background:#DCF8C6;border-radius:10px 2px 10px 10px;padding:9px 11px 18px;white-space:pre-wrap;font-size:14px;line-height:1.45;position:relative;margin-left:18px;font-family:system-ui,sans-serif}
+.bub small{position:absolute;right:8px;bottom:3px;font-size:11px;color:#6b866f}
+.e-pulse{animation:pl .35s}@keyframes pl{from{background:#c1f0aa}}
+.cel__f{padding:0 10px 14px}
+.btnwa{display:block;text-align:center;background:#25803F;color:#fff;font-weight:700;text-decoration:none;padding:12px;border-radius:999px}
+.btnwa[aria-disabled=true]{background:#8fa898}
+.falta{font-size:12.5px;color:#4d5a50;text-align:center;margin-top:6px}
+.e-shake{animation:sh .3s}@keyframes sh{30%{transform:translateX(-4px)}70%{transform:translateX(4px)}}
+
+/* seguimiento con medidor */
+.seg{background:var(--cobalto);color:#fff;border-radius:40px;margin:0 16px;padding:60px 0}
+.seg .h2{color:#fff}
+.seg .lead{color:#C9D4F3}
+.seg__g{display:grid;grid-template-columns:340px minmax(0,1fr);gap:36px;margin-top:28px;align-items:start}
+.gauge{background:var(--cob2);border-radius:24px;padding:20px}
+.gauge svg{width:100%;height:auto;display:block}
+#aguja{transform-origin:150px 150px;transition:transform 1s cubic-bezier(.3,1.4,.5,1)}
+.busc{display:flex;gap:8px;margin-top:14px}
+.busc input{background:#fff;border-color:#fff;color:var(--tinta)}
+.busc button{background:var(--sol);border:0;border-radius:12px;padding:0 16px;font-weight:700;cursor:pointer;white-space:nowrap}
+.linkej{background:none;border:0;color:#fff;text-decoration:underline;margin-top:10px;cursor:pointer;font-size:14px;text-align:left}
+.e-ord{background:#fff;color:var(--tinta);border-radius:24px;padding:22px}
+.e-ord__head{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline}
+.e-ord__num{font-family:"Changa One",sans-serif;font-size:28px;color:var(--cobalto)}
+.e-ord__auto{font-weight:600}
+.e-ord__ej{margin-left:auto;font-size:12px;color:var(--gris)}
+.e-etapas{list-style:none;display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
+.e-etapa{border-radius:999px;padding:3px 12px;font-size:13.5px;background:var(--vidrio2);color:var(--gris)}
+.e-etapa__t{font-size:11.5px;margin-left:6px}
+.e-etapa.is-done{background:var(--cobalto);color:#fff}
+.e-etapa.is-now{background:var(--sol);color:var(--tinta);font-weight:700}
+.e-ord__nota{font-size:15.5px;border-left:4px solid var(--sol);padding:4px 0 4px 12px}
+.e-presu{margin-top:14px}
+.e-presu__t{font-family:"Changa One",sans-serif;font-size:21px;color:var(--cobalto)}
+.e-presu table{width:100%;border-collapse:collapse}
+.e-presu td{padding:8px 0;border-bottom:1px solid var(--linea)}
+.e-num{text-align:right;font-weight:700;white-space:nowrap}
+td.e-num .pe{display:block}
+.e-presu__tot td{border-bottom:0;font-size:18px}
+.e-presu__acc{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:10px}
+.e-aprobar{background:var(--cobalto);color:#fff;border:0;border-radius:999px;padding:11px 22px;font-weight:700;cursor:pointer}
+.e-consultar{font-weight:600;color:var(--cobalto)}
+.e-aprobado{margin-top:10px;background:#FFF5D6;border-radius:14px;padding:10px 14px}
+
+/* recordatorio */
+.rec{display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:center;margin-top:24px}
+.mini{width:220px;aspect-ratio:1;border-radius:18px;background:#fff;border:5px solid var(--cobalto);transform:rotate(4deg);padding:16px;display:flex;flex-direction:column;justify-content:space-between}
+.mini b{font-family:"Changa One",sans-serif;font-weight:400;color:var(--cobalto);font-size:24px;line-height:1}
+.mini span{font-family:"Changa One",sans-serif;font-size:30px;border-bottom:2px solid var(--tinta);line-height:1.1}
+.mini small{font-size:11.5px;color:var(--gris)}
+.recmsg{background:#DCF8C6;border-radius:2px 14px 14px 14px;padding:14px 16px;white-space:pre-wrap;max-width:540px;font-family:system-ui,sans-serif;font-size:15.5px}
+.rec ul{margin:14px 0 0 18px;color:var(--gris);font-size:15px}
+
+.pv{background:var(--sol);border-radius:40px;margin:0 16px;padding:50px 0}
+.pv .h2{color:var(--tinta)}
+.pv ul{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:22px}
+.pv li{background:#fff;border-radius:20px;padding:16px 18px;font-size:16px;line-height:1.45}
+.pv li b{display:block;font-family:"Changa One",sans-serif;font-weight:400;font-size:20px;color:var(--cobalto);line-height:1.1;margin-bottom:4px}
+
+/* panel */
+.owner{padding:56px 0}
+.owner__in{background:var(--tinta);color:#E7ECF7;border-radius:30px;padding:30px}
+.owner__h{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.owner__h h2{font-family:"Changa One",sans-serif;font-weight:400;font-size:46px;color:#fff;line-height:1}
+.tag{background:var(--sol);color:var(--tinta);border-radius:999px;padding:3px 12px;font-size:13px;font-weight:700}
+[data-k=ownerbody]{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:20px}
+.o-blk{min-width:0;background:#222E50;border-radius:20px;padding:16px}
+.o-agenda{grid-column:1/-1}
+.o-consultas{grid-column:span 2}
+.o-blk h4{font-family:"Changa One",sans-serif;font-weight:400;font-size:20px;color:var(--sol);margin-bottom:6px}
+.o-scroll{overflow-x:auto}
+.o-grid{width:100%;min-width:620px;border-collapse:separate;border-spacing:4px;font-size:13.5px}
+.o-grid th{text-align:left;color:#9DAAD0;font-weight:500}
+.o-grid td{background:#2C3A63;border-radius:10px;padding:7px 9px}
+.o-libre{color:#7D8AB3}
+.o-blk ul{list-style:none}
+.o-blk li{display:flex;flex-wrap:wrap;justify-content:space-between;gap:2px 10px;padding:7px 0;border-bottom:1px solid #33416B;font-size:14.5px}
+.o-d{width:100%;font-size:12.5px;color:#9DAAD0}
+.o-e{font-size:11.5px;font-weight:700;border-radius:999px;padding:1px 9px;background:#33416B}
+.o-e--4{background:#3FAF6B;color:#fff}.o-e--3{background:var(--sol);color:var(--tinta)}
+.o-blk .pe{color:#9DAAD0}
+.o-consultas{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-content:start}
+.o-consultas h4{grid-column:1/-1}
+.o-bub{background:#DCF8C6;color:var(--tinta);border-radius:10px 2px 10px 10px;padding:8px 10px;font-size:13px;white-space:pre-wrap;font-family:system-ui,sans-serif}
+.o-kpi li{flex-direction:column}
+.o-kpi b{font-family:"Changa One",sans-serif;font-weight:400;font-size:34px;color:#fff;line-height:1}
+
+footer{padding:10px 0 40px;font-size:13px;color:var(--gris)}
+footer .w{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
+
+@media (max-width:960px){
+  .para{grid-template-columns:1fr;clip-path:none;border-radius:30px;padding:34px 24px 40px}
+  .oblea{width:260px;margin:0 auto}
+  .grid2,.seg__g{grid-template-columns:1fr}
+  .cel{position:static}
+  .pv ul{grid-template-columns:1fr 1fr}
+  [data-k=ownerbody]{grid-template-columns:minmax(0,1fr)}
+  .o-consultas{grid-column:auto}
+}
+@media (max-width:600px){
+  .w{padding:0 16px}
+  .seg,.pv{margin:0 8px;border-radius:26px}
+  .seg .w,.pv .w{padding:0 14px}
+  .e-serv{width:calc(50% - 7px);height:auto;aspect-ratio:1}
+  .cmp,.cmp.dos{grid-template-columns:1fr}
+  .ficha{padding:18px 14px}
+  .rec{grid-template-columns:1fr}
+  .mini{width:170px}
+  .pv ul{grid-template-columns:1fr}
+  .tablero{flex-wrap:wrap}
+  .tablero div{flex:1 1 50%;padding:10px 12px;border-radius:0!important}
+  .owner__in{padding:20px 14px}
+  .o-consultas{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="firma"><div class="w"><span>Prototipo preparado para <b>Mecánica Lorenzatti</b> · 4 de noviembre de 2026</span><span>4,5 ★ en Google · 166 reseñas</span></div></div>
+
+<header class="hero">
+  <div class="w">
+    <div class="para">
+      <div class="oblea" aria-hidden="true">
+        <div class="sol">Carlos<br>Paz</div>
+        <div class="tit">Mecánica Lorenzatti</div>
+        <div class="sub">Resistencia 53 · La Cuesta</div>
+        <dl><dt>Próximo service a los</dt><dd>__ km</dd><dt>o el día</dt><dd>__/__/__</dd></dl>
+      </div>
+      <div class="hero__txt">
+        <h1>La oblea del parabrisas, ahora en el celular</h1>
+        <p>Taller atendido por sus dueños en Villa Carlos Paz. Sacá turno, seguí el auto y recibí el aviso del próximo service.</p>
+        <div class="acc">
+          <a class="bt bt--a" href="#turno">Sacar turno</a>
+          <a class="bt" href="#seguimiento">¿Cómo va mi auto?</a>
+          <button class="bt bt--s" type="button" data-k="ownerbtn" aria-expanded="false">Ver como dueño</button>
+        </div>
+      </div>
+    </div>
+    <div class="tablero">
+      <div><b>8:30 a 12:30</b>mañana</div>
+      <div><b>15 a 19:30</b>tarde</div>
+      <div><b>Lun a vie</b>sábado y domingo cerrado</div>
+    </div>
+  </div>
+</header>
+
+<main>
+<section class="sec" id="turno" style="padding-top:20px">
+  <div class="w">
+    <h2 class="h2">Elegí tu turno</h2>
+    <p class="lead">Tocá el trabajo, completá el auto y elegí mañana o tarde. Lo que ves en el celular es lo que le llega al taller.</p>
+    <div data-k="servicios"></div>
+    <div class="grid2">
+      <div class="ficha">
+        <h3>Tu auto</h3>
+        <div class="cmp"><label>Marca<input data-f="marca" list="e-marcas" autocomplete="off" placeholder="Fiat"></label><label>Modelo y año<input data-f="modelo" placeholder="Palio 2014"></label><label>Km<input data-f="km" inputmode="numeric" placeholder="120.000"></label></div>
+        <h3>Día</h3>
+        <div data-k="dias"></div>
+        <h3>Franja</h3>
+        <div data-k="horas"></div>
+        <h3>Tus datos</h3>
+        <div class="cmp dos"><label>Nombre<input data-f="nombre" autocomplete="given-name" placeholder="Valeria"></label><label>¿Qué le notás? (opcional)<input data-f="nota" placeholder="Tironea al acelerar"></label></div>
+      </div>
+      <aside class="cel" aria-label="Mensaje que le llega al taller">
+        <div class="cel__s">
+          <div class="cel__h"><i>L</i><div><b>Mecánica Lorenzatti</b><br><span style="opacity:.8">3541 43-0400</span></div></div>
+          <div class="cel__c"><div class="bub"><span data-k="burbuja"></span><small data-k="btime"></small></div></div>
+          <div class="cel__f"><a class="btnwa" data-k="wa" href="#" target="_blank" rel="noopener">Enviar por WhatsApp</a><p class="falta" data-k="falta"></p></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section class="seg" id="seguimiento">
+  <div class="w">
+    <h2 class="h2">¿Cómo va mi auto?</h2>
+    <p class="lead">Con el número de orden, el cliente ve en qué etapa está y aprueba el presupuesto sin llamar.</p>
+    <div class="seg__g">
+      <div class="gauge">
+        <svg viewBox="0 0 300 180" role="img" aria-label="Indicador de etapa del trabajo">
+          <path d="M30 150 A120 120 0 0 1 270 150" fill="none" stroke="#2C4BB5" stroke-width="22" stroke-linecap="round"/>
+          <path d="M30 150 A120 120 0 0 1 270 150" fill="none" stroke="#FFC93C" stroke-width="22" stroke-linecap="round" stroke-dasharray="377" stroke-dashoffset="377" id="arco" style="transition:stroke-dashoffset 1s"/>
+          <g fill="#C9D4F3" font-size="13" font-family="Roboto Slab,serif"><text x="14" y="174">Recibido</text><text x="214" y="174">Listo</text></g>
+          <g id="aguja" style="transform:rotate(-90deg)"><path d="M147 150 L150 46 L153 150 Z" fill="#fff"/></g>
+          <circle cx="150" cy="150" r="10" fill="#fff"/>
+        </svg>
+        <div class="busc"><input data-k="ordin" placeholder="Ej: LZ-318" aria-label="Número de orden"><button type="button" data-k="ordbtn">Ver</button></div>
+        <button class="linkej" type="button" data-k="ordej">Probar con la orden de ejemplo LZ-318</button>
+      </div>
+      <div data-k="ordout"><p class="e-hint" style="color:#C9D4F3">La aguja se mueve según la etapa del trabajo.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="w">
+    <h2 class="h2">La oblea que avisa sola</h2>
+    <div class="rec">
+      <div class="mini" aria-hidden="true"><b>Próximo service</b><span>130.000 km</span><small>o en mayo de 2027</small></div>
+      <div>
+        <div class="recmsg" data-k="record"></div>
+        <ul><li>Sale a los 6 meses o 10.000 km.</li><li>El cliente responde y elige franja.</li><li>Las familias que vienen hace años no se olvidan del service.</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pv">
+  <div class="w">
+    <h2 class="h2">Para la familia Lorenzatti</h2>
+    <ul>
+      <li><b>Sin teléfono en la mano</b>Dejan de atender con las manos engrasadas.</li>
+      <li><b>Sin llamadas de "¿cómo va?"</b>El cliente ve el estado solo.</li>
+      <li><b>Vuelven solos</b>El que hizo el service recibe el aviso.</li>
+      <li><b>Todo por escrito</b>Presupuestos aprobados con monto y fecha.</li>
+    </ul>
+    <div class="acc"><button class="bt bt--a" type="button" data-k="ownerbtn" aria-expanded="false">Ver como dueño</button></div>
+  </div>
+</section>
+
+<section class="owner" data-k="owner" hidden>
+  <div class="w"><div class="owner__in">
+    <div class="owner__h"><h2>Panel del taller</h2><span class="tag">Panel de ejemplo</span></div>
+    <div data-k="ownerbody"></div>
+  </div></div>
+</section>
+</main>
+
+<footer><div class="w"><span>Prototipo de demostración preparado para Mecánica Lorenzatti por Resolviendo Kos · No es la web oficial</span><span>Resistencia 53, La Cuesta, Villa Carlos Paz</span></div></footer>
+
+<script>
+window.TALLER={
+  negocio:"Mecánica Lorenzatti", waIntl:"5493541430400", saludo:"",
+  horarios:{0:[],1:[[8.5,12.5],[15,19.5]],2:[[8.5,12.5],[15,19.5]],3:[[8.5,12.5],[15,19.5]],4:[[8.5,12.5],[15,19.5]],5:[[8.5,12.5],[15,19.5]],6:[]},
+  paso:1, cortaTxt:"Tarde", boxes:["Elevador 1","Elevador 2"], boxNombre:"elevador",
+  servicios:[
+    {n:"Service",p:70000,desde:1},
+    {n:"Diagnóstico",p:25000},
+    {n:"Frenos",p:80000,desde:1},
+    {n:"Tren delantero",p:0},
+    {n:"Embrague",p:0},
+    {n:"Revisión antes de viajar",p:35000}
+  ],
+  orden:{num:"LZ-318",auto:"Fiat Palio 1.4 2014",cliente:"Valeria D. (cliente de ejemplo)",etapa:1,
+    tiempos:["Lun 8:40","Lun 10:15","","",""],
+    nota:"El tironeo es por bujías y cables gastados. Las pastillas de freno también están al límite.",
+    notaAprobado:"Gracias, Valeria. Lo tenés listo mañana antes de las 12:30.",
+    items:[{d:"Bujías y cables",p:48000},{d:"Pastillas de freno delanteras",p:52000},{d:"Mano de obra",p:60000}]},
+  recordatorio:"Hola Valeria, te escribimos de Mecánica Lorenzatti.\nYa pasaron 6 meses desde el último service del Palio y estás cerca de los 130.000 km.\n¿Te guardamos un turno? Respondé con mañana o tarde y te pasamos los días.",
+  panel:{
+    trabajos:["Service","Frenos","Diagnóstico","Tren delantero","Embrague","Revisión"],
+    autos:[["Fiat Palio 2014","Bujías y frenos · Valeria D.",1],["Renault Kangoo 2016","Embrague · espera kit",2],["VW Gol 2012","Tren delantero",3],["Toyota Etios 2018","Service 80.000 km",4]],
+    presus:[["Palio 2014 · bujías y frenos",160000,"Enviado lunes 10:15"],["Kangoo 2016 · embrague",290000,"Enviado ayer, sin respuesta"],["Clio 2010 · amortiguadores",210000,"Enviado hoy 9:30"]],
+    recs:[["Familia Rossi · Corolla 2016","Service anual · sale el jueves"],["Marcelo T. · Ecosport 2015","10.000 km del último service · sale el viernes"],["Inés P. · Up 2017","6 meses · sale el lunes"]],
+    consultas:["Hola, quiero sacar turno.\nServicio: Frenos\nAuto: Chevrolet Onix · 70.000 km\nDía: jueves a las 15:00\nNombre: Sergio","Hola, quiero sacar turno.\nServicio: Revisión antes de viajar\nAuto: Peugeot 2008 · 45.000 km\nDía: viernes a las 08:30\nNombre: Carolina"],
+    kpis:[["33","turnos que entraron sin llamada"],["14","clientes que volvieron por el recordatorio"],["11","presupuestos aprobados por escrito"],["0 %","de comisión por turno"]]
+  }
+};
+</script>
+<script>
+(function(){
+"use strict";
+var C = window.TALLER;
+var $ = function(s,r){return (r||document).querySelector(s);};
+var $$ = function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));};
+var DIAS=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
+var DCORTO=["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"];
+var MES=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+var PE='<span class="pe">precio de ejemplo</span>';
+function money(n){return "$ "+Math.round(n).toLocaleString("es-AR");}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function hh(x){var h=Math.floor(x),m=Math.round((x-h)*60);return (h<10?"0":"")+h+":"+(m<10?"0":"")+m;}
+function hash(s){var h=7;for(var i=0;i<s.length;i++){h=(h*31+s.charCodeAt(i))%9973;}return h;}
+
+var st={serv:null,dia:null,hora:null,marca:"",modelo:"",km:"",nombre:"",nota:""};
+
+/* ---------- servicios ---------- */
+var sv=$("[data-k=servicios]");
+if(sv){
+  sv.innerHTML=C.servicios.map(function(s,i){
+    return '<button type="button" class="e-serv" data-i="'+i+'" aria-pressed="false">'+
+      '<span class="e-serv__n">'+esc(s.n)+'</span>'+
+      (s.d?'<span class="e-serv__d">'+esc(s.d)+'</span>':'')+
+      (s.p?'<span class="e-serv__p">'+(s.desde?'desde ':'')+money(s.p)+' '+PE+'</span>':'<span class="e-serv__p e-serv__p--q">Se presupuesta con el auto en el taller</span>')+
+      '</button>';
+  }).join("");
+  sv.addEventListener("click",function(e){
+    var b=e.target.closest(".e-serv"); if(!b) return;
+    $$(".e-serv",sv).forEach(function(x){x.setAttribute("aria-pressed","false");});
+    b.setAttribute("aria-pressed","true"); st.serv=C.servicios[+b.dataset.i]; upd();
+  });
+}
+
+/* ---------- días ---------- */
+var hoy=new Date(); hoy.setHours(0,0,0,0);
+var dias=[];
+for(var i=0;i<21 && dias.length<(C.nDias||7);i++){
+  var d=new Date(hoy.getTime()+i*864e5);
+  var r=C.horarios[d.getDay()];
+  if(r && r.length){ if(i===0){var now=new Date(); var last=r[r.length-1][1]; if(now.getHours()+now.getMinutes()/60>last-1.5) continue;} dias.push(d); }
+}
+var dv=$("[data-k=dias]");
+function diaLabel(d){return DIAS[d.getDay()]+" "+d.getDate()+"/"+(d.getMonth()+1);}
+if(dv){
+  dv.innerHTML=dias.map(function(d,i){
+    return '<button type="button" class="e-dia" data-i="'+i+'" aria-pressed="false"><span class="e-dia__w">'+DCORTO[d.getDay()]+'</span><span class="e-dia__n">'+d.getDate()+'</span><span class="e-dia__m">'+MES[d.getMonth()]+'</span></button>';
+  }).join("");
+  dv.addEventListener("click",function(e){
+    var b=e.target.closest(".e-dia"); if(!b) return;
+    $$(".e-dia",dv).forEach(function(x){x.setAttribute("aria-pressed","false");});
+    b.setAttribute("aria-pressed","true"); st.dia=dias[+b.dataset.i]; st.hora=null; horas(); upd();
+  });
+}
+var hv=$("[data-k=horas]");
+function horas(){
+  if(!hv) return;
+  if(!st.dia){hv.innerHTML='<p class="e-hint">Elegí un día para ver las franjas.</p>';return;}
+  var r=C.horarios[st.dia.getDay()], out=[], cap=C.boxes.length;
+  var now=new Date(), esHoy=st.dia.getTime()===hoy.getTime();
+  r.forEach(function(rg,ri){
+    for(var h=rg[0];h<=rg[1]-1;h+=(C.paso||1)){
+      if(esHoy && h<=now.getHours()+now.getMinutes()/60+1) continue;
+      var libres=Math.min(cap,hash(st.dia.toDateString()+h)%(cap+2));
+      if(h===rg[0] && libres===0) libres=1;
+      out.push('<button type="button" class="e-hora'+(libres===0?' is-full':'')+'" data-h="'+h+'" aria-pressed="false" '+(libres===0?'disabled':'')+'><span class="e-hora__t">'+hh(h)+'</span><span class="e-hora__c">'+(libres===0?'completo':(libres===1?'queda 1 lugar':'quedan '+libres+' lugares'))+'</span></button>');
+    }
+    if(ri<r.length-1) out.push('<span class="e-hora__sep">'+(C.cortaTxt||'mediodía')+'</span>');
+  });
+  hv.innerHTML=out.join("")||'<p class="e-hint">No quedan franjas hoy. Probá otro día.</p>';
+}
+if(hv){
+  horas();
+  hv.addEventListener("click",function(e){
+    var b=e.target.closest(".e-hora"); if(!b||b.disabled) return;
+    $$(".e-hora",hv).forEach(function(x){x.setAttribute("aria-pressed","false");});
+    b.setAttribute("aria-pressed","true"); st.hora=+b.dataset.h; upd();
+  });
+}
+/* ---------- campos ---------- */
+var ml=$("#e-marcas");
+if(!ml){ml=document.createElement("datalist");ml.id="e-marcas";document.body.appendChild(ml);}
+ml.innerHTML=(C.marcas||["Volkswagen","Chevrolet","Ford","Fiat","Renault","Peugeot","Toyota","Citroën","Honda","Nissan","Jeep","Hyundai","Kia","Mercedes-Benz","Chery"]).map(function(m){return '<option value="'+m+'">';}).join("");
+$$("[data-f]").forEach(function(inp){
+  inp.addEventListener("input",function(){st[inp.dataset.f]=inp.value.trim();upd();});
+});
+
+/* ---------- burbuja ---------- */
+function texto(){
+  var L=["Hola"+(C.saludo?" "+C.saludo:"")+", quiero sacar turno."];
+  L.push("Servicio: "+(st.serv?st.serv.n:"…"));
+  var auto=[st.marca,st.modelo].filter(Boolean).join(" ");
+  L.push("Auto: "+(auto||"…")+(st.km?" · "+st.km.replace(/\D/g,"").replace(/\B(?=(\d{3})+(?!\d))/g,".")+" km":""));
+  L.push("Día: "+(st.dia?diaLabel(st.dia):"…")+(st.hora!==null?" a las "+hh(st.hora):""));
+  if(st.nota) L.push("Qué le pasa: "+st.nota);
+  if(st.serv&&st.serv.p) L.push("Referencia: "+(st.serv.desde?"desde ":"")+money(st.serv.p)+" (precio de ejemplo)");
+  L.push("Nombre: "+(st.nombre||"…"));
+  return L.join("\n");
+}
+var bub=$("[data-k=burbuja]"), wa=$("[data-k=wa]"), bt=$("[data-k=btime]");
+var falta=$("[data-k=falta]");
+function upd(){
+  var t=texto();
+  if(bub){bub.textContent=t; bub.classList.remove("e-pulse"); void bub.offsetWidth; bub.classList.add("e-pulse");}
+  if(bt){var n=new Date();bt.textContent=hh(n.getHours()+n.getMinutes()/60);}
+  var ok=st.serv&&st.dia&&st.hora!==null&&st.nombre&&(st.marca||st.modelo);
+  if(wa){
+    wa.href="https://wa.me/"+C.waIntl+"?text="+encodeURIComponent(t);
+    wa.setAttribute("aria-disabled",ok?"false":"true");
+    wa.classList.toggle("is-ready",!!ok);
+  }
+  if(falta){
+    var f=[];if(!st.serv)f.push("servicio");if(!(st.marca||st.modelo))f.push("auto");if(!st.dia)f.push("día");if(st.hora===null)f.push("horario");if(!st.nombre)f.push("nombre");
+    falta.textContent=f.length?"Falta: "+f.join(", "):"Listo. Se abre WhatsApp con este mensaje.";
+  }
+}
+if(wa) wa.addEventListener("click",function(e){ if(wa.getAttribute("aria-disabled")==="true"){e.preventDefault(); if(falta){falta.classList.remove("e-shake");void falta.offsetWidth;falta.classList.add("e-shake");}}});
+upd();
+
+/* ---------- seguimiento ---------- */
+var O=C.orden, ETAPAS=["Recibido","En diagnóstico","Esperando repuesto","En reparación","Listo para retirar"];
+var oi=$("[data-k=ordin]"), ob=$("[data-k=ordbtn]"), oo=$("[data-k=ordout]"), oe=$("[data-k=ordej]");
+var aprob=false;
+function total(){return O.items.reduce(function(a,x){return a+x.p;},0);}
+function renderOrden(){
+  var etapa=aprob?3:O.etapa;
+  var h='<div class="e-ord">';
+  h+='<div class="e-ord__head"><span class="e-ord__num">Orden '+esc(O.num)+'</span><span class="e-ord__auto">'+esc(O.auto)+'</span><span class="e-ord__ej">Orden de ejemplo</span></div>';
+  h+='<ol class="e-etapas">'+ETAPAS.map(function(n,i){
+    var c=i<etapa?"is-done":(i===etapa?"is-now":"");
+    return '<li class="e-etapa '+c+'"><span class="e-etapa__n">'+n+'</span><span class="e-etapa__t">'+(O.tiempos[i]&&i<=etapa?O.tiempos[i]:"")+'</span></li>';
+  }).join("")+'</ol>';
+  h+='<p class="e-ord__nota">'+esc(aprob?O.notaAprobado:O.nota)+'</p>';
+  h+='<div class="e-presu"><div class="e-presu__t">Presupuesto '+(aprob?'aprobado':'para aprobar')+'</div><table>'+O.items.map(function(x){
+    return '<tr><td>'+esc(x.d)+'</td><td class="e-num">'+money(x.p)+' '+PE+'</td></tr>';
+  }).join("")+'<tr class="e-presu__tot"><td>Total</td><td class="e-num">'+money(total())+' '+PE+'</td></tr></table>';
+  if(!aprob) h+='<div class="e-presu__acc"><button type="button" class="e-aprobar" data-k="aprobar">Aprobar presupuesto</button><a class="e-consultar" target="_blank" rel="noopener" href="https://wa.me/'+C.waIntl+'?text='+encodeURIComponent("Hola, tengo una consulta sobre el presupuesto de la orden "+O.num+".")+'">Tengo una duda</a></div>';
+  else h+='<div class="e-aprobado"><b>Aprobado por escrito.</b> Al taller le llega: <q>Apruebo el presupuesto de la orden '+esc(O.num)+' por '+money(total())+'. — '+esc(O.cliente)+'</q></div>';
+  h+='</div></div>';
+  oo.innerHTML=h;
+  var ab=$("[data-k=aprobar]",oo);
+  if(ab) ab.addEventListener("click",function(){aprob=true;renderOrden();});
+}
+function buscar(){
+  var v=(oi.value||"").trim().toUpperCase().replace(/\s/g,"");
+  if(!v || v===O.num.toUpperCase().replace(/\s/g,"") || v===O.num.replace(/\D/g,"")){ if(!v) oi.value=O.num; renderOrden(); }
+  else oo.innerHTML='<p class="e-hint e-hint--err">No encontramos la orden '+esc(v)+'. En esta demo probá con '+esc(O.num)+'.</p>';
+}
+if(ob){ ob.addEventListener("click",buscar); oi.addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();buscar();}}); }
+if(oe){ oe.addEventListener("click",function(){oi.value=O.num;buscar();}); }
+
+/* ---------- recordatorio ---------- */
+var rc=$("[data-k=record]");
+if(rc) rc.textContent=C.recordatorio;
+
+/* ---------- panel dueño ---------- */
+var pb=$$("[data-k=ownerbtn]"), pw=$("[data-k=owner]"), pbody=$("[data-k=ownerbody]");
+function panel(){
+  var P=C.panel, h='';
+  // agenda
+  var semana=[];for(var i=0;i<14&&semana.length<(C.panelDias||6);i++){var d=new Date(hoy.getTime()+i*864e5);if(C.horarios[d.getDay()]&&C.horarios[d.getDay()].length)semana.push(d);}
+  h+='<section class="o-blk o-agenda"><h4>Agenda de la semana por '+(C.boxNombre||'box')+'</h4><div class="o-scroll"><table class="o-grid"><thead><tr><th></th>'+semana.map(function(d){return '<th>'+DCORTO[d.getDay()]+' '+d.getDate()+'</th>';}).join("")+'</tr></thead><tbody>'+
+    C.boxes.map(function(b,bi){return '<tr><th>'+esc(b)+'</th>'+semana.map(function(d,di){
+      var k=hash(b+d.toDateString()), n=P.trabajos[(k+bi)%P.trabajos.length];
+      var lleno=(k%5)!==0;
+      return '<td>'+(lleno?'<span class="o-t">'+esc(n)+'</span>':'<span class="o-libre">libre</span>')+'</td>';
+    }).join("")+'</tr>';}).join("")+'</tbody></table></div></section>';
+  h+='<section class="o-blk o-autos"><h4>Autos en el taller ahora</h4><ul>'+P.autos.map(function(a){return '<li><span class="o-a">'+esc(a[0])+'</span><span class="o-e o-e--'+a[2]+'">'+ETAPAS[a[2]]+'</span><span class="o-d">'+esc(a[1])+'</span></li>';}).join("")+'</ul></section>';
+  h+='<section class="o-blk o-pres"><h4>Presupuestos esperando aprobación</h4><ul>'+P.presus.map(function(a){return '<li><span>'+esc(a[0])+'</span><span class="e-num">'+money(a[1])+' '+PE+'</span><span class="o-d">'+esc(a[2])+'</span></li>';}).join("")+'</ul></section>';
+  h+='<section class="o-blk o-rec"><h4>Recordatorios que salen esta semana</h4><ul>'+P.recs.map(function(a){return '<li><span>'+esc(a[0])+'</span><span class="o-d">'+esc(a[1])+'</span></li>';}).join("")+'</ul></section>';
+  h+='<section class="o-blk o-consultas"><h4>Consultas que entraron hoy</h4>'+P.consultas.map(function(t){return '<div class="o-bub">'+esc(t)+'</div>';}).join("")+'</section>';
+  h+='<section class="o-blk o-kpi"><h4>Este mes</h4><ul>'+P.kpis.map(function(a){return '<li><b>'+esc(a[0])+'</b><span>'+esc(a[1])+'</span></li>';}).join("")+'</ul></section>';
+  pbody.innerHTML=h;
+}
+if(pw&&pbody){ panel();
+  pb.forEach(function(b){b.addEventListener("click",function(){
+    var open=pw.hidden; pw.hidden=!open; pb.forEach(function(x){x.setAttribute("aria-expanded",open?"true":"false");});
+    if(open){ pw.scrollIntoView({behavior:"smooth",block:"start"}); }
+  });});
+}
+})();
+
+</script>
+<script>
+(function(){var out=document.querySelector("[data-k=ordout]"),ag=document.getElementById("aguja"),ar=document.getElementById("arco");
+function set(){var now=out.querySelector(".e-etapa.is-now");if(!now)return;var all=[].slice.call(out.querySelectorAll(".e-etapa"));var i=all.indexOf(now),f=i/(all.length-1);
+ag.style.transform="rotate("+(-90+180*f)+"deg)";ar.style.strokeDashoffset=377*(1-f);}
+new MutationObserver(set).observe(out,{childList:true,subtree:true});})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Mecánica Lorenzatti"></script>
+</body>
+</html>
