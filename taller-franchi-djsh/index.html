@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Taller Sergio Franchi · Manual de servicio</title>
+<meta name="description" content="Prototipo de demostración preparado para el taller de Sergio Franchi, Paraná.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil+Display:wght@500;700;800&family=Hind+Madurai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --papel:#F8F8F4; --tinta:#1C2B3A; --tinta2:#4A5866; --epoxi:#2E7D5B; --epoxi2:#E2EFE8; --seguridad:#F1C40F;
+  --gris:#E3E6E1; --linea:#CDD3CC;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);font-family:"Hind Madurai",system-ui,sans-serif;font-size:17.5px;line-height:1.6;overflow-x:hidden}
+button,input{font:inherit;color:inherit}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--epoxi);outline-offset:2px}
+.bs{font-family:"Big Shoulders Stencil Display",Impact,sans-serif;font-weight:800;line-height:.92;letter-spacing:.01em}
+.pe{font-size:11.5px;color:var(--tinta2);white-space:nowrap;font-weight:400}
+.firma{font-size:13px;color:var(--tinta2);padding:8px 28px;border-bottom:1px solid var(--linea);display:flex;flex-wrap:wrap;gap:2px 14px}
+.firma b{color:var(--tinta)}
+.franja{height:10px;background:repeating-linear-gradient(-45deg,var(--seguridad) 0 14px,var(--tinta) 14px 28px)}
+/* layout manual */
+.manual{display:grid;grid-template-columns:250px 1fr;max-width:1260px;margin:0 auto}
+.indice{position:sticky;top:0;align-self:start;height:100vh;padding:28px 22px;border-right:1px solid var(--linea);display:flex;flex-direction:column;gap:18px}
+.indice .bs{font-size:40px}
+.indice p.s{font-size:14px;color:var(--tinta2);line-height:1.4}
+.indice ol{list-style:none;counter-reset:c;font-size:15.5px}
+.indice li{counter-increment:c;border-top:1px solid var(--linea)}
+.indice li a{display:flex;gap:10px;padding:8px 0;text-decoration:none}
+.indice li a:before{content:counter(c);font-family:"Big Shoulders Stencil Display";font-weight:800;font-size:20px;width:20px;color:var(--epoxi);line-height:1.2}
+.indice li a:hover{color:var(--epoxi)}
+.own{border:2px solid var(--tinta);background:var(--seguridad);font-weight:700;padding:10px;cursor:pointer;border-radius:2px;text-align:left}
+.indice .dir{margin-top:auto;font-size:13.5px;color:var(--tinta2);line-height:1.45}
+.cont{padding:0 44px;min-width:0}
+.cap{padding:56px 0;border-bottom:1px solid var(--linea)}
+.cap-n{font-family:"Big Shoulders Stencil Display";font-weight:700;font-size:18px;color:var(--epoxi);display:block;margin-bottom:4px}
+.h2{font-size:clamp(44px,5.6vw,72px)}
+.lead{max-width:36em;color:var(--tinta2);margin:10px 0 26px}
+/* hero = plan */
+.hero h1{font-size:clamp(54px,8vw,112px)}
+.hero .lead{font-size:19.5px}
+.km-box{background:#fff;border:2px solid var(--tinta);padding:20px 22px;margin-top:6px}
+.km-top{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px}
+.km-top label{font-weight:700}
+.km-val{font-family:"Big Shoulders Stencil Display";font-weight:800;font-size:46px;line-height:1}
+input[type=range]{width:100%;margin:14px 0 6px;accent-color:var(--epoxi);height:28px}
+.plan{width:100%;border-collapse:collapse;margin-top:10px;font-size:15.5px}
+.plan th{text-align:left;font-size:13px;color:var(--tinta2);font-weight:600;border-bottom:2px solid var(--tinta);padding:6px 6px 6px 0}
+.plan td{padding:9px 6px 9px 0;border-bottom:1px solid var(--linea);vertical-align:middle}
+.plan .est{font-weight:700;white-space:nowrap}
+.plan tr.toca .est{color:#B03A2E}
+.plan tr.cerca .est{color:#9A7400}
+.plan tr.ok .est{color:var(--epoxi)}
+.plan button{border:2px solid var(--tinta);background:#fff;padding:3px 10px;cursor:pointer;font-size:14px;font-weight:600;white-space:nowrap}
+.plan tr.ok button{opacity:.55}
+/* turno */
+.tg{display:grid;grid-template-columns:1.2fr .9fr;gap:34px;align-items:start}
+.blk{margin-bottom:24px}
+.blk h3{font-size:16px;font-weight:700;margin-bottom:8px;display:flex;gap:8px;align-items:baseline}
+.blk h3 span{font-family:"Big Shoulders Stencil Display";font-weight:800;color:var(--epoxi);font-size:20px}
+.svcs{display:grid;grid-template-columns:1fr 1fr;border-top:2px solid var(--tinta)}
+.svc{text-align:left;background:none;border:0;border-bottom:1px solid var(--linea);padding:10px 8px 10px 0;cursor:pointer;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.svc:nth-child(odd){border-right:1px solid var(--linea);padding-right:12px}
+.svc:nth-child(even){padding-left:12px}
+.svc b{font-weight:600}
+.svc small{font-size:13.5px;color:var(--tinta2);text-align:right}
+.svc[aria-pressed=true]{background:var(--epoxi2)}
+.svc[aria-pressed=true] b{color:var(--epoxi)}
+.cps{display:grid;grid-template-columns:1.6fr 1fr;gap:12px}
+label.l{display:block;font-size:14px;font-weight:600;margin-bottom:3px}
+.in{width:100%;padding:10px 12px;border:2px solid var(--linea);background:#fff;border-radius:2px}
+.in:focus{border-color:var(--epoxi);outline:none}
+[data-days]{display:grid;grid-template-columns:repeat(8,1fr);gap:4px}
+.dy{border:2px solid var(--linea);background:#fff;padding:5px 0;cursor:pointer;display:flex;flex-direction:column;align-items:center;line-height:1.1}
+.dy .d-n{font-family:"Big Shoulders Stencil Display";font-weight:800;font-size:26px}
+.dy .d-w,.dy .d-m{font-size:12px;color:var(--tinta2)}
+.dy[aria-pressed=true]{border-color:var(--tinta);background:var(--tinta);color:#fff}.dy[aria-pressed=true] span{color:inherit}
+[data-slots]{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:8px}
+.sl{border:2px solid var(--linea);background:#fff;padding:7px 8px;cursor:pointer;text-align:left;display:flex;flex-direction:column;line-height:1.25}
+.sl .s-h{font-weight:700;font-size:15px}.sl .s-c{font-size:12.5px;color:var(--epoxi)}
+.sl:disabled{background:repeating-linear-gradient(-45deg,#fff 0 6px,var(--gris) 6px 12px);cursor:not-allowed;color:var(--tinta2)}
+.sl:disabled .s-c{color:var(--tinta2)}
+.sl[aria-pressed=true]{border-color:var(--epoxi);background:var(--epoxi2)}
+.s-empty{grid-column:1/-1;font-size:14.5px;color:var(--tinta2)}
+.hoja{position:sticky;top:20px;background:#fff;border:2px solid var(--tinta)}
+.hoja-h{background:var(--tinta);color:#fff;padding:10px 14px;display:flex;justify-content:space-between;font-size:14px}
+.chat{background:#EFE7DD;padding:16px 12px;min-height:270px;display:flex;align-items:flex-end}
+.burb{background:#D9FDD3;color:#111B21;border-radius:10px 2px 10px 10px;padding:9px 11px 20px;font-size:14.5px;line-height:1.45;white-space:pre-wrap;position:relative;margin-left:auto;max-width:96%}
+.burb small{position:absolute;right:8px;bottom:3px;font-size:11px;color:#667781}
+.send{display:block;margin:12px 14px 0;text-align:center;background:#25D366;color:#073B1E;font-weight:700;text-decoration:none;padding:12px}
+.send[aria-disabled=true]{background:var(--gris);color:var(--tinta2);cursor:not-allowed}
+.falta{font-size:13.5px;color:var(--tinta2);text-align:center;padding:8px 14px 14px;min-height:1.2em}
+.shake{animation:sh .35s}@keyframes sh{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.reglas{list-style:none;font-size:14.5px;border-top:1px solid var(--linea);padding:10px 14px 14px}
+.reglas li{padding:3px 0 3px 16px;position:relative}
+.reglas li:before{content:"";position:absolute;left:0;top:12px;width:8px;height:8px;background:var(--seguridad);border:1px solid var(--tinta)}
+/* seguimiento */
+.busq{display:flex;max-width:440px;border:2px solid var(--tinta)}
+.busq input{flex:1;border:0;padding:11px 14px;min-width:0;text-transform:uppercase;background:#fff}
+.busq input:focus{outline:none;background:var(--epoxi2)}
+.busq button{border:0;background:var(--tinta);color:#fff;font-weight:700;padding:0 18px;cursor:pointer}
+.hint{font-size:14px;color:var(--tinta2);margin:8px 0 22px}.hint b{color:var(--epoxi)}
+[data-orden-out]{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:start}
+[data-orden-out][hidden]{display:none}
+.ord-head{grid-column:1/-1;display:flex;gap:16px;flex-wrap:wrap;align-items:baseline;border-bottom:2px solid var(--tinta);padding-bottom:6px}
+.ord-n{font-family:"Big Shoulders Stencil Display";font-weight:800;font-size:34px}
+.ord-k{color:var(--tinta2)}
+.ord-steps{list-style:none;counter-reset:e}
+.ord-steps li{counter-increment:e;display:grid;grid-template-columns:34px 1fr;gap:0 10px;padding:9px 0;border-bottom:1px solid var(--linea)}
+.ord-dot{grid-row:span 2;width:28px;height:28px;border:2px solid var(--linea);display:grid;place-items:center;font-family:"Big Shoulders Stencil Display";font-weight:800}
+.ord-dot:before{content:counter(e)}
+.ord-steps li.is-done .ord-dot{background:var(--epoxi);border-color:var(--epoxi);color:#fff}
+.ord-steps li.is-now .ord-dot{background:var(--seguridad);border-color:var(--tinta)}
+.ord-steps li:not(.is-done):not(.is-now){color:#8A949C}
+.ord-e{font-weight:700}
+.ord-note{font-size:14px;color:var(--tinta2);grid-column:2}
+.ord-budget{background:#fff;border:2px solid var(--tinta);padding:16px 18px}
+.ord-bt{font-family:"Big Shoulders Stencil Display";font-weight:800;font-size:26px;margin-bottom:4px}
+.ord-budget table{width:100%;border-collapse:collapse;font-size:15.5px}
+.ord-budget td{padding:7px 0;border-bottom:1px solid var(--linea);vertical-align:top}
+.ord-budget .num{text-align:right}
+.ord-budget tfoot td{font-weight:700;border:0}
+.ord-ok,.ord-adv{margin-top:12px;border:2px solid var(--tinta);background:var(--epoxi);color:#fff;font-weight:700;padding:10px 18px;cursor:pointer}
+.ord-adv{background:#fff;color:var(--tinta)}
+.ord-sub{font-size:13.5px;color:var(--tinta2);margin-top:8px}
+.ord-done{color:var(--epoxi);font-weight:700;margin-top:10px}
+.ord-err{grid-column:1/-1;color:#B03A2E}
+/* recordatorio + vos */
+.rv{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:start}
+.wa{background:#EFE7DD;padding:16px;border:2px solid var(--tinta)}
+.wa .q{font-size:13px;color:#6B5E50;margin-bottom:8px}
+.wa .m{background:#fff;color:#111B21;border-radius:2px 10px 10px 10px;padding:10px 12px 20px;white-space:pre-wrap;font-size:15.5px;position:relative}
+.wa .m small{position:absolute;right:8px;bottom:3px;font-size:11px;color:#667781}
+.vos{list-style:none;border-top:2px solid var(--tinta)}
+.vos li{padding:12px 0;border-bottom:1px solid var(--linea)}
+.vos li b{display:block;font-size:18px}
+/* anexo dueño */
+.owner{border:3px solid var(--tinta);margin:30px 0;background:#fff}
+.owner-h{background:repeating-linear-gradient(-45deg,var(--seguridad) 0 14px,#E4B80C 14px 28px);padding:14px 18px;border-bottom:3px solid var(--tinta);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;align-items:center}
+.owner-h .bs{font-size:34px}
+.owner-h span{background:var(--tinta);color:#fff;font-size:13px;font-weight:700;padding:2px 10px}
+.owner-b{padding:20px 18px;display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.owner-b h3{font-family:"Big Shoulders Stencil Display";font-weight:800;font-size:24px;margin-bottom:6px}
+.ag{width:100%;border-collapse:collapse;font-size:13.5px}
+.ag th,.ag td{border:1px solid var(--linea);padding:5px 6px;text-align:left;vertical-align:top}
+.ag th{background:var(--gris)}
+.ag .x{background:var(--epoxi2)}
+.full{grid-column:1/-1}
+.scroll{overflow-x:auto}
+.lst{list-style:none;font-size:15px}
+.lst li{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid var(--linea)}
+.lst li em{font-style:normal;color:var(--tinta2);font-size:13.5px;text-align:right}
+footer{padding:26px 0 44px;font-size:14px;color:var(--tinta2)}
+footer p+p{margin-top:4px}
+.tg>*,.rv>*,.owner-b>*,[data-orden-out]>*{min-width:0}
+@media (max-width:980px){
+  .manual{grid-template-columns:minmax(0,1fr)}
+  .indice{position:static;height:auto;border-right:0;border-bottom:1px solid var(--linea);padding:20px 16px}
+  .indice ol,.indice .dir{display:none}
+  .cont{padding:0 16px}
+  .tg,.rv,.owner-b,[data-orden-out]{grid-template-columns:minmax(0,1fr)}
+  .hoja{position:static}
+}
+@media (max-width:600px){
+  .firma{padding:8px 16px}
+  .svcs,.cps{grid-template-columns:1fr}
+  .svc:nth-child(odd){border-right:0;padding-right:0}.svc:nth-child(even){padding-left:0}
+  [data-days]{grid-template-columns:repeat(4,1fr)}
+  [data-slots]{grid-template-columns:1fr 1fr}
+  .ag{min-width:560px}
+  .plan th:nth-child(2),.plan td:nth-child(2){display:none}
+  .km-box{padding:14px 12px}.plan{font-size:14.5px}.plan .est{white-space:normal}.plan button{padding:3px 7px;font-size:13px}
+}
+</style>
+</head>
+<body>
+<p class="firma"><span>Prototipo preparado para <b>Taller Sergio Franchi</b> · 4 de noviembre de 2026</span><span>4,7 ★ en Google · 325 reseñas</span></p>
+<div class="franja" aria-hidden="true"></div>
+<div class="manual">
+  <aside class="indice">
+    <span class="bs">Taller Franchi</span>
+    <p class="s">Manual de servicio de tu auto, del taller de Sergio Franchi en Paraná.</p>
+    <ol>
+      <li><a href="#plan">Plan de mantenimiento</a></li>
+      <li><a href="#turno">Sacar turno</a></li>
+      <li><a href="#estado">Estado de tu auto</a></li>
+      <li><a href="#aviso">Próximo service</a></li>
+    </ol>
+    <button class="own" type="button" data-owner-toggle>Ver como dueño</button>
+    <p class="dir">Cnel. Uzin 603, Paraná<br>Lunes a viernes, 7:30 a 17</p>
+  </aside>
+  <div class="cont">
+    <section class="owner" data-owner hidden aria-label="Panel de ejemplo del dueño">
+      <div class="owner-h"><b class="bs">Anexo · vista del dueño</b><span>Panel de ejemplo</span></div>
+      <div class="owner-b">
+        <div class="full">
+          <h3>Agenda de la semana por elevador</h3>
+          <div class="scroll"><table class="ag">
+            <thead><tr><th></th><th>Lun 9</th><th>Mar 10</th><th>Mié 11</th><th>Jue 12</th><th>Vie 13</th></tr></thead>
+            <tbody>
+              <tr><th>Elevador 1</th><td class="x">7:30 Cronos · service</td><td class="x">7:30 Focus · amortiguadores</td><td>libre</td><td class="x">7:30 Etios · distribución</td><td class="x">7:30 Gol · frenos</td></tr>
+              <tr><th>Elevador 2</th><td class="x">9:30 208 · diagnóstico</td><td class="x">9:30 Onix · tren delantero</td><td class="x">9:30 Partner · service</td><td>libre</td><td class="x">9:30 Clio · diagnóstico</td></tr>
+              <tr><th>Tarde</th><td class="x">13:00 retiro Cronos</td><td class="x">13:00 Corsa · frenos</td><td class="x">13:00 Sandero · service</td><td class="x">15:00 retiro Etios</td><td>libre</td></tr>
+            </tbody></table></div>
+        </div>
+        <div>
+          <h3>Autos en el taller</h3>
+          <ul class="lst">
+            <li>FR-1129 · Peugeot 208 · amortiguadores <em>esperando aprobación</em></li>
+            <li>FR-1128 · Focus · service <em>en reparación</em></li>
+            <li>FR-1126 · Cronos · frenos <em>listo para retirar</em></li>
+          </ul>
+          <h3 style="margin-top:14px">Presupuestos pendientes</h3>
+          <ul class="lst">
+            <li>208 · $412.000 <span class="pe">precio de ejemplo</span><em>enviado 10:40</em></li>
+            <li>Etios · distribución · $290.000 <span class="pe">precio de ejemplo</span><em>visto</em></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Recordatorios de esta semana</h3>
+          <ul class="lst">
+            <li>Gustavo · Corsa · service 10.000 km <em>martes</em></li>
+            <li>Paula · Fiesta · distribución 60.000 km <em>jueves</em></li>
+            <li>Raúl · Hilux · frenos 12 meses <em>viernes</em></li>
+          </ul>
+          <h3 style="margin-top:14px">Clientes que vuelven</h3>
+          <ul class="lst"><li>Volvieron por un aviso este mes <em>11</em></li><li>Turnos que se cumplieron a horario <em>96 %</em></li></ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="cap hero" id="plan">
+      <span class="cap-n">Capítulo 1</span>
+      <h1 class="bs">¿Qué le toca a tu auto?</h1>
+      <p class="lead">Movés el kilometraje y el plan te dice qué conviene revisar. Lo que toca, lo agendás con un toque.</p>
+      <div class="km-box">
+        <div class="km-top"><label for="kmr">Kilometraje actual</label><span class="km-val" id="kmv">49.000 km</span></div>
+        <input type="range" id="kmr" min="5000" max="200000" step="1000" value="49000" aria-describedby="kmv">
+        <table class="plan">
+          <thead><tr><th>Trabajo</th><th>Cada</th><th>Estado</th><th></th></tr></thead>
+          <tbody id="planrows"></tbody>
+        </table>
+        <p class="pe" style="margin-top:8px;font-size:12.5px;white-space:normal">Intervalos orientativos de ejemplo; el taller los ajusta según marca y uso.</p>
+      </div>
+    </section>
+
+    <section class="cap" id="turno">
+      <span class="cap-n">Capítulo 2</span>
+      <h2 class="h2 bs">Sacar turno</h2>
+      <p class="lead">Te recibimos el auto en tu franja y, si no es algo grave, lo retirás el mismo día.</p>
+      <div class="tg">
+        <div>
+          <div class="blk"><h3><span>2.1</span>Trabajo</h3>
+            <div class="svcs">
+              <button class="svc" data-set="servicio" data-val="diag"><b>Diagnóstico</b><small>desde $30.000 <span class="pe">precio de ejemplo</span></small></button>
+              <button class="svc" data-set="servicio" data-val="srv"><b>Service aceite y filtros</b><small>desde $75.000 <span class="pe">precio de ejemplo</span></small></button>
+              <button class="svc" data-set="servicio" data-val="amo"><b>Amortiguadores</b><small>desde $90.000 <span class="pe">precio de ejemplo</span></small></button>
+              <button class="svc" data-set="servicio" data-val="fre"><b>Frenos</b><small>desde $55.000 <span class="pe">precio de ejemplo</span></small></button>
+              <button class="svc" data-set="servicio" data-val="tren"><b>Tren delantero</b><small>desde $70.000 <span class="pe">precio de ejemplo</span></small></button>
+              <button class="svc" data-set="servicio" data-val="dist"><b>Distribución</b><small>desde $180.000 <span class="pe">precio de ejemplo</span></small></button>
+            </div>
+          </div>
+          <div class="blk"><h3><span>2.2</span>Tu auto</h3>
+            <div class="cps"><div><label class="l" for="m5">Marca, modelo y año</label><input class="in" id="m5" data-field="marca" placeholder="Ej.: Peugeot 208 2018" autocomplete="off"></div><div><label class="l" for="k5">Kilometraje</label><input class="in" id="k5" data-field="km" inputmode="numeric" placeholder="58000"></div></div>
+          </div>
+          <div class="blk"><h3><span>2.3</span>Día y franja de entrega</h3><div data-days data-cls="dy"></div><div data-slots data-cls="sl"></div></div>
+          <div class="blk"><h3><span>2.4</span>Nombre</h3><input class="in" id="n5" data-field="nombre" placeholder="Tu nombre" aria-label="Nombre" autocomplete="given-name" style="max-width:320px"></div>
+        </div>
+        <aside class="hoja" aria-label="Vista previa del mensaje de WhatsApp">
+          <div class="hoja-h"><b>Lo que le llega al taller</b><span>WhatsApp</span></div>
+          <div class="chat"><div class="burb" aria-live="polite"><span data-bubble></span><small data-hora></small></div></div>
+          <a class="send" data-send target="_blank" rel="noopener">Enviar por WhatsApp</a>
+          <p class="falta" data-falta></p>
+          <ul class="reglas">
+            <li>Respetamos el horario del turno</li>
+            <li>Diagnóstico primero, presupuesto después</li>
+            <li>Si no es grave, retirás en el día</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <section class="cap" id="estado">
+      <span class="cap-n">Capítulo 3</span>
+      <h2 class="h2 bs">Estado de tu auto</h2>
+      <p class="lead">Con el número de orden ves en qué paso está y aprobás el presupuesto por escrito.</p>
+      <div class="busq"><input data-orden-input aria-label="Número de orden" placeholder="Número de orden"><button type="button" data-orden-btn>Consultar</button></div>
+      <p class="hint">Orden de ejemplo: <b>FR-1129</b>. También podés tocar "Consultar" con el campo vacío.</p>
+      <div data-orden-out hidden aria-live="polite"></div>
+    </section>
+
+    <section class="cap" id="aviso">
+      <span class="cap-n">Capítulo 4</span>
+      <div class="rv">
+        <div>
+          <h2 class="h2 bs">Próximo service</h2>
+          <p class="lead">El aviso sale solo, según el plan del capítulo 1. Así le llega al cliente:</p>
+          <div class="wa"><p class="q">Mensaje de ejemplo</p><div class="m">Hola Gustavo, te escribimos del taller de Sergio Franchi. Tu Corsa ya está cerca de los 70.000 km y le toca service. ¿Te reservamos turno? El martes a las 7:30 hay lugar y lo retirás a la tarde.<small>8:02</small></div></div>
+        </div>
+        <div>
+          <h2 class="h2 bs">Para vos, Sergio</h2>
+          <ul class="vos" style="margin-top:16px">
+            <li><b>Dejás de atender el teléfono con las manos engrasadas</b>El turno entra con auto, km y franja.</li>
+            <li><b>El cliente sabe el estado sin llamar</b>Ve los 5 pasos de su orden desde el celular.</li>
+            <li><b>El que hizo el service vuelve solo</b>El aviso sale por km o por meses.</li>
+            <li><b>Presupuestos aprobados por escrito</b>Queda registrado antes de pedir el repuesto.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p>Taller Sergio Franchi · Calle Cnel. Uzin 603, Paraná, Entre Ríos · +54 343 434-8867</p>
+      <p>Prototipo de demostración preparado para Taller Sergio Franchi por Resolviendo Kos · No es la web oficial</p>
+    </footer>
+  </div>
+</div>
+
+<script>
+(function(){
+  var f=["7:30 a 9:30","9:30 a 11:30","13:00 a 15:00","15:00 a 17:00"];
+  window.TALLER={
+    negocio:"Taller Sergio Franchi", wa:"5493434348867", hoy:[2026,11,4], semilla:9, cantDias:8,
+    saludo:"Hola, quiero sacar turno en el taller de Sergio Franchi.",
+    servicios:[{id:"diag",nombre:"Diagnóstico",desde:30000},{id:"srv",nombre:"Service aceite y filtros",desde:75000},{id:"amo",nombre:"Amortiguadores",desde:90000},{id:"fre",nombre:"Frenos",desde:55000},{id:"tren",nombre:"Tren delantero",desde:70000},{id:"dist",nombre:"Distribución",desde:180000}],
+    franjas:{0:null,1:f,2:f,3:f,4:f,5:f,6:null},
+    orden:{num:"FR-1129",auto:"Peugeot 208 2018 · 87.400 km",etapa:1,
+      notas:["Lunes 7:35","Amortiguadores delanteros vencidos, pérdida en el izquierdo","Amortiguadores pedidos, llegan martes 9:00","",""],
+      items:[["Par de amortiguadores delanteros",260000],["Kit de topes y fuelles",42000],["Alineación",30000],["Mano de obra",80000]]}
+  };
+})();
+(function(){
+"use strict";
+var C=window.TALLER; if(!C) return;
+var $=function(s,r){return (r||document).querySelector(s)};
+var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+var DIAS=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
+var DCORTO=["dom","lun","mar","mié","jue","vie","sáb"];
+var MES=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+var S={servicio:null,dia:null,franja:null,marca:"",km:"",nombre:"",extra:null};
+function money(n){return "$"+Math.round(n).toLocaleString("es-AR")}
+function svc(){for(var i=0;i<C.servicios.length;i++){if(C.servicios[i].id===S.servicio)return C.servicios[i]}return null}
+function seed(n){var x=Math.sin(n*9301+49297)*233280;return x-Math.floor(x)}
+/* ---------- picks ---------- */
+$$("[data-set]").forEach(function(b){
+  b.setAttribute("type","button");
+  b.setAttribute("aria-pressed","false");
+  b.addEventListener("click",function(){
+    var k=b.getAttribute("data-set");
+    S[k]=b.getAttribute("data-val");
+    $$('[data-set="'+k+'"]').forEach(function(o){o.setAttribute("aria-pressed",o===b?"true":"false")});
+    if(k==="servicio" && C.onServicio) C.onServicio(svc());
+    render();
+  });
+});
+$$("[data-field]").forEach(function(i){
+  i.addEventListener("input",function(){S[i.getAttribute("data-field")]=i.value.trim();render()});
+});
+/* ---------- días y franjas ---------- */
+var today=new Date(C.hoy[0],C.hoy[1]-1,C.hoy[2]);
+var days=[];
+for(var d=1;days.length<(C.cantDias||8)&&d<30;d++){
+  var dt=new Date(today.getTime()+d*864e5);
+  var fr=C.franjas[dt.getDay()];
+  if(fr&&fr.length) days.push({dt:dt,fr:fr,key:dt.getFullYear()+"-"+(dt.getMonth()+1)+"-"+dt.getDate()});
+}
+function cupos(di,fi){var v=Math.floor(seed(di*7+fi*3+(C.semilla||1))*(C.maxCupo||4));return (di===0&&fi===0)?0:v}
+var dWrap=$("[data-days]"), sWrap=$("[data-slots]");
+if(dWrap){
+  days.forEach(function(x,i){
+    var b=document.createElement("button");b.type="button";b.className=dWrap.getAttribute("data-cls")||"day";
+    b.innerHTML='<span class="d-w">'+DCORTO[x.dt.getDay()]+'</span><span class="d-n">'+x.dt.getDate()+'</span><span class="d-m">'+MES[x.dt.getMonth()]+'</span>';
+    b.setAttribute("aria-pressed","false");b.setAttribute("aria-label",DIAS[x.dt.getDay()]+" "+x.dt.getDate()+" de "+MES[x.dt.getMonth()]);
+    b.addEventListener("click",function(){S.dia=i;S.franja=null;$$("button",dWrap).forEach(function(o){o.setAttribute("aria-pressed",o===b?"true":"false")});slots();render()});
+    dWrap.appendChild(b);
+  });
+}
+function slots(){
+  if(!sWrap)return; sWrap.innerHTML="";
+  if(S.dia===null){sWrap.innerHTML='<p class="s-empty">'+(C.txtSinDia||"Elegí un día para ver los horarios.")+'</p>';return}
+  days[S.dia].fr.forEach(function(f,fi){
+    var c=cupos(S.dia,fi);var b=document.createElement("button");b.type="button";b.className=sWrap.getAttribute("data-cls")||"slot";
+    b.innerHTML='<span class="s-h">'+f+'</span><span class="s-c">'+(c?c+(c===1?" lugar":" lugares"):"completo")+'</span>';
+    b.disabled=!c;b.setAttribute("aria-pressed","false");
+    b.addEventListener("click",function(){S.franja=fi;$$("button",sWrap).forEach(function(o){o.setAttribute("aria-pressed",o===b?"true":"false")});render()});
+    sWrap.appendChild(b);
+  });
+}
+slots();
+/* ---------- burbuja ---------- */
+function diaTxt(){if(S.dia===null)return null;var x=days[S.dia].dt;return DIAS[x.getDay()]+" "+x.getDate()+"/"+(x.getMonth()+1)}
+function texto(){
+  var s=svc(),L=[];
+  L.push(C.saludo||("Hola "+C.negocio+", quiero sacar turno."));
+  L.push("• Servicio: "+(s?s.nombre:"…"));
+  if(C.extraLabel) L.push("• "+C.extraLabel+": "+(S.extra||"…"));
+  L.push("• Auto: "+(S.marca||"…")+(S.km?" · "+Number(S.km.replace(/\D/g,"")||0).toLocaleString("es-AR")+" km":""));
+  L.push("• Día: "+(S.dia!==null?diaTxt()+(S.franja!==null?", "+days[S.dia].fr[S.franja]:""):"…"));
+  if(s&&s.desde) L.push("• Precio de ejemplo: desde "+money(s.desde));
+  if(C.sena&&s) L.push("• Seña para reservar el lugar: "+money(C.sena)+" (precio de ejemplo)");
+  L.push("• Nombre: "+(S.nombre||"…"));
+  return L.join("\n");
+}
+function render(){
+  var t=texto();
+  $$("[data-bubble]").forEach(function(b){b.textContent=t});
+  var listo=svc()&&S.dia!==null&&S.franja!==null&&S.marca&&S.nombre;
+  $$("[data-send]").forEach(function(a){
+    a.href="https://wa.me/"+C.wa+"?text="+encodeURIComponent(t);
+    a.setAttribute("aria-disabled",listo?"false":"true");
+    a.classList.toggle("is-ready",!!listo);
+  });
+  $$("[data-falta]").forEach(function(f){
+    var falta=[];if(!svc())falta.push("servicio");if(!S.marca)falta.push("auto");if(S.dia===null)falta.push("día");else if(S.franja===null)falta.push("horario");if(!S.nombre)falta.push("nombre");
+    f.textContent=falta.length?"Falta: "+falta.join(", "):(C.txtListo||"Listo. Se abre WhatsApp con este mensaje.");
+  });
+  var hh=new Date();$$("[data-hora]").forEach(function(h){h.textContent=String(hh.getHours()).padStart(2,"0")+":"+String(hh.getMinutes()).padStart(2,"0")});
+  if(C.onRender) C.onRender(S,svc());
+}
+$$("[data-send]").forEach(function(a){a.addEventListener("click",function(e){if(a.getAttribute("aria-disabled")==="true"){e.preventDefault();var f=$("[data-falta]");if(f){f.classList.remove("shake");void f.offsetWidth;f.classList.add("shake")}}})});
+render();
+/* ---------- seguimiento de orden ---------- */
+var O=C.orden, etapa=O.etapa, aprobado=false;
+var ETAPAS=["Recibido","En diagnóstico","Esperando repuesto","En reparación","Listo para retirar"];
+function ordHTML(){
+  var h='<div class="ord-head"><div><span class="ord-k">Orden</span> <b class="ord-n">'+O.num+'</b></div><div class="ord-auto">'+O.auto+'</div></div>';
+  h+='<ol class="ord-steps">';
+  ETAPAS.forEach(function(e,i){h+='<li class="'+(i<etapa?"is-done":i===etapa?"is-now":"")+'"><span class="ord-dot" aria-hidden="true"></span><span class="ord-e">'+e+'</span>'+(O.notas[i]&&i<=etapa?'<span class="ord-note">'+O.notas[i]+'</span>':'')+'</li>'});
+  h+='</ol>';
+  var tot=0;h+='<div class="ord-budget"><p class="ord-bt">Presupuesto para aprobar</p><table><tbody>';
+  O.items.forEach(function(it){tot+=it[1];h+='<tr><td>'+it[0]+'</td><td class="num">'+money(it[1])+' <small class="pe">precio de ejemplo</small></td></tr>'});
+  h+='</tbody><tfoot><tr><td>Total</td><td class="num">'+money(tot)+' <small class="pe">precio de ejemplo</small></td></tr></tfoot></table>';
+  if(!aprobado) h+='<button type="button" class="ord-ok" data-aprobar>Aprobar presupuesto</button><p class="ord-sub">Queda registrado por escrito con fecha y hora. El taller arranca cuando lo aprobás.</p>';
+  else h+='<p class="ord-done" role="status">Aprobado por escrito el '+fechaHoy()+'. El taller ya lo recibió.</p><button type="button" class="ord-adv" data-avanzar>'+(etapa<4?"Ver cómo avanza (demo)":"Volver a empezar la demo")+'</button>';
+  h+='</div>';
+  return h;
+}
+function fechaHoy(){var x=new Date();return x.getDate()+"/"+(x.getMonth()+1)+" a las "+String(x.getHours()).padStart(2,"0")+":"+String(x.getMinutes()).padStart(2,"0")}
+var oOut=$("[data-orden-out]"), oIn=$("[data-orden-input]"), oBtn=$("[data-orden-btn]");
+function showOrden(){
+  if(!oOut)return;
+  var v=(oIn&&oIn.value||"").trim().toUpperCase().replace(/\s/g,"");
+  if(v && v!==O.num.replace(/\s/g,"")){oOut.innerHTML='<p class="ord-err" role="alert">No encontramos la orden '+v.replace(/[<>&"]/g,"")+'. Probá con la de ejemplo: <b>'+O.num+'</b>.</p>';return}
+  if(oIn&&!v)oIn.value=O.num;
+  oOut.innerHTML=ordHTML();oOut.hidden=false;
+  var a=$("[data-aprobar]",oOut);if(a)a.addEventListener("click",function(){aprobado=true;if(etapa<2)etapa=2;showOrden();if(C.onOrden)C.onOrden(etapa,aprobado)});
+  var b=$("[data-avanzar]",oOut);if(b)b.addEventListener("click",function(){if(etapa<4)etapa++;else{etapa=O.etapa;aprobado=false}showOrden();if(C.onOrden)C.onOrden(etapa,aprobado)});
+  if(C.onOrden)C.onOrden(etapa,aprobado);
+}
+if(oBtn)oBtn.addEventListener("click",showOrden);
+if(oIn)oIn.addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();showOrden()}});
+/* ---------- ver como dueño ---------- */
+var panel=$("[data-owner]");
+$$("[data-owner-toggle]").forEach(function(t){
+  t.setAttribute("aria-expanded","false");
+  t.addEventListener("click",function(){
+    var open=document.body.classList.toggle("is-owner");
+    $$("[data-owner-toggle]").forEach(function(o){o.setAttribute("aria-expanded",open?"true":"false")});
+    if(panel){panel.hidden=!open;if(open){panel.setAttribute("tabindex","-1");panel.focus({preventScroll:true});panel.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"})}}
+    if(C.onOwner)C.onOwner(open);
+  });
+});
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&document.body.classList.contains("is-owner")&&C.ownerModal){$("[data-owner-toggle]").click()}});
+})();
+
+</script>
+<script>
+(function(){
+  var P=[["Aceite y filtro","srv",10000,"10.000 km"],["Frenos (revisión)","fre",20000,"20.000 km"],["Tren delantero y alineación","tren",20000,"20.000 km"],["Distribución","dist",60000,"60.000 km"],["Amortiguadores","amo",80000,"80.000 km"]];
+  var r=document.getElementById("kmr"),v=document.getElementById("kmv"),tb=document.getElementById("planrows");
+  function fmt(n){return n.toLocaleString("es-AR")}
+  function draw(){
+    var km=+r.value;v.textContent=fmt(km)+" km";tb.innerHTML="";
+    P.forEach(function(p){
+      var resto=p[2]-(km%p[2]);if(resto===p[2])resto=0;
+      var cls=resto<=1500?"toca":resto<=5000?"cerca":"ok";
+      var txt=cls==="toca"?"Toca ahora":"Faltan "+fmt(resto)+" km";
+      var tr=document.createElement("tr");tr.className=cls;
+      tr.innerHTML="<td>"+p[0]+"</td><td>"+p[3]+"</td><td class='est'>"+txt+"</td><td><button type='button'>Agendar</button></td>";
+      tr.querySelector("button").addEventListener("click",function(){
+        var b=document.querySelector('[data-set="servicio"][data-val="'+p[1]+'"]');if(b)b.click();
+        var k=document.getElementById("k5");k.value=String(km);k.dispatchEvent(new Event("input"));
+        document.getElementById("turno").scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
+      });
+      tb.appendChild(tr);
+    });
+  }
+  r.addEventListener("input",draw);draw();
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Taller Sergio Franchi"></script>
+</body>
+</html>
