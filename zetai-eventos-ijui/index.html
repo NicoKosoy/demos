@@ -1,0 +1,585 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Zetai · Yerba Buena — Prototipo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Belleza&family=Gupter:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --noche:#0d211b; --monte:#163a2e; --musgo:#2f5a45; --helecho:#b9c86b;
+  --vidrio:rgba(236,243,236,.08); --vidrio-b:rgba(236,243,236,.22);
+  --leche:#eef2ea; --niebla:#c3cfc6; --ambar:#f1b768; --tinta:#0d211b;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--noche);color:var(--leche);font:400 17px/1.55 "Gupter",Georgia,serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3,.disp{font-family:"Belleza",sans-serif;font-weight:400;letter-spacing:.01em}
+a{color:inherit}
+button{font:inherit;cursor:pointer}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+.small{font-size:.78rem;color:var(--niebla)}
+.ej{font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--helecho);opacity:.85;margin-left:6px;white-space:nowrap}
+
+/* firma */
+.firma{border-bottom:1px solid var(--vidrio-b);font-size:.78rem;color:var(--niebla);padding:9px 0}
+.firma .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.firma b{color:var(--leche);font-weight:500}
+
+/* fachada / nav */
+.fachada{position:sticky;top:0;z-index:30;background:rgba(13,33,27,.86);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--vidrio-b)}
+.fachada .wrap{display:flex;align-items:center;gap:22px;height:62px}
+.logo{font-family:"Belleza";font-size:1.55rem;letter-spacing:.32em;text-decoration:none}
+.panes{display:flex;flex:1;gap:4px;justify-content:flex-end;overflow-x:auto;scrollbar-width:none}
+.panes::-webkit-scrollbar{display:none}
+.panes a{flex:0 0 auto;text-decoration:none;font-size:.82rem;padding:7px 12px;border:1px solid var(--vidrio-b);background:var(--vidrio);color:var(--niebla);border-radius:2px;transition:.2s}
+.panes a:hover,.panes a.on{color:var(--tinta);background:var(--helecho);border-color:var(--helecho)}
+.modo{flex:0 0 auto;border:1px solid var(--ambar);background:transparent;color:var(--ambar);padding:8px 14px;border-radius:2px;font-size:.85rem}
+.modo[aria-pressed=true]{background:var(--ambar);color:var(--tinta)}
+
+/* portada */
+.portada{position:relative;min-height:88vh;display:grid;align-items:end;overflow:hidden;isolation:isolate}
+.portada svg.yunga{position:absolute;inset:0;width:100%;height:100%;z-index:-2}
+.portada .foto{position:absolute;right:0;top:0;width:58%;height:100%;object-fit:cover;z-index:-3;opacity:.55;mask-image:linear-gradient(90deg,transparent,#000 40%);-webkit-mask-image:linear-gradient(90deg,transparent,#000 40%)}
+.portada .inner{padding:90px 28px 60px;width:100%}
+.kicker{font-size:.82rem;letter-spacing:.24em;text-transform:uppercase;color:var(--helecho)}
+.portada h1{font-size:clamp(2.6rem,7.2vw,6.4rem);line-height:.98;margin:18px 0 22px;max-width:12ch}
+.portada h1 em{font-style:normal;color:var(--ambar)}
+.portada p.baj{max-width:44ch;color:var(--niebla);font-size:1.12rem}
+.cifras{display:flex;gap:0;margin-top:44px;border-top:1px solid var(--vidrio-b);max-width:760px}
+.cifras div{flex:1;padding:16px 18px 0 0}
+.cifras b{display:block;font-family:"Belleza";font-size:2.4rem;font-weight:400;color:var(--leche)}
+.cifras span{font-size:.82rem;color:var(--niebla)}
+.cta-row{display:flex;gap:12px;margin-top:34px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 22px;border-radius:2px;text-decoration:none;border:1px solid var(--helecho);background:var(--helecho);color:var(--tinta);font-weight:500}
+.btn.ghost{background:transparent;color:var(--leche);border-color:var(--vidrio-b)}
+
+/* paño (sección) */
+.pano{padding:96px 0;border-top:1px solid var(--vidrio-b);position:relative}
+.rotulo{display:flex;align-items:baseline;gap:14px;margin-bottom:34px}
+.rotulo .n{font-family:"Belleza";font-size:.9rem;letter-spacing:.2em;color:var(--helecho);border:1px solid var(--helecho);padding:3px 8px}
+.rotulo h2{font-size:clamp(1.9rem,4vw,3rem);line-height:1.05}
+.vid{background:var(--vidrio);border:1px solid var(--vidrio-b);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-radius:3px}
+
+/* espacio */
+.espacio{display:grid;grid-template-columns:1.25fr 1fr;gap:28px;align-items:start}
+.mosaico{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:220px 160px;gap:8px}
+.mosaico figure{position:relative;overflow:hidden;border-radius:2px;background:var(--monte)}
+.mosaico figure:first-child{grid-row:span 2}
+.mosaico img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .8s}
+.mosaico figure:hover img{transform:scale(1.04)}
+.mosaico figcaption{position:absolute;left:8px;bottom:8px;font-size:.72rem;background:rgba(13,33,27,.75);padding:3px 8px;letter-spacing:.06em}
+.ilus{width:100%;height:100%;display:block}
+.ficha{padding:26px}
+.ficha h3{font-size:1.5rem;margin-bottom:12px}
+.ficha table{width:100%;border-collapse:collapse;font-size:.95rem}
+.ficha td{padding:9px 0;border-bottom:1px solid var(--vidrio-b);vertical-align:top}
+.ficha td:first-child{color:var(--niebla);width:44%;padding-right:10px}
+.cita{margin-top:18px;font-family:"Belleza";font-size:1.25rem;line-height:1.35;color:var(--leche);border-left:2px solid var(--ambar);padding-left:14px}
+.cita small{display:block;font-family:"Gupter";font-size:.75rem;color:var(--niebla);margin-top:6px}
+
+/* armador */
+.armador{display:grid;grid-template-columns:1.5fr 1fr;gap:28px}
+.plano{padding:18px}
+.plano svg{width:100%;height:auto;display:block}
+.ctrl{padding:26px;display:flex;flex-direction:column;gap:18px}
+.ctrl label{font-size:.85rem;color:var(--niebla);display:block;margin-bottom:6px}
+input[type=range]{width:100%;accent-color:var(--helecho)}
+.lect{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.lect div{border:1px solid var(--vidrio-b);padding:12px}
+.lect b{display:block;font-family:"Belleza";font-size:1.9rem;font-weight:400}
+.lect span{font-size:.78rem;color:var(--niebla)}
+.seg{display:flex;border:1px solid var(--vidrio-b)}
+.seg button{flex:1;background:transparent;border:0;color:var(--niebla);padding:9px 6px;font-size:.88rem}
+.seg button.on{background:var(--helecho);color:var(--tinta)}
+.aviso{font-size:.88rem;color:var(--ambar);min-height:1.3em}
+
+/* noches */
+.noches{display:grid;grid-template-columns:repeat(6,1fr);border:1px solid var(--vidrio-b)}
+.noches button{background:transparent;border:0;border-right:1px solid var(--vidrio-b);color:var(--leche);padding:22px 10px;text-align:left;display:flex;flex-direction:column;gap:6px;min-height:150px;transition:.2s}
+.noches button:last-child{border-right:0}
+.noches button .t{font-family:"Belleza";font-size:1.25rem}
+.noches button span{font-size:.8rem;color:var(--niebla)}
+.noches button.on{background:var(--helecho);color:var(--tinta)}
+.noches button.on span{color:var(--tinta)}
+.lista{margin-top:16px;list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:6px 24px;font-size:.95rem}
+.lista li{padding:8px 0;border-bottom:1px solid var(--vidrio-b)}
+.lista li::before{content:"—";color:var(--helecho);margin-right:8px}
+
+/* cotizador */
+.cot{display:grid;grid-template-columns:1.15fr .85fr;gap:28px;align-items:start}
+.form{padding:26px;display:grid;gap:20px}
+.form fieldset{border:0;min-width:0}
+.cot>*,.armador>*,.espacio>*,.dash>*{min-width:0}
+.form legend{font-size:.85rem;color:var(--niebla);margin-bottom:8px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{background:transparent;border:1px solid var(--vidrio-b);color:var(--leche);padding:8px 13px;border-radius:2px;font-size:.92rem}
+.chips button.on{background:var(--leche);color:var(--tinta);border-color:var(--leche)}
+.sats{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
+.sats button{flex:0 0 auto;background:transparent;border:1px solid var(--vidrio-b);color:var(--leche);padding:8px 11px;font-size:.85rem;border-radius:2px;line-height:1.2;text-align:center}
+.sats button small{display:block;font-size:.66rem;color:var(--niebla)}
+.sats button:disabled{opacity:.35;text-decoration:line-through;cursor:not-allowed}
+.sats button.on{background:var(--helecho);color:var(--tinta);border-color:var(--helecho)}
+.sats button.on small{color:var(--tinta)}
+.menus{display:grid;gap:8px}
+.menus label{display:flex;justify-content:space-between;gap:12px;border:1px solid var(--vidrio-b);padding:12px 14px;cursor:pointer;align-items:center}
+.menus label:has(input:checked){border-color:var(--helecho);background:rgba(185,200,107,.1)}
+.menus input{accent-color:var(--helecho);margin-right:10px}
+.menus .pr{white-space:nowrap;text-align:right;font-size:.92rem}
+.extras{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.extras label{display:flex;gap:8px;align-items:flex-start;font-size:.9rem;border:1px solid var(--vidrio-b);padding:9px 10px;cursor:pointer}
+.extras input{accent-color:var(--helecho);margin-top:4px}
+.extras .ej{display:block;margin:2px 0 0}
+input[type=text],input[type=number]{width:100%;background:rgba(0,0,0,.25);border:1px solid var(--vidrio-b);color:var(--leche);padding:11px 12px;font:inherit;border-radius:2px}
+.total{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--vidrio-b);padding-top:16px}
+.total b{font-family:"Belleza";font-size:2rem;font-weight:400}
+
+/* burbuja */
+.chat{position:sticky;top:84px;border-radius:14px;overflow:hidden;background:#0b141a;border:1px solid #23323a;box-shadow:0 30px 60px rgba(0,0,0,.4)}
+.chat .top{background:#1f2c34;display:flex;gap:10px;align-items:center;padding:10px 14px;font-family:system-ui,sans-serif}
+.chat .av{width:36px;height:36px;border-radius:50%;background:var(--helecho);color:var(--tinta);display:grid;place-items:center;font-family:"Belleza";font-size:.9rem;letter-spacing:.1em}
+.chat .top b{font-size:.95rem;font-weight:600}
+.chat .top span{display:block;font-size:.72rem;color:#8696a0}
+.chat .body{padding:18px 14px 22px;min-height:340px;background:#0b141a radial-gradient(rgba(255,255,255,.03) 1px,transparent 1px) 0 0/16px 16px}
+.burb{background:#005c4b;color:#e9edef;font:400 .9rem/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;padding:9px 11px 20px;border-radius:8px 0 8px 8px;margin-left:auto;max-width:92%;white-space:pre-wrap;position:relative;word-wrap:break-word}
+.burb::after{content:attr(data-h) " ✓✓";position:absolute;right:8px;bottom:4px;font-size:.66rem;color:#8fd3c4}
+.typing{font:400 .72rem system-ui,sans-serif;color:#8696a0;margin:8px 4px 0;text-align:right;min-height:1em}
+.chat .send{padding:12px 14px;background:#1f2c34}
+.chat .send a{display:block;text-align:center;background:#25d366;color:#0b141a;text-decoration:none;font:600 .95rem system-ui,sans-serif;padding:12px;border-radius:24px}
+.chat .send p{font:400 .7rem system-ui,sans-serif;color:#8696a0;text-align:center;margin-top:8px}
+
+/* llegar */
+.llegar{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center}
+.llegar ul{list-style:none}
+.llegar li{padding:11px 0;border-bottom:1px solid var(--vidrio-b);display:flex;gap:14px}
+.llegar li b{min-width:120px;color:var(--niebla);font-weight:400;font-size:.9rem}
+
+/* dueño */
+#duenio{display:none}
+body.owner #duenio{display:block}
+body.owner .cliente{display:none}
+.dash-h{display:flex;justify-content:space-between;align-items:end;gap:18px;flex-wrap:wrap;margin-bottom:24px}
+.tag{display:inline-block;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;border:1px dashed var(--ambar);color:var(--ambar);padding:4px 9px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--vidrio-b);border:1px solid var(--vidrio-b);margin-bottom:28px}
+.kpis div{background:var(--noche);padding:18px}
+.kpis b{display:block;font-family:"Belleza";font-size:2.1rem;font-weight:400}
+.kpis span{font-size:.8rem;color:var(--niebla)}
+.dash{display:grid;grid-template-columns:1.1fr .9fr;gap:24px}
+.inbox{padding:18px;display:grid;gap:12px;max-height:620px;overflow:auto}
+.inbox .burb{margin-left:0;border-radius:0 8px 8px 8px;background:#1f2c34;max-width:100%}
+.inbox .burb::after{content:attr(data-h);color:#8696a0}
+.inbox .meta{display:flex;justify-content:space-between;font-size:.78rem;color:var(--niebla);margin-bottom:4px}
+.estado{font-size:.7rem;padding:2px 8px;border-radius:2px;background:var(--helecho);color:var(--tinta)}
+.estado.p{background:transparent;border:1px solid var(--ambar);color:var(--ambar)}
+.agenda{padding:18px}
+.agenda table{width:100%;border-collapse:collapse;font-size:.9rem}
+.agenda td,.agenda th{padding:9px 6px;border-bottom:1px solid var(--vidrio-b);text-align:left}
+.agenda th{color:var(--niebla);font-weight:400;font-size:.78rem}
+.ok{color:var(--helecho)} .pend{color:var(--ambar)}
+.paravos{margin-top:28px;padding:26px}
+.paravos ul{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:10px 28px;margin-top:12px}
+.paravos li{padding:10px 0 10px 18px;border-bottom:1px solid var(--vidrio-b);position:relative}
+.paravos li::before{content:"";position:absolute;left:0;top:19px;width:8px;height:8px;background:var(--helecho)}
+.ahorro{margin-top:16px;padding:18px;border:1px solid var(--vidrio-b)}
+.ahorro .barra{height:10px;background:var(--vidrio-b);margin:10px 0 6px;position:relative}
+.ahorro .barra i{position:absolute;left:0;top:0;bottom:0;background:var(--ambar)}
+
+footer{border-top:1px solid var(--vidrio-b);padding:34px 0 48px;font-size:.82rem;color:var(--niebla)}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+@media (max-width:900px){
+  .espacio,.armador,.cot,.llegar,.dash{grid-template-columns:1fr}
+  .chat{position:relative;top:0}
+  .noches{grid-template-columns:repeat(3,1fr)}
+  .noches button{border-bottom:1px solid var(--vidrio-b);min-height:110px}
+  .lista{grid-template-columns:1fr 1fr}
+  .kpis{grid-template-columns:1fr 1fr}
+  .paravos ul{grid-template-columns:1fr}
+}
+@media (max-width:560px){
+  body{font-size:16px}
+  .wrap{padding:0 16px}
+  .fachada .wrap{gap:10px}
+  .logo{font-size:1.2rem;letter-spacing:.24em}
+  .panes{display:none}
+  .portada{min-height:auto}
+  .portada .foto{width:100%;opacity:.3;mask-image:linear-gradient(180deg,#000,transparent);-webkit-mask-image:linear-gradient(180deg,#000,transparent)}
+  .portada .inner{padding:70px 16px 44px}
+  .cifras{flex-wrap:wrap}
+  .cifras div{flex:0 0 50%;padding-bottom:12px}
+  .pano{padding:64px 0}
+  .mosaico{grid-template-columns:1fr 1fr;grid-template-rows:200px 120px}
+  .mosaico figure:first-child{grid-column:span 2;grid-row:auto}
+  .lista{grid-template-columns:1fr}
+  .extras{grid-template-columns:1fr}
+  .noches{grid-template-columns:1fr 1fr}
+  .firma .wrap{flex-direction:column;gap:2px}
+}
+</style>
+</head>
+<body>
+
+<div class="firma"><div class="wrap">
+  <span>Prototipo preparado para <b>Zetai</b> · 6 de noviembre de 2026</span>
+  <span>Jorge Luis Borges 2894 · Yerba Buena, Tucumán</span>
+</div></div>
+
+<header class="fachada"><div class="wrap">
+  <a class="logo" href="#inicio">ZETAI</a>
+  <nav class="panes cliente" aria-label="Secciones">
+    <a href="#salon">01 El salón</a>
+    <a href="#armador">02 Armá la planta</a>
+    <a href="#noches">03 Tu noche</a>
+    <a href="#cotizar">04 Cotizar</a>
+    <a href="#llegar">05 Cómo llegar</a>
+  </nav>
+  <button class="modo" id="modo" aria-pressed="false">Ver como dueño</button>
+</div></header>
+
+<main>
+<div class="cliente">
+
+<section class="portada" id="inicio">
+  <img class="foto" src="https://ss-cnt-001c.esmsv.com/r/content/host1/61f1358d892fdebbc4ceb9c52ee6c5b5//editor/zetai-1200x800.webp" alt="Salón Zetai" onerror="this.remove()">
+  <svg class="yunga" viewBox="0 0 1440 800" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    <defs>
+      <linearGradient id="cielo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0a1915"/><stop offset="1" stop-color="#163a2e"/></linearGradient>
+    </defs>
+    <rect width="1440" height="800" fill="url(#cielo)" opacity=".75"/>
+    <path d="M0 470 C160 380 260 420 380 360 S620 250 760 320 S1020 260 1160 300 S1360 250 1440 280 V800 H0Z" fill="#12302a" opacity=".9"/>
+    <path d="M0 560 C140 500 300 540 460 490 S760 430 900 480 S1200 430 1440 470 V800 H0Z" fill="#0f2822"/>
+    <g fill="#0b1f1a">
+      <path d="M0 640 q30 -60 60 0 q25 -80 55 0 q30 -50 60 0 q28 -90 58 0 q30 -60 62 0 q26 -70 56 0 V800 H0Z"/>
+      <path d="M1040 650 q30 -70 60 0 q26 -90 58 0 q30 -60 60 0 q28 -80 58 0 q30 -60 62 0 q26 -70 62 0 V800 H1040Z"/>
+    </g>
+    <g transform="translate(940 300) scale(.75)">
+      <rect x="0" y="0" width="420" height="96" fill="rgba(238,242,234,.07)" stroke="rgba(238,242,234,.4)"/>
+      <g stroke="rgba(238,242,234,.25)">
+        <line x1="60" y1="0" x2="60" y2="96"/><line x1="120" y1="0" x2="120" y2="96"/><line x1="180" y1="0" x2="180" y2="96"/><line x1="240" y1="0" x2="240" y2="96"/><line x1="300" y1="0" x2="300" y2="96"/><line x1="360" y1="0" x2="360" y2="96"/>
+      </g>
+      <rect x="0" y="0" width="420" height="96" fill="#f1b768" opacity=".16"><animate attributeName="opacity" values=".1;.24;.1" dur="5s" repeatCount="indefinite"/></rect>
+      <line x1="-30" y1="-6" x2="450" y2="-6" stroke="rgba(238,242,234,.6)" stroke-width="3"/>
+    </g>
+  </svg>
+  <div class="wrap inner">
+    <div class="kicker">Yerba Buena · al pie del cerro San Javier</div>
+    <h1>700 a cenar, en el <em>umbral</em> de la yunga.</h1>
+    <p class="baj">Planta abierta, líneas puras y vidriado opaco. Elegí fecha, invitados y gastronomía, y mirá tu presupuesto armado antes de escribirnos.</p>
+    <div class="cifras">
+      <div><b>700</b><span>personas cenando</span></div>
+      <div><b>PB</b><span>salón de planta abierta</span></div>
+      <div><b>2</b><span>ambientes: salón y aire libre</span></div>
+      <div><b>A/A</b><span>climatización central</span></div>
+    </div>
+    <div class="cta-row">
+      <a class="btn" href="#cotizar">Cotizar mi evento</a>
+      <a class="btn ghost" href="#noches">Ver sábados libres</a>
+    </div>
+  </div>
+</section>
+
+<section class="pano" id="salon"><div class="wrap">
+  <div class="rotulo"><span class="n">P-01</span><h2>El salón</h2></div>
+  <div class="espacio">
+    <div class="mosaico">
+      <figure><img src="https://ss-cnt-001c.esmsv.com/r/content/host1/61f1358d892fdebbc4ceb9c52ee6c5b5/editor/001b_FxgYFJI2up.webp" alt="Salón principal de Zetai" loading="lazy" onerror="ilus(this,0)"><figcaption>Salón principal PB</figcaption></figure>
+      <figure><img src="https://www.evenapp.com.ar/images/000000000000078695740zetai.jpg" alt="Zetai" loading="lazy" onerror="ilus(this,1)"><figcaption>Fachada</figcaption></figure>
+      <figure><img src="https://ss-cnt-001c.esmsv.com/r/content/host1/61f1358d892fdebbc4ceb9c52ee6c5b5/editor/004b.webp" alt="Evento en Zetai" loading="lazy" onerror="ilus(this,2)"><figcaption>La pista</figcaption></figure>
+    </div>
+    <div class="ficha vid">
+      <h3>Ficha del espacio</h3>
+      <table>
+        <tr><td>Capacidad</td><td>700 personas cenando</td></tr>
+        <tr><td>Espacios</td><td>Salón principal PB (planta abierta) · espacio al aire libre · cocina</td></tr>
+        <tr><td>Equipamiento</td><td>Climatización central · iluminación adaptable · pantalla de video · sonido e iluminación</td></tr>
+        <tr><td>Eventos</td><td>Bodas · 15 años · aniversarios · egresados · corporativos · infantiles</td></tr>
+        <tr><td>Proveedores</td><td>Se permite catering y ambientación externa · otros proveedores bajo condiciones</td></tr>
+        <tr><td>Formas de pago</td><td>Efectivo · transferencia · Mercado Pago · tarjeta · cuotas</td></tr>
+      </table>
+      <p class="cita">“Diseño de líneas puras y vidriado opaco.”<small>Así lo describe tuEvento Tucumán, que hace sus cenas de egresados en Zetai.</small></p>
+    </div>
+  </div>
+</div></section>
+
+<section class="pano" id="armador"><div class="wrap">
+  <div class="rotulo"><span class="n">P-02</span><h2>Armá la planta de tu noche</h2></div>
+  <div class="armador">
+    <div class="plano vid"><svg id="planoSvg" viewBox="0 0 640 420" role="img" aria-label="Plano del salón con mesas"></svg></div>
+    <div class="ctrl vid">
+      <div>
+        <label for="pax">Invitados: <b id="paxV">250</b></label>
+        <input type="range" id="pax" min="60" max="700" step="10" value="250">
+      </div>
+      <div>
+        <label>Formato</label>
+        <div class="seg" id="formato"><button class="on" data-f="cena">Cena sentados</button><button data-f="coctel">Cóctel</button></div>
+      </div>
+      <div class="lect">
+        <div><b id="mesas">25</b><span>mesas redondas de 10</span></div>
+        <div><b id="pista">%</b><span>del salón queda para pista</span></div>
+      </div>
+      <p class="aviso" id="aviso"></p>
+      <p class="small">Plano esquemático de ejemplo. Lo ajustamos con las medidas reales del salón.</p>
+    </div>
+  </div>
+</div></section>
+
+<section class="pano" id="noches"><div class="wrap">
+  <div class="rotulo"><span class="n">P-03</span><h2>Una noche, seis momentos</h2></div>
+  <div class="noches" id="momentos"></div>
+  <ul class="lista">
+    <li>Paquete integral (all inclusive)</li><li>Barra de tragos y de café</li><li>DJ, sonido e iluminación</li>
+    <li>Pantalla de video y efectos</li><li>Shows y animación</li><li>Fotografía y maquilladora</li>
+    <li>Juegos infantiles y menú infantil</li><li>Event planner y recepcionistas</li><li>Coffee break para corporativos</li>
+  </ul>
+</div></section>
+
+<section class="pano" id="cotizar"><div class="wrap">
+  <div class="rotulo"><span class="n">P-04</span><h2>Cotizá en un minuto</h2></div>
+  <div class="cot">
+    <div class="form vid">
+      <fieldset><legend>Tipo de evento</legend><div class="chips" id="tipo"></div></fieldset>
+      <fieldset><legend>Fecha · sábados libres (ocupados de ejemplo)</legend><div class="sats" id="sats"></div></fieldset>
+      <fieldset><legend>Invitados</legend><input type="number" id="inv" min="40" max="700" value="250"></fieldset>
+      <fieldset><legend>Gastronomía</legend><div class="menus" id="menus"></div></fieldset>
+      <fieldset><legend>Extras</legend><div class="extras" id="extras"></div></fieldset>
+      <fieldset><legend>Tu nombre</legend><input type="text" id="nombre" placeholder="Ej.: Sofía Paz" maxlength="40"></fieldset>
+      <div class="total"><span>Total estimado <span class="ej">Precio de ejemplo</span></span><b id="tot">$0</b></div>
+      <div class="total" style="border:0;padding:0"><span>Seña para reservar la fecha (30%) <span class="ej">Precio de ejemplo</span></span><b id="sen" style="font-size:1.4rem">$0</b></div>
+    </div>
+    <aside class="chat" aria-live="polite">
+      <div class="top"><div class="av">ZT</div><div><b>Zetai Eventos</b><span>el mensaje que nos va a llegar</span></div></div>
+      <div class="body"><div class="burb" id="burb" data-h="12:00"></div><div class="typing" id="typing"></div></div>
+      <div class="send"><a id="wa" href="#" target="_blank" rel="noopener">Enviar por WhatsApp</a><p>Se abre WhatsApp con este mismo texto. No se cobra nada desde la web.</p></div>
+    </aside>
+  </div>
+</div></section>
+
+<section class="pano" id="llegar"><div class="wrap">
+  <div class="rotulo"><span class="n">P-05</span><h2>Cómo llegar</h2></div>
+  <div class="llegar">
+    <ul>
+      <li><b>Dirección</b><span>Jorge Luis Borges 2894, Yerba Buena</span></li>
+      <li><b>Zona</b><span>Residencial, en el umbral de la yunga tucumana</span></li>
+      <li><b>Desde la plaza de Yerba Buena</b><span>Por Av. Aconquija hacia el cerro y luego al norte</span></li>
+      <li><b>Mapa</b><span><a href="https://www.google.com/maps/search/?api=1&query=-26.806644,-65.3154013" target="_blank" rel="noopener">Abrir en Google Maps</a></span></li>
+    </ul>
+    <svg viewBox="0 0 420 280" class="vid" style="width:100%;height:auto" aria-label="Mapa esquemático">
+      <path d="M0 40 C120 90 140 30 260 70 S380 20 420 50" stroke="#2f5a45" stroke-width="40" fill="none" opacity=".6"/>
+      <text x="300" y="34" fill="#c3cfc6" font-size="11" font-family="Gupter">Cerro San Javier</text>
+      <line x1="40" y1="240" x2="380" y2="120" stroke="#c3cfc6" stroke-width="3"/>
+      <text x="230" y="205" fill="#c3cfc6" font-size="11" font-family="Gupter" transform="rotate(-19 230 205)">Av. Aconquija</text>
+      <line x1="250" y1="166" x2="210" y2="80" stroke="#c3cfc6" stroke-width="1.5" stroke-dasharray="4 4"/>
+      <circle cx="210" cy="80" r="9" fill="#b9c86b"/><circle cx="210" cy="80" r="18" fill="none" stroke="#b9c86b" opacity=".5"/>
+      <text x="226" y="84" fill="#eef2ea" font-size="14" font-family="Belleza">ZETAI</text>
+      <text x="40" y="262" fill="#c3cfc6" font-size="11" font-family="Gupter">← San Miguel de Tucumán</text>
+    </svg>
+  </div>
+</div></section>
+
+</div><!-- /cliente -->
+
+<section class="pano" id="duenio"><div class="wrap">
+  <div class="dash-h">
+    <div><span class="tag">Panel de ejemplo</span><h2 style="font-size:clamp(1.9rem,4vw,3rem);margin-top:12px">Lo que ve Zetai</h2></div>
+    <p class="small" style="max-width:38ch">Datos inventados para mostrar cómo funciona. Con la web real, acá entran las consultas de verdad.</p>
+  </div>
+  <div class="kpis">
+    <div><b>23</b><span>consultas esta semana, todas con fecha e invitados</span></div>
+    <div><b>9 / 12</b><span>sábados ocupados hasta enero</span></div>
+    <div><b id="kSen">$0</b><span>en señas cobradas este mes</span></div>
+    <div><b>0%</b><span>de comisión por reserva</span></div>
+  </div>
+  <div class="dash">
+    <div class="inbox vid" id="inbox"></div>
+    <div>
+      <div class="agenda vid">
+        <h3 style="margin-bottom:10px">Sábados de la temporada</h3>
+        <table><thead><tr><th>Fecha</th><th>Evento</th><th>Inv.</th><th>Seña</th></tr></thead><tbody id="agenda"></tbody></table>
+      </div>
+      <div class="ahorro">
+        <b>Frente a un intermediario</b>
+        <p class="small">Si un portal o agencia cobrara 8% por reserva sobre las señas del mes <span class="ej">Ejemplo</span></p>
+        <div class="barra"><i id="barra" style="width:8%"></i></div>
+        <p>Zetai se ahorra <b id="ahorro">$0</b> este mes.</p>
+      </div>
+    </div>
+  </div>
+  <div class="paravos vid">
+    <h3 style="font-size:1.6rem">Para vos, Zetai</h3>
+    <ul>
+      <li>Menos mensajes de “¿cuánto sale?”: el que escribe ya trae fecha, invitados y menú.</li>
+      <li>Agenda con cupos: los sábados ocupados se ven tachados y nadie pregunta por fechas que no hay.</li>
+      <li>La seña entra antes de confirmar la fecha, por transferencia o Mercado Pago.</li>
+      <li>Sin comisión por reserva: es tu canal propio, sin otros salones al lado.</li>
+    </ul>
+  </div>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+  <span>Prototipo de demostración preparado para Zetai por Resolviendo Kos · No es la web oficial</span>
+  <span>Fotos: publicaciones públicas de Zetai y tuEvento Tucumán</span>
+</div></footer>
+
+<script>
+const $=s=>document.querySelector(s);
+const fmt=n=>"$"+Math.round(n).toLocaleString("es-AR");
+function ilus(img,i){
+  const tonos=[["#163a2e","#b9c86b"],["#0f2822","#f1b768"],["#2f5a45","#eef2ea"]][i%3];
+  const f=img.parentElement;
+  f.insertAdjacentHTML("afterbegin",`<svg class="ilus" viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice"><rect width="300" height="200" fill="${tonos[0]}"/><path d="M0 130 C60 90 120 120 180 95 S260 80 300 100 V200 H0Z" fill="#0d211b" opacity=".7"/><rect x="70" y="120" width="160" height="40" fill="none" stroke="${tonos[1]}" opacity=".7"/><g stroke="${tonos[1]}" opacity=".4"><line x1="110" y1="120" x2="110" y2="160"/><line x1="150" y1="120" x2="150" y2="160"/><line x1="190" y1="120" x2="190" y2="160"/></g></svg>`);
+  img.remove();
+}
+
+/* ---- armador ---- */
+let formato="cena";
+function plano(){
+  const pax=+$("#pax").value; $("#paxV").textContent=pax;
+  const svg=$("#planoSvg");
+  const W=640,H=420, salon={x:20,y:20,w:440,h:380}, ext={x:470,y:20,w:150,h:380};
+  let html=`<rect x="${salon.x}" y="${salon.y}" width="${salon.w}" height="${salon.h}" fill="rgba(238,242,234,.04)" stroke="rgba(238,242,234,.45)"/>
+  <rect x="${ext.x}" y="${ext.y}" width="${ext.w}" height="${ext.h}" fill="rgba(185,200,107,.05)" stroke="rgba(185,200,107,.5)" stroke-dasharray="5 5"/>
+  <text x="${salon.x+10}" y="${salon.y+18}" fill="#c3cfc6" font-size="11" font-family="Gupter">SALÓN PRINCIPAL PB</text>
+  <text x="${ext.x+10}" y="${ext.y+18}" fill="#b9c86b" font-size="11" font-family="Gupter">AIRE LIBRE</text>`;
+  let mesas, usados=0, desborda=false;
+  if(formato==="cena"){
+    mesas=Math.ceil(pax/10);
+    const cols=10, step=42, r=15; const capSalon=80;
+    html+=`<rect x="${salon.x+salon.w/2-60}" y="${salon.y+30}" width="120" height="14" fill="#f1b768" opacity=".8"/><text x="${salon.x+salon.w/2}" y="${salon.y+60}" text-anchor="middle" fill="#f1b768" font-size="10" font-family="Gupter">MESA PRINCIPAL</text>`;
+    const filas=Math.ceil(Math.min(mesas,capSalon)/cols);
+    const pistaH=Math.max(50,250-filas*30);
+    const py=salon.y+72;
+    html+=`<rect x="${salon.x+120}" y="${py}" width="200" height="${pistaH}" fill="rgba(185,200,107,.16)" stroke="#b9c86b"/><text x="${salon.x+220}" y="${py+pistaH/2+4}" text-anchor="middle" fill="#b9c86b" font-size="12" font-family="Belleza">PISTA</text>`;
+    let y0=py+pistaH+26;
+    for(let i=0;i<mesas;i++){
+      if(i<capSalon){
+        const row=Math.floor(i/cols), col=i%cols;
+        const cx=salon.x+28+col*step, cy=y0+row*30;
+        if(cy>salon.y+salon.h-14){desborda=true;continue}
+        html+=`<circle cx="${cx}" cy="${cy}" r="${r*0.75}" fill="rgba(238,242,234,.18)" stroke="#eef2ea" stroke-width=".8"/>`;usados++;
+      }else{desborda=true}
+    }
+    const pistaPct=Math.round((200*pistaH)/(salon.w*salon.h)*100*1.6);
+    $("#mesas").textContent=mesas; $("#pista").textContent=Math.min(40,pistaPct)+"%";
+    $("#aviso").textContent= mesas>60 ? "Con más de 600 invitados conviene sumar el espacio al aire libre para la recepción." : pax>=400 ? "Recepción afuera y cena adentro: así entra todo sin apretar la pista." : "";
+  }else{
+    mesas=Math.ceil(pax/18);
+    for(let i=0;i<mesas;i++){
+      const cx=salon.x+40+(i%9)*46+((Math.floor(i/9))%2)*20, cy=salon.y+60+Math.floor(i/9)*48;
+      if(cy<salon.y+salon.h-20){html+=`<rect x="${cx-6}" y="${cy-6}" width="12" height="12" fill="#eef2ea" opacity=".55" transform="rotate(45 ${cx} ${cy})"/>`}
+    }
+    html+=`<rect x="${salon.x+salon.w-140}" y="${salon.y+salon.h-60}" width="120" height="40" fill="none" stroke="#f1b768"/><text x="${salon.x+salon.w-80}" y="${salon.y+salon.h-36}" text-anchor="middle" fill="#f1b768" font-size="10" font-family="Gupter">BARRA DE TRAGOS</text>`;
+    $("#mesas").textContent=mesas; $("#pista").textContent="60%";
+    document.querySelector(".lect div span").textContent="mesas altas de apoyo";
+    $("#aviso").textContent= pax>500 ? "En formato cóctel conviene abrir el aire libre para que circulen." : "";
+  }
+  if(formato==="cena") document.querySelector(".lect div span").textContent="mesas redondas de 10";
+  if(desborda || (formato==="cena"&&mesas>60)){
+    const extra=Math.max(0,mesas-usados);
+    for(let i=0;i<Math.min(extra,30);i++){
+      const cx=ext.x+30+(i%3)*45, cy=ext.y+50+Math.floor(i/3)*34;
+      html+=`<circle cx="${cx}" cy="${cy}" r="11" fill="rgba(185,200,107,.25)" stroke="#b9c86b" stroke-width=".8"/>`;
+    }
+  }
+  svg.innerHTML=html;
+  if(+$("#inv").value!==pax){$("#inv").value=pax;cotizar();}
+}
+$("#pax").addEventListener("input",plano);
+document.querySelectorAll("#formato button").forEach(b=>b.onclick=()=>{document.querySelectorAll("#formato button").forEach(x=>x.classList.remove("on"));b.classList.add("on");formato=b.dataset.f;plano();});
+
+/* ---- momentos ---- */
+const momentos=[["21:00","Llegada","Recepción al aire libre, con el cerro de fondo."],["21:45","Entrada","Luces del salón bajan y se enciende la pista."],["22:15","Cena","Mesa principal y mesas redondas, salón climatizado."],["00:00","Pista","DJ, sonido e iluminación adaptable."],["02:00","Show","Efectos especiales, pantalla y animación."],["04:30","Fin de fiesta","Barra de café y algo dulce para cerrar."]];
+$("#momentos").innerHTML=momentos.map((m,i)=>`<button data-i="${i}"><span>${m[0]}</span><span class="t">${m[1]}</span><span>${m[2]}</span></button>`).join("");
+document.querySelectorAll("#momentos button").forEach(b=>b.onclick=()=>{document.querySelectorAll("#momentos button").forEach(x=>x.classList.remove("on"));b.classList.add("on")});
+
+/* ---- cotizador ---- */
+const tipos=["Casamiento","15 años","Egresados","Aniversario","Corporativo","Infantil"];
+const menus=[
+  {id:"picada",n:"Picadas y barra",d:"Recepción larga, picadas, bebidas sin alcohol",pp:38000},
+  {id:"cena",n:"Cena de tres pasos",d:"Entrada, principal y postre, con bebidas",pp:52000},
+  {id:"integral",n:"Paquete integral",d:"Todo incluido: gastronomía, barra, DJ y ambientación",pp:69000}
+];
+const extras=[
+  {id:"tragos",n:"Barra de tragos",pp:9000},
+  {id:"dj",n:"DJ, sonido e iluminación",fijo:450000},
+  {id:"foto",n:"Fotografía",fijo:380000},
+  {id:"pantalla",n:"Pantalla de video y efectos",fijo:260000},
+  {id:"show",n:"Show y animación",fijo:320000},
+  {id:"cafe",n:"Barra de café al cierre",pp:3500}
+];
+const ALQ_SAB=1900000;
+const meses=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+const sats=[]; {let d=new Date(2026,10,7); for(let i=0;i<12;i++){sats.push(new Date(d)); d.setDate(d.getDate()+7);}}
+const ocupados=new Set([0,1,2,5,6,9]);
+let st={tipo:"Casamiento",sat:3,menu:"cena",ex:new Set(["dj"])};
+
+$("#tipo").innerHTML=tipos.map(t=>`<button class="${t===st.tipo?"on":""}">${t}</button>`).join("");
+document.querySelectorAll("#tipo button").forEach(b=>b.onclick=()=>{st.tipo=b.textContent;document.querySelectorAll("#tipo button").forEach(x=>x.classList.toggle("on",x===b));cotizar()});
+$("#sats").innerHTML=sats.map((d,i)=>`<button data-i="${i}" ${ocupados.has(i)?"disabled":""} class="${i===st.sat?"on":""}">${d.getDate()} ${meses[d.getMonth()].slice(0,3)}<small>${ocupados.has(i)?"ocupado":"libre"}</small></button>`).join("");
+document.querySelectorAll("#sats button").forEach(b=>b.onclick=()=>{st.sat=+b.dataset.i;document.querySelectorAll("#sats button").forEach(x=>x.classList.toggle("on",x===b));cotizar()});
+$("#menus").innerHTML=menus.map(m=>`<label><span><input type="radio" name="menu" value="${m.id}" ${m.id===st.menu?"checked":""}><b>${m.n}</b><br><span class="small">${m.d}</span></span><span class="pr">${fmt(m.pp)} p/p<br><span class="ej">Precio de ejemplo</span></span></label>`).join("");
+document.querySelectorAll("#menus input").forEach(r=>r.onchange=()=>{st.menu=r.value;cotizar()});
+$("#extras").innerHTML=extras.map(e=>`<label><input type="checkbox" value="${e.id}" ${st.ex.has(e.id)?"checked":""}><span>${e.n} · ${e.pp?fmt(e.pp)+" p/p":fmt(e.fijo)}<span class="ej">Precio de ejemplo</span></span></label>`).join("");
+document.querySelectorAll("#extras input").forEach(c=>c.onchange=()=>{c.checked?st.ex.add(c.value):st.ex.delete(c.value);cotizar()});
+$("#inv").addEventListener("input",()=>{let v=Math.max(40,Math.min(700,+$("#inv").value||0));$("#pax").value=v;$("#paxV").textContent=v;plano();cotizar()});
+$("#nombre").addEventListener("input",cotizar);
+
+let tt;
+function cotizar(){
+  const inv=Math.max(40,Math.min(700,+$("#inv").value||0));
+  const m=menus.find(x=>x.id===st.menu);
+  let total=ALQ_SAB+m.pp*inv; const exN=[];
+  extras.forEach(e=>{if(st.ex.has(e.id)){total+=e.pp?e.pp*inv:e.fijo;exN.push(e.n)}});
+  const sena=total*0.3;
+  $("#tot").textContent=fmt(total); $("#sen").textContent=fmt(sena);
+  const d=sats[st.sat]; const fecha=`sábado ${d.getDate()} de ${meses[d.getMonth()]}`;
+  const nom=$("#nombre").value.trim();
+  const txt=`Hola Zetai, quiero consultar por un evento:
+• Tipo: ${st.tipo}
+• Fecha: ${fecha} (figura libre en la web)
+• Invitados: ${inv}
+• Gastronomía: ${m.n}
+• Extras: ${exN.length?exN.join(", "):"ninguno"}
+• Total estimado: ${fmt(total)}
+• Seña para reservar (30%): ${fmt(sena)}
+${nom?"Soy "+nom+". ":""}¿Me confirman la fecha?`;
+  $("#burb").textContent=txt;
+  const now=new Date(); $("#burb").dataset.h=String(now.getHours()).padStart(2,"0")+":"+String(now.getMinutes()).padStart(2,"0");
+  $("#typing").textContent="escribiendo…"; clearTimeout(tt); tt=setTimeout(()=>$("#typing").textContent="",900);
+  $("#wa").href="https://wa.me/5493815107973?text="+encodeURIComponent(txt);
+}
+
+/* ---- dueño ---- */
+const consultas=[
+  ["Casamiento","sábado 21 de noviembre",320,"Cena de tres pasos","DJ, sonido e iluminación, Fotografía",26690000,"Seña cobrada"],
+  ["15 años","sábado 12 de diciembre",180,"Paquete integral","Pantalla de video y efectos",14580000,"Esperando seña"],
+  ["Egresados","sábado 9 de enero",650,"Picadas y barra","Barra de tragos, Show y animación",36670000,"Seña cobrada"],
+  ["Corporativo","sábado 23 de enero",120,"Picadas y barra","Barra de café al cierre",6880000,"Esperando seña"]
+];
+$("#inbox").innerHTML=consultas.map((c,i)=>`<div><div class="meta"><span>Consulta ${i+1} · desde la web</span><span class="estado ${c[6]==="Seña cobrada"?"":"p"}">${c[6]}</span></div><div class="burb" data-h="${["10:12","13:47","18:05","21:30"][i]}">Hola Zetai, quiero consultar por un evento:
+• Tipo: ${c[0]}
+• Fecha: ${c[1]}
+• Invitados: ${c[2]}
+• Gastronomía: ${c[3]}
+• Extras: ${c[4]}
+• Total estimado: ${fmt(c[5])}
+• Seña para reservar (30%): ${fmt(c[5]*.3)}</div></div>`).join("");
+const senaMes=(consultas[0][5]+consultas[2][5])*.3;
+$("#kSen").textContent=fmt(senaMes); $("#ahorro").textContent=fmt(senaMes/0.3*0.08);
+$("#agenda").innerHTML=sats.slice(0,10).map((d,i)=>{const oc=ocupados.has(i);return `<tr><td>${d.getDate()} ${meses[d.getMonth()].slice(0,3)}</td><td>${oc?["Casamiento","15 años","Casamiento","","","15 años","Aniversario","","","Egresados"][i]:"<span class='ok'>Libre</span>"}</td><td>${oc?[260,210,320,0,0,180,240,0,0,650][i]:"—"}</td><td>${oc?(i===5?"<span class='pend'>Pendiente</span>":"<span class='ok'>Cobrada</span>"):"—"}</td></tr>`}).join("");
+
+$("#modo").onclick=()=>{const on=document.body.classList.toggle("owner");$("#modo").setAttribute("aria-pressed",on);$("#modo").textContent=on?"Volver a la web":"Ver como dueño";window.scrollTo({top:0})};
+
+/* nav activo */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){document.querySelectorAll(".panes a").forEach(a=>a.classList.toggle("on",a.getAttribute("href")==="#"+e.target.id))}}),{rootMargin:"-45% 0px -50% 0px"});
+document.querySelectorAll(".pano[id]").forEach(s=>io.observe(s));
+
+plano(); cotizar();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Zetai"></script>
+</body>
+</html>
