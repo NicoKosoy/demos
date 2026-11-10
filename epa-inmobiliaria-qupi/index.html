@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>EPA Inmobiliaria · Prototipo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Krona+One&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+:root{--crema:#FFF8EC;--papel:#FFFDF8;--ladrillo:#D2552B;--ladrillo2:#A93E1B;--negro:#161412;--gris:#6F6A63;--linea:#E9DFCF;--verde:#2F7D4F;--verdecl:#DCEFE2;--wa:#1F7A4D}
+*{box-sizing:border-box}
+html{overflow-x:clip;scroll-behavior:smooth}
+body{margin:0;background:var(--crema);color:var(--negro);font-family:"DM Sans",system-ui,sans-serif;font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+button,input,select{font:inherit;color:inherit}
+.kr{font-family:"Krona One",sans-serif;font-weight:400;letter-spacing:-.01em}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+@media(max-width:600px){.wrap{padding:0 16px}}
+.firma{font-size:12.5px;color:var(--gris);border-bottom:1px solid var(--linea)}
+.firma .wrap{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding-top:6px;padding-bottom:6px}
+.firma b{color:var(--negro)}
+.bd{border:1.5px solid var(--negro);border-radius:999px;background:transparent;padding:4px 12px;font-size:12.5px;font-weight:700;cursor:pointer}
+.bd[aria-pressed="true"]{background:var(--negro);color:var(--crema)}
+header .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-top:18px;padding-bottom:18px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo .e{font-family:"Krona One";font-size:26px;background:var(--ladrillo);color:var(--crema);padding:2px 12px 4px;border-radius:6px}
+.logo small{font-size:13px;color:var(--gris);line-height:1.2}
+header nav{display:flex;gap:18px;font-size:14.5px;font-weight:500;flex-wrap:wrap}
+header nav a{text-decoration:none;color:inherit}
+header nav a:hover{color:var(--ladrillo)}
+
+/* hero */
+.hero .wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:48px;align-items:center;padding-top:28px;padding-bottom:56px}
+.hero h1{font-family:"Krona One";font-weight:400;font-size:clamp(28px,3.8vw,48px);line-height:1.12;margin:0 0 18px}
+.hero h1 span{color:var(--ladrillo)}
+.hero ul{list-style:none;padding:0;margin:0 0 26px;display:grid;gap:8px}
+.hero li{display:flex;gap:10px;align-items:flex-start}
+.hero li::before{content:"";width:10px;height:10px;margin-top:7px;background:var(--ladrillo);border-radius:2px;flex:0 0 auto}
+.cta{display:inline-flex;align-items:center;gap:8px;background:var(--negro);color:var(--crema);border:0;border-radius:999px;padding:12px 20px;font-weight:700;text-decoration:none;cursor:pointer}
+.cta.cl{background:transparent;color:var(--negro);border:1.5px solid var(--negro)}
+.cta.wa{background:var(--wa);color:#fff}
+.ctas{display:flex;gap:10px;flex-wrap:wrap}
+/* visor story */
+.story{position:relative;aspect-ratio:9/16;max-height:640px;margin:0 auto;width:100%;max-width:360px;border-radius:22px;overflow:hidden;background:var(--negro);color:#fff;box-shadow:0 30px 60px -28px rgba(22,20,18,.6);cursor:pointer;user-select:none}
+.story img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.story .barras{position:absolute;top:12px;left:12px;right:12px;display:flex;gap:4px;z-index:3}
+.story .barras i{flex:1;height:3px;background:rgba(255,255,255,.35);border-radius:2px;overflow:hidden}
+.story .barras i b{display:block;height:100%;width:0;background:#fff}
+.story .cab{position:absolute;top:24px;left:14px;z-index:3;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700}
+.story .cab .av{width:30px;height:30px;border-radius:50%;background:var(--ladrillo);display:grid;place-items:center;font-family:"Krona One";font-size:11px}
+.story .pie{position:absolute;left:0;right:0;bottom:0;padding:70px 18px 20px;background:linear-gradient(transparent,rgba(0,0,0,.82));z-index:2}
+.story .pie .pr{display:inline-block;background:var(--ladrillo);font-family:"Krona One";font-size:18px;padding:4px 10px;border-radius:6px}
+.story .pie .ej{display:block;font-size:11px;opacity:.85;margin-top:4px}
+.story .pie h3{margin:10px 0 2px;font-size:20px;line-height:1.2}
+.story .pie p{margin:0;font-size:13.5px;opacity:.9}
+.story .tap{position:absolute;bottom:20px;right:16px;z-index:3;font-size:11.5px;opacity:.75}
+@media(max-width:860px){.hero .wrap{grid-template-columns:1fr}.story{max-height:560px}}
+
+/* filtros */
+.filtros{position:sticky;top:0;z-index:20;background:var(--crema);border-top:1.5px solid var(--negro);border-bottom:1.5px solid var(--negro)}
+.filtros .wrap{display:flex;gap:10px;align-items:center;padding-top:10px;padding-bottom:10px;overflow-x:auto;scrollbar-width:none}
+.filtros .wrap::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;border:1.5px solid var(--negro);background:var(--papel);border-radius:999px;padding:6px 13px;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap}
+.chip[aria-pressed="true"]{background:var(--negro);color:var(--crema)}
+.chip.cred[aria-pressed="true"]{background:var(--verde);border-color:var(--verde)}
+.filtros label{flex:0 0 auto;font-size:13.5px;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.filtros select{border:1.5px solid var(--negro);border-radius:999px;background:var(--papel);padding:5px 10px}
+.sep{flex:0 0 1.5px;height:24px;background:var(--linea)}
+
+/* reel */
+section{padding:56px 0}
+.tit{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+.tit h2{font-family:"Krona One";font-weight:400;font-size:clamp(22px,2.6vw,32px);margin:0;line-height:1.2}
+.tit p{margin:0;color:var(--gris);font-size:14.5px;max-width:460px}
+.reel{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 24px 18px;margin:0 -24px;scrollbar-width:thin}
+@media(max-width:600px){.reel{padding:4px 16px 18px;margin:0 -16px}}
+.card{flex:0 0 268px;scroll-snap-align:start;position:relative;aspect-ratio:9/15;border-radius:18px;overflow:hidden;background:var(--negro);color:#fff;cursor:pointer;border:0;padding:0;text-align:left}
+.card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.card:hover img{transform:scale(1.04)}
+.card .grad{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.35) 0,transparent 30%,transparent 45%,rgba(0,0,0,.85) 100%)}
+.card .arriba{position:absolute;top:12px;left:12px;right:12px;display:flex;justify-content:space-between;gap:6px;flex-wrap:wrap}
+.tag{font-size:11.5px;font-weight:700;background:rgba(255,255,255,.92);color:var(--negro);border-radius:999px;padding:3px 9px}
+.tag.cr{background:var(--verde);color:#fff}
+.card .abajo{position:absolute;left:14px;right:14px;bottom:14px}
+.card .pr{font-family:"Krona One";font-size:20px}
+.card .pr small{display:block;font-family:"DM Sans";font-size:11px;opacity:.8;font-weight:500}
+.card h3{font-size:17px;margin:6px 0 2px;line-height:1.25}
+.card .dat{font-size:13px;opacity:.88}
+.card .fit{margin-top:8px;font-size:12.5px;font-weight:700;padding:4px 9px;border-radius:6px;display:inline-block}
+.fit.ok{background:var(--verdecl);color:#1d5a37}.fit.no{background:#FBE3D9;color:var(--ladrillo2)}
+.vacio{padding:30px;color:var(--gris)}
+
+/* crédito */
+.credito{background:var(--negro);color:var(--crema)}
+.credito .wrap{display:grid;grid-template-columns:1fr 1fr;gap:48px}
+.credito h2{font-family:"Krona One";font-weight:400;font-size:clamp(22px,2.6vw,32px);margin:0 0 10px;line-height:1.2}
+.credito ul{padding-left:18px;margin:12px 0 0;color:#d8d0c3}
+.campos{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.campos label{display:grid;gap:5px;font-size:13px;color:#d8d0c3;min-width:0}
+.campos input{background:#26221f;border:1px solid #3a3530;border-radius:8px;padding:10px 12px;color:var(--crema);width:100%;min-width:0}
+.res{margin-top:18px;background:var(--crema);color:var(--negro);border-radius:14px;padding:18px}
+.res .fila{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid var(--linea);font-size:14.5px}
+.res .fila b{font-family:"Krona One";font-size:15px;font-weight:400}
+.res .total{font-size:15px}.res .total b{color:var(--ladrillo);font-size:20px}
+.res p{font-size:12px;color:var(--gris);margin:10px 0 0}
+.lista-fit{margin-top:14px;display:grid;gap:6px}
+.lf{color:var(--negro);display:flex;justify-content:space-between;gap:10px;font-size:13.5px;padding:7px 10px;border-radius:8px;background:var(--papel);cursor:pointer}
+.lf.ok{background:var(--verdecl)}
+@media(max-width:860px){.credito .wrap{grid-template-columns:1fr}.campos{grid-template-columns:1fr 1fr}}
+
+/* visita */
+.visita .wrap{display:grid;grid-template-columns:1fr 400px;gap:44px;align-items:start}
+.form{display:grid;gap:14px}
+.form label{display:grid;gap:5px;font-size:13.5px;font-weight:500;min-width:0}
+.form select,.form input{border:1.5px solid var(--negro);border-radius:10px;background:var(--papel);padding:10px 12px;width:100%;min-width:0}
+.pills{display:flex;gap:8px;flex-wrap:wrap}
+.pills button{border:1.5px solid var(--negro);background:var(--papel);border-radius:10px;padding:7px 11px;cursor:pointer;font-size:13.5px;line-height:1.2}
+.pills button b{display:block;font-family:"Krona One";font-size:15px;font-weight:400}
+.pills button[aria-pressed="true"]{background:var(--ladrillo);border-color:var(--ladrillo);color:#fff}
+.tel{background:#1E1B18;border-radius:28px;padding:12px;position:sticky;top:70px}
+.tel .hd{display:flex;align-items:center;gap:10px;color:#fff;padding:6px 8px 12px}
+.tel .hd .av{width:34px;height:34px;border-radius:50%;background:var(--ladrillo);display:grid;place-items:center;font-family:"Krona One";font-size:11px}
+.tel .hd b{display:block;font-size:14px}.tel .hd span{font-size:12px;opacity:.7}
+.chat{background:#EFE6D6;border-radius:18px;padding:16px 12px;min-height:280px;display:flex;flex-direction:column;justify-content:flex-end}
+.esc{font-size:12px;color:#61705f;align-self:flex-end;min-height:16px;margin-bottom:4px}
+.bur{align-self:flex-end;background:#D9F7C8;border-radius:12px 3px 12px 12px;padding:9px 11px 18px;font-size:14px;white-space:pre-wrap;max-width:92%;position:relative;color:#111;box-shadow:0 1px 1px rgba(0,0,0,.1)}
+.bur .h{position:absolute;right:8px;bottom:3px;font-size:10.5px;color:#5c6f5c}
+.tel .cta{width:100%;justify-content:center;margin-top:12px}
+@media(max-width:900px){.visita .wrap{grid-template-columns:minmax(0,1fr)}.tel{position:static}}
+
+/* tasación */
+.tasa{background:var(--ladrillo);color:#fff}
+.tasa .wrap{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.tasa h2{font-family:"Krona One";font-weight:400;font-size:clamp(22px,2.6vw,32px);margin:0 0 10px;line-height:1.2}
+.tasa ul{padding-left:18px;margin:0}
+.tasa .form select,.tasa .form input{border-color:#fff;color:var(--negro)}
+.tasa .cta{background:var(--negro)}
+@media(max-width:800px){.tasa .wrap{grid-template-columns:1fr}}
+
+/* ficha */
+dialog.ficha{border:0;padding:0;margin:0 0 0 auto;height:100vh;max-height:100vh;width:min(560px,100vw);max-width:100vw;background:var(--papel);color:var(--negro)}
+dialog.ficha::backdrop{background:rgba(22,20,18,.6)}
+.fx{position:sticky;top:0;z-index:3;display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--papel);border-bottom:1px solid var(--linea);font-size:13px;color:var(--gris)}
+.fx button{border:0;background:var(--crema);width:36px;height:36px;border-radius:50%;font-size:20px;cursor:pointer}
+.gal{position:relative;aspect-ratio:4/3;background:var(--negro)}
+.gal img{width:100%;height:100%;object-fit:cover}
+.gal .bars{position:absolute;top:10px;left:10px;right:10px;display:flex;gap:4px}
+.gal .bars i{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.4)}
+.gal .bars i.on{background:#fff}
+.gal .prev,.gal .next{position:absolute;top:0;bottom:0;width:40%;background:transparent;border:0;cursor:pointer}
+.gal .prev{left:0}.gal .next{right:0}
+.fb{padding:18px 20px 28px}
+.fb h2{font-size:24px;margin:6px 0 4px;line-height:1.2}
+.fb .pr{font-family:"Krona One";font-size:22px;color:var(--ladrillo)}
+.fb .pr small{display:block;font-family:"DM Sans";font-size:11.5px;color:var(--gris)}
+.dt{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0}
+.dt div{background:var(--crema);border-radius:10px;padding:10px}
+.dt b{display:block;font-family:"Krona One";font-size:15px;font-weight:400}
+.dt span{font-size:12px;color:var(--gris)}
+.fb ul{padding-left:18px;margin:6px 0 14px;font-size:14.5px}
+.fb .nota{font-size:12.5px;color:var(--gris);background:var(--crema);border-radius:8px;padding:8px 10px}
+.mapa iframe{width:100%;height:220px;border:0;border-radius:12px;margin-top:14px}
+.fb .ctas{margin-top:14px}
+
+/* dueño */
+.duenio{display:none;background:var(--negro);color:var(--crema);padding:36px 0 50px}
+body.vd .duenio{display:block}
+.duenio .ej{display:inline-block;background:var(--ladrillo);color:#fff;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:4px}
+.duenio h2{font-family:"Krona One";font-weight:400;font-size:clamp(20px,2.4vw,28px);margin:12px 0 20px}
+.dg{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:18px}
+.cj{background:#24201d;border-radius:14px;padding:16px}
+.cj h3{margin:0 0 10px;font-size:15px}
+.cons{background:#D9F7C8;color:#111;border-radius:12px 12px 12px 3px;padding:8px 10px;margin-bottom:10px;font-size:13px;white-space:pre-wrap}
+.cons small{display:block;color:#4d644d;font-size:11px;margin-top:3px}
+.ag{width:100%;border-collapse:collapse;font-size:13px}
+.ag td,.ag th{padding:6px 4px;border-bottom:1px solid #3a3530;text-align:left;vertical-align:top}
+.ag td span{display:block;background:rgba(210,85,43,.25);border-left:3px solid var(--ladrillo);padding:3px 6px;border-radius:3px;margin-bottom:3px;font-size:12px}
+.k{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #3a3530;font-size:14px}
+.k b{font-family:"Krona One";font-weight:400}
+.pv{margin-top:18px;background:var(--crema);color:var(--negro);border-radius:14px;padding:20px 22px}
+.pv h3{font-family:"Krona One";font-weight:400;font-size:20px;margin:0 0 10px}
+.pv ul{margin:0;padding-left:18px;columns:2;column-gap:32px}
+.pv li{margin-bottom:6px;break-inside:avoid}
+@media(max-width:900px){.dg{grid-template-columns:1fr}.pv ul{columns:1}}
+footer{padding:34px 0;border-top:1.5px solid var(--negro);font-size:14px}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+footer .legal{width:100%;font-size:12.5px;color:var(--gris);border-top:1px solid var(--linea);padding-top:14px;margin-top:8px}
+</style>
+</head>
+<body>
+<div class="firma"><div class="wrap"><span>Prototipo preparado para <b>EPA Inmobiliaria</b> · 10 de noviembre de 2026</span><button class="bd" id="bd" aria-pressed="false">Ver como dueño</button></div></div>
+
+<section class="duenio" aria-label="Vista del dueño"><div class="wrap">
+  <span class="ej">Panel de ejemplo</span>
+  <h2>Así te llegarían las consultas, Exequiel</h2>
+  <div class="dg">
+    <div class="cj"><h3>Consultas que entraron</h3><div id="dc"></div></div>
+    <div class="cj"><h3>Visitas de la semana</h3><table class="ag" id="da"></table></div>
+    <div class="cj"><h3>La semana en números</h3>
+      <div class="k"><span>Consultas con la casa ya indicada</span><b>11</b></div>
+      <div class="k"><span>Llegan con la cuenta del crédito hecha</span><b>6</b></div>
+      <div class="k"><span>Visitas agendadas</span><b>5</b></div>
+      <div class="k"><span>Pedidos de tasación</span><b>2</b></div>
+      <div class="k"><span>Reservas con seña</span><b>1 · U$D 1.000</b></div>
+      <div class="k"><span>Comisión por consulta</span><b>$ 0</b></div>
+      <p style="font-size:12px;opacity:.7;margin:10px 0 0">Todo es de ejemplo. Frente a un portal: no se paga por aviso y el comprador no ve al lado las casas de otras inmobiliarias.</p>
+    </div>
+  </div>
+  <div class="pv"><h3>Para vos, Exequiel</h3><ul>
+    <li>Menos mensajes repetidos: la consulta trae la casa, el día y cómo piensa pagar.</li>
+    <li>Agenda de visitas por días y franjas, sin ida y vuelta.</li>
+    <li>La seña de reserva queda registrada antes de confirmar.</li>
+    <li>Sin comisión por consulta ni costo por aviso.</li>
+    <li>Las aptas crédito se venden solas: el comprador ya sabe si le alcanza.</li>
+  </ul></div>
+</div></section>
+
+<header><div class="wrap">
+  <a class="logo" href="#"><span class="e">EPA</span><small>Inmobiliaria<br>Venado Tuerto</small></a>
+  <nav aria-label="Secciones"><a href="#casas">Propiedades</a><a href="#credito">¿Me alcanza?</a><a href="#visita">Visitar</a><a href="#tasar">Tasar</a></nav>
+</div></header>
+
+<div class="hero"><div class="wrap">
+  <div>
+    <h1>15 propiedades en venta, de un lote de <span>U$D 17.000</span> a una casa céntrica de <span>U$D 110.000</span>.</h1>
+    <ul>
+      <li>Casas aptas crédito en Av. España, Pasaje Roma y Vélez Sarsfield.</li>
+      <li>Precio publicado en todas: sin “consultar”.</li>
+      <li>Calculá si te alcanza y pedí la visita en un solo mensaje.</li>
+    </ul>
+    <div class="ctas"><a class="cta" href="#casas">Ver las propiedades</a><a class="cta cl" href="#credito">¿Me alcanza con crédito?</a></div>
+  </div>
+  <div class="story" id="story" role="button" tabindex="0" aria-label="Destacadas: tocá para pasar">
+    <div class="barras" id="sb"></div>
+    <div class="cab"><span class="av">EPA</span>epa.inmobiliaria · destacadas</div>
+    <div id="sc"></div>
+    <div class="tap">tocá para pasar ›</div>
+  </div>
+</div></div>
+
+<div class="filtros"><div class="wrap" role="group" aria-label="Filtros">
+  <button class="chip" data-t="" aria-pressed="true">Todas</button>
+  <button class="chip" data-t="Casa" aria-pressed="false">Casas</button>
+  <button class="chip" data-t="Departamento" aria-pressed="false">Departamentos</button>
+  <button class="chip" data-t="Otros" aria-pressed="false">Lotes, galpón y PH</button>
+  <span class="sep"></span>
+  <button class="chip cred" id="fc" aria-pressed="false">✓ Solo aptas crédito</button>
+  <span class="sep"></span>
+  <label>Hasta <select id="fp"><option value="999999">cualquier precio</option><option value="45000">U$D 45.000</option><option value="60000">U$D 60.000</option><option value="75000">U$D 75.000</option><option value="110000">U$D 110.000</option></select></label>
+  <label>Dorm. <select id="fd"><option value="0">todos</option><option value="1">1 o más</option><option value="2">2 o más</option></select></label>
+</div></div>
+
+<section id="casas"><div class="wrap">
+  <div class="tit"><h2>Deslizá como en las historias</h2><p>10 de sus avisos reales, con fotos y precio. La etiqueta verde dice si te alcanza con lo que cargaste en la cuenta.</p></div>
+  <div class="reel" id="reel"></div>
+</div></section>
+
+<section class="credito" id="credito"><div class="wrap">
+  <div>
+    <h2>¿Me alcanza con crédito?</h2>
+    <ul>
+      <li>Cargá lo que gana tu hogar y lo que tenés ahorrado.</li>
+      <li>La cuenta usa sistema francés y un tope del 75 % del valor.</li>
+      <li>Las aptas crédito suman préstamo; el resto, solo ahorro.</li>
+      <li>Tasa, plazo y dólar son de ejemplo: cambialos por los de tu banco.</li>
+    </ul>
+    <div class="lista-fit" id="lfit"></div>
+  </div>
+  <div>
+    <div class="campos">
+      <label>Ingreso del hogar ($/mes)<input id="ci" type="number" value="2500000" step="50000" min="0"></label>
+      <label>% del ingreso para la cuota<input id="cp" type="number" value="25" min="10" max="40"></label>
+      <label>Tasa anual (TNA %, ejemplo)<input id="ct" type="number" value="4.5" step="0.1" min="0"></label>
+      <label>Plazo (años)<input id="cy" type="number" value="20" min="5" max="30"></label>
+      <label>Dólar ($, ejemplo)<input id="cd" type="number" value="1450" step="10" min="1"></label>
+      <label>Ahorro (U$D)<input id="ca" type="number" value="25000" step="1000" min="0"></label>
+    </div>
+    <div class="res">
+      <div class="fila"><span>Cuota máxima</span><b id="r1"></b></div>
+      <div class="fila"><span>Préstamo posible</span><b id="r2"></b></div>
+      <div class="fila total"><span>Te alcanza para una apta crédito de hasta</span><b id="r3"></b></div>
+      <p>Cálculo de ejemplo, orientativo. Las condiciones reales las define el banco (UVA, relación cuota-ingreso, tasación).</p>
+    </div>
+  </div>
+</div></section>
+
+<section class="visita" id="visita"><div class="wrap">
+  <div>
+    <div class="tit"><h2>Pedí la visita</h2><p>Mientras elegís, a la derecha se escribe el WhatsApp que le llega a EPA.</p></div>
+    <div class="form">
+      <label>Propiedad<select id="vp"></select></label>
+      <div><div style="font-size:13.5px;font-weight:500;margin-bottom:6px">Día</div><div class="pills" id="vd"></div></div>
+      <div><div style="font-size:13.5px;font-weight:500;margin-bottom:6px">Horario (lunes a viernes, 8 a 18)</div><div class="pills" id="vf"></div></div>
+      <label>Cómo pensás pagar<select id="vg"><option>Con crédito hipotecario</option><option>Contado</option><option>Todavía no sé</option></select></label>
+      <label style="flex-direction:row;display:flex;align-items:center;gap:8px"><input type="checkbox" id="vc" style="width:auto"> Sumar mi cuenta de “¿Me alcanza?”</label>
+      <label>Tu nombre<input id="vn" placeholder="Ej.: Sofía" autocomplete="given-name"></label>
+    </div>
+  </div>
+  <aside class="tel" aria-label="Vista previa del WhatsApp">
+    <div class="hd"><span class="av">EPA</span><div><b>EPA Inmobiliaria</b><span>3462 67-5748</span></div></div>
+    <div class="chat"><div class="esc" id="esc"></div><div class="bur" id="bur"></div></div>
+    <a class="cta wa" id="venv" target="_blank" rel="noopener">Mandar este WhatsApp</a>
+  </aside>
+</div></section>
+
+<section class="tasa" id="tasar"><div class="wrap">
+  <div><h2>¿Vendés? Te la tasamos</h2>
+    <ul><li>Casas, departamentos, lotes, galpones y campos.</li><li>Te decimos si es apta crédito: hoy es lo que más se busca.</li><li>Respuesta por WhatsApp.</li></ul></div>
+  <div class="form">
+    <label>Qué tenés<select id="tt"><option>Casa</option><option>Departamento</option><option>Lote</option><option>Galpón</option><option>Campo</option></select></label>
+    <label>Dirección o barrio<input id="td" placeholder="Ej.: Pasaje Roma al 200"></label>
+    <label>Metros (aprox.)<input id="tm" placeholder="Ej.: 80 m² sobre lote de 10 x 30"></label>
+    <label>Tu nombre<input id="tn" placeholder="Ej.: Martín"></label>
+    <a class="cta" id="tenv" target="_blank" rel="noopener">Pedir tasación por WhatsApp</a>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <div><b class="kr">EPA</b> Inmobiliaria · Venado Tuerto, Santa Fe<br>Lunes a viernes de 8 a 18</div>
+  <div>WhatsApp 3462 67-5748<br>info@epainmobiliaria.com</div>
+  <div class="legal">Prototipo de demostración preparado para EPA Inmobiliaria por Resolviendo Kos · No es la web oficial. Propiedades, precios y fotos tomados de epainmobiliaria.com; los paneles, la cuenta de crédito y los números del dueño son de ejemplo.</div>
+</div></footer>
+
+<dialog class="ficha" id="ficha" aria-labelledby="ft"></dialog>
+
+<script>
+const WA="5493462675748",U="https://epainmobiliaria.com/wp-content/uploads/";
+const P=[
+ {id:"oro",t:"Casa a estrenar",dir:"Gdor. Oroño 291",tipo:"Casa",pr:70000,dorm:2,ban:"1 + antebaño",cub:85,ter:122,coch:"1 auto",cred:false,inc:["Construida en 2023","Cocina-comedor integrados y lavadero","Aberturas de aluminio línea Módena, porcelanatos y alarma","Tour 360 en su web"],f:["2024/02/20240127_195227-1-scaled.jpg","2024/02/20240127_195322-copia-scaled.jpg","2024/02/20240127_195419-copia-scaled.jpg","2024/02/20240128_132550-scaled.jpg"]},
+ {id:"paz",t:"Casa lista para mudarse",dir:"Paz al 100",tipo:"Casa",pr:105000,dorm:2,ban:1,cub:100,ter:"10 x 38 m",coch:"doble",cred:false,inc:["Dos habitaciones amplias","Cocina, living y comedor integrados","Lavadero independiente y patio","Todos los servicios"],f:["2025/10/2004185051.jpg","2025/10/2004185062.jpg","2025/10/2004185059.jpg","2025/10/2004185065.jpg","2025/10/2004185058.jpg"]},
+ {id:"esp",t:"Casa sobre Av. España",dir:"Av. España 160",tipo:"Casa",pr:75000,dorm:2,ban:2,cub:150,ter:193,coch:"a futuro",cred:true,inc:["Apta crédito hipotecario","Escritura e impuestos al día","Amplio retiro al frente"],nota:"La ficha original dice 2 y 3 habitaciones en distintos lugares: va 2, a confirmar.",f:["2025/08/1988473110-835x467.jpg","2025/08/1990999315-835x467.webp","2025/08/1988473098-835x467.webp","2025/08/1990999316-835x467.webp"]},
+ {id:"rom",t:"Casa en Pasaje Roma",dir:"Pasaje Roma al 200",tipo:"Casa",pr:40000,dorm:2,ban:1,cub:80,ter:null,coch:"propia",cred:true,inc:["Apta créditos","Cocina-comedor integrada","Lavadero independiente","Orientación norte, zona tranquila"],f:["2025/10/1997987259-835x467.jpg","2025/10/1997987257-835x467.jpg","2025/10/1997987256-835x467.webp","2025/10/1997987258-835x467.jpg"]},
+ {id:"vel",t:"Casa para refaccionar",dir:"Vélez Sarsfield al 700",tipo:"Casa",pr:55000,dorm:2,ban:2,cub:200,ter:null,coch:"1 auto",cred:true,inc:["Apta crédito, papeles al día","Galería cerrada con asador","Salón de usos múltiples al fondo"],nota:"En el listado de su web no figura el precio; está dentro de la ficha.",f:["2025/10/1998171812-835x467.jpg","2025/10/1997964892-835x467.jpg","2025/10/1997964894-835x467.jpg","2025/10/1997964897-835x467.jpg"]},
+ {id:"e841",t:"Departamento frente al parque",dir:"España 841",tipo:"Departamento",pr:60000,dorm:2,ban:"1 + antebaño",cub:66,ter:null,coch:"techada",cred:false,inc:["Planta baja con patio","Lavadero","Mucha luz natural, orientación norte"],f:["2024/07/1916602399-835x467.jpg","2024/07/1916602037-835x467.jpg","2024/07/1916602032-835x467.jpg"]},
+ {id:"poz",t:"Departamento en pozo, pleno centro",dir:"San Martín casi Roca",tipo:"Departamento",pr:40000,dorm:1,ban:1,cub:40,ter:null,coch:null,cred:false,inc:["2 ambientes en planta alta","Cocina integrada","Espacio común con parrillero","Documentación al día"],f:["2025/10/1999681980.webp","2025/10/1999681981.webp","2025/10/1999681982.webp"]},
+ {id:"ph",t:"PH céntrico (ex Hotel California)",dir:"Belgrano 415, Galería Belgrano",tipo:"Otros",sub:"PH",pr:100000,dorm:11,ban:10,cub:337,ter:null,coch:null,cred:false,inc:["9 habitaciones con baño privado","Calefacción por tiro balanceado y aire acondicionado","Entrada también por Mitre 779"],f:["2024/04/20240416_125549-1-835x467.jpg","2024/04/DSC00780-835x467.jpg","2024/04/DSC00781-835x467.jpg"]},
+ {id:"per",t:"Lote nivelado con financiación",dir:"Perilo al 900",tipo:"Otros",sub:"Lote",pr:40000,dorm:null,ban:null,cub:null,ter:"11,40 x 26 m",coch:null,cred:false,inc:["Totalmente nivelado","Todos los servicios","Medianeras edificadas, portón y vereda","Financiación disponible"],f:["2025/08/1986848757-835x467.jpg","2025/08/1986848756-835x467.jpg","2025/08/1986848754-835x467.jpg"]},
+ {id:"gal",t:"Galpón sobre Av. Perón",dir:"Av. Pte. Perón al 1100",tipo:"Otros",sub:"Galpón",pr:65000,dorm:null,ban:1,cub:150,ter:"15 x 50 m (750 m²)",coch:null,cred:false,inc:["Techo parabólico","Apto taller, depósito o logística","Zona estratégica de la ciudad"],f:["2025/04/IMG_6930-835x467.jpg","2025/04/IMG_6881-835x467.jpg","2025/04/IMG_6882-835x467.jpg"]}
+];
+const $=s=>document.querySelector(s);
+const fmt=n=>"U$D "+Math.round(n).toLocaleString("es-AR");
+function ilus(p){
+  const c=p.tipo==="Departamento"?"#2F4A6B":p.tipo==="Casa"?"#A93E1B":"#3E5A3A";
+  let s;
+  if(p.tipo==="Casa")s='<rect x="70" y="250" width="220" height="150" fill="#FFF8EC"/><path d="M50 255 L180 160 L310 255Z" fill="#161412"/><rect x="160" y="320" width="40" height="80" fill="'+c+'"/><rect x="95" y="285" width="44" height="34" fill="'+c+'"/><rect x="221" y="285" width="44" height="34" fill="'+c+'"/>';
+  else if(p.tipo==="Departamento")s='<rect x="110" y="120" width="140" height="300" fill="#FFF8EC"/>'+[0,1,2,3,4,5].map(i=>'<rect x="130" y="'+(140+i*44)+'" width="40" height="26" fill="'+c+'"/><rect x="190" y="'+(140+i*44)+'" width="40" height="26" fill="'+c+'"/>').join("");
+  else s='<rect x="50" y="280" width="260" height="110" fill="none" stroke="#FFF8EC" stroke-width="4" stroke-dasharray="12 8"/><path d="M80 280 Q180 200 280 280" fill="#FFF8EC" opacity=".25"/>';
+  const svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 600"><rect width="360" height="600" fill="'+c+'"/><circle cx="290" cy="90" r="34" fill="#F2B544"/>'+s+'</svg>';
+  return "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg);
+}
+function im(p,i,cls){return '<img'+(cls?' class="'+cls+'"':'')+' alt="'+p.t+'" loading="lazy" src="'+U+p.f[i||0]+'" data-i="'+ilus(p)+'" onerror="this.onerror=null;this.src=this.dataset.i">';}
+function datos(p){const a=[];if(p.dorm)a.push(p.dorm+" dorm.");if(p.cub)a.push(p.cub+" m² cub.");if(p.ter)a.push("terreno "+(typeof p.ter==="number"?p.ter+" m²":p.ter));return a.join(" · ");}
+// crédito
+let cap={cuota:0,prest:0,ahorro:0};
+function calc(){
+  const ing=+$("#ci").value||0,pc=(+$("#cp").value||0)/100,t=(+$("#ct").value||0)/100/12,n=(+$("#cy").value||0)*12,d=+$("#cd").value||1,ah=+$("#ca").value||0;
+  const cuota=ing*pc;const fac=t>0?(1-Math.pow(1+t,-n))/t:n;const prest=cuota*fac/d;
+  cap={cuota,prest,ahorro:ah};
+  $("#r1").textContent="$ "+Math.round(cuota).toLocaleString("es-AR");
+  $("#r2").textContent=fmt(prest);
+  $("#r3").textContent=fmt(Math.min(ah+prest,ah/0.25));
+  $("#lfit").innerHTML=P.map(p=>{const f=fit(p);return '<div class="lf'+(f.ok?" ok":"")+'" data-id="'+p.id+'"><span>'+p.dir+(p.cred?" · apta crédito":"")+'</span><b>'+(f.ok?"Te alcanza":"Faltan "+fmt(f.falta))+'</b></div>';}).join("");
+  render();burbuja();
+}
+function fit(p){
+  let alcance=cap.ahorro;
+  if(p.cred){alcance=cap.ahorro+Math.min(cap.prest,p.pr*0.75);}
+  return {ok:alcance>=p.pr,falta:Math.max(0,p.pr-alcance)};
+}
+["#ci","#cp","#ct","#cy","#cd","#ca"].forEach(s=>$(s).addEventListener("input",calc));
+// filtros
+let fT="",fC=false;
+document.querySelectorAll(".chip[data-t]").forEach(b=>b.onclick=()=>{fT=b.dataset.t;document.querySelectorAll(".chip[data-t]").forEach(x=>x.setAttribute("aria-pressed",x===b));render();});
+$("#fc").onclick=()=>{fC=!fC;$("#fc").setAttribute("aria-pressed",fC);render();};
+$("#fp").onchange=render;$("#fd").onchange=render;
+function render(){
+  const mx=+$("#fp").value,dm=+$("#fd").value;
+  const r=P.filter(p=>(!fT||p.tipo===fT)&&(!fC||p.cred)&&p.pr<=mx&&(!dm||(p.dorm&&p.dorm>=dm)));
+  $("#reel").innerHTML=r.length?r.map(p=>{const f=fit(p);return '<button class="card" data-id="'+p.id+'">'+im(p)+'<span class="grad"></span><span class="arriba"><span class="tag">'+(p.sub||p.tipo)+'</span>'+(p.cred?'<span class="tag cr">Apta crédito</span>':'')+'</span><span class="abajo"><span class="pr">'+fmt(p.pr)+'<small>Precio de ejemplo · publicado en su web</small></span><h3>'+p.dir+'</h3><span class="dat">'+datos(p)+'</span><br><span class="fit '+(f.ok?"ok":"no")+'">'+(f.ok?"✓ Te alcanza":"Faltan "+fmt(f.falta))+'</span></span></button>';}).join(""):'<div class="vacio">Ninguna propiedad con esos filtros.</div>';
+}
+document.addEventListener("click",e=>{const c=e.target.closest(".card,.lf");if(c)abrir(c.dataset.id);});
+// story
+const DEST=["oro","esp","rom","ph","gal"];let si=0,st;
+$("#sb").innerHTML=DEST.map(()=>'<i><b></b></i>').join("");
+function story(){
+  const p=P.find(x=>x.id===DEST[si]);
+  $("#sc").innerHTML=im(p,0,"bg")+'<div class="pie"><span class="pr">'+fmt(p.pr)+'</span><span class="ej">Precio de ejemplo · publicado en su web</span><h3>'+p.t+'</h3><p>'+p.dir+' · '+datos(p)+'</p></div>';
+  [...$("#sb").children].forEach((b,j)=>{const x=b.firstChild;x.style.transition="none";x.style.width=j<si?"100%":"0";});
+  const cur=$("#sb").children[si].firstChild;requestAnimationFrame(()=>{requestAnimationFrame(()=>{cur.style.transition="width 4.5s linear";cur.style.width="100%";});});
+  clearTimeout(st);st=setTimeout(()=>{si=(si+1)%DEST.length;story();},4500);
+}
+$("#story").onclick=e=>{const r=$("#story").getBoundingClientRect();if(e.clientX-r.left<r.width*0.3){si=(si-1+DEST.length)%DEST.length;story();}else if(e.clientY-r.top>r.height*0.6){abrir(DEST[si]);}else{si=(si+1)%DEST.length;story();}};
+$("#story").onkeydown=e=>{if(e.key==="Enter")abrir(DEST[si]);};
+// ficha
+function abrir(id){
+  const p=P.find(x=>x.id===id);if(!p)return;const d=$("#ficha");let g=0;const f=fit(p);
+  d.innerHTML='<div class="fx"><span>EPA Inmobiliaria · '+(p.sub||p.tipo)+'</span><button aria-label="Cerrar" id="fcx">×</button></div><div class="gal" id="gal"></div><div class="fb"><span class="fit '+(f.ok?"ok":"no")+'" style="font-size:12.5px;font-weight:700;padding:4px 9px;border-radius:6px;display:inline-block">'+(f.ok?"✓ Te alcanza con tu cuenta":"Te faltan "+fmt(f.falta)+" con tu cuenta")+'</span><h2 id="ft">'+p.t+'</h2><div style="color:var(--gris);margin-bottom:8px">'+p.dir+', Venado Tuerto</div><div class="pr">'+fmt(p.pr)+'<small>Precio de ejemplo · publicado en su web</small></div>'+
+  '<div class="dt"><div><b>'+(p.dorm??"—")+'</b><span>dormitorios</span></div><div><b>'+(p.ban??"—")+'</b><span>baños</span></div><div><b>'+(p.cub?p.cub+" m²":"—")+'</b><span>cubiertos</span></div><div><b>'+(p.ter?(typeof p.ter==="number"?p.ter+" m²":p.ter):"—")+'</b><span>terreno</span></div><div><b>'+(p.coch||"—")+'</b><span>cochera</span></div><div><b>'+(p.cred?"Sí":"—")+'</b><span>apta crédito</span></div></div>'+
+  '<b>Qué tiene</b><ul>'+p.inc.map(i=>'<li>'+i+'</li>').join("")+'</ul>'+(p.nota?'<div class="nota">'+p.nota+'</div>':'')+
+  '<div class="mapa"><iframe title="Mapa aproximado" loading="lazy" src="https://maps.google.com/maps?q='+encodeURIComponent(p.dir.split(",")[0]+", Venado Tuerto, Santa Fe")+'&z=15&output=embed"></iframe></div>'+
+  '<div class="ctas"><a class="cta wa" target="_blank" rel="noopener" href="https://wa.me/'+WA+'?text='+encodeURIComponent("Hola Exequiel, me interesa "+p.t.toLowerCase()+" de "+p.dir+" ("+fmt(p.pr)+"). ¿Cuándo se puede ver?")+'">Consultar por WhatsApp</a><button class="cta cl" id="fvis">Pedir visita</button></div></div>';
+  function pinta(){$("#gal").innerHTML=im(p,g)+'<div class="bars">'+p.f.map((x,j)=>'<i class="'+(j<=g?"on":"")+'"></i>').join("")+'</div><button class="prev" aria-label="Foto anterior"></button><button class="next" aria-label="Foto siguiente"></button>';
+    d.querySelector(".prev").onclick=()=>{g=(g-1+p.f.length)%p.f.length;pinta();};d.querySelector(".next").onclick=()=>{g=(g+1)%p.f.length;pinta();};}
+  pinta();d.showModal();
+  $("#fcx").onclick=()=>d.close();
+  $("#fvis").onclick=()=>{d.close();$("#vp").value=p.id;burbuja();location.hash="visita";};
+}
+$("#ficha").addEventListener("click",e=>{if(e.target.id==="ficha")e.target.close();});
+// visita
+const DI=["dom","lun","mar","mié","jue","vie","sáb"],ME=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+let dia,fr="Mañana (8 a 12)";
+$("#vp").innerHTML=P.map(p=>'<option value="'+p.id+'">'+p.dir+' · '+fmt(p.pr)+'</option>').join("");
+(function(){const b=new Date(2026,10,10);let c=0,i=1;const h=[];while(c<6){const x=new Date(b);x.setDate(b.getDate()+i);i++;if(x.getDay()%6===0)continue;c++;const l=DI[x.getDay()]+" "+x.getDate()+" "+ME[x.getMonth()];if(!dia)dia=l;h.push('<button data-v="'+l+'" aria-pressed="'+(c===1)+'">'+DI[x.getDay()]+'<b>'+x.getDate()+'</b></button>');}$("#vd").innerHTML=h.join("");
+$("#vf").innerHTML=["Mañana (8 a 12)","Mediodía (12 a 14)","Tarde (14 a 18)"].map((f,j)=>'<button data-v="'+f+'" aria-pressed="'+(j===0)+'">'+f+'</button>').join("");})();
+$("#vd").onclick=e=>{const b=e.target.closest("button");if(!b)return;dia=b.dataset.v;$("#vd").querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));burbuja();};
+$("#vf").onclick=e=>{const b=e.target.closest("button");if(!b)return;fr=b.dataset.v;$("#vf").querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));burbuja();};
+["#vp","#vg","#vc","#vn"].forEach(s=>$(s).addEventListener("input",burbuja));
+let tm;
+function burbuja(){
+  if(!dia)return;const p=P.find(x=>x.id===$("#vp").value);const n=$("#vn").value.trim();
+  let t="Hola Exequiel, ¿cómo estás? "+(n?"Soy "+n+". ":"")+"Quiero ver "+p.t.toLowerCase()+" de "+p.dir+" ("+fmt(p.pr)+").\n\n📅 "+dia+" · "+fr+"\n💵 "+$("#vg").value;
+  if($("#vc").checked){const f=fit(p);t+="\n🧮 Mi cuenta: ahorro "+fmt(cap.ahorro)+", préstamo posible "+fmt(cap.prest)+(f.ok?" (me alcanza)":" (me faltan "+fmt(f.falta)+")");}
+  t+="\n\n¡Gracias!";
+  $("#esc").textContent="escribiendo…";clearTimeout(tm);tm=setTimeout(()=>$("#esc").textContent="",700);
+  const h=new Date();$("#bur").innerHTML=t.replace(/&/g,"&amp;").replace(/</g,"&lt;")+'<span class="h">'+String(h.getHours()).padStart(2,"0")+":"+String(h.getMinutes()).padStart(2,"0")+' ✓✓</span>';
+  $("#venv").href="https://wa.me/"+WA+"?text="+encodeURIComponent(t);
+}
+function tasa(){const t="Hola, quiero tasar una propiedad.\n• "+$("#tt").value+"\n• "+($("#td").value||"Dirección a confirmar")+"\n• "+($("#tm").value||"Metros a confirmar")+($("#tn").value?"\nSoy "+$("#tn").value+".":"");$("#tenv").href="https://wa.me/"+WA+"?text="+encodeURIComponent(t);}
+["#tt","#td","#tm","#tn"].forEach(s=>$(s).addEventListener("input",tasa));
+// dueño
+$("#bd").onclick=()=>{const on=document.body.classList.toggle("vd");$("#bd").setAttribute("aria-pressed",on);$("#bd").textContent=on?"Volver a la vista del cliente":"Ver como dueño";if(on)scrollTo({top:0,behavior:"smooth"});};
+$("#dc").innerHTML=[["Hola Exequiel, soy Sofía. Quiero ver la casa en Pasaje Roma al 200 (U$D 40.000).\n📅 jue 12 nov · Tarde (14 a 18)\n💵 Con crédito hipotecario\n🧮 Mi cuenta: ahorro U$D 15.000 (me alcanza)","hoy 11:20"],["Quiero ver el departamento de España 841 (U$D 60.000).\n📅 vie 13 nov · Mañana","hoy 09:02"],["Quiero tasar un lote en Perilo al 1000.","ayer 18:40"]].map(c=>'<div class="cons">'+c[0]+'<small>'+c[1]+' · ejemplo</small></div>').join("");
+$("#da").innerHTML='<tr><th>Día</th><th>Visitas</th></tr>'+[["Mié 11",["10 h · Av. España 160"]],["Jue 12",["15 h · Pasaje Roma","17 h · Vélez Sarsfield"]],["Vie 13",["9 h · España 841"]],["Lun 16",["11 h · Galpón Av. Perón"]],["Mar 17",["libre"]]].map(r=>'<tr><td>'+r[0]+'</td><td>'+r[1].map(v=>'<span>'+v+'</span>').join("")+'</td></tr>').join("");
+calc();story();tasa();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="EPA Inmobiliaria"></script>
+</body>
+</html>
