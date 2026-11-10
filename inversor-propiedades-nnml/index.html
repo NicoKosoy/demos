@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Inversor Negocios Inmobiliarios · Prototipo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Brygada+1918:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Rethink+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --verde:#12392F;--verde2:#1C4A3E;--verde3:#2B5C4E;
+  --crema:#F2EDE3;--hoja:#FAF7F1;--mostaza:#D9A21B;--mostaza2:#F1D58A;
+  --piedra:#8C877D;--tinta:#1B1E1C;--linea:#D8D1C3;--wa:#1F7A4D;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:clip}
+body{margin:0;background:var(--crema);color:var(--tinta);font-family:"Rethink Sans",system-ui,sans-serif;font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+button,select,input,textarea{font:inherit;color:inherit}
+a{color:inherit}
+.serif{font-family:"Brygada 1918",Georgia,serif}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+@media(max-width:600px){.wrap{padding:0 16px}}
+
+/* firma */
+.firma{font-size:12.5px;color:var(--piedra);border-bottom:1px solid var(--linea);background:var(--hoja)}
+.firma .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:36px;flex-wrap:wrap;padding-top:6px;padding-bottom:6px}
+.firma b{color:var(--tinta);font-weight:600}
+.btn-duenio{border:1px solid var(--verde);background:transparent;color:var(--verde);border-radius:999px;padding:4px 12px;font-size:12.5px;font-weight:600;cursor:pointer}
+.btn-duenio[aria-pressed="true"]{background:var(--verde);color:var(--crema)}
+
+/* header */
+header.top{background:var(--verde);color:var(--crema)}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:18px;padding-bottom:18px;flex-wrap:wrap}
+.marca{display:flex;align-items:baseline;gap:12px;text-decoration:none}
+.marca .w{font-family:"Brygada 1918",serif;font-weight:700;font-size:28px;letter-spacing:.14em}
+.marca .s{font-size:13px;opacity:.8;letter-spacing:.04em}
+nav.menu{display:flex;gap:20px;font-size:14px;flex-wrap:wrap}
+nav.menu a{text-decoration:none;opacity:.85}
+nav.menu a:hover{opacity:1;text-decoration:underline;text-underline-offset:4px}
+
+/* hero: la pregunta */
+.hero{background:var(--verde);color:var(--crema);padding:40px 0 64px;position:relative;overflow:hidden}
+.hero .eyebrow{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--mostaza2)}
+.hero h1{font-family:"Brygada 1918",serif;font-weight:500;font-size:clamp(30px,4.6vw,56px);line-height:1.08;margin:14px 0 12px;max-width:900px}
+.hero h1 em{color:var(--mostaza);font-style:italic}
+.hero .bajada{max-width:640px;opacity:.85;margin:0 0 34px}
+.frase{background:var(--crema);color:var(--tinta);border-radius:6px;padding:28px 28px 22px;box-shadow:0 30px 60px -30px rgba(0,0,0,.5)}
+.frase .q{font-family:"Brygada 1918",serif;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--piedra);margin-bottom:8px}
+.frase p.linea{font-family:"Brygada 1918",serif;font-size:clamp(22px,3vw,34px);line-height:1.6;margin:0}
+.slot{display:inline-block;position:relative;max-width:100%}
+.slot select{appearance:none;-webkit-appearance:none;border:0;border-bottom:3px solid var(--mostaza);background:transparent;font-family:"Brygada 1918",serif;font-style:italic;font-size:inherit;color:var(--verde);padding:0 26px 0 2px;cursor:pointer;max-width:100%}
+.slot::after{content:"▾";position:absolute;right:4px;top:50%;transform:translateY(-50%);font-size:.55em;color:var(--mostaza);pointer-events:none}
+.slot select:focus{outline:2px solid var(--verde3);outline-offset:3px}
+.frase .pie{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:18px;padding-top:14px;border-top:1px dashed var(--linea);flex-wrap:wrap;font-size:14px}
+.contador{font-weight:600}
+.contador b{font-size:20px;color:var(--verde)}
+.link-reset{background:none;border:0;text-decoration:underline;cursor:pointer;color:var(--piedra);font-size:14px}
+.hero .cifras{display:flex;gap:28px;margin-top:28px;flex-wrap:wrap;font-size:14px;opacity:.9}
+.hero .cifras b{display:block;font-family:"Brygada 1918",serif;font-size:26px;font-weight:600;color:var(--mostaza2)}
+
+/* catálogo en renglones */
+section{padding:64px 0}
+.titsec{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+.titsec h2{font-family:"Brygada 1918",serif;font-weight:500;font-size:clamp(26px,3.2vw,38px);margin:0;line-height:1.1}
+.titsec .nota{font-size:14px;color:var(--piedra);max-width:420px}
+.vista{display:flex;gap:6px}
+.vista button{border:1px solid var(--linea);background:var(--hoja);border-radius:4px;padding:6px 12px;font-size:13px;cursor:pointer}
+.vista button[aria-pressed="true"]{background:var(--tinta);color:var(--hoja);border-color:var(--tinta)}
+.renglones{border-top:2px solid var(--tinta)}
+.reng{display:grid;grid-template-columns:70px 150px 1fr 190px;gap:20px;align-items:center;padding:18px 0;border-bottom:1px solid var(--linea);cursor:pointer;transition:background .15s}
+.reng:hover{background:rgba(217,162,27,.08)}
+.reng .cod{font-family:"Brygada 1918",serif;font-size:13px;color:var(--piedra);letter-spacing:.06em}
+.reng .cod b{display:block;font-size:22px;color:var(--tinta);letter-spacing:0;font-weight:600}
+.reng .ft{aspect-ratio:4/3;border-radius:3px;overflow:hidden;background:var(--linea)}
+.reng .ft img{width:100%;height:100%;object-fit:cover}
+.reng h3{font-family:"Brygada 1918",serif;font-weight:600;font-size:21px;margin:0 0 4px;line-height:1.2}
+.reng .zona{font-size:14px;color:var(--piedra);margin-bottom:8px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;list-style:none;padding:0;margin:0}
+.chips li{font-size:12.5px;border:1px solid var(--linea);border-radius:999px;padding:2px 9px;background:var(--hoja)}
+.chips li.op{background:var(--verde);color:var(--crema);border-color:var(--verde)}
+.chips li.op.alq{background:var(--mostaza);color:var(--tinta);border-color:var(--mostaza)}
+.reng .der{text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.precio{font-family:"Brygada 1918",serif;font-weight:600;font-size:20px}
+.precio small,.ej{display:block;font-family:"Rethink Sans",sans-serif;font-size:11px;font-weight:500;color:var(--piedra);letter-spacing:.02em}
+.sumar{display:inline-flex;align-items:center;gap:6px;font-size:13px;border:1px solid var(--verde);color:var(--verde);background:transparent;border-radius:999px;padding:4px 11px;cursor:pointer}
+.sumar[aria-pressed="true"]{background:var(--verde);color:var(--crema)}
+.vacio{padding:40px 0;text-align:center;color:var(--piedra)}
+.grilla{display:none;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:22px}
+.modo-fotos .renglones{display:none}.modo-fotos .grilla{display:grid}
+.tarj{background:var(--hoja);border-radius:4px;overflow:hidden;cursor:pointer;border:1px solid var(--linea)}
+.tarj .ft{aspect-ratio:3/2;background:var(--linea)}.tarj .ft img{width:100%;height:100%;object-fit:cover}
+.tarj .tx{padding:14px 16px 16px}.tarj h3{font-family:"Brygada 1918",serif;font-size:19px;margin:0 0 4px;line-height:1.2}
+@media(max-width:860px){
+  .reng{grid-template-columns:96px 1fr;gap:12px;align-items:start}
+  .reng .cod{display:none}
+  .reng .der{grid-column:1/-1;flex-direction:row;justify-content:space-between;align-items:center;text-align:left}
+  .reng h3{font-size:18px}
+}
+
+/* bandeja consulta de valores */
+.bandeja{position:fixed;left:50%;bottom:16px;transform:translate(-50%,140%);transition:transform .25s;z-index:40;background:var(--tinta);color:var(--hoja);border-radius:999px;padding:8px 8px 8px 20px;display:flex;align-items:center;gap:14px;box-shadow:0 12px 30px -10px rgba(0,0,0,.5);max-width:calc(100% - 32px);visibility:hidden}
+.bandeja.on{transform:translate(-50%,0);visibility:visible}
+.bandeja .t{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bandeja button{border:0;border-radius:999px;background:var(--mostaza);color:var(--tinta);font-weight:700;padding:9px 16px;cursor:pointer;white-space:nowrap}
+
+/* ficha dialog */
+dialog.ficha{border:0;padding:0;width:min(1060px,100%);max-height:92vh;border-radius:6px;background:var(--hoja);color:var(--tinta)}
+dialog.ficha::backdrop{background:rgba(18,57,47,.72)}
+.fi-top{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid var(--linea);position:sticky;top:0;background:var(--hoja);z-index:2}
+.fi-top .cod{font-size:13px;color:var(--piedra)}
+.cerrar{border:0;background:var(--crema);width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:20px;line-height:1}
+.fi-body{display:grid;grid-template-columns:1.25fr 1fr;gap:0}
+.gal{background:#0f1f1a;position:relative}
+.gal .principal{aspect-ratio:4/3;width:100%;object-fit:cover}
+.gal .tira{display:flex;gap:6px;padding:8px;overflow-x:auto}
+.gal .tira img{width:72px;height:54px;object-fit:cover;border-radius:2px;opacity:.6;cursor:pointer;flex:0 0 auto}
+.gal .tira img.act{opacity:1;outline:2px solid var(--mostaza)}
+.gal .nfotos{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.6);color:#fff;font-size:12px;padding:3px 8px;border-radius:3px}
+.fi-datos{padding:22px 24px 26px}
+.fi-datos h2{font-family:"Brygada 1918",serif;font-weight:600;font-size:28px;line-height:1.15;margin:6px 0 4px}
+.tabla{width:100%;border-collapse:collapse;margin:16px 0;font-size:14.5px}
+.tabla th{text-align:left;font-weight:500;color:var(--piedra);padding:7px 0;border-bottom:1px solid var(--linea);width:44%}
+.tabla td{padding:7px 0;border-bottom:1px solid var(--linea)}
+.fi-datos ul.inc{padding-left:18px;margin:8px 0 0;font-size:14.5px}
+.fi-acc{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:4px;padding:11px 16px;font-weight:600;font-size:15px;cursor:pointer;border:1px solid var(--verde);background:var(--verde);color:var(--crema);text-decoration:none}
+.btn.sec{background:transparent;color:var(--verde)}
+.btn.wa{background:var(--wa);border-color:var(--wa);color:#fff}
+.fi-extra{grid-column:1/-1;display:grid;grid-template-columns:1.25fr 1fr;border-top:1px solid var(--linea)}
+.mapa{min-height:260px;background:var(--crema)}
+.mapa iframe{width:100%;height:100%;min-height:260px;border:0;display:block}
+.parecidas{padding:20px 24px}
+.parecidas h4{margin:0 0 10px;font-family:"Brygada 1918",serif;font-size:19px;font-weight:600}
+.par{display:flex;gap:12px;align-items:center;padding:8px 0;border-bottom:1px solid var(--linea);cursor:pointer}
+.par img{width:64px;height:48px;object-fit:cover;border-radius:2px;background:var(--linea)}
+.par b{display:block;font-size:14.5px;line-height:1.25}.par span{font-size:12.5px;color:var(--piedra)}
+@media(max-width:860px){.fi-body,.fi-extra{grid-template-columns:1fr}dialog.ficha{max-height:100vh;height:100%;width:100vw;max-width:100vw;margin:0;border-radius:0}}
+
+/* visita + burbuja */
+.visita{background:var(--verde);color:var(--crema)}
+.visita .grid{display:grid;grid-template-columns:1fr 420px;gap:48px;align-items:start}
+.visita h2{color:var(--crema)}
+.form{display:grid;gap:14px}
+.form select,.form input{width:100%;min-width:0}
+.form label{display:grid;gap:5px;min-width:0;font-size:13.5px;opacity:.9}
+.form select,.form input,.form textarea{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.25);border-radius:4px;padding:10px 12px;color:var(--crema)}
+.form select option{color:var(--tinta)}
+.dias{display:flex;gap:8px;flex-wrap:wrap}
+.dias button,.franjas button{border:1px solid rgba(255,255,255,.3);background:transparent;color:var(--crema);border-radius:4px;padding:8px 10px;cursor:pointer;font-size:13.5px;min-width:64px;line-height:1.2}
+.dias button b{display:block;font-size:17px}
+.dias button[aria-pressed="true"],.franjas button[aria-pressed="true"]{background:var(--mostaza);color:var(--tinta);border-color:var(--mostaza)}
+.franjas{display:flex;gap:8px;flex-wrap:wrap}
+.chk{display:flex!important;grid-template-columns:none!important;align-items:center;gap:8px!important}
+.telefono{background:#0B241E;border-radius:22px;padding:14px;position:sticky;top:20px}
+.tel-head{display:flex;align-items:center;gap:10px;padding:4px 6px 12px;border-bottom:1px solid rgba(255,255,255,.1)}
+.tel-head .av{width:36px;height:36px;border-radius:50%;background:var(--mostaza);color:var(--tinta);display:grid;place-items:center;font-weight:700;font-family:"Brygada 1918",serif}
+.tel-head b{display:block;font-size:14px}.tel-head span{font-size:12px;opacity:.7}
+.chat{background:#E7DED0;border-radius:12px;padding:16px 12px;margin-top:12px;min-height:260px;display:flex;flex-direction:column;justify-content:flex-end}
+.burbuja{align-self:flex-end;background:#D7F5C5;color:#111;border-radius:10px 2px 10px 10px;padding:9px 11px 18px;max-width:92%;font-size:14px;line-height:1.45;white-space:pre-wrap;position:relative;box-shadow:0 1px 1px rgba(0,0,0,.12)}
+.burbuja .hora{position:absolute;right:8px;bottom:3px;font-size:10.5px;color:#5c6f5c}
+.escribiendo{font-size:12px;color:#5c6f5c;align-self:flex-end;margin-bottom:6px;min-height:16px}
+.telefono .btn{width:100%;margin-top:12px}
+@media(max-width:900px){.visita .grid{grid-template-columns:minmax(0,1fr)}.telefono{position:static}}
+
+/* tasación */
+.tasa{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.tasa ul{padding-left:18px;margin:12px 0 0}
+.tasa .form label{opacity:1}
+.tasa .form select,.tasa .form input{background:var(--hoja);border:1px solid var(--linea);color:var(--tinta)}
+@media(max-width:800px){.tasa{grid-template-columns:1fr}}
+
+/* historia */
+.historia{background:var(--hoja);border-top:1px solid var(--linea);border-bottom:1px solid var(--linea)}
+.linea-t{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:2px solid var(--tinta);margin-top:18px}
+.linea-t div{padding:16px 18px 0 0;border-right:1px solid var(--linea);margin-right:18px}
+.linea-t div:last-child{border-right:0}
+.linea-t b{font-family:"Brygada 1918",serif;font-size:22px;display:block;font-weight:600}
+.linea-t p{margin:6px 0 0;font-size:14.5px}
+@media(max-width:800px){.linea-t{grid-template-columns:1fr 1fr;row-gap:18px}}
+
+/* panel del dueño */
+.duenio{display:none;background:#0B241E;color:var(--crema);padding:40px 0 56px}
+body.ver-duenio .duenio{display:block}
+.duenio .marcaej{display:inline-block;background:var(--mostaza);color:var(--tinta);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:3px}
+.duenio h2{font-family:"Brygada 1918",serif;font-weight:500;font-size:34px;margin:12px 0 22px}
+.dgrid{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:20px}
+.caja{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:6px;padding:18px}
+.caja h3{margin:0 0 12px;font-size:15px;letter-spacing:.04em;font-weight:600}
+.consulta{background:#D7F5C5;color:#111;border-radius:10px 10px 10px 2px;padding:8px 10px;font-size:13px;margin-bottom:10px;white-space:pre-wrap;line-height:1.4}
+.consulta small{display:block;color:#476147;margin-top:4px;font-size:11px}
+.agenda{width:100%;border-collapse:collapse;font-size:13px}
+.agenda th,.agenda td{padding:6px 4px;border-bottom:1px solid rgba(255,255,255,.1);text-align:left;vertical-align:top}
+.agenda td span{display:block;background:rgba(217,162,27,.25);border-left:3px solid var(--mostaza);padding:3px 6px;margin-bottom:3px;border-radius:2px;font-size:12px}
+.kpi{display:flex;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.1);padding:8px 0;font-size:14px}
+.kpi b{font-family:"Brygada 1918",serif;font-size:19px}
+.paravos{margin-top:22px;background:var(--crema);color:var(--tinta);border-radius:6px;padding:22px 24px}
+.paravos h3{font-family:"Brygada 1918",serif;font-size:24px;margin:0 0 10px;font-weight:600}
+.paravos ul{margin:0;padding-left:18px;columns:2;column-gap:36px}
+.paravos li{margin-bottom:6px;break-inside:avoid}
+@media(max-width:900px){.dgrid{grid-template-columns:1fr}.paravos ul{columns:1}}
+
+footer{background:var(--tinta);color:#cfc9bd;padding:36px 0;font-size:14px}
+footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+footer .legal{margin-top:22px;padding-top:16px;border-top:1px solid #3a3d3b;font-size:12.5px;color:#9b968d;width:100%}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+</head>
+<body>
+
+<div class="firma"><div class="wrap">
+  <span>Prototipo preparado para <b>Inversor Negocios Inmobiliarios</b> · 10 de noviembre de 2026</span>
+  <button class="btn-duenio" id="btnDuenio" aria-pressed="false">Ver como dueño</button>
+</div></div>
+
+<section class="duenio" id="duenio" aria-label="Vista del dueño">
+  <div class="wrap">
+    <span class="marcaej">Panel de ejemplo</span>
+    <h2>Lo que le llegaría a Rivadavia 765 en una semana</h2>
+    <div class="dgrid">
+      <div class="caja">
+        <h3>Consultas que entraron</h3>
+        <div id="dConsultas"></div>
+      </div>
+      <div class="caja">
+        <h3>Visitas de la semana</h3>
+        <table class="agenda" id="dAgenda"></table>
+      </div>
+      <div class="caja">
+        <h3>Números de la semana</h3>
+        <div class="kpi"><span>Consultas con la propiedad ya indicada</span><b>14</b></div>
+        <div class="kpi"><span>Pedidos de valor (varias juntas)</span><b>5</b></div>
+        <div class="kpi"><span>Visitas agendadas</span><b>6</b></div>
+        <div class="kpi"><span>Pedidos de tasación</span><b>3</b></div>
+        <div class="kpi"><span>Reservas con seña</span><b>1 · U$D 2.000</b></div>
+        <div class="kpi"><span>Comisión por consulta</span><b>$ 0</b></div>
+        <p style="font-size:12.5px;opacity:.7;margin:10px 0 0">Todos los números son de ejemplo. Frente a un portal: no se paga por aviso ni por destacado, y el cliente no ve al lado las propiedades de otras inmobiliarias.</p>
+      </div>
+    </div>
+    <div class="paravos">
+      <h3>Para vos, Alejandro</h3>
+      <ul>
+        <li>Menos mensajes repetidos: la consulta llega con el código (dd2214, dd1298…) y lo que el cliente quiere saber.</li>
+        <li>Agenda de visitas con días y franjas, sin ida y vuelta por teléfono.</li>
+        <li>La reserva con seña queda registrada antes de confirmar la operación.</li>
+        <li>Sin comisión por consulta ni costo por aviso: el catálogo es suyo.</li>
+        <li>Los pedidos de tasación entran armados: tipo, dirección, metros y si quiere permutar.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<header class="top"><div class="wrap">
+  <a class="marca" href="#"><span class="w">INVERSOR</span><span class="s">Negocios Inmobiliarios · desde Rivadavia 725</span></a>
+  <nav class="menu" aria-label="Secciones">
+    <a href="#catalogo">Propiedades</a><a href="#visita">Pedir visita</a><a href="#tasar">Tasar</a><a href="#historia">La empresa</a>
+  </nav>
+</div></header>
+
+<div class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Venado Tuerto · más de 40 años ininterrumpidos</div>
+    <h1>De un monoambiente de 38 m² en Casey 540 a <em>373 hectáreas</em> sobre la Ruta 14.</h1>
+    <p class="bajada">Su portada pregunta “¿Qué buscás?”. Acá la pregunta se responde: completá la frase y la cartera se ordena sola.</p>
+    <div class="frase" role="search">
+      <div class="q">¿Qué buscás?</div>
+      <p class="linea">
+        Busco
+        <span class="slot"><label class="sr" for="fTipo">Tipo</label><select id="fTipo">
+          <option value="">una propiedad</option><option value="Casa">una casa</option><option value="Departamento">un departamento</option><option value="Quinta">una casa quinta</option><option value="Campo">un campo</option><option value="Local">un local</option>
+        </select></span>
+        para
+        <span class="slot"><label class="sr" for="fOp">Operación</label><select id="fOp">
+          <option value="">comprar o alquilar</option><option value="Venta">comprar</option><option value="Alquiler">alquilar</option>
+        </select></span>,
+        con
+        <span class="slot"><label class="sr" for="fDorm">Dormitorios</label><select id="fDorm">
+          <option value="0">los dormitorios que sea</option><option value="1">1 dormitorio o más</option><option value="2">2 dormitorios o más</option><option value="3">3 dormitorios o más</option><option value="4">4 dormitorios o más</option>
+        </select></span>
+        y
+        <span class="slot"><label class="sr" for="fExtra">Extra</label><select id="fExtra">
+          <option value="">sin exigencias</option><option value="pileta">pileta</option><option value="cochera">cochera</option><option value="quincho">quincho</option><option value="permuta">que acepte permuta</option><option value="estrenar">a estrenar</option>
+        </select></span>.
+      </p>
+      <div class="pie">
+        <span class="contador" id="contador" aria-live="polite"></span>
+        <button class="link-reset" id="reset">Empezar de nuevo</button>
+      </div>
+    </div>
+    <div class="cifras">
+      <div><b>+40</b>años en Venado Tuerto</div>
+      <div><b>47</b>avisos en su web hoy</div>
+      <div><b>Mat. 0784</b>Alejandro M. Cataldi</div>
+    </div>
+  </div>
+</div>
+
+<section id="catalogo">
+  <div class="wrap" id="catWrap">
+    <div class="titsec">
+      <div>
+        <h2>La cartera, renglón por renglón</h2>
+        <div class="nota">Muestra de 10 avisos reales de su web. Tocá uno para ver la ficha; sumá varios para pedir los valores juntos.</div>
+      </div>
+      <div class="vista" role="group" aria-label="Vista">
+        <button aria-pressed="true" data-v="lista">Lista</button><button aria-pressed="false" data-v="fotos">Fotos</button>
+      </div>
+    </div>
+    <div class="renglones" id="lista"></div>
+    <div class="grilla" id="grilla"></div>
+  </div>
+</section>
+
+<div class="bandeja" id="bandeja" aria-live="polite">
+  <span class="t" id="bandejaT"></span>
+  <button id="bandejaBtn">Pedir valores</button>
+</div>
+
+<section class="visita" id="visita">
+  <div class="wrap grid">
+    <div>
+      <div class="titsec"><h2>Pedí la visita y mirá el mensaje que nos llega</h2></div>
+      <div class="form">
+        <label>Propiedad<select id="vProp"></select></label>
+        <div><div style="font-size:13.5px;opacity:.9;margin-bottom:6px">Día</div><div class="dias" id="vDias"></div></div>
+        <div><div style="font-size:13.5px;opacity:.9;margin-bottom:6px">Franja</div><div class="franjas" id="vFranjas"></div></div>
+        <label>¿Cuántos van a la visita?<select id="vPers"><option>1 persona</option><option selected>2 personas</option><option>3 personas</option><option>4 o más</option></select></label>
+        <label>Cómo pensás pagar<select id="vPago"><option>Contado</option><option>Con crédito hipotecario</option><option>Entregando una propiedad (permuta)</option><option>Todavía no sé</option></select></label>
+        <label>Tu nombre<input id="vNom" placeholder="Ej.: Laura" autocomplete="given-name"></label>
+      </div>
+    </div>
+    <aside class="telefono" aria-label="Vista previa del WhatsApp">
+      <div class="tel-head"><div class="av">I</div><div><b>Inversor Negocios Inmobiliarios</b><span>3462 54-4795</span></div></div>
+      <div class="chat">
+        <div class="escribiendo" id="escr"></div>
+        <div class="burbuja" id="burbuja"></div>
+      </div>
+      <a class="btn wa" id="vEnviar" target="_blank" rel="noopener">Mandar este WhatsApp</a>
+    </aside>
+  </div>
+</section>
+
+<section id="tasar">
+  <div class="wrap tasa">
+    <div>
+      <div class="titsec"><h2>¿Querés vender? Pedí la tasación</h2></div>
+      <ul>
+        <li>La hace el equipo de Rivadavia 765, con más de 30 años en el rubro.</li>
+        <li>Casas, departamentos, lotes, quintas y campos de la zona.</li>
+        <li>Si querés cambiar por otra propiedad, lo dejamos dicho desde el principio.</li>
+      </ul>
+    </div>
+    <div class="form">
+      <label>Qué tenés<select id="tTipo"><option>Casa</option><option>Departamento</option><option>Lote o terreno</option><option>Casa quinta</option><option>Campo</option><option>Local u oficina</option></select></label>
+      <label>Dirección o zona<input id="tDir" placeholder="Ej.: Alvear al 1000"></label>
+      <label>Metros o hectáreas (aprox.)<input id="tMet" placeholder="Ej.: 200 m² sobre lote de 10 x 30"></label>
+      <label class="chk"><input type="checkbox" id="tPerm"> Me interesa permutar por otra propiedad</label>
+      <label>Tu nombre<input id="tNom" placeholder="Ej.: Marcelo"></label>
+      <a class="btn" id="tEnviar" target="_blank" rel="noopener">Pedir tasación por WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<section class="historia" id="historia">
+  <div class="wrap">
+    <div class="titsec"><h2>Una empresa pionera en Venado Tuerto</h2></div>
+    <div class="linea-t">
+      <div><b>Rivadavia 725</b><p>Don Francisco Cataldi abre el primer local.</p></div>
+      <div><b>+40 años</b><p>Sin interrupciones, en casas, quintas, lotes y campos.</p></div>
+      <div><b>Mat. 0784</b><p>Hoy la dirige Alejandro Marcelo Cataldi, corredor inmobiliario.</p></div>
+      <div><b>Rivadavia 765</b><p>Las oficinas de hoy. También funciona ahí INVERCAR Multimarcas.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div><b style="color:#fff;font-family:'Brygada 1918',serif;font-size:20px;letter-spacing:.12em">INVERSOR</b><br>Rivadavia 765 · Venado Tuerto · Santa Fe<br>(03462) 421062 · 427855 · WhatsApp 3462 54-4795<br>info@inversorpropiedades.com.ar</div>
+    <div>Alejandro Marcelo Cataldi<br>Corredor Inmobiliario · Matrícula Nº 0784</div>
+    <div class="legal">Prototipo de demostración preparado para Inversor Negocios Inmobiliarios por Resolviendo Kos · No es la web oficial. Propiedades, textos y fotos tomados de inversorpropiedades.com.ar; los paneles y números del dueño son de ejemplo.</div>
+  </div>
+</footer>
+
+<dialog class="ficha" id="ficha" aria-labelledby="fiTit"></dialog>
+
+<script>
+const WA="5493462544795";
+const IMG="https://www.inversorpropiedades.com.ar/inmuebles.devenado.ar/IMG/";
+const IMG2="https://inmuebles.devenado.ar/IMG/";
+const P=[
+ {id:"dd1298",t:"Casa quinta en Los Robles",op:"Venta",tipo:"Quinta",zona:"Barrio Los Robles",q:"Barrio Los Robles, Venado Tuerto, Santa Fe",precio:null,dorm:3,ban:3,cub:null,ter:"Lote de 1.350 m²",coch:true,ext:["pileta","cochera","permuta"],inc:["Living, comedor, cocina y sala de estar","Galería","Cochera","Pileta de natación","Se permuta por casa o departamento"],fot:"casa-quinta-en-los-robles-id1298",n:5},
+ {id:"dd1118",t:"Casa quinta de 6 ha, zona La Rural",op:"Venta",tipo:"Quinta",zona:"Zona La Rural",q:"Sociedad Rural Venado Tuerto, Santa Fe",precio:null,dorm:null,ban:null,cub:null,ter:"6 ha",coch:null,ext:["pileta"],inc:["Chalet de excelente construcción","Pileta y parquización","Galpones","Salida por tres calles"],fot:"casa-quinta-6has-zona-la-rural-",n:4},
+ {id:"dd2177",t:"Quinta en zona ex Peaje",op:"Venta",tipo:"Quinta",zona:"Zona ex Peaje",q:"Venado Tuerto, Santa Fe",precio:"U$D 65.000",dorm:2,ban:1,cub:null,ter:"1 ¼ ha",coch:null,ext:["pileta","permuta"],inc:["Casa de 2 dormitorios, baño, cocina, comedor y living","Pileta (tanque australiano)","Galpón","Recibe permuta"],fot:"quinta-en-zona-ex-peaje-id2177",n:1},
+ {id:"dd1946",t:"Departamento 2 dormitorios, Maipú Green",op:"Venta",tipo:"Departamento",zona:"Maipú y Moreno",q:"Maipú y Moreno, Venado Tuerto, Santa Fe",precio:null,dorm:2,ban:1,cub:null,ter:null,coch:true,ext:["cochera","pileta","quincho"],inc:["Baño y antebaño","Cocina, lavadero, living y comedor","Balcón y cochera","Amenities: quincho, pileta y solárium"],fot:"departamento-2-dormitorios-maipu-green-maipu-y-moreno-id1946",n:5},
+ {id:"dd2215",t:"Departamento Alvear 990, 1.er piso",op:"Venta",tipo:"Departamento",zona:"Alvear 990",q:"Alvear 990, Venado Tuerto, Santa Fe",precio:null,dorm:2,ban:2,cub:"70,5 m² exclusivos",ter:"Terraza 22 m² · balcón 6 m²",coch:null,ext:["pileta","quincho"],inc:["Frente y contrafrente","Sala de estar, comedor y living","Patio exclusivo","Quincho y piscina de uso común","Construcción 2014, habitado y en excelente estado"],fot:"departamento-alvear-990-p1-id2215",n:1},
+ {id:"dd2219",t:"Monoambiente Casey 540, 5.º piso",op:"Venta",tipo:"Departamento",zona:"Casey 540",q:"Casey 540, Venado Tuerto, Santa Fe",precio:null,dorm:0,ban:1,cub:"38 m² exclusivos",ter:"Balcón 4 m²",coch:null,ext:["pileta","quincho","estrenar"],inc:["Contrafrente","Baño y cocina","Balcón","Quincho y piscina de uso común","A estrenar (la web dice “marzo 2024”, a confirmar)"],fot:"departamento-casey-540-p5-id2219",n:1},
+ {id:"dd2214",t:"Casa Pueyrredón 859",op:"Venta",tipo:"Casa",zona:"Pueyrredón 859",q:"Pueyrredón 859, Venado Tuerto, Santa Fe",precio:null,dorm:2,ban:2,cub:"150 m²",ter:"8 x 40 m (320 m²)",coch:true,ext:["cochera","quincho"],inc:["Dos plantas","Sala de estar, living, comedor y cocina","Patio, cochera, quincho y depósito","Mitad de 1938 y mitad de 2014, muy buen estado"],fot:"casa-pueyrredon-859-id2214",n:1},
+ {id:"dd2213",t:"Casa Alvear 1020",op:"Venta",tipo:"Casa",zona:"Alvear 1020",q:"Alvear 1020, Venado Tuerto, Santa Fe",precio:null,dorm:4,ban:2,cub:"200 m²",ter:"10 x 20 m (200 m²)",coch:true,ext:["cochera"],inc:["Dos plantas","Sala de estar, living, comedor y cocina","Patio, cochera y dependencias de servicio","PB de 1960 y PA de 1975, muy buen estado"],fot:"casa-alvear-1020-id2213",n:1},
+ {id:"dd1518",t:"Campo sobre Ruta 14, zona María Teresa",op:"Venta",tipo:"Campo",zona:"Ruta 14 · María Teresa",q:"María Teresa, Santa Fe",precio:null,dorm:null,ban:null,cub:null,ter:"373 ha (115 ha 100 % agrícolas)",coch:null,ext:[],inc:["115 ha 100 % agrícolas con mejoras","Dos entradas sobre la ruta","Alambrado bueno"],fot:"campo-sobre-ruta-14-zona-maria-teresa-id1518",n:1},
+ {id:"dd2186",t:"Locales en Edificio Lihuén",op:"Alquiler",tipo:"Local",zona:"Ituzaingó 208 esq. Dante Alighieri",q:"Ituzaingó 208, Venado Tuerto, Santa Fe",precio:null,dorm:null,ban:1,cub:"Local A 54 m² · Local B 22 m²",ter:null,coch:null,ext:["estrenar"],inc:["A estrenar","Cada local con baño","Esquina Dante Alighieri e Ituzaingó"],fot:"locales-en-edificio-lihuen-ituzaingo-208-esquina-dante-alighieri-id2186",n:1}
+];
+// ilustración de respaldo por tipo
+function ilus(tipo,id){
+  const c={Casa:"#2B5C4E",Departamento:"#1C4A3E",Quinta:"#3E6B4A",Campo:"#6E7A3A",Local:"#5A5148"}[tipo]||"#2B5C4E";
+  const shapes={
+    Casa:'<path d="M90 150 L200 70 L310 150 Z" fill="#D9A21B"/><rect x="110" y="150" width="180" height="90" fill="#F2EDE3"/><rect x="185" y="190" width="30" height="50" fill="'+c+'"/><rect x="130" y="170" width="34" height="26" fill="'+c+'"/><rect x="236" y="170" width="34" height="26" fill="'+c+'"/>',
+    Departamento:'<rect x="140" y="50" width="120" height="190" fill="#F2EDE3"/>'+[0,1,2,3,4].map(i=>'<rect x="158" y="'+(66+i*34)+'" width="34" height="20" fill="'+c+'"/><rect x="208" y="'+(66+i*34)+'" width="34" height="20" fill="'+c+'"/>').join("")+'<rect x="0" y="240" width="400" height="60" fill="#D9A21B" opacity=".5"/>',
+    Quinta:'<circle cx="300" cy="80" r="26" fill="#D9A21B"/><path d="M0 220 Q200 180 400 220 V300 H0Z" fill="#F2EDE3" opacity=".35"/><path d="M120 170 L190 120 L260 170Z" fill="#D9A21B"/><rect x="135" y="170" width="110" height="60" fill="#F2EDE3"/><circle cx="70" cy="180" r="30" fill="#F2EDE3" opacity=".5"/><rect x="66" y="200" width="8" height="40" fill="#F2EDE3" opacity=".5"/><rect x="270" y="215" width="80" height="18" rx="9" fill="#7FB8C9"/>',
+    Campo:'<circle cx="320" cy="70" r="24" fill="#D9A21B"/>'+[0,1,2,3,4,5].map(i=>'<path d="M0 '+(170+i*22)+' Q200 '+(150+i*22)+' 400 '+(170+i*22)+'" stroke="#F2EDE3" stroke-width="3" fill="none" opacity="'+(0.25+i*0.1)+'"/>').join(""),
+    Local:'<rect x="90" y="90" width="220" height="150" fill="#F2EDE3"/><rect x="90" y="90" width="220" height="30" fill="#D9A21B"/><rect x="110" y="140" width="80" height="100" fill="'+c+'" opacity=".6"/><rect x="210" y="140" width="80" height="100" fill="'+c+'" opacity=".6"/>'
+  };
+  const svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="'+c+'"/>'+(shapes[tipo]||shapes.Casa)+'<text x="20" y="34" font-family="Georgia" font-size="16" fill="#F2EDE3" opacity=".8">'+id+'</text></svg>';
+  return "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg);
+}
+function fotos(p,size){const s=size||"w1200-h800-m3";const a=[];for(let i=1;i<=p.n;i++)a.push(p.fot+"_"+i+"-"+s+".jpg");return a;}
+function imgTag(file,p,cls,alt){
+  return '<img'+(cls?' class="'+cls+'"':'')+' loading="lazy" alt="'+(alt||p.t)+'" src="'+IMG+file+'" data-alt="'+IMG2+file+'" data-ilus="'+ilus(p.tipo,p.id)+'" onerror="fixImg(this)">';
+}
+function fixImg(el){if(el.dataset.alt&&!el.dataset.tried){el.dataset.tried=1;el.src=el.dataset.alt;}else{el.onerror=null;el.src=el.dataset.ilus;}}
+function precioHTML(p){return p.precio?p.precio+'<small>Precio de ejemplo · tomado de su web</small>':'Valor a consultar<small>Precio de ejemplo: sin publicar</small>';}
+function chips(p){
+  const a=['<li class="op'+(p.op==="Alquiler"?" alq":"")+'">'+p.op+'</li>','<li>'+p.tipo+'</li>'];
+  if(p.dorm!==null)a.push('<li>'+(p.dorm===0?'Monoambiente':p.dorm+' dorm.')+'</li>');
+  if(p.ban)a.push('<li>'+p.ban+' baño'+(p.ban>1?'s':'')+'</li>');
+  if(p.cub)a.push('<li>'+p.cub+'</li>');else if(p.ter)a.push('<li>'+p.ter+'</li>');
+  if(p.ext.includes("pileta"))a.push('<li>Pileta</li>');
+  if(p.ext.includes("permuta"))a.push('<li>Acepta permuta</li>');
+  return '<ul class="chips">'+a.join("")+'</ul>';
+}
+const $=s=>document.querySelector(s);
+const sel=new Set();
+function filtrar(){
+  const t=$("#fTipo").value,o=$("#fOp").value,d=+$("#fDorm").value,e=$("#fExtra").value;
+  return P.filter(p=>(!t||p.tipo===t)&&(!o||p.op===o)&&(!d||(p.dorm!==null&&p.dorm>=d))&&(!e||p.ext.includes(e)));
+}
+function render(){
+  const r=filtrar();
+  $("#contador").innerHTML=r.length?'<b>'+r.length+'</b> propiedad'+(r.length>1?'es':'')+' de la muestra responden a tu frase':'Ninguna de la muestra responde. Probá aflojar una palabra.';
+  $("#lista").innerHTML=r.length?r.map(p=>
+    '<article class="reng" data-id="'+p.id+'" tabindex="0"><div class="cod">AVISO<b>'+p.id+'</b></div><div class="ft">'+imgTag(fotos(p,"w640-h640-m1")[0],p)+'</div><div><h3>'+p.t+'</h3><div class="zona">'+p.zona+' · Venado Tuerto</div>'+chips(p)+'</div><div class="der"><div class="precio">'+precioHTML(p)+'</div><button class="sumar" data-s="'+p.id+'" aria-pressed="'+sel.has(p.id)+'">'+(sel.has(p.id)?'✓ En mi consulta':'+ Sumar a mi consulta')+'</button></div></article>').join(""):'<div class="vacio">Sin coincidencias en la muestra.</div>';
+  $("#grilla").innerHTML=r.map(p=>'<article class="tarj" data-id="'+p.id+'" tabindex="0"><div class="ft">'+imgTag(fotos(p,"w640-h640-m1")[0],p)+'</div><div class="tx"><h3>'+p.t+'</h3><div class="zona" style="font-size:13.5px;color:var(--piedra);margin-bottom:8px">'+p.zona+'</div><div class="precio" style="font-size:17px">'+precioHTML(p)+'</div></div></article>').join("");
+}
+["#fTipo","#fOp","#fDorm","#fExtra"].forEach(s=>$(s).addEventListener("change",render));
+$("#reset").onclick=()=>{["#fTipo","#fOp","#fExtra"].forEach(s=>$(s).value="");$("#fDorm").value="0";render();};
+document.querySelectorAll(".vista button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".vista button").forEach(x=>x.setAttribute("aria-pressed",x===b));$("#catWrap").classList.toggle("modo-fotos",b.dataset.v==="fotos");});
+document.addEventListener("click",ev=>{
+  const s=ev.target.closest(".sumar");
+  if(s){ev.stopPropagation();const id=s.dataset.s;sel.has(id)?sel.delete(id):sel.add(id);render();bandeja();return;}
+  const r=ev.target.closest(".reng,.tarj,.par");
+  if(r&&r.dataset.id){abrir(r.dataset.id);}
+});
+document.addEventListener("keydown",ev=>{if(ev.key==="Enter"){const r=ev.target.closest&&ev.target.closest(".reng,.tarj");if(r)abrir(r.dataset.id);}});
+function bandeja(){
+  const n=sel.size;$("#bandeja").classList.toggle("on",n>0);
+  $("#bandejaT").textContent=n+" propiedad"+(n>1?"es":"")+" en tu consulta";
+}
+$("#bandejaBtn").onclick=()=>{
+  const ps=P.filter(p=>sel.has(p.id));
+  const txt="Hola, ¿cómo están? Quisiera saber el valor y las condiciones de estas propiedades:\n"+ps.map(p=>"• "+p.id+" · "+p.t).join("\n")+"\n¡Gracias!";
+  window.open("https://wa.me/"+WA+"?text="+encodeURIComponent(txt),"_blank","noopener");
+};
+// ficha
+function parecidas(p){
+  return P.filter(x=>x.id!==p.id).map(x=>({x,s:(x.tipo===p.tipo?3:0)+(x.op===p.op?1:0)+(p.dorm!==null&&x.dorm!==null&&Math.abs(x.dorm-p.dorm)<=1?1:0)+(x.ext.filter(e=>p.ext.includes(e)).length)})).sort((a,b)=>b.s-a.s).slice(0,3).map(o=>o.x);
+}
+function abrir(id){
+  const p=P.find(x=>x.id===id);if(!p)return;const d=$("#ficha");const fs=fotos(p);
+  const filas=[["Operación",p.op],["Tipo",p.tipo],["Ubicación",p.zona+", Venado Tuerto"],["Dormitorios",p.dorm===null?"—":(p.dorm===0?"Monoambiente":p.dorm)],["Baños",p.ban||"—"],["Superficie cubierta",p.cub||"—"],["Terreno / extras",p.ter||"—"],["Cochera",p.coch?"Sí":"—"]];
+  d.innerHTML='<div class="fi-top"><span class="cod">Aviso '+p.id+' · Inversor Negocios Inmobiliarios</span><button class="cerrar" aria-label="Cerrar" id="cerrar">×</button></div>'+
+  '<div class="fi-body"><div class="gal">'+imgTag(fs[0],p,"principal")+'<span class="nfotos">'+fs.length+' foto'+(fs.length>1?'s':'')+'</span>'+(fs.length>1?'<div class="tira">'+fs.map((f,i)=>imgTag(f,p,i?"":"act","Foto "+(i+1))).join("")+'</div>':'')+'</div>'+
+  '<div class="fi-datos"><div class="chips" style="display:flex;gap:6px"><span class="ej" style="font-size:12px">'+p.op.toUpperCase()+' · '+p.tipo.toUpperCase()+'</span></div><h2 id="fiTit">'+p.t+'</h2><div class="precio">'+precioHTML(p)+'</div>'+
+  '<table class="tabla">'+filas.map(f=>'<tr><th>'+f[0]+'</th><td>'+f[1]+'</td></tr>').join("")+'</table><b style="font-size:14px">Qué tiene</b><ul class="inc">'+p.inc.map(i=>'<li>'+i+'</li>').join("")+'</ul>'+
+  '<div class="fi-acc"><a class="btn wa" target="_blank" rel="noopener" href="https://wa.me/'+WA+'?text='+encodeURIComponent("Hola, ¿cómo están? Me interesa el aviso "+p.id+" ("+p.t+"). ¿Me pasan el valor y cuándo se puede ver?")+'">Consultar por WhatsApp</a><button class="btn sec" id="fiVisita">Pedir visita</button><button class="btn sec" id="fiSumar">'+(sel.has(p.id)?'✓ En mi consulta':'+ Sumar a mi consulta')+'</button></div></div>'+
+  '<div class="fi-extra"><div class="mapa" id="fiMapa"></div><div class="parecidas"><h4>Propiedades parecidas</h4>'+parecidas(p).map(x=>'<div class="par" data-id="'+x.id+'">'+imgTag(fotos(x,"w640-h640-m1")[0],x)+'<div><b>'+x.t+'</b><span>'+x.zona+' · '+(x.precio||"Valor a consultar")+'</span></div></div>').join("")+'</div></div></div>';
+  d.showModal();d.scrollTop=0;
+  setTimeout(()=>{const m=$("#fiMapa");if(m)m.innerHTML='<iframe title="Mapa aproximado" loading="lazy" src="https://maps.google.com/maps?q='+encodeURIComponent(p.q)+'&z=15&output=embed"></iframe>';},60);
+  $("#cerrar").onclick=()=>d.close();
+  d.querySelectorAll(".tira img").forEach(im=>im.onclick=()=>{d.querySelectorAll(".tira img").forEach(x=>x.classList.remove("act"));im.classList.add("act");const pr=d.querySelector(".principal");pr.dataset.tried="";pr.src=im.src;});
+  $("#fiVisita").onclick=()=>{d.close();$("#vProp").value=p.id;burbuja();location.hash="visita";};
+  $("#fiSumar").onclick=()=>{sel.has(p.id)?sel.delete(p.id):sel.add(p.id);$("#fiSumar").textContent=sel.has(p.id)?'✓ En mi consulta':'+ Sumar a mi consulta';render();bandeja();};
+}
+$("#ficha").addEventListener("click",e=>{if(e.target.id==="ficha")e.target.close();});
+// visita
+const DIAS=["dom","lun","mar","mié","jue","vie","sáb"],MESES=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+let diaSel=null,franSel="Mañana (9 a 12)";
+(function(){
+  $("#vProp").innerHTML=P.map(p=>'<option value="'+p.id+'">'+p.id+' · '+p.t+'</option>').join("");
+  const base=new Date(2026,10,10);let c=0,i=1;const h=[];
+  while(c<6){const d=new Date(base);d.setDate(base.getDate()+i);i++;if(d.getDay()===0||d.getDay()===6)continue;c++;const lab=DIAS[d.getDay()]+" "+d.getDate()+" "+MESES[d.getMonth()];if(!diaSel)diaSel=lab;h.push('<button data-d="'+lab+'" aria-pressed="'+(c===1)+'">'+DIAS[d.getDay()]+'<b>'+d.getDate()+'</b>'+MESES[d.getMonth()]+'</button>');}
+  $("#vDias").innerHTML=h.join("");
+  $("#vFranjas").innerHTML=["Mañana (9 a 12)","Mediodía (12 a 14)","Tarde (16 a 19)"].map((f,j)=>'<button data-f="'+f+'" aria-pressed="'+(j===0)+'">'+f+'</button>').join("");
+})();
+$("#vDias").onclick=e=>{const b=e.target.closest("button");if(!b)return;diaSel=b.dataset.d;$("#vDias").querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));burbuja();};
+$("#vFranjas").onclick=e=>{const b=e.target.closest("button");if(!b)return;franSel=b.dataset.f;$("#vFranjas").querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));burbuja();};
+["#vProp","#vPers","#vPago","#vNom"].forEach(s=>$(s).addEventListener("input",burbuja));
+let tmr;
+function textoVisita(){
+  const p=P.find(x=>x.id===$("#vProp").value);const nom=$("#vNom").value.trim();
+  return "Hola, ¿cómo están? "+(nom?"Soy "+nom+". ":"")+"Quiero visitar el aviso "+p.id+" ("+p.t+", "+p.zona+").\n\n📅 "+diaSel+" · "+franSel+"\n👥 "+$("#vPers").value+"\n💵 Pago: "+$("#vPago").value+"\n\n"+(p.precio?"":"¿Me pasan también el valor? ")+"¡Gracias!";
+}
+function burbuja(){
+  const t=textoVisita();const b=$("#burbuja");$("#escr").textContent="escribiendo…";
+  clearTimeout(tmr);tmr=setTimeout(()=>$("#escr").textContent="",700);
+  const now=new Date();b.innerHTML=t.replace(/&/g,"&amp;").replace(/</g,"&lt;")+'<span class="hora">'+String(now.getHours()).padStart(2,"0")+":"+String(now.getMinutes()).padStart(2,"0")+' ✓✓</span>';
+  $("#vEnviar").href="https://wa.me/"+WA+"?text="+encodeURIComponent(t);
+}
+// tasación
+function tasa(){const t="Hola, quiero tasar una propiedad.\n• Tipo: "+$("#tTipo").value+"\n• Dirección/zona: "+($("#tDir").value||"—")+"\n• Medidas: "+($("#tMet").value||"—")+($("#tPerm").checked?"\n• Me interesa permutar":"")+($("#tNom").value?"\nSoy "+$("#tNom").value+".":"");$("#tEnviar").href="https://wa.me/"+WA+"?text="+encodeURIComponent(t);}
+["#tTipo","#tDir","#tMet","#tPerm","#tNom"].forEach(s=>$(s).addEventListener("input",tasa));
+// dueño
+$("#btnDuenio").onclick=()=>{const on=document.body.classList.toggle("ver-duenio");$("#btnDuenio").setAttribute("aria-pressed",on);$("#btnDuenio").textContent=on?"Volver a la vista del cliente":"Ver como dueño";if(on)window.scrollTo({top:0,behavior:"smooth"});};
+$("#dConsultas").innerHTML=[
+ ["Hola, ¿cómo están? Soy Laura. Quiero visitar el aviso dd2214 (Casa Pueyrredón 859).\n📅 jue 12 nov · Tarde (16 a 19)\n👥 2 personas\n💵 Pago: Con crédito hipotecario","hoy 10:42"],
+ ["Quisiera saber el valor de:\n• dd1946 · Maipú Green\n• dd2215 · Alvear 990","hoy 09:15"],
+ ["Quiero tasar una casa en Alvear al 1100. Me interesa permutar.","ayer 19:03"]
+].map(c=>'<div class="consulta">'+c[0]+'<small>'+c[1]+' · ejemplo</small></div>').join("");
+$("#dAgenda").innerHTML='<tr><th>Día</th><th>Visitas</th></tr>'+[["Mié 11",["10 h · dd1298 Los Robles"]],["Jue 12",["16 h · dd2214 Pueyrredón","18 h · dd2213 Alvear 1020"]],["Vie 13",["11 h · dd1946 Maipú Green"]],["Lun 16",["9 h · dd1518 Campo Ruta 14","17 h · dd2186 Lihuén"]],["Mar 17",["libre: 2 franjas"]]].map(r=>'<tr><td>'+r[0]+'</td><td>'+r[1].map(v=>'<span>'+v+'</span>').join("")+'</td></tr>').join("");
+render();burbuja();tasa();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Inversor Negocios Inmobiliarios"></script>
+</body>
+</html>
