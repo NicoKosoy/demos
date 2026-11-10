@@ -1,0 +1,788 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Cabañas Dos Arroyos · Los Hornillos (prototipo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Forum&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+/* Si una foto no carga, se reemplaza por una ilustración del elemento */
+var EL_COL={aire:['#CFE3EC','#8FB6C8'],sol:['#E7B456','#C9861C'],tierra:['#C77C55','#9A4F2C'],agua:['#6FA595','#3E7F6E']};
+function fb(img){
+  if(img.dataset.fb) return; img.dataset.fb=1;
+  var e=img.getAttribute('data-el')||'agua', c=EL_COL[e]||EL_COL.agua, n=img.getAttribute('data-n')||'Dos Arroyos';
+  var s='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 560">'+
+  '<rect width="800" height="560" fill="#F4F1EA"/>'+
+  '<rect x="40" y="40" width="720" height="480" fill="'+c[0]+'"/>'+
+  '<path d="M40 380 L180 250 L300 320 L450 190 L600 300 L760 220 L760 520 L40 520Z" fill="'+c[1]+'" opacity=".55"/>'+
+  '<path d="M40 470 C200 420 300 500 430 450 S650 420 760 460 L760 520 L40 520Z" fill="#3E7F6E" opacity=".55"/>'+
+  '<path d="M330 400 L400 340 L470 400 L470 470 L330 470Z" fill="#141414"/>'+
+  '<rect x="388" y="425" width="24" height="45" fill="'+c[0]+'"/>'+
+  '<line x1="40" y1="100" x2="760" y2="100" stroke="#141414" stroke-width="2"/>'+
+  '<text x="60" y="82" font-family="Georgia,serif" font-size="30" fill="#141414">'+n+'</text></svg>';
+  img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(s);
+}
+</script>
+<style>
+:root{
+  --papel:#F4F1EA; --papel-2:#EAE5DA; --tinta:#141414; --gris:#5E5A53; --regla:#141414;
+  --aire:#CFE3EC; --aire-d:#5F8FA6;
+  --sol:#E2A63B; --sol-d:#A86C0E;
+  --tierra:#B5653F; --tierra-d:#7E3E20;
+  --agua:#3E7F6E; --agua-d:#24584A;
+  --wa-bg:#ECE5DD; --wa-out:#DCF8C6;
+  --disp:'Forum', 'Times New Roman', serif;
+  --sans:'IBM Plex Sans', system-ui, sans-serif;
+  --mono:'IBM Plex Mono', ui-monospace, monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--papel);color:var(--tinta);font-family:var(--sans);font-size:16px;line-height:1.5;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit}
+button,input,select{font:inherit;color:inherit}
+.g{max-width:1240px;margin:0 auto;padding:0 24px}
+.mono{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.ej{font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;color:var(--gris);text-transform:uppercase;white-space:nowrap;margin-left:6px;font-weight:400}
+
+/* firma */
+.firma{font-size:12.5px;color:var(--gris);text-align:center;padding:7px 16px;border-bottom:1px solid #d6d0c4}
+.firma b{color:var(--tinta);font-weight:500}
+
+/* barra */
+.barra{position:sticky;top:0;z-index:50;background:rgba(244,241,234,.95);backdrop-filter:blur(6px);border-bottom:2px solid var(--regla)}
+.barra .g{display:grid;grid-template-columns:auto 1fr auto;align-items:center;height:60px;gap:20px}
+.marca{font-family:var(--disp);font-size:25px;text-decoration:none;letter-spacing:.02em;display:flex;align-items:center;gap:10px}
+.marca .cuad{display:grid;grid-template-columns:9px 9px;gap:2px}
+.marca .cuad i{width:9px;height:9px;display:block}
+.barra nav{display:flex;gap:22px;justify-content:center}
+.barra nav a{text-decoration:none;font-size:14px;color:var(--gris)}
+.barra nav a:hover{color:var(--tinta)}
+.dueno-btn{border:2px solid var(--tinta);background:transparent;padding:7px 14px;font-weight:600;font-size:13.5px;cursor:pointer;white-space:nowrap}
+.dueno-btn[aria-pressed="true"]{background:var(--tinta);color:var(--papel)}
+@media(max-width:860px){.barra nav{display:none}.barra .g{grid-template-columns:1fr auto}}
+
+/* portada */
+.portada{border-bottom:2px solid var(--regla)}
+.portada .g{display:grid;grid-template-columns:5fr 7fr;gap:0;min-height:560px}
+.p-izq{padding:48px 36px 40px 0;border-right:2px solid var(--regla);display:flex;flex-direction:column}
+.p-izq .mono{color:var(--gris)}
+.p-izq h1{font-family:var(--disp);font-weight:400;font-size:clamp(42px,5.2vw,74px);line-height:.98;margin:18px 0 22px;letter-spacing:-.01em}
+.p-izq h1 span{display:block}
+.p-izq ul{list-style:none;padding:0;margin:0 0 28px;border-top:1px solid var(--regla)}
+.p-izq li{display:grid;grid-template-columns:110px 1fr;border-bottom:1px solid var(--regla);padding:9px 0;font-size:15px}
+.p-izq li b{font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:.05em;text-transform:uppercase;padding-top:2px}
+.cta{display:inline-flex;align-items:center;gap:10px;background:var(--tinta);color:var(--papel);text-decoration:none;padding:14px 20px;font-weight:600;border:2px solid var(--tinta);cursor:pointer}
+.cta.alt{background:transparent;color:var(--tinta)}
+.cta-fila{display:flex;gap:10px;flex-wrap:wrap;margin-top:auto}
+.p-der{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr}
+.q{position:relative;padding:20px 22px;display:flex;flex-direction:column;justify-content:space-between;text-decoration:none;min-height:240px;overflow:hidden;transition:filter .2s}
+.q:hover{filter:brightness(1.04)}
+.q:nth-child(1){border-right:2px solid var(--regla);border-bottom:2px solid var(--regla)}
+.q:nth-child(2){border-bottom:2px solid var(--regla)}
+.q:nth-child(3){border-right:2px solid var(--regla)}
+.q .num{font-family:var(--mono);font-size:12px;letter-spacing:.08em}
+.q h2{font-family:var(--disp);font-weight:400;font-size:clamp(40px,4.6vw,66px);margin:0;line-height:1}
+.q .cap{font-size:13.5px;display:flex;justify-content:space-between;gap:8px;align-items:end}
+.q svg{position:absolute;right:16px;top:16px;width:64px;height:64px}
+.q.aire{background:var(--aire)}.q.sol{background:var(--sol)}.q.tierra{background:var(--tierra);color:#FBF3EC}.q.agua{background:var(--agua);color:#EEF6F2}
+@media(max-width:900px){
+  .portada .g{grid-template-columns:1fr;padding:0}
+  .p-izq{border-right:0;border-bottom:2px solid var(--regla);padding:32px 20px}
+  .q{min-height:170px;padding:16px}
+  .q svg{width:44px;height:44px}
+}
+
+/* secciones */
+.sec{border-bottom:2px solid var(--regla)}
+.sec-h{display:grid;grid-template-columns:3fr 9fr;border-bottom:1px solid var(--regla)}
+.sec-h .mono{padding:22px 20px 22px 0;border-right:1px solid var(--regla)}
+.sec-h h2{font-family:var(--disp);font-weight:400;font-size:clamp(30px,3.4vw,46px);margin:0;padding:16px 0 16px 24px;line-height:1.05}
+@media(max-width:760px){.sec-h{grid-template-columns:1fr}.sec-h .mono{border-right:0;border-bottom:1px solid var(--regla);padding:14px 0}.sec-h h2{padding:14px 0}}
+
+/* que elemento */
+.quiz{display:grid;grid-template-columns:3fr 5fr 4fr}
+.quiz>div{padding:24px 24px 28px}
+.quiz>div+div{border-left:1px solid var(--regla)}
+.quiz>div:first-child{padding-left:0}
+.quiz h3{font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin:0 0 12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.chip{border:1.5px solid var(--tinta);background:transparent;padding:8px 13px;cursor:pointer;font-size:14px}
+.chip[aria-pressed="true"]{background:var(--tinta);color:var(--papel)}
+.res{min-height:220px;display:flex;flex-direction:column;gap:10px}
+.res .big{font-family:var(--disp);font-size:58px;line-height:1}
+.res ul{margin:0;padding-left:18px;font-size:14.5px}
+.res .sw{height:10px;width:100%}
+.nota{font-size:12.5px;color:var(--gris)}
+@media(max-width:900px){.quiz{grid-template-columns:1fr}.quiz>div{padding:20px 0}.quiz>div+div{border-left:0;border-top:1px solid var(--regla)}}
+
+/* cabañas */
+.cabs{display:grid;grid-template-columns:1fr 1fr}
+.cab{padding:24px;border-bottom:1px solid var(--regla)}
+.cab:nth-child(odd){border-right:1px solid var(--regla);padding-left:0}
+.cab:nth-child(even){padding-right:0}
+.cab:nth-child(n+3){border-bottom:0}
+.cab-top{display:flex;justify-content:space-between;align-items:baseline;border-bottom:6px solid;padding-bottom:8px;margin-bottom:16px}
+.cab-top h3{font-family:var(--disp);font-weight:400;font-size:44px;margin:0;line-height:1}
+.foto-p{background:var(--papel-2);border:1px solid #cfc8bb}
+.foto-p img{width:100%;height:auto;max-height:520px;object-fit:contain;margin:0 auto}
+.fotos-s{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+.fotos-s button{padding:0;border:1px solid #cfc8bb;background:var(--papel-2);cursor:pointer;display:flex;align-items:center;justify-content:center;aspect-ratio:4/3}
+.fotos-s img{width:100%;height:100%;object-fit:contain}
+.ficha{display:grid;grid-template-columns:1fr 1fr;margin-top:16px;border-top:1px solid var(--regla)}
+.ficha div{padding:8px 0;border-bottom:1px solid #cfc8bb;font-size:14.5px}
+.ficha div:nth-child(odd){padding-right:10px}
+.ficha b{display:block;font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--gris)}
+.cab .elegir{margin-top:14px;border:2px solid var(--tinta);background:transparent;padding:9px 14px;font-weight:600;cursor:pointer}
+.cab .elegir:hover{background:var(--tinta);color:var(--papel)}
+.cred{font-size:11.5px;color:var(--gris);margin-top:6px}
+@media(max-width:860px){.cabs{grid-template-columns:1fr}.cab,.cab:nth-child(odd),.cab:nth-child(even){padding:22px 0;border-right:0;border-bottom:1px solid var(--regla)}}
+
+/* reservar */
+.reserva{display:grid;grid-template-columns:7fr 5fr}
+.reserva>div{padding:24px 0 30px}
+.reserva>div:first-child{padding-right:24px;border-right:1px solid var(--regla)}
+.reserva>div:last-child{padding-left:24px}
+.campos{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--regla);margin-bottom:18px}
+.campo{padding:8px 10px;border-right:1px solid var(--regla)}
+.campo:last-child{border-right:0}
+.campo label{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--gris)}
+.campo select,.campo input{width:100%;border:0;background:transparent;padding:4px 0;font-size:15px;outline:none}
+.campo .val{font-size:15px;padding:4px 0}
+.cal-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.cal-top b{font-family:var(--disp);font-size:28px;font-weight:400}
+.cal-top button{border:1.5px solid var(--tinta);background:transparent;width:36px;height:36px;cursor:pointer;font-size:16px}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);border-top:1px solid var(--regla);border-left:1px solid var(--regla)}
+.cal div{border-right:1px solid var(--regla);border-bottom:1px solid var(--regla);min-height:46px;padding:4px 6px;font-size:13.5px;position:relative}
+.cal .dw{min-height:auto;font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;background:var(--papel-2)}
+.cal .d{cursor:pointer;background:#fff}
+.cal .d:hover{outline:2px solid var(--tinta);outline-offset:-2px}
+.cal .x{background:repeating-linear-gradient(135deg,#e4ded2 0 5px,#f0ebe1 5px 10px);color:#9b958b;cursor:not-allowed;text-decoration:line-through}
+.cal .pas{color:#b9b3a8;background:transparent}
+.cal .sel{background:var(--tinta);color:var(--papel)}
+.cal .rng{background:#d9d3c7}
+.cal .alta::after{content:"";position:absolute;left:6px;right:6px;bottom:4px;height:3px;background:var(--sol)}
+.leyenda{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--gris);margin-top:10px;align-items:center}
+.leyenda i{display:inline-block;width:14px;height:14px;vertical-align:-2px;margin-right:5px;border:1px solid #bbb}
+.sync{margin-top:12px;font-size:13px;border-left:4px solid var(--agua);padding:6px 10px;background:#fff}
+.total{margin-top:18px;border:2px solid var(--tinta)}
+.total>div{display:flex;justify-content:space-between;padding:9px 12px;border-bottom:1px solid #cfc8bb;font-size:15px;gap:10px}
+.total>div>span:last-child{text-align:right}
+.total .ej{display:block}
+.total>div:last-child{border-bottom:0}
+.total .seña{background:var(--sol);font-weight:600}
+.avisos{font-size:13px;color:#8a2d12;min-height:20px;margin-top:8px}
+/* burbuja WhatsApp */
+.wa{background:var(--wa-bg);border:2px solid var(--tinta);position:sticky;top:76px}
+.wa-h{background:#075E54;color:#fff;padding:10px 14px;display:flex;align-items:center;gap:10px}
+.wa-h .av{width:36px;height:36px;border-radius:50%;background:var(--papel);display:grid;grid-template-columns:1fr 1fr;overflow:hidden;flex:none}
+.wa-h .av i{display:block}
+.wa-h small{display:block;opacity:.8;font-size:12px}
+.wa-body{padding:16px 12px 12px;min-height:280px}
+.burb{background:var(--wa-out);margin-left:auto;max-width:94%;padding:10px 12px 18px;border-radius:8px 0 8px 8px;font-size:14.5px;line-height:1.45;white-space:pre-wrap;position:relative;box-shadow:0 1px 1px rgba(0,0,0,.12);word-wrap:break-word}
+.burb .hora{position:absolute;right:8px;bottom:3px;font-size:11px;color:#6b7a6b}
+.burb .cursor{display:inline-block;width:7px;height:15px;background:#075E54;vertical-align:-2px;animation:parp 1s steps(1) infinite}
+@keyframes parp{50%{opacity:0}}
+.wa-f{padding:12px;border-top:1px solid #cfc8bb;background:#F0F0F0}
+.wa-btn{display:flex;justify-content:center;align-items:center;gap:8px;background:#25D366;color:#073b1c;text-decoration:none;font-weight:600;padding:13px;border:2px solid var(--tinta)}
+.wa-btn[aria-disabled="true"]{opacity:.55;pointer-events:none}
+.wa-f p{margin:8px 0 0;font-size:12px;color:var(--gris)}
+@media(max-width:900px){.reserva{grid-template-columns:1fr}.reserva>div:first-child{padding-right:0;border-right:0;border-bottom:1px solid var(--regla)}.reserva>div:last-child{padding-left:0}.wa{position:static}.campos{grid-template-columns:1fr 1fr}.campo:nth-child(2){border-right:0}.campo:nth-child(-n+2){border-bottom:1px solid var(--regla)}}
+
+/* temporadas */
+.tabla{width:100%;border-collapse:collapse;margin:20px 0 26px;font-size:15px}
+.tabla th,.tabla td{border-bottom:1px solid var(--regla);padding:11px 10px 11px 0;text-align:left;vertical-align:top}
+.tabla th{font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--gris);border-bottom:2px solid var(--regla)}
+.tabla td.p{white-space:nowrap;font-weight:500}
+.tabla .t{font-family:var(--disp);font-size:22px}
+.tabla-wrap{overflow-x:auto}
+@media(max-width:700px){
+  .tabla thead{display:none}
+  .tabla tr{display:grid;grid-template-columns:1fr 1fr;border-bottom:2px solid var(--regla);padding:10px 0}
+  .tabla td{border:0;padding:3px 8px 3px 0}
+  .tabla td:first-child,.tabla td:nth-child(2){grid-column:1/-1}
+  .tabla td.p{white-space:normal}
+  .tabla td.p .ej{display:block;margin-left:0}
+  .tabla td.p::before{content:attr(data-l);display:block;font-family:var(--mono);font-size:10.5px;color:var(--gris);text-transform:uppercase;letter-spacing:.05em}
+}
+.reglas{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--regla);margin-bottom:28px}
+.reglas div{padding:14px 14px 14px 0;font-size:14.5px}
+.reglas div+div{border-left:1px solid var(--regla);padding-left:14px}
+.reglas b{display:block;font-family:var(--mono);font-weight:500;font-size:11px;letter-spacing:.07em;text-transform:uppercase;margin-bottom:4px}
+@media(max-width:800px){.reglas{grid-template-columns:1fr 1fr}.reglas div:nth-child(3){border-left:0;padding-left:0}.reglas div{border-bottom:1px solid #cfc8bb}}
+
+/* lugar */
+.lugar{display:grid;grid-template-columns:6fr 6fr}
+.lugar>div{padding:24px 0 30px}
+.lugar>div:first-child{padding-right:24px;border-right:1px solid var(--regla)}
+.lugar>div:last-child{padding-left:24px}
+.dist{list-style:none;padding:0;margin:0}
+.dist li{display:grid;grid-template-columns:1fr auto;gap:12px;border-bottom:1px solid #cfc8bb;padding:10px 0;font-size:15px}
+.dist li span{font-family:var(--mono);font-size:12.5px;color:var(--gris);white-space:nowrap}
+.dist li small{display:block;color:var(--gris);font-size:13px}
+.mapa{border:2px solid var(--tinta);background:#fff}
+.mapa svg{width:100%;height:auto;display:block}
+.llegar{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+@media(max-width:860px){.lugar{grid-template-columns:1fr}.lugar>div:first-child{padding-right:0;border-right:0;border-bottom:1px solid var(--regla)}.lugar>div:last-child{padding-left:0}}
+
+/* faq */
+.faq{display:grid;grid-template-columns:1fr 1fr;padding:6px 0 26px;column-gap:24px}
+.faq details{border-bottom:1px solid var(--regla);padding:12px 0}
+.faq summary{cursor:pointer;font-weight:500;list-style:none;display:flex;justify-content:space-between;gap:12px}
+.faq summary::after{content:"+";font-family:var(--mono)}
+.faq details[open] summary::after{content:"–"}
+.faq ul{margin:8px 0 0;padding-left:18px;font-size:14.5px;color:#333}
+@media(max-width:760px){.faq{grid-template-columns:1fr}}
+
+/* dueño */
+#dueno{display:none;background:var(--tinta);color:var(--papel)}
+body.modo-dueno #dueno{display:block}
+body.modo-dueno .solo-huesped{display:none}
+body.modo-dueno .barra nav{visibility:hidden}
+#dueno .g{padding-top:30px;padding-bottom:40px}
+.d-cab{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;border-bottom:2px solid var(--papel);padding-bottom:14px}
+.d-cab h2{font-family:var(--disp);font-weight:400;font-size:clamp(32px,4vw,52px);margin:0;line-height:1}
+.marca-ej{border:1.5px solid var(--sol);color:var(--sol);padding:4px 10px;font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid #555}
+.kpis div{padding:18px 16px 18px 0}
+.kpis div+div{border-left:1px solid #555;padding-left:16px}
+.kpis b{display:block;font-family:var(--disp);font-size:40px;font-weight:400;line-height:1.05}
+.kpis span{font-size:13px;color:#bdb7ac}
+.d-grid{display:grid;grid-template-columns:5fr 7fr;border-bottom:1px solid #555}
+.d-grid>div{padding:20px 0}
+.d-grid>div:first-child{padding-right:22px;border-right:1px solid #555}
+.d-grid>div:last-child{padding-left:22px}
+.d-grid h3{font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin:0 0 12px;color:#bdb7ac}
+.cons{background:#ECE5DD;padding:10px;display:flex;flex-direction:column;gap:10px;max-height:470px;overflow:auto}
+.cons .burb{color:var(--tinta);font-size:13.5px;max-width:100%}
+.cons .meta{font-family:var(--mono);font-size:10.5px;color:#555;margin-bottom:4px;display:flex;justify-content:space-between}
+.agenda{width:100%;border-collapse:collapse;font-size:13px}
+.agenda th,.agenda td{border:1px solid #555;padding:6px 4px;text-align:center}
+.agenda th{font-family:var(--mono);font-weight:500;font-size:10.5px;letter-spacing:.05em;color:#bdb7ac}
+.agenda td.n{text-align:left;padding-left:8px;font-family:var(--disp);font-size:18px;white-space:nowrap}
+.agenda td.oc{color:var(--tinta);font-weight:600;font-size:11px}
+.agenda td.li{color:#8f8a80;font-size:11px}
+.ahorro{margin-top:18px;border:1px solid #555;padding:14px}
+.ahorro label{font-size:13.5px;display:block;margin-bottom:6px}
+.ahorro input[type=range]{width:100%;accent-color:var(--sol)}
+.ahorro .r{font-family:var(--disp);font-size:34px}
+.paravos{padding-top:22px}
+.paravos h3{font-family:var(--disp);font-weight:400;font-size:34px;margin:0 0 10px}
+.paravos ul{display:grid;grid-template-columns:1fr 1fr;gap:0 24px;padding:0;list-style:none;margin:0}
+.paravos li{border-top:1px solid #555;padding:10px 0 10px 22px;position:relative;font-size:15px}
+.paravos li::before{content:"";position:absolute;left:0;top:16px;width:10px;height:10px}
+.paravos li:nth-child(1)::before{background:var(--aire)}.paravos li:nth-child(2)::before{background:var(--sol)}.paravos li:nth-child(3)::before{background:var(--tierra)}.paravos li:nth-child(4)::before{background:var(--agua)}
+.tabla-scroll{overflow-x:auto}
+@media(max-width:860px){.kpis{grid-template-columns:1fr 1fr}.kpis div:nth-child(3){border-left:0;padding-left:0}.kpis div{border-bottom:1px solid #555}.kpis b{font-size:30px}.d-grid{grid-template-columns:1fr}.d-grid>div:first-child{padding-right:0;border-right:0;border-bottom:1px solid #555}.d-grid>div:last-child{padding-left:0}.paravos ul{grid-template-columns:1fr}}
+
+/* pie */
+footer{padding:26px 0 40px;font-size:13.5px;color:var(--gris)}
+footer .g{display:grid;grid-template-columns:2fr 1fr 1fr;gap:20px}
+footer b{color:var(--tinta);font-weight:500}
+footer .disc{grid-column:1/-1;border-top:1px solid var(--regla);padding-top:14px;font-size:12.5px}
+@media(max-width:760px){footer .g{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="firma">Prototipo preparado para <b>Cabañas Dos Arroyos</b> · 10 de noviembre de 2026</div>
+
+<header class="barra">
+  <div class="g">
+    <a class="marca" href="#inicio"><span class="cuad"><i style="background:var(--aire)"></i><i style="background:var(--sol)"></i><i style="background:var(--tierra)"></i><i style="background:var(--agua)"></i></span>Dos Arroyos</a>
+    <nav>
+      <a href="#elemento">Qué cabaña</a><a href="#cabanas">Cabañas</a><a href="#reservar">Disponibilidad</a><a href="#temporadas">Temporadas</a><a href="#lugar">Los Hornillos</a><a href="#preguntas">Preguntas</a>
+    </nav>
+    <button class="dueno-btn" id="btnDueno" aria-pressed="false">Ver como dueño</button>
+  </div>
+</header>
+
+<!-- PANEL DEL DUEÑO -->
+<section id="dueno" aria-label="Panel del dueño">
+  <div class="g">
+    <div class="d-cab">
+      <div>
+        <div class="mono" style="color:#bdb7ac;margin-bottom:8px">Lo que ven ustedes · semana del 16 al 22 de noviembre</div>
+        <h2>Aire, Sol, Tierra y Agua, desde adentro</h2>
+      </div>
+      <span class="marca-ej">Panel de ejemplo</span>
+    </div>
+    <div class="kpis">
+      <div><b>7</b><span>consultas que entraron esta semana</span></div>
+      <div><b>3</b><span>reservas confirmadas con seña</span></div>
+      <div><b id="kSenas">$ 0</b><span>señas cobradas por Mercado Pago <em class="ej" style="color:#bdb7ac">Precio de ejemplo</em></span></div>
+      <div><b>11 / 28</b><span>noches libres en la semana (4 cabañas)</span></div>
+    </div>
+    <div class="d-grid">
+      <div>
+        <h3>Consultas que entraron</h3>
+        <div class="cons" id="consultas"></div>
+      </div>
+      <div>
+        <h3>Agenda y cupos de la semana</h3>
+        <div class="tabla-scroll"><table class="agenda" id="agenda"></table></div>
+        <div class="ahorro">
+          <label for="rngRes">Reservas directas por temporada: <b id="rngVal">3</b></label>
+          <input type="range" id="rngRes" min="1" max="20" value="3">
+          <div>Lo que dejan de pagarle a Booking (comisión aprox. 15%):</div>
+          <div class="r" id="ahorroTxt">$ 0</div>
+          <div class="nota" style="color:#bdb7ac">Cálculo con 4 noches a la tarifa de ejemplo de enero. <span class="ej" style="color:#bdb7ac">Precio de ejemplo</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="paravos">
+      <h3>Para vos, Dos Arroyos</h3>
+      <ul>
+        <li>Menos mensajes repetidos: el huésped ve solo qué cabaña está libre y cuánto sale, antes de escribir.</li>
+        <li>Agenda con cupos de las cuatro cabañas en una sola grilla, sincronizada con Booking y Airbnb.</li>
+        <li>La seña entra por Mercado Pago antes de confirmar: nadie bloquea fechas sin pagar.</li>
+        <li>Sin comisión por reserva directa: lo que hoy se lleva Booking queda en el complejo.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<main id="inicio">
+<section class="portada solo-huesped">
+  <div class="g">
+    <div class="p-izq">
+      <div class="mono">Villa Dos Arroyos · Los Hornillos · Traslasierra</div>
+      <h1><span>Aire, Sol,</span><span>Tierra y Agua.</span><span style="color:var(--agua)">Cuatro cabañas</span><span>junto al arroyo.</span></h1>
+      <ul>
+        <li><b>Parque</b><span>Cerca de 1 ha de monte nativo con arroyo</span></li>
+        <li><b>Altura</b><span>Unos 1.100 m, al pie de las Sierras Grandes</span></li>
+        <li><b>Cabañas</b><span>4, para grupos de 2 a 5 personas</span></li>
+      </ul>
+      <div class="cta-fila">
+        <a class="cta" href="#reservar">Ver disponibilidad</a>
+        <a class="cta alt" href="#elemento">¿Qué elemento les toca?</a>
+      </div>
+    </div>
+    <div class="p-der">
+      <a class="q aire" href="#cab-aire">
+        <svg viewBox="0 0 64 64" fill="none" stroke="#141414" stroke-width="3"><path d="M6 24h34a8 8 0 1 0-8-8"/><path d="M6 36h46a7 7 0 1 1-7 7"/></svg>
+        <span class="num">01 / Aire</span><h2>Aire</h2><span class="cap"><span>Para 2 a 3</span><span>→</span></span>
+      </a>
+      <a class="q sol" href="#cab-sol">
+        <svg viewBox="0 0 64 64" fill="none" stroke="#141414" stroke-width="3"><circle cx="32" cy="32" r="12"/><path d="M32 4v10M32 50v10M4 32h10M50 32h10M12 12l7 7M45 45l7 7M52 12l-7 7M19 45l-7 7"/></svg>
+        <span class="num">02 / Sol</span><h2>Sol</h2><span class="cap"><span>Para 2 a 3</span><span>→</span></span>
+      </a>
+      <a class="q tierra" href="#cab-tierra">
+        <svg viewBox="0 0 64 64" fill="none" stroke="#FBF3EC" stroke-width="3"><path d="M4 54L24 22l10 14 8-10 18 28z"/></svg>
+        <span class="num">03 / Tierra</span><h2>Tierra</h2><span class="cap"><span>Para 4 a 5</span><span>→</span></span>
+      </a>
+      <a class="q agua" href="#cab-agua">
+        <svg viewBox="0 0 64 64" fill="none" stroke="#EEF6F2" stroke-width="3"><path d="M4 22c8-6 14 6 22 0s14-6 22 0 10 4 12 2M4 36c8-6 14 6 22 0s14-6 22 0 10 4 12 2M4 50c8-6 14 6 22 0s14-6 22 0 10 4 12 2"/></svg>
+        <span class="num">04 / Agua</span><h2>Agua</h2><span class="cap"><span>Para 4 a 5</span><span>→</span></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- QUE ELEMENTO -->
+<section class="sec solo-huesped" id="elemento">
+  <div class="g">
+    <div class="sec-h"><div class="mono">01 · Para elegir</div><h2>¿Qué elemento les toca?</h2></div>
+    <div class="quiz">
+      <div>
+        <h3>¿Cuántos son?</h3>
+        <div class="chips" id="qGrupo">
+          <button class="chip" data-v="2">Pareja</button>
+          <button class="chip" data-v="3">3 personas</button>
+          <button class="chip" data-v="4">4 personas</button>
+          <button class="chip" data-v="5">5 personas</button>
+        </div>
+        <p class="nota">Su web dice que hay cabañas para 2 o 3 y para 4 o 5. En este prototipo ubicamos Aire y Sol en el primer grupo y Tierra y Agua en el segundo. Lo ajustamos con ustedes.</p>
+      </div>
+      <div>
+        <h3>¿Qué quieren para estos días?</h3>
+        <div class="chips" id="qGusto">
+          <button class="chip" data-v="arroyo">Escuchar el arroyo</button>
+          <button class="chip" data-v="monte">Monte nativo y silencio</button>
+          <button class="chip" data-v="sierra">Caminar la sierra</button>
+          <button class="chip" data-v="calma">Calma y cielo abierto</button>
+        </div>
+        <h3>¿Cuándo?</h3>
+        <div class="chips" id="qCuando">
+          <button class="chip" data-v="verano">Verano</button>
+          <button class="chip" data-v="finde">Fin de semana largo</button>
+          <button class="chip" data-v="otono">Otoño o invierno</button>
+        </div>
+      </div>
+      <div class="res" id="qRes">
+        <div class="mono" style="color:var(--gris)">Resultado</div>
+        <div class="big" style="color:#b9b3a8">—</div>
+        <p class="nota">Elijan cuántos son y qué buscan: les sugerimos una cabaña y la pasamos al simulador de reserva.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CABAÑAS -->
+<section class="sec solo-huesped" id="cabanas">
+  <div class="g">
+    <div class="sec-h"><div class="mono">02 · Las cuatro</div><h2>Una cabaña por elemento</h2></div>
+    <div class="cabs" id="cabs"></div>
+  </div>
+</section>
+
+<!-- RESERVA -->
+<section class="sec solo-huesped" id="reservar">
+  <div class="g">
+    <div class="sec-h"><div class="mono">03 · Disponibilidad</div><h2>Fechas libres y pedido de reserva</h2></div>
+    <div class="reserva">
+      <div>
+        <div class="campos">
+          <div class="campo"><label for="fCab">Cabaña</label><select id="fCab"><option value="aire">Aire</option><option value="sol">Sol</option><option value="tierra">Tierra</option><option value="agua">Agua</option></select></div>
+          <div class="campo"><label for="fPers">Personas</label><select id="fPers"></select></div>
+          <div class="campo"><label>Llegada · salida</label><div class="val" id="fFechas">Elegí en el calendario</div></div>
+          <div class="campo"><label for="fNom">Tu nombre</label><input id="fNom" placeholder="Nombre" autocomplete="off"></div>
+        </div>
+        <div class="cal-top"><button id="prev" aria-label="Mes anterior">←</button><b id="mesTxt"></b><button id="next" aria-label="Mes siguiente">→</button></div>
+        <div class="cal" id="cal"></div>
+        <div class="leyenda"><span><i style="background:#fff"></i>Libre</span><span><i style="background:repeating-linear-gradient(135deg,#e4ded2 0 3px,#f0ebe1 3px 6px)"></i>Ocupado</span><span><i style="background:#fff;border-bottom:3px solid var(--sol)"></i>Temporada alta</span></div>
+        <div class="sync">Calendario de ejemplo. En la web real <b>se sincroniza con Booking y Airbnb</b>: si una fecha se reserva allá, acá aparece ocupada, y al revés.</div>
+        <div class="total" id="total">
+          <div><span>Noches</span><span id="tN">—</span></div>
+          <div><span>Tarifa por noche</span><span id="tP">— <em class="ej">Precio de ejemplo</em></span></div>
+          <div><span>Total de la estadía</span><span id="tT">— <em class="ej">Precio de ejemplo</em></span></div>
+          <div class="seña"><span>Seña del 30% por Mercado Pago</span><span id="tS">— <em class="ej">Precio de ejemplo</em></span></div>
+        </div>
+        <div class="avisos" id="avisos"></div>
+      </div>
+      <div>
+        <div class="wa">
+          <div class="wa-h"><span class="av"><i style="background:var(--aire)"></i><i style="background:var(--sol)"></i><i style="background:var(--tierra)"></i><i style="background:var(--agua)"></i></span><div><b>Cabañas Dos Arroyos</b><small>Así les llega tu mensaje</small></div></div>
+          <div class="wa-body"><div class="burb" id="burb"></div></div>
+          <div class="wa-f">
+            <a class="wa-btn" id="waBtn" href="#" target="_blank" rel="noopener" aria-disabled="true">Pedir reserva por WhatsApp</a>
+            <p id="waAyuda">Elegí cabaña, fechas y tu nombre: el mensaje se arma solo.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEMPORADAS -->
+<section class="sec solo-huesped" id="temporadas">
+  <div class="g">
+    <div class="sec-h"><div class="mono">04 · Tarifas</div><h2>Temporadas 2026–2027</h2></div>
+    <div class="tabla-wrap">
+    <table class="tabla">
+      <thead><tr><th>Temporada</th><th>Fechas</th><th>Aire · Sol (2 a 3)</th><th>Tierra · Agua (4 a 5)</th><th>Mínimo</th></tr></thead>
+      <tbody id="tbTemp"></tbody>
+    </table>
+    </div>
+    <div class="reglas">
+      <div><b>Seña</b>30% por Mercado Pago para confirmar; el resto al llegar.</div>
+      <div><b>Check-in</b>Horario a confirmar por ustedes (ejemplo: desde las 14).</div>
+      <div><b>Check-out</b>Horario a confirmar por ustedes (ejemplo: hasta las 10).</div>
+      <div><b>Promociones</b>Su web tiene una página de promociones: acá se cargan con sus fechas y condiciones.</div>
+    </div>
+  </div>
+</section>
+
+<!-- LUGAR -->
+<section class="sec solo-huesped" id="lugar">
+  <div class="g">
+    <div class="sec-h"><div class="mono">05 · Alrededor</div><h2>Los Hornillos y el valle de Traslasierra</h2></div>
+    <div class="lugar">
+      <div>
+        <ul class="dist">
+          <li><div>El arroyo, adentro del parque<small>Baño, lectura y sombra sin sacar el auto</small></div><span>0 km</span></li>
+          <li><div>Balnearios del arroyo Los Hornillos<small>Ollas y piedras al pie de la sierra</small></div><span>en el pueblo</span></li>
+          <li><div>Villa de las Rosas<small>Feria artesanal de los sábados</small></div><span>aprox. 10 km</span></li>
+          <li><div>Nono y el Museo Rocsen<small>Pueblo histórico y museo de colecciones</small></div><span>aprox. 15 km</span></li>
+          <li><div>Mina Clavero<small>Río, costanera y gastronomía</small></div><span>aprox. 25 km</span></li>
+          <li><div>Cerro Champaquí<small>El techo de Córdoba: ascensos guiados desde la zona</small></div><span>salidas cercanas</span></li>
+          <li><div>Villa Dolores<small>Bancos, supermercados y terminal</small></div><span>aprox. 35 km</span></li>
+        </ul>
+        <p class="nota">Distancias aproximadas por la RP 14.</p>
+      </div>
+      <div>
+        <div class="mapa">
+          <svg viewBox="0 0 520 420" role="img" aria-label="Mapa ilustrado de la zona">
+            <rect width="520" height="420" fill="#F4F1EA"/>
+            <path d="M380 0 L520 0 L520 420 L330 420 C360 330 340 260 380 200 C410 150 360 80 380 0Z" fill="#C77C55" opacity=".35"/>
+            <text x="440" y="60" font-family="IBM Plex Mono,monospace" font-size="12" fill="#7E3E20" text-anchor="middle">SIERRAS</text>
+            <text x="440" y="76" font-family="IBM Plex Mono,monospace" font-size="12" fill="#7E3E20" text-anchor="middle">GRANDES</text>
+            <path d="M470 160 L452 190 L488 190Z" fill="#7E3E20"/><text x="470" y="210" font-family="IBM Plex Sans,sans-serif" font-size="12" fill="#141414" text-anchor="middle">Champaquí</text>
+            <path d="M210 0 C215 90 230 160 220 220 C210 300 240 360 230 420" stroke="#141414" stroke-width="4" fill="none"/>
+            <text x="200" y="30" font-family="IBM Plex Mono,monospace" font-size="11" fill="#141414" text-anchor="end">RP 14</text>
+            <path d="M420 230 C360 240 300 225 222 228" stroke="#3E7F6E" stroke-width="3" fill="none"/>
+            <path d="M410 270 C350 262 300 260 226 250" stroke="#3E7F6E" stroke-width="3" fill="none" stroke-dasharray="6 4"/>
+            <circle cx="220" cy="50" r="7" fill="#141414"/><text x="234" y="54" font-family="IBM Plex Sans,sans-serif" font-size="13">Mina Clavero</text>
+            <circle cx="219" cy="120" r="7" fill="#141414"/><text x="233" y="124" font-family="IBM Plex Sans,sans-serif" font-size="13">Nono</text>
+            <rect x="285" y="226" width="20" height="20" fill="#E2A63B" stroke="#141414" stroke-width="2"/>
+            <text x="312" y="215" font-family="Forum,serif" font-size="20">Dos Arroyos</text>
+            <circle cx="222" cy="238" r="7" fill="#141414"/><text x="208" y="242" font-family="IBM Plex Sans,sans-serif" font-size="13" text-anchor="end">Los Hornillos</text>
+            <circle cx="225" cy="300" r="7" fill="#141414"/><text x="211" y="304" font-family="IBM Plex Sans,sans-serif" font-size="13" text-anchor="end">Villa de las Rosas</text>
+            <circle cx="231" cy="395" r="7" fill="#141414"/><text x="217" y="399" font-family="IBM Plex Sans,sans-serif" font-size="13" text-anchor="end">Villa Dolores</text>
+            <text x="300" y="290" font-family="IBM Plex Mono,monospace" font-size="10.5" fill="#24584A">arroyos</text>
+          </svg>
+        </div>
+        <p class="nota">Mapa ilustrativo, no a escala.</p>
+        <div class="llegar">
+          <a class="cta" href="https://www.google.com/maps/search/?api=1&query=Caba%C3%B1as+Dos+Arroyos+Los+Hornillos+C%C3%B3rdoba" target="_blank" rel="noopener">Abrir en Google Maps</a>
+        </div>
+        <ul style="font-size:14.5px;padding-left:18px;margin-top:14px">
+          <li>Desde Córdoba capital: por las Altas Cumbres hasta Mina Clavero y luego RP 14 al sur.</li>
+          <li>Dirección: Crucero ARA General Belgrano s/n, Villa Dos Arroyos.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="sec solo-huesped" id="preguntas">
+  <div class="g">
+    <div class="sec-h"><div class="mono">06 · Antes de venir</div><h2>Preguntas frecuentes</h2></div>
+    <div class="faq">
+      <details open><summary>¿Aceptan mascotas?</summary><ul><li>Respuesta a completar por ustedes.</li><li>Si aceptan, se marca acá y el simulador suma la opción.</li></ul></details>
+      <details><summary>¿Hay ropa blanca y toallas?</summary><ul><li>Respuesta a completar por ustedes.</li><li>Se puede aclarar si hay recambio en estadías largas.</li></ul></details>
+      <details><summary>¿A qué hora es el check-in y el check-out?</summary><ul><li>Horarios a confirmar por ustedes.</li><li>El mensaje de reserva ya incluye la fecha de llegada.</li></ul></details>
+      <details><summary>¿Cómo se confirma la reserva?</summary><ul><li>Se pide por WhatsApp con el mensaje armado.</li><li>Se confirma con la seña del 30% por Mercado Pago.</li></ul></details>
+      <details><summary>¿Siguen estando en Booking?</summary><ul><li>Sí. Booking y Airbnb siguen igual.</li><li>El calendario se sincroniza: no hay dobles reservas.</li></ul></details>
+      <details><summary>¿Cómo llego sin auto?</summary><ul><li>Micros a Villa Dolores o Mina Clavero y remis hasta Los Hornillos.</li><li>Ustedes pueden sumar acá contactos de remises de confianza.</li></ul></details>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="g">
+    <div><b>Cabañas Dos Arroyos</b><br>Crucero ARA Gral. Belgrano s/n, Villa Dos Arroyos, Los Hornillos, Córdoba</div>
+    <div><b>Contacto</b><br>(+54) 3544 579643<br>dosarroyoscabanas@gmail.com</div>
+    <div><b>Redes</b><br>@cabanasdosarroyos</div>
+    <div class="disc">Prototipo de demostración preparado para Cabañas Dos Arroyos por Resolviendo Kos · No es la web oficial. Precios, disponibilidad y panel del dueño son de ejemplo. Fotos tomadas de la web pública del complejo.</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var WA='5493544579643';
+  var IMG='https://f316b022d7.clvaw-cdnwnd.com/24a98e4032f4bf68f6446d2f43eb087a/';
+  var FOTOS=[
+    IMG+'200000037-11f6212f07/IMG_2823.JPG?ph=f316b022d7',
+    IMG+'200000013-77f9178f18/IMG_2686.JPG?ph=f316b022d7',
+    IMG+'200000009-e9ab7eaa5d/terminada3.jpg?ph=f316b022d7',
+    IMG+'200000017-5e9645f8fc/nuevas%20008.jpg?ph=f316b022d7'
+  ];
+  var CABS={
+    aire:{n:'Aire',cap:3,min:2,tipo:'2 a 3',col:'var(--aire-d)',fx:0,txt:['Para parejas o 3 personas','Cerca del monte nativo','Pensada para descansar y leer afuera'],gusto:['calma','monte']},
+    sol:{n:'Sol',cap:3,min:2,tipo:'2 a 3',col:'var(--sol)',fx:1,txt:['Para parejas o 3 personas','Luz de la tarde sobre la sierra','Ideal para escapadas cortas'],gusto:['calma','sierra']},
+    tierra:{n:'Tierra',cap:5,min:4,tipo:'4 a 5',col:'var(--tierra)',fx:2,txt:['Para familias o grupos de 4 a 5','Al pie de las Sierras Grandes','Base para salir a caminar'],gusto:['sierra','monte']},
+    agua:{n:'Agua',cap:5,min:4,tipo:'4 a 5',col:'var(--agua)',fx:3,txt:['Para familias o grupos de 4 a 5','La más ligada al arroyo','Para chicos que quieren agua todo el día'],gusto:['arroyo']}
+  };
+  /* Temporadas (fechas reales del calendario 2026-2027; precios de ejemplo) */
+  var TEMP=[
+    {n:'Fin de semana largo de la Soberanía',d:'21 al 23 de noviembre de 2026',a:'2026-11-21',b:'2026-11-23',p:[70000,98000],m:2},
+    {n:'Fin de semana del 8 de diciembre',d:'5 al 8 de diciembre de 2026',a:'2026-12-05',b:'2026-12-08',p:[70000,98000],m:2},
+    {n:'Fiestas',d:'24 de diciembre de 2026 al 1 de enero de 2027',a:'2026-12-24',b:'2027-01-01',p:[85000,118000],m:3},
+    {n:'Temporada alta',d:'2 de enero al 28 de febrero de 2027 (incluye Carnaval, 8 y 9 de febrero)',a:'2027-01-02',b:'2027-02-28',p:[95000,130000],m:3},
+    {n:'Semana Santa',d:'24 al 28 de marzo de 2027',a:'2027-03-24',b:'2027-03-28',p:[80000,110000],m:2},
+    {n:'Vacaciones de invierno',d:'Julio de 2027, según calendario escolar de Córdoba',a:'2027-07-05',b:'2027-07-30',p:[70000,98000],m:2},
+    {n:'Resto del año',d:'Días de semana y fines de semana sin feriado',a:null,b:null,p:[58000,82000],m:2}
+  ];
+  var $=function(s){return document.querySelector(s)};
+  var fmt=function(n){return '$ '+Math.round(n).toLocaleString('es-AR')};
+  var ej='<em class="ej">Precio de ejemplo</em>';
+
+  /* tabla temporadas */
+  $('#tbTemp').innerHTML=TEMP.map(function(t){
+    return '<tr><td class="t">'+t.n+'</td><td>'+t.d+'</td><td class="p" data-l="Aire · Sol">'+fmt(t.p[0])+' / noche '+ej+'</td><td class="p" data-l="Tierra · Agua">'+fmt(t.p[1])+' / noche '+ej+'</td><td data-l="Mínimo" class="p">'+t.m+' noches</td></tr>';
+  }).join('');
+
+  /* fichas */
+  var orden=['aire','sol','tierra','agua'];
+  $('#cabs').innerHTML=orden.map(function(k,i){
+    var c=CABS[k]; var otros=FOTOS.filter(function(_,j){return j!==c.fx});
+    return '<article class="cab" id="cab-'+k+'">'+
+      '<div class="cab-top" style="border-color:'+c.col+'"><h3>'+c.n+'</h3><span class="mono">0'+(i+1)+' · para '+c.tipo+'</span></div>'+
+      '<div class="foto-p"><img id="fp-'+k+'" src="'+FOTOS[c.fx]+'" alt="Cabañas Dos Arroyos, foto de su web" data-el="'+k+'" data-n="Cabaña '+c.n+'" loading="lazy" onerror="fb(this)"></div>'+
+      '<div class="fotos-s">'+otros.map(function(u){return '<button data-k="'+k+'" data-u="'+u+'" aria-label="Ver foto"><img src="'+u+'" alt="Foto del complejo" data-el="'+k+'" data-n="Dos Arroyos" loading="lazy" onerror="fb(this)"></button>'}).join('')+'</div>'+
+      '<div class="cred">Fotos de dosarroyoscabanas.com</div>'+
+      '<div class="ficha">'+
+        '<div><b>Capacidad</b>'+c.tipo+' personas</div>'+
+        '<div><b>Desde</b>'+fmt(TEMP[6].p[c.cap>3?1:0])+' / noche '+ej+'</div>'+
+        c.txt.map(function(t,j){return '<div'+(j==2?' style="grid-column:1/-1"':'')+'><b>'+(j==0?'Ideal':j==1?'Entorno':'Para qué')+'</b>'+t+'</div>'}).join('')+
+      '</div>'+
+      '<button class="elegir" data-k="'+k+'">Ver fechas libres de '+c.n+' →</button>'+
+    '</article>';
+  }).join('');
+  document.querySelectorAll('.fotos-s button').forEach(function(b){
+    b.addEventListener('click',function(){var im=$('#fp-'+b.dataset.k);im.removeAttribute('data-fb');im.src=b.dataset.u;});
+  });
+  document.querySelectorAll('.cab .elegir').forEach(function(b){
+    b.addEventListener('click',function(){setCab(b.dataset.k);location.hash='reservar';});
+  });
+
+  /* estado */
+  var S={cab:'aire',pers:2,ini:null,fin:null,nom:'',mes:new Date(2026,10,1)};
+  var HOY=new Date(2026,10,10);
+  function key(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+  function ocupado(k,d){ /* ocupación de ejemplo, fija por cabaña */
+    var s=d.getFullYear()*372+d.getMonth()*31+d.getDate()+ {aire:3,sol:11,tierra:17,agua:23}[k];
+    var r=Math.sin(s*12.9898)*43758.5453; r=r-Math.floor(r);
+    var fds=d.getDay()==5||d.getDay()==6;
+    var alta=d.getMonth()==0||d.getMonth()==1;
+    return r < (alta?0.3:fds?0.3:0.12);
+  }
+  function temporada(d){
+    var k=key(d);
+    for(var i=0;i<TEMP.length-1;i++){if(k>=TEMP[i].a && k<=TEMP[i].b) return TEMP[i];}
+    return TEMP[6];
+  }
+  function setCab(k){S.cab=k;$('#fCab').value=k;persOpts();S.ini=null;S.fin=null;render();}
+  function persOpts(){
+    var c=CABS[S.cab],h='';
+    for(var i=1;i<=c.cap;i++)h+='<option value="'+i+'">'+i+(i==1?' persona':' personas')+'</option>';
+    $('#fPers').innerHTML=h; if(S.pers>c.cap)S.pers=c.cap; $('#fPers').value=S.pers;
+  }
+  $('#fCab').addEventListener('change',function(e){setCab(e.target.value)});
+  $('#fPers').addEventListener('change',function(e){S.pers=+e.target.value;render()});
+  $('#fNom').addEventListener('input',function(e){S.nom=e.target.value.trim();render()});
+  $('#prev').addEventListener('click',function(){var m=new Date(S.mes);m.setMonth(m.getMonth()-1);if(m>=new Date(2026,10,1)){S.mes=m;cal()}});
+  $('#next').addEventListener('click',function(){var m=new Date(S.mes);m.setMonth(m.getMonth()+1);if(m<=new Date(2027,7,1)){S.mes=m;cal()}});
+
+  function cal(){
+    var m=S.mes, y=m.getFullYear(), mo=m.getMonth();
+    var mt=m.toLocaleDateString('es-AR',{month:'long',year:'numeric'});$('#mesTxt').textContent=mt.charAt(0).toUpperCase()+mt.slice(1);
+    var h=['lu','ma','mi','ju','vi','sá','do'].map(function(x){return '<div class="dw">'+x+'</div>'}).join('');
+    var off=(new Date(y,mo,1).getDay()+6)%7;
+    for(var i=0;i<off;i++)h+='<div></div>';
+    var dias=new Date(y,mo+1,0).getDate();
+    for(var d=1;d<=dias;d++){
+      var dt=new Date(y,mo,d), cl='d';
+      var t=temporada(dt); if(t!==TEMP[6]) cl+=' alta';
+      if(dt<HOY) cl='pas';
+      else if(ocupado(S.cab,dt)) cl='x';
+      var k=key(dt);
+      if(S.ini && k===key(S.ini)) cl+=' sel';
+      else if(S.fin && k===key(S.fin)) cl+=' sel';
+      else if(S.ini && S.fin && dt>S.ini && dt<S.fin) cl+=' rng';
+      h+='<div class="'+cl+'" data-k="'+k+'" title="'+t.n+'">'+d+'</div>';
+    }
+    $('#cal').innerHTML=h;
+    document.querySelectorAll('#cal .d').forEach(function(el){el.addEventListener('click',function(){pick(el.dataset.k)})});
+  }
+  function pick(k){
+    var p=k.split('-'), d=new Date(+p[0],+p[1]-1,+p[2]);
+    $('#avisos').textContent='';
+    if(!S.ini || S.fin || d<=S.ini){S.ini=d;S.fin=null;}
+    else{
+      for(var x=new Date(S.ini);x<d;x.setDate(x.getDate()+1)){
+        if(ocupado(S.cab,x)){ $('#avisos').textContent='Hay noches ocupadas en el medio: probá otras fechas u otra cabaña.'; S.ini=d; S.fin=null; render(); return; }
+      }
+      S.fin=d;
+    }
+    render();
+  }
+  function calc(){
+    if(!S.ini||!S.fin) return null;
+    var n=0,tot=0,minimo=2,t0=temporada(S.ini);
+    for(var x=new Date(S.ini);x<S.fin;x.setDate(x.getDate()+1)){var t=temporada(x);tot+=t.p[CABS[S.cab].cap>3?1:0];n++;minimo=Math.max(minimo,t.m);}
+    return {n:n,tot:tot,pn:tot/n,sena:tot*0.3,min:minimo,t:t0};
+  }
+  function fl(d){return d.toLocaleDateString('es-AR',{weekday:'short',day:'numeric',month:'short'})}
+  var typing=null, lastTxt='';
+  function mensaje(r){
+    var c=CABS[S.cab], L=[];
+    L.push('Hola, Dos Arroyos! '+(S.nom?'Soy '+S.nom+'. ':'')+'Quiero reservar:');
+    L.push('• Cabaña: '+c.n+' (para '+c.tipo+')');
+    L.push('• Personas: '+S.pers);
+    if(S.ini) L.push('• Llegada: '+fl(S.ini));
+    if(S.fin) L.push('• Salida: '+fl(S.fin)+(r?' ('+r.n+' noche'+(r.n>1?'s':'')+')':''));
+    if(r){
+      L.push('• Total: '+fmt(r.tot)+' (precio de ejemplo)');
+      L.push('• Seña 30%: '+fmt(r.sena)+' por Mercado Pago');
+    }
+    L.push(S.ini&&S.fin?'¿Me confirman y me pasan el link de la seña?':'¿Qué fechas tienen libres?');
+    return L.join('\n');
+  }
+  function escribir(txt){
+    var b=$('#burb'); if(txt===lastTxt) return;
+    var comun=0; while(comun<txt.length && comun<lastTxt.length && txt[comun]===lastTxt[comun]) comun++;
+    lastTxt=txt; clearInterval(typing); var i=comun;
+    typing=setInterval(function(){
+      i=Math.min(txt.length,i+3);
+      b.innerHTML=esc(txt.slice(0,i))+(i<txt.length?'<span class="cursor"></span>':'')+'<span class="hora">'+hora()+'</span>';
+      if(i>=txt.length) clearInterval(typing);
+    },16);
+  }
+  function esc(s){return s.replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]})}
+  function hora(){var d=new Date();return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}
+  function render(){
+    cal();
+    var r=calc();
+    $('#fFechas').textContent=S.ini?(fl(S.ini)+(S.fin?' → '+fl(S.fin):' → ?')):'Elegí en el calendario';
+    if(r){
+      $('#tN').textContent=r.n+' noche'+(r.n>1?'s':'');
+      $('#tP').innerHTML=fmt(r.pn)+' '+ej;
+      $('#tT').innerHTML=fmt(r.tot)+' '+ej;
+      $('#tS').innerHTML=fmt(r.sena)+' '+ej;
+      if(r.n<r.min) $('#avisos').textContent='En '+r.t.n.toLowerCase()+' el mínimo de ejemplo es de '+r.min+' noches.';
+    } else {['#tN'].forEach(function(s){$(s).textContent='—'});['#tP','#tT','#tS'].forEach(function(s){$(s).innerHTML='— '+ej});}
+    var txt=mensaje(r); escribir(txt);
+    var ok=r && S.nom && r.n>=r.min;
+    var a=$('#waBtn'); a.href='https://wa.me/'+WA+'?text='+encodeURIComponent(txt); a.setAttribute('aria-disabled',ok?'false':'true');
+    $('#waAyuda').textContent=ok?'Se abre WhatsApp con este mismo texto, listo para enviar.':'Elegí cabaña, fechas y tu nombre: el mensaje se arma solo.';
+  }
+
+  /* quiz */
+  var Q={g:null,gu:null,c:null};
+  function chipGroup(id,prop){
+    document.querySelectorAll(id+' .chip').forEach(function(b){
+      b.addEventListener('click',function(){
+        document.querySelectorAll(id+' .chip').forEach(function(x){x.setAttribute('aria-pressed','false')});
+        b.setAttribute('aria-pressed','true'); Q[prop]=b.dataset.v; quiz();
+      });
+    });
+  }
+  chipGroup('#qGrupo','g');chipGroup('#qGusto','gu');chipGroup('#qCuando','c');
+  function quiz(){
+    if(!Q.g) return;
+    var g=+Q.g, cands=orden.filter(function(k){return CABS[k].cap>=g && CABS[k].min<=g || (g<=3&&CABS[k].cap==3) });
+    if(g>=4) cands=['tierra','agua'];
+    var elegida=cands[0];
+    if(Q.gu){var m=cands.filter(function(k){return CABS[k].gusto.indexOf(Q.gu)>=0}); if(m.length) elegida=m[0];}
+    var c=CABS[elegida];
+    var cuando={verano:'En enero y febrero piden mínimo de 3 noches (regla de ejemplo).',finde:'Próximo fin de semana largo: 21 al 23 de noviembre.',otono:'Fuera de temporada rige la tarifa más baja.'}[Q.c]||'';
+    $('#qRes').innerHTML='<div class="mono" style="color:var(--gris)">Les toca</div><div class="sw" style="background:'+c.col+'"></div><div class="big">'+c.n+'</div>'+
+      '<ul><li>Para '+c.tipo+' personas</li>'+c.txt.slice(1).map(function(t){return '<li>'+t+'</li>'}).join('')+(cuando?'<li>'+cuando+'</li>':'')+'</ul>'+
+      '<button class="cta" id="qIr" style="align-self:flex-start">Ver fechas de '+c.n+' →</button>';
+    $('#qIr').addEventListener('click',function(){S.pers=g;setCab(elegida);if(Q.c==='verano'){S.mes=new Date(2027,0,1);cal();}else if(Q.c==='finde'){S.mes=new Date(2026,10,1);cal();}location.hash='reservar';});
+  }
+
+  /* panel dueño */
+  var CONS=[
+    {q:'Lun 16 · 09:12',t:'Hola, Dos Arroyos! Soy Mariana. Quiero reservar:\n• Cabaña: Agua (para 4 a 5)\n• Personas: 4\n• Llegada: sáb 9 ene\n• Salida: mié 13 ene (4 noches)\n• Total: $ 520.000 (precio de ejemplo)\n• Seña 30%: $ 156.000 por Mercado Pago\n¿Me confirman y me pasan el link de la seña?',e:'Seña cobrada'},
+    {q:'Mar 17 · 18:40',t:'Hola, Dos Arroyos! Soy Julián. Quiero reservar:\n• Cabaña: Sol (para 2 a 3)\n• Personas: 2\n• Llegada: sáb 21 nov\n• Salida: lun 23 nov (2 noches)\n• Total: $ 140.000 (precio de ejemplo)\n• Seña 30%: $ 42.000 por Mercado Pago\n¿Me confirman y me pasan el link de la seña?',e:'Seña cobrada'},
+    {q:'Jue 19 · 21:05',t:'Hola, Dos Arroyos! Soy Paula. Quiero reservar:\n• Cabaña: Tierra (para 4 a 5)\n• Personas: 5\n• Llegada: mié 24 mar\n• Salida: dom 28 mar (4 noches)\n• Total: $ 440.000 (precio de ejemplo)\n• Seña 30%: $ 132.000 por Mercado Pago\n¿Me confirman y me pasan el link de la seña?',e:'Esperando seña'}
+  ];
+  $('#consultas').innerHTML=CONS.map(function(c){return '<div><div class="meta"><span>'+c.q+'</span><span>'+c.e+'</span></div><div class="burb">'+esc(c.t)+'<span class="hora">'+c.q.split('· ')[1]+'</span></div></div>'}).join('');
+  $('#kSenas').textContent=fmt(156000+42000);
+  var dias=['LU 16','MA 17','MI 18','JU 19','VI 20','SÁ 21','DO 22'];
+  var occ={aire:[0,0,1,1,1,1,0],sol:[0,0,0,0,1,1,1],tierra:[1,1,0,0,0,1,1],agua:[0,0,0,1,1,1,1]};
+  var cols={aire:'#CFE3EC',sol:'#E2A63B',tierra:'#C77C55',agua:'#6FA595'};
+  $('#agenda').innerHTML='<tr><th></th>'+dias.map(function(d){return '<th>'+d+'</th>'}).join('')+'</tr>'+
+    orden.map(function(k){return '<tr><td class="n">'+CABS[k].n+'</td>'+occ[k].map(function(o){return o?'<td class="oc" style="background:'+cols[k]+'">Ocup.</td>':'<td class="li">Libre</td>'}).join('')+'</tr>'}).join('');
+  function ahorro(){var n=+$('#rngRes').value;$('#rngVal').textContent=n;$('#ahorroTxt').innerHTML=fmt(n*4*112500*0.15)+' <em class="ej" style="color:#bdb7ac">Precio de ejemplo</em>';}
+  $('#rngRes').addEventListener('input',ahorro);ahorro();
+  $('#btnDueno').addEventListener('click',function(){
+    var on=document.body.classList.toggle('modo-dueno');
+    this.setAttribute('aria-pressed',on);this.textContent=on?'Volver a la web':'Ver como dueño';
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+
+  persOpts(); render();
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Cabañas Dos Arroyos"></script>
+</body>
+</html>
