@@ -1,0 +1,716 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Cabañas Flor de Lis · San Javier (prototipo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rosarivo:ital@0;1&family=Quattrocento+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<script>
+/* Si una foto principal no carga: lámina ilustrada */
+function fb(img){
+  if(img.dataset.fb) return; img.dataset.fb=1;
+  var n=img.getAttribute('data-n')||'';
+  var s='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520">'+
+  '<rect width="800" height="520" fill="#E9EEF2"/>'+
+  '<g stroke="#9FB3C8" stroke-width="1" opacity=".55">'+Array.from({length:21},function(_,i){return '<line x1="'+(i*40)+'" y1="0" x2="'+(i*40)+'" y2="520"/>'}).join('')+Array.from({length:14},function(_,i){return '<line x1="0" y1="'+(i*40)+'" x2="800" y2="'+(i*40)+'"/>'}).join('')+'</g>'+
+  '<path d="M0 250 L140 150 L260 210 L380 90 L520 190 L640 130 L800 210 L800 520 L0 520Z" fill="#5C7A4E" opacity=".35"/>'+
+  '<path d="M250 330 L400 230 L550 330 Z" fill="none" stroke="#1E3F66" stroke-width="5"/>'+
+  '<rect x="280" y="330" width="240" height="120" fill="none" stroke="#1E3F66" stroke-width="5"/>'+
+  '<rect x="375" y="380" width="50" height="70" fill="none" stroke="#1E3F66" stroke-width="4"/>'+
+  '<rect x="560" y="400" width="150" height="60" rx="6" fill="#9CC3D9" stroke="#1E3F66" stroke-width="3"/>'+
+  '<text x="40" y="490" fill="#1E3F66" font-family="Georgia,serif" font-size="28">'+(n?('Cabaña Flor de Lis '+n):'Cabañas Flor de Lis · San Javier')+'</text></svg>';
+  img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(s);
+}
+/* Fotos secundarias: si no existen, se quitan (sin recuadros vacíos) */
+function gone(img){var f=img.closest('figure');(f||img).remove();}
+</script>
+<style>
+:root{
+  --calco:#F3F1EA; --calco-2:#E9E6DB; --plano:#1E3F66; --plano-2:#2D5A8C; --linea:#9FB3C8;
+  --sierra:#5C7A4E; --sierra-d:#3F5636; --oro:#C49A3A; --oro-l:#EBD9A8; --tinta:#1D2733; --gris:#5E6670;
+  --agua:#9CC3D9; --wa:#DCF8C6; --wa-bg:#ECE5DD;
+  --disp:'Rosarivo', Georgia, serif; --txt:'Quattrocento Sans', 'Trebuchet MS', sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--calco);color:var(--tinta);font-family:var(--txt);font-size:17px;line-height:1.5;overflow-x:hidden;
+  background-image:linear-gradient(rgba(30,63,102,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(30,63,102,.05) 1px,transparent 1px);background-size:24px 24px}
+img{max-width:100%;display:block}
+a{color:inherit}
+button,input,select{font-family:inherit;font-size:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+.sig{font-size:12.5px;color:var(--gris);text-align:center;padding:7px 16px;border-bottom:1px solid var(--calco-2);background:var(--calco)}
+.sig b{color:var(--tinta)}
+/* barra */
+.bar{position:sticky;top:0;z-index:50;background:rgba(243,241,234,.95);backdrop-filter:blur(6px);border-bottom:1.5px solid var(--plano)}
+.bar .wrap{display:flex;align-items:center;gap:16px;height:60px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo svg{width:28px;height:28px;flex:none}
+.logo span{font-family:var(--disp);font-size:21px;color:var(--plano);line-height:1}
+.logo small{display:block;font-family:var(--txt);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gris);margin-top:3px}
+.bar nav{margin-left:auto;display:flex;gap:18px;font-size:14px;letter-spacing:.04em}
+.bar nav a{text-decoration:none;color:var(--gris)}
+.bar nav a:hover{color:var(--plano)}
+.tabs{display:flex;border:1.5px solid var(--plano);border-radius:4px;overflow:hidden;flex:none}
+.tabs button{border:0;background:transparent;color:var(--plano);padding:7px 12px;font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap}
+.tabs button[aria-pressed="true"]{background:var(--plano);color:var(--calco)}
+@media(max-width:900px){.bar nav{display:none}.tabs{margin-left:auto}}
+@media(max-width:420px){.logo small{display:none}.tabs button{padding:7px 9px;font-size:12.5px}}
+
+/* rótulo / hero */
+.hero{padding:34px 0 10px}
+.sheet{background:#FBFAF6;border:1.5px solid var(--plano);position:relative}
+.sheet::before{content:"";position:absolute;inset:6px;border:1px solid var(--linea);pointer-events:none}
+.hero-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:0}
+.hero-plan{padding:22px;border-right:1.5px solid var(--plano)}
+.hero-plan svg{width:100%;height:auto}
+.hero-txt{padding:28px 28px 22px;display:flex;flex-direction:column}
+.kicker{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--plano-2);font-weight:700}
+h1{font-family:var(--disp);font-weight:400;font-size:clamp(32px,4.2vw,50px);line-height:1.06;margin:10px 0 14px;color:var(--plano)}
+h1 em{color:var(--sierra);font-style:italic}
+.hero-txt ul{margin:0 0 18px;padding:0;list-style:none}
+.hero-txt li{padding:7px 0 7px 22px;border-bottom:1px dashed var(--linea);position:relative;font-size:16px}
+.hero-txt li::before{content:"";position:absolute;left:2px;top:15px;width:10px;height:2px;background:var(--oro)}
+.cta{display:inline-flex;align-items:center;gap:8px;background:var(--plano);color:var(--calco);text-decoration:none;padding:12px 18px;border-radius:3px;font-weight:700;border:0;cursor:pointer}
+.cta.alt{background:transparent;color:var(--plano);border:1.5px solid var(--plano)}
+.cta-row{display:flex;gap:10px;flex-wrap:wrap}
+.rotulo{margin-top:auto;padding-top:18px;display:grid;grid-template-columns:repeat(4,1fr);border-top:1.5px solid var(--plano);font-size:11.5px}
+.rotulo div{padding:8px 8px 2px;border-right:1px solid var(--linea)}
+.rotulo div:last-child{border-right:0}
+.rotulo b{display:block;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gris);font-weight:700}
+@media(max-width:860px){.hero-grid{grid-template-columns:1fr}.hero-plan{border-right:0;border-bottom:1.5px solid var(--plano);padding:14px}.hero-txt{padding:22px 18px}.rotulo{grid-template-columns:repeat(2,1fr)}.rotulo div:nth-child(2){border-right:0}}
+
+/* secciones */
+section{padding:46px 0}
+.lam{display:flex;align-items:baseline;gap:14px;margin-bottom:20px;border-bottom:1.5px solid var(--plano);padding-bottom:10px;flex-wrap:wrap}
+.lam .n{font-family:var(--disp);font-size:15px;color:var(--oro);letter-spacing:.06em;white-space:nowrap}
+.lam h2{font-family:var(--disp);font-weight:400;font-size:clamp(26px,3vw,36px);margin:0;color:var(--plano);line-height:1.1}
+.lam p{margin:0 0 0 auto;color:var(--gris);font-size:14.5px}
+@media(max-width:700px){.lam p{margin:0;width:100%}}
+
+/* cuántos son */
+.cuantos{display:grid;grid-template-columns:320px 1fr;gap:0}
+.cq-in{padding:22px;border-right:1.5px solid var(--plano)}
+.cq-out{padding:22px}
+.stepper{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px dashed var(--linea)}
+.stepper span small{display:block;color:var(--gris);font-size:13px}
+.stepper .ctl{display:flex;align-items:center;gap:10px}
+.stepper button{width:36px;height:36px;border:1.5px solid var(--plano);background:#fff;color:var(--plano);border-radius:3px;font-size:20px;line-height:1;cursor:pointer}
+.stepper output{min-width:24px;text-align:center;font-family:var(--disp);font-size:22px}
+.reco{display:flex;flex-direction:column;gap:10px}
+.reco-row{display:grid;grid-template-columns:150px 1fr auto;gap:14px;align-items:center;padding:12px 14px;border:1.5px solid var(--linea);background:#fff}
+.reco-row.ok{border-color:var(--sierra);background:#F1F5EE}
+.reco-row.best{border-color:var(--oro);background:#FBF5E6;box-shadow:inset 4px 0 0 var(--oro)}
+.reco-row.no{opacity:.55}
+.reco-row b{font-family:var(--disp);font-weight:400;font-size:19px;color:var(--plano)}
+.cap{display:flex;gap:3px;flex-wrap:wrap}
+.cap i{width:12px;height:16px;border:1.5px solid var(--plano);border-radius:6px 6px 2px 2px;display:block}
+.cap i.on{background:var(--plano)}
+.cap i.over{background:#B5462E;border-color:#B5462E}
+.tag{font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.tag.g{color:var(--sierra-d)} .tag.o{color:#8A6516} .tag.r{color:#B5462E}
+.warn{margin-top:12px;padding:10px 14px;border-left:4px solid #B5462E;background:#FBEDE8;font-size:15px;display:none}
+@media(max-width:860px){.cuantos{grid-template-columns:1fr}.cq-in{border-right:0;border-bottom:1.5px solid var(--plano)}.reco-row{grid-template-columns:1fr auto}.reco-row .cap{grid-column:1/-1;order:3}}
+
+/* fichas */
+.ficha{display:grid;grid-template-columns:1.35fr 1fr;margin-bottom:34px}
+.ficha .ph{padding:18px;border-right:1.5px solid var(--plano)}
+.ph-main{background:var(--calco-2);border:1px solid var(--linea)}
+.ph-main img{width:100%;height:auto;object-fit:contain}
+.ph-more{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:10px}
+.ph-more figure{margin:0;background:var(--calco-2);border:1px solid var(--linea)}
+.ph-more img{width:100%;height:auto;object-fit:contain}
+.dim{display:flex;align-items:center;gap:8px;color:var(--plano-2);font-size:12px;letter-spacing:.1em;margin-top:8px}
+.dim::before,.dim::after{content:"";flex:1;height:1px;background:var(--plano-2)}
+.dim span{white-space:nowrap}
+.spec{padding:22px}
+.spec h3{font-family:var(--disp);font-weight:400;font-size:30px;margin:0;color:var(--plano)}
+.spec .sub{color:var(--gris);font-size:14px;margin:2px 0 14px}
+.spec table{width:100%;border-collapse:collapse;font-size:15px}
+.spec td{padding:8px 0;border-bottom:1px dashed var(--linea);vertical-align:top}
+.spec td:first-child{color:var(--gris);width:46%;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+.pe{display:inline-block;font-size:11px;color:var(--gris);font-style:italic;margin-left:4px;white-space:nowrap}
+.pool{margin-top:14px;padding:12px 14px;background:#EEF4F8;border:1px solid var(--agua);font-size:14.5px}
+.pool b{display:block;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--plano-2);margin-bottom:4px}
+.pool .sun{display:flex;gap:4px;margin:6px 0}
+.pool .sun i{flex:1;height:8px;background:var(--linea)}
+.pool .sun i.s{background:var(--oro)}
+.pool small{color:var(--gris);font-size:12px}
+.spec .cta{margin-top:16px}
+@media(max-width:860px){.ficha{grid-template-columns:1fr}.ficha .ph{border-right:0;border-bottom:1.5px solid var(--plano);padding:12px}.spec{padding:18px}}
+
+/* temporadas */
+.tbl{width:100%;border-collapse:collapse;background:#fff;border:1.5px solid var(--plano);font-size:15px}
+.tbl th,.tbl td{padding:10px 12px;border-bottom:1px solid var(--linea);text-align:left}
+.tbl th{background:var(--plano);color:var(--calco);font-weight:700;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase}
+.tbl td.num{font-family:var(--disp);font-size:17px;white-space:nowrap}
+.tbl-wrap{overflow-x:auto}
+.note{font-size:13.5px;color:var(--gris);margin-top:10px}
+
+/* reserva */
+.res{display:grid;grid-template-columns:1.25fr .9fr;gap:22px;align-items:start}
+.res-box{padding:20px}
+.fld{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.fld label{display:block;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gris);font-weight:700;margin-bottom:4px}
+.fld select,.fld input{width:100%;padding:10px;border:1.5px solid var(--plano);background:#fff;border-radius:3px;color:var(--tinta)}
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin:6px 0 8px}
+.cal-head b{font-family:var(--disp);font-weight:400;font-size:21px;color:var(--plano)}
+.cal-head button{border:1.5px solid var(--plano);background:#fff;color:var(--plano);width:36px;height:36px;border-radius:3px;cursor:pointer;font-size:18px}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cal .dw{font-size:11px;text-align:center;color:var(--gris);letter-spacing:.08em;padding:4px 0}
+.cal button{aspect-ratio:1/1;border:1px solid var(--linea);background:#fff;color:var(--tinta);border-radius:2px;cursor:pointer;font-size:14px;padding:0;position:relative}
+.cal button.alta{background:#FBF5E6}
+.cal button.finde{background:#EEF4F8}
+.cal button.busy{background:repeating-linear-gradient(135deg,#d9dde2 0 4px,#eef0f2 4px 8px);color:#9aa2ab;cursor:not-allowed;text-decoration:line-through}
+.cal button.sel{background:var(--plano);color:#fff;border-color:var(--plano)}
+.cal button.in{background:#CFDCEA;border-color:#9FB3C8}
+.cal button:disabled.past{opacity:.35;cursor:default}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:12.5px;color:var(--gris);margin-top:10px}
+.legend i{display:inline-block;width:12px;height:12px;border:1px solid var(--linea);vertical-align:-2px;margin-right:4px}
+.sync{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--sierra-d);margin-top:10px;font-weight:700}
+.sync::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--sierra);box-shadow:0 0 0 3px #D7E3D1}
+.tot{margin-top:14px;border-top:1.5px solid var(--plano)}
+.tot div{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px dashed var(--linea);font-size:15px;gap:10px}
+.tot div b{font-family:var(--disp);font-weight:400;font-size:18px;white-space:nowrap}
+.chat{position:sticky;top:76px;background:var(--wa-bg);border:1.5px solid var(--plano);padding:0;overflow:hidden}
+.chat-top{background:#075E54;color:#fff;padding:10px 14px;display:flex;gap:10px;align-items:center}
+.chat-top .av{width:34px;height:34px;border-radius:50%;background:var(--oro-l);display:grid;place-items:center;flex:none}
+.chat-top .av svg{width:20px;height:20px}
+.chat-top b{display:block;font-size:15px}
+.chat-top small{opacity:.8;font-size:12px}
+.chat-body{padding:16px 14px 10px;min-height:240px}
+.bub{background:var(--wa);border-radius:8px 0 8px 8px;padding:10px 12px 18px;margin-left:12%;position:relative;font-size:14.5px;white-space:pre-wrap;box-shadow:0 1px 1px rgba(0,0,0,.12);word-wrap:break-word}
+.bub::after{content:"";position:absolute;right:-8px;top:0;border-left:8px solid var(--wa);border-bottom:8px solid transparent}
+.bub time{position:absolute;right:8px;bottom:3px;font-size:11px;color:#6b7b6b}
+.caret{display:inline-block;width:1px;height:1em;background:#333;vertical-align:-2px;animation:bl 1s steps(1) infinite}
+@keyframes bl{50%{opacity:0}}
+.chat-foot{padding:12px 14px 14px;background:#F6F3EF;border-top:1px solid #ddd}
+.wa-btn{display:flex;width:100%;justify-content:center;align-items:center;gap:8px;background:#1FA855;color:#fff;border:0;border-radius:3px;padding:13px;font-weight:700;text-decoration:none;cursor:pointer}
+.wa-btn[aria-disabled="true"]{background:#9bbfa8;pointer-events:none}
+.chat-foot small{display:block;text-align:center;color:var(--gris);font-size:12px;margin-top:6px}
+@media(max-width:900px){.res{grid-template-columns:1fr}.chat{position:static}}
+@media(max-width:420px){.fld{grid-template-columns:1fr}}
+
+/* pueblo, faq, llegar */
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.list{margin:0;padding:0;list-style:none;background:#fff;border:1.5px solid var(--plano)}
+.list li{padding:12px 16px;border-bottom:1px solid var(--linea);display:grid;grid-template-columns:62px 1fr;gap:12px;font-size:15.5px}
+.list li:last-child{border-bottom:0}
+.list li b{font-family:var(--disp);font-weight:400;color:var(--oro);font-size:15px}
+.list li strong{display:block;color:var(--plano)}
+.faq details{background:#fff;border:1.5px solid var(--plano);border-bottom-width:0}
+.faq details:last-child{border-bottom-width:1.5px}
+.faq summary{padding:13px 16px;cursor:pointer;font-weight:700;color:var(--plano);list-style:none;display:flex;justify-content:space-between;gap:10px}
+.faq summary::after{content:"+";font-family:var(--disp);font-size:20px;line-height:1}
+.faq details[open] summary::after{content:"–"}
+.faq ul{margin:0;padding:0 16px 14px 34px;font-size:15px}
+.map{padding:16px}
+.map svg{width:100%;height:auto}
+@media(max-width:860px){.cols{grid-template-columns:1fr}}
+
+/* dueño */
+#owner{display:none}
+body.owner #guest{display:none}
+body.owner #owner{display:block}
+.ow-band{background:var(--plano);color:var(--calco);padding:10px 0;font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:700}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);border:1.5px solid var(--plano);background:#fff}
+.kpis div{padding:16px;border-right:1px solid var(--linea)}
+.kpis div:last-child{border-right:0}
+.kpis small{display:block;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--gris);font-weight:700}
+.kpis b{font-family:var(--disp);font-weight:400;font-size:28px;color:var(--plano);display:block;margin-top:4px}
+.kpis span{font-size:12.5px;color:var(--gris)}
+@media(max-width:860px){.kpis{grid-template-columns:1fr 1fr}.kpis div:nth-child(2){border-right:0}.kpis div:nth-child(-n+2){border-bottom:1px solid var(--linea)}}
+.ow-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:22px;margin-top:22px}
+.ow-grid>div,.res>*,.cols>*{min-width:0}
+.inbox{background:var(--wa-bg);border:1.5px solid var(--plano);padding:14px;display:flex;flex-direction:column;gap:12px}
+.inbox .bub{margin-left:0;margin-right:10%;border-radius:0 8px 8px 8px;background:#fff}
+.inbox .bub::after{right:auto;left:-8px;border-left:0;border-right:8px solid #fff}
+.inbox .who{font-size:12px;color:#0b7a5f;font-weight:700;display:block;margin-bottom:2px;white-space:normal}
+.agenda{background:#fff;border:1.5px solid var(--plano);overflow-x:auto}
+.agenda table{border-collapse:collapse;width:100%;min-width:480px;font-size:13.5px}
+.agenda th,.agenda td{border:1px solid var(--linea);padding:8px 6px;text-align:center}
+.agenda th{background:var(--calco-2);font-weight:700;color:var(--plano)}
+.agenda td.u{text-align:left;font-family:var(--disp);color:var(--plano);white-space:nowrap}
+.agenda td.oc{background:var(--plano);color:#fff;font-size:11.5px}
+.agenda td.bk{background:#003580;color:#fff;font-size:11.5px}
+.agenda td.lb{background:#EEF4F8;color:var(--sierra-d);font-size:11.5px}
+.para{margin-top:22px;padding:22px}
+.para h3{font-family:var(--disp);font-weight:400;font-size:28px;margin:0 0 10px;color:var(--plano)}
+.para ul{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:0 24px}
+.para li{padding:10px 0 10px 22px;border-bottom:1px dashed var(--linea);position:relative}
+.para li::before{content:"";position:absolute;left:0;top:19px;width:12px;height:2px;background:var(--oro)}
+@media(max-width:860px){.ow-grid{grid-template-columns:1fr}.para ul{grid-template-columns:1fr}}
+.ex{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8A6516;border:1px solid var(--oro);padding:2px 6px;margin-left:6px;vertical-align:middle}
+
+footer{border-top:1.5px solid var(--plano);padding:26px 0 40px;font-size:13.5px;color:var(--gris);text-align:center}
+footer b{color:var(--tinta)}
+</style>
+</head>
+<body>
+
+<div class="sig">Prototipo preparado para <b>Cabañas Flor de Lis</b> · 10 de noviembre de 2026</div>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="Cabañas Flor de Lis">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 3c-4 6-5 11-1 17-6-3-12-1-13 5 4-2 8-1 10 3h8c2-4 6-5 10-3-1-6-7-8-13-5 4-6 3-11-1-17z" fill="none" stroke="#C49A3A" stroke-width="2.2" stroke-linejoin="round"/><path d="M12 30h16M14 34h12M20 28v9" stroke="#1E3F66" stroke-width="2.2" stroke-linecap="round"/></svg>
+      <span>Flor de Lis<small>Cabañas · San Javier</small></span>
+    </a>
+    <nav>
+      <a href="#cuantos">¿Cuántos son?</a>
+      <a href="#fichas">Cabañas</a>
+      <a href="#temporadas">Temporadas</a>
+      <a href="#reservar">Reservar</a>
+      <a href="#llegar">Cómo llegar</a>
+    </nav>
+    <div class="tabs" role="group" aria-label="Vista">
+      <button type="button" id="vG" aria-pressed="true">Huésped</button>
+      <button type="button" id="vO" aria-pressed="false">Ver como dueño</button>
+    </div>
+  </div>
+</header>
+
+<main id="guest">
+<div class="hero wrap" id="top">
+  <div class="sheet">
+    <div class="hero-grid">
+      <div class="hero-plan">
+        <svg viewBox="0 0 640 470" role="img" aria-label="Plano ilustrativo del terreno de 3.700 m² con tres cabañas, cada una con su pileta, mirando al Champaquí">
+          <defs><pattern id="h" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#5C7A4E" stroke-width="1.2" opacity=".5"/></pattern></defs>
+          <!-- sierras -->
+          <path d="M0 70 L70 30 L130 52 L200 14 L260 44 L330 6 L400 40 L470 18 L540 46 L640 22 L640 96 L0 96Z" fill="#5C7A4E" opacity=".22"/>
+          <path d="M330 6 L318 30 M330 6 L344 28" stroke="#3F5636" stroke-width="1.5"/>
+          <text x="330" y="66" text-anchor="middle" font-family="Rosarivo,Georgia,serif" font-size="15" fill="#3F5636">Cerro Champaquí · 2.790 m</text>
+          <!-- lote -->
+          <rect x="60" y="110" width="520" height="300" fill="#FBFAF6" stroke="#1E3F66" stroke-width="2.5" stroke-dasharray="10 5"/>
+          <rect x="60" y="110" width="520" height="300" fill="url(#h)" opacity=".35"/>
+          <!-- cabañas -->
+          <g font-family="Quattrocento Sans,sans-serif" font-size="12" fill="#1E3F66">
+            <g transform="translate(95,150)"><rect width="110" height="78" fill="#fff" stroke="#1E3F66" stroke-width="2.5"/><line x1="55" y1="0" x2="55" y2="78" stroke="#9FB3C8"/><text x="55" y="44" text-anchor="middle" font-family="Rosarivo,Georgia,serif" font-size="17">FL 1</text><rect x="8" y="100" width="94" height="42" rx="4" fill="#9CC3D9" stroke="#1E3F66" stroke-width="1.8"/><text x="55" y="126" text-anchor="middle">pileta</text><circle cx="130" cy="120" r="10" fill="none" stroke="#C49A3A" stroke-width="2"/><text x="130" y="152" text-anchor="middle" font-size="10">juegos</text></g>
+            <g transform="translate(265,150)"><rect width="110" height="78" fill="#fff" stroke="#1E3F66" stroke-width="2.5"/><line x1="55" y1="0" x2="55" y2="78" stroke="#9FB3C8"/><text x="55" y="44" text-anchor="middle" font-family="Rosarivo,Georgia,serif" font-size="17">FL 2</text><rect x="8" y="100" width="94" height="42" rx="4" fill="#9CC3D9" stroke="#1E3F66" stroke-width="1.8"/><text x="55" y="126" text-anchor="middle">pileta</text><circle cx="130" cy="120" r="10" fill="none" stroke="#C49A3A" stroke-width="2"/><text x="130" y="152" text-anchor="middle" font-size="10">juegos</text></g>
+            <g transform="translate(435,150)"><rect width="120" height="88" fill="#fff" stroke="#1E3F66" stroke-width="2.5"/><line x1="40" y1="0" x2="40" y2="88" stroke="#9FB3C8"/><line x1="80" y1="0" x2="80" y2="88" stroke="#9FB3C8"/><text x="60" y="50" text-anchor="middle" font-family="Rosarivo,Georgia,serif" font-size="17">FL 3</text><rect x="12" y="110" width="96" height="42" rx="4" fill="#9CC3D9" stroke="#1E3F66" stroke-width="1.8"/><text x="60" y="136" text-anchor="middle">pileta</text></g>
+          </g>
+          <!-- cota -->
+          <g stroke="#2D5A8C" stroke-width="1.2" fill="#2D5A8C" font-family="Quattrocento Sans,sans-serif" font-size="12">
+            <line x1="60" y1="432" x2="580" y2="432"/><line x1="60" y1="424" x2="60" y2="440"/><line x1="580" y1="424" x2="580" y2="440"/>
+            <rect x="248" y="424" width="144" height="16" fill="#FBFAF6" stroke="none"/>
+            <text x="320" y="436" text-anchor="middle" stroke="none">TERRENO · 3.700 m²</text>
+          </g>
+          <!-- ruta -->
+          <line x1="20" y1="110" x2="20" y2="410" stroke="#C49A3A" stroke-width="4" stroke-dasharray="14 8"/>
+          <text x="38" y="460" font-family="Quattrocento Sans,sans-serif" font-size="11" fill="#5E6670">RP 14 · km 134–135</text>
+          <!-- norte -->
+          <g transform="translate(605,140)"><circle r="16" fill="none" stroke="#1E3F66" stroke-width="1.4"/><path d="M0 -12 L5 6 L0 2 L-5 6Z" fill="#1E3F66"/></g>
+        </svg>
+        <div class="dim"><span>Plano ilustrativo · no a escala</span></div>
+      </div>
+      <div class="hero-txt">
+        <div class="kicker">Chacras de San Javier · Traslasierra</div>
+        <h1>Tres cabañas, tres piletas propias, <em>frente al Champaquí.</em></h1>
+        <ul>
+          <li>Cada cabaña con su pileta privada y su juego para chicos</li>
+          <li>De 4 a 6 personas: 2 o 3 dormitorios</li>
+          <li>3.700 m² de parque sobre la Ruta 14</li>
+          <li>Disponibilidad a la vista: se sincroniza con Booking y Airbnb</li>
+        </ul>
+        <div class="cta-row">
+          <a class="cta" href="#cuantos">¿Cuántos son? Te digo cuál</a>
+          <a class="cta alt" href="#reservar">Ver fechas libres</a>
+        </div>
+        <div class="rotulo">
+          <div><b>Proyecto</b>Flor de Lis</div>
+          <div><b>Unidades</b>3 cabañas</div>
+          <div><b>Altura</b>Pie del Champaquí</div>
+          <div><b>Lámina</b>00 / 06</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section id="cuantos">
+  <div class="wrap">
+    <div class="lam"><span class="n">LÁMINA 01</span><h2>¿Cuántos son?</h2><p>Cargá el grupo y te marcamos la cabaña justa.</p></div>
+    <div class="sheet cuantos">
+      <div class="cq-in">
+        <div class="stepper"><span>Adultos<small>13 años o más</small></span><div class="ctl"><button type="button" data-k="a" data-d="-1" aria-label="Menos adultos">−</button><output id="oA">2</output><button type="button" data-k="a" data-d="1" aria-label="Más adultos">+</button></div></div>
+        <div class="stepper"><span>Chicos<small>hasta 12 años</small></span><div class="ctl"><button type="button" data-k="c" data-d="-1" aria-label="Menos chicos">−</button><output id="oC">2</output><button type="button" data-k="c" data-d="1" aria-label="Más chicos">+</button></div></div>
+        <div class="stepper"><span>¿Traen bebé?<small>cuna a consultar</small></span><div class="ctl"><button type="button" data-k="b" data-d="-1" aria-label="Menos bebés">−</button><output id="oB">0</output><button type="button" data-k="b" data-d="1" aria-label="Más bebés">+</button></div></div>
+        <p class="note">Las capacidades salen de la web de Flor de Lis.</p>
+      </div>
+      <div class="cq-out">
+        <div class="reco" id="reco"></div>
+        <div class="warn" id="warn"></div>
+        <div class="cta-row" style="margin-top:14px"><a class="cta" href="#reservar" id="recoGo">Reservar la recomendada</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="fichas" style="padding-top:10px">
+  <div class="wrap">
+    <div class="lam"><span class="n">LÁMINAS 02–04</span><h2>Fichas de cada cabaña</h2><p>Foto principal entera, el resto abajo.</p></div>
+    <div id="fichasBox"></div>
+  </div>
+</section>
+
+<section id="temporadas" style="padding-top:10px">
+  <div class="wrap">
+    <div class="lam"><span class="n">LÁMINA 05</span><h2>Temporadas 2026–2027</h2><p>Precio por noche y por cabaña.</p></div>
+    <div class="tbl-wrap">
+    <table class="tbl">
+      <thead><tr><th>Temporada</th><th>Fechas</th><th>FL 1 · 4 p.</th><th>FL 2 · 5 p.</th><th>FL 3 · 6 p.</th></tr></thead>
+      <tbody id="tempBody"></tbody>
+    </table>
+    </div>
+    <p class="note">Valores de muestra para ver cómo funciona el cotizador: los reales los cargan ustedes.</p>
+  </div>
+</section>
+
+<section id="reservar" style="padding-top:10px">
+  <div class="wrap">
+    <div class="lam"><span class="n">LÁMINA 06</span><h2>Fechas libres y pedido de reserva</h2><p>Elegí entrada y salida en el calendario.</p></div>
+    <div class="res">
+      <div class="sheet res-box">
+        <div class="fld">
+          <div><label for="selU">Cabaña</label><select id="selU"></select></div>
+          <div><label for="inN">Tu nombre</label><input id="inN" placeholder="Ej.: Laura" autocomplete="off"></div>
+        </div>
+        <div class="cal-head"><button type="button" id="mPrev" aria-label="Mes anterior">‹</button><b id="mName"></b><button type="button" id="mNext" aria-label="Mes siguiente">›</button></div>
+        <div class="cal" id="cal"></div>
+        <div class="legend"><span><i style="background:#FBF5E6"></i>Temporada alta</span><span><i style="background:#EEF4F8"></i>Fin de semana largo</span><span><i style="background:repeating-linear-gradient(135deg,#d9dde2 0 3px,#eef0f2 3px 6px)"></i>Ocupado</span><span><i style="background:#1E3F66"></i>Tu elección</span></div>
+        <div class="sync">Calendario de ejemplo · se sincroniza con Booking y Airbnb</div>
+        <div class="tot" id="tot"></div>
+      </div>
+      <aside class="chat" aria-live="polite">
+        <div class="chat-top"><div class="av"><svg viewBox="0 0 40 40"><path d="M20 4c-4 6-5 11-1 16-6-3-11-1-12 5 4-2 8-1 10 3h6c2-4 6-5 10-3-1-6-6-8-12-5 4-5 3-10-1-16z" fill="none" stroke="#1E3F66" stroke-width="2.6"/></svg></div><div><b>Cabañas Flor de Lis</b><small>Así les llega tu mensaje</small></div></div>
+        <div class="chat-body"><div class="bub" id="bub"><span id="bubTxt"></span><span class="caret"></span><time id="bubT"></time></div></div>
+        <div class="chat-foot">
+          <a class="wa-btn" id="waBtn" href="#" target="_blank" rel="noopener" aria-disabled="true">Enviar pedido por WhatsApp</a>
+          <small id="waHint">Elegí fechas para habilitar el envío · seña del 30% por Mercado Pago (demo)</small>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section id="pueblo" style="padding-top:10px">
+  <div class="wrap">
+    <div class="lam"><span class="n">ANEXO A</span><h2>San Javier y alrededores</h2><p>Lo que tienen cerca los huéspedes.</p></div>
+    <div class="cols">
+      <ul class="list">
+        <li><b>Cerro</b><span><strong>Champaquí</strong>El techo de Córdoba (2.790 m). Desde San Javier salen las subidas a pie y a caballo.</span></li>
+        <li><b>Pueblo</b><span><strong>Plaza e iglesia de San Javier</strong>Casco histórico chico, a minutos por la Ruta 14.</span></li>
+        <li><b>Agua</b><span><strong>Arroyos de Yacanto y San Javier</strong>Ollas y balnearios de agua de sierra.</span></li>
+      </ul>
+      <ul class="list">
+        <li><b>Rutas</b><span><strong>Camino de la Costa Traslasierra</strong>La Población, Luyaba y La Paz hacia el sur; Los Hornillos y Nono hacia el norte.</span></li>
+        <li><b>Ciudad</b><span><strong>Villa Dolores</strong>Bancos, súper y servicios, a pocos kilómetros.</span></li>
+        <li><b>Cielo</b><span><strong>Noches de sierra</strong>Poca luz de ciudad: cielo estrellado desde la galería.</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="faq" style="padding-top:10px">
+  <div class="wrap">
+    <div class="lam"><span class="n">ANEXO B</span><h2>Preguntas frecuentes</h2><p>Respuestas de ejemplo: las ajustan ustedes.</p></div>
+    <div class="cols">
+      <div class="faq">
+        <details open><summary>¿Aceptan mascotas?</summary><ul><li>A confirmar con los dueños antes de reservar</li><li>Si se aceptan, el aviso aparece acá y en el pedido</li></ul></details>
+        <details><summary>¿Hay ropa blanca?</summary><ul><li>Sábanas y toallas: se indica por cabaña</li><li>Si no incluye, se avisa en el mensaje de reserva</li></ul></details>
+        <details><summary>¿Horarios de entrada y salida?</summary><ul><li>Check-in y check-out con horario fijo (a definir)</li><li>Entrada tarde: avisar por WhatsApp</li></ul></details>
+      </div>
+      <div class="faq">
+        <details open><summary>¿Cómo se paga la seña?</summary><ul><li>30% por Mercado Pago al pedir la reserva</li><li>El saldo, al llegar</li><li>La reserva queda firme cuando entra la seña</li></ul></details>
+        <details><summary>¿La pileta es compartida?</summary><ul><li>No: cada cabaña tiene la suya</li><li>Al lado, juego para chicos</li></ul></details>
+        <details><summary>¿Siguen en Booking?</summary><ul><li>Sí: el calendario se cruza con Booking y Airbnb</li><li>Una fecha tomada en un lado se bloquea en el otro</li></ul></details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="llegar" style="padding-top:10px">
+  <div class="wrap">
+    <div class="lam"><span class="n">ANEXO C</span><h2>Cómo llegar</h2><p>Barrio Chacras de San Javier · RP 14, km 134–135.</p></div>
+    <div class="cols">
+      <div class="sheet map">
+        <svg viewBox="0 0 520 300" role="img" aria-label="Mapa ilustrativo de Traslasierra con la Ruta 14">
+          <path d="M380 0 L420 60 L400 120 L450 190 L430 300" stroke="#5C7A4E" stroke-width="40" opacity=".2" fill="none" stroke-linecap="round"/>
+          <text x="430" y="150" font-family="Quattrocento Sans,sans-serif" font-size="12" fill="#3F5636" transform="rotate(70 430 150)">SIERRAS DE COMECHINGONES</text>
+          <path d="M240 10 C250 70 270 110 280 160 C290 210 300 250 310 295" stroke="#C49A3A" stroke-width="5" fill="none"/>
+          <text x="210" y="30" font-family="Quattrocento Sans,sans-serif" font-size="12" fill="#8A6516">RP 14</text>
+          <g font-family="Quattrocento Sans,sans-serif" font-size="13" fill="#1D2733">
+            <circle cx="244" cy="40" r="5" fill="#1E3F66"/><text x="256" y="44">Mina Clavero</text>
+            <circle cx="262" cy="100" r="5" fill="#1E3F66"/><text x="274" y="104">Los Hornillos</text>
+            <circle cx="180" cy="160" r="6" fill="#1E3F66"/><text x="80" y="150">Villa Dolores</text>
+            <line x1="186" y1="160" x2="282" y2="168" stroke="#9FB3C8" stroke-width="2" stroke-dasharray="4 3"/>
+            <circle cx="285" cy="172" r="9" fill="#C49A3A" stroke="#1E3F66" stroke-width="2"/><text x="300" y="176" font-family="Rosarivo,Georgia,serif" font-size="16" fill="#1E3F66">Flor de Lis</text>
+            <circle cx="296" cy="220" r="5" fill="#1E3F66"/><text x="308" y="224">Yacanto</text>
+            <circle cx="306" cy="265" r="5" fill="#1E3F66"/><text x="318" y="269">La Población</text>
+          </g>
+        </svg>
+        <div class="dim"><span>Esquema ilustrativo · no a escala</span></div>
+      </div>
+      <ul class="list">
+        <li><b>Auto</b><span><strong>Desde Córdoba capital</strong>Por el Camino de las Altas Cumbres hasta Mina Clavero y la Ruta 14 al sur.</span></li>
+        <li><b>Ruta</b><span><strong>RP 14, km 134–135</strong>Barrio Chacras de San Javier, entre Villa Dolores y Yacanto.</span></li>
+        <li><b>GPS</b><span><strong><a href="https://www.google.com/maps/search/?api=1&query=Caba%C3%B1as+Flor+de+Lis+San+Javier+C%C3%B3rdoba" target="_blank" rel="noopener">Abrir en Google Maps</a></strong>Ubicación exacta en el mapa.</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ===== VISTA DUEÑO ===== -->
+<main id="owner">
+  <div class="ow-band"><div class="wrap">Panel de ejemplo · así lo ve el dueño</div></div>
+  <section>
+    <div class="wrap">
+      <div class="lam"><span class="n">PANEL</span><h2>Semana del 16 al 22 de noviembre <span class="ex">Panel de ejemplo</span></h2></div>
+      <div class="kpis">
+        <div><small>Consultas nuevas</small><b>7</b><span>3 con fechas y seña</span></div>
+        <div><small>Señas cobradas</small><b id="kSen"></b><span>Mercado Pago · ejemplo</span></div>
+        <div><small>Ocupación semana</small><b>52%</b><span>11 de 21 noches</span></div>
+        <div><small>Ahorro vs Booking</small><b id="kAh"></b><span>comisión ~15% no pagada</span></div>
+      </div>
+      <div class="ow-grid">
+        <div>
+          <h3 style="font-family:var(--disp);font-weight:400;color:var(--plano);font-size:22px;margin:0 0 10px">Consultas que entraron <span class="ex">Ejemplo</span></h3>
+          <div class="inbox" id="inbox"></div>
+        </div>
+        <div>
+          <h3 style="font-family:var(--disp);font-weight:400;color:var(--plano);font-size:22px;margin:0 0 10px">Agenda y cupos <span class="ex">Ejemplo</span></h3>
+          <div class="agenda"><table id="agenda"></table></div>
+          <div class="legend"><span><i style="background:#1E3F66"></i>Reserva directa (con seña)</span><span><i style="background:#003580"></i>Entró por Booking</span><span><i style="background:#EEF4F8"></i>Libre</span></div>
+          <div class="tot" id="ahorro" style="background:#fff;padding:4px 14px;border:1.5px solid var(--plano);margin-top:16px"></div>
+        </div>
+      </div>
+      <div class="sheet para">
+        <h3>Para vos, Flor de Lis</h3>
+        <ul>
+          <li>Menos mensajes repetidos: el huésped ya ve qué cabaña le entra y qué fechas hay</li>
+          <li>Agenda con cupos de las 3 cabañas en una sola pantalla</li>
+          <li>La seña del 30% entra por Mercado Pago antes de confirmar</li>
+          <li>Sin comisión por reserva directa; Booking y Airbnb siguen, sincronizados</li>
+        </ul>
+      </div>
+      <div class="cta-row" style="margin-top:20px"><button class="cta alt" type="button" id="backG">Volver a la vista del huésped</button></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><b>Cabañas Flor de Lis</b> · Barrio Chacras de San Javier · RP 14 km 134–135 · San Javier, Córdoba</p>
+    <p>Prototipo de demostración preparado para Cabañas Flor de Lis por Resolviendo Kos · No es la web oficial</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+var WA='5491137335731';
+var IMG='https://www.cabanasflordelis.com.ar/images/';
+var U=[
+ {id:1,name:'Flor de Lis 1',dorm:2,cap:4,low:95000,mid:110000,high:135000,
+  main:IMG+'cabania01/index.jpg',more:[IMG+'verticales/01.jpg',IMG+'cabania01/01.jpg',IMG+'cabania01/02.jpg'],
+  pool:'Pileta propia junto a la galería', sun:[1,1,1,0,0,0]},
+ {id:2,name:'Flor de Lis 2',dorm:2,cap:5,low:110000,mid:125000,high:155000,
+  main:IMG+'cabania02/index.jpg',more:[IMG+'verticales/02.jpg',IMG+'cabania02/01.jpg',IMG+'cabania02/02.jpg'],
+  pool:'Pileta propia junto a la galería', sun:[0,1,1,1,1,0]},
+ {id:3,name:'Flor de Lis 3',dorm:3,cap:6,low:135000,mid:155000,high:195000,
+  main:IMG+'cabania03/index.jpg',more:[IMG+'cabania03/01.jpg',IMG+'cabania03/02.jpg',IMG+'cabania03/03.jpg'],
+  pool:'Pileta propia junto a la galería', sun:[0,0,1,1,1,1]}
+];
+function $(s){return document.querySelector(s)}
+function fmt(n){return '$ '+Math.round(n).toLocaleString('es-AR')}
+var PE='<span class="pe">Precio de ejemplo</span>';
+
+/* temporadas reales */
+function d(y,m,dd){return new Date(y,m-1,dd)}
+var SEAS=[
+ {k:'high',name:'Temporada alta (verano)',from:d(2027,1,1),to:d(2027,2,28),txt:'1 ene – 28 feb 2027 · incluye Carnaval 6 al 9 feb'},
+ {k:'high',name:'Fiestas de fin de año',from:d(2026,12,24),to:d(2026,12,31),txt:'24 al 31 dic 2026'},
+ {k:'mid',name:'Fin de semana largo · Soberanía',from:d(2026,11,21),to:d(2026,11,23),txt:'sáb 21 al lun 23 nov 2026',fl:1},
+ {k:'mid',name:'Fin de semana largo · Inmaculada',from:d(2026,12,5),to:d(2026,12,8),txt:'sáb 5 al mar 8 dic 2026',fl:1},
+ {k:'high',name:'Semana Santa',from:d(2027,3,25),to:d(2027,3,28),txt:'jue 25 al dom 28 mar 2027',fl:1},
+ {k:'mid',name:'Vacaciones de invierno',from:null,to:null,txt:'julio 2027 · fechas de Córdoba a confirmar'},
+ {k:'low',name:'Resto del año',from:null,to:null,txt:'días de semana y findes comunes'}
+];
+function seasonOf(dt){
+  for(var i=0;i<SEAS.length;i++){var s=SEAS[i];if(s.from&&dt>=s.from&&dt<=s.to)return s}
+  var wd=dt.getDay(); return (wd==5||wd==6)?{k:'mid',name:'Fin de semana'}:{k:'low',name:'Semana'};
+}
+$('#tempBody').innerHTML=SEAS.map(function(s){
+  return '<tr><td><b>'+s.name+'</b></td><td>'+s.txt+'</td>'+U.map(function(u){return '<td class="num">'+fmt(u[s.k])+PE+'</td>'}).join('')+'</tr>';
+}).join('');
+
+/* fichas */
+$('#fichasBox').innerHTML=U.map(function(u,i){
+  var sun=u.sun.map(function(x){return '<i class="'+(x?'s':'')+'"></i>'}).join('');
+  return '<article class="sheet ficha" id="u'+u.id+'">'+
+   '<div class="ph"><div class="ph-main"><img src="'+u.main+'" alt="Cabaña '+u.name+'" data-n="'+u.id+'" onerror="fb(this)" loading="lazy"></div>'+
+   '<div class="ph-more">'+u.more.map(function(m){return '<figure><img src="'+m+'" alt="'+u.name+', otra vista" loading="lazy" onerror="gone(this)"></figure>'}).join('')+'</div>'+
+   '<div class="dim"><span>LÁMINA 0'+(i+2)+' · '+u.name.toUpperCase()+'</span></div></div>'+
+   '<div class="spec"><h3>'+u.name+'</h3><div class="sub">Cabaña de '+u.dorm+' dormitorios · hasta '+u.cap+' personas</div>'+
+   '<table><tr><td>Dormitorios</td><td>'+u.dorm+'</td></tr><tr><td>Capacidad</td><td>'+u.cap+' personas</td></tr>'+
+   '<tr><td>Pileta</td><td>Privada, solo para esta cabaña</td></tr><tr><td>Para chicos</td><td>Juegos propios</td></tr>'+
+   '<tr><td>Desde</td><td><b style="font-family:var(--disp);font-weight:400;font-size:20px">'+fmt(u.low)+'</b> / noche '+PE+'</td></tr>'+
+   '<tr><td>Temporada alta</td><td>'+fmt(u.high)+' / noche '+PE+'</td></tr></table>'+
+   '<div class="pool"><b>Nota de la pileta · sol y sombra</b>'+u.pool+'<div class="sun" aria-hidden="true">'+sun+'</div><small>Barra de 9 a 19 h: sol <span style="color:#8A6516">■</span> / sombra <span style="color:#9FB3C8">■</span>. Ejemplo: la orientación real la cargan ustedes.</small></div>'+
+   '<a class="cta" href="#reservar" data-pick="'+u.id+'">Ver fechas de '+u.name+'</a></div></article>';
+}).join('');
+document.querySelectorAll('[data-pick]').forEach(function(a){a.addEventListener('click',function(){sel.value=a.dataset.pick;state.u=+a.dataset.pick;drawCal();upd()})});
+
+/* ¿cuántos son? */
+var G={a:2,c:2,b:0};
+function reco(){
+  var n=G.a+G.c, best=null;
+  U.forEach(function(u){if(u.cap>=n&&(!best||u.cap<best.cap))best=u});
+  $('#oA').textContent=G.a;$('#oC').textContent=G.c;$('#oB').textContent=G.b;
+  $('#reco').innerHTML=U.map(function(u){
+    var fits=u.cap>=n, isB=best&&best.id==u.id, ic='';
+    for(var i=0;i<Math.max(u.cap,n);i++){ic+='<i class="'+(i<n?(i<u.cap?'on':'over'):'')+'"></i>'}
+    var tag=isB?'<span class="tag o">Recomendada</span>':(fits?'<span class="tag g">Entran · sobra lugar</span>':'<span class="tag r">No entran</span>');
+    return '<div class="reco-row '+(isB?'best':(fits?'ok':'no'))+'"><b>'+u.name+'</b><div class="cap" aria-label="'+n+' de '+u.cap+' lugares">'+ic+'</div>'+tag+'</div>';
+  }).join('');
+  var w=$('#warn');
+  if(!best){
+    var opt=n<=10?'Opción: Flor de Lis 3 + Flor de Lis 1 (hasta 10 personas en total).':(n<=15?'Opción: las 3 cabañas juntas (hasta 15 personas).':'Son más de 15: las 3 cabañas no alcanzan.');
+    w.style.display='block';w.innerHTML='<b>Son '+n+' y ninguna cabaña sola los aloja.</b> '+opt;
+    $('#recoGo').textContent='Consultar por varias cabañas';
+  } else {
+    w.style.display=G.b?'block':'none';
+    w.innerHTML=G.b?'Con bebé: avisen en el pedido si necesitan cuna (a consultar).':'';
+    $('#recoGo').textContent='Reservar '+best.name;
+  }
+  state.best=best?best.id:3;
+}
+document.querySelectorAll('.stepper button').forEach(function(b){b.addEventListener('click',function(){
+  var k=b.dataset.k,v=G[k]+(+b.dataset.d);var min=k=='a'?1:0;if(v<min)v=min;if(v>12)v=12;G[k]=v;reco();upd();
+})});
+$('#recoGo').addEventListener('click',function(){sel.value=state.best;state.u=state.best;drawCal();upd()});
+
+/* calendario */
+var state={u:2,inD:null,outD:null,best:2};
+var sel=$('#selU');
+sel.innerHTML=U.map(function(u){return '<option value="'+u.id+'">'+u.name+' · hasta '+u.cap+' p.</option>'}).join('');
+sel.value=2;
+sel.addEventListener('change',function(){state.u=+sel.value;state.inD=state.outD=null;drawCal();upd()});
+$('#inN').addEventListener('input',upd);
+var TODAY=d(2026,11,10);
+var view={y:2026,m:11};
+var MN=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+function key(dt){return dt.getFullYear()+'-'+(dt.getMonth()+1)+'-'+dt.getDate()}
+function busy(u,dt){ /* ocupación de ejemplo, fija por cabaña */
+  var x=(dt.getFullYear()*372+dt.getMonth()*31+dt.getDate())*(u*7+3);
+  var s=seasonOf(dt); var r=(x*9301+49297)%233280/233280;
+  var p=s.k=='high'?.45:(s.fl?.5:.18);
+  if(Math.floor(dt.getDate()/3)%((u%3)+3)==0) p+=.25;
+  return r<p;
+}
+function drawCal(){
+  var y=view.y,m=view.m, first=new Date(y,m-1,1), days=new Date(y,m,0).getDate();
+  $('#mName').textContent=MN[m-1]+' '+y;
+  var h=['lu','ma','mi','ju','vi','sá','do'].map(function(x){return '<div class="dw">'+x+'</div>'}).join('');
+  var off=(first.getDay()+6)%7; for(var i=0;i<off;i++)h+='<div></div>';
+  for(var dd=1;dd<=days;dd++){
+    var dt=new Date(y,m-1,dd), s=seasonOf(dt), c=[];
+    var past=dt<=TODAY, b=!past&&busy(state.u,dt);
+    if(s.k=='high'&&s.from)c.push('alta'); if(s.fl)c.push('finde');
+    if(b)c.push('busy'); if(past)c.push('past');
+    if(state.inD&&key(dt)==key(state.inD))c.push('sel');
+    if(state.outD&&key(dt)==key(state.outD))c.push('sel');
+    if(state.inD&&state.outD&&dt>state.inD&&dt<state.outD)c.push('in');
+    h+='<button type="button" class="'+c.join(' ')+'" data-d="'+dd+'" '+(past||b?'disabled':'')+' aria-label="'+dd+' de '+MN[m-1]+(b?' ocupado':'')+'">'+dd+'</button>';
+  }
+  $('#cal').innerHTML=h;
+  $('#mPrev').disabled=(y==2026&&m==11);
+  $('#mNext').disabled=(y==2027&&m==4);
+}
+$('#cal').addEventListener('click',function(e){
+  var b=e.target.closest('button[data-d]'); if(!b||b.disabled)return;
+  var dt=new Date(view.y,view.m-1,+b.dataset.d);
+  if(!state.inD||state.outD||dt<=state.inD){state.inD=dt;state.outD=null}
+  else{
+    var t=new Date(state.inD),ok=true; t.setDate(t.getDate()+1);
+    while(t<dt){if(busy(state.u,t)){ok=false;break}t.setDate(t.getDate()+1)}
+    if(ok)state.outD=dt; else {state.inD=dt;state.outD=null}
+  }
+  drawCal();upd();
+});
+$('#mPrev').addEventListener('click',function(){view.m--;if(view.m<1){view.m=12;view.y--}drawCal()});
+$('#mNext').addEventListener('click',function(){view.m++;if(view.m>12){view.m=1;view.y++}drawCal()});
+
+function calc(){
+  var u=U[state.u-1]; if(!state.inD||!state.outD)return null;
+  var t=new Date(state.inD),tot=0,n=0,sn={};
+  while(t<state.outD){var s=seasonOf(t);tot+=u[s.k];n++;sn[s.name]=1;t.setDate(t.getDate()+1)}
+  return {u:u,n:n,tot:tot,sen:tot*.3,seas:Object.keys(sn)};
+}
+var DW=['dom','lun','mar','mié','jue','vie','sáb'];
+function fd(dt){return DW[dt.getDay()]+' '+dt.getDate()+'/'+(dt.getMonth()+1)}
+var target='',shown='',timer=null;
+function upd(){
+  var c=calc(), u=U[state.u-1], n=G.a+G.c, nm=$('#inN').value.trim();
+  var g=G.a+' adulto'+(G.a>1?'s':'')+(G.c?' y '+G.c+' chico'+(G.c>1?'s':''):'')+(G.b?' + bebé':'');
+  var t='Hola, Flor de Lis. '+(nm?'Soy '+nm+'. ':'')+'Quiero reservar la cabaña '+u.name;
+  if(state.inD)t+=' del '+fd(state.inD); if(state.outD)t+=' al '+fd(state.outD)+' ('+c.n+' noche'+(c.n>1?'s':'')+')';
+  t+=' para '+g+'.';
+  if(n>u.cap)t+='\n(Somos '+n+' y la cabaña es para '+u.cap+': ¿qué opción tienen?)';
+  if(c){t+='\nTotal: '+fmt(c.tot)+' (precio de ejemplo).\nSeña 30%: '+fmt(c.sen)+' por Mercado Pago.\n¿Me confirman?'}
+  target=t;
+  var tb=$('#tot');
+  tb.innerHTML=c?('<div><span>'+u.name+' · '+c.n+' noche'+(c.n>1?'s':'')+'<br><small style="color:var(--gris)">'+c.seas.join(' + ')+'</small></span><b>'+fmt(c.tot)+PE+'</b></div><div><span>Seña 30% por Mercado Pago (demo)</span><b>'+fmt(c.sen)+PE+'</b></div><div><span>Saldo al llegar</span><b>'+fmt(c.tot-c.sen)+PE+'</b></div>'):'<div><span>Elegí la entrada y la salida en el calendario</span><b>—</b></div>';
+  var btn=$('#waBtn');
+  btn.href='https://wa.me/'+WA+'?text='+encodeURIComponent(t);
+  btn.setAttribute('aria-disabled',c?'false':'true');
+  $('#waHint').textContent=c?'Se abre WhatsApp con este mismo texto':'Elegí fechas para habilitar el envío · seña del 30% por Mercado Pago (demo)';
+  type();
+}
+function type(){
+  clearTimeout(timer);
+  var i=0; while(i<shown.length&&i<target.length&&shown[i]==target[i])i++;
+  shown=shown.slice(0,i);
+  (function step(){
+    if(shown.length<target.length){shown=target.slice(0,shown.length+3);$('#bubTxt').textContent=shown;timer=setTimeout(step,14)}
+    else $('#bubTxt').textContent=shown;
+  })();
+  var now=new Date();$('#bubT').textContent=('0'+now.getHours()).slice(-2)+':'+('0'+now.getMinutes()).slice(-2);
+}
+
+/* vista dueño */
+var INB=[
+ {w:'Mariana · Río Cuarto',t:'Hola, Flor de Lis. Soy Mariana. Quiero reservar la cabaña Flor de Lis 3 del sáb 9/1 al mié 13/1 (4 noches) para 4 adultos y 2 chicos.\nTotal: '+fmt(4*195000)+' (precio de ejemplo).\nSeña 30%: '+fmt(4*195000*.3)+' por Mercado Pago. Seña pagada.'},
+ {w:'Diego · Córdoba',t:'Hola, Flor de Lis. Soy Diego. Quiero reservar la cabaña Flor de Lis 1 del sáb 21/11 al lun 23/11 (2 noches) para 2 adultos y 2 chicos.\nTotal: '+fmt(2*110000)+' (precio de ejemplo).\nSeña 30%: '+fmt(2*110000*.3)+' por Mercado Pago.'},
+ {w:'Carla · San Luis',t:'Hola, Flor de Lis. Soy Carla. Quiero reservar la cabaña Flor de Lis 2 del vie 5/2 al mar 9/2 (4 noches) para 3 adultos y 2 chicos.\nTotal: '+fmt(4*155000)+' (precio de ejemplo).\nSeña 30%: '+fmt(4*155000*.3)+' por Mercado Pago. Seña pagada.'}
+];
+$('#inbox').innerHTML=INB.map(function(m){return '<div class="bub"><span class="who">'+m.w+'</span>'+m.t.replace(/</g,'&lt;')+'<time>ejemplo</time></div>'}).join('');
+var sen=4*195000*.3+4*155000*.3+2*110000*.3;
+$('#kSen').textContent=fmt(sen);
+var direct=4*195000+4*155000+2*110000, ah=direct*.15;
+$('#kAh').textContent=fmt(ah);
+$('#ahorro').innerHTML='<div><span>Reservas directas del mes (ejemplo)</span><b>'+fmt(direct)+'</b></div><div><span>Comisión Booking ~15% que no se pagó</span><b>'+fmt(ah)+'</b></div><div><span>Señas ya cobradas por Mercado Pago</span><b>'+fmt(sen)+'</b></div>';
+var days=['lu 16','ma 17','mi 18','ju 19','vi 20','sá 21','do 22'];
+var A={1:['lb','lb','lb','lb','oc','oc','oc'],2:['bk','bk','lb','lb','oc','oc','lb'],3:['lb','lb','lb','bk','bk','oc','oc']};
+var L={oc:'Directa',bk:'Booking',lb:'Libre'};
+$('#agenda').innerHTML='<tr><th></th>'+days.map(function(x){return '<th>'+x+'</th>'}).join('')+'</tr>'+U.map(function(u){return '<tr><td class="u">'+u.name+'</td>'+A[u.id].map(function(s){return '<td class="'+s+'">'+L[s]+'</td>'}).join('')+'</tr>'}).join('');
+
+function setView(o){
+  document.body.classList.toggle('owner',o);
+  $('#vG').setAttribute('aria-pressed',!o);$('#vO').setAttribute('aria-pressed',o);
+  window.scrollTo(0,0);
+}
+$('#vG').addEventListener('click',function(){setView(false)});
+$('#vO').addEventListener('click',function(){setView(true)});
+$('#backG').addEventListener('click',function(){setView(false)});
+
+reco();drawCal();upd();
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Cabañas Flor de Lis"></script>
+</body>
+</html>
