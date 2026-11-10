@@ -1,0 +1,631 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Samsara · Cabañas de Montaña en Los Hornillos (prototipo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Italiana&family=Manjari:wght@100;400;700&display=swap" rel="stylesheet">
+<script>
+function fb(img){
+  if(img.dataset.fb) return; img.dataset.fb=1;
+  var n=img.getAttribute('data-n')||'Samsara · Los Hornillos';
+  var s='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520">'+
+  '<rect width="800" height="520" fill="#E7E0D1"/>'+
+  '<path d="M0 260 L110 170 L210 220 L330 120 L460 210 L580 140 L700 200 L800 160 L800 520 L0 520Z" fill="#8E8A7F"/>'+
+  '<path d="M0 320 L160 250 L300 300 L470 240 L640 300 L800 260 L800 520 L0 520Z" fill="#7C8B4F"/>'+
+  '<path d="M-20 470 C150 400 260 500 400 430 C540 360 650 470 820 400 L820 520 L-20 520Z" fill="#2F6F73"/>'+
+  '<path d="M60 455 C180 420 260 470 380 440" stroke="#BFD9D6" stroke-width="5" fill="none" stroke-linecap="round"/>'+
+  '<ellipse cx="250" cy="352" rx="70" ry="22" fill="#5E5A53"/><path d="M200 350 L250 300 L300 350Z" fill="#C8743E"/>'+
+  '<text x="400" y="80" fill="#1E2A2B" font-family="Georgia,serif" font-size="30" text-anchor="middle">'+n+'</text></svg>';
+  img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(s);
+}
+</script>
+<style>
+:root{
+  --arena:#EDE6D8; --arena-2:#E2D9C6; --papel:#F7F3EA;
+  --agua:#2F6F73; --agua-d:#1F4E51; --agua-l:#BFD9D6;
+  --jarilla:#7C8B4F; --granito:#6E6A63; --noche:#1E2A2B;
+  --cobre:#C8743E; --cobre-d:#9E5427;
+  --wa:#DCF8C6; --wa-bg:#ECE5DD;
+  --disp:'Italiana', Georgia, serif;
+  --txt:'Manjari', 'Trebuchet MS', sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--papel);color:var(--noche);font-family:var(--txt);font-size:17px;line-height:1.55;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit}
+button,input,select{font-family:inherit;font-size:16px}
+.sig{font-size:12.5px;color:var(--granito);padding:7px 16px;text-align:center;background:var(--papel);border-bottom:1px solid var(--arena-2)}
+.sig b{color:var(--noche);font-weight:700}
+
+/* split */
+.split{display:grid;grid-template-columns:minmax(320px,38%) 1fr;min-height:100vh}
+.rio{position:sticky;top:0;height:100vh;background:var(--noche);color:var(--arena);overflow:hidden;display:flex;flex-direction:column}
+.rio-top{padding:26px 30px 0}
+.marca{font-family:var(--disp);font-size:44px;line-height:1;letter-spacing:1px}
+.marca small{display:block;font-family:var(--txt);font-size:13px;letter-spacing:3px;text-transform:uppercase;color:var(--agua-l);margin-top:8px}
+.rio-map{flex:1;position:relative;min-height:0}
+.rio-map svg{width:100%;height:100%}
+.piedra{cursor:pointer}
+.piedra ellipse{transition:fill .2s, transform .2s}
+.piedra:hover ellipse.p, .piedra.on ellipse.p{fill:var(--cobre)}
+.piedra text{font-family:var(--disp);font-size:26px;fill:var(--arena);pointer-events:none}
+.piedra .cap{font-family:var(--txt);font-size:12px;fill:var(--agua-l);letter-spacing:1px}
+.orilla{margin:0 22px 22px;background:rgba(237,230,216,.08);border:1px solid rgba(191,217,214,.25);border-radius:14px;padding:14px 16px;font-size:14.5px;min-height:118px}
+.orilla h4{margin:0 0 4px;font-family:var(--disp);font-size:24px;font-weight:400;color:#fff}
+.orilla ul{margin:4px 0 8px;padding-left:18px}
+.orilla button{background:var(--cobre);color:#fff;border:0;border-radius:999px;padding:6px 14px;font-weight:700;cursor:pointer;font-size:14px}
+.eti{font-size:11.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--agua-l)}
+
+.cont{min-width:0}
+.bar{position:sticky;top:0;z-index:30;background:rgba(247,243,234,.95);backdrop-filter:blur(6px);border-bottom:1px solid var(--arena-2);display:flex;align-items:center;gap:18px;padding:0 34px;height:58px}
+.bar nav{display:flex;gap:20px;font-size:15px}
+.bar nav a{text-decoration:none;color:var(--granito)}
+.bar nav a:hover{color:var(--noche)}
+.tabs{margin-left:auto;display:flex;border:1.5px solid var(--agua);border-radius:999px;overflow:hidden;flex-shrink:0}
+.tabs button{border:0;background:transparent;color:var(--agua);padding:6px 14px;font-weight:700;cursor:pointer;font-size:14px;white-space:nowrap}
+.tabs button[aria-selected="true"]{background:var(--agua);color:#fff}
+.sec{padding:56px 34px;max-width:900px}
+.sec + .sec{border-top:1px solid var(--arena-2)}
+h1,h2,h3{font-family:var(--disp);font-weight:400;margin:0;line-height:1.1}
+h1{font-size:clamp(40px,5.4vw,70px)}
+h2{font-size:clamp(32px,3.6vw,46px);margin-bottom:18px}
+h3{font-size:30px}
+.kicker{font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--cobre-d);font-weight:700;margin-bottom:10px}
+.hero-img{margin:26px 0 18px;border-radius:4px;overflow:hidden;background:var(--arena)}
+.hero-img img{width:100%;height:auto}
+.datos{display:flex;flex-wrap:wrap;gap:10px 26px;padding:0;margin:18px 0 0;list-style:none;font-size:15.5px}
+.datos li{border-left:3px solid var(--agua);padding-left:10px}
+.datos b{display:block;font-family:var(--disp);font-size:28px;font-weight:400;line-height:1}
+.cta{display:inline-flex;align-items:center;gap:8px;background:var(--agua);color:#fff;text-decoration:none;border:0;border-radius:999px;padding:12px 22px;font-weight:700;cursor:pointer;margin-top:22px}
+.cta.alt{background:transparent;color:var(--agua);border:1.5px solid var(--agua);margin-left:8px}
+
+/* fichas */
+.ficha{padding:34px 0;border-bottom:1px dashed var(--arena-2)}
+.ficha:last-child{border-bottom:0}
+.ficha-h{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:14px}
+.ficha-h .num{font-family:var(--disp);font-size:20px;color:var(--cobre-d)}
+.ficha-h .cap{font-size:15px;color:var(--granito)}
+.foto-main{background:var(--arena);border-radius:4px;overflow:hidden}
+.foto-main img{width:100%;height:auto}
+.fotos-sec{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:10px}
+.fotos-sec img{width:100%;height:auto;background:var(--arena);border-radius:3px}
+.foto-nota{font-size:12.5px;color:var(--granito);margin-top:6px}
+.ficha-b{display:grid;grid-template-columns:1.3fr 1fr;gap:24px;margin-top:16px}
+.ficha-b ul{margin:0;padding-left:18px}
+.precio{background:var(--arena);border-radius:10px;padding:12px 14px;font-size:15px}
+.precio div{display:flex;justify-content:space-between;gap:8px;padding:3px 0}
+.pe{font-size:11.5px;color:var(--granito);font-style:normal;white-space:nowrap}
+.elegir{margin-top:10px;background:none;border:0;color:var(--agua);font-weight:700;cursor:pointer;padding:0;text-decoration:underline;text-underline-offset:3px}
+
+/* temporadas */
+table{border-collapse:collapse;width:100%;font-size:15.5px}
+th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--arena-2);vertical-align:top}
+th{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--granito);font-weight:700}
+td .pe{display:block}
+.tbl{overflow-x:auto}
+
+/* calendario */
+.cal-wrap{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.cal h4{margin:0 0 8px;font-family:var(--disp);font-size:24px;font-weight:400}
+.cal-g{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;font-size:13px;text-align:center}
+.cal-g .d{padding:7px 0;border-radius:4px;background:#fff}
+.cal-g .h{font-size:11px;color:var(--granito);background:none}
+.cal-g .x{background:var(--arena-2);color:#9a948a;text-decoration:line-through}
+.cal-g .s{background:var(--agua);color:#fff}
+.cal-g .e{background:none}
+.leyenda{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;margin-top:10px;color:var(--granito)}
+.leyenda i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.sync{display:inline-block;margin-top:12px;font-size:13.5px;background:#fff;border:1px solid var(--agua-l);border-radius:999px;padding:5px 12px;color:var(--agua-d)}
+
+/* simulador */
+.sim{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:start}
+.campo{margin-bottom:14px}
+.campo label{display:block;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--granito);margin-bottom:5px;font-weight:700}
+.campo input,.campo select{width:100%;padding:10px 12px;border:1.5px solid var(--arena-2);border-radius:8px;background:#fff;color:var(--noche)}
+.fila{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.uni-op{display:flex;gap:8px;flex-wrap:wrap}
+.uni-op button{flex:1;min-width:90px;border:1.5px solid var(--arena-2);background:#fff;border-radius:8px;padding:9px 6px;cursor:pointer;font-family:var(--disp);font-size:20px}
+.uni-op button small{display:block;font-family:var(--txt);font-size:12px;color:var(--granito)}
+.uni-op button[aria-pressed="true"]{border-color:var(--agua);background:var(--agua);color:#fff}
+.uni-op button[aria-pressed="true"] small{color:var(--agua-l)}
+.tot{background:var(--noche);color:var(--arena);border-radius:12px;padding:14px 16px;font-size:15px}
+.tot div{display:flex;justify-content:space-between;padding:3px 0;gap:10px}
+.tot .big{font-family:var(--disp);font-size:26px;color:#fff}
+.tot .pe{color:var(--agua-l)}
+.err{color:var(--cobre-d);font-size:14px;min-height:20px}
+.chat{background:var(--wa-bg);border-radius:14px;padding:14px;position:sticky;top:76px}
+.chat-h{display:flex;align-items:center;gap:10px;font-size:14px;margin-bottom:10px}
+.chat-h .av{width:34px;height:34px;border-radius:50%;background:var(--agua);color:#fff;display:grid;place-items:center;font-family:var(--disp);font-size:20px}
+.chat-h small{display:block;color:var(--granito);font-size:12px}
+.burbuja{background:var(--wa);border-radius:10px 10px 2px 10px;padding:10px 12px;font-size:14.5px;white-space:pre-wrap;box-shadow:0 1px 1px rgba(0,0,0,.1);margin-left:auto;max-width:96%;min-height:60px}
+.burbuja .hora{display:block;text-align:right;font-size:11px;color:#6b7b6b;margin-top:4px}
+.cursor{display:inline-block;width:7px;height:15px;background:var(--agua);vertical-align:-2px;animation:b 1s steps(1) infinite}
+@keyframes b{50%{opacity:0}}
+.wa-btn{display:flex;justify-content:center;width:100%;background:#1f8f4e;color:#fff;border:0;border-radius:999px;padding:12px;font-weight:700;margin-top:12px;cursor:pointer;text-decoration:none}
+.chat-nota{font-size:12.5px;color:var(--granito);margin-top:8px}
+
+/* listas */
+.lista{columns:2;column-gap:30px;padding-left:18px;margin:0}
+.lista li{break-inside:avoid;margin-bottom:8px}
+details{border-bottom:1px solid var(--arena-2);padding:12px 0}
+summary{cursor:pointer;font-weight:700;list-style:none}
+summary::after{content:'+';float:right;color:var(--agua);font-size:20px;line-height:1}
+details[open] summary::after{content:'–'}
+details ul{margin:8px 0 0;padding-left:18px}
+.mapa{display:grid;grid-template-columns:1.2fr 1fr;gap:22px;align-items:center}
+.mapa svg{width:100%;height:auto;background:var(--arena);border-radius:10px}
+
+/* dueño */
+.duenio{display:none}
+body.modo-duenio .duenio{display:block}
+body.modo-duenio .huesped{display:none}
+.ej{display:inline-block;background:var(--cobre);color:#fff;font-size:11.5px;letter-spacing:2px;text-transform:uppercase;padding:3px 10px;border-radius:999px;font-weight:700}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 0}
+.kpi{background:#fff;border:1px solid var(--arena-2);border-radius:10px;padding:12px}
+.kpi b{display:block;font-family:var(--disp);font-size:30px;font-weight:400}
+.kpi span{font-size:13px;color:var(--granito)}
+.consultas{display:grid;gap:10px}
+.consultas .burbuja{margin-left:0;max-width:100%;font-size:14px}
+.consultas .meta{font-size:12.5px;color:var(--granito);margin-bottom:3px}
+.agenda{overflow-x:auto}
+.agenda table{min-width:560px}
+.agenda td.o{background:var(--agua);color:#fff;font-size:13px}
+.agenda td.l{background:#fff;color:var(--granito);font-size:13px}
+.agenda td.p{background:var(--cobre);color:#fff;font-size:13px}
+.para{background:var(--noche);color:var(--arena);border-radius:14px;padding:24px 26px;margin-top:26px}
+.para h3{color:#fff;margin-bottom:10px}
+.para ul{margin:0;padding-left:18px}
+.para li{margin-bottom:6px}
+
+footer{padding:30px 34px 40px;font-size:13.5px;color:var(--granito);border-top:1px solid var(--arena-2)}
+
+@media(max-width:980px){
+  .split{grid-template-columns:1fr}
+  .rio{position:relative;height:auto}
+  .rio-map{height:260px;flex:none}
+  .bar nav{display:none}
+  .bar{padding:0 16px}
+  .sec{padding:40px 16px}
+  footer{padding:26px 16px 34px}
+  .cal-wrap,.sim,.ficha-b,.mapa{grid-template-columns:1fr}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .lista{columns:1}
+  .chat{position:static}
+}
+@media(max-width:420px){
+  .marca{font-size:38px}
+  .rio-top{padding:20px 16px 0}
+  .orilla{margin:0 16px 16px}
+  .tabs button{padding:6px 10px;font-size:13px}
+  .cta.alt{margin-left:0}
+}
+</style>
+</head>
+<body>
+<div class="sig">Prototipo preparado para <b>Samsara Cabañas de Montaña</b> · 10 de noviembre de 2026</div>
+
+<div class="split">
+  <!-- columna fija: el arroyo -->
+  <aside class="rio" aria-label="Elegí tu orilla">
+    <div class="rio-top">
+      <div class="marca">Samsara<small>Cabañas de montaña · Los Hornillos</small></div>
+      <p class="eti" style="margin:18px 0 0">Elegí tu orilla · tocá una piedra</p>
+    </div>
+    <div class="rio-map">
+      <svg viewBox="0 0 400 520" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Mapa ilustrado del arroyo con las tres cabañas">
+        <defs>
+          <linearGradient id="ag" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2F6F73"/><stop offset="1" stop-color="#1F4E51"/></linearGradient>
+        </defs>
+        <path d="M0 40 L60 10 L120 34 L190 0 L260 30 L330 6 L400 28 L400 0 L0 0Z" fill="#3A4A4B"/>
+        <path d="M150 0 C110 90 250 130 210 220 C170 310 60 330 120 420 C160 480 230 490 210 520 L290 520 C310 480 230 450 210 410 C170 340 280 300 300 220 C320 130 190 90 230 0Z" fill="url(#ag)"/>
+        <path d="M195 30 C170 100 260 140 245 210" stroke="#BFD9D6" stroke-width="2.5" fill="none" stroke-dasharray="10 12" opacity=".7"/>
+        <path d="M230 260 C200 320 140 350 170 420" stroke="#BFD9D6" stroke-width="2.5" fill="none" stroke-dasharray="10 12" opacity=".7"/>
+        <g fill="#7C8B4F" opacity=".55">
+          <circle cx="50" cy="120" r="14"/><circle cx="70" cy="140" r="10"/><circle cx="350" cy="90" r="16"/><circle cx="360" cy="380" r="13"/><circle cx="40" cy="470" r="15"/><circle cx="330" cy="470" r="11"/>
+        </g>
+        <g class="piedra" data-u="luna" tabindex="0" role="button" aria-label="Cabaña Luna">
+          <ellipse class="p" cx="96" cy="180" rx="70" ry="30" fill="#6E6A63"/>
+          <circle cx="150" cy="200" r="11" fill="#BFD9D6" stroke="#fff" stroke-width="2"/>
+          <text x="96" y="188" text-anchor="middle">Luna</text>
+          <text class="cap" x="96" y="232" text-anchor="middle">2 hab · 2 a 4</text>
+        </g>
+        <g class="piedra" data-u="arroyo" tabindex="0" role="button" aria-label="Cabaña Arroyo">
+          <ellipse class="p" cx="318" cy="290" rx="66" ry="28" fill="#6E6A63"/>
+          <circle cx="266" cy="310" r="11" fill="#BFD9D6" stroke="#fff" stroke-width="2"/>
+          <text x="318" y="298" text-anchor="middle">Arroyo</text>
+          <text class="cap" x="318" y="340" text-anchor="middle">monoambiente · 2 a 3</text>
+        </g>
+        <g class="piedra" data-u="lucero" tabindex="0" role="button" aria-label="Cabaña Lucero">
+          <ellipse class="p" cx="88" cy="400" rx="66" ry="28" fill="#6E6A63"/>
+          <circle cx="140" cy="420" r="11" fill="#BFD9D6" stroke="#fff" stroke-width="2"/>
+          <text x="88" y="408" text-anchor="middle">Lucero</text>
+          <text class="cap" x="88" y="450" text-anchor="middle">monoambiente · 2 a 3</text>
+        </g>
+        <text x="200" y="506" text-anchor="middle" font-size="11" fill="#BFD9D6" font-family="Manjari, sans-serif" letter-spacing="2">ARROYO LOS HORNILLOS</text>
+      </svg>
+    </div>
+    <div class="orilla" id="orilla" aria-live="polite">
+      <h4>Tres piedras, un arroyo</h4>
+      <ul><li>Cada cabaña tiene su mini pileta con jacuzzi (el círculo claro).</li><li>Las tres bajan directo al Arroyo Los Hornillos.</li></ul>
+    </div>
+  </aside>
+
+  <div class="cont">
+    <div class="bar">
+      <nav aria-label="Secciones">
+        <a href="#cabanas">Cabañas</a><a href="#temporadas">Temporadas</a><a href="#reservar">Reservar</a><a href="#pueblo">Los Hornillos</a><a href="#preguntas">Preguntas</a>
+      </nav>
+      <div class="tabs" role="tablist">
+        <button role="tab" aria-selected="true" id="tab-h">Huésped</button>
+        <button role="tab" aria-selected="false" id="tab-d">Ver como dueño</button>
+      </div>
+    </div>
+
+    <!-- ======= HUÉSPED ======= -->
+    <main class="huesped">
+      <section class="sec" id="inicio">
+        <div class="kicker">Barrio La Cañada · Los Hornillos · Traslasierra</div>
+        <h1>Tres cabañas, tres jacuzzis y el arroyo al pie</h1>
+        <div class="hero-img"><img src="https://www.samsaratraslasierra.com.ar/assets/img/index/carousel/carousel-01.jpg" alt="Samsara Cabañas de Montaña" data-n="Samsara · Los Hornillos" onerror="fb(this)"></div>
+        <ul class="datos">
+          <li><b>3</b>cabañas con nombre propio</li>
+          <li><b>3</b>mini piletas con jacuzzi</li>
+          <li><b>1</b>arroyo, con bajada directa</li>
+        </ul>
+        <a class="cta" href="#reservar">Ver fechas y pedir reserva</a><a class="cta alt" href="#cabanas">Conocer las cabañas</a>
+      </section>
+
+      <section class="sec" id="cabanas">
+        <div class="kicker">Las cabañas</div>
+        <h2>Luna, Arroyo y Lucero</h2>
+
+        <article class="ficha" id="f-luna">
+          <div class="ficha-h"><span class="num">I</span><h3>Luna</h3><span class="cap">2 habitaciones · de 2 a 4 personas</span></div>
+          <div class="foto-main"><img src="https://www.samsaratraslasierra.com.ar/assets/img/index/home/home-01.jpg" alt="Foto de Samsara" data-n="Cabaña Luna" onerror="fb(this)" loading="lazy"></div>
+          <div class="fotos-sec">
+            <img src="https://www.samsaratraslasierra.com.ar/assets/img/index/carousel/carousel-02.jpg" alt="Foto de Samsara" data-n="Samsara" onerror="fb(this)" loading="lazy">
+            <img src="https://www.samsaratraslasierra.com.ar/assets/img/index/home/home-03.jpg" alt="Foto de Samsara" data-n="Samsara" onerror="fb(this)" loading="lazy">
+          </div>
+          <p class="foto-nota">Fotos de su web. En la versión final, cada ficha lleva las fotos de esa cabaña.</p>
+          <div class="ficha-b">
+            <ul>
+              <li>La más grande: ideal para familia o dos parejas</li>
+              <li>Mini pileta propia con jacuzzi</li>
+              <li>Acceso directo al Arroyo Los Hornillos</li>
+            </ul>
+            <div class="precio">
+              <div><span>Temporada alta</span><span>$ 150.000 <em class="pe">Precio de ejemplo</em></span></div>
+              <div><span>Resto del año</span><span>$ 110.000 <em class="pe">Precio de ejemplo</em></span></div>
+              <button class="elegir" data-pick="luna">Elegir Luna</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="ficha" id="f-arroyo">
+          <div class="ficha-h"><span class="num">II</span><h3>Arroyo</h3><span class="cap">Monoambiente · de 2 a 3 personas</span></div>
+          <div class="foto-main"><img src="https://www.samsaratraslasierra.com.ar/assets/img/index/home/home-02.jpg" alt="Foto de Samsara" data-n="Cabaña Arroyo" onerror="fb(this)" loading="lazy"></div>
+          <div class="fotos-sec">
+            <img src="https://www.samsaratraslasierra.com.ar/assets/img/index/home/home-01.jpg" alt="Foto de Samsara" data-n="Samsara" onerror="fb(this)" loading="lazy">
+            <img src="https://www.samsaratraslasierra.com.ar/assets/img/index/carousel/carousel-01.jpg" alt="Foto de Samsara" data-n="Samsara" onerror="fb(this)" loading="lazy">
+          </div>
+          <div class="ficha-b">
+            <ul>
+              <li>Para pareja, o pareja con un chico</li>
+              <li>Mini pileta propia con jacuzzi</li>
+              <li>El arroyo a unos pasos</li>
+            </ul>
+            <div class="precio">
+              <div><span>Temporada alta</span><span>$ 115.000 <em class="pe">Precio de ejemplo</em></span></div>
+              <div><span>Resto del año</span><span>$ 85.000 <em class="pe">Precio de ejemplo</em></span></div>
+              <button class="elegir" data-pick="arroyo">Elegir Arroyo</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="ficha" id="f-lucero">
+          <div class="ficha-h"><span class="num">III</span><h3>Lucero</h3><span class="cap">Monoambiente · de 2 a 3 personas</span></div>
+          <div class="foto-main"><img src="https://www.samsaratraslasierra.com.ar/assets/img/index/home/home-03.jpg" alt="Foto de Samsara" data-n="Cabaña Lucero" onerror="fb(this)" loading="lazy"></div>
+          <div class="fotos-sec">
+            <img src="https://www.samsaratraslasierra.com.ar/assets/img/index/carousel/carousel-02.jpg" alt="Foto de Samsara" data-n="Samsara" onerror="fb(this)" loading="lazy">
+            <img src="https://www.samsaratraslasierra.com.ar/assets/img/index/home/home-02.jpg" alt="Foto de Samsara" data-n="Samsara" onerror="fb(this)" loading="lazy">
+          </div>
+          <div class="ficha-b">
+            <ul>
+              <li>Para pareja, o pareja con un chico</li>
+              <li>Mini pileta propia con jacuzzi</li>
+              <li>Bajada directa al arroyo</li>
+            </ul>
+            <div class="precio">
+              <div><span>Temporada alta</span><span>$ 115.000 <em class="pe">Precio de ejemplo</em></span></div>
+              <div><span>Resto del año</span><span>$ 85.000 <em class="pe">Precio de ejemplo</em></span></div>
+              <button class="elegir" data-pick="lucero">Elegir Lucero</button>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="sec" id="temporadas">
+        <div class="kicker">Temporadas 2026–2027</div>
+        <h2>Cuándo sube y cuándo baja</h2>
+        <div class="tbl"><table>
+          <thead><tr><th>Temporada</th><th>Fechas</th><th>Luna</th><th>Arroyo / Lucero</th><th>Mínimo</th></tr></thead>
+          <tbody>
+            <tr><td>Fiestas</td><td>24 dic 2026 al 3 ene 2027</td><td>$ 160.000<span class="pe">Precio de ejemplo</span></td><td>$ 125.000<span class="pe">Precio de ejemplo</span></td><td>3 noches</td></tr>
+            <tr><td>Verano</td><td>4 ene al 28 feb 2027</td><td>$ 150.000<span class="pe">Precio de ejemplo</span></td><td>$ 115.000<span class="pe">Precio de ejemplo</span></td><td>3 noches</td></tr>
+            <tr><td>Carnaval</td><td>6 al 9 feb 2027</td><td>$ 150.000<span class="pe">Precio de ejemplo</span></td><td>$ 115.000<span class="pe">Precio de ejemplo</span></td><td>3 noches</td></tr>
+            <tr><td>Semana Santa</td><td>25 al 28 mar 2027</td><td>$ 135.000<span class="pe">Precio de ejemplo</span></td><td>$ 100.000<span class="pe">Precio de ejemplo</span></td><td>2 noches</td></tr>
+            <tr><td>Vacaciones de invierno</td><td>julio 2027 (fecha oficial de Córdoba)</td><td>$ 125.000<span class="pe">Precio de ejemplo</span></td><td>$ 95.000<span class="pe">Precio de ejemplo</span></td><td>2 noches</td></tr>
+            <tr><td>Resto del año</td><td>fines de semana y semana</td><td>$ 110.000<span class="pe">Precio de ejemplo</span></td><td>$ 85.000<span class="pe">Precio de ejemplo</span></td><td>2 noches</td></tr>
+          </tbody>
+        </table></div>
+        <p class="foto-nota">Precio por noche por cabaña. Las fechas y reglas se cargan con las que ustedes usan.</p>
+      </section>
+
+      <section class="sec" id="disponibilidad">
+        <div class="kicker">Disponibilidad</div>
+        <h2>Lo libre, a la vista</h2>
+        <div class="cal-wrap" id="cals"></div>
+        <div class="leyenda"><span><i style="background:#fff;border:1px solid #ccc"></i>Libre</span><span><i style="background:var(--arena-2)"></i>Ocupado</span><span><i style="background:var(--agua)"></i>Tu estadía</span></div>
+        <span class="sync">Calendario de ejemplo · se sincroniza con Booking y Airbnb</span>
+      </section>
+
+      <section class="sec" id="reservar">
+        <div class="kicker">Pedido de reserva</div>
+        <h2>Armá tu estadía y mirá el mensaje</h2>
+        <div class="sim">
+          <div>
+            <div class="campo"><label>Cabaña</label>
+              <div class="uni-op" id="uniop">
+                <button data-u="luna" aria-pressed="true">Luna<small>2 a 4</small></button>
+                <button data-u="arroyo" aria-pressed="false">Arroyo<small>2 a 3</small></button>
+                <button data-u="lucero" aria-pressed="false">Lucero<small>2 a 3</small></button>
+              </div>
+            </div>
+            <div class="fila">
+              <div class="campo"><label for="in">Llegada</label><input type="date" id="in"></div>
+              <div class="campo"><label for="out">Salida</label><input type="date" id="out"></div>
+            </div>
+            <div class="fila">
+              <div class="campo"><label for="pax">Personas</label><select id="pax"></select></div>
+              <div class="campo"><label for="nom">Tu nombre</label><input id="nom" placeholder="Ej: Laura" autocomplete="off"></div>
+            </div>
+            <div class="err" id="err"></div>
+            <div class="tot" id="tot">
+              <div><span>Noches</span><span id="t-n">–</span></div>
+              <div><span>Total</span><span><span class="big" id="t-t">–</span> <em class="pe">Precio de ejemplo</em></span></div>
+              <div><span>Seña 30% por Mercado Pago</span><span><b id="t-s">–</b> <em class="pe">Precio de ejemplo</em></span></div>
+            </div>
+          </div>
+          <div class="chat" aria-live="polite">
+            <div class="chat-h"><span class="av">S</span><div><b>Samsara Cabañas de Montaña</b><small>Así le llega al dueño por WhatsApp</small></div></div>
+            <div class="burbuja"><span id="msg"></span><span class="cursor"></span><span class="hora" id="hora"></span></div>
+            <a class="wa-btn" id="wa" href="#" target="_blank" rel="noopener">Enviar pedido por WhatsApp</a>
+            <p class="chat-nota">Demo: la seña por Mercado Pago se activa en la versión final.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec" id="pueblo">
+        <div class="kicker">Los Hornillos y alrededores</div>
+        <h2>Qué hay cerca</h2>
+        <ul class="lista">
+          <li>El Arroyo Los Hornillos, con ollas y piedras para pasar la tarde</li>
+          <li>Senderos de las Sierras Grandes, camino al Cerro Champaquí</li>
+          <li>Río Mina Clavero y sus balnearios, por la RP14</li>
+          <li>Nono y el Museo Rocsen</li>
+          <li>Camino de las Altas Cumbres, hacia Córdoba</li>
+          <li>Ferias y almacenes de campo de Traslasierra</li>
+        </ul>
+      </section>
+
+      <section class="sec" id="preguntas">
+        <div class="kicker">Preguntas frecuentes</div>
+        <h2>Antes de venir</h2>
+        <details><summary>¿Aceptan mascotas?</summary><ul><li>Se completa con la regla de Samsara.</li><li>El simulador puede sumar un aviso o un cargo si traen mascota.</li></ul></details>
+        <details><summary>¿Hay ropa blanca?</summary><ul><li>Se completa con lo que incluye cada cabaña: sábanas, toallas, toallones de pileta.</li></ul></details>
+        <details><summary>¿Horario de check-in y check-out?</summary><ul><li>Se muestran sus horarios reales.</li><li>Llegadas fuera de horario: se avisan por WhatsApp.</li></ul></details>
+        <details><summary>¿Cómo se confirma la reserva?</summary><ul><li>Elegís cabaña y fechas.</li><li>Pagás la seña del 30% por Mercado Pago.</li><li>El dueño confirma y la fecha se bloquea también en Booking y Airbnb.</li></ul></details>
+        <details><summary>¿El jacuzzi es privado?</summary><ul><li>Sí: cada cabaña tiene su propia mini pileta con jacuzzi.</li></ul></details>
+      </section>
+
+      <section class="sec" id="llegar">
+        <div class="kicker">Cómo llegar</div>
+        <h2>Barrio La Cañada, Los Hornillos</h2>
+        <div class="mapa">
+          <svg viewBox="0 0 400 260" role="img" aria-label="Mapa ilustrado de Traslasierra">
+            <path d="M40 0 C60 80 30 160 70 260" stroke="#8E8A7F" stroke-width="22" fill="none" opacity=".35"/>
+            <path d="M210 0 C200 70 230 140 215 260" stroke="#C8743E" stroke-width="4" fill="none"/>
+            <text x="222" y="22" font-size="12" fill="#9E5427" font-family="Manjari,sans-serif">RP14</text>
+            <circle cx="206" cy="50" r="6" fill="#1E2A2B"/><text x="118" y="54" font-size="13" font-family="Manjari,sans-serif">Mina Clavero</text>
+            <circle cx="214" cy="100" r="6" fill="#1E2A2B"/><text x="160" y="104" font-size="13" font-family="Manjari,sans-serif">Nono</text>
+            <circle cx="222" cy="150" r="6" fill="#1E2A2B"/><text x="130" y="154" font-size="13" font-family="Manjari,sans-serif">Las Rabonas</text>
+            <circle cx="222" cy="196" r="10" fill="#2F6F73"/><text x="240" y="200" font-size="17" font-family="Italiana,serif">Los Hornillos · Samsara</text>
+            <path d="M300 196 C330 160 360 150 390 120" stroke="#2F6F73" stroke-width="2" stroke-dasharray="4 5" fill="none"/>
+            <text x="300" y="120" font-size="11" fill="#2F6F73" font-family="Manjari,sans-serif">Sierras Grandes</text>
+            <text x="60" y="240" font-size="11" fill="#6E6A63" font-family="Manjari,sans-serif">Altas Cumbres → Córdoba</text>
+          </svg>
+          <ul>
+            <li>Por RP14, entre Las Rabonas y Villa de las Rosas</li>
+            <li>Desde Córdoba: por el Camino de las Altas Cumbres</li>
+            <li><a href="https://www.google.com/maps/search/?api=1&query=Samsara+Caba%C3%B1as+de+Monta%C3%B1a+Los+Hornillos" target="_blank" rel="noopener">Abrir en Google Maps</a></li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <!-- ======= DUEÑO ======= -->
+    <main class="duenio" id="panel">
+      <section class="sec">
+        <span class="ej">Panel de ejemplo</span>
+        <h2 style="margin-top:14px">Lo que ven ustedes</h2>
+        <div class="kpis">
+          <div class="kpi"><b>7</b><span>consultas esta semana</span></div>
+          <div class="kpi"><b>3</b><span>reservas directas confirmadas</span></div>
+          <div class="kpi"><b>$ 207.000</b><span>en señas cobradas <em class="pe">Precio de ejemplo</em></span></div>
+          <div class="kpi"><b>$ 103.500</b><span>de comisión ahorrada vs Booking (15%) <em class="pe">Precio de ejemplo</em></span></div>
+        </div>
+        <h3 style="margin:24px 0 10px">Consultas que entraron</h3>
+        <div class="consultas">
+          <div><div class="meta">Hoy 10:42 · seña pagada</div><div class="burbuja">Hola! Soy Martina. Quiero reservar Luna del 8/1 al 12/1 (4 noches) para 4 personas. Total: $ 600.000. Seña 30%: $ 180.000.</div></div>
+          <div><div class="meta">Ayer 21:15 · esperando seña</div><div class="burbuja">Hola! Soy Diego. Quiero reservar Arroyo del 25/3 al 28/3 (3 noches) para 2 personas. Total: $ 300.000. Seña 30%: $ 90.000.</div></div>
+          <div><div class="meta">Lunes 18:03 · seña pagada</div><div class="burbuja">Hola! Soy Caro. Quiero reservar Lucero del 20/11 al 22/11 (2 noches) para 2 personas. Total: $ 170.000. Seña 30%: $ 51.000.</div></div>
+        </div>
+        <p class="foto-nota">Montos: precios de ejemplo.</p>
+        <h3 style="margin:28px 0 10px">Semana del 16 al 22 de noviembre</h3>
+        <div class="agenda"><table>
+          <thead><tr><th>Cabaña</th><th>Lun</th><th>Mar</th><th>Mié</th><th>Jue</th><th>Vie</th><th>Sáb</th><th>Dom</th></tr></thead>
+          <tbody>
+            <tr><td>Luna</td><td class="l">libre</td><td class="l">libre</td><td class="l">libre</td><td class="o">Booking</td><td class="o">Booking</td><td class="o">Booking</td><td class="l">libre</td></tr>
+            <tr><td>Arroyo</td><td class="l">libre</td><td class="l">libre</td><td class="p">directa</td><td class="p">directa</td><td class="l">libre</td><td class="o">Airbnb</td><td class="o">Airbnb</td></tr>
+            <tr><td>Lucero</td><td class="l">libre</td><td class="l">libre</td><td class="l">libre</td><td class="l">libre</td><td class="p">directa</td><td class="p">directa</td><td class="l">libre</td></tr>
+          </tbody>
+        </table></div>
+        <div class="leyenda"><span><i style="background:var(--cobre)"></i>Reserva directa (sin comisión)</span><span><i style="background:var(--agua)"></i>Booking / Airbnb (sincronizado)</span></div>
+
+        <div class="para">
+          <h3>Para vos, Samsara</h3>
+          <ul>
+            <li>Menos mensajes repetidos: el huésped ve lo libre antes de escribir</li>
+            <li>Agenda de las 3 cabañas en un solo lugar, sin dobles reservas</li>
+            <li>La seña entra por Mercado Pago antes de confirmar</li>
+            <li>Sin comisión por cada reserva directa</li>
+          </ul>
+        </div>
+        <button class="cta" id="volver">Volver a la vista del huésped</button>
+      </section>
+    </main>
+
+    <footer>
+      Prototipo de demostración preparado para Samsara Cabañas de Montaña por Resolviendo Kos · No es la web oficial
+    </footer>
+  </div>
+</div>
+
+<script>
+(function(){
+  var U={
+    luna:{n:'Luna',max:4,alta:150000,base:110000,d:['2 habitaciones, de 2 a 4 personas','Mini pileta propia con jacuzzi','Bajada directa al arroyo']},
+    arroyo:{n:'Arroyo',max:3,alta:115000,base:85000,d:['Monoambiente, de 2 a 3 personas','Mini pileta propia con jacuzzi','El arroyo a unos pasos']},
+    lucero:{n:'Lucero',max:3,alta:115000,base:85000,d:['Monoambiente, de 2 a 3 personas','Mini pileta propia con jacuzzi','Bajada directa al arroyo']}
+  };
+  var WA='5491158940489';
+  var sel='luna';
+  var $=function(id){return document.getElementById(id)};
+  var fmt=function(n){return '$ '+Math.round(n).toLocaleString('es-AR')};
+  function isAlta(d){var m=d.getMonth(),dd=d.getDate();return (m===11&&dd>=24)||m===0||m===1||(d.getFullYear()===2027&&m===2&&dd>=25&&dd<=28);}
+  var R={luna:{fi:160000,ve:150000,ss:135000,inv:125000},arroyo:{fi:125000,ve:115000,ss:100000,inv:95000},lucero:{fi:125000,ve:115000,ss:100000,inv:95000}};
+  function rate(u,d){var m=d.getMonth(),dd=d.getDate(),r=R[u];
+    if((m===11&&dd>=24)||(m===0&&dd<=3&&d.getFullYear()===2027))return r.fi;
+    if(m===0||m===1)return r.ve;
+    if(d.getFullYear()===2027&&m===2&&dd>=25&&dd<=28)return r.ss;
+    if(m===6)return r.inv;
+    return U[u].base;}
+
+  // orilla
+  var orilla=$('orilla');
+  function pick(u,scroll){
+    sel=u;
+    document.querySelectorAll('.piedra').forEach(function(p){p.classList.toggle('on',p.dataset.u===u)});
+    document.querySelectorAll('#uniop button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.u===u)});
+    var x=U[u];
+    orilla.innerHTML='<h4>'+x.n+'</h4><ul>'+x.d.map(function(t){return '<li>'+t+'</li>'}).join('')+'</ul><button type="button" id="ir">Reservar '+x.n+'</button>';
+    $('ir').onclick=function(){document.getElementById('reservar').scrollIntoView({behavior:'smooth'})};
+    fillPax(); calc();
+    if(scroll) document.getElementById('reservar').scrollIntoView({behavior:'smooth'});
+  }
+  document.querySelectorAll('.piedra').forEach(function(p){
+    p.addEventListener('click',function(){pick(p.dataset.u)});
+    p.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();pick(p.dataset.u)}});
+  });
+  document.querySelectorAll('#uniop button').forEach(function(b){b.onclick=function(){pick(b.dataset.u)}});
+  document.querySelectorAll('.elegir').forEach(function(b){b.onclick=function(){pick(b.dataset.pick,true)}});
+
+  function fillPax(){
+    var s=$('pax'),v=+s.value||2,m=U[sel].max;s.innerHTML='';
+    for(var i=1;i<=m;i++){var o=document.createElement('option');o.value=i;o.textContent=i+(i===1?' persona':' personas');s.appendChild(o)}
+    s.value=Math.min(v,m);
+  }
+
+  // fechas por defecto
+  var t=new Date(2026,10,10);
+  function iso(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+  function parse(v){if(!v)return null;var p=v.split('-');return new Date(+p[0],+p[1]-1,+p[2])}
+  $('in').value='2027-01-08';$('out').value='2027-01-12';$('in').min=iso(t);$('out').min=iso(t);
+
+  var target='',shown=0,timer=null;
+  function type(){
+    clearInterval(timer);
+    var cur=$('msg').textContent;
+    var k=0;while(k<cur.length&&k<target.length&&cur[k]===target[k])k++;
+    shown=k;$('msg').textContent=target.slice(0,shown);
+    timer=setInterval(function(){
+      if(shown>=target.length){clearInterval(timer);return}
+      shown=Math.min(target.length,shown+2);$('msg').textContent=target.slice(0,shown);
+    },18);
+  }
+  function calc(){
+    var a=parse($('in').value),b=parse($('out').value),x=U[sel],pax=$('pax').value,nom=$('nom').value.trim();
+    var err='',n=0,tot=0;
+    if(a&&b){
+      n=Math.round((b-a)/864e5);
+      if(n<=0){err='La salida tiene que ser después de la llegada.';n=0}
+      else{for(var i=0;i<n;i++){var d=new Date(a);d.setDate(d.getDate()+i);tot+=rate(sel,d)}
+        var mm=a.getMonth();var minN=((mm===11&&a.getDate()>=24)||mm===0||mm===1)?3:2; if(n<minN) err='En esas fechas el mínimo es de '+minN+' noches.';}
+    }
+    $('err').textContent=err;
+    $('t-n').textContent=n?n:'–';$('t-t').textContent=n?fmt(tot):'–';$('t-s').textContent=n?fmt(tot*.3):'–';
+    var f=function(d){return d.getDate()+'/'+(d.getMonth()+1)};
+    var m='Hola! '+(nom?'Soy '+nom+'. ':'')+'Quiero reservar '+x.n;
+    if(a&&b&&n>0) m+=' del '+f(a)+' al '+f(b)+' ('+n+(n===1?' noche':' noches')+')';
+    m+=' para '+pax+(pax==1?' persona':' personas')+'.';
+    if(n>0) m+='\nTotal: '+fmt(tot)+'.\nSeña 30% por Mercado Pago: '+fmt(tot*.3)+'.';
+    m+='\n¿Me confirman?';
+    target=m;type();
+    $('wa').href='https://wa.me/'+WA+'?text='+encodeURIComponent(m);
+    var h=new Date();$('hora').textContent=String(h.getHours()).padStart(2,'0')+':'+String(h.getMinutes()).padStart(2,'0');
+    drawCals();
+  }
+  ['in','out','pax','nom'].forEach(function(id){$(id).addEventListener('input',calc);$(id).addEventListener('change',calc)});
+
+  // calendarios de ejemplo
+  var busy={luna:[2,3,4,9,10,16,17,18,23,24,30,31],arroyo:[5,6,11,12,13,19,20,26,27],lucero:[1,7,8,14,15,21,22,28,29]};
+  function drawCals(){
+    var box=$('cals');box.innerHTML='';
+    var a=parse($('in').value),b=parse($('out').value);
+    var base=a||new Date(2026,11,1);
+    for(var k=0;k<2;k++){
+      var y=base.getFullYear(),mo=base.getMonth()+k;var first=new Date(y,mo,1);y=first.getFullYear();mo=first.getMonth();
+      var days=new Date(y,mo+1,0).getDate();
+      var c=document.createElement('div');c.className='cal';
+      var name=first.toLocaleDateString('es-AR',{month:'long',year:'numeric'});
+      var html='<h4>'+name.charAt(0).toUpperCase()+name.slice(1)+' · '+U[sel].n+'</h4><div class="cal-g">';
+      ['L','M','M','J','V','S','D'].forEach(function(d){html+='<div class="d h">'+d+'</div>'});
+      var off=(first.getDay()+6)%7;for(var i=0;i<off;i++)html+='<div class="d e"></div>';
+      for(var d=1;d<=days;d++){
+        var dt=new Date(y,mo,d),cls='d';
+        if(a&&b&&dt>=a&&dt<b)cls+=' s';else if(busy[sel].indexOf(d)>-1&&((d+mo)%3!==0))cls+=' x';
+        html+='<div class="'+cls+'">'+d+'</div>';
+      }
+      c.innerHTML=html+'</div>';box.appendChild(c);
+    }
+  }
+
+  // tabs
+  function modo(d){
+    document.body.classList.toggle('modo-duenio',d);
+    $('tab-h').setAttribute('aria-selected',!d);$('tab-d').setAttribute('aria-selected',d);
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  $('tab-h').onclick=function(){modo(false)};$('tab-d').onclick=function(){modo(true)};$('volver').onclick=function(){modo(false)};
+
+  fillPax();$('pax').value=4;pick('luna');
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Samsara Cabañas de Montaña"></script>
+</body>
+</html>
