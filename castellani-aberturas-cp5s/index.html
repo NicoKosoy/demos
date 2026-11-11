@@ -1,0 +1,792 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Castellani · Cotizador de aberturas (prototipo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;600;700;800&family=Spectral:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --niebla:#E6ECEE; --hoja:#F8FAFA; --tinta:#17232B; --gris:#5C6870; --linea:#C9D3D7;
+  --canto:#3F8572; --canto2:#CFE5DD; --alu:#8C959C; --ocre:#B97A22; --wa:#D9FDD3;
+  --d:"Epilogue",system-ui,sans-serif; --s:"Spectral",Georgia,serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--niebla);color:var(--tinta);font:16px/1.5 var(--d);-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--ocre);outline-offset:2px}
+.wrap{max-width:1240px;margin:0 auto;padding:0 24px}
+@media(max-width:600px){.wrap{padding:0 16px}}
+.pe{display:block;font:500 10.5px/1.2 var(--d);color:var(--gris);letter-spacing:.01em;margin-top:2px}
+
+/* firma */
+.firma{font-size:12.5px;color:var(--gris);padding:7px 0;border-bottom:1px solid var(--linea)}
+.firma .wrap{display:flex;gap:6px 18px;flex-wrap:wrap}
+.firma b{color:var(--tinta);font-weight:600}
+
+/* header */
+header{padding:16px 0}
+header .wrap{display:flex;align-items:center;gap:20px}
+.marca{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:var(--tinta);margin-right:auto}
+.marca b{font-weight:800;font-size:23px;letter-spacing:-.02em}
+.marca span{font-size:13px;color:var(--gris)}
+header nav{display:flex;gap:18px}
+header nav a{color:var(--tinta);text-decoration:none;font-size:14.5px}
+header nav a:hover{text-decoration:underline;text-underline-offset:4px}
+.bd{border:1.5px solid var(--tinta);background:transparent;padding:8px 14px;border-radius:999px;cursor:pointer;font-weight:600;font-size:14px}
+.bd[aria-pressed=true]{background:var(--tinta);color:var(--hoja)}
+@media(max-width:820px){header nav{display:none}}
+@media(max-width:520px){.marca span{display:none}.bd{font-size:13px;padding:7px 12px;white-space:nowrap}}
+
+/* portada */
+.portada{padding:26px 0 40px;overflow-x:clip}
+.portada .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
+.portada h1{font-weight:800;font-size:clamp(34px,4.6vw,62px);line-height:1.02;letter-spacing:-.035em;margin:0 0 22px;max-width:15ch}
+.portada .baj{font-family:var(--s);font-size:19px;line-height:1.55;color:#2c3a42;max-width:46ch;margin:0 0 26px}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+.btn{background:var(--tinta);color:var(--hoja);text-decoration:none;padding:13px 20px;border-radius:999px;font-weight:600;font-size:15px;border:0;cursor:pointer}
+.btn.l{background:transparent;color:var(--tinta);border:1.5px solid var(--tinta)}
+.pila{position:relative;aspect-ratio:1/1.02;max-width:520px;justify-self:end;width:100%}
+.panel-v{position:absolute;width:66%;aspect-ratio:3/4;border-left:10px solid var(--canto);background:#cfdde0;box-shadow:0 18px 40px -22px #17232B88;transition:transform .45s cubic-bezier(.2,.7,.2,1),z-index 0s .2s;overflow:hidden;cursor:pointer;border-radius:2px}
+.panel-v img,.panel-v .fb{width:100%;height:100%;object-fit:cover}
+.panel-v figcaption{position:absolute;left:0;right:0;bottom:0;padding:26px 14px 10px;color:#fff;font-size:13.5px;background:linear-gradient(transparent,#0d171ccc)}
+.panel-v figcaption b{display:block;font-size:15px}
+.panel-v:nth-child(1){left:0;top:12%;transform:rotate(-2deg)}
+.panel-v:nth-child(2){left:13%;top:6%;transform:rotate(1deg)}
+.panel-v:nth-child(3){left:26%;top:0;transform:rotate(3deg)}
+.panel-v.top{z-index:5}
+.panel-v:focus-visible{outline-offset:4px}
+.pila small{position:absolute;right:0;bottom:-6px;font-size:12px;color:var(--gris)}
+.hechos{display:grid;grid-template-columns:repeat(4,1fr);border-top:1.5px solid var(--tinta);margin-top:42px}
+.hechos div{padding:14px 18px 0 0;font-size:14px;color:var(--gris)}
+.hechos div+div{padding-left:18px;border-left:1px solid var(--linea)}
+.hechos b{display:block;color:var(--tinta);font-size:17px;font-weight:700;letter-spacing:-.01em}
+@media(max-width:900px){.portada .wrap{grid-template-columns:1fr;gap:28px}.pila{justify-self:start;max-width:420px}.hechos{grid-template-columns:1fr 1fr}.hechos div:nth-child(3){border-left:0;padding-left:0}.hechos div{padding-bottom:12px}}
+
+/* secciones */
+.s{padding:56px 0}
+.s h2{font-weight:800;font-size:clamp(27px,3vw,40px);letter-spacing:-.03em;line-height:1.08;margin:0 0 8px;max-width:22ch}
+.s .sub{font-family:var(--s);font-size:17.5px;color:#34434b;margin:0 0 26px;max-width:58ch}
+
+/* mesa */
+.mesa{background:var(--hoja);border:1px solid var(--linea);border-radius:6px;display:grid;grid-template-columns:330px 1fr 300px;min-height:560px}
+.ctrl{padding:22px;border-right:1px solid var(--linea);display:flex;flex-direction:column;gap:18px}
+.ctrl h4,.lupa h4{margin:0 0 8px;font-size:12.5px;font-weight:600;color:var(--gris);letter-spacing:.02em}
+.perf{display:grid;grid-template-columns:1fr 1fr;border:1.5px solid var(--tinta);border-radius:999px;overflow:hidden}
+.perf button{border:0;background:none;padding:9px;cursor:pointer;font-weight:600}
+.perf button[aria-pressed=true]{background:var(--tinta);color:var(--hoja)}
+.ops{display:flex;flex-wrap:wrap;gap:6px}
+.op{border:1px solid var(--linea);background:#fff;border-radius:4px;padding:6px 10px;cursor:pointer;font-size:13.5px;text-align:left;display:flex;flex-direction:column;line-height:1.2}
+.op .op-s{font-size:11px;color:var(--gris)}
+.op[aria-pressed=true]{border-color:var(--canto);background:var(--canto2);box-shadow:inset 0 0 0 1px var(--canto)}
+.op .sw{display:inline-block;width:14px;height:14px;border-radius:50%;border:1px solid #0003;margin-bottom:3px}
+#o-color .op{flex-direction:row;align-items:center;gap:6px}
+#o-color .op .sw{margin:0}
+#o-type .op{min-width:calc(50% - 3px)}
+.med{display:grid;grid-template-columns:1fr 1fr 70px;gap:8px}
+.med label{font-size:12px;color:var(--gris);display:flex;flex-direction:column;gap:4px}
+.med input[type=number]{width:100%;border:1px solid var(--linea);border-radius:4px;padding:7px 8px;background:#fff;font-size:15px;color:var(--tinta)}
+.med input[type=range]{width:100%;accent-color:var(--canto)}
+.chk{display:flex;gap:8px;align-items:center;font-size:14px;margin-top:10px;cursor:pointer}
+.chk input{accent-color:var(--canto);width:17px;height:17px}
+.lienzo{position:relative;display:flex;align-items:center;justify-content:center;padding:16px;background:
+  linear-gradient(var(--hoja),var(--hoja)) padding-box,
+  repeating-linear-gradient(90deg,transparent 0 23px,#e3eaec 23px 24px),repeating-linear-gradient(0deg,transparent 0 23px,#e3eaec 23px 24px)}
+.lienzo{background-color:var(--hoja);background-image:repeating-linear-gradient(90deg,transparent 0 23px,#E4EBED 23px 24px),repeating-linear-gradient(0deg,transparent 0 23px,#E4EBED 23px 24px)}
+#plano{width:100%;max-width:620px}
+#plano svg{width:100%;height:auto}
+.lienzo .tag{position:absolute;left:14px;top:12px;font-size:12px;color:var(--gris);background:var(--hoja);padding:2px 6px}
+.lupa{padding:22px;border-left:1px solid var(--linea);display:flex;flex-direction:column;gap:12px;background:#f1f6f5}
+#corte svg{width:100%;height:auto;display:block}
+.ben{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:13.5px}
+.ben li{display:flex;gap:8px;align-items:flex-start}
+.ben li i{flex:0 0 14px;height:14px;border-radius:50%;margin-top:3px;border:1.5px solid var(--canto)}
+.ben li.si i{background:var(--canto)}
+.ben li.no{color:var(--gris)}
+#o-glass{display:grid;gap:6px}
+#o-glass .op{flex-direction:row;align-items:center;gap:9px}
+#o-glass .op i{flex:0 0 10px;height:26px;border:1px solid #0002;border-radius:1px}
+#o-glass .op small{display:block;color:var(--gris);font-size:11px}
+.pie{grid-column:1/-1;border-top:1px solid var(--linea);display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 22px;flex-wrap:wrap}
+.pie .v{font-size:30px;font-weight:800;letter-spacing:-.02em;display:block;line-height:1}
+#desc{font-size:13.5px;color:var(--gris);margin-top:6px}
+.add{background:var(--ocre);color:#fff;border:0;border-radius:999px;padding:13px 22px;font-weight:700;cursor:pointer;font-size:15px}
+@media(max-width:1100px){.mesa{grid-template-columns:300px 1fr}.lupa{grid-column:1/-1;border-left:0;border-top:1px solid var(--linea);display:grid;grid-template-columns:1fr 1fr;gap:20px}}
+@media(max-width:760px){.mesa{grid-template-columns:1fr}.ctrl{border-right:0;border-bottom:1px solid var(--linea);order:2}.lienzo{order:1;min-height:260px}.lupa{order:3;grid-template-columns:1fr}.pie{order:4}}
+
+/* pedido */
+.pedido{display:grid;grid-template-columns:1fr 1fr 360px;gap:18px;margin-top:22px;align-items:start}
+.box{background:var(--hoja);border:1px solid var(--linea);border-radius:6px;padding:20px}
+.box h3{margin:0 0 12px;font-size:17px;font-weight:700}
+#items{list-style:none;margin:0 0 12px;padding:0}
+#items li{display:grid;grid-template-columns:60px 1fr 28px;gap:4px 10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--linea);font-size:13.5px}
+#items li .mini svg{width:60px;height:auto}
+#items li b{grid-column:2;font-size:14px}
+#items li button{grid-column:3;grid-row:1;border:0;background:none;font-size:20px;cursor:pointer;color:var(--gris)}
+#items li.vacio{display:block;color:var(--gris);font-family:var(--s);font-size:15px}
+.tt{display:flex;justify-content:space-between;align-items:flex-start;padding-top:8px;font-size:14px}
+.tt b{font-size:22px;text-align:right}
+.tt.s b{font-size:16px;color:var(--ocre)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.chips button{border:1px solid var(--linea);background:#fff;border-radius:999px;padding:6px 11px;font-size:13px;cursor:pointer}
+.chips button[aria-pressed=true]{background:var(--tinta);color:#fff;border-color:var(--tinta)}
+.box label.t{display:block;font-size:12.5px;color:var(--gris);margin:4px 0 6px}
+#fechas{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px}
+.dia{border:1px solid var(--linea);background:#fff;border-radius:4px;padding:6px 2px;cursor:pointer;display:flex;flex-direction:column;align-items:center;font-size:11.5px;color:var(--gris)}
+.dia b{font-size:18px;color:var(--tinta)}
+.dia[aria-pressed=true]{background:var(--canto);color:#fff;border-color:var(--canto)}.dia[aria-pressed=true] b{color:#fff}
+.dia:disabled{opacity:.45;cursor:not-allowed;text-decoration:line-through}
+.box input:not([type]),.box input[type=text]{width:100%;border:1px solid var(--linea);border-radius:4px;padding:9px 10px;margin-top:8px;background:#fff;font-size:15px}
+.tel{background:#EFEAE2;border-radius:14px;overflow:hidden;border:1px solid #d8d1c6}
+.tel .top{background:#075E54;color:#fff;display:flex;gap:10px;align-items:center;padding:10px 14px}
+.tel .top i{width:34px;height:34px;border-radius:50%;background:var(--canto2);color:var(--canto);display:grid;place-items:center;font-style:normal;font-weight:800}
+.tel .top small{display:block;font-size:11.5px;opacity:.85}
+.chat{padding:14px 12px;min-height:220px}
+#bubble{background:var(--wa);border-radius:10px 2px 10px 10px;padding:9px 11px 18px;font-size:14px;line-height:1.42;color:#111b21;margin-left:auto;max-width:96%;position:relative;box-shadow:0 1px 1px #0002;word-break:break-word;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+#bubble .hora{position:absolute;right:8px;bottom:3px;font-size:10.5px;color:#667781;display:flex;gap:3px;align-items:center}
+.wab{display:block;margin:0 12px 6px;background:#25D366;color:#0B141A;text-align:center;text-decoration:none;padding:12px;border-radius:999px;font-weight:700}
+.tel p{margin:0 12px 12px;font-size:12px;color:#54656f;text-align:center}
+@media(max-width:1100px){.pedido{grid-template-columns:1fr 1fr}.tel{grid-column:1/-1;max-width:520px}}
+@media(max-width:700px){.pedido{grid-template-columns:1fr}}
+
+/* obras */
+.obras{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px;margin-top:8px}
+.obras figure{flex:0 0 280px;margin:0;scroll-snap-align:start}
+.obras .ph{aspect-ratio:4/3;background:#cfdde0;border-left:6px solid var(--canto);overflow:hidden}
+.obras .ph img,.obras .ph .fb{width:100%;height:100%;object-fit:cover}
+.obras figcaption{padding:10px 0 0;font-size:14px}
+.obras figcaption b{display:block;font-size:15.5px}
+.obras figcaption span{color:var(--gris)}
+.obras button{margin-top:8px;border:0;background:none;padding:0;color:var(--canto);font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:3px;font-size:13.5px}
+
+/* sistemas */
+.sist{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1.5px solid var(--tinta)}
+.sist div{padding:16px 18px 6px 0}
+.sist div+div{padding-left:18px;border-left:1px solid var(--linea)}
+.sist h3{margin:0 0 8px;font-size:18px}
+.sist h3 small{display:block;font-size:12.5px;color:var(--gris);font-weight:500}
+.sist ul{margin:0;padding-left:18px;font-family:var(--s);font-size:15.5px}
+@media(max-width:900px){.sist{grid-template-columns:1fr 1fr}.sist div:nth-child(3){border-left:0;padding-left:0}}
+@media(max-width:520px){.sist{grid-template-columns:1fr}.sist div+div{border-left:0;padding-left:0;border-top:1px solid var(--linea)}}
+
+/* para vos */
+.vos{background:var(--tinta);color:var(--hoja)}
+.vos h2{color:#fff}
+.vos ul{list-style:none;margin:20px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.vos li{border-top:3px solid var(--canto);padding-top:12px;font-family:var(--s);font-size:15.5px;color:#cfd9dc}
+.vos li b{display:block;font-family:var(--d);color:#fff;font-size:16.5px;margin-bottom:4px}
+@media(max-width:900px){.vos ul{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.vos ul{grid-template-columns:1fr}}
+
+/* dueño */
+#ownerPanel{padding:30px 0 50px}
+.ow-h{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+.ow-h h2{margin:6px 0 0;font-size:34px;letter-spacing:-.03em}
+.tag{display:inline-block;background:var(--ocre);color:#fff;font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px}
+.ow{display:grid;grid-template-columns:1.1fr 1fr;gap:16px}
+.card{background:var(--hoja);border:1px solid var(--linea);border-radius:6px;padding:18px}
+.card h3{margin:0 0 12px;font-size:16px}
+.ob{background:var(--wa);border-radius:8px;padding:9px 11px;font-size:13.5px;margin-bottom:10px;line-height:1.42;font-family:system-ui,sans-serif}
+.ob.live{outline:2px dashed var(--canto)}
+.ob-h{display:flex;justify-content:space-between;font-size:12px;color:#54656f;margin-bottom:4px}
+.ob-h b{color:#111b21}
+.ag{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.ag-d b{display:block;font-size:12.5px;margin-bottom:4px;text-transform:capitalize}
+.ag-s{font-size:11.5px;padding:6px;border-radius:4px;margin-bottom:5px;line-height:1.25}
+.ag-s.oc{background:var(--canto);color:#fff}.ag-s.li{background:#eef3f2;color:var(--gris)}
+.os{list-style:none;margin:0;padding:0}
+.os li{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid var(--linea);font-size:14px}
+.os li b{text-align:right}
+.os-t{padding-top:10px;font-size:14px}
+.oa div{display:flex;justify-content:space-between;gap:10px;padding:8px 10px;font-size:14px;border-bottom:1px solid var(--linea)}
+.oa div b{text-align:right}
+.oa .hi{background:var(--canto2)}
+.ot{width:100%;border-collapse:collapse;font-size:14px;margin-bottom:14px}
+.ot th{text-align:left;font-size:12px;color:var(--gris);border-bottom:1px solid var(--linea);padding:6px 4px;font-weight:600}
+.ot td{padding:5px 4px;border-bottom:1px solid var(--linea)}
+.ot input{width:120px;border:1px solid var(--linea);border-radius:4px;padding:5px 7px;background:#fff}
+.ot-n{font-size:13px;color:var(--gris)}
+.ot-r{background:none;border:1.5px solid var(--tinta);border-radius:999px;padding:7px 13px;cursor:pointer;font-weight:600}
+.precios{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:start}
+@media(max-width:900px){.precios{grid-template-columns:1fr}.ot input{width:110px}}
+#oPrecios{display:contents}
+@media(max-width:900px){.ow{grid-template-columns:1fr}.ag{grid-template-columns:repeat(5,minmax(58px,1fr));overflow-x:auto}}
+
+footer{border-top:1px solid var(--linea);padding:24px 0 96px;font-size:13px;color:var(--gris)}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.mbar{display:none}
+@media(max-width:760px){.mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--hoja);border-top:1px solid var(--linea);padding:10px 16px;justify-content:space-between;align-items:center;gap:12px}
+.mbar b{font-size:18px}.mbar .pe{display:inline;margin-left:4px}.mbar a{background:#25D366;color:#0B141A;text-decoration:none;padding:10px 15px;border-radius:999px;font-weight:700;font-size:14px;white-space:nowrap}}
+body.dueno .mbar{display:none}
+.fb{display:flex;align-items:center;justify-content:center;background:#d5e2e4}
+.fb svg{width:60%;height:60%}
+</style>
+</head>
+<body>
+<div class="firma"><div class="wrap"><span>Prototipo preparado para <b>Castellani Aberturas y Vidrios</b> · 11 de noviembre de 2026</span><span>4,6 ★ en Google · 44 reseñas</span></div></div>
+<header><div class="wrap">
+  <a class="marca" href="#top"><b>Castellani</b><span>Aberturas y Vidrios</span></a>
+  <nav><a href="#mesa">Cotizar</a><a href="#obras">Obras</a><a href="#sistemas">Perfilería</a></nav>
+  <button class="bd" type="button" data-owner aria-pressed="false">Ver como dueño</button>
+</div></header>
+
+<main id="clientView">
+<section class="portada" id="top"><div class="wrap">
+  <div>
+    <h1>La planta que vidrió el Aeropuerto de Bariloche ahora te cotiza la ventana del living.</h1>
+    <p class="baj">Elegí perfilería de aluminio o PVC, la medida y el vidrio. Ves el plano, el corte del DVH y un precio estimado antes de escribir.</p>
+    <div class="cta"><a class="btn" href="#mesa">Armar mi presupuesto</a><a class="btn l" href="#obras">Ver obras</a></div>
+  </div>
+  <div class="pila" id="pila">
+    <figure class="panel-v" tabindex="0"><img src="https://i.imgur.com/1ZXipRv.jpg" alt="Usina Cultural, Salta" data-fb="a"><figcaption><b>Usina Cultural</b>Salta</figcaption></figure>
+    <figure class="panel-v" tabindex="0"><img src="https://i.imgur.com/3gPQfmo.jpg" alt="Torres Necochea, Salta" data-fb="b"><figcaption><b>Torres Necochea</b>Salta</figcaption></figure>
+    <figure class="panel-v top" tabindex="0"><img src="https://i.imgur.com/HDdPSR8.jpg" alt="Aeropuerto de Bariloche" data-fb="a"><figcaption><b>Aeropuerto</b>Bariloche</figcaption></figure>
+    <small>Obras publicadas por Castellani · tocá para pasar</small>
+  </div>
+  <div class="hechos" style="grid-column:1/-1">
+    <div><b>Parque Industrial</b>Fábrica y oficina en Av. Rodríguez Durañona 2457</div>
+    <div><b>Hydro y Aluar</b>HA 62, HA 110, Rotonda, Modena, A30 New</div>
+    <div><b>PVC Rehau</b>Euro Design y High Design</div>
+    <div><b>Vidrio VASA</b>Distribución y DVH Climanet</div>
+  </div>
+</div></section>
+
+<section class="s" id="mesa" style="padding-top:20px"><div class="wrap">
+  <h2>Armá la abertura y mirá el vidrio por dentro</h2>
+  <p class="sub">Los mismos datos que hoy piden en el formulario: perfilería, DVH, estado y urgencia de obra. Con plano y precio al instante.</p>
+  <div class="mesa">
+    <div class="ctrl">
+      <div><h4>Perfilería</h4><div class="perf" id="perf"><button type="button" class="op-perf" data-perf="al" aria-pressed="true">Aluminio</button><button type="button" class="op-perf" data-perf="pvc" aria-pressed="false">PVC</button></div></div>
+      <div><h4>Tipología</h4><div class="ops" id="o-type"></div></div>
+      <div id="o-line-wrap"><h4 id="o-line-title">Línea</h4><div class="ops" id="o-line"></div></div>
+      <div id="o-color-wrap"><h4>Color</h4><div class="ops" id="o-color"></div></div>
+      <div><h4>Medidas del vano</h4><div class="med">
+        <label>Ancho (cm)<input id="w" type="number" inputmode="numeric"><input id="w-r" type="range" aria-label="Ancho"></label>
+        <label>Alto (cm)<input id="h" type="number" inputmode="numeric"><input id="h-r" type="range" aria-label="Alto"></label>
+        <label>Cant.<input id="q" type="number" inputmode="numeric"></label></div>
+        <label class="chk"><input type="checkbox" id="inst"><span>Con colocación</span></label></div>
+    </div>
+    <div class="lienzo"><span class="tag" id="area"></span><div id="plano"></div></div>
+    <div class="lupa">
+      <div><h4>Vidrio</h4><div id="o-glass-wrap"><div id="o-glass"></div></div></div>
+      <div><h4>Corte del vidrio</h4><div id="corte"></div><ul class="ben" id="ben"></ul></div>
+    </div>
+    <div class="pie"><div><span class="v" id="unit"></span><div id="desc"></div></div><button class="add" type="button" id="add">Agregar al presupuesto</button></div>
+  </div>
+
+  <div class="pedido">
+    <div class="box"><h3>Tu presupuesto</h3><ul id="items"></ul>
+      <div class="tt"><span>Total estimado (<span data-count></span> u.)</span><b data-total></b></div>
+      <div class="tt s"><span>Seña para confirmar</span><b data-sena></b></div></div>
+    <div class="box"><h3>Tu obra</h3>
+      <label class="t">Estado de obra</label><div class="chips" data-grp="estado"><button type="button" data-v="En proyecto" aria-pressed="true">En proyecto</button><button type="button" data-v="En ejecución" aria-pressed="false">En ejecución</button><button type="button" data-v="Terminada" aria-pressed="false">Terminada</button></div>
+      <label class="t">Urgencia</label><div class="chips" data-grp="urg"><button type="button" data-v="Baja" aria-pressed="false">Baja</button><button type="button" data-v="Media" aria-pressed="true">Media</button><button type="button" data-v="Alta" aria-pressed="false">Alta</button></div>
+      <label class="t">Visita técnica</label><div id="fechas"></div>
+      <div class="chips"><button type="button" data-franja="mañana" aria-pressed="true">Mañana</button><button type="button" data-franja="tarde" aria-pressed="false">Tarde</button></div>
+      <input id="nombre" placeholder="Tu nombre" autocomplete="name" aria-label="Tu nombre"><input id="zona" placeholder="Barrio o localidad" aria-label="Barrio o localidad"></div>
+    <aside class="tel" aria-label="Mensaje que le llega a Castellani"><div class="top"><i>C</i><div>Castellani Aberturas<small>así le llega tu pedido</small></div></div><div class="chat"><div id="bubble"></div></div><a class="wab" id="wa" target="_blank" rel="noopener">Enviar por WhatsApp</a><p>Se abre WhatsApp con este mismo texto.</p></aside>
+  </div>
+</div></section>
+
+<section class="s" id="obras" style="padding-top:20px"><div class="wrap">
+  <h2>Obras de Castellani</h2>
+  <p class="sub">Las que publican en su web. Tocá “Quiero algo así” y el cotizador arranca con una abertura parecida.</p>
+  <div class="obras">
+    <figure><div class="ph"><img loading="lazy" src="https://i.imgur.com/HDdPSR8.jpg" alt="Aeropuerto de Bariloche" data-fb="a"></div><figcaption><b>Aeropuerto</b><span>Bariloche</span><br><button type="button" data-pre='{"type":"fijo","perf":"al","line":"ha110","glass":"dvh4124","w":240,"h":220}'>Quiero algo así</button></figcaption></figure>
+    <figure><div class="ph"><img loading="lazy" src="https://i.imgur.com/3gPQfmo.jpg" alt="Torres Necochea, Salta" data-fb="b"></div><figcaption><b>Torres Necochea</b><span>Salta</span><br><button type="button" data-pre='{"type":"balcon","perf":"al","line":"ha62","glass":"dvh494","w":220,"h":215}'>Quiero algo así</button></figcaption></figure>
+    <figure><div class="ph"><img loading="lazy" src="https://i.imgur.com/1ZXipRv.jpg" alt="Usina Cultural, Salta" data-fb="a"></div><figcaption><b>Usina Cultural</b><span>Salta</span><br><button type="button" data-pre='{"type":"fijo","perf":"al","line":"modena","glass":"lam33","w":200,"h":200}'>Quiero algo así</button></figcaption></figure>
+    <figure><div class="ph"><img loading="lazy" src="https://i.imgur.com/679mzHS.jpg" alt="Praderas del Bosque, Salta" data-fb="b"></div><figcaption><b>Praderas del Bosque</b><span>Salta</span><br><button type="button" data-pre='{"type":"corr","perf":"pvc","line":"euro","glass":"dvh4124","w":180,"h":150}'>Quiero algo así</button></figcaption></figure>
+    <figure><div class="ph"><img loading="lazy" src="https://i.imgur.com/coDzDuR.jpg" alt="El Punto, San Lorenzo Chico" data-fb="a"></div><figcaption><b>El Punto</b><span>San Lorenzo Chico</span><br><button type="button" data-pre='{"type":"corr","perf":"al","line":"rot700","glass":"dvh494","w":300,"h":220}'>Quiero algo así</button></figcaption></figure>
+    <figure><div class="ph"><img loading="lazy" src="https://i.imgur.com/R2YcIfv.jpg" alt="Alto NOA, Mooi" data-fb="b"></div><figcaption><b>Alto NOA · Mooi</b><span>Salta</span><br><button type="button" data-pre='{"type":"fijo","perf":"al","line":"a30","glass":"lam33","w":250,"h":240}'>Quiero algo así</button></figcaption></figure>
+    <figure><div class="ph"><img loading="lazy" src="https://i.imgur.com/Cf08v0E.jpg" alt="Casa particular, Salta" data-fb="a"></div><figcaption><b>Casa particular</b><span>Salta</span><br><button type="button" data-pre='{"type":"osc","perf":"pvc","line":"high","glass":"dvh4124","w":100,"h":120}'>Quiero algo así</button></figcaption></figure>
+    <figure><div class="ph"><img loading="lazy" src="https://i.imgur.com/mKaE7RH.jpg" alt="Benavidez, Buenos Aires" data-fb="b"></div><figcaption><b>Benavidez</b><span>Buenos Aires</span><br><button type="button" data-pre='{"type":"corr3","perf":"al","line":"rot640","glass":"dvh494","w":360,"h":220}'>Quiero algo así</button></figcaption></figure>
+  </div>
+</div></section>
+
+<section class="s" id="sistemas" style="padding-top:20px"><div class="wrap">
+  <h2>Perfilería y vidrio con los que trabajan</h2>
+  <div class="sist" style="margin-top:18px">
+    <div><h3>Línea Hydro<small>Aluminio</small></h3><ul><li>HA 110</li><li>HA 62</li><li>Rotonda 700 y 640</li><li>HA Baranda Balcón</li></ul></div>
+    <div><h3>Línea Aluar<small>Aluminio</small></h3><ul><li>Sistema Modena</li><li>Sistema A30 New</li></ul></div>
+    <div><h3>Línea Rehau<small>PVC multicámara</small></h3><ul><li>Euro Design</li><li>High Design</li><li>Cierre perimetral</li></ul></div>
+    <div><h3>Vidrio<small>VASA · DVH Climanet</small></h3><ul><li>Vidrio fabricado en el país</li><li>Cámara de aire y separador térmico</li><li>Esquinas continuas</li></ul></div>
+  </div>
+</div></section>
+</main>
+
+<section id="ownerPanel" hidden><div class="wrap">
+  <div class="ow-h"><div><span class="tag">Panel de ejemplo</span><h2>Tablero de Castellani</h2></div><button class="bd" type="button" data-owner aria-pressed="true">Volver a la vista del cliente</button></div>
+  <div class="ow">
+    <div class="card"><h3>Consultas que entraron</h3><div id="oConsultas"></div></div>
+    <div style="display:grid;gap:16px;align-content:start">
+      <div class="card"><h3>Visitas técnicas de la semana</h3><div id="oAgenda"></div></div>
+      <div class="card"><h3>Señas cobradas</h3><div id="oSenas"></div></div>
+      <div class="card"><h3>Frente a un intermediario</h3><div id="oAhorro"></div></div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px"><h3>Tabla de precios (la cambian ustedes)</h3><div class="precios"><div id="oPrecios"></div></div></div>
+</div></section>
+
+<section class="s vos"><div class="wrap">
+  <h2>Para vos, Castellani</h2>
+  <ul>
+    <li><b>Menos mensajes repetidos</b>El pedido llega con perfilería, línea, vidrio y medidas.</li>
+    <li><b>Visitas técnicas con cupos</b>El cliente elige entre los turnos que ustedes abren.</li>
+    <li><b>Seña antes de confirmar</b>Entra antes de cortar perfiles y pedir el DVH.</li>
+    <li><b>Sin comisión por presupuesto</b>Va directo a su WhatsApp, sin portales.</li>
+  </ul>
+</div></section>
+
+<footer><div class="wrap"><span>Prototipo de demostración preparado para Castellani Aberturas y Vidrios por Resolviendo Kos · No es la web oficial</span><span>Todos los precios son de ejemplo</span></div></footer>
+<div class="mbar"><div><small>Total estimado</small><br><b data-total></b></div><a data-wa target="_blank" rel="noopener">Pedir por WhatsApp</a></div>
+
+<script>
+window.CONFIG = {
+  key:"castellani_precios_v1", saludo:"Castellani", wa:"5493874892669", ink:"#17232B", cota:"#3F8572",
+  minM2:1, instPct:12, senaPct:30, visita:"Visita técnica", perfState:true,
+  types:[
+    {id:"corr",name:"Ventana corrediza",kind:"corr",m2:250000,mat:"al",w:150,h:110},
+    {id:"corr3",name:"Corrediza 3 hojas",kind:"corr3",m2:265000,mat:"al",w:240,h:200},
+    {id:"abrir",name:"Ventana de abrir",kind:"abrir",m2:290000,mat:"al",w:80,h:110},
+    {id:"osc",name:"Oscilobatiente",kind:"osc",m2:320000,mat:"al",w:90,h:120},
+    {id:"banderola",name:"Banderola",kind:"banderola",m2:240000,mat:"al",w:80,h:50},
+    {id:"fijo",name:"Paño fijo",kind:"fijo",m2:180000,mat:"al",w:150,h:120},
+    {id:"balcon",name:"Puerta balcón",kind:"balcon",m2:285000,mat:"al",w:200,h:210},
+    {id:"puerta",name:"Puerta",kind:"puerta",m2:340000,mat:"al",w:90,h:205}
+  ],
+  fmtType:o=>`<span class="op-n">${o.name}</span>`,
+  lines:[
+    {id:"a30",name:"A30 New",note:"Aluar",f:1,mat:"al"},
+    {id:"modena",name:"Modena",note:"Aluar",f:1.18,mat:"al"},
+    {id:"rot640",name:"Rotonda 640",note:"Hydro",f:1.22,mat:"al"},
+    {id:"rot700",name:"Rotonda 700",note:"Hydro",f:1.34,mat:"al"},
+    {id:"ha62",name:"HA 62",note:"Hydro",f:1.4,mat:"al"},
+    {id:"ha110",name:"HA 110",note:"Hydro",f:1.62,mat:"al"},
+    {id:"euro",name:"Euro Design",note:"Rehau",f:1.55,mat:"pvc"},
+    {id:"high",name:"High Design",note:"Rehau",f:1.78,mat:"pvc"}
+  ],
+  lineTitle:{al:"Línea de aluminio",pvc:"Línea de PVC",_:"Línea"},
+  glass:[
+    {id:"float4",name:"Simple 4 mm",short:"vidrio simple 4 mm",note:"sin cámara",m2:0,tint:"#E2EFEF",L:[{t:4}],cam:0},
+    {id:"lam33",name:"Laminado 3+3",short:"laminado 3+3",note:"de seguridad",m2:46000,tint:"#D7E8E6",L:[{t:3,lam:true},{t:3}],cam:0,lam:true},
+    {id:"dvh494",name:"DVH 4/9/4",short:"DVH 4/9/4",note:"Climanet · cámara 9 mm",m2:62000,dvh:true,tint:"#CDE3DF",L:[{t:4}],cam:9,R:[{t:4}]},
+    {id:"dvh4124",name:"DVH 4/12/4",short:"DVH 4/12/4",note:"Climanet · cámara 12 mm",m2:70000,dvh:true,tint:"#C6DEDA",L:[{t:4}],cam:12,R:[{t:4}]},
+    {id:"dvhlam",name:"DVH 3+3/12/4",short:"DVH laminado 3+3/12/4",note:"Climanet · cara laminada",m2:98000,dvh:true,lam:true,tint:"#BFD9D4",L:[{t:3,lam:true},{t:3}],cam:12,R:[{t:4}]}
+  ],
+  fmtGlass:o=>`<i style="background:${o.tint}"></i><span><span class="op-n">${o.name}</span><small>${o.note}</small></span>`,
+  colors:[
+    {id:"blanco",name:"Blanco",hex:"#F1F2F0"},
+    {id:"negro",name:"Negro",hex:"#2A2D30",f:1.06,mat:["al","pvc"]},
+    {id:"natural",name:"Natural",hex:"#BFC5C9",f:1.03,mat:["al"]},
+    {id:"bronce",name:"Bronce",hex:"#6B5944",f:1.06,mat:["al"]},
+    {id:"madera",name:"Foliado símil madera",hex:"#8A5A36",wood:true,f:1.12,mat:["pvc"]}
+  ],
+  start:{type:"corr",perf:"al",line:"modena",glass:"dvh494",color:"negro",w:150,h:110},
+  busy:i=>i===2||i===5,
+  extraLines:(S,F)=>[`Perfilería: ${S.perf==="pvc"?"PVC":"Aluminio"} · Obra ${(F.estado||"En proyecto").toLowerCase()} · Urgencia ${(F.urg||"Media").toLowerCase()}`],
+  onRender:(S)=>{
+    document.querySelectorAll("[data-perf]").forEach(b=>b.setAttribute("aria-pressed", b.dataset.perf===S.perf));
+    const g = CONFIG.glass.find(x=>x.id===S.glass); if(!g) return;
+    document.getElementById("corte").innerHTML = corte(g);
+    const B = [["Aislamiento térmico",!!g.dvh],["Aislamiento acústico",!!g.dvh],["Reducción de humedad",!!g.dvh],["Mayor resistencia",!!(g.dvh||g.lam)]];
+    document.getElementById("ben").innerHTML = B.map(([n,on])=>`<li class="${on?"si":"no"}"><i></i>${n}</li>`).join("") + (g.lam?`<li class="si"><i></i>Cara laminada: más segura ante roturas</li>`:"");
+  },
+  owner:{
+    consultas:[
+      {n:"Consulta de ejemplo · Tres Cerritos",t:"08:12",m:"2 × Ventana corrediza 150 × 110 cm · Modena · DVH 4/9/4 · Negro · con colocación\nPerfilería: Aluminio · Obra en ejecución · Urgencia alta\nVisita técnica: jueves por la mañana"},
+      {n:"Consulta de ejemplo · San Lorenzo",t:"ayer 20:40",m:"1 × Oscilobatiente 90 × 120 cm · High Design · DVH 4/12/4 · Foliado símil madera\nPerfilería: PVC · Obra en proyecto · Urgencia baja"},
+      {n:"Consulta de ejemplo · Grand Bourg",t:"ayer 10:05",m:"1 × Paño fijo 240 × 220 cm · HA 110 · DVH 3+3/12/4 · Natural\nPerfilería: Aluminio · Obra terminada · Urgencia media"}
+    ],
+    agenda:[["Tres Cerritos · 2 corredizas",""],["","San Lorenzo · PVC"],["",""],["Grand Bourg · paño fijo",""],["","Castañares · balcón"]],
+    senas:[{n:"2 corredizas Modena DVH · Tres Cerritos",v:540000},{n:"Oscilobatiente Rehau · San Lorenzo",v:310000},{n:"Paño fijo HA 110 · Grand Bourg",v:720000}],
+    vendido:12800000, comision:10
+  },
+  fallback:k => `<svg viewBox="0 0 100 80" aria-hidden="true"><rect x="8" y="8" width="84" height="64" fill="none" stroke="#3F8572" stroke-width="1.5"/><path d="M50 8v64" stroke="#3F8572" stroke-width="1.2"/>${k==="b"?'<path d="M8 40h84" stroke="#3F8572" stroke-width="1"/>':''}<path d="M16 64 44 16M58 64 84 22" stroke="#B97A22" stroke-width="1" opacity=".7"/></svg>`
+};
+
+/* corte transversal del vidrio (lupa) */
+function corte(g){
+  const k = 9, H = 230, top = 34, x0 = 50; let x = x0, s = "", lab = [];
+  const pane = (t,lam) => { const w = t*k; s += `<rect x="${x}" y="${top}" width="${w}" height="${H}" fill="#CFE6E1" stroke="#3F8572" stroke-width="1.2"/><rect x="${x+1.5}" y="${top}" width="2" height="${H}" fill="#fff" opacity=".7"/>`; x += w; if(lam){ s += `<rect x="${x}" y="${top}" width="4" height="${H}" fill="#B97A22" opacity=".85"/>`; x += 4; } };
+  const L0 = x; g.L.forEach((p,i)=>pane(p.t, p.lam && i===0));
+  lab.push([L0 + (x-L0)/2, top+H*0.62, g.lam ? "Vidrio laminado" : "Vidrio a elección"]);
+  if(g.cam){
+    const cw = g.cam*k*1.1, cx = x;
+    s += `<rect x="${cx}" y="${top+16}" width="${cw}" height="${H-32}" fill="#F3F8F7"/>`;
+    [top, top+H-18].forEach(yy=>{ s += `<rect x="${cx}" y="${yy}" width="${cw}" height="18" fill="#8C959C" stroke="#5C6870"/><g fill="#fff" opacity=".8">${[0.2,0.4,0.6,0.8].map(f=>`<circle cx="${cx+cw*f}" cy="${yy+9}" r="1.6"/>`).join("")}</g>`; });
+    s += `<text x="${cx+cw/2}" y="${top+H/2}" text-anchor="middle" font-size="15" fill="#5C6870" transform="rotate(-90 ${cx+cw/2} ${top+H/2})">${g.cam} mm de aire</text>`;
+    lab.push([cx+cw/2, top+9, "Separador térmico"]);
+    lab.push([cx+cw/2, top+H/2-48, "Cámara de aire"]);
+    x += cw; const R0 = x; g.R.forEach(p=>pane(p.t,false));
+    s += `<rect x="${L0}" y="${top+H}" width="${x-L0}" height="8" fill="#17232B"/>`;
+    lab.push([L0+(x-L0)/2, top+H+4, "Sellado perimetral"]);
+  }
+  const W = Math.max(x + 190, 300);
+  const lx = x + 22;
+  const used = [];
+  lab.forEach(([px,py,t],i)=>{ let ly = py; used.forEach(u=>{ if(Math.abs(u-ly)<26) ly = u+28; }); used.push(ly);
+    s += `<path d="M${px} ${py}L${lx-6} ${ly}" stroke="#17232B" stroke-width=".8" fill="none"/><circle cx="${px}" cy="${py}" r="2.2" fill="#17232B"/><text x="${lx}" y="${ly+4}" font-size="18" fill="#17232B">${t}</text>`; });
+  s += `<text x="${x0}" y="20" font-size="15" fill="#5C6870">Interior</text><text x="${x}" y="20" font-size="15" fill="#5C6870" text-anchor="end">Exterior</text>`;
+  return `<svg viewBox="0 0 ${W} ${top+H+22}" role="img" aria-label="Corte de ${g.name}">${s}</svg>`;
+}
+
+/* pila de obras de la portada */
+document.querySelectorAll(".panel-v").forEach(f=>{ const go=()=>{ document.querySelectorAll(".panel-v").forEach(x=>x.classList.remove("top")); f.classList.add("top"); }; f.addEventListener("click",go); f.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); go(); } }); });
+</script>
+<script>
+/* ===== Motor del cotizador (prototipo Resolviendo Kos) ===== */
+(function(){
+const C = window.CONFIG;
+const $ = id => document.getElementById(id);
+const ars = n => "$" + Math.round(n).toLocaleString("es-AR");
+const rnd = n => Math.round(n/1000)*1000;
+const byId = (a,id) => a.find(x=>x.id===id);
+const PE = '<small class="pe">Precio de ejemplo</small>';
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* ---- precios editables ---- */
+function defaults(){ return {m2:Object.fromEntries(C.types.map(t=>[t.id,t.m2])), f:Object.fromEntries(C.lines.map(l=>[l.id,l.f])), inst:C.instPct, sena:C.senaPct}; }
+let P = defaults();
+try{ const s = localStorage.getItem(C.key); if(s){ const o = JSON.parse(s); P = {m2:Object.assign(P.m2,o.m2||{}), f:Object.assign(P.f,o.f||{}), inst:o.inst??P.inst, sena:o.sena??P.sena}; } }catch(e){}
+function saveP(){ try{ localStorage.setItem(C.key, JSON.stringify(P)); }catch(e){} }
+
+/* ---- estado ---- */
+const S = Object.assign({type:C.types[0].id, line:null, glass:C.glass[0].id, color:C.colors[0].id, w:150, h:110, q:1, extras:{}, inst:true}, C.start||{});
+const F = {fecha:null, franja:"mañana", nombre:"", zona:""};
+const items = [];
+window.COT = {S, F, items, msg:()=>msg(), refresh:()=>all(), setType, set:(k,v)=>{S[k]=v; all();}, prefill};
+
+function T(){ return byId(C.types, S.type); }
+function matOf(t){ return C.perfState ? (S.perf||t.mat) : t.mat; }
+function linesFor(t){ const m=matOf(t); return C.lines.filter(l => !l.mat || l.mat===m); }
+function colorsFor(t){ const m=matOf(t); return C.colors.filter(c => !c.mat || c.mat.includes(m)); }
+function extrasFor(t){ return (C.extras||[]).filter(x => !x.mat || x.mat.includes(t.mat)); }
+function fixSel(){
+  const t = T();
+  const ls = linesFor(t); if(!ls.find(l=>l.id===S.line)) S.line = ls.length? ls[0].id : null;
+  const cs = colorsFor(t); if(!cs.find(c=>c.id===S.color)) S.color = cs.length? cs[0].id : null;
+  if(t.noGlass) S.glass = null; else if(!S.glass || !byId(C.glass,S.glass)) S.glass = C.glass[0].id;
+  for(const k in S.extras){ if(!extrasFor(t).find(x=>x.id===k)) delete S.extras[k]; }
+}
+function setType(id){
+  S.type = id; const t = T();
+  if(t.w) S.w = t.w; if(t.h) S.h = t.h;
+  fixSel(); all();
+}
+function prefill(o){ Object.assign(S, o); if(o.type){ const t=T(); } fixSel(); all(); }
+
+/* ---- cálculo ---- */
+function price(st){
+  const t = byId(C.types, st.type);
+  const area = Math.max((st.w/100)*(st.h/100), C.minM2||1);
+  let u = area * (P.m2[t.id]||t.m2) * (st.line ? (P.f[st.line]||1) : 1);
+  const g = st.glass && byId(C.glass, st.glass); if(g && !t.noGlass) u += area * (g.m2||0);
+  const c = st.color && byId(C.colors, st.color); if(c) u *= (c.f||1);
+  for(const k in st.extras){ if(!st.extras[k]) continue; const x = byId(C.extras||[], k); if(!x) continue; u += x.fixed ? x.fixed : area*(x.m2||0); }
+  if(st.inst) u *= 1 + (P.inst/100);
+  return rnd(u) * st.q;
+}
+function desc(st){
+  const t = byId(C.types, st.type);
+  const p = [`${st.q} × ${t.name} ${st.w} × ${st.h} cm`];
+  const l = st.line && byId(C.lines, st.line); if(l) p.push(l.short||l.name);
+  const g = st.glass && byId(C.glass, st.glass); if(g && !t.noGlass) p.push(g.short||g.name);
+  const c = st.color && byId(C.colors, st.color); if(c) p.push(c.name);
+  for(const k in st.extras){ if(st.extras[k]){ const x = byId(C.extras||[],k); if(x) p.push("+ " + x.name); } }
+  if(st.inst) p.push("con colocación");
+  return p.join(" · ");
+}
+function totals(){
+  const list = items.length ? items : [Object.assign({}, S, {extras:{...S.extras}})];
+  const total = list.reduce((a,i)=>a+price(i),0);
+  return {list, total, sena: rnd(total*P.sena/100)};
+}
+
+/* ---- dibujo ---- */
+function shade(hex, k){ const n = parseInt(hex.slice(1),16); let r=n>>16,g=(n>>8)&255,b=n&255; r=Math.max(0,Math.min(255,Math.round(r*k))); g=Math.max(0,Math.min(255,Math.round(g*k))); b=Math.max(0,Math.min(255,Math.round(b*k))); return "#"+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1); }
+function draw(st, o={}){
+  const VW=o.vw||600, VH=o.vh||440, mini=!!o.mini, uid=o.uid||"m";
+  const t = byId(C.types, st.type);
+  const col = (st.color && byId(C.colors, st.color)) || {hex:"#cfd3d6"};
+  const g = st.glass && byId(C.glass, st.glass);
+  const tint = (g && g.tint) || C.glassTint || "#cfe6ee";
+  const pad = mini?6:74;
+  const sc = Math.min((VW-pad*2)/st.w, (VH-pad*2)/st.h);
+  const W = st.w*sc, H = st.h*sc, x=(VW-W)/2+(mini?0:12), y=(VH-H)/2-(mini?0:10);
+  const fr = mini?3:Math.max(7,Math.min(15,W*.032)), sw = mini?.8:1.4;
+  const stroke = shade(col.hex, .62), ink = C.ink || "#1c1c1c";
+  const frame = col.wood ? `url(#wd${uid})` : col.hex;
+  let s = `<defs>
+   <pattern id="wd${uid}" width="26" height="8" patternUnits="userSpaceOnUse"><rect width="26" height="8" fill="${col.hex}"/><path d="M0 3Q7 1 13 3T26 3M0 6Q8 5 14 7T26 6" stroke="${shade(col.hex,.75)}" stroke-width=".9" fill="none"/></pattern>
+   <linearGradient id="gl${uid}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".6"/><stop offset=".4" stop-color="#fff" stop-opacity="0"/><stop offset=".75" stop-color="#fff" stop-opacity=".12"/></linearGradient>
+   <pattern id="mq${uid}" width="5" height="5" patternUnits="userSpaceOnUse"><path d="M0 0H5M0 0V5" stroke="#334" stroke-width=".5" opacity=".4"/></pattern>
+   <pattern id="ch${uid}" width="10" height="10" patternUnits="userSpaceOnUse"><rect width="10" height="10" fill="${col.hex}"/><path d="M0 5H10" stroke="${stroke}" stroke-width=".8" opacity=".6"/></pattern>
+  </defs>`;
+  const R = (a,b,c,d,f,st2=stroke,w=sw) => `<rect x="${a}" y="${b}" width="${Math.max(0,c)}" height="${Math.max(0,d)}" fill="${f}" stroke="${st2}" stroke-width="${w}"/>`;
+  const pane = (a,b,c,d,opt={}) => {
+    let z = R(a,b,c,d,tint,stroke,sw*.8) + `<rect x="${a}" y="${b}" width="${Math.max(0,c)}" height="${Math.max(0,d)}" fill="url(#gl${uid})"/>`;
+    if(g && g.dvh && !mini) z += `<rect x="${a+4}" y="${b+4}" width="${Math.max(0,c-8)}" height="${Math.max(0,d-8)}" fill="none" stroke="#fff" stroke-opacity=".75"/>`;
+    if(g && g.mirror && !mini) z += `<path d="M${a+c*.2} ${b+d*.8}L${a+c*.5} ${b+d*.2}M${a+c*.35} ${b+d*.85}L${a+c*.62} ${b+d*.3}" stroke="#fff" stroke-opacity=".7" stroke-width="2"/>`;
+    if(opt.mq) z += `<rect x="${a}" y="${b}" width="${Math.max(0,c)}" height="${Math.max(0,d)}" fill="url(#mq${uid})"/>`;
+    return z;
+  };
+  const dash = pts => `<polyline points="${pts}" fill="none" stroke="${ink}" stroke-width="${mini?.7:1.2}" stroke-dasharray="${mini?'2 2':'6 5'}" opacity=".7"/>`;
+  const handle = (hx,hy) => mini?"":`<rect x="${hx-2}" y="${hy-12}" width="4" height="24" rx="2" fill="${ink}" opacity=".8"/>`;
+  const arrow = (ax,ay,dir) => mini?"":`<path d="M${ax-20*dir} ${ay}H${ax+20*dir}M${ax+12*dir} ${ay-6}L${ax+20*dir} ${ay}L${ax+12*dir} ${ay+6}" stroke="${ink}" stroke-width="1.5" fill="none" opacity=".75"/>`;
+  const mq = !!(st.extras && st.extras.mosq);
+  const k = t.kind;
+  const solid = (k==="porton" || t.mat==="metal" || t.mat==="madera");
+
+  if(k==="baranda"){
+    const top = y, bot = y+H, n = Math.max(2, Math.round(st.w/120));
+    s += R(x, top, W, fr*.9, frame);
+    s += R(x, bot-fr*.6, W, fr*.6, frame);
+    for(let i=0;i<=n;i++){ const px = x + (W-fr*.8)*i/n; s += R(px, top, fr*.8, H, frame); }
+    for(let i=0;i<n;i++){ const px = x + (W-fr*.8)*i/n + fr*.8 + 3; const pw = (W-fr*.8)/n - fr*.8 - 6; s += pane(px, top+fr*1.4, pw, H-fr*2.6); }
+  } else {
+    s += R(x,y,W,H,frame,stroke,sw);
+    const ix=x+fr, iy=y+fr, iW=W-fr*2, iH=H-fr*2, s1=fr*.6;
+    const leaf = (a,b,c,d,opt={}) => {
+      let z = R(a,b,c,d,frame,stroke,sw*.8);
+      if(opt.solid){ z += R(a+s1*2,b+s1*2,c-s1*4,d-s1*4, t.mat==="madera"?`url(#wd${uid})`:`url(#ch${uid})`, stroke, sw*.6); if(!mini && t.mat==="madera") z += R(a+c*.18,b+d*.12,c*.64,d*.3,"none",stroke,sw*.6)+R(a+c*.18,b+d*.56,c*.64,d*.3,"none",stroke,sw*.6); }
+      else z += pane(a+s1,b+s1,c-s1*2,d-s1*2,opt);
+      return z;
+    };
+    if(k==="corr" || k==="corr3" || k==="balcon"){
+      const n = k==="corr3"?3:2, ov = mini?1:6, hw = iW/n;
+      for(let i=0;i<n;i++){ s += leaf(ix+hw*i-(i?ov:0), iy, hw+ov, iH, {mq: mq && i===n-1}); }
+      const ay = iy+iH/2;
+      s += arrow(ix+hw*.5, ay, 1) + arrow(ix+hw*(n-.5), ay, -1);
+      s += handle(ix+hw-ov-4, ay);
+      if(k==="balcon" && !mini) s += `<rect x="${ix}" y="${iy+iH*.64}" width="${iW}" height="3" fill="${stroke}" opacity=".35"/>`;
+    } else if(k==="abrir" || k==="osc" || k==="abrir2" || k==="puerta" || k==="puerta2"){
+      const n = (k==="abrir2"||k==="puerta2"||(k==="abrir" && st.w>=120)) ? 2 : 1, pw = iW/n;
+      for(let i=0;i<n;i++){
+        const px = ix+pw*i, left = (n===1)||i===0;
+        if(k==="puerta"||k==="puerta2"){
+          if(solid){ s += leaf(px,iy,pw,iH,{solid:true}); }
+          else { const gh = iH*.56; s += R(px,iy,pw,iH,frame,stroke,sw*.8) + pane(px+s1*2,iy+s1*2,pw-s1*4,gh-s1*2) + R(px+s1*2,iy+gh+s1,pw-s1*4,iH-gh-s1*3,"none",stroke,sw*.7); }
+        } else s += leaf(px,iy,pw,iH,{mq: mq && i===n-1});
+        s += left ? dash(`${px+pw-s1},${iy+s1} ${px+s1},${iy+iH/2} ${px+pw-s1},${iy+iH-s1}`) : dash(`${px+s1},${iy+s1} ${px+pw-s1},${iy+iH/2} ${px+s1},${iy+iH-s1}`);
+        if(k==="osc") s += dash(`${px+s1},${iy+s1} ${px+pw/2},${iy+iH-s1} ${px+pw-s1},${iy+s1}`);
+        s += handle(left ? px+pw-s1-7 : px+s1+7, iy+iH*(k.startsWith("puerta")?.52:.5));
+      }
+    } else if(k==="banderola" || k==="ventiluz" || k==="desplazable"){
+      s += leaf(ix,iy,iW,iH,{mq});
+      if(k==="banderola") s += dash(`${ix+s1},${iy+s1} ${ix+iW/2},${iy+iH-s1} ${ix+iW-s1},${iy+s1}`);
+      else s += dash(`${ix+s1},${iy+iH-s1} ${ix+iW/2},${iy+s1} ${ix+iW-s1},${iy+iH-s1}`);
+    } else if(k==="plegadiza"){
+      const n = Math.max(3, Math.min(7, Math.round(st.w/70))), pw = iW/n;
+      for(let i=0;i<n;i++){ s += leaf(ix+pw*i, iy, pw, iH); if(!mini) s += `<path d="M${ix+pw*i+(i%2?pw:0)} ${iy+iH+fr+6}l${i%2?-pw:pw} 10" stroke="${ink}" stroke-width="1" opacity=".5" fill="none"/>`; }
+    } else if(k==="mampara"){
+      const hw = iW/2;
+      s += pane(ix,iy,hw+4,iH) + pane(ix+hw-4,iy,hw+4,iH);
+      s += arrow(ix+hw*.5, iy+iH/2, 1);
+      if(!mini) s += `<rect x="${ix+hw-10}" y="${iy+iH*.45}" width="4" height="${iH*.12}" rx="2" fill="${ink}" opacity=".7"/>`;
+    } else if(k==="porton"){
+      const n = Math.max(6, Math.round(st.w/16));
+      for(let i=0;i<n;i++){ const px = ix + iW*i/n; s += R(px+iW/n*.3, iy, iW/n*.4, iH, frame, stroke, sw*.6); }
+      s += R(ix, iy+iH*.2, iW, fr*.7, frame) + R(ix, iy+iH*.75, iW, fr*.7, frame);
+      s += arrow(ix+iW/2, iy+iH/2, 1);
+    } else if(k==="frente"){
+      const n = Math.max(2, Math.round(st.w/110)), pw = iW/n, dh = Math.min(iH*.85, 210*sc);
+      for(let i=0;i<n;i++){ s += pane(ix+pw*i+2, iy, pw-4, iH); }
+      const dx = ix+iW/2-Math.min(pw,90*sc)/2, dw = Math.min(pw,90*sc);
+      s += R(dx, iy+iH-dh, dw, dh, "none", stroke, sw*1.4);
+      if(!mini) s += `<rect x="${dx+dw-12}" y="${iy+iH-dh/2-14}" width="4" height="28" rx="2" fill="${ink}" opacity=".7"/>`;
+    } else { // fijo
+      s += pane(ix,iy,iW,iH);
+      if(!mini) s += `<text x="${ix+iW/2}" y="${iy+iH/2+5}" text-anchor="middle" font-size="15" fill="${ink}" opacity=".5">F</text>`;
+    }
+    const rx = st.extras && (C.extras||[]).find(x=>x.roller && st.extras[x.id]);
+    if(rx){
+      const bh = mini?4:Math.max(14, H*.07);
+      s += R(x-3, y-bh, W+6, bh, C.rollerBox||"#e9e4da", stroke, sw);
+      const down = H*.42;
+      s += `<rect x="${x+fr}" y="${y}" width="${W-fr*2}" height="${down}" fill="${rx.fabric||'#d9cfbf'}" opacity="${rx.op||.9}"/>`;
+      if(!mini) s += `<rect x="${x+fr}" y="${y+down-5}" width="${W-fr*2}" height="5" fill="${stroke}"/>`;
+    }
+  }
+  if(!mini){
+    const c = C.cota || ink, yb = y+H+28, xl = x-28;
+    s += `<g stroke="${c}" stroke-width="1" fill="${c}" font-size="14" font-weight="600" style="font-family:var(--cotaf,inherit)">
+      <line x1="${x}" y1="${y+H+6}" x2="${x}" y2="${yb+6}"/><line x1="${x+W}" y1="${y+H+6}" x2="${x+W}" y2="${yb+6}"/>
+      <line x1="${x}" y1="${yb}" x2="${x+W}" y2="${yb}"/>
+      <path d="M${x} ${yb}l8 -4v8zM${x+W} ${yb}l-8 -4v8z" stroke="none"/>
+      <text x="${x+W/2}" y="${yb+20}" text-anchor="middle" stroke="none">${st.w} cm</text>
+      <line x1="${x-6}" y1="${y}" x2="${xl-6}" y2="${y}"/><line x1="${x-6}" y1="${y+H}" x2="${xl-6}" y2="${y+H}"/>
+      <line x1="${xl}" y1="${y}" x2="${xl}" y2="${y+H}"/>
+      <path d="M${xl} ${y}l-4 8h8zM${xl} ${y+H}l-4 -8h8z" stroke="none"/>
+      <text x="${xl-10}" y="${y+H/2}" text-anchor="middle" stroke="none" transform="rotate(-90 ${xl-10} ${y+H/2})">${st.h} cm</text></g>`;
+  }
+  return `<svg viewBox="0 0 ${VW} ${VH}" role="img" aria-label="Plano de ${esc(t.name)} de ${st.w} por ${st.h} centímetros" xmlns="http://www.w3.org/2000/svg">${s}</svg>`;
+}
+window.COT.draw = draw;
+
+/* ---- opciones ---- */
+function opts(el, arr, cur, key, fmt){
+  if(!el) return;
+  el.innerHTML = arr.map(o => `<button type="button" class="op" data-k="${key}" data-v="${o.id}" aria-pressed="${o.id===cur}">${fmt?fmt(o):`<span class="op-n">${esc(o.name)}</span>${o.note?`<span class="op-s">${esc(o.note)}</span>`:""}`}</button>`).join("");
+}
+function renderOpts(){
+  const t = T();
+  opts($("o-type"), C.types, S.type, "type", C.fmtType);
+  opts($("o-line"), linesFor(t), S.line, "line", C.fmtLine);
+  const gw = $("o-glass-wrap"); if(gw) gw.hidden = !!t.noGlass;
+  opts($("o-glass"), C.glass, S.glass, "glass", C.fmtGlass);
+  opts($("o-color"), colorsFor(t), S.color, "color", o => `<i class="sw" style="background:${o.wood?`repeating-linear-gradient(100deg,${o.hex} 0 5px,${shade(o.hex,.82)} 5px 7px)`:o.hex}"></i><span class="op-n">${esc(o.name)}</span>`);
+  const cw = $("o-color-wrap"); if(cw) cw.hidden = !colorsFor(t).length;
+  const ex = $("o-extras");
+  if(ex){ const xs = extrasFor(t); ex.innerHTML = xs.map(x=>`<label class="chk"><input type="checkbox" data-x="${x.id}" ${S.extras[x.id]?"checked":""}><span>${esc(x.name)}</span></label>`).join(""); const xw=$("o-extras-wrap"); if(xw) xw.hidden = !xs.length; }
+  const lw = $("o-line-wrap"); if(lw) lw.hidden = !linesFor(t).length;
+  const lt = $("o-line-title"); if(lt) lt.textContent = (C.lineTitle && C.lineTitle[matOf(t)]) || (C.lineTitle && C.lineTitle._) || "Línea";
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest(".op[data-k]"); if(!b) return;
+  const k = b.dataset.k, v = b.dataset.v;
+  if(k==="type") setType(v); else { S[k]=v; if(k==="perf") fixSel(); all(); }
+});
+document.addEventListener("change", e => {
+  const x = e.target.closest("input[data-x]"); if(x){ S.extras[x.dataset.x] = x.checked; all(); }
+});
+
+/* ---- medidas ---- */
+function bindNum(id, key, min, max){
+  const n = $(id), r = $(id+"-r");
+  const set = v => { v = Math.round(+v); if(isNaN(v)) return; S[key] = Math.max(min, Math.min(max, v)); all(true); };
+  if(n){ n.min=min; n.max=max; n.addEventListener("input", ()=>{ if(n.value!=="" && +n.value>=min) set(n.value); }); n.addEventListener("change", ()=>{ set(n.value||min); }); }
+  if(r){ r.min=min; r.max=max; r.addEventListener("input", ()=>set(r.value)); }
+}
+bindNum("w","w",30,C.maxW||600); bindNum("h","h",30,C.maxH||300); bindNum("q","q",1,40);
+const ins = $("inst"); if(ins) ins.addEventListener("change", ()=>{ S.inst = ins.checked; all(); });
+
+/* ---- pedido ---- */
+const addB = $("add"); if(addB) addB.addEventListener("click", ()=>{ items.push(Object.assign({}, S, {extras:{...S.extras}})); all(); if(C.onAdd) C.onAdd(); });
+document.addEventListener("click", e => { const d = e.target.closest("[data-del]"); if(d){ items.splice(+d.dataset.del,1); all(); } });
+
+/* ---- fechas ---- */
+const DIAS = ["domingo","lunes","martes","miércoles","jueves","viernes","sábado"], MES = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+function nextDays(n){ const out=[]; const d=new Date(); d.setHours(12); while(out.length<n){ d.setDate(d.getDate()+1); if(d.getDay()>0 && d.getDay()<6) out.push(new Date(d)); } return out; }
+const DAYS = nextDays(8);
+const full = d => `${DIAS[d.getDay()]} ${d.getDate()} de ${["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"][d.getMonth()]}`;
+const busy = i => C.busy ? C.busy(i) : (i%3===1);
+function renderFechas(){
+  const el = $("fechas"); if(!el) return;
+  el.innerHTML = DAYS.map((d,i)=>{ const full_ = busy(i); return `<button type="button" class="dia" data-d="${i}" ${full_?"disabled":""} aria-pressed="${F.fecha===i}"><span>${DIAS[d.getDay()].slice(0,3)}</span><b>${d.getDate()}</b><span>${full_?"completo":MES[d.getMonth()]}</span></button>`; }).join("");
+}
+document.addEventListener("click", e => { const b = e.target.closest(".dia[data-d]"); if(b && !b.disabled){ F.fecha = +b.dataset.d; renderFechas(); msg(); } });
+document.addEventListener("click", e => { const b = e.target.closest("[data-franja]"); if(b){ F.franja = b.dataset.franja; document.querySelectorAll("[data-franja]").forEach(x=>x.setAttribute("aria-pressed", x===b)); msg(); } });
+["nombre","zona"].forEach(k => { const el=$(k); if(el) el.addEventListener("input", ()=>{ F[k]=el.value.trim(); msg(); }); });
+
+/* ---- mensaje ---- */
+function text(){
+  const {list,total,sena} = totals();
+  const L = [];
+  L.push(`Hola ${C.saludo}! Soy ${F.nombre||"(tu nombre)"}${F.zona?`, de ${F.zona}`:""}.`);
+  L.push(`Quiero presupuesto de:`);
+  list.forEach(i => L.push(`• ${desc(i)}`));
+  L.push(`Total estimado: ${ars(total)} (precio de ejemplo)`);
+  L.push(`Seña para confirmar: ${ars(sena)} (${P.sena}%)`);
+  L.push(`${C.visita||"Medición"}: ${F.fecha!=null ? full(DAYS[F.fecha]) + " por la " + F.franja : "a coordinar"}`);
+  if(C.extraLines) C.extraLines(S,F).forEach(x=>L.push(x));
+  L.push(`(Armado en el cotizador de la web)`);
+  return L.join("\n");
+}
+function msg(){
+  const t = text();
+  const b = $("bubble");
+  if(b){ const now = new Date(); const hh = String(now.getHours()).padStart(2,"0")+":"+String(now.getMinutes()).padStart(2,"0");
+    b.innerHTML = esc(t).replace(/\n/g,"<br>").replace(/^(Hola [^<]*)/,"<b>$1</b>") + `<span class="hora">${hh} <svg width="16" height="10" viewBox="0 0 16 10"><path d="M1 5l3 3 6-7M6 8l1 1 7-8" stroke="#53bdeb" stroke-width="1.6" fill="none"/></svg></span>`; }
+  const wa = $("wa");
+  if(wa) wa.href = (C.wa ? `https://wa.me/${C.wa}` : "https://wa.me/") + "?text=" + encodeURIComponent(t);
+  document.querySelectorAll("[data-wa]").forEach(a => a.href = (C.wa ? `https://wa.me/${C.wa}` : "https://wa.me/") + "?text=" + encodeURIComponent(t));
+  const fill = $("ownerLive"); if(fill) fill.innerHTML = esc(t).replace(/\n/g,"<br>");
+}
+
+/* ---- render general ---- */
+function all(fromInput){
+  renderOpts();
+  const p = $("plano"); if(p) p.innerHTML = draw(S, {uid:"m"});
+  ["w","h","q"].forEach(k=>{ const n=$(k), r=$(k+"-r"); if(n && document.activeElement!==n) n.value=S[k]; if(r) r.value=S[k]; });
+  if(ins) ins.checked = S.inst;
+  const u = $("unit"); if(u) u.innerHTML = ars(price(S)) + PE;
+  const d = $("desc"); if(d) d.textContent = desc(S);
+  const area = $("area"); if(area) area.textContent = ((S.w/100)*(S.h/100)).toFixed(2).replace(".",",") + " m²";
+  const {list,total,sena} = totals();
+  const it = $("items");
+  if(it){ it.innerHTML = items.length ? items.map((i,ix)=>`<li><span class="mini">${draw(i,{mini:true,vw:60,vh:46,uid:"i"+ix})}</span><span class="d">${esc(desc(i))}</span><b>${ars(price(i))}${PE}</b><button type="button" data-del="${ix}" aria-label="Quitar">×</button></li>`).join("") : `<li class="vacio">${C.emptyItems||"Todavía no agregaste aberturas: se cotiza la que estás armando."}</li>`; }
+  document.querySelectorAll("[data-total]").forEach(e=>e.innerHTML = ars(total) + PE);
+  document.querySelectorAll("[data-sena]").forEach(e=>e.innerHTML = ars(sena) + PE);
+  document.querySelectorAll("[data-count]").forEach(e=>e.textContent = list.reduce((a,i)=>a+i.q,0));
+  if(C.onRender) C.onRender(S, {price, desc, draw, totals});
+  msg();
+}
+
+/* ---- vista dueño ---- */
+function owner(){
+  const O = C.owner;
+  const q = $("oConsultas");
+  if(q) q.innerHTML = `<div class="ob live"><div class="ob-h"><b>Recién armada</b><span>ahora</span></div><div id="ownerLive"></div></div>` + O.consultas.map(c=>`<div class="ob"><div class="ob-h"><b>${esc(c.n)}</b><span>${esc(c.t)}</span></div>${esc(c.m).replace(/\n/g,"<br>")}</div>`).join("");
+  const ag = $("oAgenda");
+  if(ag){ ag.innerHTML = `<div class="ag">` + DAYS.slice(0,5).map((d,i)=>`<div class="ag-d"><b>${DIAS[d.getDay()].slice(0,3)} ${d.getDate()}</b>${["Mañana","Tarde"].map((f,j)=>{ const x = O.agenda[i] && O.agenda[i][j]; return `<div class="ag-s ${x?"oc":"li"}">${f}<br><small>${x?esc(x):"libre"}</small></div>`; }).join("")}</div>`).join("") + `</div>`; }
+  const se = $("oSenas");
+  if(se){ const sum = O.senas.reduce((a,s)=>a+s.v,0); se.innerHTML = `<ul class="os">${O.senas.map(s=>`<li><span>${esc(s.n)}</span><b>${ars(s.v)}${PE}</b></li>`).join("")}</ul><div class="os-t">Cobrado esta semana: <b>${ars(sum)}</b>${PE}</div>`; }
+  const ah = $("oAhorro");
+  if(ah){ const v = O.vendido, pct = O.comision; ah.innerHTML = `<div class="oa"><div><span>Vendido por el cotizador (mes)</span><b>${ars(v)}${PE}</b></div><div><span>Comisión de un intermediario (${pct}%)</span><b>${ars(v*pct/100)}${PE}</b></div><div class="hi"><span>Te queda a vos</span><b>${ars(v*pct/100)}</b></div></div>`; }
+  const pr = $("oPrecios");
+  if(pr){
+    pr.innerHTML = `<table class="ot"><thead><tr><th>Abertura</th><th>$ por m²</th></tr></thead><tbody>${C.types.map(t=>`<tr><td>${esc(t.name)}</td><td><input type="number" step="1000" data-pm="${t.id}" value="${P.m2[t.id]}"></td></tr>`).join("")}</tbody></table>
+    <table class="ot"><thead><tr><th>${esc((C.lineTitle&&C.lineTitle._)||"Línea")}</th><th>Factor</th></tr></thead><tbody>${C.lines.map(l=>`<tr><td>${esc(l.name)}</td><td><input type="number" step="0.05" data-pf="${l.id}" value="${P.f[l.id]}"></td></tr>`).join("")}</tbody></table>
+    <table class="ot"><tbody><tr><td>Colocación (%)</td><td><input type="number" data-pi value="${P.inst}"></td></tr><tr><td>Seña (%)</td><td><input type="number" data-ps value="${P.sena}"></td></tr></tbody></table>
+    <p class="ot-n">Precios de ejemplo. Lo que cambies acá se guarda en este navegador y se aplica al instante en el cotizador.</p><button type="button" class="ot-r" id="resetP">Volver a los precios de ejemplo</button>`;
+  }
+}
+document.addEventListener("input", e => {
+  const el = e.target; let ch = true;
+  if(el.dataset.pm) P.m2[el.dataset.pm] = +el.value||0;
+  else if(el.dataset.pf) P.f[el.dataset.pf] = +el.value||1;
+  else if(el.hasAttribute("data-pi")) P.inst = +el.value||0;
+  else if(el.hasAttribute("data-ps")) P.sena = +el.value||0;
+  else ch = false;
+  if(ch){ saveP(); all(); }
+});
+document.addEventListener("click", e => { if(e.target.id==="resetP"){ P = defaults(); saveP(); owner(); all(); } });
+function setOwner(on){
+  document.body.classList.toggle("dueno", on);
+  document.querySelectorAll("[data-owner]").forEach(b=>b.setAttribute("aria-pressed", on));
+  const op = $("ownerPanel"); if(op) op.hidden = !on;
+  const cv = $("clientView"); if(cv) cv.hidden = on;
+  if(on){ owner(); msg(); window.scrollTo({top:0, behavior:"smooth"}); }
+}
+document.addEventListener("click", e => { const b = e.target.closest("[data-owner]"); if(b){ setOwner(b.getAttribute("aria-pressed")!=="true"); } });
+
+/* ---- fotos con respaldo ---- */
+document.querySelectorAll("img[data-fb]").forEach(img => {
+  const fail = () => { const d = document.createElement("div"); d.className = "fb " + (img.className||""); d.innerHTML = (C.fallback ? C.fallback(img.dataset.fb) : "") ; img.replaceWith(d); };
+  img.addEventListener("error", fail, {once:true});
+  if(img.complete && img.naturalWidth===0 && img.src) fail();
+});
+
+fixSel(); renderFechas(); all();
+})();
+
+</script>
+<script>
+/* estado y urgencia de obra (campos del formulario de Castellani) */
+(function(){
+  const F = window.COT.F; F.estado = "En proyecto"; F.urg = "Media";
+  document.querySelectorAll(".chips[data-grp]").forEach(g=>g.addEventListener("click",e=>{ const b=e.target.closest("button"); if(!b) return; g.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed", x===b)); F[g.dataset.grp]=b.dataset.v; window.COT.msg(); }));
+  document.querySelectorAll("[data-perf]").forEach(b=>b.addEventListener("click",()=>{ window.COT.prefill({perf:b.dataset.perf}); }));
+  document.querySelectorAll("[data-pre]").forEach(b=>b.addEventListener("click",()=>{ const o=JSON.parse(b.dataset.pre); window.COT.setType(o.type); window.COT.prefill(o); document.getElementById("mesa").scrollIntoView({behavior:"smooth"}); }));
+  window.COT.msg();
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Castellani Aberturas y Vidrios"></script>
+</body>
+</html>
