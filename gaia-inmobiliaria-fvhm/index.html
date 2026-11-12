@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Gaia Inmobiliaria · Plano de propiedades</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hedvig+Letters+Serif:opsz@12..24&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --yeso:#F3EEE4; --papel:#FBF8F2; --grafito:#23211D; --tinta:#4A463F; --linea:#D8CFBF;
+  --arcilla:#B8532F; --arcilla2:#8F3D20; --salvia:#6F7F62; --ocre:#C99A3C; --wa:#1F7A4D; --burbuja:#DCF4D0;
+  --disp:"Hedvig Letters Serif",Georgia,serif; --txt:"Geist",system-ui,sans-serif; --mono:"Geist Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--yeso);color:var(--grafito);font:16px/1.5 var(--txt);-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+button,input,select{font:inherit;color:inherit}
+a{color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+.mono{font-family:var(--mono)}
+.ej{display:inline-block;font:500 11px/1.3 var(--mono);color:var(--tinta);opacity:.8;letter-spacing:.02em}
+
+/* firma */
+.firma{border-bottom:1px solid var(--linea);font-size:13px;color:var(--tinta);background:var(--papel)}
+.firma .wrap{display:flex;gap:12px;align-items:center;justify-content:space-between;padding-top:7px;padding-bottom:7px}
+.bd{border:1px solid var(--grafito);background:transparent;border-radius:99px;padding:5px 14px;font-weight:600;font-size:13px;cursor:pointer;white-space:nowrap}
+.bd[aria-pressed="true"]{background:var(--grafito);color:var(--yeso)}
+
+/* cabecera */
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;padding-top:18px;padding-bottom:18px;gap:16px}
+.marca{display:flex;align-items:baseline;gap:10px;text-decoration:none}
+.marca b{font:400 34px/1 var(--disp);letter-spacing:-.01em}
+.marca span{font:500 12px/1.2 var(--mono);color:var(--tinta);text-transform:uppercase;letter-spacing:.08em}
+nav.nv{display:flex;gap:20px;font-weight:500;font-size:15px}
+nav.nv a{text-decoration:none;border-bottom:1px solid transparent}
+nav.nv a:hover{border-color:var(--arcilla)}
+
+/* portada */
+.portada{display:grid;grid-template-columns:1fr 1.05fr;gap:36px;align-items:center;padding:24px 0 48px}
+.portada h1{font:400 clamp(38px,5.2vw,64px)/1.02 var(--disp);letter-spacing:-.02em;margin:0 0 20px}
+.portada h1 em{font-style:normal;color:var(--arcilla)}
+.datos{list-style:none;padding:0;margin:0 0 26px;display:grid;gap:8px}
+.datos li{display:flex;gap:10px;align-items:baseline;border-top:1px solid var(--linea);padding-top:8px}
+.datos li i{font:500 12px var(--mono);color:var(--arcilla);font-style:normal;min-width:28px}
+.ctas{display:flex;gap:10px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;border-radius:6px;padding:12px 18px;font-weight:600;border:1px solid var(--grafito);background:var(--grafito);color:var(--yeso);cursor:pointer;text-decoration:none}
+.btn.ln{background:transparent;color:var(--grafito)}
+.btn.wa{background:var(--wa);border-color:var(--wa);color:#fff}
+.plano{background:var(--papel);border:1px solid var(--linea);border-radius:4px;padding:14px 14px 10px;position:relative}
+.plano .cab{display:flex;justify-content:space-between;font:500 11px var(--mono);color:var(--tinta);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.plano svg{width:100%;height:auto;display:block}
+.parc{cursor:pointer}
+.parc rect{transition:fill .2s}
+.parc:hover rect,.parc:focus rect{fill:var(--arcilla);fill-opacity:.85}
+.parc:hover text,.parc:focus text{fill:#fff}
+.parc:focus{outline:none}
+.plano .pie{font:500 11px var(--mono);color:var(--tinta);margin-top:6px}
+
+/* filtros */
+.barra{position:sticky;top:0;z-index:20;background:var(--yeso);border-top:1px solid var(--grafito);border-bottom:1px solid var(--linea)}
+.barra .wrap{display:flex;gap:14px;align-items:center;flex-wrap:wrap;padding-top:10px;padding-bottom:10px}
+.grupo{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.grupo>span{font:500 11px var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--tinta);margin-right:2px}
+.chip{border:1px solid var(--linea);background:var(--papel);border-radius:99px;padding:5px 12px;font-size:14px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--grafito);color:var(--yeso);border-color:var(--grafito)}
+.barra select{border:1px solid var(--linea);background:var(--papel);border-radius:6px;padding:6px 8px;font-size:14px}
+.cuenta{margin-left:auto;font:500 12px var(--mono);color:var(--tinta)}
+
+/* legajos */
+h2.sec{font:400 clamp(28px,3.4vw,40px)/1.1 var(--disp);margin:0 0 6px;letter-spacing:-.01em}
+.sub{color:var(--tinta);margin:0 0 22px}
+section.blq{padding:52px 0}
+.legajo{display:grid;grid-template-columns:72px 260px 1fr 210px;gap:22px;align-items:start;border-top:1px solid var(--linea);padding:22px 0}
+.legajo:last-child{border-bottom:1px solid var(--linea)}
+.nro{font:400 44px/1 var(--disp);color:var(--arcilla)}
+.nro small{display:block;font:500 10px var(--mono);color:var(--tinta);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+.foto{aspect-ratio:4/3;border-radius:3px;overflow:hidden;background:var(--papel);border:1px solid var(--linea)}
+.foto img{width:100%;height:100%;object-fit:cover}
+.foto svg{width:100%;height:100%}
+.legajo h3{font:600 19px/1.25 var(--txt);margin:2px 0 8px}
+.legajo .zona{font:500 12px var(--mono);color:var(--salvia);text-transform:uppercase;letter-spacing:.06em}
+.legajo ul{margin:8px 0 0;padding-left:18px;color:var(--tinta);font-size:15px}
+.precio b{display:block;font:400 28px/1.1 var(--disp)}
+.precio .m2{font:500 12px var(--mono);color:var(--tinta);display:block;margin:4px 0 10px}
+.acc{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.lnk{background:none;border:0;padding:0;text-align:left;font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--linea);font-size:15px}
+.lnk:hover{text-decoration-color:var(--arcilla)}
+.lnk.cmp[aria-pressed="true"]{color:var(--arcilla)}
+.vacio{padding:30px 0;color:var(--tinta)}
+
+/* comparador */
+.comparador{background:var(--grafito);color:var(--yeso)}
+.comparador .sub{color:#CFC7B8}
+.cmpgrid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#4a463f;border:1px solid #4a463f}
+.cmpcol{background:var(--grafito);padding:18px}
+.cmpcol h4{font:400 22px/1.2 var(--disp);margin:0 0 10px}
+.cmpcol table{width:100%;border-collapse:collapse;font-size:15px}
+.cmpcol td{padding:7px 0;border-top:1px solid #3a3731}
+.cmpcol td:last-child{text-align:right;font-family:var(--mono)}
+.cmpcol .gana{color:var(--ocre)}
+.cmpvac{color:#CFC7B8;padding:22px;border:1px dashed #5a554c}
+
+/* consulta + burbuja */
+.consulta{display:grid;grid-template-columns:1fr 380px;gap:36px;align-items:start}
+.tabs{display:flex;gap:0;border:1px solid var(--grafito);border-radius:6px;overflow:hidden;width:max-content;margin-bottom:18px}
+.tabs button{border:0;background:transparent;padding:9px 16px;font-weight:600;cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--grafito);color:var(--yeso)}
+.campo{display:grid;gap:6px;margin-bottom:16px}
+.campo>label,.campo>span{font:500 12px var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--tinta)}
+.campo input,.campo select{border:1px solid var(--linea);background:var(--papel);border-radius:6px;padding:10px 12px;width:100%}
+.dias{display:flex;gap:6px;flex-wrap:wrap}
+.telefono{background:#E7DED0;border-radius:18px;padding:12px;border:1px solid var(--linea);position:sticky;top:70px}
+.telefono .tcab{display:flex;align-items:center;gap:10px;padding:4px 6px 10px;border-bottom:1px solid #d3c8b6}
+.avatar{width:34px;height:34px;border-radius:50%;background:var(--arcilla);color:#fff;display:grid;place-items:center;font:400 18px var(--disp)}
+.tcab b{display:block;font-size:14px}.tcab small{font-size:12px;color:var(--tinta)}
+.chat{padding:14px 4px 6px;min-height:220px}
+.burbuja{background:var(--burbuja);border-radius:10px 10px 2px 10px;padding:10px 12px 18px;margin-left:24px;font-size:14.5px;white-space:pre-wrap;position:relative;box-shadow:0 1px 0 rgba(0,0,0,.08)}
+.burbuja .hora{position:absolute;right:10px;bottom:4px;font-size:11px;color:#5b6b55}
+.cursor{display:inline-block;width:2px;height:1em;background:var(--grafito);vertical-align:-2px;animation:p 1s steps(1) infinite}
+@keyframes p{50%{opacity:0}}
+.telefono .btn{width:100%;justify-content:center;margin-top:10px}
+
+/* tasación */
+.tasar ul{padding-left:18px;margin:0 0 16px}
+
+/* dueño */
+.duenio{display:none;background:var(--papel);border-bottom:1px solid var(--grafito)}
+body.vd .duenio{display:block}
+.duenio .marcaej{display:inline-block;background:var(--ocre);color:var(--grafito);font:600 11px var(--mono);text-transform:uppercase;letter-spacing:.08em;padding:4px 8px;border-radius:3px;margin-bottom:12px}
+.pgrid{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:18px}
+.card{background:#fff;border:1px solid var(--linea);border-radius:6px;padding:16px}
+.card h4{margin:0 0 10px;font:400 20px var(--disp)}
+.card .burbuja{margin:0 0 10px;font-size:13.5px}
+.agenda{width:100%;border-collapse:collapse;font-size:14px}
+.agenda td,.agenda th{border-top:1px solid var(--linea);padding:6px 4px;text-align:left;vertical-align:top}
+.agenda th{font:500 11px var(--mono);text-transform:uppercase;color:var(--tinta)}
+.kpi{font:400 34px/1 var(--disp)}
+.paravos{margin-top:22px;border-top:1px solid var(--linea);padding-top:18px}
+.paravos ul{columns:2;column-gap:30px;padding-left:18px;margin:8px 0 0}
+.paravos li{break-inside:avoid;margin-bottom:6px}
+
+/* ficha */
+dialog{border:0;padding:0;max-width:920px;width:calc(100% - 24px);border-radius:6px;background:var(--papel);color:var(--grafito)}
+dialog::backdrop{background:rgba(35,33,29,.6)}
+.fx{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;border-bottom:1px solid var(--linea);font:500 12px var(--mono);text-transform:uppercase;letter-spacing:.06em}
+.fx button{background:none;border:0;font-size:26px;line-height:1;cursor:pointer}
+.fg{display:grid;grid-template-columns:1.1fr 1fr;gap:20px;padding:18px}
+.fg .foto{aspect-ratio:4/3}
+.fg h3{font:400 28px/1.15 var(--disp);margin:0 0 10px}
+.tabla{width:100%;border-collapse:collapse;font-size:15px;margin:12px 0}
+.tabla td{border-top:1px solid var(--linea);padding:6px 0}
+.tabla td:last-child{text-align:right;font-family:var(--mono)}
+.mapa iframe{width:100%;height:240px;border:0;display:block}
+.parec{padding:14px 18px 18px;border-top:1px solid var(--linea)}
+.parec h5{margin:0 0 8px;font:500 12px var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--tinta)}
+.parec div{display:flex;gap:8px;flex-wrap:wrap}
+
+footer{border-top:1px solid var(--grafito);padding:28px 0 40px;font-size:14px;color:var(--tinta)}
+footer .legal{margin-top:10px;font-size:12.5px}
+
+@media (max-width:900px){
+  .portada,.consulta{grid-template-columns:1fr}
+  .legajo{grid-template-columns:52px 1fr;gap:12px 14px}
+  .legajo .foto{grid-column:1/-1;grid-row:2}
+  .legajo>div:nth-child(3){grid-column:1/-1}
+  .legajo .precio{grid-column:1/-1}
+  .nro{font-size:34px}
+  .pgrid{grid-template-columns:1fr}
+  .paravos ul{columns:1}
+  .fg{grid-template-columns:1fr}
+  .telefono{position:static}
+  nav.nv{display:none}
+  .cmpgrid{grid-template-columns:1fr}
+}
+@media (max-width:520px){
+  .firma .wrap{flex-direction:column;align-items:flex-start;gap:6px}
+  .marca b{font-size:28px}
+  .cuenta{margin-left:0;width:100%}
+  .barra .wrap{gap:8px}
+  .barra{position:static}
+}
+</style>
+</head>
+<body>
+
+<div class="firma"><div class="wrap"><span>Prototipo preparado para <b>Gaia Inmobiliaria</b> · 12 de noviembre de 2026</span><button class="bd" id="bd" aria-pressed="false">Ver como dueño</button></div></div>
+
+<!-- Vista del dueño -->
+<section class="duenio" id="duenio" aria-label="Vista del dueño">
+  <div class="wrap" style="padding-top:28px;padding-bottom:30px">
+    <span class="marcaej">Panel de ejemplo</span>
+    <h2 class="sec">Así lo vería la oficina de San Martín 195</h2>
+    <p class="sub">Datos ficticios para mostrar el funcionamiento. Las consultas llegan al WhatsApp con la propiedad ya indicada.</p>
+    <div class="pgrid">
+      <div class="card">
+        <h4>Consultas que entraron</h4>
+        <div class="burbuja">Hola Gaia, soy Martín. Me interesa la Parcela 07: PH en Río Pilcomayo 700, Santa Genoveva (USD 210.000).
+Quiero visitarla el jueves a la tarde.
+Pago: contado.<span class="hora">10:42</span></div>
+        <div class="burbuja">Hola Gaia, soy Carla. Quiero tasar mi propiedad: casa en Barrio Confluencia, 180 m².
+¿Cuándo pueden venir a verla?<span class="hora">12:15</span></div>
+        <div class="burbuja">Hola Gaia, soy Diego. Me interesa la Parcela 02: galpón en San Fernando y Tinogasta, Canal V.
+¿Admite permuta?<span class="hora">16:03</span></div>
+      </div>
+      <div class="card">
+        <h4>Visitas de la semana</h4>
+        <table class="agenda">
+          <tr><th>Día</th><th>Propiedad</th><th>Quién</th></tr>
+          <tr><td>Lun</td><td>Lote Canal V</td><td>Sergio</td></tr>
+          <tr><td>Mar</td><td>Casa Islas Malvinas 700</td><td>Laura</td></tr>
+          <tr><td>Mié</td><td>Terreno Plottier</td><td>Fam. Ríos</td></tr>
+          <tr><td>Jue</td><td>PH Río Pilcomayo 700</td><td>Martín</td></tr>
+          <tr><td>Vie</td><td>Tasación B° Confluencia</td><td>Carla</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <h4>Lo que cambia</h4>
+        <div class="kpi">3</div><p style="margin:2px 0 12px">tasaciones pedidas esta semana <span class="ej">(ejemplo)</span></p>
+        <ul style="padding-left:18px;margin:0;font-size:14.5px">
+          <li>Consulta con propiedad, día y forma de pago ya escritos</li>
+          <li>Sin comisión por contacto ni por aviso</li>
+          <li>Referencia: planes altos de portal ≈ ARS 1,5 M/mes <span class="ej">(dato 2024)</span></li>
+          <li>Abono propio estimado: ARS 40.000 a 80.000/mes <span class="ej">Precio de ejemplo</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="paravos">
+      <h3 style="font:400 24px var(--disp);margin:0">Para vos, Nadia</h3>
+      <ul>
+        <li>Menos mensajes repetidos: el cliente ya llega sabiendo metros, precio y barrio.</li>
+        <li>Agenda de visitas por día, armada desde las mismas consultas.</li>
+        <li>Propietarios que piden tasación entran solos por la web.</li>
+        <li>Tu catálogo en tu dominio, sin pagar por cada aviso ni competir con otras 50 inmobiliarias.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<header class="top"><div class="wrap">
+  <a class="marca" href="#"><b>Gaia</b><span>Inmobiliaria · Neuquén</span></a>
+  <nav class="nv"><a href="#legajos">Propiedades</a><a href="#comparar">Comparar</a><a href="#consulta">Consultar</a><a href="#tasar">Tasá la tuya</a></nav>
+</div></header>
+
+<main>
+<div class="wrap">
+  <section class="portada">
+    <div>
+      <h1>De un local de <em>28 m²</em> en Islas Malvinas a <em>1.900 m²</em> en Plottier.</h1>
+      <ul class="datos">
+        <li><i>01</i>Casas, PH, lotes, galpón y local en venta</li>
+        <li><i>02</i>Neuquén capital, Plottier y Villa El Chocón</li>
+        <li><i>03</i>Oficina en San Martín 195 · Martillera Nadia Bast, Mat. 618 CMyCPN</li>
+      </ul>
+      <div class="ctas"><a class="btn" href="#legajos">Ver las 7 propiedades</a><a class="btn ln" href="#tasar">Quiero tasar la mía</a></div>
+    </div>
+    <div class="plano">
+      <div class="cab"><span>Plano de cartera · a escala por superficie</span><span>N ↑</span></div>
+      <svg id="plano" viewBox="0 0 560 400" role="img" aria-label="Plano con las propiedades dibujadas a escala según su superficie"></svg>
+      <div class="pie">Cada parcela está dibujada en proporción a sus m². Tocá una para ver la ficha.</div>
+    </div>
+  </section>
+</div>
+
+<div class="barra"><div class="wrap">
+  <div class="grupo" id="fTipo"><span>Tipo</span>
+    <button class="chip" data-v="todos" aria-pressed="true">Todos</button>
+    <button class="chip" data-v="vivienda" aria-pressed="false">Casa / PH</button>
+    <button class="chip" data-v="tierra" aria-pressed="false">Lote / terreno</button>
+    <button class="chip" data-v="comercial" aria-pressed="false">Comercial</button>
+  </div>
+  <div class="grupo"><span>Zona</span>
+    <select id="fZona" aria-label="Zona"><option value="">Todas</option></select>
+  </div>
+  <div class="grupo"><span>Hasta</span>
+    <select id="fPrecio" aria-label="Precio máximo"><option value="0">Sin tope</option><option value="80000">USD 80.000</option><option value="220000">USD 220.000</option><option value="500000">USD 500.000</option></select>
+  </div>
+  <span class="cuenta" id="cuenta"></span>
+</div></div>
+
+<div class="wrap">
+  <section class="blq" id="legajos" aria-label="Propiedades">
+    <h2 class="sec">Legajos en venta</h2>
+    <p class="sub">Propiedades reales publicadas por Gaia. Precios como figuran en sus avisos.</p>
+    <div id="lista"></div>
+  </section>
+</div>
+
+<section class="blq comparador" id="comparar">
+  <div class="wrap">
+    <h2 class="sec">Compará dos, lado a lado</h2>
+    <p class="sub">Marcá “Comparar” en dos legajos. Calcula el precio por m² para ver cuál rinde más.</p>
+    <div id="cmp"></div>
+  </div>
+</section>
+
+<div class="wrap">
+  <section class="blq consulta" id="consulta">
+    <div>
+      <div class="tabs" role="tablist">
+        <button role="tab" aria-selected="true" data-m="visita">Consultar una propiedad</button>
+        <button role="tab" aria-selected="false" data-m="tasar" id="tabTasar">Tasar la mía</button>
+      </div>
+      <div id="mVisita">
+        <h2 class="sec">Pedí una visita</h2>
+        <p class="sub">Elegí y mirá a la derecha el mensaje exacto que le llega a Gaia.</p>
+        <div class="campo"><label for="cProp">Propiedad</label><select id="cProp"></select></div>
+        <div class="campo"><span>Día de visita</span><div class="dias" id="cDia"></div></div>
+        <div class="campo"><span>Horario</span><div class="dias" id="cHora">
+          <button class="chip" data-v="a la mañana" aria-pressed="true">Mañana</button>
+          <button class="chip" data-v="a la tarde" aria-pressed="false">Tarde</button></div></div>
+        <div class="campo"><span>¿Cómo pensás pagar?</span><div class="dias" id="cPago">
+          <button class="chip" data-v="contado" aria-pressed="true">Contado</button>
+          <button class="chip" data-v="crédito hipotecario" aria-pressed="false">Crédito</button>
+          <button class="chip" data-v="permuta + diferencia" aria-pressed="false">Permuta</button></div></div>
+        <div class="campo"><label for="cNom">Tu nombre</label><input id="cNom" placeholder="Ej.: Martín" autocomplete="given-name"></div>
+      </div>
+      <div id="mTasar" class="tasar" hidden>
+        <h2 class="sec" id="tasar">Tasá tu propiedad</h2>
+        <ul>
+          <li>Visita sin cargo de la martillera</li>
+          <li>Valor de referencia con propiedades parecidas de la zona</li>
+          <li>Si decidís vender, se publica en este catálogo</li>
+        </ul>
+        <div class="campo"><label for="tTipo">Qué tenés</label><select id="tTipo"><option>Casa</option><option>Departamento</option><option>PH / dúplex</option><option>Lote</option><option>Local o galpón</option></select></div>
+        <div class="campo"><label for="tBarrio">Barrio</label><select id="tBarrio"><option>Santa Genoveva</option><option>Confluencia</option><option>Centro</option><option>Canal V</option><option>Altos del Limay</option><option>Plottier</option><option>Otro</option></select></div>
+        <div class="campo"><label for="tM2">Superficie aproximada (m²)</label><input id="tM2" inputmode="numeric" placeholder="Ej.: 180"></div>
+        <div class="campo"><label for="tNom">Tu nombre</label><input id="tNom" placeholder="Ej.: Carla"></div>
+      </div>
+    </div>
+    <aside class="telefono" aria-label="Vista previa del mensaje">
+      <div class="tcab"><div class="avatar">G</div><div><b>Gaia Inmobiliaria</b><small>WhatsApp · 299 577-0913</small></div></div>
+      <div class="chat"><div class="burbuja" id="burbuja"><span id="btx"></span><span class="cursor"></span><span class="hora" id="bhora"></span></div></div>
+      <a class="btn wa" id="enviar" target="_blank" rel="noopener" href="#">Enviar por WhatsApp</a>
+    </aside>
+  </section>
+</div>
+</main>
+
+<dialog id="ficha" aria-label="Ficha de la propiedad"></dialog>
+
+<footer><div class="wrap">
+  <div><b>Gaia Inmobiliaria</b> · San Martín 195, Neuquén · 299 577-0913 · Martillera Nadia Bast, Mat. 618 CMyCPN</div>
+  <div class="legal">Prototipo de demostración preparado para Gaia Inmobiliaria por Resolviendo Kos · No es la web oficial. Propiedades, fotos y precios tomados de sus avisos públicos en Argenprop (noviembre 2026).</div>
+</div></footer>
+
+<script>
+const WA="5492995770913";
+const IMG="https://www.argenprop.com/static-content/";
+const P=[
+ {id:1,t:"Casa de 2 dormitorios con cochera",tipo:"Casa",g:"vivienda",zona:"Santa Genoveva",dir:"Islas Malvinas al 700",pr:0,m2:204,cub:143,img:"82846381/9cd576b9-4275-4f8b-8c10-9a1b28676ee5",
+  inc:["143 m² cubiertos · terreno 204 m²","2 dormitorios · 1 baño · 1 cochera","30 años · para refaccionar"]},
+ {id:2,t:"Galpón sobre esquina",tipo:"Galpón",g:"comercial",zona:"Canal V",dir:"San Fernando y Tinogasta",pr:450000,m2:447,cub:447,img:"54846381/f439dbc3-f7d6-4eb6-b8e7-1fab8f685b7d",
+  inc:["447 m² cubiertos","2 baños","Esquina San Fernando y Tinogasta"]},
+ {id:3,t:"Terreno de 1.900 m² con casa",tipo:"Terreno",g:"tierra",zona:"Plottier",dir:"Isla al 100, Plottier",pr:75000,m2:1900,cub:72,img:"84846381/093ea9a6-932c-419a-b5cb-86914c56ac22",
+  inc:["1.900 m² de terreno","Casa de 72 m² con 2 dormitorios","Isla al 100, Plottier"]},
+ {id:4,t:"Local comercial",tipo:"Local",g:"comercial",zona:"Islas Malvinas al 200",dir:"Islas Malvinas al 200",pr:55000,m2:28,cub:28,exp:"+ $90.000 de expensas",img:"06331481/ae6957e7-13d8-427f-8df0-5dcfc6180bc1",
+  inc:["28 m²","1 baño","Expensas $90.000"]},
+ {id:5,t:"Lote de 750 m²",tipo:"Lote",g:"tierra",zona:"Canal V",dir:"Saladillo y Venado Tuerto",pr:65000,m2:750,cub:0,img:"48289981/2fdc555f-e306-494f-8f9f-e32a55d5f307",
+  inc:["750 m²","Esquina Saladillo y Venado Tuerto","Barrio Canal V"]},
+ {id:6,t:"Terreno en Piedras Coloradas",tipo:"Terreno",g:"tierra",zona:"Villa El Chocón",dir:"Piedras Coloradas, Villa El Chocón",pr:24000,m2:412,cub:0,img:"24846381/a8233e13-4da5-47a8-ac7a-02cfbcccc014",
+  inc:["412 m²","Barrio Piedras Coloradas","Villa El Chocón, Neuquén"]},
+ {id:7,t:"PH de 4 ambientes al frente",tipo:"PH",g:"vivienda",zona:"Santa Genoveva",dir:"Río Pilcomayo 700",pr:210000,m2:118,cub:118,img:"08896691/5b1cb454-3dc4-4904-b62c-b35a626beee3",
+  inc:["118 m² · 4 ambientes","2 baños · al frente","25 años"]}
+];
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const usd=n=>n?"USD "+n.toLocaleString("es-AR"):"Consultar precio";
+const nro=n=>String(n).padStart(2,"0");
+
+/* ilustración de reemplazo */
+function ilu(p){
+  const casa=p.g==="vivienda", com=p.g==="comercial";
+  return '<svg viewBox="0 0 400 300" aria-hidden="true"><rect width="400" height="300" fill="#EFE7D8"/>'+
+   '<g stroke="#D8CFBF">'+Array.from({length:9},(_,i)=>'<line x1="0" y1="'+(i*36+12)+'" x2="400" y2="'+(i*36+12)+'"/>').join("")+'</g>'+
+   '<rect x="70" y="70" width="260" height="170" fill="none" stroke="#B8532F" stroke-width="2" stroke-dasharray="8 6"/>'+
+   (casa?'<path d="M140 200v-60l60-40 60 40v60z" fill="#6F7F62"/><rect x="185" y="165" width="30" height="35" fill="#EFE7D8"/>':
+    com?'<rect x="125" y="120" width="150" height="80" fill="#6F7F62"/><path d="M125 120l75-30 75 30" fill="none" stroke="#23211D" stroke-width="3"/>':
+    '<circle cx="200" cy="155" r="6" fill="#B8532F"/>')+
+   '<text x="200" y="270" text-anchor="middle" font-family="Geist Mono,monospace" font-size="15" fill="#4A463F">'+esc(p.tipo)+' · '+p.m2.toLocaleString("es-AR")+' m²</text></svg>';
+}
+function foto(p){return '<div class="foto"><img loading="lazy" alt="'+esc(p.t+", "+p.dir)+'" src="'+IMG+p.img+'_u_medium.jpg" onerror="this.parentNode.innerHTML=ilu(P['+(p.id-1)+'])"></div>';}
+
+/* plano a escala */
+(function(){
+  const s=$("#plano"); const W=560,H=400; const max=Math.sqrt(1900); const k=150/max;
+  const pos={3:[18,18],2:[200,24],5:[300,170],6:[30,200],1:[180,225],7:[440,52],4:[470,300]};
+  let h='<defs><pattern id="g" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="#E4DCCD" stroke-width="1"/></pattern></defs><rect width="'+W+'" height="'+H+'" fill="url(#g)"/>';
+  P.forEach(p=>{const l=Math.max(Math.sqrt(p.m2)*k,26);const [x,y]=pos[p.id];
+    h+='<g class="parc" tabindex="0" role="button" data-id="'+p.id+'" aria-label="Parcela '+nro(p.id)+': '+esc(p.t)+', '+p.m2+' m²">'+
+      '<rect x="'+x+'" y="'+y+'" width="'+l+'" height="'+l+'" fill="'+(p.g==="tierra"?"#C9D1BE":p.g==="vivienda"?"#EBC9B6":"#E8D7A9")+'" stroke="#23211D" stroke-width="1.2"/>'+
+      '<text x="'+(x+6)+'" y="'+(y+17)+'" font-family="Geist Mono,monospace" font-size="12" fill="#23211D">'+nro(p.id)+'</text>'+
+      (l>60?'<text x="'+(x+6)+'" y="'+(y+l-8)+'" font-family="Geist Mono,monospace" font-size="11" fill="#4A463F">'+p.m2.toLocaleString("es-AR")+' m²</text>':'')+'</g>';});
+  h+='<g font-family="Geist Mono,monospace" font-size="10" fill="#4A463F"><rect x="16" y="372" width="12" height="10" fill="#C9D1BE" stroke="#23211D"/><text x="32" y="381">Lote / terreno</text><rect x="130" y="372" width="12" height="10" fill="#EBC9B6" stroke="#23211D"/><text x="146" y="381">Casa / PH</text><rect x="226" y="372" width="12" height="10" fill="#E8D7A9" stroke="#23211D"/><text x="242" y="381">Comercial</text></g>';
+  s.innerHTML=h;
+  s.addEventListener("click",e=>{const g=e.target.closest(".parc");if(g)abrir(+g.dataset.id);});
+  s.addEventListener("keydown",e=>{const g=e.target.closest(".parc");if(g&&(e.key==="Enter"||e.key===" ")){e.preventDefault();abrir(+g.dataset.id);}});
+})();
+
+/* filtros + lista */
+const F={g:"todos",z:"",max:0}; const CMP=[];
+[...new Set(P.map(p=>p.zona))].forEach(z=>{const o=document.createElement("option");o.value=z;o.textContent=z;$("#fZona").appendChild(o);});
+$$("#fTipo .chip").forEach(b=>b.onclick=()=>{$$("#fTipo .chip").forEach(x=>x.setAttribute("aria-pressed","false"));b.setAttribute("aria-pressed","true");F.g=b.dataset.v;lista();});
+$("#fZona").onchange=e=>{F.z=e.target.value;lista();};
+$("#fPrecio").onchange=e=>{F.max=+e.target.value;lista();};
+function lista(){
+  const r=P.filter(p=>(F.g==="todos"||p.g===F.g)&&(!F.z||p.zona===F.z)&&(!F.max||(p.pr&&p.pr<=F.max)));
+  $("#cuenta").textContent=r.length+" de "+P.length+" propiedades";
+  $("#lista").innerHTML=r.length?r.map(p=>'<article class="legajo"><div class="nro"><small>Parcela</small>'+nro(p.id)+'</div>'+foto(p)+
+   '<div><span class="zona">'+esc(p.tipo)+' · '+esc(p.zona)+'</span><h3>'+esc(p.t)+'</h3><div class="mono" style="font-size:13px;color:var(--tinta)">'+esc(p.dir)+'</div><ul>'+p.inc.map(i=>'<li>'+esc(i)+'</li>').join("")+'</ul></div>'+
+   '<div class="precio"><b>'+usd(p.pr)+'</b><span class="ej">'+(p.pr?'Precio de ejemplo · tomado de su aviso':'Precio a consultar en la oficina')+'</span>'+(p.pr?'<span class="m2">USD '+Math.round(p.pr/p.m2).toLocaleString("es-AR")+' por m²</span>':'<span class="m2">&nbsp;</span>')+
+   '<div class="acc"><button class="lnk" data-f="'+p.id+'">Ver ficha</button><button class="lnk cmp" data-c="'+p.id+'" aria-pressed="'+CMP.includes(p.id)+'">'+(CMP.includes(p.id)?"✓ En comparación":"Comparar")+'</button><button class="lnk" data-q="'+p.id+'">Pedir visita</button></div></div></article>').join(""):'<p class="vacio">No hay propiedades con esos filtros. Probá otra zona o sacá el tope de precio.</p>';
+}
+$("#lista").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
+  if(b.dataset.f)abrir(+b.dataset.f);
+  if(b.dataset.c)comparar(+b.dataset.c);
+  if(b.dataset.q)pedir(+b.dataset.q);});
+
+/* comparador */
+function comparar(id){const i=CMP.indexOf(id);if(i>-1)CMP.splice(i,1);else{CMP.push(id);if(CMP.length>2)CMP.shift();}lista();cmp();if(CMP.length===2)$("#comparar").scrollIntoView({behavior:"smooth"});}
+function cmp(){
+  if(CMP.length<2){$("#cmp").innerHTML='<div class="cmpvac">'+(CMP.length?"Elegí una más para comparar con la Parcela "+nro(CMP[0])+".":"Todavía no elegiste ninguna. Por ejemplo: el PH de Río Pilcomayo contra la casa de Islas Malvinas.")+'</div>';return;}
+  const [a,b]=CMP.map(id=>P[id-1]); const pa=a.pr?a.pr/a.m2:Infinity, pb=b.pr?b.pr/b.m2:Infinity;
+  const col=(p,mejor)=>'<div class="cmpcol"><h4>'+nro(p.id)+' · '+esc(p.t)+'</h4><table>'+
+   '<tr><td>Precio</td><td>'+usd(p.pr)+'</td></tr><tr><td></td><td><span class="ej" style="color:#CFC7B8">Precio de ejemplo</span></td></tr>'+
+   '<tr><td>Superficie total</td><td>'+p.m2.toLocaleString("es-AR")+' m²</td></tr>'+
+   '<tr><td>Cubiertos</td><td>'+(p.cub?p.cub+' m²':'—')+'</td></tr>'+
+   '<tr><td>Precio por m²</td><td class="'+(mejor?'gana':'')+'">'+(p.pr?'USD '+Math.round(p.pr/p.m2).toLocaleString("es-AR"):'Consultar')+(mejor?' ✓':'')+'</td></tr>'+
+   '<tr><td>Zona</td><td>'+esc(p.zona)+'</td></tr></table></div>';
+  $("#cmp").innerHTML='<div class="cmpgrid">'+col(a,pa<pb)+col(b,pb<pa)+'</div>';
+}
+
+/* ficha */
+function abrir(id){const p=P[id-1];const d=$("#ficha");
+  const par=P.filter(x=>x.id!==p.id&&(x.g===p.g||x.zona===p.zona)).slice(0,3);
+  d.innerHTML='<div class="fx"><span>Parcela '+nro(p.id)+' · '+esc(p.tipo)+' · Venta</span><button aria-label="Cerrar" id="fcx">×</button></div>'+
+   '<div class="fg">'+foto(p)+'<div><h3>'+esc(p.t)+'</h3><div><span style="font:400 26px var(--disp)">'+usd(p.pr)+'</span> <span class="ej">Precio de ejemplo · tomado de su aviso</span></div>'+(p.exp?'<div class="mono" style="font-size:13px">'+esc(p.exp)+'</div>':'')+
+   '<table class="tabla"><tr><td>Dirección</td><td>'+esc(p.dir)+'</td></tr><tr><td>Superficie</td><td>'+p.m2.toLocaleString("es-AR")+' m²</td></tr><tr><td>Cubiertos</td><td>'+(p.cub?p.cub+' m²':'—')+'</td></tr><tr><td>Zona</td><td>'+esc(p.zona)+'</td></tr></table>'+
+   '<ul style="padding-left:18px;margin:0 0 14px">'+p.inc.map(i=>'<li>'+esc(i)+'</li>').join("")+'</ul>'+
+   '<div class="ctas"><button class="btn wa" id="fq">Pedir visita por WhatsApp</button><button class="btn ln" id="fc">Comparar</button></div></div></div>'+
+   '<div class="mapa"><iframe title="Mapa aproximado" loading="lazy" src="https://maps.google.com/maps?q='+encodeURIComponent(p.dir+", Neuquén, Argentina")+'&z=14&output=embed"></iframe></div>'+
+   (par.length?'<div class="parec"><h5>Propiedades parecidas</h5><div>'+par.map(x=>'<button class="chip" data-p="'+x.id+'">'+nro(x.id)+' · '+esc(x.t)+'</button>').join("")+'</div></div>':'');
+  d.showModal();
+  $("#fcx").onclick=()=>d.close();
+  $("#fq").onclick=()=>{d.close();pedir(p.id);};
+  $("#fc").onclick=()=>{d.close();comparar(p.id);};
+  $$("#ficha [data-p]").forEach(b=>b.onclick=()=>abrir(+b.dataset.p));
+}
+$("#ficha").addEventListener("click",e=>{if(e.target.id==="ficha")e.target.close();});
+
+/* consulta + burbuja */
+const S={m:"visita",prop:7,dia:"",hora:"a la mañana",pago:"contado"};
+P.forEach(p=>{const o=document.createElement("option");o.value=p.id;o.textContent=nro(p.id)+" · "+p.t+" · "+p.zona;$("#cProp").appendChild(o);});
+$("#cProp").value=S.prop;
+(function(){const d=new Date();const n=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];let c=0,h="";
+  for(let i=1;c<5&&i<10;i++){const x=new Date(d);x.setDate(d.getDate()+i);if(x.getDay()===0)continue;
+   const t=n[x.getDay()]+" "+x.getDate()+"/"+(x.getMonth()+1);h+='<button class="chip" data-v="'+t+'" aria-pressed="'+(c===0)+'">'+t.charAt(0).toUpperCase()+t.slice(1)+'</button>';if(c===0)S.dia=t;c++;}
+  $("#cDia").innerHTML=h;})();
+function grupo(sel,key){$$(sel+" .chip").forEach(b=>b.onclick=()=>{$$(sel+" .chip").forEach(x=>x.setAttribute("aria-pressed","false"));b.setAttribute("aria-pressed","true");S[key]=b.dataset.v;msg();});}
+grupo("#cDia","dia");grupo("#cHora","hora");grupo("#cPago","pago");
+["#cProp","#cNom","#tTipo","#tBarrio","#tM2","#tNom"].forEach(s=>$(s).addEventListener("input",msg));
+$$(".tabs button").forEach(b=>b.onclick=()=>modo(b.dataset.m));
+function modo(m){S.m=m;$$(".tabs button").forEach(x=>x.setAttribute("aria-selected",x.dataset.m===m));$("#mVisita").hidden=m!=="visita";$("#mTasar").hidden=m!=="tasar";msg();}
+function pedir(id){$("#cProp").value=id;modo("visita");$("#consulta").scrollIntoView({behavior:"smooth"});}
+document.querySelector('a[href="#tasar"].btn').addEventListener("click",e=>{e.preventDefault();modo("tasar");$("#consulta").scrollIntoView({behavior:"smooth"});});
+document.querySelector('nav a[href="#tasar"]').addEventListener("click",e=>{e.preventDefault();modo("tasar");$("#consulta").scrollIntoView({behavior:"smooth"});});
+function texto(){
+  if(S.m==="tasar"){const n=$("#tNom").value.trim()||"…";const m=$("#tM2").value.replace(/\D/g,"");
+    return "Hola Gaia, soy "+n+". Quiero tasar mi propiedad: "+$("#tTipo").value.toLowerCase()+" en "+$("#tBarrio").value+(m?", "+(+m).toLocaleString("es-AR")+" m²":"")+".\n¿Cuándo pueden venir a verla?";}
+  const p=P[$("#cProp").value-1];const n=$("#cNom").value.trim()||"…";
+  return "Hola Gaia, soy "+n+". Me interesa la Parcela "+nro(p.id)+": "+p.t+" en "+p.dir+", "+p.zona+" ("+usd(p.pr)+").\nQuiero visitarla el "+S.dia+" "+S.hora+".\nPago: "+S.pago+".";
+}
+let tm=null,shown="";
+function msg(){const t=texto();$("#enviar").href="https://wa.me/"+WA+"?text="+encodeURIComponent(t);
+  const now=new Date();$("#bhora").textContent=now.getHours()+":"+String(now.getMinutes()).padStart(2,"0");
+  clearInterval(tm);let i=0;while(i<shown.length&&i<t.length&&shown[i]===t[i])i++;
+  tm=setInterval(()=>{if(i>=t.length){clearInterval(tm);}shown=t.slice(0,i);$("#btx").textContent=shown;i+=2;},18);}
+msg();lista();cmp();
+
+/* vista dueño */
+$("#bd").onclick=()=>{const on=document.body.classList.toggle("vd");$("#bd").setAttribute("aria-pressed",on);$("#bd").textContent=on?"Volver a la vista del cliente":"Ver como dueño";if(on)scrollTo({top:0,behavior:"smooth"});};
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Gaia Inmobiliaria"></script>
+</body>
+</html>
