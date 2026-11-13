@@ -1,0 +1,677 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Mendoza Sol y Nieve · Prototipo de reservas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Radio+Canada:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script>
+window.FALLBACK_IMG = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500"><rect width="800" height="500" fill="#e9eef1"/><circle cx="610" cy="120" r="54" fill="#f0b23c"/><path d="M0 380 L160 230 L260 300 L400 150 L520 270 L640 190 L800 330 L800 500 L0 500Z" fill="#7f97a6"/><path d="M400 150 L445 195 L420 200 L400 185 L378 205 L360 192Z" fill="#fff"/><path d="M0 430 Q200 390 400 425 T800 410 L800 500 L0 500Z" fill="#3e8f99"/><text x="40" y="70" font-family="monospace" font-size="22" fill="#2b3a48">Ilustración · foto no disponible</text></svg>');
+function imgFail(el){el.onerror=null;el.src=window.FALLBACK_IMG;el.classList.add('ill');}
+</script>
+<style>
+:root{
+  --ink:#1f2b37; --slate:#2b3a48; --mist:#e9eef1; --snow:#f7f8f6; --sun:#e9a12f; --sun-d:#b97412;
+  --river:#2f8793; --line:#c9d3d9; --mute:#5d6b77; --ok:#2e7d4f; --busy:#c8513b;
+  --wa:#dcf8c6; --wa-bg:#ece5dd;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--snow);color:var(--ink);font-family:"Radio Canada",system-ui,sans-serif;font-size:17px;line-height:1.5}
+img{max-width:100%;display:block}
+.mono{font-family:"Spline Sans Mono",ui-monospace,monospace}
+h1,h2,h3{font-family:"Bowlby One",serif;font-weight:400;line-height:1.02;margin:0;letter-spacing:.2px}
+a{color:var(--river)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+/* firma */
+.firma{font-size:12.5px;color:var(--mute);padding:8px 20px;text-align:center;border-bottom:1px solid var(--line);background:#fff}
+.firma b{color:var(--ink);font-weight:600}
+/* barra */
+.bar{position:sticky;top:0;z-index:30;background:rgba(247,248,246,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;align-items:center;gap:14px;height:62px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
+.logo svg{flex:none}
+.logo span{font-family:"Bowlby One";font-size:19px;line-height:1}
+.logo small{display:block;font-family:"Spline Sans Mono";font-size:10.5px;color:var(--mute);letter-spacing:.08em}
+.tabs{margin-left:auto;display:flex;background:var(--mist);border-radius:999px;padding:4px}
+.tabs button{border:0;background:transparent;font:600 14px "Radio Canada";padding:8px 14px;border-radius:999px;cursor:pointer;color:var(--slate)}
+.tabs button[aria-selected=true]{background:var(--slate);color:#fff}
+/* portada */
+.cover{display:grid;grid-template-columns:1.05fr 1fr;gap:28px;padding:44px 0 26px;align-items:end}
+.kicker{font-family:"Spline Sans Mono";font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--sun-d)}
+.cover h1{font-size:clamp(40px,6.2vw,82px);margin:12px 0 18px}
+.cover h1 em{font-style:normal;color:var(--river)}
+.cover ul{margin:0;padding:0;list-style:none;display:grid;gap:6px}
+.cover li{display:flex;gap:10px;align-items:baseline}
+.cover li::before{content:"";width:9px;height:9px;border-radius:2px;background:var(--sun);flex:none;transform:translateY(-1px)}
+.cta{display:inline-flex;gap:10px;align-items:center;margin-top:22px;background:var(--sun);color:#1f1606;font-weight:700;text-decoration:none;padding:13px 20px;border-radius:12px;border:0;font-size:16px;cursor:pointer}
+.cta.alt{background:transparent;border:2px solid var(--slate);color:var(--slate)}
+.ctas{display:flex;gap:10px;flex-wrap:wrap}
+/* perfil de altura */
+.profile{background:var(--slate);border-radius:20px;padding:18px 18px 10px;color:#fff;position:relative}
+.profile h2{font-size:15px;font-family:"Spline Sans Mono";font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#cfe0e6}
+.profile svg{width:100%;height:auto;display:block}
+.stop{cursor:pointer}
+.stop circle{transition:r .2s}
+.stop:hover circle,.stop:focus circle{r:11}
+.stop text{font-family:"Spline Sans Mono";font-size:13px;fill:#fff}
+.stop .alt{fill:var(--sun);font-weight:600}
+.profile p{margin:6px 2px 4px;font-size:13px;color:#cfe0e6}
+.aerial{margin:6px 0 0;background:#fff;border:1px solid var(--line);border-radius:18px;padding:10px}
+.aerial img{width:100%;height:auto;border-radius:10px;background:var(--mist)}
+.aerial figcaption{font-size:13px;color:var(--mute);padding:8px 4px 0}
+/* temporada */
+.season{margin:36px 0 10px}
+.sechead{display:flex;align-items:end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:14px}
+.sechead h2{font-size:clamp(28px,3.6vw,44px)}
+.sechead p{margin:0;color:var(--mute);max-width:520px}
+.months{display:grid;grid-template-columns:120px repeat(12,1fr);gap:3px;font-size:12px}
+.months .h{font-family:"Spline Sans Mono";color:var(--mute);text-align:center;padding:4px 0}
+.months .lab{font-weight:600;font-size:13px;display:flex;align-items:center}
+.months .c{height:30px;border-radius:5px;background:var(--mist)}
+.c.sol{background:#f3c46f}.c.sol2{background:var(--sun)}
+.c.nieve{background:#9fc3d2}.c.nieve2{background:#5d9bb5}
+.c.city{background:#c9d3d9}.c.city2{background:#7a8c99}
+.c.now{outline:2px solid var(--ink);outline-offset:1px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--mute);margin-top:10px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.dates{margin:16px 0 0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:8px}
+.dates li{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14.5px}
+.dates b{display:block;font-family:"Spline Sans Mono";font-size:12px;color:var(--sun-d);font-weight:600;letter-spacing:.04em}
+/* tramos */
+.tramo{display:grid;grid-template-columns:120px 1fr;gap:24px;padding:46px 0 10px;border-top:1px solid var(--line);margin-top:34px}
+.rail{position:relative}
+.rail .m{position:sticky;top:84px;font-family:"Spline Sans Mono";font-size:13px;color:var(--mute)}
+.rail .m strong{display:block;font-family:"Bowlby One";font-size:34px;color:var(--river);line-height:1}
+.rail .m .bar2{display:block;height:6px;border-radius:3px;background:var(--line);margin:10px 0 6px;overflow:hidden}
+.rail .m .bar2 i{display:block;height:100%;background:var(--sun)}
+.tramo h2{font-size:clamp(30px,4vw,52px)}
+.tramo .lead{margin:8px 0 22px;color:var(--mute)}
+.ficha{display:grid;grid-template-columns:1.25fr 1fr;gap:26px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:18px;margin-bottom:22px}
+.ficha .ph{display:grid;gap:10px;align-content:start}
+.ficha .ph img{width:100%;height:auto;border-radius:12px;background:var(--mist)}
+.ficha .ph img.ill{aspect-ratio:8/5}
+.thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.thumbs img{width:100%;height:auto;border-radius:8px}
+.drawn{border-radius:12px;background:var(--mist);overflow:hidden}
+.drawn svg{display:block;width:100%;height:auto}
+.ficha h3{font-size:30px;margin:2px 0 4px}
+.ficha .num{font-family:"Spline Sans Mono";font-size:12px;color:var(--mute);letter-spacing:.08em;text-transform:uppercase}
+.ficha ul{padding-left:18px;margin:10px 0}
+.ficha li{margin:3px 0}
+.price{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin:10px 0}
+.price b{font-family:"Bowlby One";font-size:30px;font-weight:400}
+.ej{font-size:11.5px;color:var(--mute);background:var(--mist);padding:2px 7px;border-radius:999px;white-space:nowrap}
+.pick{border:2px solid var(--slate);background:#fff;border-radius:10px;padding:9px 14px;font:600 14.5px "Radio Canada";cursor:pointer;color:var(--slate)}
+.pick:hover{background:var(--slate);color:#fff}
+.note{font-size:14px;background:#fff6e3;border:1px solid #f1d59c;border-radius:12px;padding:10px 12px;margin:0 0 20px}
+/* reserva */
+.reserva{margin-top:44px;background:var(--slate);color:#fff;border-radius:26px;padding:28px}
+.reserva h2{font-size:clamp(28px,3.6vw,44px)}
+.reserva .sub{color:#cfe0e6;margin:6px 0 20px}
+.rgrid{display:grid;grid-template-columns:1.1fr .9fr;gap:24px}
+.panel{background:#fff;color:var(--ink);border-radius:18px;padding:18px}
+.f{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.f label{display:grid;gap:4px;font-size:13px;font-weight:600;color:var(--mute)}
+.f .full{grid-column:1/-1}
+select,input{font:16px "Radio Canada";padding:10px 11px;border:1.5px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);width:100%}
+.cal{margin-top:14px}
+.calhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.calhead b{font-family:"Spline Sans Mono";font-size:14px}
+.calhead button{border:1px solid var(--line);background:#fff;border-radius:8px;width:34px;height:30px;cursor:pointer;font-size:16px}
+.grid7{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;font-size:13px}
+.grid7 .dw{text-align:center;font-family:"Spline Sans Mono";font-size:11px;color:var(--mute)}
+.d{aspect-ratio:1/1;border-radius:7px;display:flex;align-items:center;justify-content:center;background:#eef6f0;color:#244b33;cursor:pointer;border:0;font:500 13px "Radio Canada"}
+.d.busy{background:#f6e1dc;color:#9a3d2c;text-decoration:line-through;cursor:not-allowed}
+.d.past,.d.off{background:#f1f3f4;color:#a7b0b6;cursor:not-allowed}
+.d.sel{background:var(--river);color:#fff}
+.d.edge{background:var(--slate);color:#fff}
+.sync{font-size:12.5px;color:var(--mute);margin-top:8px;display:flex;gap:8px;align-items:center}
+.sync i{width:8px;height:8px;border-radius:50%;background:var(--ok);display:inline-block}
+.sum{margin-top:14px;border-top:1px dashed var(--line);padding-top:12px;display:grid;gap:4px;font-size:15px}
+.sum div{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.sum .tot{font-weight:700;font-size:18px}
+.warn{color:var(--busy);font-size:14px;min-height:1.2em}
+/* chat */
+.chat{background:var(--wa-bg);border-radius:18px;padding:0;overflow:hidden;color:#111;display:flex;flex-direction:column}
+.chat .top{background:#075e54;color:#fff;padding:10px 14px;display:flex;align-items:center;gap:10px;font-size:14px}
+.chat .top .av{width:34px;height:34px;border-radius:50%;background:var(--sun);display:flex;align-items:center;justify-content:center;font-family:"Bowlby One";color:#1f1606}
+.chat .top small{display:block;opacity:.8;font-size:12px}
+.chat .body{padding:16px;flex:1}
+.bubble{background:var(--wa);border-radius:10px 2px 10px 10px;padding:10px 12px 18px;max-width:94%;margin-left:auto;font-size:14.5px;white-space:pre-wrap;position:relative;box-shadow:0 1px 1px rgba(0,0,0,.12);min-height:60px}
+.bubble .t{position:absolute;right:8px;bottom:3px;font-size:11px;color:#667}
+.typing{font-size:12px;color:#556;margin:6px 4px 0;text-align:right;height:16px}
+.wa{display:flex;justify-content:center;gap:8px;align-items:center;margin:12px 16px 16px;background:#25d366;color:#04230f;font-weight:700;text-decoration:none;padding:13px;border-radius:12px}
+/* bullets secciones */
+.cols{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;margin-top:40px}
+.box{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px 20px}
+.box h3{font-size:24px;margin-bottom:8px}
+.box ul{margin:0;padding-left:18px}
+.box li{margin:4px 0}
+.faq details{border-bottom:1px solid var(--line);padding:10px 0}
+.faq summary{cursor:pointer;font-weight:600}
+.faq p{margin:6px 0 0;color:var(--mute)}
+.mapa svg{width:100%;height:auto;border-radius:12px;background:var(--mist)}
+/* dueño */
+#owner{display:none}
+body.owner #guest{display:none}
+body.owner #owner{display:block}
+.tag{display:inline-block;font-family:"Spline Sans Mono";font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;background:#fff6e3;border:1px solid #f1d59c;color:var(--sun-d);padding:3px 8px;border-radius:6px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}
+.kpi b{display:block;font-family:"Bowlby One";font-size:28px;font-weight:400}
+.kpi span{font-size:13px;color:var(--mute)}
+.ogrid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.inbox .bubble{margin:0 0 12px auto;font-size:13.5px}
+.inbox .meta{font-size:12px;color:var(--mute);text-align:right;margin:-8px 0 10px}
+.week{width:100%;border-collapse:collapse;font-size:13.5px}
+.week th,.week td{border:1px solid var(--line);padding:7px 6px;text-align:center}
+.week th{font-family:"Spline Sans Mono";font-weight:600;font-size:11.5px;color:var(--mute);background:var(--mist)}
+.week td.o{background:#f6e1dc;color:#9a3d2c}
+.week td.l{background:#eef6f0;color:#244b33}
+.week td.n{text-align:left;font-weight:600}
+.cmp{display:grid;gap:8px;margin-top:8px}
+.cmp .row{display:grid;grid-template-columns:150px 1fr 90px;gap:10px;align-items:center;font-size:14px}
+.cmp .tr{height:14px;border-radius:7px;background:var(--mist);overflow:hidden}
+.cmp .tr i{display:block;height:100%}
+.para{background:var(--slate);color:#fff;border-radius:20px;padding:22px;margin-top:20px}
+.para h3{font-size:28px;margin-bottom:10px}
+.para ul{margin:0;padding-left:20px;display:grid;gap:6px}
+footer{margin-top:50px;border-top:1px solid var(--line);padding:22px 0 34px;font-size:13px;color:var(--mute);text-align:center}
+@media (max-width:900px){
+  .cover,.rgrid,.ficha,.ogrid,.cols{grid-template-columns:1fr}
+  .tramo{grid-template-columns:1fr;gap:6px}
+  .rail .m{position:static;display:flex;gap:14px;align-items:baseline}
+  .rail .m .bar2{display:none}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .months{grid-template-columns:78px repeat(12,1fr);font-size:10px}
+  .months .lab{font-size:11px}
+  .months .h{font-size:9px}
+}
+@media (max-width:520px){
+  body{font-size:16px}
+  .wrap{padding:0 16px}
+  .bar .wrap{height:auto;padding-top:8px;padding-bottom:8px;flex-wrap:wrap}
+  .tabs{margin-left:0;width:100%}
+  .tabs button{flex:1}
+  .f{grid-template-columns:1fr}
+  .reserva{padding:18px 14px;border-radius:20px}
+  .panel{padding:14px}
+  .cmp .row{grid-template-columns:96px 1fr 70px;font-size:13px}
+  .week{font-size:11.5px}
+  .week th,.week td{padding:5px 2px}
+}
+</style>
+</head>
+<body>
+<div class="firma">Prototipo preparado para <b>Mendoza Sol y Nieve</b> · 13 de noviembre de 2026</div>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="Mendoza Sol y Nieve">
+      <svg width="38" height="38" viewBox="0 0 38 38" aria-hidden="true"><circle cx="27" cy="11" r="6" fill="#e9a12f"/><path d="M2 32 L13 15 L20 24 L25 18 L36 32Z" fill="#2b3a48"/><path d="M13 15 L16.5 20 L13.8 19.4 L11.6 21Z" fill="#fff"/></svg>
+      <div><span>Sol y Nieve</span><small>MENDOZA · POTRERILLOS · LAS LEÑAS</small></div>
+    </a>
+    <div class="tabs" role="tablist">
+      <button role="tab" aria-selected="true" id="tGuest">Vista huésped</button>
+      <button role="tab" aria-selected="false" id="tOwner">Ver como dueño</button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+<div id="guest">
+<div class="wrap">
+  <section class="cover">
+    <div>
+      <div class="kicker">Atención directa con los dueños</div>
+      <h1>De 750 a 2.240 metros, <em>con los mismos dueños.</em></h1>
+      <ul>
+        <li>Cabañas de madera en Potrerillos, Ruta 7 km 1108</li>
+        <li>Departamentos frente a Plaza Independencia</li>
+        <li>Un departamento a metros de las pistas de Las Leñas</li>
+        <li>Mirás la disponibilidad y pedís la reserva con seña acá mismo</li>
+      </ul>
+      <div class="ctas">
+        <a class="cta" href="#reservar">Ver fechas libres ↓</a>
+        <a class="cta alt" href="#temporadas">¿Cuándo conviene ir?</a>
+      </div>
+    </div>
+    <div>
+      <div class="profile">
+        <h2>Elegí por altura</h2>
+        <svg viewBox="0 0 520 250" role="img" aria-label="Perfil de altura: Mendoza, Potrerillos y Las Leñas">
+          <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4c6577"/><stop offset="1" stop-color="#2b3a48"/></linearGradient></defs>
+          <g stroke="#3d5163" stroke-width="1"><line x1="0" y1="200" x2="520" y2="200"/><line x1="0" y1="140" x2="520" y2="140"/><line x1="0" y1="80" x2="520" y2="80"/></g>
+          <g font-family="Spline Sans Mono" font-size="10" fill="#8fa6b4"><text x="4" y="196">750 m</text><text x="4" y="136">1.500 m</text><text x="4" y="76">2.250 m</text></g>
+          <path d="M0 210 L70 205 L120 200 C170 196 190 160 230 150 L260 147 C300 140 320 100 360 90 L390 78 C420 70 440 74 470 60 L520 50 L520 250 L0 250Z" fill="url(#g)"/>
+          <path d="M440 74 L470 60 L486 70 L470 72 L456 80Z" fill="#fff" opacity=".9"/>
+          <path d="M0 210 L70 205 L120 200 C170 196 190 160 230 150 L260 147 C300 140 320 100 360 90 L390 78 C420 70 440 74 470 60 L520 50" fill="none" stroke="#e9a12f" stroke-width="3" stroke-dasharray="6 5"/>
+          <g class="stop" tabindex="0" data-go="t-mza"><circle cx="100" cy="201" r="8" fill="#c9d3d9"/><text x="70" y="232">Mendoza</text><text class="alt" x="70" y="246">≈750 m</text></g>
+          <g class="stop" tabindex="0" data-go="t-pot"><circle cx="250" cy="148" r="8" fill="#e9a12f"/><text x="214" y="122">Potrerillos</text><text class="alt" x="214" y="108">≈1.400 m</text></g>
+          <g class="stop" tabindex="0" data-go="t-len"><circle cx="455" cy="70" r="8" fill="#9fc3d2"/><text x="380" y="30">Las Leñas</text><text class="alt" x="380" y="46">≈2.240 m</text></g>
+        </svg>
+        <p class="mono">Tocá una parada para ver sus unidades.</p>
+      </div>
+      <figure class="aerial">
+        <img src="https://www.mendozasolynieve.com.ar/assets/img/pot-aerea.jpg" alt="Vista aérea del complejo de Potrerillos frente al dique" onerror="imgFail(this)">
+        <figcaption>El complejo de Potrerillos, frente al dique. Foto de mendozasolynieve.com.ar</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="season" id="temporadas">
+    <div class="sechead">
+      <h2>Sol o nieve: cada mes tiene su parada</h2>
+      <p>El huésped ve qué conviene en cada época, sin preguntarte por WhatsApp.</p>
+    </div>
+    <div class="months" id="months"></div>
+    <div class="legend">
+      <span><i style="background:#e9a12f"></i>Potrerillos: verano, rafting y pileta</span>
+      <span><i style="background:#5d9bb5"></i>Las Leñas: temporada de nieve</span>
+      <span><i style="background:#7a8c99"></i>Mendoza: todo el año, Vendimia</span>
+      <span><i style="background:#fff;outline:2px solid #1f2b37"></i>Hoy</span>
+    </div>
+    <ul class="dates">
+      <li><b>15 DIC 2026 – 28 FEB 2027</b>Temporada alta de verano en Potrerillos</li>
+      <li><b>8 Y 9 FEB 2027</b>Fin de semana largo de Carnaval</li>
+      <li><b>PRINCIPIOS DE MARZO 2027</b>Fiesta Nacional de la Vendimia en Mendoza</li>
+      <li><b>25 – 28 MAR 2027</b>Semana Santa</li>
+      <li><b>JUNIO – SEPTIEMBRE 2027</b>Temporada de nieve en Las Leñas</li>
+      <li><b>FERIADOS LARGOS Y ALTA</b>Puede pedirse un mínimo de 2 noches</li>
+    </ul>
+  </section>
+
+  <!-- POTRERILLOS -->
+  <section class="tramo" id="t-pot">
+    <div class="rail"><div class="m"><strong>1.400</strong>metros<span class="bar2"><i style="width:58%"></i></span> · Potrerillos</div></div>
+    <div>
+      <h2>Potrerillos</h2>
+      <p class="lead">Cabañas de madera en el complejo de Ruta 7 km 1108, con vista al dique y a la cordillera.</p>
+      <article class="ficha">
+        <div class="ph">
+          <img src="https://www.mendozasolynieve.com.ar/assets/img/pot-grande-living.jpg" alt="Cabaña Grande: living con hogar" onerror="imgFail(this)">
+          <div class="thumbs">
+            <img src="https://www.mendozasolynieve.com.ar/assets/img/pot-aerea.jpg" alt="Vista aérea del complejo" onerror="imgFail(this)">
+          </div>
+        </div>
+        <div>
+          <div class="num">Cabaña 15</div>
+          <h3>Cabaña Grande</h3>
+          <ul>
+            <li>Hasta 7 personas</li>
+            <li>3 dormitorios</li>
+            <li>Living con hogar</li>
+            <li>Deck con vista a la cordillera y parrilla privada</li>
+            <li>Tarifa grupal reservando con 30 días</li>
+          </ul>
+          <div class="price"><span>desde</span><b>U$S 79</b><span>/ noche</span><span class="ej">Precio de ejemplo</span></div>
+          <button class="pick" data-unit="grande">Elegir Cabaña Grande →</button>
+        </div>
+      </article>
+      <article class="ficha">
+        <div class="ph">
+          <img src="https://www.mendozasolynieve.com.ar/assets/img/pot-loft-cocina.jpg" alt="Cabaña Loft: cocina equipada" onerror="imgFail(this)">
+        </div>
+        <div>
+          <div class="num">Cabaña 16</div>
+          <h3>Cabaña Loft</h3>
+          <ul>
+            <li>Hasta 4 personas</li>
+            <li>1 dormitorio en planta alta</li>
+            <li>Cocina equipada</li>
+            <li>Ideal para parejas o familia chica</li>
+          </ul>
+          <div class="price"><span>desde</span><b>U$S 65</b><span>/ noche</span><span class="ej">Precio de ejemplo</span></div>
+          <button class="pick" data-unit="loft">Elegir Cabaña Loft →</button>
+        </div>
+      </article>
+      <p class="note">En las dos cabañas: WiFi, parrilla, cocina equipada, ropa blanca y toallas, deck, cochera y calefacción.</p>
+    </div>
+  </section>
+
+  <!-- MENDOZA -->
+  <section class="tramo" id="t-mza">
+    <div class="rail"><div class="m"><strong>750</strong>metros<span class="bar2"><i style="width:32%"></i></span> · Mendoza</div></div>
+    <div>
+      <h2>Mendoza Capital</h2>
+      <p class="lead">Gral. Espejo 333, frente a Plaza Independencia.</p>
+      <article class="ficha">
+        <div class="ph"><div class="drawn"><svg viewBox="0 0 800 500" aria-label="Ilustración de Plaza Independencia"><rect width="800" height="500" fill="#e9eef1"/><rect x="60" y="150" width="140" height="300" fill="#c9d3d9"/><rect x="220" y="90" width="120" height="360" fill="#7a8c99"/><rect x="360" y="190" width="110" height="260" fill="#c9d3d9"/><g fill="#f7f8f6"><rect x="240" y="120" width="22" height="22"/><rect x="290" y="120" width="22" height="22"/><rect x="240" y="170" width="22" height="22"/><rect x="290" y="170" width="22" height="22"/><rect x="240" y="220" width="22" height="22"/><rect x="290" y="220" width="22" height="22"/></g><circle cx="610" cy="330" r="80" fill="#5f9a6e"/><circle cx="690" cy="360" r="60" fill="#4f8a5e"/><rect x="0" y="440" width="800" height="60" fill="#2b3a48"/><text x="40" y="60" font-family="monospace" font-size="22" fill="#2b3a48">Gral. Espejo 333 · Plaza Independencia</text></svg></div></div>
+        <div>
+          <div class="num">2 ambientes</div>
+          <h3>Departamento 2</h3>
+          <ul><li>Hasta 4 personas</li><li>En pleno centro, frente a la plaza</li><li>A pasos de la Peatonal Sarmiento</li></ul>
+          <div class="price"><span>desde</span><b>U$S 46</b><span>/ noche</span><span class="ej">Precio de ejemplo</span></div>
+          <button class="pick" data-unit="d2">Elegir Departamento 2 →</button>
+        </div>
+      </article>
+      <article class="ficha">
+        <div class="ph"><div class="drawn"><svg viewBox="0 0 800 500" aria-label="Ilustración de departamento"><rect width="800" height="500" fill="#f2efe8"/><rect x="80" y="260" width="300" height="120" rx="14" fill="#7a8c99"/><rect x="80" y="230" width="300" height="50" rx="14" fill="#c9d3d9"/><rect x="470" y="80" width="250" height="230" fill="#9fc3d2"/><path d="M470 260 L560 180 L620 230 L720 150 L720 310 L470 310Z" fill="#2b3a48"/><rect x="460" y="70" width="270" height="250" fill="none" stroke="#2b3a48" stroke-width="10"/><rect x="0" y="420" width="800" height="80" fill="#d8cdb8"/><text x="40" y="60" font-family="monospace" font-size="22" fill="#2b3a48">3 ambientes · centro de Mendoza</text></svg></div></div>
+        <div>
+          <div class="num">3 ambientes</div>
+          <h3>Departamento 3</h3>
+          <ul><li>De 2 a 4 personas</li><li>Ideal para Vendimia y bodegas</li><li>Tarifa especial en fines de semana largos (3 noches)</li></ul>
+          <div class="price"><span>desde</span><b>U$S 48</b><span>/ noche</span><span class="ej">Precio de ejemplo</span></div>
+          <button class="pick" data-unit="d3">Elegir Departamento 3 →</button>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- LAS LEÑAS -->
+  <section class="tramo" id="t-len">
+    <div class="rail"><div class="m"><strong>2.240</strong>metros<span class="bar2"><i style="width:96%"></i></span> · Las Leñas</div></div>
+    <div>
+      <h2>Valle de Las Leñas</h2>
+      <p class="lead">A metros de las pistas. Solo en temporada de nieve, de junio a septiembre.</p>
+      <article class="ficha">
+        <div class="ph"><div class="drawn"><svg viewBox="0 0 800 500" aria-label="Ilustración de pistas de esquí"><rect width="800" height="500" fill="#dfeaf0"/><path d="M0 360 L180 140 L300 260 L460 60 L620 230 L800 120 L800 500 L0 500Z" fill="#ffffff"/><path d="M0 360 L180 140 L300 260 L460 60 L620 230 L800 120" fill="none" stroke="#9fc3d2" stroke-width="6"/><path d="M460 60 C430 160 520 220 470 330 C440 400 520 440 500 500" fill="none" stroke="#5d9bb5" stroke-width="5" stroke-dasharray="14 10"/><g fill="#2f6e4b"><path d="M90 470 l20 -50 l20 50z"/><path d="M130 480 l18 -44 l18 44z"/><path d="M680 470 l20 -52 l20 52z"/></g><text x="40" y="60" font-family="monospace" font-size="22" fill="#2b3a48">Temporada de nieve · junio a septiembre</text></svg></div></div>
+        <div>
+          <div class="num">Temporada de nieve</div>
+          <h3>Departamento Las Leñas</h3>
+          <ul><li>Hasta 4 personas</li><li>A metros de las pistas</li><li>Abre de junio a septiembre</li><li>Precio por temporada, a consultar</li></ul>
+          <div class="price"><b style="font-size:24px">A consultar</b><span class="ej">Precio de ejemplo</span></div>
+          <button class="pick" data-unit="lenas">Pedir fechas en Las Leñas →</button>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- RESERVA -->
+  <section class="reserva" id="reservar">
+    <h2>Pedí tu reserva</h2>
+    <p class="sub">Elegí unidad y fechas: el mensaje se arma solo y les llega a los dueños por WhatsApp.</p>
+    <div class="rgrid">
+      <div class="panel">
+        <div class="f">
+          <label class="full">Unidad
+            <select id="unit">
+              <option value="grande">Potrerillos · Cabaña Grande (hasta 7)</option>
+              <option value="loft">Potrerillos · Cabaña Loft (hasta 4)</option>
+              <option value="d2">Mendoza · Departamento 2 (hasta 4)</option>
+              <option value="d3">Mendoza · Departamento 3 (hasta 4)</option>
+              <option value="lenas">Las Leñas · Departamento (hasta 4)</option>
+            </select>
+          </label>
+          <label>Llegada <input type="date" id="in"></label>
+          <label>Salida <input type="date" id="out"></label>
+          <label>Personas <select id="pax"></select></label>
+          <label>Tu nombre <input id="name" placeholder="Ej.: Laura" autocomplete="off"></label>
+        </div>
+        <div class="cal">
+          <div class="calhead"><button id="prev" aria-label="Mes anterior">‹</button><b id="calTitle"></b><button id="next" aria-label="Mes siguiente">›</button></div>
+          <div class="grid7" id="cal"></div>
+          <div class="sync"><i></i>Disponibilidad de ejemplo · se sincroniza con Booking y Airbnb, sin dobles reservas</div>
+        </div>
+        <div class="warn" id="warn"></div>
+        <div class="sum" id="sum"></div>
+      </div>
+      <div class="chat">
+        <div class="top"><div class="av">S</div><div>Mendoza Sol y Nieve<small>+54 9 261 654-3938</small></div></div>
+        <div class="body">
+          <div class="bubble" id="bubble"></div>
+          <div class="typing" id="typing"></div>
+        </div>
+        <a class="wa" id="waBtn" href="#" target="_blank" rel="noopener">Enviar por WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="cols">
+    <div class="box">
+      <h3>Cómo funciona</h3>
+      <ul>
+        <li>Elegís unidad, fechas y personas</li>
+        <li>Ves el total y la seña del 30%</li>
+        <li>Mandás el pedido por WhatsApp con un toque</li>
+        <li>Pagás la seña por Mercado Pago y queda confirmada</li>
+      </ul>
+    </div>
+    <div class="box">
+      <h3>Reglas de la casa</h3>
+      <ul>
+        <li>Check-in 14:00 · check-out 10:00</li>
+        <li>Recepción hasta las 21:00; más tarde, avisá por WhatsApp</li>
+        <li>Temporada baja: desde 1 noche</li>
+        <li>Feriados largos y alta: puede pedirse mínimo 2 noches</li>
+        <li>Ropa blanca y toallas incluidas</li>
+      </ul>
+    </div>
+    <div class="box">
+      <h3>Qué hacer en Potrerillos</h3>
+      <ul>
+        <li>Rafting y kayak en el río Mendoza y el dique</li>
+        <li>Trekking y mountain bike en el Cordón del Plata</li>
+        <li>Rappel y tirolesa con operadores de la zona</li>
+        <li>Termas de Cacheuta, a pocos kilómetros</li>
+        <li>Los dueños te recomiendan operadores</li>
+      </ul>
+    </div>
+    <div class="box faq">
+      <h3>Preguntas frecuentes</h3>
+      <details><summary>¿Aceptan mascotas?</summary><p>Según disponibilidad: algunas cabañas aceptan mascotas chicas con aviso previo.</p></details>
+      <details><summary>¿Cómo llego a Potrerillos?</summary><p>Por Ruta Nacional 7 hasta el km 1108. Hay combis y remises desde Mendoza Capital.</p></details>
+      <details><summary>¿La seña se devuelve?</summary><p>Lo define cada dueño; acá se muestra su política antes de pagar.</p></details>
+      <details><summary>¿Puedo reservar varias unidades?</summary><p>Sí: para grupos hay tarifa en la Cabaña Grande reservando con 30 días.</p></details>
+    </div>
+    <div class="box mapa" style="grid-column:1/-1">
+      <h3>Dónde estamos</h3>
+      <svg viewBox="0 0 900 260" role="img" aria-label="Esquema de ubicación">
+        <rect width="900" height="260" fill="#e9eef1"/>
+        <path d="M60 190 C200 180 300 120 420 130 S700 70 860 60" fill="none" stroke="#2b3a48" stroke-width="6"/>
+        <text x="380" y="112" font-family="Spline Sans Mono" font-size="14" fill="#2b3a48">RN 7</text>
+        <path d="M430 160 C480 150 520 175 600 160 C640 152 660 170 640 190 C600 210 480 205 440 190Z" fill="#3e8f99" opacity=".8"/>
+        <text x="470" y="230" font-family="Spline Sans Mono" font-size="13" fill="#2b3a48">Dique Potrerillos</text>
+        <circle cx="80" cy="190" r="10" fill="#7a8c99"/><text x="60" y="225" font-family="Spline Sans Mono" font-size="13" fill="#2b3a48">Mendoza Capital</text>
+        <circle cx="560" cy="110" r="12" fill="#e9a12f"/><text x="560" y="88" font-family="Spline Sans Mono" font-size="13" fill="#2b3a48" text-anchor="middle">Ruta 7 km 1108</text>
+        <path d="M780 70 L860 60" stroke="#9fc3d2" stroke-width="6" stroke-dasharray="8 6"/><text x="740" y="40" font-family="Spline Sans Mono" font-size="13" fill="#2b3a48">→ Alta montaña</text>
+      </svg>
+      <p style="margin:10px 0 0"><a href="https://www.google.com/maps/search/?api=1&query=Ruta+7+km+1108+Potrerillos+Mendoza" target="_blank" rel="noopener">Abrir en Google Maps</a></p>
+    </div>
+  </section>
+</div>
+</div>
+
+<!-- DUEÑO -->
+<div id="owner">
+<div class="wrap" style="padding-top:30px">
+  <span class="tag">Panel de ejemplo</span>
+  <h2 style="font-size:clamp(30px,4vw,50px);margin-top:10px">Lo que ven los dueños</h2>
+  <div class="kpis">
+    <div class="kpi"><b>9</b><span>pedidos esta semana</span></div>
+    <div class="kpi"><b>4</b><span>señas cobradas</span></div>
+    <div class="kpi"><b id="kSena">U$S 0</b><span>en señas (30%)</span></div>
+    <div class="kpi"><b id="kAhorro">U$S 0</b><span>que no se lleva Booking</span></div>
+  </div>
+  <div class="ogrid">
+    <div class="box inbox">
+      <h3>Pedidos que entraron</h3>
+      <div class="bubble">Hola! Soy Martín. Quiero reservar Cabaña Grande (Potrerillos).
+Llegada: vie 18/12 · Salida: lun 21/12 (3 noches)
+Personas: 6
+Total: U$S 237 · Seña 30%: U$S 71,10 por Mercado Pago
+¿Me confirman?<span class="t">10:42 ✓✓</span></div>
+      <div class="meta">Seña pagada · Mercado Pago</div>
+      <div class="bubble">Hola! Soy Carla. Quiero reservar Departamento 3 (Mendoza).
+Llegada: jue 4/3 · Salida: dom 7/3 (3 noches)
+Personas: 4
+Total: U$S 144 · Seña 30%: U$S 43,20 por Mercado Pago
+¿Me confirman?<span class="t">09:15 ✓✓</span></div>
+      <div class="meta">Esperando seña</div>
+      <div class="bubble">Hola! Soy Diego. Quiero reservar Cabaña Loft (Potrerillos).
+Llegada: lun 23/11 · Salida: jue 26/11 (3 noches)
+Personas: 2
+Total: U$S 195 · Seña 30%: U$S 58,50 por Mercado Pago
+¿Me confirman?<span class="t">ayer ✓✓</span></div>
+      <div class="meta">Seña pagada · Mercado Pago</div>
+    </div>
+    <div>
+      <div class="box">
+        <h3>Cupos de la semana</h3>
+        <table class="week" id="week"></table>
+        <p style="font-size:12.5px;color:var(--mute);margin:8px 0 0">Ocupado = reservas directas + Booking + Airbnb, en un solo calendario.</p>
+      </div>
+      <div class="box" style="margin-top:20px">
+        <h3>Directo vs. Booking</h3>
+        <p style="margin:0;color:var(--mute);font-size:14px">Mismas 4 reservas, comisión de hasta 15%.</p>
+        <div class="cmp" id="cmp"></div>
+      </div>
+    </div>
+  </div>
+  <div class="para">
+    <h3>Para ustedes, Mendoza Sol y Nieve</h3>
+    <ul>
+      <li>Menos "¿tenés libre del 10 al 15?": el huésped ve el calendario de las 5 unidades</li>
+      <li>Potrerillos, Mendoza y Las Leñas en una sola agenda, con cupos por unidad</li>
+      <li>La seña del 30% entra por Mercado Pago antes de confirmar</li>
+      <li>Sin comisión por reserva: lo que hoy se lleva Booking queda en el complejo</li>
+    </ul>
+  </div>
+</div>
+</div>
+</main>
+
+<footer>Prototipo de demostración preparado para Mendoza Sol y Nieve por Resolviendo Kos · No es la web oficial</footer>
+
+<script>
+(function(){
+const UNITS={
+  grande:{n:"Cabaña Grande",z:"Potrerillos",rate:79,max:7},
+  loft:{n:"Cabaña Loft",z:"Potrerillos",rate:65,max:4},
+  d2:{n:"Departamento 2",z:"Mendoza",rate:46,max:4},
+  d3:{n:"Departamento 3",z:"Mendoza",rate:48,max:4},
+  lenas:{n:"Departamento Las Leñas",z:"Las Leñas",rate:null,max:4}
+};
+const $=id=>document.getElementById(id);
+const TODAY=new Date(2026,10,13);
+const MES=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+const DIA=["dom","lun","mar","mié","jue","vie","sáb"];
+const iso=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const parse=s=>{const [y,m,d]=s.split("-").map(Number);return new Date(y,m-1,d)};
+const fmt=d=>DIA[d.getDay()]+" "+d.getDate()+"/"+(d.getMonth()+1);
+const money=v=>"U$S "+(Math.round(v*100)/100).toLocaleString("es-AR",{minimumFractionDigits:v%1?2:0,maximumFractionDigits:2});
+
+/* tabs */
+function setTab(owner){document.body.classList.toggle("owner",owner);$("tGuest").setAttribute("aria-selected",!owner);$("tOwner").setAttribute("aria-selected",owner);window.scrollTo({top:0});}
+$("tGuest").onclick=()=>setTab(false);$("tOwner").onclick=()=>setTab(true);
+
+/* paradas */
+document.querySelectorAll(".stop").forEach(s=>{const go=()=>$(s.dataset.go).scrollIntoView({behavior:"smooth"});s.addEventListener("click",go);s.addEventListener("keydown",e=>{if(e.key==="Enter")go()})});
+
+/* meses */
+const M=["E","F","M","A","M","J","J","A","S","O","N","D"];
+const rows=[["Potrerillos",m=>[0,1].includes(m)?"sol2":[2,10,11].includes(m)?"sol":""],["Las Leñas",m=>[6,7].includes(m)?"nieve2":[5,8].includes(m)?"nieve":""],["Mendoza",m=>m===2?"city2":"city"]];
+let h='<div></div>'+M.map(x=>'<div class="h">'+x+'</div>').join("");
+rows.forEach(([lab,f])=>{h+='<div class="lab">'+lab+'</div>';for(let m=0;m<12;m++)h+='<div class="c '+f(m)+(m===10?' now':'')+'" title="'+lab+' · '+MES[m]+'"></div>'});
+$("months").innerHTML=h;
+
+/* ocupación de ejemplo, determinística */
+function busy(unit,d){
+  const k=d.getFullYear()*400+d.getMonth()*32+d.getDate();
+  const seed={grande:3,loft:7,d2:11,d3:5,lenas:2}[unit];
+  const v=(k*seed*2654435761>>>0)%100;
+  const wk=d.getDay()===5||d.getDay()===6;
+  return v<(wk?42:16);
+}
+function inSeason(unit,d){return unit!=="lenas"||(d.getMonth()>=5&&d.getMonth()<=8)}
+
+/* estado */
+let view=new Date(2026,11,1);
+const st={unit:"grande",in:null,out:null};
+function defaultDates(){let d=new Date(2026,11,4);while(true){const e=new Date(d);e.setDate(e.getDate()+3);if(rangeFree(st.unit,d,e))break;d.setDate(d.getDate()+1)}st.in=d;st.out=new Date(d.getFullYear(),d.getMonth(),d.getDate()+3);}
+function rangeFree(u,a,b){for(let d=new Date(a);d<b;d.setDate(d.getDate()+1)){if(busy(u,d)||!inSeason(u,d))return false}return true}
+
+function fillPax(){const max=UNITS[st.unit].max;const cur=+$("pax").value||2;$("pax").innerHTML=Array.from({length:max},(_,i)=>'<option value="'+(i+1)+'">'+(i+1)+(i?' personas':' persona')+'</option>').join("");$("pax").value=Math.min(cur,max);}
+
+function drawCal(){
+  $("calTitle").textContent=MES[view.getMonth()]+" "+view.getFullYear();
+  const first=new Date(view.getFullYear(),view.getMonth(),1);
+  const days=new Date(view.getFullYear(),view.getMonth()+1,0).getDate();
+  let html=["D","L","M","M","J","V","S"].map(x=>'<div class="dw">'+x+'</div>').join("");
+  for(let i=0;i<first.getDay();i++)html+='<div></div>';
+  for(let i=1;i<=days;i++){
+    const d=new Date(view.getFullYear(),view.getMonth(),i);
+    let c="d";
+    if(d<TODAY)c+=" past";else if(!inSeason(st.unit,d))c+=" off";else if(busy(st.unit,d))c+=" busy";
+    if(st.in&&st.out&&d>=st.in&&d<st.out)c+=" sel";
+    if(st.in&&+d===+st.in)c+=" edge";
+    html+='<button class="'+c+'" data-d="'+iso(d)+'" aria-label="'+i+' de '+MES[d.getMonth()]+'">'+i+'</button>';
+  }
+  $("cal").innerHTML=html;
+  $("cal").querySelectorAll(".d").forEach(b=>b.onclick=()=>{
+    if(b.classList.contains("busy")||b.classList.contains("past")||b.classList.contains("off"))return;
+    const d=parse(b.dataset.d);
+    if(!st.in||st.out){st.in=d;st.out=null}
+    else if(d>st.in){st.out=d}
+    else{st.in=d}
+    sync();
+  });
+}
+
+let typingT;
+function sync(){
+  const u=UNITS[st.unit];
+  $("in").value=st.in?iso(st.in):"";$("out").value=st.out?iso(st.out):"";
+  drawCal();
+  const name=$("name").value.trim();
+  const pax=+$("pax").value;
+  let warn="",sum="",msg;
+  const nights=st.in&&st.out?Math.round((st.out-st.in)/864e5):0;
+  if(st.unit==="lenas"&&st.in&&!inSeason("lenas",st.in))warn="Las Leñas abre en temporada de nieve (junio a septiembre). Pasá el calendario a junio.";
+  else if(st.in&&st.out&&!rangeFree(st.unit,st.in,st.out))warn="Hay noches ocupadas en ese rango. Elegí otras fechas.";
+  let lines=["Hola! Soy "+(name||"…")+". Quiero reservar "+u.n+" ("+u.z+")."];
+  if(st.in)lines.push("Llegada: "+fmt(st.in)+(st.out?" · Salida: "+fmt(st.out)+" ("+nights+(nights===1?" noche)":" noches)"):" · Salida: …"));
+  else lines.push("Fechas: …");
+  lines.push("Personas: "+pax);
+  if(u.rate&&nights){
+    const tot=u.rate*nights,sena=tot*.3;
+    sum='<div><span>'+nights+' × '+money(u.rate)+' <span class="ej">Precio de ejemplo</span></span><span>'+money(tot)+'</span></div>'+
+        '<div class="tot"><span>Total</span><span>'+money(tot)+'</span></div>'+
+        '<div><span>Seña 30% por Mercado Pago (demo) <span class="ej">Precio de ejemplo</span></span><span>'+money(sena)+'</span></div>'+
+        '<div><span>Saldo al llegar</span><span>'+money(tot-sena)+'</span></div>';
+    lines.push("Total: "+money(tot)+" · Seña 30%: "+money(sena)+" por Mercado Pago");
+  }else if(!u.rate){
+    sum='<div><span>Precio por temporada <span class="ej">Precio de ejemplo</span></span><span>A consultar</span></div>';
+    lines.push("¿Qué precio tiene para esas fechas?");
+  }
+  lines.push("¿Me confirman?");
+  msg=lines.join("\n");
+  $("warn").textContent=warn;$("sum").innerHTML=sum;
+  const now=new Date();const hh=String(now.getHours()).padStart(2,"0")+":"+String(now.getMinutes()).padStart(2,"0");
+  $("bubble").innerHTML="";$("bubble").appendChild(document.createTextNode(msg));
+  const t=document.createElement("span");t.className="t";t.textContent=hh;$("bubble").appendChild(t);
+  $("typing").textContent="escribiendo…";clearTimeout(typingT);typingT=setTimeout(()=>$("typing").textContent="",900);
+  $("waBtn").href="https://wa.me/5492616543938?text="+encodeURIComponent(msg);
+}
+
+$("unit").onchange=e=>{st.unit=e.target.value;fillPax();if(st.unit==="lenas"){view=new Date(2027,5,1);st.in=null;st.out=null}else{if(view.getMonth()>=5&&view.getFullYear()===2027)view=new Date(2026,11,1);defaultDates()}sync()};
+$("in").onchange=e=>{if(e.target.value){st.in=parse(e.target.value);if(st.out&&st.out<=st.in)st.out=null;view=new Date(st.in.getFullYear(),st.in.getMonth(),1)}sync()};
+$("out").onchange=e=>{if(e.target.value){const d=parse(e.target.value);if(!st.in||d>st.in)st.out=d}sync()};
+$("pax").onchange=sync;$("name").oninput=sync;
+$("prev").onclick=()=>{const p=new Date(view.getFullYear(),view.getMonth()-1,1);if(p>=new Date(2026,10,1)){view=p;drawCal()}};
+$("next").onclick=()=>{view=new Date(view.getFullYear(),view.getMonth()+1,1);drawCal()};
+document.querySelectorAll(".pick").forEach(b=>b.onclick=()=>{$("unit").value=b.dataset.unit;$("unit").onchange({target:$("unit")});$("reservar").scrollIntoView({behavior:"smooth"})});
+
+fillPax();$("pax").value=2;defaultDates();sync();
+
+/* panel dueño */
+const wk=[new Date(2026,10,16)];for(let i=1;i<7;i++){const d=new Date(wk[0]);d.setDate(d.getDate()+i);wk.push(d)}
+let t='<tr><th>Unidad</th>'+wk.map(d=>'<th>'+DIA[d.getDay()]+' '+d.getDate()+'</th>').join("")+'</tr>';
+Object.keys(UNITS).forEach(k=>{t+='<tr><td class="n">'+UNITS[k].n.replace("Departamento","Depto.")+'</td>'+wk.map(d=>!inSeason(k,d)?'<td style="color:#a7b0b6">—</td>':busy(k,d)?'<td class="o">●</td>':'<td class="l">libre</td>').join("")+'</tr>'});
+$("week").innerHTML=t;
+const res=[237,144,195,316];const total=res.reduce((a,b)=>a+b,0);
+$("kSena").textContent=money(Math.round(total*.3));$("kAhorro").textContent=money(Math.round(total*.15));
+const bk=total*.85;
+$("cmp").innerHTML=
+ '<div class="row"><span>Reserva directa</span><span class="tr"><i style="width:100%;background:#2e7d4f"></i></span><b>'+money(total)+'</b></div>'+
+ '<div class="row"><span>Por Booking (−15%)</span><span class="tr"><i style="width:85%;background:#c8513b"></i></span><b>'+money(Math.round(bk))+'</b></div>'+
+ '<div class="row"><span>Diferencia</span><span class="tr"><i style="width:15%;background:#e9a12f"></i></span><b>'+money(Math.round(total-bk))+'</b></div>';
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Mendoza Sol y Nieve"></script>
+</body>
+</html>
