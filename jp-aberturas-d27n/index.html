@@ -1,0 +1,591 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>JP Aberturas · Armá tu obra (prototipo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@300;500;700&family=Arsenal:ital,wght@0,400;0,700;1,400&family=Anonymous+Pro:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --tiza:#F1EFEA; --hoja:#FBFAF7; --negro:#121212; --grafito:#2A2A2A; --gris:#6B6964; --linea:#D8D4CC;
+  --cobre:#B5532A; --cobre2:#F3DDD1; --vidrio:#CFE0E3; --wa:#DCF8C6; --wafondo:#ECE5DD;
+  --d:"Lexend Exa",system-ui,sans-serif; --b:"Arsenal",Georgia,sans-serif; --m:"Anonymous Pro",ui-monospace,monospace;
+  --marco:14px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--tiza);color:var(--negro);font:17px/1.5 var(--b);-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--cobre);outline-offset:2px}
+.wrap{max-width:1240px;margin:0 auto;padding:0 24px}
+@media(max-width:600px){.wrap{padding:0 16px}}
+.pe{display:inline-block;font:400 11px/1.2 var(--m);color:var(--gris);letter-spacing:.02em;margin-left:6px;white-space:nowrap}
+.kicker{font:500 11px/1 var(--d);letter-spacing:.18em;text-transform:uppercase;color:var(--gris)}
+
+/* firma */
+.firma{font:400 12.5px/1.4 var(--m);color:var(--gris);padding:8px 0;border-bottom:1px solid var(--linea)}
+.firma b{color:var(--negro)}
+
+/* header */
+header{padding:18px 0;position:sticky;top:0;z-index:20;background:rgba(241,239,234,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--linea)}
+header .wrap{display:flex;align-items:center;gap:18px}
+.marca{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--negro);margin-right:auto}
+.marca .logo{height:34px;width:auto}
+.marca .txt{font:700 17px/1 var(--d);letter-spacing:.06em}
+.marca .txt small{display:block;font:400 10px/1.4 var(--m);letter-spacing:.04em;color:var(--gris);margin-top:3px}
+.marca.sinlogo .logo{display:none}
+nav.vistas{display:flex;border:2px solid var(--negro)}
+nav.vistas button{background:none;border:0;padding:9px 14px;font:500 12px/1 var(--d);letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+nav.vistas button[aria-pressed=true]{background:var(--negro);color:var(--hoja)}
+@media(max-width:640px){.marca .txt small{display:none}nav.vistas button{padding:8px 9px;font-size:10.5px}}
+
+/* hero: una ventana negra de 4 paños */
+.hero{padding:40px 0 56px}
+.ventanal{display:grid;grid-template-columns:1.15fr .85fr;grid-template-rows:auto auto;background:var(--negro);gap:var(--marco);padding:var(--marco);box-shadow:0 30px 60px -30px rgba(0,0,0,.45)}
+.pano{position:relative;background:var(--grafito);overflow:hidden;min-height:220px}
+.pano img{width:100%;height:100%;object-fit:cover;filter:saturate(.9)}
+.pano.titulo{background:var(--hoja);grid-row:span 2;padding:44px 40px;display:flex;flex-direction:column;justify-content:space-between;gap:28px}
+.pano.titulo h1{font:300 clamp(34px,5.4vw,68px)/1.02 var(--d);letter-spacing:-.02em;margin:14px 0 0}
+.pano.titulo h1 b{font-weight:700;display:block}
+.pano.titulo p{margin:0;max-width:34ch;color:var(--grafito);font-size:18px}
+.pano.titulo .acc{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 20px;border:2px solid var(--negro);background:var(--negro);color:var(--hoja);font:500 13px/1 var(--d);letter-spacing:.06em;text-transform:uppercase;text-decoration:none;cursor:pointer}
+.btn.claro{background:transparent;color:var(--negro)}
+.btn.wa{background:#1F7A45;border-color:#1F7A45}
+.pano .rotulo{position:absolute;left:0;bottom:0;background:var(--negro);color:var(--hoja);font:400 12px/1 var(--m);padding:8px 12px}
+.manija{position:absolute;right:-9px;top:50%;width:6px;height:46px;background:#3a3a3a;border-radius:3px;transform:translateY(-50%);z-index:2}
+.sinfoto{background:repeating-linear-gradient(135deg,#2c2c2c 0 2px,#262626 2px 14px)}
+.sinfoto::after{content:"";position:absolute;inset:22% 26%;border:10px solid #111;background:linear-gradient(160deg,#cfe0e3 0,#9fb8bd 60%,#7f9ca2 100%);box-shadow:inset 0 0 0 4px #111}
+.fotos2{display:grid;grid-template-rows:1fr 1fr;gap:var(--marco)}
+@media(max-width:860px){.ventanal{grid-template-columns:1fr}.pano.titulo{grid-row:auto;padding:30px 22px}.pano{min-height:200px}.manija{display:none}}
+
+.datos{display:grid;grid-template-columns:repeat(4,1fr);border-top:2px solid var(--negro);margin-top:34px}
+.datos div{padding:16px 16px 0 0}
+.datos b{display:block;font:700 15px/1.2 var(--d);letter-spacing:.02em}
+.datos span{font-size:14.5px;color:var(--gris)}
+@media(max-width:760px){.datos{grid-template-columns:1fr 1fr}}
+
+/* índice bajo un techo */
+.techo{padding:54px 0;border-top:1px solid var(--linea)}
+.techo .wrap{display:grid;grid-template-columns:280px 1fr;gap:40px}
+.techo h2,.sec h2{font:700 clamp(24px,3vw,34px)/1.1 var(--d);letter-spacing:-.01em;margin:8px 0 0}
+.indice{list-style:none;margin:0;padding:0;border-top:2px solid var(--negro)}
+.indice li{display:grid;grid-template-columns:52px 1fr auto;gap:14px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--linea)}
+.indice .n{font:400 13px var(--m);color:var(--gris)}
+.indice b{font:500 16px/1.25 var(--d)}
+.indice span{color:var(--gris);font-size:15px}
+.indice em{font:400 12px var(--m);font-style:normal;color:var(--cobre);text-align:right}
+@media(max-width:820px){.techo .wrap{grid-template-columns:1fr;gap:16px}.indice li{grid-template-columns:36px 1fr}.indice em{grid-column:2;text-align:left}}
+
+/* cotizador */
+.sec{padding:60px 0}
+.sec.cot{background:var(--hoja);border-top:2px solid var(--negro);border-bottom:2px solid var(--negro)}
+.cabsec{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:26px}
+.cabsec p{margin:6px 0 0;color:var(--gris);max-width:58ch}
+.mesa{display:grid;grid-template-columns:340px 1fr 360px;gap:22px;align-items:start}
+@media(max-width:1120px){.mesa{grid-template-columns:1fr 1fr}.col-pedido{grid-column:1/-1}}
+@media(max-width:720px){.mesa{grid-template-columns:1fr}}
+.panel{border:2px solid var(--negro);background:var(--hoja)}
+.panel h3{margin:0;padding:12px 16px;font:500 12px/1 var(--d);letter-spacing:.14em;text-transform:uppercase;border-bottom:2px solid var(--negro);display:flex;justify-content:space-between;gap:10px}
+.panel .in{padding:16px}
+.campo{margin-bottom:16px}
+.campo>label,.campo>.lbl{display:block;font:500 11px/1 var(--d);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{border:1.5px solid var(--negro);background:transparent;padding:7px 10px;font:400 14px/1.1 var(--b);cursor:pointer}
+.chips button[aria-pressed=true]{background:var(--negro);color:var(--hoja)}
+.chips button small{display:block;font:400 10.5px var(--m);opacity:.75}
+.medidas{display:grid;grid-template-columns:1fr 1fr 74px;gap:8px}
+.medidas label{font:400 12px var(--m);color:var(--gris);display:block}
+input[type=number],input[type=text],select{width:100%;padding:10px;border:1.5px solid var(--negro);background:#fff;border-radius:0}
+.chk{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-top:1px dashed var(--linea);font-size:15px;cursor:pointer}
+.chk input{margin-top:4px;accent-color:var(--negro)}
+.chk small{display:block;color:var(--gris)}
+
+.plano{background:#fff;border:2px solid var(--negro);position:sticky;top:84px}
+.plano .lienzo{padding:14px;display:flex;justify-content:center;align-items:center;min-height:360px;background:
+  linear-gradient(#0000 23px,#eceae5 24px) 0 0/24px 24px,linear-gradient(90deg,#0000 23px,#eceae5 24px) 0 0/24px 24px}
+.plano svg{width:100%;height:auto;max-height:420px}
+.plano .pie{display:grid;grid-template-columns:repeat(3,1fr);border-top:2px solid var(--negro)}
+.plano .pie div{padding:10px 12px;border-right:1px solid var(--linea);font:400 12px/1.3 var(--m);color:var(--gris)}
+.plano .pie div:last-child{border:0}
+.plano .pie b{display:block;color:var(--negro);font:700 15px var(--d)}
+@media(max-width:720px){.plano{position:static}.plano .lienzo{min-height:260px}}
+
+.precioitem{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:14px 16px;border-top:2px solid var(--negro);background:var(--tiza)}
+.precioitem b{font:700 22px var(--d)}
+.agregar{width:100%;justify-content:center;margin-top:0}
+
+.lista{list-style:none;margin:0;padding:0}
+.lista li{display:grid;grid-template-columns:1fr auto;gap:4px 10px;padding:12px 16px;border-bottom:1px solid var(--linea);font-size:15px}
+.lista li small{grid-column:1;color:var(--gris);font:400 12px/1.35 var(--m)}
+.lista li .p{text-align:right;font:700 14px var(--d);white-space:nowrap}
+.lista li .p .pe{display:block;margin:2px 0 0}
+.lista li button{grid-column:2;justify-self:end;background:none;border:0;color:var(--cobre);font:400 12px var(--m);cursor:pointer;padding:0;text-decoration:underline}
+.vacio{padding:16px;color:var(--gris);font-size:15px}
+.tot{padding:12px 16px;border-top:2px solid var(--negro)}
+.tot div{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:3px 0}
+.tot .grande b{font:700 24px var(--d)}
+.tot .s{color:var(--cobre)}
+.tot div>span:last-child{text-align:right;white-space:nowrap}
+.tot .pe{display:block;margin:2px 0 0}
+.turnos{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.turnos button{border:1.5px solid var(--negro);background:#fff;padding:7px 4px;cursor:pointer;font:400 12.5px/1.2 var(--m);text-align:center}
+.turnos button[aria-pressed=true]{background:var(--negro);color:var(--hoja)}
+.turnos button:disabled{opacity:.35;text-decoration:line-through;cursor:not-allowed}
+.turnos button small{display:block;opacity:.7}
+
+/* burbuja WhatsApp */
+.chat{background:var(--wafondo);border:2px solid var(--negro);border-top:0;padding:14px}
+.chat .cab{display:flex;align-items:center;gap:8px;font:400 12px var(--m);color:#4a4a4a;margin-bottom:8px}
+.chat .cab i{width:26px;height:26px;border-radius:50%;background:var(--negro);display:grid;place-items:center;color:#fff;font:700 10px var(--d);font-style:normal}
+.burbuja{background:var(--wa);border-radius:8px 0 8px 8px;padding:10px 12px 18px;font:400 14px/1.45 var(--b);white-space:pre-wrap;position:relative;box-shadow:0 1px 1px rgba(0,0,0,.12);margin-left:18px;min-height:60px}
+.burbuja::after{content:"";position:absolute;right:-8px;top:0;border:8px solid transparent;border-top-color:var(--wa);border-left-color:var(--wa)}
+.burbuja .hora{position:absolute;right:8px;bottom:4px;font:400 10.5px var(--m);color:#6a7d6a}
+.burbuja .cursor{display:inline-block;width:2px;height:1em;background:#333;vertical-align:-2px;animation:p 1s steps(2) infinite}
+@keyframes p{50%{opacity:0}}
+.enviar{width:100%;justify-content:center;margin-top:12px}
+
+/* obras */
+.obras{display:grid;grid-template-columns:repeat(6,1fr);gap:var(--marco);background:var(--negro);padding:var(--marco)}
+.obras figure{margin:0;position:relative;background:var(--grafito);aspect-ratio:3/4;overflow:hidden}
+.obras figure:nth-child(1){grid-column:span 2;grid-row:span 2;aspect-ratio:auto}
+.obras img{width:100%;height:100%;object-fit:cover}
+.obras figcaption{position:absolute;left:0;bottom:0;background:var(--negro);color:#fff;font:400 11.5px var(--m);padding:6px 9px}
+@media(max-width:820px){.obras{grid-template-columns:repeat(2,1fr)}.obras figure:nth-child(1){grid-column:span 2;grid-row:auto;aspect-ratio:4/3}}
+
+/* cómo funciona */
+.pasos{display:grid;grid-template-columns:repeat(4,1fr);border-top:2px solid var(--negro)}
+.pasos li{list-style:none;padding:18px 18px 0 0}
+.pasos b{font:700 14px/1.2 var(--d);display:block;margin:6px 0}
+.pasos span{color:var(--gris);font-size:15px}
+.pasos .n{font:400 12px var(--m);color:var(--cobre)}
+.pasos{padding:0;margin:0}
+@media(max-width:760px){.pasos{grid-template-columns:1fr 1fr}}
+
+/* dueño */
+#vista-duenio{display:none}
+body.duenio #vista-cliente{display:none}
+body.duenio #vista-duenio{display:block}
+.ejemplo{display:inline-block;background:var(--cobre);color:#fff;font:500 10.5px/1 var(--d);letter-spacing:.14em;text-transform:uppercase;padding:6px 9px}
+.tablero{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:2px solid var(--negro);background:var(--hoja);margin:22px 0}
+.tablero div{padding:16px;border-right:1px solid var(--linea)}
+.tablero div:last-child{border:0}
+.tablero b{display:block;font:700 26px/1.1 var(--d)}
+.tablero span{font:400 12px var(--m);color:var(--gris)}
+@media(max-width:760px){.tablero{grid-template-columns:1fr 1fr}.tablero div:nth-child(2){border-right:0}.tablero div{border-bottom:1px solid var(--linea)}}
+.duenio-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:22px;align-items:start}
+.duenio-grid>*{min-width:0}
+@media(max-width:900px){.duenio-grid{grid-template-columns:1fr}}
+.entrantes{display:grid;gap:12px;padding:14px;background:var(--wafondo)}
+.entrantes .burbuja{margin:0 18px 0 0;border-radius:0 8px 8px 8px;background:#fff;font-size:13.5px}
+.entrantes .burbuja::after{left:-8px;right:auto;border-top-color:#fff;border-right-color:#fff;border-left-color:transparent}
+.entrantes .de{font:700 12px var(--m);color:#1F7A45;display:block;margin-bottom:4px}
+.semana{width:100%;border-collapse:collapse;font-size:14px}
+.semana th,.semana td{border:1px solid var(--linea);padding:8px;text-align:left;vertical-align:top}
+.semana th{font:500 11px var(--d);letter-spacing:.1em;text-transform:uppercase;background:var(--tiza)}
+.semana .lleno{background:var(--negro);color:#fff}
+.semana .libre{color:var(--gris);font:400 12px var(--m)}
+.precios{width:100%;border-collapse:collapse;font-size:15px}
+.precios th,.precios td{border-bottom:1px solid var(--linea);padding:8px 6px;text-align:left}
+.precios th{font:500 11px var(--d);letter-spacing:.1em;text-transform:uppercase}
+.precios input{padding:6px 8px;max-width:130px}
+.paravos{background:var(--negro);color:var(--hoja);padding:30px;margin-top:22px}
+.paravos h3{font:700 22px/1.2 var(--d);margin:0 0 14px}
+.paravos ul{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:12px 28px}
+.paravos li{padding-left:22px;position:relative}
+.paravos li::before{content:"";position:absolute;left:0;top:.55em;width:10px;height:10px;border:2px solid var(--cobre)}
+.paravos li b{display:block;font:500 14px var(--d)}
+@media(max-width:700px){.paravos ul{grid-template-columns:1fr}.paravos{padding:22px}}
+
+footer{padding:34px 0 46px;font:400 13px/1.6 var(--m);color:var(--gris);border-top:2px solid var(--negro);margin-top:0}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+footer b{color:var(--negro)}
+.fijo{position:fixed;left:12px;right:12px;bottom:12px;z-index:30;display:none}
+@media(max-width:720px){.fijo.on{display:flex}.fijo .btn{flex:1;justify-content:space-between}}
+</style>
+</head>
+<body>
+
+<div class="firma"><div class="wrap">Prototipo preparado para <b>JP Aberturas</b> · 13 de noviembre de 2026</div></div>
+
+<header>
+  <div class="wrap">
+    <a class="marca" href="#" id="marca">
+      <img class="logo" alt="JP Aberturas" src="https://www.jpaberturas.com.ar/wp-content/uploads/2020/09/JPlogo2020.png" onerror="this.closest('.marca').classList.add('sinlogo')">
+      <span class="txt">JP ABERTURAS<small>Porfirio Seppey 1514 · Villa María</small></span>
+    </a>
+    <nav class="vistas" aria-label="Vista">
+      <button type="button" aria-pressed="true" data-vista="cliente">Cliente</button>
+      <button type="button" aria-pressed="false" data-vista="duenio">Ver como dueño</button>
+    </nav>
+  </div>
+</header>
+
+<main id="vista-cliente">
+<section class="hero">
+  <div class="wrap">
+    <div class="ventanal">
+      <div class="pano titulo">
+        <div>
+          <span class="kicker">Villa María · fábrica y showroom</span>
+          <h1>Ventana, cortina y toldo<b>en un solo pedido.</b></h1>
+        </div>
+        <ul style="margin:0;padding-left:18px;color:var(--grafito)">
+          <li>Líneas Herrero, Módena, At Premium con DVH y PVC</li>
+          <li>Cortinas Compacto y Mini Exterior, motores Somfy</li>
+          <li>Precio estimado al instante, pedido directo por WhatsApp</li>
+        </ul>
+        <div class="acc">
+          <a class="btn" href="#cotizar">Armar mi obra</a>
+          <a class="btn claro" href="#obras">Ver obras negras</a>
+        </div>
+      </div>
+      <div class="pano"><span class="manija"></span><img alt="Obra con aberturas negras de JP Aberturas" src="https://www.jpaberturas.com.ar/wp-content/uploads/2017/12/negro001.jpg" onerror="this.onerror=null;this.parentNode.classList.add('sinfoto');this.remove()"><span class="rotulo">Obra · aberturas negras</span></div>
+      <div class="pano"><img alt="Detalle de abertura negra" src="https://www.jpaberturas.com.ar/wp-content/uploads/2017/12/negro010.jpg" onerror="this.onerror=null;this.parentNode.classList.add('sinfoto');this.remove()"><span class="rotulo">Línea Módena · negro</span></div>
+    </div>
+    <div class="datos">
+      <div><b>Lun a vie 8:30–17:30</b><span>Sábados 9 a 13</span></div>
+      <div><b>Presupuesto sin cargo</b><span>Ahora, con precio estimado en línea</span></div>
+      <div><b>Fábrica propia</b><span>Diseño y fabricación en Villa María</span></div>
+      <div><b>(0353) 453-8449</b><span>WhatsApp 353 401-1027</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="techo">
+  <div class="wrap">
+    <div><span class="kicker">Todo bajo un techo</span><h2>Lo que hace JP</h2></div>
+    <ol class="indice">
+      <li><span class="n">01</span><div><b>Línea Herrero</b><br><span>Puertas con módulo de 75 mm, ventanas corredizas</span></div><em>se cotiza acá</em></li>
+      <li><span class="n">02</span><div><b>Línea Módena</b><br><span>Módulo de 50 mm, la más pedida para casa</span></div><em>se cotiza acá</em></li>
+      <li><span class="n">03</span><div><b>At Premium</b><br><span>Alta prestación con doble vidriado hermético</span></div><em>se cotiza acá</em></li>
+      <li><span class="n">04</span><div><b>PVC</b><br><span>Aislación térmica y acústica</span></div><em>se cotiza acá</em></li>
+      <li><span class="n">05</span><div><b>Cortinas y toldos</b><br><span>Compacto, Mini Exterior, brazo retráctil, motor Somfy</span></div><em>se cotiza acá</em></li>
+      <li><span class="n">06</span><div><b>Amoblamientos SQL</b><br><span>Cocinas, placares, vestidores, vanitory</span></div><em>consulta aparte</em></li>
+    </ol>
+  </div>
+</section>
+
+<section class="sec cot" id="cotizar">
+  <div class="wrap">
+    <div class="cabsec">
+      <div><span class="kicker">Armá tu obra</span><h2>Sumá cada abertura, cortina o toldo.<br>Mandás todo junto.</h2></div>
+      <p>Precios de ejemplo para mostrar cómo funciona. JP los cambia desde su tabla.</p>
+    </div>
+    <div class="mesa">
+      <!-- controles -->
+      <div class="panel col-ctrl">
+        <h3><span>1 · Elegí</span><span id="cont-items">0 en el pedido</span></h3>
+        <div class="in">
+          <div class="campo"><span class="lbl">Qué querés</span>
+            <div class="chips" id="c-cat">
+              <button type="button" data-v="abertura" aria-pressed="true">Abertura</button>
+              <button type="button" data-v="toldo" aria-pressed="false">Toldo</button>
+            </div>
+          </div>
+          <div id="bloque-abertura">
+            <div class="campo"><span class="lbl">Tipo</span><div class="chips" id="c-tipo"></div></div>
+            <div class="campo"><span class="lbl">Línea</span><div class="chips" id="c-linea"></div></div>
+            <div class="campo"><span class="lbl">Color</span><div class="chips" id="c-color"></div></div>
+            <div class="campo"><span class="lbl">Vidrio</span><div class="chips" id="c-vidrio"></div></div>
+          </div>
+          <div id="bloque-toldo" hidden>
+            <div class="campo"><span class="lbl">Toldo</span><div class="chips" id="c-toldo"></div></div>
+          </div>
+          <div class="campo"><span class="lbl">Medidas</span>
+            <div class="medidas">
+              <div><label for="m-an">Ancho cm</label><input id="m-an" type="number" min="40" max="600" value="150" inputmode="numeric"></div>
+              <div><label for="m-al" id="lbl-al">Alto cm</label><input id="m-al" type="number" min="40" max="300" value="110" inputmode="numeric"></div>
+              <div><label for="m-q">Cant.</label><input id="m-q" type="number" min="1" max="40" value="1" inputmode="numeric"></div>
+            </div>
+          </div>
+          <div id="extras"></div>
+        </div>
+        <div class="precioitem"><span>Este ítem</span><span><b id="p-item">$0</b><span class="pe">Precio de ejemplo</span></span></div>
+        <button type="button" class="btn agregar" id="btn-agregar">+ Agregar al pedido</button>
+      </div>
+
+      <!-- plano -->
+      <div class="plano col-plano">
+        <div class="lienzo" id="lienzo"></div>
+        <div class="pie">
+          <div><b id="pl-sup">0 m²</b>superficie</div>
+          <div><b id="pl-lin">—</b>sistema</div>
+          <div><b id="pl-vid">—</b>vidrio</div>
+        </div>
+      </div>
+
+      <!-- pedido -->
+      <div class="col-pedido">
+        <div class="panel">
+          <h3><span>2 · Tu pedido</span><span>Villa María</span></h3>
+          <ul class="lista" id="lista"></ul>
+          <div class="tot">
+            <div><span>Subtotal</span><span><b id="t-sub">$0</b><span class="pe">Precio de ejemplo</span></span></div>
+            <div><span>Colocación en Villa María</span><span><b id="t-col">$0</b><span class="pe">Precio de ejemplo</span></span></div>
+            <div class="grande"><span>Total estimado</span><span><b id="t-tot">$0</b><span class="pe">Precio de ejemplo</span></span></div>
+            <div class="s"><span>Seña para fabricar (30%)</span><span><b id="t-sena">$0</b><span class="pe">Precio de ejemplo</span></span></div>
+          </div>
+          <div class="in" style="border-top:2px solid var(--negro)">
+            <div class="campo"><span class="lbl">3 · Turno de medición</span><div class="turnos" id="turnos"></div></div>
+            <div class="campo" style="margin:0"><label for="nombre">Tu nombre</label><input id="nombre" type="text" placeholder="Ej.: Marcela" autocomplete="given-name"></div>
+          </div>
+        </div>
+        <div class="chat">
+          <div class="cab"><i>JP</i>Así le llega a JP Aberturas · 353 401-1027</div>
+          <div class="burbuja" id="burbuja"></div>
+          <a class="btn wa enviar" id="btn-wa" href="#" target="_blank" rel="noopener">Enviar pedido por WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="obras">
+  <div class="wrap">
+    <div class="cabsec"><div><span class="kicker">De su galería</span><h2>Obras en negro</h2></div><p>Fotos de jpaberturas.com.ar.</p></div>
+    <div class="obras">
+      <figure><img loading="lazy" alt="Obra JP Aberturas" src="https://www.jpaberturas.com.ar/wp-content/uploads/2017/12/negro005.jpg" onerror="this.onerror=null;this.parentNode.classList.add('sinfoto');this.remove()"><figcaption>Obra 05</figcaption></figure>
+      <figure><img loading="lazy" alt="Obra JP Aberturas" src="https://www.jpaberturas.com.ar/wp-content/uploads/2017/12/negro015.jpg" onerror="this.onerror=null;this.parentNode.classList.add('sinfoto');this.remove()"><figcaption>Obra 15</figcaption></figure>
+      <figure><img loading="lazy" alt="Obra JP Aberturas" src="https://www.jpaberturas.com.ar/wp-content/uploads/2017/12/negro020.jpg" onerror="this.onerror=null;this.parentNode.classList.add('sinfoto');this.remove()"><figcaption>Obra 20</figcaption></figure>
+      <figure><img loading="lazy" alt="Obra JP Aberturas" src="https://www.jpaberturas.com.ar/wp-content/uploads/2017/12/negro025.jpg" onerror="this.onerror=null;this.parentNode.classList.add('sinfoto');this.remove()"><figcaption>Obra 25</figcaption></figure>
+      <figure><img loading="lazy" alt="Showroom JP Aberturas" src="http://www.jpaberturas.com.ar/wp-content/uploads/2016/08/quienes.jpg" onerror="this.onerror=null;this.parentNode.classList.add('sinfoto');this.remove()"><figcaption>JP</figcaption></figure>
+      <figure><img loading="lazy" alt="Cocina línea Eclipse" src="https://www.jpaberturas.com.ar/wp-content/uploads/2017/10/eclipse1.jpg" onerror="this.onerror=null;this.parentNode.classList.add('sinfoto');this.remove()"><figcaption>Cocina Eclipse</figcaption></figure>
+      <figure><img loading="lazy" alt="Obra JP Aberturas" src="https://www.jpaberturas.com.ar/wp-content/uploads/2017/12/negro029.jpg" onerror="this.onerror=null;this.parentNode.classList.add('sinfoto');this.remove()"><figcaption>Obra 29</figcaption></figure>
+      <figure><img loading="lazy" alt="Obra JP Aberturas" src="https://www.jpaberturas.com.ar/wp-content/uploads/2017/12/negro008.jpg" onerror="this.onerror=null;this.parentNode.classList.add('sinfoto');this.remove()"><figcaption>Obra 8</figcaption></figure><figure><img loading="lazy" alt="Obra JP Aberturas" src="https://www.jpaberturas.com.ar/wp-content/uploads/2017/12/negro012.jpg" onerror="this.onerror=null;this.parentNode.classList.add('sinfoto');this.remove()"><figcaption>Obra 12</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:10px">
+  <div class="wrap">
+    <span class="kicker">Cómo funciona</span><h2 style="margin-bottom:18px">Del celular al taller</h2>
+    <ol class="pasos">
+      <li><span class="n">01</span><b>Armás la obra</b><span>Cada abertura con medida, línea y vidrio.</span></li>
+      <li><span class="n">02</span><b>Ves el estimado</b><span>Total y seña al instante.</span></li>
+      <li><span class="n">03</span><b>Elegís turno</b><span>JP va a medir el día que reservaste.</span></li>
+      <li><span class="n">04</span><b>Confirmás</b><span>Medida final, seña y a fabricar.</span></li>
+    </ol>
+  </div>
+</section>
+</main>
+
+<main id="vista-duenio">
+<section class="sec">
+  <div class="wrap">
+    <span class="ejemplo">Panel de ejemplo</span>
+    <h2 style="margin-top:14px">Lo que ve JP del otro lado</h2>
+    <div class="tablero">
+      <div><b>14</b><span>pedidos esta semana</span></div>
+      <div><b>9</b><span>con turno de medición</span></div>
+      <div><b>$4.380.000</b><span>señas cobradas<span class="pe">Precio de ejemplo</span></span></div>
+      <div><b>$0</b><span>comisión por pedido</span></div>
+    </div>
+    <div class="duenio-grid">
+      <div class="panel">
+        <h3><span>Pedidos que entraron</span><span class="ejemplo" style="padding:4px 7px">Ejemplo</span></h3>
+        <div class="entrantes" id="entrantes"></div>
+      </div>
+      <div>
+        <div class="panel">
+          <h3><span>Mediciones de la semana</span><span>16–21 nov</span></h3>
+          <div class="in" style="overflow-x:auto"><table class="semana" id="semana"></table></div>
+        </div>
+        <div class="panel" style="margin-top:22px">
+          <h3><span>Tabla de precios</span><span>editable</span></h3>
+          <div class="in">
+            <table class="precios" id="tabla-precios"></table>
+            <p style="font:400 12px var(--m);color:var(--gris);margin:10px 0 0">Cambiás un valor y el cotizador se actualiza. Precios de ejemplo.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="paravos">
+      <h3>Para vos, JP</h3>
+      <ul>
+        <li><b>Menos mensajes repetidos</b>El “¿cuánto sale una ventana?” se contesta solo.</li>
+        <li><b>Pedido completo de entrada</b>Tipo, línea, color, vidrio y medidas, todo en un mensaje.</li>
+        <li><b>Agenda de mediciones con cupos</b>El cliente elige turno; no se superponen.</li>
+        <li><b>Seña antes de fabricar, sin comisión</b>Entra antes de cortar perfiles; nadie se queda con un porcentaje.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Prototipo de demostración preparado para <b>JP Aberturas</b> por Resolviendo Kos · No es la web oficial</span>
+    <span>Precios de ejemplo · Fotos de jpaberturas.com.ar</span>
+  </div>
+</footer>
+
+<div class="fijo" id="fijo"><a class="btn wa" href="#cotizar"><span>Tu pedido</span><span id="fijo-tot">$0</span></a></div>
+
+<script>
+(()=>{
+const WA="5493534011027";
+const P={
+  lineas:{herrero:{n:"Herrero",m2:185000,d:"módulo 75 mm"},modena:{n:"Módena",m2:245000,d:"módulo 50 mm"},premium:{n:"At Premium",m2:390000,d:"alta prestación"},pvc:{n:"PVC",m2:420000,d:"aislación"}},
+  tipos:{corrediza:{n:"Ventana corrediza",k:1,hojas:2,min:1},abrir:{n:"Ventana de abrir",k:1.12,hojas:1,min:1},balcon:{n:"Puerta balcón",k:1.08,hojas:2,min:1},puerta:{n:"Puerta de entrada",k:1.35,hojas:1,min:1.6},fijo:{n:"Paño fijo",k:.72,hojas:0,min:.5},ventiluz:{n:"Ventiluz",k:.95,hojas:1,min:.3}},
+  colores:{blanco:{n:"Blanco",k:1,c:"#f4f4f2"},negro:{n:"Negro",k:1.08,c:"#151515"},madera:{n:"Símil madera",k:1.15,c:"#7a4b2a"}},
+  vidrios:{simple:{n:"Float 4 mm",m2:0},lam:{n:"Laminado 3+3",m2:38000},dvh:{n:"DVH",m2:82000}},
+  toldos:{brazo:{n:"Toldo brazo retráctil",m2:118000}},
+  cortina:{n:"Cortina Compacto",m2:62000},mini:{n:"Cortina Mini Exterior",m2:79000},
+  mosq:{n:"Mosquitero",m2:24000},somfy:{n:"Motor Somfy",u:210000},
+  colocacion:{n:"Colocación por unidad",u:45000}
+};
+const $=s=>document.querySelector(s);
+const ars=n=>"$"+Math.round(n).toLocaleString("es-AR");
+const S={cat:"abertura",tipo:"corrediza",linea:"modena",color:"negro",vidrio:"dvh",toldo:"brazo",extras:{cortina:false,mini:false,mosq:false,somfy:false}};
+const pedido=[];let turno=null;
+
+function chips(el,obj,key,fmt){
+  el.innerHTML=Object.entries(obj).map(([k,v])=>`<button type="button" data-v="${k}" aria-pressed="${S[key]===k}">${v.n}${fmt?`<small>${fmt(v)}</small>`:""}</button>`).join("");
+  el.onclick=e=>{const b=e.target.closest("button");if(!b)return;S[key]=b.dataset.v;el.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));render()};
+}
+chips($("#c-tipo"),P.tipos,"tipo");
+chips($("#c-linea"),P.lineas,"linea",v=>v.d);
+chips($("#c-color"),P.colores,"color");
+chips($("#c-vidrio"),P.vidrios,"vidrio");
+chips($("#c-toldo"),P.toldos,"toldo");
+$("#c-cat").onclick=e=>{const b=e.target.closest("button");if(!b)return;S.cat=b.dataset.v;$("#c-cat").querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));
+  $("#bloque-abertura").hidden=S.cat!=="abertura";$("#bloque-toldo").hidden=S.cat!=="toldo";
+  $("#lbl-al").textContent=S.cat==="toldo"?"Salida cm":"Alto cm";
+  if(S.cat==="toldo"){$("#m-an").value=350;$("#m-al").value=200}else{$("#m-an").value=150;$("#m-al").value=110}
+  extrasUI();render()};
+
+function extrasUI(){
+  const ex=S.cat==="toldo"?["somfy"]:["cortina","mini","mosq","somfy"];
+  const desc={cortina:"Enrollar, sobre la abertura",mini:"Cajón exterior, para obra hecha",mosq:"Paño corredizo",somfy:"Abrís y cerrás con control"};
+  $("#extras").innerHTML='<span class="lbl" style="display:block;font:500 11px/1 var(--d);letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px">Sumale</span>'+ex.map(k=>{const v=P[k];const pr=v.m2?ars(v.m2)+"/m²":ars(v.u)+" c/u";
+    return `<label class="chk"><input type="checkbox" data-x="${k}" ${S.extras[k]?"checked":""}><span>${v.n} · ${pr}<span class="pe">Precio de ejemplo</span><small>${desc[k]}</small></span></label>`}).join("");
+  $("#extras").onchange=e=>{const k=e.target.dataset.x;if(!k)return;S.extras[k]=e.target.checked;if(k==="cortina"&&e.target.checked){S.extras.mini=false}if(k==="mini"&&e.target.checked){S.extras.cortina=false}extrasUI();render()};
+}
+
+function medidas(){const an=Math.min(600,Math.max(40,+$("#m-an").value||0)),al=Math.min(300,Math.max(40,+$("#m-al").value||0)),q=Math.min(40,Math.max(1,+$("#m-q").value||1));return{an,al,q}}
+function calc(){
+  const {an,al,q}=medidas();const m2=an*al/10000;let u=0;const det=[];
+  if(S.cat==="abertura"){
+    const L=P.lineas[S.linea],T=P.tipos[S.tipo],C=P.colores[S.color],V=P.vidrios[S.vidrio];
+    const m2c=Math.max(m2,T.min);
+    u=m2c*L.m2*T.k*C.k+m2*V.m2;
+    det.push(`Línea ${L.n}`,`${C.n} · ${V.n}`);
+    if(S.extras.cortina){u+=m2*P.cortina.m2;det.push(P.cortina.n)}
+    if(S.extras.mini){u+=m2*P.mini.m2;det.push(P.mini.n)}
+    if(S.extras.mosq){u+=m2*P.mosq.m2;det.push(P.mosq.n)}
+    if(S.extras.somfy&&(S.extras.cortina||S.extras.mini)){u+=P.somfy.u;det.push(P.somfy.n)}
+  }else{
+    u=Math.max(m2,3)*P.toldos[S.toldo].m2;det.push(P.toldos[S.toldo].n);
+    if(S.extras.somfy){u+=P.somfy.u;det.push(P.somfy.n)}
+  }
+  return{an,al,q,m2,u,total:u*q,det,titulo:S.cat==="abertura"?P.tipos[S.tipo].n:P.toldos[S.toldo].n};
+}
+
+function svg(c){
+  const W=360,H=300,pad=46;const r=Math.min((W-pad*2)/c.an,(H-pad*2)/c.al);const w=c.an*r,h=c.al*r,x=(W-w)/2,y=(H-h)/2;
+  const col=S.cat==="toldo"?"#3a3a3a":P.colores[S.color].c;const st=S.color==="blanco"&&S.cat!=="toldo"?"#555":"#000";
+  const f=S.linea==="herrero"?7:S.linea==="modena"?8:S.linea==="premium"?10:12;
+  let g="";
+  const cota=`<g font-family="Anonymous Pro,monospace" font-size="12" fill="#121212"><line x1="${x}" y1="${y+h+18}" x2="${x+w}" y2="${y+h+18}" stroke="#B5532A"/><line x1="${x}" y1="${y+h+12}" x2="${x}" y2="${y+h+24}" stroke="#B5532A"/><line x1="${x+w}" y1="${y+h+12}" x2="${x+w}" y2="${y+h+24}" stroke="#B5532A"/><text x="${x+w/2}" y="${y+h+34}" text-anchor="middle">${c.an} cm</text><line x1="${x-18}" y1="${y}" x2="${x-18}" y2="${y+h}" stroke="#B5532A"/><line x1="${x-24}" y1="${y}" x2="${x-12}" y2="${y}" stroke="#B5532A"/><line x1="${x-24}" y1="${y+h}" x2="${x-12}" y2="${y+h}" stroke="#B5532A"/><text x="${x-26}" y="${y+h/2}" text-anchor="middle" transform="rotate(-90 ${x-26} ${y+h/2})">${c.al} cm</text></g>`;
+  if(S.cat==="toldo"){
+    g=`<rect x="${x}" y="${y}" width="${w}" height="12" fill="#222"/>`;
+    const n=Math.max(4,Math.round(w/26));for(let i=0;i<n;i++){g+=`<rect x="${x+i*w/n}" y="${y+12}" width="${w/n}" height="${h-12}" fill="${i%2?"#B5532A":"#efe7dc"}" opacity=".9"/>`}
+    g+=`<path d="M${x} ${y+h} q ${w/(2*n)} 14 ${w/n} 0`+(" t "+w/n+" 0").repeat(n-1)+`" fill="${"#efe7dc"}" stroke="#222"/><line x1="${x+6}" y1="${y+12}" x2="${x+w*.3}" y2="${y+h}" stroke="#222" stroke-width="3"/><line x1="${x+w-6}" y1="${y+12}" x2="${x+w*.7}" y2="${y+h}" stroke="#222" stroke-width="3"/>`;
+    return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Dibujo del toldo">${g}${cota}</svg>`;
+  }
+  const T=P.tipos[S.tipo];const glass=`<linearGradient id="gv" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e3eef0"/><stop offset="1" stop-color="#9fbcc2"/></linearGradient>`;
+  let cajon=0;if(S.extras.cortina||S.extras.mini){cajon=Math.min(26,h*.15);g+=`<rect x="${x-4}" y="${y-cajon-2}" width="${w+8}" height="${cajon}" fill="${S.extras.mini?"#2a2a2a":col}" stroke="${st}"/>`;}
+  g+=`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${col}" stroke="${st}"/>`;
+  const panes=[];
+  if(S.tipo==="corrediza"||S.tipo==="balcon"){panes.push([x+f,y+f,w/2-f*1.5,h-2*f],[x+w/2+f/2,y+f,w/2-f*1.5,h-2*f])}
+  else panes.push([x+f,y+f,w-2*f,h-2*f]);
+  panes.forEach(([a,b,c2,d2])=>{g+=`<rect x="${a}" y="${b}" width="${c2}" height="${d2}" fill="url(#gv)" stroke="${st}" stroke-width=".8"/>`;
+    if(S.vidrio==="dvh")g+=`<rect x="${a+3}" y="${b+3}" width="${c2-6}" height="${d2-6}" fill="none" stroke="#fff" stroke-opacity=".6" stroke-dasharray="3 3"/>`;
+    g+=`<path d="M${a+c2*.15} ${b+d2*.25} l ${c2*.25} -${d2*.12}" stroke="#fff" stroke-opacity=".7" stroke-width="2"/>`});
+  if(S.tipo==="corrediza"||S.tipo==="balcon"){g+=`<path d="M${x+w*.3} ${y+h/2} h ${w*.12} m -6 -5 l 6 5 l -6 5" stroke="#B5532A" fill="none" stroke-width="1.6"/>`}
+  if(S.tipo==="abrir"||S.tipo==="puerta"){g+=`<path d="M${x+f} ${y+f} L${x+w-f} ${y+h/2} L${x+f} ${y+h-f}" stroke="#B5532A" fill="none" stroke-dasharray="5 4"/>`;g+=`<rect x="${x+w-f-6}" y="${y+h/2-14}" width="4" height="28" fill="${S.color==="negro"?"#9a9a9a":"#222"}"/>`}
+  if(S.tipo==="ventiluz"){g+=`<path d="M${x+f} ${y+h-f} L${x+w/2} ${y+f} L${x+w-f} ${y+h-f}" stroke="#B5532A" fill="none" stroke-dasharray="5 4"/>`}
+  if(S.tipo==="puerta"){g+=`<rect x="${x+f}" y="${y+h*.55}" width="${w-2*f}" height="${h*.45-f}" fill="${col}" stroke="${st}"/>`}
+  if(S.extras.mosq){g+=`<rect x="${x+w/2}" y="${y+f}" width="${w/2-f}" height="${h-2*f}" fill="url(#mq)" opacity=".55"/>`}
+  const mq=`<pattern id="mq" width="4" height="4" patternUnits="userSpaceOnUse"><path d="M0 0h4M0 0v4" stroke="#333" stroke-width=".5"/></pattern>`;
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Plano de ${T.n}"><defs>${glass}${mq}</defs>${g}${cota}</svg>`;
+}
+
+const DIAS=[["Lun 16","16/11"],["Mar 17","17/11"],["Mié 18","18/11"],["Jue 19","19/11"],["Vie 20","20/11"],["Sáb 21","21/11"]];
+const OCUP={"Lun 16 · 9 h":1,"Mar 17 · 15 h":1,"Jue 19 · 9 h":1,"Sáb 21 · 10 h":1,"Mié 18 · 9 h":1};
+function turnosUI(){
+  const opts=[];DIAS.forEach(([d])=>{(d.startsWith("Sáb")?["10 h"]:["9 h","15 h"]).forEach(h=>opts.push(d+" · "+h))});
+  $("#turnos").innerHTML=opts.map(o=>`<button type="button" data-t="${o}" ${OCUP[o]?"disabled":""} aria-pressed="${turno===o}">${o.split(" · ")[0]}<small>${o.split(" · ")[1]}</small></button>`).join("");
+  $("#turnos").onclick=e=>{const b=e.target.closest("button");if(!b||b.disabled)return;turno=b.dataset.t;turnosUI();render()};
+}
+
+function totales(){const sub=pedido.reduce((a,i)=>a+i.total,0);const uds=pedido.reduce((a,i)=>a+i.q,0);const col=uds*P.colocacion.u;const tot=sub+col;return{sub,col,tot,sena:tot*.3,uds}}
+
+let objetivo="",escrito="",timer=null;
+function mensaje(c){
+  const n=($("#nombre").value||"").trim();
+  const L=[`Hola JP Aberturas, soy ${n||"…"}. Les paso mi pedido armado en la web:`,""];
+  const items=pedido.length?pedido:[Object.assign({},c,{borrador:true})];
+  items.forEach((i,k)=>{L.push(`${k+1}) ${i.q} × ${i.titulo} ${i.an}×${i.al} cm${i.borrador?" (sin agregar)":""}`);L.push(`   ${i.det.join(" · ")}`)});
+  const t=pedido.length?totales():{sub:c.total,col:c.q*P.colocacion.u,tot:c.total+c.q*P.colocacion.u,sena:(c.total+c.q*P.colocacion.u)*.3};
+  L.push("",`Total estimado: ${ars(t.tot)} (precio de ejemplo)`,`Seña para fabricar (30%): ${ars(t.sena)}`,`Turno de medición: ${turno||"a coordinar"}`,"","¿Me confirman?");
+  return L.join("\n");
+}
+function tipear(){
+  clearTimeout(timer);
+  if(escrito===objetivo){pintar(false);return}
+  let i=0;while(i<escrito.length&&escrito[i]===objetivo[i])i++;
+  escrito=escrito.length>i?escrito.slice(0,Math.max(i,escrito.length-6)):objetivo.slice(0,i+3);
+  pintar(true);timer=setTimeout(tipear,16);
+}
+function pintar(c){const h=new Date().toLocaleTimeString("es-AR",{hour:"2-digit",minute:"2-digit",hour12:false});$("#burbuja").innerHTML=esc(escrito)+(c?'<span class="cursor"></span>':"")+`<span class="hora">${h} ✓✓</span>`}
+const esc=s=>s.replace(/[&<>]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[m]));
+
+function render(){
+  const c=calc();
+  $("#lienzo").innerHTML=svg(c);
+  $("#p-item").textContent=ars(c.total);
+  $("#pl-sup").textContent=(c.m2*c.q).toFixed(2).replace(".",",")+" m²";
+  $("#pl-lin").textContent=S.cat==="toldo"?"Toldo":P.lineas[S.linea].n;
+  $("#pl-vid").textContent=S.cat==="toldo"?"Lona":P.vidrios[S.vidrio].n;
+  $("#lista").innerHTML=pedido.length?pedido.map((i,k)=>`<li><span><b>${i.q} × ${i.titulo}</b> ${i.an}×${i.al}</span><span class="p">${ars(i.total)}<span class="pe">Precio de ejemplo</span></span><small>${i.det.join(" · ")}</small><button type="button" data-del="${k}">quitar</button></li>`).join(""):`<li class="vacio" style="display:block">Todavía no agregaste nada. Elegí y tocá “Agregar al pedido”.</li>`;
+  const t=totales();
+  $("#t-sub").textContent=ars(t.sub);$("#t-col").textContent=ars(t.col);$("#t-tot").textContent=ars(t.tot);$("#t-sena").textContent=ars(t.sena);
+  $("#fijo-tot").textContent=ars(t.tot)+" · ejemplo";$("#fijo").classList.toggle("on",pedido.length>0);
+  $("#cont-items").textContent=pedido.length+" en el pedido";
+  objetivo=mensaje(c);tipear();
+  $("#btn-wa").href=`https://wa.me/${WA}?text=${encodeURIComponent(objetivo)}`;
+}
+$("#lista").onclick=e=>{const b=e.target.closest("[data-del]");if(!b)return;pedido.splice(+b.dataset.del,1);render()};
+$("#btn-agregar").onclick=()=>{pedido.push(calc());render();if(innerWidth<1120)document.querySelector(".col-pedido").scrollIntoView({behavior:"smooth",block:"start"})};
+["#m-an","#m-al","#m-q","#nombre"].forEach(s=>$(s).addEventListener("input",render));
+
+/* dueño */
+document.querySelector("nav.vistas").onclick=e=>{const b=e.target.closest("button");if(!b)return;document.querySelectorAll("nav.vistas button").forEach(x=>x.setAttribute("aria-pressed",x===b));document.body.classList.toggle("duenio",b.dataset.vista==="duenio");scrollTo({top:0})};
+const ENT=[
+ ["Carolina (ejemplo)","1) 3 × Ventana corrediza 150×110 cm\n   Módena · Negro · DVH · Cortina Compacto\n2) 1 × Puerta balcón 180×220 cm\n   Módena · Negro · DVH\nTotal estimado: $3.912.000 (precio de ejemplo)\nSeña (30%): $1.173.600\nTurno: Mar 17 · 9 h","09:12"],
+ ["Diego (ejemplo)","1) 1 × Toldo brazo retráctil 400×250 cm\n   Motor Somfy\nTotal estimado: $1.435.000 (precio de ejemplo)\nTurno: Jue 19 · 15 h","11:40"],
+ ["Lucía (ejemplo)","1) 6 × Ventana de abrir 60×60 cm\n   Herrero · Blanco · Float 4 mm\nTotal estimado: $1.150.000 (precio de ejemplo)\nTurno: Vie 20 · 9 h","16:05"]
+];
+$("#entrantes").innerHTML=ENT.map(([n,t,h])=>`<div class="burbuja"><span class="de">${n}</span>${esc(t)}<span class="hora">${h}</span></div>`).join("");
+const AG={"Lun 16":["9 h · Carolina · B° Palermo","15 h · libre"],"Mar 17":["9 h · Martín · Villa Nueva","15 h · Obra edificio"],"Mié 18":["9 h · Sofía · centro","15 h · libre"],"Jue 19":["9 h · Pablo · B° Rivadavia","15 h · Diego · toldo"],"Vie 20":["9 h · Lucía","15 h · libre"],"Sáb 21":["10 h · Inés · country"]};
+$("#semana").innerHTML="<tr>"+Object.keys(AG).map(d=>`<th>${d}</th>`).join("")+"</tr><tr>"+Object.values(AG).map(v=>`<td>${v.map(x=>x.includes("libre")?`<div class="libre">${x}</div>`:`<div class="lleno" style="padding:4px 6px;margin-bottom:4px">${x}</div>`).join("")}</td>`).join("")+"</tr>";
+function tablaPrecios(){
+  const rows=[...Object.entries(P.lineas).map(([k,v])=>[`Línea ${v.n} (por m²)`,["lineas",k,"m2"]]),...Object.entries(P.vidrios).filter(([k])=>k!=="simple").map(([k,v])=>[`Vidrio ${v.n} (por m²)`,["vidrios",k,"m2"]]),[`Cortina Compacto (por m²)`,["cortina","m2"]],[`Toldo brazo retráctil (por m²)`,["toldos","brazo","m2"]],[`Motor Somfy (c/u)`,["somfy","u"]],[`Colocación (por unidad)`,["colocacion","u"]]];
+  const get=p=>p.reduce((o,k)=>o[k],P);
+  $("#tabla-precios").innerHTML="<tr><th>Ítem</th><th>Precio <span class='pe' style='margin:0'>de ejemplo</span></th></tr>"+rows.map(([n,p],i)=>`<tr><td>${n}</td><td><input type="number" step="1000" data-i="${i}" value="${get(p)}"><span class="pe">Precio de ejemplo</span></td></tr>`).join("");
+  $("#tabla-precios").oninput=e=>{const i=e.target.dataset.i;if(i==null)return;const p=rows[i][1];const o=p.slice(0,-1).reduce((o,k)=>o[k],P);o[p[p.length-1]]=Math.max(0,+e.target.value||0);extrasUI();chips($("#c-linea"),P.lineas,"linea",v=>v.d);pedido.forEach((it,k)=>{});render()};
+}
+tablaPrecios();
+extrasUI();turnosUI();render();
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="JP Aberturas"></script>
+</body>
+</html>
