@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Estancia Río Abajo · Trevelin (prototipo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=Special+Elite&display=swap" rel="stylesheet">
+<style>/* piezas de reserva compartidas (cada página define --k-*) */
+.ej{font:500 11.5px var(--k-fb);color:var(--k-mute);border:1px solid var(--k-line);border-radius:4px;padding:1px 5px;margin-left:6px;vertical-align:middle;white-space:nowrap;letter-spacing:0;text-transform:none}
+.calhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.calhead b{font:700 20px var(--k-fd);text-transform:capitalize}
+.calhead button{border:1px solid var(--k-line);background:transparent;color:inherit;border-radius:8px;width:36px;height:36px;cursor:pointer;font-size:18px}
+.cal-g{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
+.cal-g b{font-size:12px;color:var(--k-mute)}
+.cal-g .d{border:0;border-radius:var(--k-r,8px);padding:8px 0;background:var(--k-free);font:600 15px var(--k-fb);cursor:pointer;color:var(--k-ink)}
+.cal-g .d.t-a{background:var(--k-ta)}.cal-g .d.t-b{background:var(--k-tb)}.cal-g .d.t-c{background:var(--k-tc)}
+.cal-g .d.oc{background:var(--k-oc);color:var(--k-mute);text-decoration:line-through;cursor:not-allowed;opacity:.7}
+.cal-g .d.in{background:var(--k-sel2)!important}.cal-g .d.ci,.cal-g .d.co{background:var(--k-sel)!important;color:#fff}
+.ley{display:flex;flex-wrap:wrap;gap:10px;font-size:13px;color:var(--k-mute);margin-top:10px}.ley i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+.sync{font-size:13px;margin-top:8px;font-weight:600}
+.k-form label{display:block;font-weight:700;font-size:14px;margin:12px 0 4px}
+.k-form select,.k-form input{width:100%;padding:10px;border:1px solid var(--k-line);border-radius:10px;font:16px var(--k-fb);background:#fff;color:#222}
+.pax{display:flex;align-items:center;gap:12px}.pax button{width:38px;height:38px;border-radius:50%;border:1px solid currentColor;background:transparent;color:inherit;font-size:20px;cursor:pointer}
+.pax b{font:800 26px var(--k-fd)}
+dl.sum{display:grid;grid-template-columns:auto auto;gap:6px 10px;margin:16px 0 0}dl.sum dt{color:var(--k-mute)}dl.sum dd{margin:0;text-align:right;font-weight:700}
+.wa{background:#E5DDD5;border-radius:16px;padding:16px;color:#111}
+.wa .hd{display:flex;align-items:center;gap:10px;background:#075E54;color:#fff;margin:-16px -16px 12px;padding:10px 14px;border-radius:16px 16px 0 0;font:600 15px system-ui,sans-serif}
+.wa .hd span{width:30px;height:30px;border-radius:50%;background:#fff;display:grid;place-items:center;font:800 14px var(--k-fd);color:#075E54}
+#bubble{background:#DCF8C6;border-radius:10px 0 10px 10px;padding:10px 12px;white-space:pre-wrap;font:15px/1.4 system-ui,sans-serif;min-height:120px;margin-left:24px;box-shadow:0 1px 1px #0002}
+#bubble.is-typing::after{content:'▍';opacity:.5}
+.wa .wabtn{display:block;text-align:center;margin-top:12px;background:#25D366;color:#063;border-radius:99px;padding:12px;font:700 16px system-ui,sans-serif;text-decoration:none}
+.wa small{display:block;margin-top:8px;color:#555;font-size:12px}
+#owner-panel{scroll-margin-top:10px}
+.op-tag{display:inline-block;background:var(--k-sel);color:#fff;font-weight:700;border-radius:6px;padding:3px 10px;margin-bottom:14px}
+.op-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.op-kpis div{border:1px solid var(--k-line);border-radius:12px;padding:14px}.op-kpis small{display:block;color:var(--k-mute)}.op-kpis strong{font:800 28px var(--k-fd)}
+#owner-panel h4{font:700 22px var(--k-fd);margin:22px 0 10px}
+.op-inbox{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.op-msg{background:#E5DDD5;border-radius:12px;padding:10px;color:#111}.op-msg pre{background:#DCF8C6;border-radius:8px;padding:8px;white-space:pre-wrap;font:13px/1.4 system-ui;margin:6px 0}
+.op-meta{font-size:12px;color:#555}.op-st{font-weight:700;font-size:13px}.op-paga{color:#0A7A3B}.op-pend{color:#B26B00}.op-nueva{color:#1d4f91}
+.op-scroll{overflow-x:auto}.op-week{border-collapse:collapse;min-width:640px;width:100%;font-size:13px}.op-week th,.op-week td{border:1px solid var(--k-line);padding:6px;text-align:center}.op-week td.oc{background:var(--k-ta);color:#222}.op-week td.lb{background:#E4F4E9;color:#222}
+.op-note{font-size:13px;color:var(--k-mute)}
+@media(max-width:600px){.op-kpis{grid-template-columns:1fr}}
+</style>
+<style>
+:root{--rio:#2F5D50;--rio2:#3E7A69;--kraft:#E8DCC4;--kraft2:#F3ECDD;--trucha:#C2462E;--tinta:#22252A;--mute:#6A6457;--lin:#CDBFA4;
+--k-fd:'Special Elite',monospace;--k-fb:'Source Sans 3',sans-serif;--k-ink:#22252A;--k-mute:#6A6457;--k-line:#CDBFA4;--k-free:#E6EFE6;--k-ta:#F3D2C6;--k-tb:#E9E2C2;--k-tc:#D4E0EC;--k-oc:#DDD5C6;--k-sel:#2F5D50;--k-sel2:#BFD8CC;--k-r:3px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--kraft2);color:var(--tinta);font:18px/1.55 'Source Sans 3',sans-serif}
+h1,h2,h3,h4{font-family:'Special Elite',monospace;font-weight:400;margin:0;line-height:1.12}
+img{display:block;max-width:100%}a{color:inherit}
+.w{max-width:1180px;margin:0 auto;padding:0 20px}
+.firma{font-size:13px;color:var(--mute);background:var(--kraft)}
+.firma .w{display:flex;gap:10px;justify-content:space-between;align-items:center;flex-wrap:wrap;padding-top:7px;padding-bottom:7px}
+.vista button{font:13px 'Special Elite';background:none;border:1px dashed var(--rio);color:var(--rio);padding:4px 10px;cursor:pointer}
+.vista button[aria-pressed=true]{background:var(--rio);color:#fff;border-style:solid}
+/* mapa primero */
+.mapa{display:grid;grid-template-columns:1.25fr 1fr;min-height:560px;border-bottom:2px solid var(--rio)}
+.mapa svg{width:100%;height:100%;display:block;background:#DCE7D9;min-height:420px}
+.mapa .txt{padding:46px 40px;background:var(--kraft);display:flex;flex-direction:column;justify-content:center}
+.sello{display:inline-block;border:2px solid var(--trucha);color:var(--trucha);font:15px 'Special Elite';padding:4px 10px;transform:rotate(-2deg);margin-bottom:18px;align-self:flex-start}
+.mapa h1{font-size:clamp(34px,4.6vw,58px);color:var(--rio)}
+.mapa p{font-size:19px;color:#4C4A42;margin:18px 0 0}
+.dist{list-style:none;padding:0;margin:22px 0 0;border-top:1px dashed var(--lin)}
+.dist li{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed var(--lin)}
+.dist b{font-family:'Special Elite'}
+@media(max-width:900px){.mapa{grid-template-columns:1fr}.mapa svg{height:auto}.mapa .txt{padding:30px 20px}}
+/* libreta */
+section{padding:66px 0}
+.fecha{font:14px 'Special Elite';color:var(--trucha)}
+h2.s{font-size:clamp(30px,4.2vw,50px);color:var(--rio);margin:6px 0 26px}
+.hoja{background:#FFFDF7;border:1px solid var(--lin);box-shadow:4px 4px 0 var(--lin);padding:28px;background-image:repeating-linear-gradient(transparent 0 31px,#E7DFCC 31px 32px)}
+.cab{display:grid;grid-template-columns:1.4fr 1fr;gap:30px;align-items:start}
+.cab .main{width:100%;height:auto;border:6px solid #fff;box-shadow:0 2px 6px #0002;background:var(--kraft)}
+.cab .mini{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px;align-items:start}
+.cab .mini img{width:100%;height:auto;border:4px solid #fff;box-shadow:0 1px 4px #0002;background:var(--kraft)}
+.cab h3{font-size:30px;color:var(--rio)}
+.cab ul{padding-left:20px;margin:10px 0}.cab li{margin-bottom:4px}
+.precio{font:22px 'Special Elite';color:var(--trucha)}
+.btn{display:inline-block;margin:12px 8px 0 0;background:var(--rio);color:#fff;border:0;padding:11px 18px;font:15px 'Special Elite';cursor:pointer;text-decoration:none}
+.btn.r{background:var(--trucha)}
+@media(max-width:860px){.cab{grid-template-columns:1fr}}
+.pesca{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:2px solid var(--rio)}
+.pesca div{padding:18px;border-right:1px solid var(--lin);background:#FFFDF7}.pesca div:last-child{border-right:0}
+.pesca b{display:block;font:20px 'Special Elite';color:var(--rio);margin-bottom:6px}
+@media(max-width:860px){.pesca{grid-template-columns:1fr 1fr}.pesca div{border-bottom:1px solid var(--lin)}}
+.tt{overflow-x:auto}.tt table{width:100%;min-width:620px;border-collapse:collapse;background:#FFFDF7;border:2px solid var(--rio)}
+.tt th,.tt td{padding:11px 14px;border-bottom:1px dashed var(--lin);text-align:left}.tt th{font:14px 'Special Elite';background:var(--kraft)}
+.resv{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start}
+.resv .wa{grid-row:span 2}
+.cardk{background:#FFFDF7;border:1px solid var(--lin);padding:20px}
+@media(max-width:860px){.resv{grid-template-columns:1fr}.resv .wa{grid-row:auto}}
+.cita{border-left:4px solid var(--trucha);padding:6px 0 6px 18px;margin:0;font-size:22px}
+.cita small{display:block;font-size:14px;color:var(--mute);margin-top:4px}
+.dos{display:grid;grid-template-columns:1fr 1fr;gap:36px}.dos ul{padding-left:20px;margin:0}.dos li{margin-bottom:6px}.dos h3{font-size:26px;color:var(--rio);margin-bottom:10px}
+@media(max-width:800px){.dos{grid-template-columns:1fr}}
+.paravos{background:var(--rio);color:#EEF3EE;padding:36px}
+.paravos h2{font-size:clamp(28px,4vw,44px);color:#fff}.paravos ul{padding-left:20px;margin:16px 0}.paravos li{margin-bottom:8px}
+.paravos .btn{background:var(--trucha)}
+#owner-panel{background:#FFFDF7;border:3px solid var(--trucha);padding:24px;margin:24px 0}
+footer{background:var(--tinta);color:#D8D2C4;padding:38px 0;font-size:15px}
+footer .legal{margin-top:16px;font-size:13px;opacity:.85}
+</style>
+<script>
+window.CFG={
+ negocio:'Cabañas Estancia Río Abajo', waIntl:'5492945554493', ownerName:'Leo y Graciela',
+ ill:{a:'#2F5D50',b:'#EADFC8',c:'#C2462E'},
+ units:[
+  {name:'Cabaña 54 m² · para 2',cap:2,base:90000},
+  {name:'Cabaña 54 m² · familia',cap:4,base:112000}
+ ],
+ seasons:[
+  {name:'Fiestas',from:'2026-12-24',to:'2027-01-01',mult:1.4,tag:'a'},
+  {name:'Verano',from:'2027-01-02',to:'2027-02-28',mult:1.5,tag:'a'},
+  {name:'Semana Santa',from:'2027-03-24',to:'2027-03-28',mult:1.3,tag:'b'},
+  {name:'Vacaciones de invierno',from:'2027-07-10',to:'2027-07-25',mult:1.4,tag:'c'},
+  {name:'Pesca de temporada',from:'2026-12-02',to:'2027-04-30',mult:1.15,tag:'b'}
+ ],
+ calStart:'2026-12-01', calEnd:'2027-09-01', defaultUnit:0, defaultPax:2, defaultIn:'2027-03-08', defaultOut:'2027-03-13',
+ ownerInbox:[
+  {when:'Lun 7:58',u:0,n:6,p:2,f:'del lun 18/1 al dom 24/1',name:'Diego R. (pesca con mosca)',st:'paga'},
+  {when:'Lun 19:12',u:1,n:5,p:4,f:'del sáb 6/2 al jue 11/2',name:'Familia Pereyra',st:'pend'},
+  {when:'Mar 8:30',u:0,n:4,p:2,f:'del lun 15/3 al vie 19/3',mult:1.15,name:'Andrea y Tomás',st:'nueva'}
+ ]
+};
+
+/* respaldo ilustrado si una foto no carga */
+window.fb=function(img){
+  img.onerror=null;
+  var C=window.CFG, k=C.ill||{a:'#333',b:'#ddd',c:'#999'}, lab=(img.getAttribute('alt')||C.negocio).replace(/[<&"]/g,'');
+  var s='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><rect width="1200" height="800" fill="'+k.b+'"/>'+
+  '<circle cx="900" cy="200" r="70" fill="'+k.c+'" opacity=".55"/>'+
+  '<path d="M0 520 L170 330 L300 430 L470 220 L620 400 L760 290 L930 450 L1060 330 L1200 420 V800 H0Z" fill="'+k.a+'" opacity=".22"/>'+
+  '<path d="M0 620 L220 470 L400 560 L600 450 L820 560 L1000 480 L1200 560 V800 H0Z" fill="'+k.a+'" opacity=".45"/>'+
+  '<path d="M520 640 L600 560 L680 640 V720 H520Z" fill="'+k.a+'"/><rect x="585" y="665" width="30" height="55" fill="'+k.b+'"/>'+
+  '<path d="M300 720 L330 640 L360 720Z M840 720 L875 620 L910 720Z M940 720 L965 655 L990 720Z" fill="'+k.a+'"/>'+
+  '<text x="600" y="770" text-anchor="middle" font-family="sans-serif" font-size="30" fill="'+k.a+'" opacity=".8">'+lab+'</text></svg>';
+  img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(s);
+  img.classList.add('is-fb');
+};
+
+</script>
+</head>
+<body>
+<div class="firma"><div class="w"><span>Prototipo preparado para Cabañas Estancia Río Abajo · <span data-hoy></span></span>
+<span class="vista" role="group" aria-label="Cambiar vista"><button type="button" data-view="guest" aria-pressed="true">Huésped</button> <button type="button" data-view="owner" aria-pressed="false">Ver como dueño</button></span></div></div>
+
+<header class="mapa">
+ <svg viewBox="0 0 700 560" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mapa ilustrado: Estancia Río Abajo sobre la Ruta 71, Trevelin, río Percy, Los Alerces y Esquel">
+  <defs><pattern id="pt" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.2" fill="#2F5D50" opacity=".25"/></pattern></defs>
+  <rect width="700" height="560" fill="url(#pt)"/>
+  <path d="M0 120 L120 60 L200 110 L290 30 L370 90 L460 20 L560 80 L700 40 V0 H0Z" fill="#2F5D50" opacity=".18"/>
+  <path d="M-10 470 C120 430 160 360 260 340 S430 300 470 220 S600 120 720 110" fill="none" stroke="#5A93B8" stroke-width="10" stroke-linecap="round"/>
+  <text x="300" y="318" font-family="Special Elite, monospace" font-size="18" fill="#2F5D50" transform="rotate(-14 300 318)">río Percy</text>
+  <path d="M40 560 C120 460 220 420 330 380 S520 300 700 290" fill="none" stroke="#22252A" stroke-width="4" stroke-dasharray="14 8"/>
+  <text x="520" y="330" font-family="Special Elite, monospace" font-size="16" fill="#22252A">Ruta 71 → Los Alerces</text>
+  <circle cx="150" cy="470" r="14" fill="#22252A"/><text x="60" y="510" font-family="Special Elite, monospace" font-size="20" fill="#22252A">TREVELIN</text>
+  <path d="M150 470 L60 300 L40 180" fill="none" stroke="#22252A" stroke-width="3" stroke-dasharray="4 6"/>
+  <text x="20" y="168" font-family="Special Elite, monospace" font-size="16" fill="#22252A">↑ Esquel · aeropuerto (44 km)</text>
+  <g transform="translate(232 410)"><circle r="22" fill="#C2462E"/><circle r="36" fill="none" stroke="#C2462E" stroke-width="2" opacity=".6"/><text x="44" y="-6" font-family="Special Elite, monospace" font-size="20" fill="#C2462E">Estancia Río Abajo</text><text x="44" y="18" font-family="Special Elite, monospace" font-size="15" fill="#22252A">Ruta 71 · km 1,7</text></g>
+  <path d="M600 200 q12 -10 24 0 q-12 10 -24 0Z M560 236 q10 -8 20 0 q-10 8 -20 0Z" fill="#C2462E" opacity=".7"/>
+  <text x="20" y="545" font-family="Special Elite, monospace" font-size="12" fill="#6A6457">Mapa ilustrado, no a escala</text>
+ </svg>
+ <div class="txt">
+  <span class="sello">Ruta 71 · km 1,7</span>
+  <h1>Cabañas a la salida de Trevelin, camino al Percy y a Los Alerces.</h1>
+  <p>Las atienden Leo y Graciela, que además son instructores de pesca con mosca. Te esperan con la cabaña lista, el auto al lado de la puerta y el río a mano.</p>
+  <ul class="dist"><li>Centro de Trevelin<b>km 1,7</b></li><li>Aeropuerto de Esquel<b>44 km</b></li><li>Traslado desde el aeropuerto<b>a pedido</b></li></ul>
+ </div>
+</header>
+
+<div class="w"><div id="owner-panel" hidden></div></div>
+
+<div class="w">
+<section id="cabanas">
+ <div class="fecha">Anotación 1 · Las cabañas</div>
+ <h2 class="s">54 m², dos dormitorios y la cochera pegada.</h2>
+ <div class="hoja"><div class="cab" data-unit-i="0">
+  <div><img class="main" data-fb onerror="fb(this)" alt="Estancia Río Abajo" src="https://estanciarioabajo.com.ar/images/fondos_home/fondo001-1480.jpg">
+   <div class="mini"><img data-fb onerror="fb(this)" alt="Estancia Río Abajo" src="https://www.welcomeargentina.com/plantillas/webp/grandes/61911-00Gr.webp"><img data-fb onerror="fb(this)" alt="Estancia Río Abajo" src="https://www.welcomeargentina.com/plantillas/webp/grandes/61911-01Gr.webp"><img data-fb onerror="fb(this)" alt="Estancia Río Abajo" src="https://www.welcomeargentina.com/plantillas/webp/grandes/61911-02Gr.webp"></div></div>
+  <div>
+   <h3>La cabaña</h3>
+   <ul><li>54 m² con 2 dormitorios</li><li>Parrilla individual</li><li>Cochera junto a la cabaña</li><li>DirecTV con LED de 32" y wifi</li><li>Mucama opcional y practicuna</li></ul>
+   <div class="precio">pareja desde $ 90.000 <span class="ej">Precio de ejemplo</span></div>
+   <div class="precio">familia desde $ 112.000 <span class="ej">Precio de ejemplo</span></div>
+   <button class="btn" type="button" onclick="elegirUnidad(0)">Fechas para 2</button><button class="btn r" type="button" onclick="elegirUnidad(1)">Fechas en familia</button>
+  </div>
+ </div></div>
+</section>
+
+<section>
+ <div class="fecha">Anotación 2 · Qué hacer desde acá</div>
+ <h2 class="s">Lo que Leo y Graciela te pueden armar.</h2>
+ <div class="pesca">
+  <div><b>Río Percy</b>Pesca con mosca, con instructores en casa</div>
+  <div><b>Los Alerces</b>Asesoramiento para recorrer el Parque Nacional</div>
+  <div><b>La Hoya</b>Descuento en equipos de esquí</div>
+  <div><b>Trevelin</b>Casas de té galés a 1,7 km</div>
+ </div>
+ <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px;align-items:start">
+  <img style="width:100%;height:auto" data-fb onerror="fb(this)" alt="Estancia Río Abajo" src="https://estanciarioabajo.com.ar/images/fondos_home/fondo002-2-1480.jpg">
+  <img style="width:100%;height:auto" data-fb onerror="fb(this)" alt="Estancia Río Abajo" src="https://estanciarioabajo.com.ar/images/fondos_home/fondo003-1480.jpg">
+  <img style="width:100%;height:auto" data-fb onerror="fb(this)" alt="Estancia Río Abajo" src="https://www.welcomeargentina.com/plantillas/webp/grandes/61911-03Gr.webp">
+ </div>
+</section>
+
+<section>
+ <div class="fecha">Anotación 3 · Temporadas</div>
+ <h2 class="s">Cuánto sale cada época, a la vista.</h2>
+ <div class="tt"><table>
+  <thead><tr><th>Temporada</th><th>Fechas</th><th>Para 2 · noche</th><th>Familia · noche</th></tr></thead>
+  <tbody>
+   <tr><td>Fiestas</td><td>24 dic – 1 ene</td><td>$ 126.000 <span class="ej">Precio de ejemplo</span></td><td>$ 156.800 <span class="ej">Precio de ejemplo</span></td></tr>
+   <tr><td>Verano</td><td>2 ene – 28 feb (Carnaval 8 y 9 de febrero)</td><td>$ 135.000 <span class="ej">Precio de ejemplo</span></td><td>$ 168.000 <span class="ej">Precio de ejemplo</span></td></tr>
+   <tr><td>Semana Santa</td><td>24 – 28 mar 2027</td><td>$ 117.000 <span class="ej">Precio de ejemplo</span></td><td>$ 145.600 <span class="ej">Precio de ejemplo</span></td></tr>
+   <tr><td>Pesca (resto de la temporada)</td><td>Diciembre y de marzo a abril <span class="ej">Fechas de ejemplo</span></td><td>$ 103.500 <span class="ej">Precio de ejemplo</span></td><td>$ 128.800 <span class="ej">Precio de ejemplo</span></td></tr>
+   <tr><td>Vacaciones de invierno</td><td>10 – 25 jul (fechas de ejemplo)</td><td>$ 126.000 <span class="ej">Precio de ejemplo</span></td><td>$ 156.800 <span class="ej">Precio de ejemplo</span></td></tr>
+   <tr><td>Resto del año</td><td>Mayo a noviembre</td><td>$ 90.000 <span class="ej">Precio de ejemplo</span></td><td>$ 112.000 <span class="ej">Precio de ejemplo</span></td></tr>
+  </tbody></table></div>
+</section>
+
+<section id="reservar">
+ <div class="fecha">Anotación 4 · Reservar</div>
+ <h2 class="s">Marcá las fechas: el mensaje se escribe solo.</h2>
+ <div class="resv">
+  <div class="cardk">
+   <div class="calhead"><button type="button" id="cal-prev" aria-label="Mes anterior">‹</button><b id="cal-title"></b><button type="button" id="cal-next" aria-label="Mes siguiente">›</button></div>
+   <div id="cal"></div>
+   <div class="ley"><span><i style="background:var(--k-free)"></i>Libre</span><span><i style="background:var(--k-ta)"></i>Verano y fiestas</span><span><i style="background:var(--k-tb)"></i>Pesca y Semana Santa</span><span><i style="background:var(--k-tc)"></i>Invierno</span><span><i style="background:var(--k-oc)"></i>Ocupado</span></div>
+   <div class="sync" style="color:var(--rio)">Disponibilidad de ejemplo · se sincroniza con Booking y Airbnb</div>
+  </div>
+  <div class="wa">
+   <div class="hd"><span>RA</span>Estancia Río Abajo</div>
+   <div id="bubble"></div>
+   <a id="wa-btn" class="wabtn" target="_blank" rel="noopener">Enviar por WhatsApp</a>
+   <small>Así le llega el pedido a Leo y Graciela. Seña por Mercado Pago de demostración.</small>
+  </div>
+  <div class="cardk k-form">
+   <label for="sim-unit">Cabaña</label><select id="sim-unit"></select>
+   <label>Personas</label><div class="pax"><button type="button" data-pax="-1" aria-label="Menos">−</button><b data-v="pax"></b><button type="button" data-pax="1" aria-label="Más">+</button><span style="color:var(--mute)">máx. <span data-v="cap"></span></span></div>
+   <label for="sim-name">Nombre</label><input id="sim-name" placeholder="¿A nombre de quién?" autocomplete="name">
+   <dl class="sum"><dt>Entrada</dt><dd data-v="in"></dd><dt>Salida</dt><dd data-v="out"></dd><dt>Noches</dt><dd data-v="nights"></dd><dt>Temporada</dt><dd data-v="season"></dd><dt>Total <span class="ej">Precio de ejemplo</span></dt><dd data-v="total"></dd><dt>Seña 30% (Mercado Pago)</dt><dd data-v="sena"></dd></dl>
+  </div>
+ </div>
+</section>
+
+<section>
+ <div class="dos">
+  <div><h3>Lo que dicen</h3>
+   <blockquote class="cita">"Todo excelente!!"<small>Paula Carrera · 1 de febrero de 2026 · reseña en Welcome Argentina</small></blockquote></div>
+  <div><h3>Bueno saber</h3><ul><li>Traslado desde el aeropuerto (44 km), a pedido</li><li>Mucama opcional</li><li>Practicuna a pedido</li><li>Horarios y reglas: los confirman Leo y Graciela <span class="ej">A completar</span></li><li><a href="https://www.google.com/maps/search/?api=1&query=Ruta+71+km+1.7+Trevelin+Chubut" target="_blank" rel="noopener">Ruta 71 km 1,7 en Google Maps</a></li></ul></div>
+ </div>
+</section>
+
+<section>
+ <div class="paravos">
+  <h2>Para vos, Leo y Graciela</h2>
+  <ul>
+   <li>Menos idas y vueltas por el formulario: el huésped ve libre y precio antes de escribir.</li>
+   <li>Agenda con cupos por cabaña, sincronizada con Booking.</li>
+   <li>La seña entra por Mercado Pago antes de confirmar.</li>
+   <li>Sin comisión en cada reserva directa: más tiempo para el río.</li>
+  </ul>
+  <button class="btn" type="button" data-view="owner">Ver como dueño</button>
+ </div>
+</section>
+</div>
+
+<footer><div class="w">
+ <strong>Cabañas Estancia Río Abajo</strong> · Ruta 71 km 1,7, Trevelin, Chubut · +54 9 2945 55-4493 · estanciarioabajo@gmail.com
+ <div class="legal">Prototipo de demostración preparado para Cabañas Estancia Río Abajo por Resolviendo Kos · No es la web oficial</div>
+</div></footer>
+<script>
+/* Motor de reserva del prototipo: calendario de ejemplo, simulador, burbuja de WhatsApp y panel del dueño */
+(function(){
+var C=window.CFG, $=function(s,r){return (r||document).querySelector(s)}, $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+var MES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+var DIA=['dom','lun','mar','mié','jue','vie','sáb'];
+function pesos(n){return '$ '+Math.round(n).toLocaleString('es-AR')}
+function iso(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function pd(s){var p=s.split('-');return new Date(+p[0],+p[1]-1,+p[2])}
+function corto(d){return DIA[d.getDay()]+' '+d.getDate()+'/'+(d.getMonth()+1)}
+/* fecha de hoy en la firma */
+var hoy=new Date();
+$$('[data-hoy]').forEach(function(e){e.textContent=hoy.getDate()+' de '+MES[hoy.getMonth()]+' de '+hoy.getFullYear()});
+$$('img[data-fb]').forEach(function(i){ if(i.complete && i.naturalWidth===0 && i.src) fb(i); });
+
+/* temporadas */
+function temporada(d){
+  var s=iso(d);
+  for(var i=0;i<C.seasons.length;i++){var t=C.seasons[i]; if(s>=t.from && s<=t.to) return t;}
+  return C.base||{name:'Temporada baja',mult:1};
+}
+/* ocupación de ejemplo, fija por unidad */
+function ocupado(u,d){
+  var x=(d.getFullYear()*372+d.getMonth()*31+d.getDate())*7+(u+3)*131;
+  x=(x*2654435761)%4294967296;
+  var blk=Math.floor((d.getMonth()*31+d.getDate()+u*5)/4);
+  var h=((blk*977+u*313)%11);
+  return h<3;
+}
+var st={u:0,pax:2,ci:null,co:null,name:'',month:null};
+st.u=C.defaultUnit||0; st.pax=Math.min(C.units[st.u].cap, C.defaultPax||2);
+var first=pd(C.calStart||'2027-01-01'); st.month=new Date(first.getFullYear(),first.getMonth(),1);
+if(C.defaultIn){st.ci=pd(C.defaultIn);st.co=pd(C.defaultOut);st.month=new Date(st.ci.getFullYear(),st.ci.getMonth(),1);}
+
+var cal=$('#cal');
+function rangoLibre(a,b){for(var d=new Date(a);d<b;d.setDate(d.getDate()+1)){if(ocupado(st.u,d))return false}return true}
+if(st.ci&&st.co){var L=Math.round((st.co-st.ci)/864e5),k=0;while(!rangoLibre(st.ci,st.co)&&k<90){st.ci.setDate(st.ci.getDate()+1);st.co=new Date(st.ci);st.co.setDate(st.co.getDate()+L);k++}st.month=new Date(st.ci.getFullYear(),st.ci.getMonth(),1)}
+function drawCal(){
+  if(!cal)return;
+  var m=st.month, y=m.getFullYear(), mo=m.getMonth();
+  var t=$('#cal-title'); if(t)t.textContent=MES[mo]+' '+y;
+  var h='<div class="cal-g">'+['L','M','M','J','V','S','D'].map(function(x){return '<b>'+x+'</b>'}).join('');
+  var off=(new Date(y,mo,1).getDay()+6)%7; for(var i=0;i<off;i++)h+='<span></span>';
+  var n=new Date(y,mo+1,0).getDate();
+  for(var dd=1;dd<=n;dd++){
+    var d=new Date(y,mo,dd), oc=ocupado(st.u,d), cls=['d'];
+    if(oc)cls.push('oc');
+    if(st.ci&&iso(d)===iso(st.ci))cls.push('ci');
+    if(st.co&&iso(d)===iso(st.co))cls.push('co');
+    if(st.ci&&st.co&&d>st.ci&&d<st.co)cls.push('in');
+    var tp=temporada(d); if(tp.tag)cls.push('t-'+tp.tag);
+    h+='<button type="button" class="'+cls.join(' ')+'" data-d="'+iso(d)+'" '+(oc?'disabled aria-label="'+dd+' ocupado"':'aria-label="'+dd+' libre, '+tp.name+'"')+'>'+dd+'</button>';
+  }
+  cal.innerHTML=h+'</div>';
+}
+if(cal){
+  cal.addEventListener('click',function(e){
+    var b=e.target.closest('button[data-d]'); if(!b||b.disabled)return;
+    var d=pd(b.dataset.d);
+    if(!st.ci||st.co||d<=st.ci){st.ci=d;st.co=null}
+    else{ if(rangoLibre(st.ci,d)){st.co=d}else{st.ci=d;st.co=null} }
+    upd();
+  });
+  var pv=$('#cal-prev'),nx=$('#cal-next');
+  var minM=new Date(first.getFullYear(),first.getMonth(),1), maxM=pd(C.calEnd||'2027-09-01');
+  if(pv)pv.onclick=function(){var t=new Date(st.month.getFullYear(),st.month.getMonth()-1,1); if(t>=minM){st.month=t;drawCal()}};
+  if(nx)nx.onclick=function(){var t=new Date(st.month.getFullYear(),st.month.getMonth()+1,1); if(t<=maxM){st.month=t;drawCal()}};
+}
+/* simulador */
+var su=$('#sim-unit'), sp=$('#sim-pax'), sn=$('#sim-name');
+if(su){su.innerHTML=C.units.map(function(u,i){return '<option value="'+i+'">'+u.name+' · hasta '+u.cap+'</option>'}).join('');su.value=st.u;
+  su.onchange=function(){st.u=+su.value; if(st.pax>C.units[st.u].cap)st.pax=C.units[st.u].cap; if(st.ci&&st.co&&!rangoLibre(st.ci,st.co)){st.co=null} upd()}}
+function setPax(v){st.pax=Math.max(1,Math.min(C.units[st.u].cap,v));upd()}
+$$('[data-pax]').forEach(function(b){b.onclick=function(){setPax(st.pax+(+b.dataset.pax))}});
+if(sn)sn.oninput=function(){st.name=sn.value.trim();upd(true)};
+window.elegirUnidad=function(i){st.u=i; if(su)su.value=i; if(st.pax>C.units[i].cap)st.pax=C.units[i].cap; if(st.ci&&st.co&&!rangoLibre(st.ci,st.co))st.co=null; upd(); var r=$('#reservar'); if(r)r.scrollIntoView({behavior:'smooth',block:'start'})};
+
+function calc(){
+  if(!st.ci||!st.co)return null;
+  var u=C.units[st.u], tot=0, n=0, tps={};
+  for(var d=new Date(st.ci);d<st.co;d.setDate(d.getDate()+1)){var t=temporada(d);tot+=u.base*t.mult;n++;tps[t.name]=1}
+  return {n:n,tot:tot,sena:tot*(C.sena||.3),tps:Object.keys(tps)};
+}
+function msg(){
+  var u=C.units[st.u], r=calc(), L=['Hola! Quiero pedir una reserva en '+C.negocio+'.'];
+  if(r){L.push('Fechas: del '+corto(st.ci)+' al '+corto(st.co)+' ('+r.n+' noche'+(r.n>1?'s':'')+')')}
+  else if(st.ci){L.push('Entrada: '+corto(st.ci)+' (falta elegir la salida)')}
+  else{L.push('Fechas: a elegir')}
+  L.push('Personas: '+st.pax+' · '+u.name);
+  if(r){L.push('Total: '+pesos(r.tot)+' · Seña '+Math.round((C.sena||.3)*100)+'%: '+pesos(r.sena)+' por Mercado Pago')}
+  L.push('A nombre de: '+(st.name||'...'));
+  return L.join('\n');
+}
+var bub=$('#bubble'), typing=null, shown='';
+function type(target){
+  if(!bub)return;
+  clearInterval(typing);
+  var common=0; while(common<shown.length&&common<target.length&&shown[common]===target[common])common++;
+  shown=shown.slice(0,common);
+  typing=setInterval(function(){
+    if(shown.length>=target.length){clearInterval(typing);bub.classList.remove('is-typing');return}
+    bub.classList.add('is-typing');
+    shown=target.slice(0,shown.length+3); bub.textContent=shown;
+  },14);
+}
+function upd(fast){
+  var u=C.units[st.u], r=calc();
+  $$('[data-v="pax"]').forEach(function(e){e.textContent=st.pax});
+  $$('[data-v="cap"]').forEach(function(e){e.textContent=u.cap});
+  $$('[data-v="unit"]').forEach(function(e){e.textContent=u.name});
+  $$('[data-v="in"]').forEach(function(e){e.textContent=st.ci?corto(st.ci):'elegí en el calendario'});
+  $$('[data-v="out"]').forEach(function(e){e.textContent=st.co?corto(st.co):(st.ci?'elegí la salida':'—')});
+  $$('[data-v="nights"]').forEach(function(e){e.textContent=r?r.n:'—'});
+  $$('[data-v="total"]').forEach(function(e){e.textContent=r?pesos(r.tot):'—'});
+  $$('[data-v="sena"]').forEach(function(e){e.textContent=r?pesos(r.sena):'—'});
+  $$('[data-v="season"]').forEach(function(e){e.textContent=r?r.tps.join(' + '):'—'});
+  $$('[data-unit-i]').forEach(function(e){e.classList.toggle('is-on',+e.dataset.unitI===st.u)});
+  drawCal();
+  var m=msg(); type(m);
+  var w=$('#wa-btn'); if(w){w.href='https://wa.me/'+C.waIntl+'?text='+encodeURIComponent(m)}
+  var ok=$('#sim-ok'); if(ok)ok.hidden=!r;
+}
+upd();
+
+/* vista del dueño */
+var op=$('#owner-panel');
+function ownerHTML(){
+  var base=new Date(2027,0,11), dias=[];
+  for(var i=0;i<7;i++){var d=new Date(base);d.setDate(base.getDate()+i);dias.push(d)}
+  var grid='<table class="op-week"><thead><tr><th>Unidad</th>'+dias.map(function(d){return '<th>'+corto(d)+'</th>'}).join('')+'</tr></thead><tbody>'+
+    C.units.map(function(u,i){return '<tr><th>'+u.name+'</th>'+dias.map(function(d){var o=ocupado(i,d)||((i+d.getDate())%3===0);return '<td class="'+(o?'oc':'lb')+'">'+(o?'Ocupada':'Libre')+'</td>'}).join('')+'</tr>'}).join('')+'</tbody></table>';
+  var q=C.ownerInbox.map(function(x){
+    var u=C.units[x.u], n=x.n, t=u.base*(x.mult||1.5)*n;
+    return '<div class="op-msg"><div class="op-meta">'+x.when+' · entró por la web</div><pre>Hola! Quiero pedir una reserva en '+C.negocio+'.\nFechas: '+x.f+' ('+n+' noches)\nPersonas: '+x.p+' · '+u.name+'\nTotal: '+pesos(t)+' · Seña 30%: '+pesos(t*.3)+' por Mercado Pago\nA nombre de: '+x.name+'</pre><div class="op-st op-'+x.st+'">'+({paga:'Seña cobrada',pend:'Esperando seña',nueva:'Nueva'})[x.st]+'</div></div>';
+  }).join('');
+  var cob=C.ownerInbox.filter(function(x){return x.st==='paga'}).reduce(function(a,x){return a+C.units[x.u].base*(x.mult||1.5)*x.n*.3},0);
+  var totDir=C.ownerInbox.reduce(function(a,x){return a+C.units[x.u].base*(x.mult||1.5)*x.n},0);
+  return '<div class="op-tag">Panel de ejemplo · así lo vería '+(C.ownerName||'el dueño')+'</div>'+
+   '<div class="op-kpis"><div><small>Consultas esta semana</small><strong>'+C.ownerInbox.length+'</strong></div><div><small>Señas cobradas</small><strong>'+pesos(cob)+'</strong></div><div><small>Comisión que no pagaste (15% Booking)</small><strong>'+pesos(totDir*.15)+'</strong></div></div>'+
+   '<h4>Consultas que entraron</h4><div class="op-inbox">'+q+'</div>'+
+   '<h4>Semana del 11 de enero</h4><div class="op-scroll">'+grid+'</div>'+
+   '<p class="op-note">Datos de ejemplo. El calendario se sincroniza con Booking y Airbnb: lo que se reserva allá aparece ocupado acá.</p>';
+}
+var vbtn=$$('[data-view]');
+function view(v){
+  document.body.classList.toggle('is-owner',v==='owner');
+  vbtn.forEach(function(b){b.setAttribute('aria-pressed',b.dataset.view===v?'true':'false')});
+  if(op){ if(v==='owner'&&!op.innerHTML)op.innerHTML=ownerHTML(); op.hidden=v!=='owner'; if(v==='owner')op.scrollIntoView({behavior:'smooth',block:'start'}); }
+}
+vbtn.forEach(function(b){b.onclick=function(){view(b.dataset.view)}});
+})();
+
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Cabañas Estancia Río Abajo"></script>
+</body>
+</html>
