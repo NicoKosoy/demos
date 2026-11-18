@@ -1,0 +1,973 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Leffler-Dietz Aluminio · Cómputo de aberturas (prototipo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mona+Sans:wdth,wght@75..125,300..900&family=Halant:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script>
+window.__fb=[];
+function fb(img,k){if(window.ilus){img.replaceWith(window.ilus(k))}else{window.__fb.push([img,k])}}
+function fbLogo(img){var s=document.createElement('span');s.className='logo-txt';s.innerHTML='LEFFLER·DIETZ<small>Aluminio y vidrio</small>';img.replaceWith(s)}
+</script>
+<style>
+:root{
+  --noche:#0E1B2B; --noche2:#17293F; --vidrio:#BFD9E6; --vidrio2:#E3EFF5; --alu:#A7AEB4; --horm:#ECEDEA; --obra:#E0692B; --blanco:#FFFFFF;
+  --tinta:#0E1B2B; --tinta2:#46525F; --linea:#CBCFCB; --linea2:#DFE1DD;
+  --wa:#D9FDD3; --wafondo:#EFEAE2; --wahead:#1F5A4C; --wabtn:#1C7A4D;
+  --d:"Mona Sans","Helvetica Neue",sans-serif; --s:"Halant",Georgia,serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+#cotizar,#publicos,#obras,#contacto,#hojaBox,.plano,.chat{scroll-margin-top:68px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--horm);color:var(--tinta);font:400 16px/1.5 var(--d);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--obra);outline-offset:2px}
+.wrap{max-width:1200px;margin:0 auto;padding:0 32px}
+.x{font-stretch:125%}
+.pe{display:inline-block;font:500 10.5px/1.2 var(--d);color:#5F6B77;margin-left:6px;white-space:nowrap;letter-spacing:.01em;font-stretch:90%}
+.rot{font:600 11px/1.2 var(--d);letter-spacing:.12em;text-transform:uppercase;color:var(--tinta2)}
+.nota{font:400 17px/1.4 var(--s);color:var(--tinta2)}
+
+/* firma */
+.firma{font:400 12.5px/1.4 var(--d);color:var(--tinta2);padding:9px 0;background:var(--horm);border-bottom:1px solid var(--linea)}
+.firma b{color:var(--tinta);font-weight:600}
+
+/* barra */
+.barra{position:sticky;top:0;z-index:30;background:var(--noche);color:#fff}
+.barra .wrap{display:flex;align-items:center;gap:22px;height:60px}
+.logo{display:flex;align-items:center;background:#fff;border-radius:4px;padding:5px 9px;height:42px}
+.logo img{height:32px;width:auto}
+.logo-txt{font:800 15px/1 var(--d);font-stretch:125%;letter-spacing:.02em;color:var(--noche)}
+.logo-txt small{display:block;font:500 9.5px/1.2 var(--d);letter-spacing:.14em;text-transform:uppercase;color:var(--tinta2);margin-top:3px;font-stretch:100%}
+.barra nav{display:flex;gap:4px;flex:1}
+.barra nav a{color:#C9D3DD;text-decoration:none;font:500 14px/1 var(--d);padding:10px 12px;border-radius:4px}
+.barra nav a:hover{background:var(--noche2);color:#fff}
+.btn-duenio{border:1.5px solid var(--obra);background:transparent;color:#fff;border-radius:4px;padding:10px 14px;font:700 14px/1 var(--d);cursor:pointer;white-space:nowrap}
+.btn-duenio[aria-pressed=true]{background:var(--obra);color:var(--noche)}
+
+/* portada / lámina */
+.lamina{padding:34px 0 40px;background-color:var(--horm);background-image:linear-gradient(rgba(14,27,43,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(14,27,43,.055) 1px,transparent 1px);background-size:24px 24px}
+.hoja-lam{border:1.5px solid var(--noche);background:rgba(236,237,234,.82);position:relative}
+.regla{height:18px;border-bottom:1px solid var(--noche);background:repeating-linear-gradient(90deg,var(--noche) 0 1px,transparent 1px 24px);background-size:24px 6px;background-repeat:repeat-x;background-position:0 100%;display:flex;justify-content:space-between;padding:0 10px;font:600 10px/18px var(--d);letter-spacing:.2em;color:var(--tinta2)}
+.lam-g{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr)}
+.lam-izq{padding:34px 36px 30px;border-right:1px solid var(--noche)}
+.lam-der{display:flex;flex-direction:column}
+h1{margin:14px 0 0;font-weight:400}
+h1 .num{display:block;font:900 clamp(62px,15.2vw,184px)/.86 var(--d);font-stretch:125%;letter-spacing:-.03em;color:var(--noche)}
+h1 .num-t{display:block;font:400 clamp(20px,2.3vw,28px)/1.25 var(--s);color:var(--noche);margin-top:16px;max-width:22em}
+.cota-h{display:flex;align-items:center;gap:10px;margin-top:14px;max-width:560px}
+.cota-h i{flex:1;height:1px;background:var(--noche);position:relative}
+.cota-h i::before,.cota-h i::after{content:"";position:absolute;top:-5px;width:1.5px;height:11px;background:var(--obra);transform:rotate(45deg)}
+.cota-h i::before{left:0}.cota-h i::after{right:0}
+.cota-h span{font:600 11px/1 var(--d);letter-spacing:.12em;text-transform:uppercase;color:var(--tinta2);white-space:nowrap}
+.esl{font:750 clamp(22px,2.4vw,32px)/1.12 var(--d);font-stretch:118%;letter-spacing:-.01em;margin:28px 0 8px;max-width:20em}
+.bajada{font:400 19px/1.4 var(--s);color:var(--tinta2);margin:0 0 6px;max-width:32em}
+.frase{font:400 15.5px/1.4 var(--s);color:var(--tinta2);margin:12px 0 22px;padding-left:12px;border-left:2px solid var(--alu);max-width:34em}
+.btns{display:flex;gap:10px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 18px;background:var(--noche);color:#fff;border:1.5px solid var(--noche);border-radius:4px;font:700 15px/1 var(--d);text-decoration:none;cursor:pointer}
+.btn.l{background:transparent;color:var(--noche)}
+.btn.wa{background:var(--wabtn);border-color:var(--wabtn)}
+.btn.sm{padding:9px 12px;font-size:13.5px}
+.foto-hero{position:relative;flex:1;min-height:300px;background:var(--noche);overflow:hidden;border-bottom:1px solid var(--noche)}
+.foto-hero img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.foto-hero .ilus{position:absolute;inset:0}
+.foto-hero figcaption{position:absolute;left:0;bottom:0;background:var(--noche);color:#fff;font:600 11px/1 var(--d);letter-spacing:.12em;text-transform:uppercase;padding:9px 12px}
+.ilus{display:grid;place-items:center;background:var(--noche);width:100%;height:100%}
+.ilus svg{width:86%;height:86%}
+.cartela{display:grid;grid-template-columns:1fr 1fr;font:400 13px/1.3 var(--d)}
+.cartela div{padding:9px 12px;border-bottom:1px solid var(--noche);border-right:1px solid var(--noche)}
+.cartela div:nth-child(2n){border-right:0}
+.cartela div.full{grid-column:1/-1;border-right:0}
+.cartela div:last-child{border-bottom:0}
+.cartela span{display:block;font:600 9.5px/1.2 var(--d);letter-spacing:.14em;text-transform:uppercase;color:var(--tinta2);margin-bottom:3px}
+.cartela b{font-weight:650}
+.cartela a{color:inherit}
+.pilares{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--noche)}
+.pilares div{padding:14px 16px;border-right:1px solid var(--noche)}
+.pilares div:last-child{border-right:0}
+.pilares em{font:600 10px/1 var(--d);font-style:normal;letter-spacing:.14em;color:var(--obra)}
+.pilares b{display:block;font:700 15.5px/1.2 var(--d);font-stretch:112%;margin:6px 0 4px}
+.pilares span{font:400 14.5px/1.3 var(--s);color:var(--tinta2)}
+
+/* conmutador */
+.modo-sec{padding:36px 0 10px}
+.conmuta{display:grid;grid-template-columns:1fr 1fr;border:2px solid var(--noche);background:#fff}
+.conmuta button{all:unset;cursor:pointer;padding:22px 26px;display:grid;gap:6px;position:relative;box-sizing:border-box}
+.conmuta button+button{border-left:2px solid var(--noche)}
+.conmuta button b{font:850 clamp(26px,4.4vw,54px)/1 var(--d);font-stretch:125%;letter-spacing:-.02em}
+.conmuta button span{font:400 17px/1.3 var(--s);color:var(--tinta2)}
+.conmuta button small{font:600 10.5px/1 var(--d);letter-spacing:.14em;text-transform:uppercase;color:var(--tinta2)}
+.conmuta button[aria-pressed=true]{background:var(--noche);color:#fff}
+.conmuta button[aria-pressed=true] span,.conmuta button[aria-pressed=true] small{color:#BFCBD6}
+.conmuta button[aria-pressed=true]::after{content:"";position:absolute;right:18px;top:18px;width:12px;height:12px;background:var(--obra)}
+.obra-sel{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:16px}
+.seg{display:inline-flex;border:1.5px solid var(--noche);border-radius:4px;overflow:hidden;background:#fff}
+.seg button{border:0;background:transparent;padding:9px 16px;font:600 14px/1 var(--d);cursor:pointer}
+.seg button+button{border-left:1.5px solid var(--noche)}
+.seg button[aria-pressed=true]{background:var(--vidrio);}
+.sugtxt{font:400 15.5px/1.35 var(--s);color:var(--tinta2)}
+.sugtxt i{display:inline-block;width:8px;height:8px;background:var(--obra);border-radius:50%;margin-right:6px;vertical-align:1px}
+
+/* zona de trabajo */
+.trabajo-sec{padding:18px 0 60px}
+.trabajo{display:grid;gap:18px;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr) minmax(0,.92fr);grid-template-areas:"ctl plano chat";align-items:start}
+.trabajo.pro{grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr);grid-template-areas:"hoja hoja" "plano chat"}
+#ctl{grid-area:ctl}#hojaBox{grid-area:hoja}.plano{grid-area:plano}.chat{grid-area:chat}
+.trabajo:not(.pro) #hojaBox{display:none}.trabajo.pro #ctl{display:none}
+.trabajo.pro .solo-part{display:none}.trabajo:not(.pro) .solo-pro{display:none}
+.card{background:#fff;border:1px solid var(--noche);border-radius:2px}
+.card-h{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--noche);font:600 11px/1.2 var(--d);letter-spacing:.12em;text-transform:uppercase}
+.card-h b{font:800 13px/1 var(--d);letter-spacing:.06em;font-stretch:115%}
+#ctl .in{padding:16px}
+.campo{margin-bottom:16px}
+.campo>.rot{display:block;margin-bottom:8px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{border:1px solid var(--linea);background:var(--horm);border-radius:3px;padding:8px 10px;font:550 13.5px/1.15 var(--d);cursor:pointer;position:relative;text-align:left}
+.chips button[aria-pressed=true]{background:var(--noche);color:#fff;border-color:var(--noche)}
+.chips button:disabled{opacity:.42;cursor:not-allowed}
+.chips button.sug::after{content:"";position:absolute;top:-3px;right:-3px;width:8px;height:8px;border-radius:50%;background:var(--obra);border:1.5px solid #fff}
+.acab{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.acab button{border:1px solid var(--linea);background:#fff;border-radius:3px;padding:6px 4px 7px;cursor:pointer;display:grid;justify-items:center;gap:5px;font:500 11px/1.15 var(--d);text-align:center}
+.acab button i{width:100%;height:22px;border-radius:2px;border:1px solid rgba(14,27,43,.25)}
+.acab button[aria-pressed=true]{border-color:var(--noche);box-shadow:inset 0 0 0 1.5px var(--noche)}
+.medida{display:grid;grid-template-columns:76px 1fr;gap:4px 12px;align-items:center;margin-bottom:8px}
+.medida label{font:600 12px/1 var(--d);color:var(--tinta2)}
+.medida .num{display:flex;align-items:center;border:1px solid var(--linea);border-radius:3px;background:var(--horm)}
+.medida input[type=number]{width:100%;border:0;background:transparent;padding:8px 8px;font:650 16px/1 var(--d);font-variant-numeric:tabular-nums}
+.medida .num span{font:500 12px var(--d);color:var(--tinta2);padding-right:8px}
+input[type=range]{width:100%;accent-color:var(--noche)}
+.check{display:flex;gap:9px;align-items:center;font:500 14.5px/1.3 var(--d);cursor:pointer}
+.check input{width:18px;height:18px;accent-color:var(--noche);flex:0 0 auto}
+.minota{font:400 14.5px/1.35 var(--s);color:var(--tinta2);margin:6px 0 0}
+
+/* planilla */
+#hojaBox .tool{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:12px 14px;border-bottom:1px solid var(--noche);background:var(--horm)}
+#hojaBox .tool .sp{flex:1}
+.aviso{font:400 15px/1.35 var(--s);color:var(--tinta2);padding:10px 14px;border-bottom:1px solid var(--linea2);background:var(--vidrio2)}
+.hoja-scroll{overflow-x:auto}
+table.hoja{width:100%;border-collapse:collapse;font:500 14px/1.2 var(--d);font-variant-numeric:tabular-nums;min-width:1040px}
+.hoja th{font:600 10.5px/1.2 var(--d);letter-spacing:.1em;text-transform:uppercase;color:var(--tinta2);text-align:left;padding:8px 8px;background:#F6F7F5;border-bottom:1px solid var(--noche);border-right:1px solid var(--linea2);white-space:nowrap}
+.hoja td{border-bottom:1px solid var(--linea2);border-right:1px solid var(--linea2);padding:0;vertical-align:middle;height:44px}
+.hoja tbody tr{cursor:pointer}
+.hoja tbody tr.on td{background:#F3F8FA}
+.hoja tbody tr.on td:first-child{box-shadow:inset 4px 0 0 var(--obra)}
+.hoja td.cod{padding:0 8px 0 12px;font:800 14px/1 var(--d);font-stretch:118%;width:58px}
+.hoja select,.hoja input[type=number]{width:100%;border:0;background:transparent;padding:12px 8px;font:500 14px/1.2 var(--d);font-variant-numeric:tabular-nums;border-radius:0}
+.hoja select:focus,.hoja input:focus{outline:2px solid var(--obra);outline-offset:-2px;background:#fff}
+.hoja td.c-v select{min-width:96px}.hoja td.c-ac select{min-width:150px}.hoja td.c-sis select{min-width:150px}
+.hoja select:disabled{color:var(--tinta2);opacity:1}
+.hoja .tipc{display:flex;flex-direction:column}
+.hoja .tipc label{font:500 11.5px/1 var(--d);color:var(--tinta2);display:flex;gap:5px;align-items:center;padding:0 8px 8px;margin-top:-6px}
+.hoja .tipc label input{width:14px;height:14px;accent-color:var(--noche)}
+.hoja td.calc{padding:0 10px;white-space:nowrap;text-align:right}
+.hoja td.tot{font-weight:700}
+.hoja td.tot .pe{display:block;margin:3px 0 0;text-align:right}
+.hoja td.del{width:40px;text-align:center}
+.hoja td.del button{border:0;background:none;cursor:pointer;font:600 18px/1 var(--d);color:var(--tinta2);padding:8px}
+.hoja td.del button:disabled{opacity:.25;cursor:not-allowed}
+.hoja tfoot td{height:auto;padding:12px 10px;font-weight:700;border-bottom:0;background:#F6F7F5;border-top:1.5px solid var(--noche)}
+.hoja tfoot .big{font:800 18px/1.1 var(--d);font-stretch:112%}
+.hoja .w-tip{width:23%}.hoja .w-sis{width:15%}.hoja .w-ac{width:16%}.hoja .w-n{width:72px}.hoja .w-m{width:86px}.hoja .w-v{width:104px}
+
+/* plano */
+.plano .svgbox{background-color:#fff;background-image:linear-gradient(rgba(14,27,43,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(14,27,43,.045) 1px,transparent 1px);background-size:16px 16px;border-bottom:1px solid var(--noche)}
+.plano svg.dib{width:100%;height:auto;display:block}
+.fdatos{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--noche)}
+.fdatos div{padding:8px 12px;font:600 13.5px/1.25 var(--d);border-right:1px solid var(--linea2);border-bottom:1px solid var(--linea2)}
+.fdatos div:nth-child(2n){border-right:0}
+.fdatos span{display:block;font:600 9.5px/1.2 var(--d);letter-spacing:.14em;text-transform:uppercase;color:var(--tinta2);margin-bottom:2px}
+.ref{display:grid;grid-template-columns:96px 1fr;gap:12px;align-items:center;padding:10px 12px;border-bottom:1px solid var(--noche)}
+.ref .ph{height:72px;background:var(--noche);overflow:hidden}
+.ref .ph img{width:100%;height:100%;object-fit:cover}
+.ref .ph .ilus svg{width:80%;height:80%}
+.ref p{margin:0;font:400 14.5px/1.3 var(--s);color:var(--tinta2)}
+.ref p b{display:block;font:600 12.5px/1.2 var(--d);color:var(--tinta)}
+.cuenta{padding:6px 14px 12px}
+.cuenta .ln{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:7px 0;border-bottom:1px solid var(--linea2);font:500 14px/1.3 var(--d);flex-wrap:wrap}
+.cuenta .ln:last-child{border-bottom:0}
+.cuenta .ln b{font-variant-numeric:tabular-nums}
+.cuenta .tot{font:800 19px/1.2 var(--d);font-stretch:110%}
+.cuenta .sena b{color:#B4501C}
+.lista{list-style:none;margin:0;padding:0 14px 6px}
+.lista li{display:flex;justify-content:space-between;gap:8px;padding:8px 10px;border:1px solid var(--linea2);margin-bottom:5px;font:500 13.5px/1.3 var(--d);align-items:center;flex-wrap:wrap;cursor:pointer;border-radius:2px}
+.lista li.on{border-color:var(--noche);box-shadow:inset 4px 0 0 var(--obra)}
+.lista li b{font-stretch:115%}
+.lista button{background:none;border:0;color:var(--tinta2);cursor:pointer;font:600 12px var(--d);text-decoration:underline;padding:2px}
+.agregar{margin:6px 14px 14px;width:calc(100% - 28px)}
+.selnota{padding:10px 14px 0;font:400 15px/1.35 var(--s);color:var(--tinta2)}
+
+/* chat */
+.chat{background:var(--wafondo);border:1px solid var(--noche);border-radius:2px;overflow:hidden}
+.chat .top{background:var(--wahead);color:#fff;padding:11px 14px;display:flex;gap:10px;align-items:center}
+.chat .top i{width:36px;height:36px;border-radius:50%;background:#fff;color:var(--noche);display:grid;place-items:center;font:800 12px var(--d);font-style:normal;font-stretch:120%;flex:0 0 auto}
+.chat .top b{display:block;font:700 15px/1.2 var(--d)}
+.chat .top small{font:400 12px var(--d);opacity:.85}
+.chat .cuerpo{padding:14px 12px;background-image:radial-gradient(rgba(14,27,43,.05) 1px,transparent 1.2px);background-size:14px 14px}
+.burbuja{background:var(--wa);border-radius:8px 0 8px 8px;padding:9px 11px 20px;margin-left:auto;max-width:97%;position:relative;font:400 13.5px/1.45 var(--d);white-space:pre-wrap;word-break:break-word;box-shadow:0 1px .5px rgba(0,0,0,.13);color:#111B21}
+.burbuja::before{content:"";position:absolute;right:-7px;top:0;border-left:8px solid var(--wa);border-bottom:9px solid transparent}
+.burbuja .hora{position:absolute;right:9px;bottom:4px;font:400 10.5px var(--d);color:#667781;display:flex;align-items:center;gap:3px}
+.burbuja .hora svg{width:16px;height:11px}
+#burbuja{max-height:560px;overflow:auto}
+.cursor{display:inline-block;width:6px;height:14px;background:var(--wahead);vertical-align:-2px;animation:t 1s steps(2) infinite}
+@keyframes t{50%{opacity:0}}
+.chat .pie2{padding:12px;border-top:1px solid rgba(0,0,0,.08);background:#F5F2EE;display:grid;gap:8px}
+.chat input,.chat select{width:100%;border:1px solid #D3CEC6;background:#fff;border-radius:3px;padding:10px 11px;font:500 15px/1.2 var(--d)}
+.dias{display:flex;gap:5px;overflow-x:auto;padding-bottom:3px;scrollbar-width:thin}
+.dias button{flex:0 0 auto;border:1px solid #D3CEC6;background:#fff;border-radius:3px;padding:7px 9px;font:600 12.5px/1.2 var(--d);cursor:pointer;text-align:center}
+.dias button small{display:block;font:400 11px var(--d);color:var(--tinta2)}
+.dias button[aria-pressed=true]{background:var(--wahead);color:#fff;border-color:var(--wahead)}
+.dias button[aria-pressed=true] small{color:#d4eadf}
+.dias button:disabled{opacity:.45;cursor:not-allowed;text-decoration:line-through}
+.chat .btn{width:100%}
+.chat .wanota{font:400 13.5px/1.3 var(--s);color:var(--tinta2);text-align:center}
+
+/* secciones */
+section.bl{padding:64px 0}
+.tit{display:grid;grid-template-columns:auto 1fr;gap:4px 18px;align-items:end;margin-bottom:26px;border-bottom:1.5px solid var(--noche);padding-bottom:14px}
+.tit .rot{grid-column:1/-1}
+.tit h2{font:850 clamp(28px,3.8vw,46px)/1.02 var(--d);font-stretch:122%;letter-spacing:-.02em;margin:0}
+.tit p{margin:0;font:400 18px/1.3 var(--s);color:var(--tinta2);justify-self:end;text-align:right;max-width:26em}
+
+/* públicos */
+table.pub{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--noche)}
+.pub th{font:600 10.5px/1.2 var(--d);letter-spacing:.12em;text-transform:uppercase;color:var(--tinta2);text-align:left;padding:10px 16px;border-bottom:1px solid var(--noche);background:#F6F7F5}
+.pub td{padding:16px;border-bottom:1px solid var(--linea2);vertical-align:top}
+.pub tr:last-child td{border-bottom:0}
+.pub td.q{font:800 19px/1.15 var(--d);font-stretch:118%;width:25%}
+.pub td.q small{display:block;font:600 10px/1 var(--d);letter-spacing:.14em;color:var(--obra);margin-bottom:6px;font-stretch:100%}
+.pub ul{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:6px 8px}
+.pub li{font:500 14.5px/1.2 var(--d);padding:6px 10px;background:var(--vidrio2);border:1px solid var(--vidrio);border-radius:2px}
+.pub td.go{width:200px;text-align:right}
+
+/* obras */
+.tira-ctrl{display:flex;gap:8px;justify-content:flex-end;margin:-10px 0 14px}
+.tira-ctrl button{width:40px;height:40px;border:1.5px solid var(--noche);background:#fff;border-radius:2px;cursor:pointer;font:700 18px/1 var(--d)}
+.tira{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px;scrollbar-width:thin}
+.obra{flex:0 0 auto;width:290px;scroll-snap-align:start;background:#fff;border:1px solid var(--noche);display:flex;flex-direction:column}
+.obra.an{width:360px}
+.obra .ph{height:300px;background:var(--noche);overflow:hidden;position:relative}
+.obra .ph img{width:100%;height:100%;object-fit:cover}
+.obra .ph .ilus svg{width:76%;height:76%}
+.obra .ph .tag{position:absolute;top:10px;left:10px;background:var(--noche);color:#fff;font:600 10px/1 var(--d);letter-spacing:.12em;text-transform:uppercase;padding:6px 8px}
+.obra .cap{padding:12px 14px;border-top:1px solid var(--noche)}
+.obra .cap b{display:block;font:750 16px/1.2 var(--d);font-stretch:112%}
+.obra .cap span{font:400 15px/1.3 var(--s);color:var(--tinta2)}
+
+/* dueño */
+#vista-duenio{display:none}
+body.duenio #vista-duenio{display:block}
+body.duenio #vista-cliente{display:none}
+.ej{display:inline-block;background:var(--obra);color:var(--noche);font:700 11px/1 var(--d);letter-spacing:.12em;text-transform:uppercase;padding:7px 10px;border-radius:2px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--noche);background:#fff;margin-bottom:24px}
+.kpis div{padding:16px 18px;border-right:1px solid var(--noche)}
+.kpis div:last-child{border-right:0}
+.kpis b{display:block;font:850 30px/1.05 var(--d);font-stretch:120%;letter-spacing:-.02em}
+.kpis span{font:400 15px/1.3 var(--s);color:var(--tinta2)}
+.dg{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:18px;align-items:start}
+.dg h3{font:800 17px/1.2 var(--d);font-stretch:115%;margin:0 0 10px}
+.bandeja .msg{background:var(--wafondo);border:1px solid var(--linea);padding:10px;margin-bottom:10px}
+.bandeja .msg header{display:flex;justify-content:space-between;font:700 13.5px var(--d);margin-bottom:6px;gap:8px;flex-wrap:wrap}
+.bandeja .msg header span{font:400 12px var(--d);color:var(--tinta2)}
+.bandeja .burbuja{max-width:100%;margin:0;max-height:250px;overflow:auto}
+.tabla{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--noche);font:500 13.5px/1.3 var(--d);font-variant-numeric:tabular-nums}
+.tabla th,.tabla td{border:1px solid var(--linea2);padding:8px 8px;text-align:left;vertical-align:top}
+.tabla th{font:600 10px/1.2 var(--d);text-transform:uppercase;letter-spacing:.1em;color:var(--tinta2);background:#F6F7F5}
+.tabla tr th:first-child{white-space:nowrap}
+.tabla td.lleno{background:var(--vidrio2)}
+.tabla td.libre{color:#1C7A4D}
+.tabla td.r{text-align:right;white-space:nowrap}
+.tabla input{width:120px;border:1px solid var(--linea);border-radius:2px;padding:6px 8px;font:600 14px var(--d);background:var(--horm);font-variant-numeric:tabular-nums}
+.scrollx{overflow-x:auto}
+.ahorro{background:var(--noche);color:#fff;padding:16px 18px;margin-top:14px}
+.ahorro .ln{display:flex;justify-content:space-between;gap:8px;padding:6px 0;font:500 14px/1.3 var(--d);flex-wrap:wrap;border-bottom:1px solid #2A3C52}
+.ahorro .ln:last-child{border:0}
+.ahorro .pe{color:#AFBCCA}
+.ahorro .grande{font:850 21px/1.2 var(--d);font-stretch:115%}
+.preciosg{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:24px}
+.paravos{background:#fff;border:2px solid var(--noche);padding:24px 26px;margin-top:24px;display:grid;grid-template-columns:.8fr 1.2fr;gap:20px;align-items:start}
+.paravos h3{font:850 clamp(26px,3vw,36px)/1.05 var(--d);font-stretch:122%;margin:0;letter-spacing:-.02em}
+.paravos ul{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+.paravos li{padding-left:22px;position:relative;font:400 17px/1.35 var(--s);color:var(--tinta2)}
+.paravos li::before{content:"";position:absolute;left:0;top:7px;width:10px;height:10px;background:var(--obra)}
+.paravos li b{color:var(--tinta);font:700 15.5px/1.3 var(--d);display:block}
+
+/* pie */
+.pie{background:var(--noche);color:#BFCBD6;padding:40px 0 34px;font:400 14.5px/1.55 var(--d)}
+.pie .g{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:24px}
+.pie b{color:#fff}
+.pie a{color:#fff}
+.pie .marca{font:850 22px/1.1 var(--d);font-stretch:125%;color:#fff;margin-bottom:8px}
+.pie .legal{margin-top:26px;padding-top:14px;border-top:1px solid #2A3C52;font:400 12.5px/1.45 var(--d);color:#9FAEBD}
+
+/* ficha imprimible */
+#ficha{display:none;position:fixed;inset:0;z-index:100;background:rgba(14,27,43,.72);overflow:auto;padding:24px 16px}
+#ficha.on{display:block}
+.ficha-tool{max-width:1060px;margin:0 auto 12px;display:flex;gap:8px;justify-content:flex-end}
+.ficha-tool .btn.l{background:#fff}
+.fhoja{max-width:1060px;margin:0 auto;background:#fff;color:var(--noche);border:1.5px solid var(--noche);padding:22px;font:400 12.5px/1.35 var(--d)}
+.fcab{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:end;border-bottom:1.5px solid var(--noche);padding-bottom:12px}
+.fcab h2{margin:0;font:850 26px/1 var(--d);font-stretch:122%;letter-spacing:-.01em}
+.fcab .m{font:800 14px/1 var(--d);font-stretch:125%;text-align:right}
+.fcab .m small{display:block;font:500 9.5px/1.3 var(--d);letter-spacing:.14em;text-transform:uppercase;color:var(--tinta2);margin-top:4px;font-stretch:100%}
+.fcart{display:grid;grid-template-columns:repeat(6,1fr);border:1px solid var(--noche);margin:12px 0}
+.fcart div{padding:7px 9px;border-right:1px solid var(--noche);font-weight:600}
+.fcart div:last-child{border-right:0}
+.fcart span{display:block;font:600 8.5px/1.2 var(--d);letter-spacing:.14em;text-transform:uppercase;color:var(--tinta2);margin-bottom:2px}
+.ftab{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.ftab th{font:600 9px/1.2 var(--d);letter-spacing:.1em;text-transform:uppercase;color:var(--tinta2);text-align:left;border-bottom:1px solid var(--noche);padding:6px 6px}
+.ftab td{border-bottom:1px solid var(--linea2);padding:5px 6px;vertical-align:middle}
+.ftab td.r,.ftab th.r{text-align:right;white-space:nowrap}
+.ftab td.c{font:800 13px/1 var(--d);font-stretch:118%}
+.ftab svg{width:92px;height:auto;display:block}
+.ftab tfoot td{border-top:1.5px solid var(--noche);border-bottom:0;font-weight:700;padding-top:8px}
+.fnotas{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px}
+.fnotas ul{margin:0;padding-left:16px}
+.fnotas li{margin-bottom:3px}
+.flegal{margin-top:14px;padding-top:8px;border-top:1px solid var(--linea);font-size:11px;color:var(--tinta2)}
+@media print{
+  @page{size:A4 landscape;margin:10mm}
+  body{background:#fff}
+  body>*:not(#ficha){display:none!important}
+  #ficha{display:block!important;position:static;background:#fff;padding:0;overflow:visible}
+  .ficha-tool{display:none!important}
+  .fhoja{border:0;padding:0;max-width:none}
+  .ftab tr{break-inside:avoid}
+}
+
+/* responsive */
+@media(max-width:1120px){
+  .trabajo{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"ctl plano" "chat chat"}
+  .trabajo.pro{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"hoja hoja" "plano chat"}
+}
+@media(max-width:900px){
+  .lam-g{grid-template-columns:1fr}
+  .lam-izq{border-right:0;border-bottom:1px solid var(--noche)}
+  .foto-hero{min-height:320px}
+  .barra nav{display:none}.barra .wrap{justify-content:space-between}
+  .pilares{grid-template-columns:1fr 1fr}.pilares div:nth-child(2){border-right:0}.pilares div:nth-child(-n+2){border-bottom:1px solid var(--noche)}
+  .dg,.preciosg,.paravos,.pie .g{grid-template-columns:minmax(0,1fr)}
+  .pie a{word-break:break-word}
+  .kpis{grid-template-columns:1fr 1fr}.kpis div:nth-child(2){border-right:0}.kpis div:nth-child(-n+2){border-bottom:1px solid var(--noche)}
+  .tit{grid-template-columns:1fr}.tit p{justify-self:start;text-align:left}
+}
+@media(max-width:760px){
+  .wrap{padding:0 16px}
+  .lamina{padding:16px 0 24px}
+  .lam-izq{padding:22px 18px}
+  .trabajo,.trabajo.pro{grid-template-columns:minmax(0,1fr);grid-template-areas:"ctl" "hoja" "plano" "chat"}
+  .conmuta button{padding:16px 14px}
+  .conmuta button span{font-size:14.5px}
+  .conmuta button[aria-pressed=true]::after{right:10px;top:10px;width:9px;height:9px}
+  .acab{grid-template-columns:repeat(3,1fr)}
+  section.bl{padding:44px 0}
+  /* planilla como fichas */
+  table.hoja{min-width:0}
+  .hoja thead{display:none}
+  .hoja,.hoja tbody,.hoja tfoot{display:block}
+  .hoja tbody tr{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));border-bottom:1px solid var(--noche)}
+  .hoja tbody tr.on{box-shadow:inset 4px 0 0 var(--obra)}
+  .hoja tbody tr.on td:first-child{box-shadow:none}
+  .hoja td{height:auto;border-right:1px solid var(--linea2);border-bottom:1px solid var(--linea2);min-width:0}
+  .hoja td[data-l]::before{content:attr(data-l);display:block;font:600 9.5px/1 var(--d);letter-spacing:.12em;text-transform:uppercase;color:var(--tinta2);padding:8px 8px 0}
+  .hoja td{order:20}.hoja td.c-tip{order:2}.hoja td.del{order:3}.hoja td.c-sis{order:4}.hoja td.c-ac{order:5}.hoja td.c-n{order:6}.hoja td.c-a{order:7}.hoja td.c-h{order:8}.hoja td.c-v{order:9}.hoja td.c-m2{order:10}.hoja td.tot{order:11}
+  .hoja td select{min-width:0!important}
+  .hoja td.cod{order:1;grid-column:span 1;width:auto;display:flex;align-items:center;padding:0 0 0 12px}
+  .hoja td.c-tip{grid-column:span 4}
+  .hoja td.del{grid-column:span 1;width:auto;display:flex;align-items:center;justify-content:center}
+  .hoja td.c-sis,.hoja td.c-ac{grid-column:span 3}
+  .hoja td.c-n,.hoja td.c-a,.hoja td.c-h,.hoja td.c-v,.hoja td.c-m2,.hoja td.tot{grid-column:span 2}
+  .hoja td.calc{text-align:left;padding:0 8px 10px}
+  .hoja td.calc[data-l]::before{padding:8px 0 6px}
+  .hoja td.tot .pe{text-align:left}
+  .hoja select,.hoja input[type=number]{padding:8px 8px 10px}
+  .hoja tfoot tr{display:grid;grid-template-columns:1fr 1fr}
+  .hoja tfoot td{display:block}
+  .hoja tfoot td.vac{display:none}
+  .pub,.pub tbody,.pub tr,.pub td{display:block;width:auto!important}
+  .pub thead{display:none}
+  .pub tr{border-bottom:1px solid var(--noche);padding:4px 0}
+  .pub td{border:0;padding:10px 14px}
+  .pub td.go{text-align:left;padding-bottom:16px}
+  .obra{width:252px}.obra.an{width:300px}
+  .obra .ph{height:240px}
+  .tira-ctrl{display:none}
+  .fcart{grid-template-columns:1fr 1fr}
+  .fcart div{border-bottom:1px solid var(--noche)}
+  .fnotas{grid-template-columns:1fr}
+  .fhoja{padding:14px;overflow-x:auto}
+  .paravos{padding:20px 18px}
+  .tabla td.r{white-space:normal}
+  .tabla td.r .pe{display:block;margin:3px 0 0}
+  .tabla input{width:110px}
+}
+@media(max-width:420px){
+  .btn-duenio{padding:9px 10px;font-size:13px}
+  .logo{height:38px}.logo img{height:28px}
+  .cartela{font-size:12.5px}
+}
+</style>
+</head>
+<body>
+
+<div class="firma"><div class="wrap">Prototipo preparado para <b>Leffler-Dietz Aluminio</b> · 18 de noviembre de 2026</div></div>
+
+<header class="barra">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="Leffler-Dietz Aluminio"><img src="https://www.leffler-dietz.com.ar/images/logo-leffler-dietz-aluminio-vidrio.webp" alt="Leffler-Dietz Aluminio" onerror="fbLogo(this)"></a>
+    <nav aria-label="Secciones">
+      <a href="#cotizar">Cotizar</a>
+      <a href="#publicos">Para quién</a>
+      <a href="#obras">Obras</a>
+      <a href="#contacto">Planta</a>
+    </nav>
+    <button class="btn-duenio" type="button" id="btn-duenio" aria-pressed="false">Ver como dueño</button>
+  </div>
+</header>
+
+<main id="top">
+<div id="vista-cliente">
+
+<!-- LÁMINA 01 · PORTADA -->
+<header class="lamina">
+  <div class="wrap">
+    <div class="hoja-lam">
+      <div class="regla" aria-hidden="true"><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span></div>
+      <div class="lam-g">
+        <div class="lam-izq">
+          <span class="rot">Lámina 01 · Portada</span>
+          <h1><span class="num">16.000</span><span class="num-t">proyectos exitosos en más de 200 ciudades argentinas.</span></h1>
+          <div class="cota-h" aria-hidden="true"><i></i><span>Desde General Ramírez, Entre Ríos</span></div>
+          <p class="esl">Aberturas y soluciones en aluminio y vidrio</p>
+          <p class="bajada">Fabricación e instalación a medida para viviendas, obras y espacios comerciales.</p>
+          <p class="frase">"En Leffler Dietz nos consolidamos como referentes en la fabricación de aberturas y soluciones en vidrio y aluminio."</p>
+          <div class="btns">
+            <button class="btn" type="button" data-ir="part">Cotizar una abertura</button>
+            <button class="btn l" type="button" data-ir="pro">Cargar un cómputo de obra</button>
+          </div>
+        </div>
+        <div class="lam-der">
+          <figure class="foto-hero" style="margin:0">
+            <img src="https://www.leffler-dietz.com.ar/images/piel-de-vidrio-leffler-dietz.webp" alt="Fachada con piel de vidrio de Leffler-Dietz" onerror="fb(this,'fv')">
+            <figcaption>Piel de vidrio · curtain wall</figcaption>
+          </figure>
+          <div class="cartela">
+            <div><span>Obra</span><b>Leffler-Dietz Aluminio</b></div>
+            <div><span>Lámina</span><b>01 / 04</b></div>
+            <div class="full"><span>Planta</span><b>Ex RN 131, Gral. Ramírez · L a V 7–16</b></div>
+            <div><span>Teléfono</span><b><a href="tel:+543434901500">0343 490-1500</a></b></div>
+            <div><span>Fecha</span><b>18·11·2026</b></div>
+          </div>
+        </div>
+      </div>
+      <div class="pilares">
+        <div><em>N1</em><b>Asesoramiento técnico</b><span>Para arquitectos, constructoras y desarrolladores</span></div>
+        <div><em>N2</em><b>Fabricación propia</b><span>En la planta de General Ramírez</span></div>
+        <div><em>N3</em><b>Desarrollos a medida</b><span>Fachadas, frentes, puertas piso-techo</span></div>
+        <div><em>N4</em><b>Instalación y logística</b><span>Obras en más de 200 ciudades</span></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- CONMUTADOR -->
+<section class="modo-sec" id="cotizar">
+  <div class="wrap">
+    <span class="rot">Lámina 02 · Cotizador</span>
+    <div class="conmuta" role="group" aria-label="Tipo de cliente" style="margin-top:10px">
+      <button type="button" id="m-part" aria-pressed="true"><small>Modo</small><b>Particular</b><span>Una abertura con plano y precio al instante</span></button>
+      <button type="button" id="m-pro" aria-pressed="false"><small>Modo</small><b>Profesional</b><span>Planilla de cómputo: V1, V2, P1… con m² y total de obra</span></button>
+    </div>
+    <div class="obra-sel">
+      <span class="rot">Tipo de obra</span>
+      <div class="seg" id="obra-seg" role="group" aria-label="Tipo de obra"></div>
+      <span class="sugtxt" id="sugtxt"></span>
+    </div>
+  </div>
+</section>
+
+<!-- ZONA DE TRABAJO -->
+<section class="trabajo-sec">
+  <div class="wrap">
+    <div class="trabajo" id="trabajo">
+
+      <div class="card" id="ctl">
+        <div class="card-h"><span>Abertura <b id="ctl-cod">V1</b></span><span>Particular</span></div>
+        <div class="in">
+          <div class="campo"><span class="rot">Tipología</span><div class="chips" id="c-tip"></div></div>
+          <div class="campo"><span class="rot">Sistema</span><div class="chips" id="c-sis"></div><p class="minota" id="sis-nota"></p></div>
+          <div class="campo" id="campo-hj"><span class="rot">Hojas</span><div class="chips" id="c-hj"></div></div>
+          <div class="campo">
+            <span class="rot">Medidas del vano</span>
+            <div class="medida"><label for="ancho">Ancho</label><div class="num"><input id="ancho" type="number" inputmode="numeric"><span>cm</span></div><span></span><input id="r-ancho" type="range" aria-label="Ancho"></div>
+            <div class="medida"><label for="alto">Alto</label><div class="num"><input id="alto" type="number" inputmode="numeric"><span>cm</span></div><span></span><input id="r-alto" type="range" aria-label="Alto"></div>
+            <div class="medida"><label for="cant">Cantidad</label><div class="num"><input id="cant" type="number" min="1" max="200" inputmode="numeric"><span>u</span></div></div>
+          </div>
+          <div class="campo"><span class="rot">Acabado</span><div class="acab" id="c-ac"></div></div>
+          <div class="campo" id="campo-vid"><span class="rot">Vidrio</span><div class="chips" id="c-vid"></div></div>
+          <label class="check" id="campo-pers"><input type="checkbox" id="pers"> Con persiana de aluminio incorporada</label>
+        </div>
+      </div>
+
+      <div class="card" id="hojaBox">
+        <div class="card-h"><span>Planilla de cómputo · <b id="hoja-obra">Vivienda</b></span><span id="hoja-cnt"></span></div>
+        <div class="tool">
+          <button class="btn sm" type="button" id="h-add">+ Agregar posición</button>
+          <button class="btn sm l" type="button" id="h-tip">Cargar típicas de vivienda</button>
+          <span class="sp"></span>
+          <button class="btn sm l" type="button" id="h-ficha">Ver ficha imprimible</button>
+        </div>
+        <div class="aviso" id="h-aviso" hidden>Cargamos posiciones típicas como ejemplo. Editá cualquier celda o borrá filas.</div>
+        <div class="hoja-scroll">
+          <table class="hoja" id="hoja">
+            <thead><tr><th>Cód.</th><th class="w-tip">Tipología</th><th class="w-sis">Sistema</th><th class="w-n">Cant.</th><th class="w-m">Ancho cm</th><th class="w-m">Alto cm</th><th class="w-ac">Acabado</th><th class="w-v">DVH</th><th style="text-align:right">m²</th><th style="text-align:right">Total</th><th></th></tr></thead>
+            <tbody id="hoja-b"></tbody>
+            <tfoot><tr>
+              <td class="vac" colspan="3">Total de obra</td>
+              <td data-l="Unidades" id="f-un"></td>
+              <td class="vac" colspan="4"></td>
+              <td class="calc" data-l="m² totales" id="f-m2"></td>
+              <td class="calc big" data-l="Total posiciones" id="f-tot"></td>
+              <td class="vac"></td>
+            </tr></tfoot>
+          </table>
+        </div>
+      </div>
+
+      <div class="card plano" aria-live="polite">
+        <div class="card-h"><span>Plano · vista exterior</span><b id="p-cod">V1</b></div>
+        <div class="svgbox" id="svgbox"></div>
+        <div class="fdatos">
+          <div><span>Tipología</span><b id="d-tip"></b></div>
+          <div><span>Sistema</span><b id="d-sis"></b></div>
+          <div><span>Acabado</span><b id="d-ac"></b></div>
+          <div><span>Superficie</span><b id="d-m2"></b></div>
+        </div>
+        <div class="ref" id="ref" hidden></div>
+        <p class="selnota solo-pro">Tocá una fila de la planilla para ver su plano.</p>
+        <div class="cuenta">
+          <div class="ln"><span id="k-lab">Aberturas</span><span><b id="k-sub"></b><span class="pe">Precio de ejemplo</span></span></div>
+          <div class="ln"><label class="check" style="font-size:14px"><input type="checkbox" id="inst" checked> Instalación y logística</label><span><b id="k-inst"></b><span class="pe">Precio de ejemplo</span></span></div>
+          <div class="ln tot"><span id="k-totlab">Total estimado</span><span><b id="k-tot"></b><span class="pe">Precio de ejemplo</span></span></div>
+          <div class="ln sena"><span>Seña para fabricar (30%)</span><span><b id="k-sena"></b><span class="pe">Precio de ejemplo</span></span></div>
+        </div>
+        <ul class="lista solo-part" id="lista"></ul>
+        <button class="btn l agregar solo-part" type="button" id="agregar">+ Sumar otra abertura</button>
+      </div>
+
+      <div class="chat">
+        <div class="top"><i>LD</i><span><b>Leffler-Dietz Aluminio</b><small id="chat-sub">Así le llega tu pedido</small></span></div>
+        <div class="cuerpo"><div class="burbuja" id="burbuja"><span id="btxt"></span><span class="cursor"></span><span class="hora"><span id="bhora"></span><svg viewBox="0 0 16 11" aria-hidden="true"><path d="M1 6l3 3 6-7M6 8l1 1 6-7" fill="none" stroke="#53BDEB" stroke-width="1.6"/></svg></span></div></div>
+        <div class="pie2">
+          <input id="nombre" placeholder="Tu nombre" autocomplete="name" aria-label="Tu nombre">
+          <input id="estudio" class="solo-pro" placeholder="Estudio, constructora o empresa" aria-label="Estudio o empresa">
+          <input id="obraNom" class="solo-pro" placeholder="Nombre de la obra" aria-label="Nombre de la obra">
+          <input id="loc" placeholder="Localidad de la obra" aria-label="Localidad">
+          <select id="cuando" aria-label="Cuándo lo necesitás"></select>
+          <span class="rot" id="dia-lab">Día para que vayan a medir</span>
+          <div class="dias" id="dias"></div>
+          <a class="btn wa" id="btn-wa" href="#" target="_blank" rel="noopener">Enviar por WhatsApp</a>
+          <span class="wanota">Se abre WhatsApp con este mismo texto al +54 9 343 425-2249</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- LÁMINA 03 · PÚBLICOS -->
+<section class="bl" id="publicos" style="padding-top:20px">
+  <div class="wrap">
+    <div class="tit"><span class="rot">Lámina 03</span><h2>Para quién trabajamos</h2><p>Cuatro públicos, una misma planta de fabricación.</p></div>
+    <table class="pub">
+      <thead><tr><th>Público</th><th>Qué les resuelve Leffler-Dietz</th><th style="text-align:right">Empezá por</th></tr></thead>
+      <tbody>
+        <tr><td class="q"><small>P1</small>Arquitectos</td><td><ul><li>Asesoramiento técnico</li><li>Desarrollos a medida</li><li>Puertas piso-techo con bisagra oculta</li><li>Acabados especiales</li></ul></td><td class="go"><button class="btn sm l" type="button" data-ir="pro" data-obra="vivienda">Cómputo de vivienda</button></td></tr>
+        <tr><td class="q"><small>P2</small>Constructoras</td><td><ul><li>Fabricación propia</li><li>Instalación y logística</li><li>Cómputo por posición</li><li>Sistemas corredizos y DVH</li></ul></td><td class="go"><button class="btn sm l" type="button" data-ir="pro" data-obra="edificio">Cómputo de edificio</button></td></tr>
+        <tr><td class="q"><small>P3</small>Desarrolladores</td><td><ul><li>Piel de vidrio</li><li>Cerramientos de balcón</li><li>Barandas vidriadas</li><li>Alta prestación</li></ul></td><td class="go"><button class="btn sm l" type="button" data-ir="pro" data-obra="edificio">Cómputo de edificio</button></td></tr>
+        <tr><td class="q"><small>P4</small>Empresas y comercios</td><td><ul><li>Frente integral</li><li>Fachadas vidriadas</li><li>Parasoles y quiebravistas tubulares</li><li>Cortinas automatizadas</li></ul></td><td class="go"><button class="btn sm l" type="button" data-ir="pro" data-obra="comercio">Cómputo de comercio</button></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- LÁMINA 04 · OBRAS -->
+<section class="bl" id="obras" style="padding-top:10px">
+  <div class="wrap">
+    <div class="tit"><span class="rot">Lámina 04</span><h2>Obras</h2><p>Paraná, Concepción del Uruguay, Colón, Paso de los Libres.</p></div>
+    <div class="tira-ctrl"><button type="button" id="t-prev" aria-label="Anterior">←</button><button type="button" id="t-next" aria-label="Siguiente">→</button></div>
+    <div class="tira" id="tira"></div>
+  </div>
+</section>
+
+</div><!-- /vista-cliente -->
+
+<!-- VISTA DUEÑO -->
+<div id="vista-duenio">
+<section class="bl" style="padding-top:36px">
+  <div class="wrap">
+    <span class="ej">Panel de ejemplo</span>
+    <div class="tit" style="margin-top:14px"><span class="rot">Lado del dueño</span><h2>Así se vería tu semana, Leffler-Dietz</h2><p>Datos inventados para mostrar cómo funciona. Nada de esto es real.</p></div>
+    <div class="kpis">
+      <div><b>12</b><span>consultas con medidas y acabado cargados</span></div>
+      <div><b>4</b><span>cómputos de obra de estudios y constructoras</span></div>
+      <div><b id="kp-m2"></b><span>m² cotizados solos esta semana</span></div>
+      <div><b id="kp-ant"></b><span>en anticipos cobrados<span class="pe">Precio de ejemplo</span></span></div>
+    </div>
+    <div class="dg">
+      <div>
+        <h3>Consultas que entraron</h3>
+        <div class="bandeja" id="bandeja"></div>
+      </div>
+      <div>
+        <h3>Visitas técnicas y mediciones · semana del 23 nov</h3>
+        <div class="scrollx"><table class="tabla" id="agenda"></table></div>
+        <h3 style="margin-top:20px">Anticipos cobrados</h3>
+        <table class="tabla" id="anticipos"></table>
+        <div class="ahorro" id="ahorro"></div>
+      </div>
+    </div>
+    <div class="preciosg">
+      <div>
+        <h3 style="font:800 17px/1.2 var(--d);font-stretch:115%;margin:0 0 10px">Tabla de precios por m² · la cambiás vos</h3>
+        <table class="tabla" id="precios1"></table>
+      </div>
+      <div>
+        <h3 style="font:800 17px/1.2 var(--d);font-stretch:115%;margin:0 0 10px">Vidrio, extras y recargos por acabado</h3>
+        <table class="tabla" id="precios2"></table>
+      </div>
+    </div>
+    <div class="paravos">
+      <h3>Para vos, Leffler-Dietz</h3>
+      <ul>
+        <li><b>Menos mensajes repetidos</b>Cada consulta llega con tipología, sistema, medidas, acabado y DVH.</li>
+        <li><b>Cómputos de obra ya armados</b>El estudio carga V1, V2, P1… y te llega la planilla con m² y total.</li>
+        <li><b>Agenda de visitas técnicas con cupos</b>De lunes a viernes de 7 a 16; los turnos llenos no se ofrecen.</li>
+        <li><b>Seña antes de fabricar, sin comisión</b>El 30% se pide antes de confirmar y el cliente te escribe directo.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+</div>
+</main>
+
+<footer class="pie" id="contacto">
+  <div class="wrap">
+    <div class="g">
+      <div><div class="marca">LEFFLER·DIETZ</div>Aberturas y soluciones en aluminio y vidrio<br>Fabricación e instalación a medida</div>
+      <div><b>Planta</b><br>Ex Ruta Nacional 131, General Ramírez, Entre Ríos<br>Lunes a viernes de 7 a 16</div>
+      <div><a href="tel:+543434901500">0343 490-1500</a><br><a href="https://wa.me/5493434252249" target="_blank" rel="noopener">WhatsApp +54 9 343 425-2249</a><br><a href="mailto:contacto@leffler-dietz.com.ar">contacto@leffler-dietz.com.ar</a><br><a href="https://www.instagram.com/leffler_dietzaluminio/" target="_blank" rel="noopener">@leffler_dietzaluminio</a></div>
+    </div>
+    <div class="legal">Prototipo de demostración preparado para Leffler-Dietz Aluminio por Resolviendo Kos · No es la web oficial. Todos los precios son de ejemplo.</div>
+  </div>
+</footer>
+
+<!-- FICHA IMPRIMIBLE -->
+<div id="ficha" aria-hidden="true">
+  <div class="ficha-tool"><button class="btn" type="button" id="f-print">Imprimir ficha</button><button class="btn l" type="button" id="f-close">Cerrar</button></div>
+  <div class="fhoja" id="fhoja"></div>
+</div>
+
+<script>
+const $=s=>document.querySelector(s);
+const N="#0E1B2B";
+const WA="5493434252249";
+const fmt=n=>"$"+(Math.round(n/1000)*1000).toLocaleString("es-AR");
+const fm2=n=>n.toLocaleString("es-AR",{minimumFractionDigits:2,maximumFractionDigits:2});
+const clamp=(v,r)=>Math.max(r[0],Math.min(r[1],Math.round(+v||0)));
+const IMG="https://www.leffler-dietz.com.ar/images/";
+const FECHA="18 de noviembre de 2026";
+
+/* ---------- datos ---------- */
+const P={
+  sis:[{n:"Tradicional (Herrero)",m2:310000},{n:"Alta prestación",m2:470000}],
+  own:{b:520000,pg:290000,pi:640000,q:240000},
+  vid:[{n:"Vidrio simple",m2:0},{n:"DVH",m2:95000},{n:"DVH laminado",m2:160000}],
+  pers:260000, inst:42000, sena:.3,
+  ac:[{n:"Esmaltado blanco",c:"#F3F4F1",p:0},{n:"Esmaltado gris",c:"#6C737A",p:.04},{n:"Esmaltado negro",c:"#1D2024",p:.06},{n:"Tono especial",c:"#8A7A66",p:.12,nota:"color a definir"},{n:"Anodizado",c:"#B9BDC0",p:.10,pat:"ano"},{n:"Efecto madera",c:"#8B5A36",p:.18,pat:"mad"}]
+};
+const TIP={
+  v:{cod:"V",n:"Ventana de abrir",f:1,vid:1,pers:1,hj:[[1,"1 hoja"],[2,"2 hojas"]],d:[120,110],ra:[40,300],rh:[40,250]},
+  vc:{cod:"V",n:"Ventana corrediza",f:.95,vid:1,pers:1,hj:[[2,"2 hojas"],[3,"3 hojas"],[4,"4 hojas"]],d:[180,120],ra:[80,600],rh:[50,260],foto:"acabado-aluminio-abertura-corrediza-leffler-dietz.webp",fotoT:"Corrediza con acabado"},
+  p:{cod:"P",n:"Puerta",f:1.3,vid:1,hj:[[1,"Simple"],[2,"Doble"]],d:[90,205],ra:[60,220],rh:[180,300]},
+  pv:{cod:"PV",n:"Puerta-ventana",f:1.15,vid:1,pers:1,hj:[[1,"1 hoja"],[2,"2 hojas"]],d:[150,220],ra:[70,400],rh:[180,300]},
+  cb:{cod:"CB",n:"Cerramiento de balcón",f:1.05,vid:1,d:[380,240],ra:[120,1200],rh:[120,320]},
+  fv:{cod:"F",n:"Piel de vidrio",f:1.55,vid:1,soloAP:1,d:[600,900],ra:[200,3000],rh:[250,3000],foto:"instalacion-fachada-vidriada-leffler-dietz.webp",fotoT:"Instalación de fachada vidriada"},
+  fi:{cod:"FI",n:"Frente integral",f:1.35,vid:1,d:[500,320],ra:[150,1500],rh:[200,700]},
+  b:{cod:"B",n:"Baranda vidriada",own:1,d:[300,100],ra:[50,2000],rh:[90,120]},
+  pg:{cod:"PG",n:"Persiana / postigo",own:1,hj:[[1,"1 paño"],[2,"2 hojas"]],d:[120,110],ra:[40,300],rh:[40,260],foto:"persianas-postigos-aluminio-leffler-dietz.jpeg",fotoT:"Persianas y postigos"},
+  pi:{cod:"PI",n:"Puerta interior piso-techo",own:1,d:[90,270],ra:[60,150],rh:[200,350],foto:"puerta-interior-piso-techo-a-medida-leffler-dietz.webp",fotoT:"Con bisagra oculta, junto a Gromanti"},
+  q:{cod:"Q",n:"Parasol tubular",own:1,d:[400,250],ra:[50,1500],rh:[50,800]}
+};
+const ORD=["v","vc","p","pv","cb","fv","fi","b","pg","pi","q"];
+const OBRA={
+  vivienda:{n:"Vivienda",sug:["vc","v","pv","pg","pi"],tip:[["vc",{a:240,h:210,c:2,s:1,ac:2,hj:2}],["v",{a:120,h:110,c:4,s:1,ac:2,hj:1}],["pv",{a:150,h:220,c:1,s:1,ac:2,hj:2}],["pg",{a:120,h:110,c:4,ac:2,hj:2}],["pi",{a:90,h:270,c:3,ac:5}]]},
+  edificio:{n:"Edificio",sug:["vc","cb","b","fv"],tip:[["vc",{a:180,h:140,c:24,s:0,ac:0,hj:2}],["cb",{a:380,h:240,c:12,s:1,ac:1}],["b",{a:380,h:100,c:12,ac:1}],["fv",{a:900,h:1800,c:1,s:1,ac:4}]]},
+  comercio:{n:"Comercio",sug:["fi","fv","p","q"],tip:[["fi",{a:600,h:320,c:1,s:1,ac:2}],["p",{a:100,h:220,c:2,s:1,ac:2,hj:1}],["fv",{a:1200,h:650,c:1,s:1,ac:4}],["q",{a:600,h:250,c:1,ac:1}]]}
+};
+const CUANDO=["Lo antes posible","En 1 a 2 meses","En 3 a 6 meses","Estoy presupuestando"];
+
+function nuevo(t,x){const T=TIP[t];return Object.assign({t,s:T.soloAP?1:0,c:1,a:T.d[0],h:T.d[1],ac:0,vid:T.vid?1:0,hj:T.hj?((t==="v"||t==="pv")?2:T.hj[0][0]):1,pe:false},x||{})}
+const S={modo:"part",obra:"vivienda",sel:0,inst:true,dia:null,cargado:false};
+let pos=[nuevo("vc",{s:1,ac:2})];
+
+/* ---------- cálculo ---------- */
+function calc(r){const T=TIP[r.t];const a=clamp(r.a,T.ra),h=clamp(r.h,T.rh),c=Math.max(1,Math.min(999,Math.round(+r.c||1)));
+  const m2=a*h/1e4,mb=Math.max(.5,m2),s=T.soloAP?1:r.s;
+  const base=T.own?P.own[r.t]:P.sis[s].m2*T.f;
+  let u=mb*base*(1+P.ac[r.ac].p);
+  if(T.vid)u+=mb*P.vid[r.vid].m2;
+  if(T.pers&&r.pe)u+=mb*P.pers;
+  return{a,h,c,m2,m2t:m2*c,u,tot:u*c,s}}
+function totales(rows,inst){let sub=0,m2=0,un=0;rows.forEach(r=>{const k=calc(r);sub+=k.tot;m2+=k.m2t;un+=k.c});const ins=inst?m2*P.inst:0;const tot=sub+ins;return{sub,m2,un,ins,tot,sena:tot*P.sena}}
+function cods(rows){const n={};return rows.map(r=>{const p=TIP[r.t].cod;n[p]=(n[p]||0)+1;return p+n[p]})}
+function sisTxt(r){const T=TIP[r.t];return T.own?"":P.sis[T.soloAP?1:r.s].n}
+function vidTxt(r){const T=TIP[r.t];return T.vid?P.vid[r.vid].n:(r.t==="b"?"vidrio incluido":"")}
+function acTxt(r){const a=P.ac[r.ac];return a.n+(a.nota?" ("+a.nota+")":"")}
+function hjTxt(r){const T=TIP[r.t];if(!T.hj)return"";const o=T.hj.find(x=>x[0]===r.hj);return o?o[1]:""}
+
+/* ---------- dibujo ---------- */
+let UID=0;
+function dib(r,o){o=o||{};const T=TIP[r.t],k=calc(r),W=o.W||440,H=o.H||340,cot=o.cot!==false,id="p"+(++UID);
+  const caj=T.pers&&r.pe;
+  const pL=cot?34:8,pR=cot?60:8,pT=cot?(caj?64:44):(caj?18:8),pB=cot?56:8;
+  const aw=W-pL-pR,ah=H-pT-pB,sc=Math.min(aw/k.a,ah/k.h),w=k.a*sc,h=k.h*sc,x=pL+(aw-w)/2,y=pT+(ah-h)/2;
+  const A=P.ac[r.ac],fill=A.pat?`url(#${id}${A.pat})`:A.c;
+  const ft=Math.max(2.2,Math.min(9,Math.min(w,h)*.045));
+  const fr=(X,Y,Wd,Hd,t)=>{t=t||ft;return`<path fill-rule="evenodd" fill="${fill}" stroke="${N}" stroke-width=".7" d="M${X} ${Y}h${Wd}v${Hd}h${-Wd}zM${X+t} ${Y+t}v${Hd-2*t}h${Wd-2*t}v${-(Hd-2*t)}z"/>`};
+  const gl=(X,Y,Wd,Hd,alt)=>{let g=`<rect x="${X}" y="${Y}" width="${Math.max(0,Wd)}" height="${Math.max(0,Hd)}" fill="${alt?"#A9CBDB":"#BFD9E6"}" stroke="${N}" stroke-width=".4"/>`;if(Wd>18&&Hd>18&&!o.mini)g+=`<path d="M${X+Wd*.18} ${Y+Hd*.42}l${Math.min(Wd,Hd)*.22} ${-Math.min(Wd,Hd)*.22}M${X+Wd*.18} ${Y+Hd*.58}l${Math.min(Wd,Hd)*.36} ${-Math.min(Wd,Hd)*.36}" stroke="#fff" stroke-width="1.3" opacity=".85"/>`;return g};
+  const da=d=>`<path d="${d}" fill="none" stroke="${N}" stroke-width="${o.mini?.6:1}" stroke-dasharray="${o.mini?"3 2":"5 4"}" opacity=".7"/>`;
+  const piso=()=>`<line x1="${x-16}" y1="${y+h}" x2="${x+w+16}" y2="${y+h}" stroke="${N}" stroke-width="2"/>`+(o.mini?"":`<path d="${Array.from({length:Math.ceil((w+32)/9)},(_,i)=>`M${x-16+i*9} ${y+h+7}l6 -6`).join("")}" stroke="${N}" stroke-width=".6" opacity=".5"/>`);
+  const flecha=(cx,cy,L,dir)=>`<path d="M${cx-L} ${cy}H${cx+L}${dir>0?`M${cx+L-5} ${cy-4}L${cx+L} ${cy}L${cx+L-5} ${cy+4}`:`M${cx-L+5} ${cy-4}L${cx-L} ${cy}L${cx-L+5} ${cy+4}`}" stroke="${N}" stroke-width="1.3" fill="none"/>`;
+  const manija=(X,Y,v)=>`<rect x="${X-1.6}" y="${Y-(v||8)}" width="3.2" height="${2*(v||8)}" rx="1.4" fill="${N}"/>`;
+  let s="";const xi=x+ft,yi=y+ft,wi=w-2*ft,hi=h-2*ft;
+  switch(r.t){
+    case"v":case"pv":{const n=r.hj;s+=fr(x,y,w,h);for(let i=0;i<n;i++){const sx=xi+wi*i/n,sw=wi/n,t=ft*.8;s+=fr(sx,yi,sw,hi,t)+gl(sx+t,yi+t,sw-2*t,hi-2*t);const hin=(n===1||i===0)?sx+t:sx+sw-t,op=(n===1||i===0)?sx+sw-t:sx+t;s+=da(`M${op} ${yi+t}L${hin} ${yi+hi/2}L${op} ${yi+hi-t}`);s+=manija(op+(op>hin?-4:4),yi+hi/2,Math.min(8,hi*.08))}if(r.t==="pv")s+=piso();break}
+    case"vc":{const n=r.hj;s+=fr(x,y,w,h);for(let i=0;i<n;i++){const sx=xi+wi*i/n,sw=wi/n,t=ft*.8;s+=fr(sx,yi,sw,hi,t)+gl(sx+t,yi+t,sw-2*t,hi-2*t);if(i%2===0||n===2)s+=flecha(sx+sw/2,yi+hi/2,Math.min(22,sw*.25),i%2?-1:1)}break}
+    case"p":{const n=r.hj;s+=fr(x,y,w,h);for(let i=0;i<n;i++){const sx=xi+wi*i/n,sw=wi/n,t=ft*.9,zh=hi*.2;s+=fr(sx,yi,sw,hi,t)+gl(sx+t,yi+t,sw-2*t,hi-zh-2*t)+`<rect x="${sx+t}" y="${yi+hi-zh-t}" width="${sw-2*t}" height="${zh}" fill="${fill}" stroke="${N}" stroke-width=".6"/>`;const hin=(n===1||i===0)?sx+t:sx+sw-t,op=(n===1||i===0)?sx+sw-t:sx+t;s+=da(`M${op} ${yi+t}L${hin} ${yi+hi/2}L${op} ${yi+hi-t}`)+manija(op+(op>hin?-5:5),yi+hi*.52,Math.min(14,hi*.07))}s+=piso();break}
+    case"cb":{const n=Math.max(2,Math.min(12,Math.round(k.a/70))),tr=ft*1.3,pw=w/n;s+=`<rect x="${x}" y="${y}" width="${w}" height="${tr}" fill="${fill}" stroke="${N}" stroke-width=".7"/><rect x="${x}" y="${y+h-tr}" width="${w}" height="${tr}" fill="${fill}" stroke="${N}" stroke-width=".7"/>`;for(let i=0;i<n;i++){const px=x+pw*i;s+=gl(px+1,y+tr,pw-2,h-2*tr)+`<rect x="${px}" y="${y+tr}" width="${Math.max(1.2,ft*.45)}" height="${h-2*tr}" fill="${fill}" stroke="${N}" stroke-width=".4"/>`;if(i%2===0&&pw>30)s+=flecha(px+pw/2,y+h/2,Math.min(14,pw*.25),i%4?-1:1)}s+=piso();break}
+    case"fv":{const cols=Math.max(2,Math.round(k.a/150)),rows=Math.max(1,Math.round(k.h/330)),mw=Math.max(1.3,ft*.5),cw=w/cols,rh=h/rows;for(let j=0;j<rows;j++)for(let i=0;i<cols;i++)s+=gl(x+i*cw,y+j*rh,cw,rh,(i+j)%3===1);for(let i=0;i<=cols;i++)s+=`<rect x="${x+i*cw-mw/2}" y="${y}" width="${mw}" height="${h}" fill="${fill}" stroke="${N}" stroke-width=".3"/>`;for(let j=0;j<=rows;j++){s+=`<rect x="${x}" y="${y+j*rh-mw/2}" width="${w}" height="${mw}" fill="${fill}" stroke="${N}" stroke-width=".3"/>`;if(j>0&&j<rows&&!o.mini)s+=`<line x1="${x-12}" y1="${y+j*rh+mw}" x2="${x+w+12}" y2="${y+j*rh+mw}" stroke="${N}" stroke-dasharray="2 3" stroke-width=".8" opacity=".55"/>`}break}
+    case"fi":{s+=fr(x,y,w,h);const tb=k.h>=250?hi*.24:0,mw=Math.max(1.5,ft*.6);if(tb){const nc=Math.max(1,Math.round(k.a/150));for(let i=0;i<nc;i++)s+=gl(xi+wi*i/nc,yi,wi/nc,tb);for(let i=1;i<nc;i++)s+=`<rect x="${xi+wi*i/nc-mw/2}" y="${yi}" width="${mw}" height="${tb}" fill="${fill}"/>`;s+=`<rect x="${xi}" y="${yi+tb-mw/2}" width="${wi}" height="${mw}" fill="${fill}" stroke="${N}" stroke-width=".3"/>`}
+      const dw=Math.min(wi*.42,200*sc),dx=xi+(wi-dw)/2,by=yi+tb+mw/2,bh=hi-tb-mw/2;
+      s+=gl(xi,by,dx-xi,bh)+gl(dx+dw,by,xi+wi-dx-dw,bh)+`<rect x="${dx-mw}" y="${by}" width="${mw}" height="${bh}" fill="${fill}"/><rect x="${dx+dw}" y="${by}" width="${mw}" height="${bh}" fill="${fill}"/>`;
+      for(let i=0;i<2;i++){const sx=dx+dw*i/2,sw=dw/2,t=Math.max(1.5,ft*.7);s+=fr(sx,by,sw,bh,t)+gl(sx+t,by+t,sw-2*t,bh-2*t);const hin=i===0?sx+t:sx+sw-t,op=i===0?sx+sw-t:sx+t;s+=da(`M${op} ${by+t}L${hin} ${by+bh/2}L${op} ${by+bh-t}`)+`<rect x="${op+(i===0?-4:2)}" y="${by+bh*.3}" width="2.4" height="${bh*.4}" fill="${N}"/>`}s+=piso();break}
+    case"b":{const n=Math.max(1,Math.round(k.a/120)),pw=w/n,bc=Math.max(3,ft*1.4),hr=Math.max(2.5,ft*.9);s+=`<rect x="${x}" y="${y}" width="${w}" height="${hr}" rx="${hr/2}" fill="${fill}" stroke="${N}" stroke-width=".7"/>`;for(let i=0;i<n;i++)s+=gl(x+pw*i+1.5,y+hr+3,pw-3,h-hr-bc-3);s+=`<rect x="${x}" y="${y+h-bc}" width="${w}" height="${bc}" fill="${fill}" stroke="${N}" stroke-width=".7"/>`+piso();break}
+    case"pg":{const n=r.hj;s+=fr(x,y,w,h);const st=Math.max(2.5,Math.min(7,6*sc));for(let i=0;i<n;i++){const sx=xi+wi*i/n,sw=wi/n;s+=`<rect x="${sx}" y="${yi}" width="${sw}" height="${hi}" fill="${fill}" stroke="${N}" stroke-width=".6"/>`;let l="";for(let yy=yi+st;yy<yi+hi-1;yy+=st)l+=`M${sx+2} ${yy}H${sx+sw-2}`;s+=`<path d="${l}" stroke="${r.ac===2?"#5A6570":N}" stroke-width=".7" opacity=".55"/>`}break}
+    case"pi":{s+=`<line x1="${x-18}" y1="${y}" x2="${x+w+18}" y2="${y}" stroke="${N}" stroke-width="2"/>`;s+=`<rect x="${x+1}" y="${y+1}" width="${w-2}" height="${h-2}" fill="${fill}" stroke="${N}" stroke-width=".8"/>`;[.14,.5,.86].forEach(f=>s+=`<rect x="${x+1}" y="${y+h*f-5}" width="2.5" height="10" fill="${N}" opacity=".5"/>`);s+=da(`M${x+w-3} ${y+3}L${x+3} ${y+h/2}L${x+w-3} ${y+h-3}`)+manija(x+w-6,y+h*.5,Math.min(10,h*.04))+piso();break}
+    case"q":{const rl=Math.max(2,ft*.8);s+=`<rect x="${x}" y="${y}" width="${w}" height="${rl}" fill="${fill}" stroke="${N}" stroke-width=".6"/><rect x="${x}" y="${y+h-rl}" width="${w}" height="${rl}" fill="${fill}" stroke="${N}" stroke-width=".6"/>`;const tw=Math.max(1.6,6*sc),stp=Math.max(tw+2,15*sc),n=Math.floor((w-tw)/stp)+1,off=x+(w-((n-1)*stp+tw))/2;for(let i=0;i<n;i++)s+=`<rect x="${off+i*stp}" y="${y+rl}" width="${tw}" height="${h-2*rl}" fill="${fill}" stroke="${N}" stroke-width=".4"/>`;break}
+  }
+  if(caj){const ch=Math.min(cot?24:10,h*.18);s+=`<rect x="${x}" y="${y-ch}" width="${w}" height="${ch}" fill="${fill}" stroke="${N}" stroke-width=".7"/>`+(o.mini?"":`<path d="M${x+4} ${y-ch/2}H${x+w-4}" stroke="${N}" stroke-width=".6" opacity=".5"/><text x="${x+w/2}" y="${y-ch/2+3.5}" text-anchor="middle" font-size="9" font-family="Mona Sans,sans-serif" fill="${r.ac===2?"#fff":N}" letter-spacing="1">PERSIANA</text>`)}
+  let c="";
+  if(cot){const by=y+h+(["p","pv","cb","fi","b","pi"].includes(r.t)?24:20),rx=x+w+20,O="#E0692B";
+    c+=`<g stroke="${N}" stroke-width=".7" fill="none"><path d="M${x} ${y+h+4}V${by+6}M${x+w} ${y+h+4}V${by+6}M${x+w+4} ${y}H${rx+6}M${x+w+4} ${y+h}H${rx+6}"/><path d="M${x} ${by}H${x+w}M${rx} ${y}V${y+h}"/></g>`;
+    c+=`<g stroke="${O}" stroke-width="1.6"><path d="M${x-4} ${by+4}l8 -8M${x+w-4} ${by+4}l8 -8M${rx-4} ${y+4}l8 -8M${rx-4} ${y+h+4}l8 -8"/></g>`;
+    c+=`<g font-family="Mona Sans,sans-serif" font-size="12.5" font-weight="650" fill="${N}"><text x="${x+w/2}" y="${by+17}" text-anchor="middle">${k.a} cm</text><text x="${rx+16}" y="${y+h/2}" text-anchor="middle" transform="rotate(90 ${rx+16} ${y+h/2})">${k.h} cm</text></g>`;
+    if(o.tag){const ty=Math.max(16,y-(caj?Math.min(24,h*.18):0)-20);c+=`<g><circle cx="${x+13}" cy="${ty}" r="13" fill="${N}"/><text x="${x+13}" y="${ty+4}" text-anchor="middle" font-family="Mona Sans,sans-serif" font-size="${o.tag.length>2?9.5:11}" font-weight="800" fill="#fff">${o.tag}</text><line x1="${x+26}" y1="${ty}" x2="${x+60}" y2="${ty}" stroke="${N}" stroke-width=".6"/><text x="${x+64}" y="${ty+4}" font-family="Mona Sans,sans-serif" font-size="10.5" fill="#46525F">${k.c>1?k.c+" u · ":""}${TIP[r.t].n}</text></g>`}
+  }
+  const defs=`<defs><linearGradient id="${id}ano" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#D3D6D8"/><stop offset=".5" stop-color="#A7AEB4"/><stop offset="1" stop-color="#C6CACD"/></linearGradient><pattern id="${id}mad" width="18" height="8" patternUnits="userSpaceOnUse"><rect width="18" height="8" fill="#8B5A36"/><path d="M0 2q5 -1.5 9 0t9 0M0 6q6 1 10 0t8 0" stroke="#6E4428" stroke-width=".8" fill="none"/></pattern></defs>`;
+  return`<svg class="dib" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${TIP[r.t].n} de ${k.a} por ${k.h} cm">${defs}${s}${c}</svg>`;
+}
+window.ilus=function(k){const d=document.createElement("div");d.className="ilus";
+  let r;if(TIP[k])r=nuevo(k,{s:1,ac:k==="fv"?4:2,vid:1});
+  if(k==="edificio"){d.innerHTML=`<svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg"><rect x="50" y="20" width="100" height="210" fill="#17293F" stroke="#A7AEB4"/>${Array.from({length:7},(_,j)=>`<rect x="58" y="${30+j*28}" width="84" height="18" fill="#BFD9E6" opacity="${.55+.06*j}"/><line x1="50" y1="${52+j*28}" x2="156" y2="${52+j*28}" stroke="#A7AEB4" stroke-width="2"/><line x1="100" y1="${30+j*28}" x2="100" y2="${48+j*28}" stroke="#A7AEB4"/>`).join("")}<line x1="20" y1="230" x2="180" y2="230" stroke="#A7AEB4" stroke-width="2"/></svg>`;return d}
+  if(k==="casa"){d.innerHTML=`<svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg"><path d="M30 80L120 30L210 80V160H30Z" fill="#17293F" stroke="#A7AEB4"/><rect x="52" y="96" width="70" height="64" fill="#BFD9E6" stroke="#A7AEB4" stroke-width="3"/><line x1="87" y1="96" x2="87" y2="160" stroke="#A7AEB4" stroke-width="3"/><rect x="142" y="96" width="46" height="34" fill="#BFD9E6" stroke="#A7AEB4" stroke-width="3"/><line x1="16" y1="160" x2="224" y2="160" stroke="#A7AEB4" stroke-width="2"/></svg>`;return d}
+  if(k==="local"){d.innerHTML=`<svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg"><rect x="30" y="30" width="180" height="130" fill="#17293F" stroke="#A7AEB4"/><rect x="40" y="40" width="160" height="22" fill="#A7AEB4"/>${Array.from({length:9},(_,i)=>`<line x1="42" y1="${70+i*10}" x2="198" y2="${70+i*10}" stroke="#BFD9E6" stroke-width="5"/>`).join("")}<line x1="16" y1="160" x2="224" y2="160" stroke="#A7AEB4" stroke-width="2"/></svg>`;return d}
+  r=r||nuevo("v",{s:1,ac:4});d.innerHTML=dib(r,{W:300,H:360,cot:false,mini:false});return d};
+
+/* ---------- modo y obra ---------- */
+function setModo(m,scroll){S.modo=m;$("#m-part").setAttribute("aria-pressed",m==="part");$("#m-pro").setAttribute("aria-pressed",m==="pro");$("#trabajo").classList.toggle("pro",m==="pro");
+  if(m==="pro"&&!S.cargado&&pos.length<=1){cargarTipicas();$("#h-aviso").hidden=false}
+  S.sel=Math.min(S.sel,pos.length-1);
+  $("#chat-sub").textContent=m==="pro"?"Así le llega tu cómputo":"Así le llega tu pedido";
+  $("#dia-lab").textContent=m==="pro"?"Día para la visita técnica":"Día para que vayan a medir";
+  $("#k-totlab").textContent=m==="pro"?"Total de obra":"Total estimado";
+  render();if(scroll)$("#cotizar").scrollIntoView({behavior:"smooth"})}
+function cargarTipicas(){pos=OBRA[S.obra].tip.map(([t,x])=>nuevo(t,x));S.sel=0;S.cargado=true}
+function obraSeg(){$("#obra-seg").innerHTML=Object.keys(OBRA).map(k=>`<button type="button" data-o="${k}" aria-pressed="${S.obra===k}">${OBRA[k].n}</button>`).join("");
+  $("#sugtxt").innerHTML=`<i></i>Sugeridas: ${OBRA[S.obra].sug.map(t=>TIP[t].n).join(", ")}`;
+  $("#h-tip").textContent="Cargar típicas de "+OBRA[S.obra].n.toLowerCase();$("#hoja-obra").textContent=OBRA[S.obra].n}
+$("#obra-seg").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;S.obra=b.dataset.o;obraSeg();render()});
+$("#m-part").onclick=()=>setModo("part");$("#m-pro").onclick=()=>setModo("pro");
+document.querySelectorAll("[data-ir]").forEach(b=>b.addEventListener("click",()=>{if(b.dataset.obra){S.obra=b.dataset.obra;obraSeg();if(b.dataset.ir==="pro"){cargarTipicas();$("#h-aviso").hidden=false}}setModo(b.dataset.ir,true)}));
+
+/* ---------- controles particular ---------- */
+function chips(el,items,cur,on,dis){el.innerHTML="";items.forEach(([v,lab,cls])=>{const b=document.createElement("button");b.type="button";b.textContent=lab;if(cls)b.className=cls;b.setAttribute("aria-pressed",v===cur);if(dis&&dis(v))b.disabled=true;b.onclick=()=>on(v);el.appendChild(b)})}
+function renderCtl(){const r=pos[S.sel],T=TIP[r.t],sug=OBRA[S.obra].sug;
+  chips($("#c-tip"),ORD.map(t=>[t,TIP[t].n,sug.includes(t)?"sug":""]),r.t,t=>{if(t===r.t)return;pos[S.sel]=nuevo(t,{ac:r.ac,s:r.s,c:r.c});render()});
+  chips($("#c-sis"),P.sis.map((x,i)=>[i,x.n]),T.own?-1:(T.soloAP?1:r.s),v=>{r.s=v;render()},v=>T.own||(T.soloAP&&v===0));
+  $("#sis-nota").textContent=T.own?"Producto a medida: se cotiza por m² propio.":T.soloAP?"La piel de vidrio va en alta prestación.":"";$("#sis-nota").hidden=!(T.own||T.soloAP);
+  $("#campo-hj").hidden=!T.hj;if(T.hj)chips($("#c-hj"),T.hj,r.hj,v=>{r.hj=v;render()});
+  $("#campo-vid").hidden=!T.vid;if(T.vid)chips($("#c-vid"),P.vid.map((x,i)=>[i,x.n]),r.vid,v=>{r.vid=v;render()});
+  $("#campo-pers").hidden=!T.pers;$("#pers").checked=!!r.pe;
+  $("#c-ac").innerHTML=P.ac.map((a,i)=>`<button type="button" data-i="${i}" aria-pressed="${r.ac===i}"><i style="background:${a.pat==="ano"?"linear-gradient(135deg,#D3D6D8,#A7AEB4,#C6CACD)":a.pat==="mad"?"repeating-linear-gradient(170deg,#8B5A36 0 5px,#6E4428 5px 6px)":a.c}"></i>${a.n.replace("Esmaltado ","Esm. ")}</button>`).join("");
+  [["ancho",T.ra,r.a],["alto",T.rh,r.h]].forEach(([k,rg,v])=>{const i=$("#"+k),s=$("#r-"+k);i.min=s.min=rg[0];i.max=s.max=rg[1];s.step=rg[1]>1000?10:1;i.value=v;s.value=v});$("#cant").value=r.c}
+$("#c-ac").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;pos[S.sel].ac=+b.dataset.i;render()});
+["ancho","alto"].forEach(k=>{const f=k==="ancho"?"a":"h";$("#"+k).addEventListener("input",e=>{pos[S.sel][f]=+e.target.value;$("#r-"+k).value=e.target.value;upd()});$("#"+k).addEventListener("change",e=>{const T=TIP[pos[S.sel].t];pos[S.sel][f]=clamp(e.target.value,f==="a"?T.ra:T.rh);e.target.value=pos[S.sel][f];upd()});$("#r-"+k).addEventListener("input",e=>{pos[S.sel][f]=+e.target.value;$("#"+k).value=e.target.value;upd()})});
+$("#cant").addEventListener("input",e=>{pos[S.sel].c=Math.max(1,+e.target.value||1);upd()});
+$("#pers").addEventListener("change",e=>{pos[S.sel].pe=e.target.checked;upd()});
+$("#inst").addEventListener("change",e=>{S.inst=e.target.checked;upd()});
+$("#agregar").onclick=()=>{const r=pos[S.sel];pos.push(nuevo(r.t,{s:r.s,ac:r.ac,vid:r.vid}));S.sel=pos.length-1;render()};
+$("#lista").addEventListener("click",e=>{const q=e.target.dataset.q;if(q!==undefined){e.stopPropagation();if(pos.length>1){pos.splice(+q,1);S.sel=Math.min(S.sel,pos.length-1);render()}return}const li=e.target.closest("li");if(li){S.sel=+li.dataset.i;render()}});
+
+/* ---------- planilla ---------- */
+function opts(arr,cur){return arr.map(([v,l])=>`<option value="${v}"${v==cur?" selected":""}>${l}</option>`).join("")}
+function renderHoja(){const cs=cods(pos);
+  $("#hoja-b").innerHTML=pos.map((r,i)=>{const T=TIP[r.t],k=calc(r);return`<tr data-i="${i}" class="${i===S.sel?"on":""}">
+  <td class="cod">${cs[i]}</td>
+  <td class="c-tip" data-l="Tipología"><div class="tipc"><select data-f="t" aria-label="Tipología">${opts(ORD.map(t=>[t,TIP[t].n]),r.t)}</select>${T.pers?`<label><input type="checkbox" data-f="pe"${r.pe?" checked":""}> c/ persiana</label>`:""}</div></td>
+  <td class="c-sis" data-l="Sistema"><select data-f="s" aria-label="Sistema"${T.own||T.soloAP?" disabled":""}>${T.own?`<option>—</option>`:opts(P.sis.map((x,j)=>[j,x.n]),T.soloAP?1:r.s)}</select></td>
+  <td class="c-n" data-l="Cant."><input type="number" data-f="c" min="1" max="999" value="${r.c}" aria-label="Cantidad"></td>
+  <td class="c-a" data-l="Ancho cm"><input type="number" data-f="a" min="${T.ra[0]}" max="${T.ra[1]}" value="${r.a}" aria-label="Ancho"></td>
+  <td class="c-h" data-l="Alto cm"><input type="number" data-f="h" min="${T.rh[0]}" max="${T.rh[1]}" value="${r.h}" aria-label="Alto"></td>
+  <td class="c-ac" data-l="Acabado"><select data-f="ac" aria-label="Acabado">${opts(P.ac.map((a,j)=>[j,a.n]),r.ac)}</select></td>
+  <td class="c-v" data-l="DVH"><select data-f="vid" aria-label="Vidrio"${T.vid?"":" disabled"}>${T.vid?opts([[0,"No"],[1,"DVH"],[2,"DVH lam."]],r.vid):`<option>${r.t==="b"?"incluido":"—"}</option>`}</select></td>
+  <td class="calc c-m2" data-l="m²">${fm2(k.m2t)}</td>
+  <td class="calc tot" data-l="Total">${fmt(k.tot)}<span class="pe">Precio de ejemplo</span></td>
+  <td class="del"><button type="button" data-del="${i}" aria-label="Borrar fila"${pos.length<2?" disabled":""}>×</button></td></tr>`}).join("");
+  hojaTot()}
+function hojaTot(){const t=totales(pos,false);$("#f-un").innerHTML=`<span style="padding:0 0 0 0">${t.un} u</span>`;$("#f-m2").textContent=fm2(t.m2)+" m²";$("#f-tot").innerHTML=fmt(t.sub)+`<span class="pe" style="display:block;margin:3px 0 0">Precio de ejemplo</span>`;$("#hoja-cnt").textContent=pos.length+" posiciones"}
+function hojaCalc(){const cs=cods(pos);$("#hoja-b").querySelectorAll("tr").forEach((tr,i)=>{const k=calc(pos[i]);tr.querySelector(".cod").textContent=cs[i];tr.querySelector(".c-m2").textContent=fm2(k.m2t);tr.querySelector(".tot").innerHTML=fmt(k.tot)+`<span class="pe">Precio de ejemplo</span>`;tr.classList.toggle("on",i===S.sel)});hojaTot()}
+const HB=$("#hoja-b");
+HB.addEventListener("input",e=>{const f=e.target.dataset.f;if(!f||e.target.type!=="number")return;const i=+e.target.closest("tr").dataset.i;pos[i][f]=+e.target.value;S.sel=i;hojaCalc();upd(true)});
+HB.addEventListener("change",e=>{const f=e.target.dataset.f;if(!f)return;const i=+e.target.closest("tr").dataset.i,r=pos[i];
+  if(f==="t"){pos[i]=nuevo(e.target.value,{ac:r.ac,s:r.s,c:r.c});S.sel=i;render();return}
+  if(f==="pe")r.pe=e.target.checked;else if(e.target.type==="number"){const T=TIP[r.t];r[f]=f==="a"?clamp(e.target.value,T.ra):f==="h"?clamp(e.target.value,T.rh):Math.max(1,Math.round(+e.target.value||1));e.target.value=r[f]}else r[f]=+e.target.value;
+  S.sel=i;hojaCalc();upd(true)});
+HB.addEventListener("click",e=>{const d=e.target.closest("[data-del]");if(d){if(pos.length>1){pos.splice(+d.dataset.del,1);S.sel=Math.min(S.sel,pos.length-1);render()}return}});
+HB.addEventListener("focusin",e=>{const tr=e.target.closest("tr");if(tr&&+tr.dataset.i!==S.sel){S.sel=+tr.dataset.i;hojaCalc();upd(true)}});
+HB.addEventListener("pointerdown",e=>{const tr=e.target.closest("tr");if(tr&&+tr.dataset.i!==S.sel&&!e.target.closest("[data-del]")){S.sel=+tr.dataset.i;hojaCalc();upd(true)}});
+$("#h-add").onclick=()=>{const r=pos[pos.length-1];pos.push(nuevo(r?r.t:"v",{s:r?r.s:0,ac:r?r.ac:0}));S.sel=pos.length-1;render()};
+$("#h-tip").onclick=()=>{cargarTipicas();$("#h-aviso").hidden=false;render()};
+
+/* ---------- mensaje ---------- */
+function mensaje(modo,D,rows,inst){const t=totales(rows,inst),cs=cods(rows),L=[];
+  if(modo==="pro"){
+    L.push(`Hola, Leffler-Dietz. Les paso el cómputo de aberturas de la obra "${D.obraNom||"(nombre de la obra)"}" (${OBRA[D.obra].n.toLowerCase()})${D.loc?", en "+D.loc:""}.`);
+    L.push(`De: ${D.nombre||"(tu nombre)"}${D.estudio?" · "+D.estudio:""}`,"");
+    rows.forEach((r,i)=>{const k=calc(r),hj=hjTxt(r),sis=sisTxt(r),v=vidTxt(r);
+      L.push(`${cs[i]} · ${TIP[r.t].n}${hj?" ("+hj+")":""}${r.pe&&TIP[r.t].pers?" c/ persiana":""} · ${k.c} u`);
+      L.push(`   ${k.a} × ${k.h} cm${sis?" · "+sis:""} · ${acTxt(r)}${v?" · "+v:""}`);
+      L.push(`   ${fm2(k.m2t)} m² · ${fmt(k.tot)} (precio de ejemplo)`)});
+    L.push("",`Resumen: ${rows.length} posiciones · ${t.un} unidades · ${fm2(t.m2)} m²`);
+    L.push(`Instalación y logística: ${inst?fmt(t.ins)+" (precio de ejemplo)":"no incluida"}`);
+    L.push(`Total de obra: ${fmt(t.tot)} (precio de ejemplo)`,`Anticipo para fabricar (30%): ${fmt(t.sena)} (precio de ejemplo)`);
+    L.push(`Plazo: ${D.cuando}`,`Visita técnica: ${D.dia||"a coordinar"}`,"","¿Me envían la cotización formal? Tengo la ficha del cómputo para imprimir.");
+  }else{
+    L.push(`Hola, Leffler-Dietz. Soy ${D.nombre||"(tu nombre)"}${D.loc?", de "+D.loc:""}, y armé este presupuesto en la web:`,"");
+    rows.forEach((r,i)=>{const k=calc(r),hj=hjTxt(r),sis=sisTxt(r),v=vidTxt(r);
+      L.push(`${i+1}. ${k.c>1?k.c+" × ":""}${TIP[r.t].n} de ${k.a} × ${k.h} cm${hj?" · "+hj:""}`);
+      L.push(`   ${sis?sis+" · ":""}${acTxt(r)}${v?" · "+v:""}${r.pe&&TIP[r.t].pers?" · con persiana":""}`);
+      L.push(`   ${fm2(k.m2t)} m² · ${fmt(k.tot)} (precio de ejemplo)`)});
+    L.push("",`Instalación y logística: ${inst?fmt(t.ins)+" (precio de ejemplo)":"no incluida"}`);
+    L.push(`Total estimado: ${fmt(t.tot)} (precio de ejemplo)`,`Seña para fabricar (30%): ${fmt(t.sena)} (precio de ejemplo)`);
+    L.push(`Lo necesito: ${D.cuando}`,`Medición: ${D.dia||"a coordinar"}`,"","¿Me confirman si está bien así?");
+  }
+  return L.join("\n")}
+function datos(){return{nombre:$("#nombre").value.trim(),estudio:$("#estudio").value.trim(),obraNom:$("#obraNom").value.trim(),loc:$("#loc").value.trim(),cuando:$("#cuando").value,dia:S.dia,obra:S.obra}}
+let objetivo="",escrito="",tmr=null;
+function tipear(){clearTimeout(tmr);let i=0;while(i<escrito.length&&i<objetivo.length&&escrito[i]===objetivo[i])i++;escrito=escrito.slice(0,i);
+  (function paso(){if(escrito.length<objetivo.length){escrito=objetivo.slice(0,escrito.length+Math.max(3,Math.ceil((objetivo.length-escrito.length)/22)));$("#btxt").textContent=escrito;tmr=setTimeout(paso,16)}else $("#btxt").textContent=objetivo})()}
+function hora(){const d=new Date();return String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0")}
+
+/* ---------- render ---------- */
+function upd(desdeHoja){const r=pos[S.sel],T=TIP[r.t],k=calc(r),cs=cods(pos),t=totales(pos,S.inst);
+  $("#svgbox").innerHTML=dib(r,{tag:cs[S.sel]});
+  $("#p-cod").textContent=cs[S.sel];$("#ctl-cod").textContent=cs[S.sel];
+  $("#d-tip").textContent=T.n+(hjTxt(r)?" · "+hjTxt(r):"");$("#d-sis").textContent=sisTxt(r)||"Producto a medida";$("#d-ac").textContent=P.ac[r.ac].n+(T.vid?" · "+P.vid[r.vid].n:"");
+  $("#d-m2").textContent=fm2(k.m2t)+" m²"+(k.c>1?` (${k.c} u)`:"");
+  const ref=$("#ref");if(T.foto){if(ref.dataset.t!==r.t){ref.dataset.t=r.t;ref.innerHTML=`<div class="ph"><img src="${IMG+T.foto}" alt="${T.fotoT}" loading="lazy" onerror="fb(this,'${r.t}')"></div><p><b>Foto real de Leffler-Dietz</b>${T.fotoT}</p>`}ref.hidden=false}else{ref.hidden=true;ref.dataset.t=""}
+  $("#k-lab").textContent=`${t.un} ${t.un===1?"abertura":"aberturas"} · ${fm2(t.m2)} m²`;
+  $("#k-sub").textContent=fmt(t.sub);$("#k-inst").textContent=S.inst?fmt(t.ins):"$0";$("#k-tot").textContent=fmt(t.tot);$("#k-sena").textContent=fmt(t.sena);
+  $("#lista").innerHTML=pos.map((x,i)=>{const kk=calc(x);return`<li data-i="${i}" class="${i===S.sel?"on":""}"><span><b>${cs[i]}</b> · ${kk.c>1?kk.c+" × ":""}${TIP[x.t].n} ${kk.a}×${kk.h}</span><span>${fmt(kk.tot)}<span class="pe">Precio de ejemplo</span>${pos.length>1?` <button type="button" data-q="${i}" aria-label="Quitar ${cs[i]}">quitar</button>`:""}</span></li>`}).join("");
+  if(!desdeHoja&&S.modo==="pro")hojaCalc();
+  objetivo=mensaje(S.modo,datos(),pos,S.inst);tipear();
+  $("#btn-wa").href=`https://wa.me/${WA}?text=${encodeURIComponent(objetivo)}`;$("#bhora").textContent=hora();
+  if($("#ficha").classList.contains("on"))ficha();
+}
+function render(){obraSeg();renderCtl();renderHoja();upd(true)}
+["#nombre","#estudio","#obraNom","#loc"].forEach(s=>$(s).addEventListener("input",()=>upd(true)));
+$("#cuando").innerHTML=CUANDO.map(c=>`<option>${c}</option>`).join("");$("#cuando").value=CUANDO[1];$("#cuando").addEventListener("change",()=>upd(true));
+
+/* días hábiles (planta L a V) con cupos de ejemplo */
+const DN=["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"],MN=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+function dias(){const el=$("#dias");el.innerHTML="";const d=new Date();let n=0,g=0;while(n<8&&g<30){d.setDate(d.getDate()+1);g++;const wd=d.getDay();if(wd===0||wd===6)continue;const lleno=d.getDate()%5===2;const lbl=`${DN[wd]} ${d.getDate()} ${MN[d.getMonth()]}`;const b=document.createElement("button");b.type="button";b.innerHTML=`${DN[wd]} ${d.getDate()}<small>${lleno?"completo":"7 a 16"}</small>`;b.disabled=lleno;b.setAttribute("aria-pressed",S.dia===lbl);b.onclick=()=>{S.dia=S.dia===lbl?null:lbl;dias();upd(true)};el.appendChild(b);n++}}
+
+/* ---------- ficha imprimible ---------- */
+function ficha(){const D=datos(),cs=cods(pos),t=totales(pos,S.inst);
+  $("#fhoja").innerHTML=`<div class="fcab"><div><span class="rot">Ficha de cómputo · ${S.modo==="pro"?"profesional":"particular"}</span><h2>Cómputo de aberturas</h2></div><div class="m">LEFFLER·DIETZ<small>Aluminio y vidrio · Gral. Ramírez, E. R.</small></div></div>
+  <div class="fcart"><div><span>Obra</span>${D.obraNom||"Sin nombre"}</div><div><span>Tipo</span>${OBRA[S.obra].n}</div><div><span>Cliente / estudio</span>${[D.nombre,D.estudio].filter(Boolean).join(" · ")||"—"}</div><div><span>Localidad</span>${D.loc||"—"}</div><div><span>Fecha</span>18·11·2026</div><div><span>Posiciones</span>${pos.length} · ${t.un} u</div></div>
+  <table class="ftab"><thead><tr><th>Cód.</th><th>Esquema</th><th>Tipología</th><th>Sistema</th><th class="r">Cant.</th><th class="r">Ancho × alto</th><th>Acabado</th><th>Vidrio</th><th class="r">m²</th><th class="r">Total</th></tr></thead><tbody>
+  ${pos.map((r,i)=>{const k=calc(r);return`<tr><td class="c">${cs[i]}</td><td>${dib(r,{W:120,H:84,cot:false,mini:true})}</td><td>${TIP[r.t].n}${hjTxt(r)?"<br>"+hjTxt(r):""}${r.pe&&TIP[r.t].pers?"<br>c/ persiana":""}</td><td>${sisTxt(r)||"A medida"}</td><td class="r">${k.c}</td><td class="r">${k.a} × ${k.h} cm</td><td>${acTxt(r)}</td><td>${vidTxt(r)||"—"}</td><td class="r">${fm2(k.m2t)}</td><td class="r"><b>${fmt(k.tot)}</b><span class="pe">Precio de ejemplo</span></td></tr>`}).join("")}
+  </tbody><tfoot><tr><td colspan="4">Subtotal posiciones</td><td class="r">${t.un}</td><td colspan="3"></td><td class="r">${fm2(t.m2)}</td><td class="r">${fmt(t.sub)}<span class="pe">Precio de ejemplo</span></td></tr>
+  <tr><td colspan="9">Instalación y logística</td><td class="r">${S.inst?fmt(t.ins):"no incluida"}${S.inst?'<span class="pe">Precio de ejemplo</span>':""}</td></tr>
+  <tr><td colspan="9" style="font-size:15px">Total de obra</td><td class="r" style="font-size:15px">${fmt(t.tot)}<span class="pe">Precio de ejemplo</span></td></tr>
+  <tr><td colspan="9">Anticipo para fabricar (30%)</td><td class="r">${fmt(t.sena)}<span class="pe">Precio de ejemplo</span></td></tr></tfoot></table>
+  <div class="fnotas"><ul><li>Medidas de vano a verificar en obra por personal técnico.</li><li>Precios de ejemplo: no son una cotización.</li><li>Plazo pedido: ${D.cuando}. Visita técnica: ${D.dia||"a coordinar"}.</li></ul>
+  <ul><li>Planta: Ex Ruta Nacional 131, General Ramírez, Entre Ríos.</li><li>Lunes a viernes de 7 a 16 · 0343 490-1500.</li><li>contacto@leffler-dietz.com.ar</li></ul></div>
+  <div class="flegal">Prototipo de demostración preparado para Leffler-Dietz Aluminio por Resolviendo Kos · No es la web oficial</div>`}
+$("#h-ficha").onclick=()=>{ficha();$("#ficha").classList.add("on");$("#ficha").setAttribute("aria-hidden","false")};
+$("#f-close").onclick=()=>{$("#ficha").classList.remove("on");$("#ficha").setAttribute("aria-hidden","true")};
+$("#f-print").onclick=()=>{ficha();window.print()};
+$("#ficha").addEventListener("click",e=>{if(e.target.id==="ficha")$("#f-close").click()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&$("#ficha").classList.contains("on"))$("#f-close").click()});
+
+/* ---------- obras ---------- */
+const OBRAS=[
+  ["Vivienda Puerto Urquiza","Paraná, Entre Ríos","vivienda-puerto-urquiza-parana-leffler-dietz.webp","casa",1,"Vivienda"],
+  ["Torre Mónaco","Concepción del Uruguay","torre-monaco-concepcion-del-uruguay-leffler-dietz.webp","edificio",0,"Edificio"],
+  ["Barrio Privado La Soñada","Concepción del Uruguay","aberturas-aluminio-barrio-privado-la-sonada-concepcion-del-uruguay.webp","casa",1,"Aberturas de aluminio"],
+  ["Edificio Rocamora","Concepción del Uruguay","edificio-rocamora-concepcion-del-uruguay-leffler-dietz.webp","edificio",0,"Edificio"],
+  ["Casa Matriz Transporte GAGAMA","Paso de los Libres, Corrientes","casa-matriz-transporte-gagama-paso-de-los-libres-corrientes-leffler-dietz.jpeg","fi",1,"Empresa"],
+  ["Obra con piel de vidrio","Colonia Hocker","","fv",0,"Piel de vidrio"],
+  ["Cortinas automatizadas para local comercial","Concepción del Uruguay","","local",1,"Comercio"],
+  ["Casa en Colón","Colón","","casa",0,"Vivienda"]
+];
+$("#tira").innerHTML=OBRAS.map(o=>`<article class="obra${o[4]?" an":""}"><div class="ph">${o[2]?`<img src="${IMG+o[2]}" alt="${o[0]}, ${o[1]}" loading="lazy" onerror="fb(this,'${o[3]}')">`:`<div class="ilus" data-il="${o[3]}"></div>`}<span class="tag">${o[5]}</span></div><div class="cap"><b>${o[0]}</b><span>${o[1]}</span></div></article>`).join("");
+document.querySelectorAll("[data-il]").forEach(el=>el.replaceWith(window.ilus(el.dataset.il)));
+$("#t-prev").onclick=()=>$("#tira").scrollBy({left:-320,behavior:"smooth"});$("#t-next").onclick=()=>$("#tira").scrollBy({left:320,behavior:"smooth"});
+
+/* ---------- dueño ---------- */
+const EJ=[
+  {who:"Cliente de ejemplo",h:"09:14",modo:"part",D:{nombre:"Cliente de ejemplo",loc:"Paraná",cuando:"En 1 a 2 meses",dia:"Jue 26 nov",obra:"vivienda"},rows:[nuevo("vc",{a:240,h:210,c:2,s:1,ac:2}),nuevo("pg",{a:120,h:110,c:2,ac:2,hj:2})]},
+  {who:"Estudio de ejemplo",h:"11:02",modo:"pro",D:{nombre:"Arq. de ejemplo",estudio:"Estudio de ejemplo",obraNom:"Vivienda de ejemplo",loc:"Concepción del Uruguay",cuando:"En 3 a 6 meses",dia:"Mar 24 nov",obra:"vivienda"},rows:OBRA.vivienda.tip.map(([t,x])=>nuevo(t,x))},
+  {who:"Constructora de ejemplo",h:"15:40",modo:"pro",D:{nombre:"Jefe de obra de ejemplo",estudio:"Constructora de ejemplo",obraNom:"Edificio de ejemplo",loc:"Paraná",cuando:"Lo antes posible",dia:"Vie 27 nov",obra:"edificio"},rows:OBRA.edificio.tip.slice(0,3).map(([t,x])=>nuevo(t,x))}
+];
+function duenio(){
+  $("#bandeja").innerHTML=EJ.map(m=>{const t=totales(m.rows,true);return`<div class="msg"><header>${m.who}<span>hoy ${m.h} · total ${fmt(t.tot)}<span class="pe">Precio de ejemplo</span></span></header><div class="burbuja">${mensaje(m.modo,m.D,m.rows,true).replace(/</g,"&lt;")}<span class="hora">${m.h}<svg viewBox="0 0 16 11" aria-hidden="true"><path d="M1 6l3 3 6-7M6 8l1 1 6-7" fill="none" stroke="#53BDEB" stroke-width="1.6"/></svg></span></div></div>`}).join("");
+  const tots=EJ.map(m=>totales(m.rows,true));
+  $("#kp-m2").textContent=fm2(tots.reduce((a,t)=>a+t.m2,0)).replace(/,\d+$/,"")+" m²";
+  const ant=[tots[0].sena,tots[1].sena];$("#kp-ant").textContent=fmt(ant[0]+ant[1]);
+  $("#agenda").innerHTML=`<tr><th></th><th>Lun 23</th><th>Mar 24</th><th>Mié 25</th><th>Jue 26</th><th>Vie 27</th></tr>
+  <tr><th>7 a 11</th><td class="lleno">Visita técnica · obra de ejemplo</td><td class="lleno">Estudio de ejemplo</td><td class="libre">libre</td><td class="lleno">Cliente de ejemplo</td><td class="lleno">Constructora de ejemplo</td></tr>
+  <tr><th>11 a 16</th><td class="libre">libre</td><td class="lleno">Medición · Paraná</td><td class="lleno">Colocación · ejemplo</td><td class="libre">libre</td><td class="lleno">Completo</td></tr>`;
+  $("#anticipos").innerHTML=`<tr><th>Consulta</th><th>Estado</th><th style="text-align:right">Anticipo 30%</th></tr>
+  <tr><td>Cliente de ejemplo · 2 posiciones</td><td>Cobrado</td><td class="r">${fmt(ant[0])}<span class="pe">Precio de ejemplo</span></td></tr>
+  <tr><td>Estudio de ejemplo · ${EJ[1].rows.length} posiciones</td><td>Cobrado</td><td class="r">${fmt(ant[1])}<span class="pe">Precio de ejemplo</span></td></tr>
+  <tr><td>Constructora de ejemplo · ${EJ[2].rows.length} posiciones</td><td>Pendiente</td><td class="r">${fmt(tots[2].sena)}<span class="pe">Precio de ejemplo</span></td></tr>`;
+  const ventas=tots[0].tot+tots[1].tot,com=ventas*.08;
+  $("#ahorro").innerHTML=`<div class="ln"><span>Vendido por la web (semana de ejemplo)</span><span><b>${fmt(ventas)}</b><span class="pe">Precio de ejemplo</span></span></div>
+  <div class="ln"><span>Comisión de un intermediario (8%)</span><span><b>${fmt(com)}</b><span class="pe">Precio de ejemplo</span></span></div>
+  <div class="ln grande"><span>Lo que te ahorrás</span><span>${fmt(com)}<span class="pe">Precio de ejemplo</span></span></div>
+  <div class="ln"><span>Presupuestos que se respondieron solos</span><span><b>9 · ≈ 11 h de planilla</b></span></div>`}
+function precios(){const R1=[...P.sis.map((x,i)=>[x.n,()=>P.sis[i].m2,v=>P.sis[i].m2=v]),...["b","pg","pi","q"].map(k=>[TIP[k].n,()=>P.own[k],v=>P.own[k]=v])];
+  const R2=[...P.vid.slice(1).map((x,i)=>[x.n+" (m²)",()=>P.vid[i+1].m2,v=>P.vid[i+1].m2=v]),["Persiana incorporada (m²)",()=>P.pers,v=>P.pers=v],["Instalación y logística (m²)",()=>P.inst,v=>P.inst=v]];
+  const R3=P.ac.slice(1).map((a,i)=>[a.n+" (recargo %)",()=>Math.round(a.p*100),v=>P.ac[i+1].p=v/100]);
+  const row=(r,i,g,pct)=>`<tr><td>${r[0]}</td><td class="r"><input type="number" min="0" step="${pct?1:1000}" value="${r[1]()}" data-g="${g}" data-i="${i}" aria-label="${r[0]}"><span class="pe">${pct?"Recargo de ejemplo":"Precio de ejemplo"}</span></td></tr>`;
+  $("#precios1").innerHTML=`<tr><th>Sistema o producto</th><th style="text-align:right">$ por m²</th></tr>`+R1.map((r,i)=>row(r,i,1)).join("");
+  $("#precios2").innerHTML=`<tr><th>Ítem</th><th style="text-align:right">Valor</th></tr>`+R2.map((r,i)=>row(r,i,2)).join("")+R3.map((r,i)=>row(r,i,3,1)).join("");
+  const G={1:R1,2:R2,3:R3};
+  document.querySelectorAll("#precios1 input,#precios2 input").forEach(inp=>inp.addEventListener("input",()=>{const v=+inp.value;if(v>=0&&inp.value!==""){G[inp.dataset.g][+inp.dataset.i][2](v);hojaCalc();upd(true);duenio()}}))}
+$("#btn-duenio").onclick=function(){const on=document.body.classList.toggle("duenio");this.setAttribute("aria-pressed",on);this.textContent=on?"Ver como cliente":"Ver como dueño";window.scrollTo({top:0})};
+
+/* ---------- inicio ---------- */
+dias();precios();duenio();render();
+(window.__fb||[]).forEach(([img,k])=>{if(img.isConnected)img.replaceWith(window.ilus(k))});window.__fb=[];
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Leffler-Dietz Aluminio"></script>
+</body>
+</html>
