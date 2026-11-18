@@ -1,0 +1,973 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>NEU Aberturas · La ventana en tu color (prototipo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&family=Kumbh+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --hueso:#F3EFE7; --hueso2:#E9E3D7; --papel:#FBF9F4; --grafito:#2E3236; --roble:#B07A3E; --rio:#4E6B5C; --tinta:#141414;
+  --gris:#6B6A66; --linea:#D9D2C4; --wa:#D9FDD3; --wafondo:#EFE7DC;
+  --d:"DM Serif Text",Georgia,serif; --t:"Kumbh Sans",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--hueso);color:var(--tinta);font:16px/1.5 var(--t);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--roble);outline-offset:2px}
+a{color:inherit}
+.wrap{max-width:1220px;margin:0 auto;padding:0 32px}
+.pe{display:inline-block;font:500 10px/1.2 var(--t);letter-spacing:.02em;color:var(--gris);margin-left:6px;white-space:nowrap;vertical-align:middle}
+.dark .pe,.pe.cl{color:#B9B4AA}
+.sc{font:700 11px/1.2 var(--t);letter-spacing:.16em;text-transform:uppercase}
+ul.b{margin:0;padding:0;list-style:none}
+ul.b li{position:relative;padding-left:16px;margin:5px 0}
+ul.b li::before{content:"";position:absolute;left:0;top:.62em;width:7px;height:1.5px;background:var(--roble)}
+
+/* ilustraciones de respaldo */
+.ilu{overflow:hidden;background:var(--hueso2)}
+.ilu svg{width:100%;height:100%;display:block}
+
+/* firma + barra */
+.firma{font:400 12px/1.4 var(--t);color:var(--gris);padding:9px 0;text-align:center;border-bottom:1px solid var(--linea);background:var(--papel)}
+.firma b{color:var(--grafito);font-weight:600}
+.barra{position:sticky;top:0;z-index:30;background:rgba(243,239,231,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--linea)}
+.barra .wrap{display:flex;align-items:center;gap:22px;height:52px}
+.barra .mini{font:400 24px/1 var(--d);letter-spacing:.02em;text-decoration:none}
+.barra nav{display:flex;gap:18px;flex:1}
+.barra nav a{text-decoration:none;font:600 13px/1 var(--t);color:var(--grafito)}
+.barra nav a b{color:var(--roble);font-weight:700;margin-right:4px}
+.modo{display:flex;border:1px solid var(--grafito);border-radius:999px;padding:3px;gap:2px;flex-shrink:0}
+.modo button{border:0;background:transparent;border-radius:999px;padding:7px 14px;font:700 12.5px/1 var(--t);cursor:pointer}
+.modo button[aria-pressed=true]{background:var(--grafito);color:#fff}
+
+/* tapa */
+.tapa{position:relative;min-height:min(88vh,820px);color:#fff;overflow:hidden;background:var(--grafito);display:flex;flex-direction:column}
+.tapa-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.tapa::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,20,20,.62) 0,rgba(20,20,20,.12) 34%,rgba(20,20,20,.08) 55%,rgba(20,20,20,.78) 100%);pointer-events:none}
+.tapa .wrap{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;width:100%;padding-top:26px;padding-bottom:34px}
+.cab{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid rgba(255,255,255,.55);padding-bottom:10px}
+.cab .nom{font:400 clamp(110px,19vw,250px)/.78 var(--d);letter-spacing:-.02em;margin:0}
+.cab .nom span{display:block;font:700 12px/1 var(--t);letter-spacing:.5em;text-transform:uppercase;margin:14px 0 0 6px}
+.cab .ed{text-align:right;font:500 12px/1.6 var(--t);letter-spacing:.06em;padding-top:14px}
+.cab .ed b{display:block;font:400 19px/1.2 var(--d);letter-spacing:0}
+.lema{font:italic 400 clamp(18px,2vw,24px)/1.2 var(--d);margin:14px 0 0}
+.titulares{margin-top:auto;display:grid;grid-template-columns:1.25fr 1fr;gap:40px;align-items:end;padding-top:40px}
+.tit-p{font:400 clamp(38px,5.4vw,74px)/.98 var(--d);margin:0 0 16px;letter-spacing:-.01em;max-width:11em}
+.tit-p em{color:#E6C08F}
+.bajada{font:500 17px/1.45 var(--t);margin:0 0 22px;max-width:30em}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 20px;background:var(--roble);color:#fff;border:0;border-radius:2px;font:700 15px/1 var(--t);text-decoration:none;cursor:pointer}
+.btn.os{background:var(--grafito)}
+.btn.wa{background:#1F7A4D}
+.btn.claro{background:#fff;color:var(--tinta)}
+.btns{display:flex;flex-wrap:wrap;gap:10px}
+.lineas-tapa{list-style:none;margin:0;padding:0;border-left:1px solid rgba(255,255,255,.55)}
+.lineas-tapa li{padding:10px 0 10px 18px;border-bottom:1px solid rgba(255,255,255,.25)}
+.lineas-tapa li:last-child{border-bottom:0}
+.lineas-tapa b{display:block;font:400 30px/1 var(--d)}
+.lineas-tapa span{font:500 13.5px/1.35 var(--t);opacity:.92}
+.pie-foto{position:absolute;z-index:2;right:32px;bottom:10px;font:500 10.5px/1 var(--t);letter-spacing:.08em;opacity:.8}
+
+/* índice */
+.indice{padding:64px 0 56px;border-bottom:1px solid var(--linea)}
+.indice .g{display:grid;grid-template-columns:1.5fr 1fr;gap:56px}
+.indice h2{font:400 44px/1 var(--d);margin:0 0 6px}
+.entradas{list-style:none;margin:22px 0 0;padding:0;border-top:2px solid var(--tinta)}
+.entradas li{border-bottom:1px solid var(--linea)}
+.entradas a{display:grid;grid-template-columns:70px 1fr auto;gap:18px;align-items:baseline;padding:16px 0;text-decoration:none}
+.entradas .n{font:400 40px/1 var(--d);color:var(--roble)}
+.entradas b{font:400 24px/1.15 var(--d);display:block}
+.entradas small{font:500 14px/1.4 var(--t);color:var(--gris)}
+.entradas .p{font:600 12px/1 var(--t);letter-spacing:.12em;color:var(--gris)}
+.entradas a:hover b{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}
+.editorial{background:var(--papel);border:1px solid var(--linea);padding:26px 26px 22px}
+.editorial h3{font:400 26px/1.1 var(--d);margin:8px 0 12px}
+.editorial ul{font-size:15px}
+.editorial .firma-ed{margin-top:14px;font:italic 400 17px/1.3 var(--d);color:var(--rio)}
+
+/* nota central */
+.nota{padding:70px 0 80px}
+.nota-cab{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:end;margin-bottom:34px}
+.nota-cab .n{font:400 120px/.8 var(--d);color:var(--roble)}
+.nota-cab h2{font:400 clamp(38px,5vw,64px)/1 var(--d);margin:6px 0 10px}
+.nota-cab p{margin:0;font:500 16px/1.45 var(--t);color:#3D3D3A;max-width:40em}
+.nota-g{display:grid;grid-template-columns:minmax(0,1fr) 370px;gap:40px;align-items:start}
+.paso{border-top:2px solid var(--tinta);padding:16px 0 24px}
+.paso-h{display:flex;align-items:baseline;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.paso-h i{font:italic 400 22px/1 var(--d);color:var(--roble)}
+.paso-h h3{font:400 24px/1 var(--d);margin:0}
+.paso-h small{font:500 13px/1.3 var(--t);color:var(--gris)}
+.tipos{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:6px}
+.tipos button{border:1px solid var(--linea);background:var(--papel);padding:10px 4px 9px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:7px;font:600 11.5px/1.15 var(--t);text-align:center;min-height:92px}
+.tipos button svg{width:40px;height:40px}
+.tipos button[aria-pressed=true]{background:var(--grafito);color:#fff;border-color:var(--grafito)}
+.tipos button[aria-pressed=true] svg *{stroke:#fff}
+.sub{display:flex;gap:8px;align-items:center;margin-top:12px;flex-wrap:wrap;font:500 14px var(--t)}
+.seg{display:inline-flex;border:1px solid var(--grafito)}
+.seg button{border:0;background:transparent;padding:8px 13px;font:600 13px/1 var(--t);cursor:pointer}
+.seg button+button{border-left:1px solid var(--grafito)}
+.seg button[aria-pressed=true]{background:var(--grafito);color:#fff}
+
+.escena{background:var(--papel);border:1px solid var(--linea);margin-bottom:6px}
+.escena-top{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--linea);flex-wrap:wrap}
+.escena-top .sc{color:var(--rio)}
+#svg-v{width:100%;height:auto;display:block}
+.ficha{display:flex;flex-wrap:wrap;gap:6px 22px;padding:12px 14px;border-top:1px solid var(--linea);font:500 13.5px/1.35 var(--t)}
+.ficha span{color:var(--gris)}
+.ficha b{font-weight:700;color:var(--tinta)}
+.ficha .pr{margin-left:auto;font:400 26px/1 var(--d)}
+
+.bic{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;margin-bottom:14px}
+.sw{display:inline-flex;align-items:center;gap:8px;font:600 14px var(--t);cursor:pointer}
+.sw input{width:18px;height:18px;accent-color:var(--grafito)}
+.lados{display:flex;gap:8px}
+.lado{display:flex;align-items:center;gap:8px;border:1px solid var(--linea);background:var(--papel);padding:7px 11px 7px 7px;cursor:pointer;font:600 13px/1.1 var(--t);text-align:left}
+.lado i{width:26px;height:26px;border:1px solid rgba(0,0,0,.2);flex-shrink:0}
+.lado small{display:block;font-weight:500;color:var(--gris);font-size:11px}
+.lado[aria-pressed=true]{border-color:var(--tinta);box-shadow:inset 0 0 0 1px var(--tinta)}
+.pared{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;background:#E4DED2;padding:12px;border:1px solid var(--linea)}
+.chip{background:#fff;border:0;padding:0 0 8px;cursor:pointer;text-align:left;box-shadow:0 1px 2px rgba(0,0,0,.12);position:relative;display:flex;flex-direction:column}
+.chip .m{aspect-ratio:1/1.05;width:100%;display:block;border-bottom:1px solid rgba(0,0,0,.08)}
+.chip b{font:700 11.5px/1.15 var(--t);padding:7px 7px 0;display:block}
+.chip small{font:500 10px/1.1 var(--t);color:var(--gris);padding:2px 7px 0;letter-spacing:.06em;text-transform:uppercase}
+.chip .tag{position:absolute;top:6px;left:6px;font:800 9px/1 var(--t);letter-spacing:.08em;padding:4px 5px;background:var(--tinta);color:#fff;display:none}
+.chip.e .tag.te,.chip.i .tag.ti{display:block}
+.chip.e.i .tag.ti{top:24px}
+.chip.e,.chip.i{outline:2px solid var(--tinta);outline-offset:1px}
+.veta{background-image:repeating-linear-gradient(94deg,rgba(0,0,0,0) 0 5px,rgba(0,0,0,.13) 5px 6px,rgba(0,0,0,0) 6px 11px,rgba(255,255,255,.08) 11px 13px,rgba(0,0,0,0) 13px 19px,rgba(0,0,0,.08) 19px 20.5px),repeating-linear-gradient(88deg,rgba(0,0,0,0) 0 23px,rgba(0,0,0,.12) 23px 24px,rgba(0,0,0,0) 24px 37px);}
+
+.cmp{margin-top:16px;border:1px solid var(--linea);background:var(--papel)}
+.cmp-h{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 14px;border-bottom:1px solid var(--linea)}
+.cmp-h select{border:1px solid var(--linea);background:#fff;padding:7px 8px;font:600 13px var(--t)}
+.cmp-g{display:grid;grid-template-columns:1fr 1fr}
+.cmp-g>div{padding:10px 12px 12px;text-align:center}
+.cmp-g>div+div{border-left:1px solid var(--linea)}
+.cmp-g svg{width:100%;height:auto;display:block}
+.cmp-g b{font:400 18px/1.1 var(--d);display:block;margin-top:6px}
+.cmp-g span{font:500 12.5px/1.3 var(--t);color:var(--gris)}
+.cmp-g button{margin-top:8px;border:1px solid var(--tinta);background:transparent;padding:7px 12px;font:700 12px var(--t);cursor:pointer}
+
+.med{display:grid;grid-template-columns:1fr 1fr 150px;gap:18px}
+.campo label,.campo .lb{display:block;font:700 12px/1.2 var(--t);letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px;color:var(--grafito)}
+.campo .row{display:flex;align-items:center;gap:10px}
+.campo input[type=number],.campo input[type=text],.campo select{width:100%;border:1px solid var(--linea);background:#fff;padding:11px 10px;font:600 16px var(--t);border-radius:0}
+.campo .row input[type=number]{width:86px;flex-shrink:0}
+.campo input[type=range]{width:100%;accent-color:var(--roble)}
+.cant{display:flex;border:1px solid var(--linea);background:#fff}
+.cant button{width:42px;border:0;background:transparent;font:700 18px var(--t);cursor:pointer}
+.cant input{border:0!important;text-align:center;width:100%!important;padding:11px 0!important}
+.ops{display:flex;flex-wrap:wrap;gap:8px}
+.op{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--linea);background:var(--papel);padding:11px 13px;cursor:pointer;flex:1 1 220px}
+.op input{margin-top:3px;accent-color:var(--grafito)}
+.op b{display:block;font:700 14px/1.25 var(--t)}
+.op small{font:500 12.5px/1.35 var(--t);color:var(--gris)}
+.op:has(input:checked){border-color:var(--tinta);background:#fff}
+.op.off{opacity:.45;pointer-events:none}
+
+.pedido{background:var(--grafito);color:#fff;padding:18px 18px 16px;margin-top:4px}
+.pedido-h{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.pedido-h h3{font:400 22px/1 var(--d);margin:0}
+.pedido ol{list-style:none;margin:12px 0 0;padding:0;font:500 14px/1.35 var(--t)}
+.pedido li{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-top:1px solid rgba(255,255,255,.16);flex-wrap:wrap}
+.pedido li.arm{color:#E6C08F}
+.pedido li button{background:none;border:0;color:#B9B4AA;text-decoration:underline;cursor:pointer;font:500 12px var(--t);padding:0 0 0 8px}
+.pedido .sum{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid rgba(255,255,255,.4);padding-top:12px;margin-top:4px;font:600 15px var(--t);flex-wrap:wrap;gap:6px}
+.pedido .sum b{font:400 28px/1 var(--d)}
+.datos{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.dias{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:6px;margin-top:8px}
+.dias button{border:1px solid var(--linea);background:#fff;padding:8px 2px;cursor:pointer;font:700 13px/1.15 var(--t);text-align:center}
+.dias button small{display:block;font:500 10.5px/1.2 var(--t);color:var(--rio);margin-top:3px}
+.dias button:disabled{background:transparent;color:#AAA59B;cursor:not-allowed;text-decoration:line-through}
+.dias button:disabled small{color:#AAA59B}
+.dias button[aria-pressed=true]{background:var(--rio);color:#fff;border-color:var(--rio)}
+.dias button[aria-pressed=true] small{color:#DCE8E1}
+
+/* carta del lector */
+.carta{position:sticky;top:68px}
+.carta-h{border-top:2px solid var(--tinta);padding-top:12px}
+.carta-h h3{font:400 26px/1.05 var(--d);margin:4px 0 4px}
+.carta-h p{margin:0 0 12px;font:500 13.5px/1.4 var(--t);color:var(--gris)}
+.chat{background:var(--wafondo);background-image:radial-gradient(rgba(78,107,92,.10) 1px,transparent 1.4px);background-size:14px 14px;border:1px solid var(--linea)}
+.chat-top{display:flex;align-items:center;gap:10px;padding:10px 12px;background:#1F5C45;color:#fff}
+.chat-top .av{width:34px;height:34px;border-radius:50%;background:var(--hueso);color:var(--tinta);display:grid;place-items:center;font:400 14px/1 var(--d)}
+.chat-top b{display:block;font:700 14px/1.15 var(--t)}
+.chat-top small{font:500 11.5px/1.2 var(--t);opacity:.85}
+.chat-body{padding:14px 12px 16px;max-height:min(56vh,520px);overflow:auto}
+.burbuja{background:var(--wa);border-radius:9px 0 9px 9px;padding:8px 10px 20px;margin-left:auto;max-width:94%;position:relative;font:400 13.8px/1.42 var(--t);white-space:pre-wrap;word-break:break-word;box-shadow:0 1px .5px rgba(0,0,0,.13)}
+.burbuja::after{content:"";position:absolute;top:0;right:-7px;border-left:8px solid var(--wa);border-bottom:9px solid transparent}
+.burbuja .hora{position:absolute;right:9px;bottom:4px;font:500 10.5px/1 var(--t);color:#5E7A68;display:flex;align-items:center;gap:3px}
+.burbuja .hora svg{width:16px;height:10px}
+.cursor{display:inline-block;width:2px;height:1em;background:#1F5C45;vertical-align:-2px;animation:p 1s steps(1) infinite}
+@keyframes p{50%{opacity:0}}
+.tot{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--linea);border:1px solid var(--linea);margin-top:12px}
+.tot>div{background:var(--papel);padding:10px 12px}
+.tot span{display:block;font:600 11px/1.2 var(--t);letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
+.tot b{font:400 24px/1.15 var(--d)}
+.tot .pe{margin-left:0;display:block;text-transform:none;letter-spacing:.02em;font-weight:500}
+.carta .btn{width:100%;justify-content:center;margin-top:12px;padding:16px}
+.carta .nota-p{font:500 12px/1.4 var(--t);color:var(--gris);margin:8px 0 0}
+
+/* otras secciones */
+.otras{padding:70px 0;background:var(--papel);border-top:1px solid var(--linea);border-bottom:1px solid var(--linea)}
+.sec-h{display:flex;align-items:baseline;gap:18px;margin-bottom:28px;border-bottom:2px solid var(--tinta);padding-bottom:12px;flex-wrap:wrap}
+.sec-h .n{font:400 48px/1 var(--d);color:var(--roble)}
+.sec-h h2{font:400 clamp(32px,4vw,48px)/1 var(--d);margin:0}
+.sec-h p{margin:0 0 0 auto;font:500 14px/1.4 var(--t);color:var(--gris)}
+.cols{display:grid;grid-template-columns:1.35fr 1fr .9fr 1.1fr;gap:0}
+.cols>article{padding:0 24px;border-left:1px solid var(--linea)}
+.cols>article:first-child{padding-left:0;border-left:0}
+.cols>article:last-child{padding-right:0}
+.cols .k{color:var(--rio)}
+.cols h3{font:400 30px/1.05 var(--d);margin:8px 0 12px}
+.cols article:first-child h3{font-size:44px}
+.cols article:nth-child(3) h3{font-style:italic}
+.cols ul{font-size:14.5px}
+.cols a.l{display:inline-block;margin-top:12px;font:700 13px var(--t);text-decoration:none;border-bottom:1.5px solid var(--roble);padding-bottom:2px}
+.cols .ico{width:100%;height:84px;margin-bottom:10px;display:block}
+.cols article:nth-child(2) .ico{height:120px}
+.cols article:nth-child(4){background:var(--hueso);padding-top:18px;padding-bottom:18px}
+
+/* obras */
+.obras{padding:76px 0}
+.rep{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.rep figure{margin:0;position:relative}
+.rep .fx{width:100%;height:100%;object-fit:cover;aspect-ratio:4/3;display:block}
+.rep figcaption{font:500 12.5px/1.35 var(--t);color:var(--gris);margin-top:7px}
+.r1{grid-column:1/9;grid-row:1/3}
+.r2{grid-row:1}.r3{grid-row:2}
+.r1 .fx{aspect-ratio:auto;height:100%;min-height:420px}
+.r2{grid-column:9/13}
+.r3{grid-column:9/13}
+.rep-t{display:grid;grid-template-columns:1fr 2fr;gap:30px;margin:26px 0 20px;align-items:end}
+.rep-t h3,.rep-a h3{font:400 40px/1 var(--d);margin:6px 0 0}
+.rep-t ul,.rep-a ul{font-size:15px}
+.rep-a{display:grid;grid-template-columns:1fr 2fr;gap:30px;margin:46px 0 18px;align-items:end;border-top:2px solid var(--tinta);padding-top:16px}
+.c1{grid-column:1/6}.c2{grid-column:6/10}.c3{grid-column:10/13}
+.c3 .fx{aspect-ratio:3/4}
+.c1 .fx{aspect-ratio:auto;height:100%}
+.mas{margin-top:46px;display:grid;grid-template-columns:200px 1fr;gap:30px;border-top:2px solid var(--tinta);padding-top:16px}
+.mas h3{font:400 26px/1.1 var(--d);margin:0}
+.mas ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0}
+.mas li{padding:0 18px;border-left:1px solid var(--linea)}
+.mas li b{font:400 22px/1.15 var(--d);display:block}
+.mas li span{font:500 13.5px/1.35 var(--t);color:var(--gris)}
+
+/* pie */
+.pie{background:var(--tinta);color:#E9E3D7;padding:56px 0 24px}
+.pie .g{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:36px;align-items:start}
+.pie .logo{height:64px;width:auto;background:#fff;padding:6px 10px}
+.pie .logo-t{font:400 56px/1 var(--d);color:#fff}
+.pie h4{font:700 11px/1 var(--t);letter-spacing:.16em;text-transform:uppercase;color:#B9B4AA;margin:0 0 10px}
+.pie p{margin:0 0 6px;font:500 15px/1.5 var(--t)}
+.pie a{color:#fff}
+.pie .sh{aspect-ratio:16/10;width:100%;object-fit:cover}
+.legal{border-top:1px solid #3A3A38;margin-top:36px;padding-top:16px;font:500 12px/1.5 var(--t);color:#9C978D}
+
+/* barra móvil */
+.movil{display:none}
+
+/* dueño */
+.panel{display:none;padding:40px 0 80px}
+body.duenio .cliente{display:none}
+body.duenio .panel{display:block}
+body.duenio .movil{display:none!important}
+.panel-h{display:flex;align-items:end;justify-content:space-between;gap:20px;flex-wrap:wrap;border-bottom:2px solid var(--tinta);padding-bottom:14px;margin-bottom:26px}
+.panel-h h2{font:400 clamp(34px,4.4vw,54px)/1 var(--d);margin:8px 0 0}
+.ej{display:inline-block;background:var(--roble);color:#fff;font:800 11px/1 var(--t);letter-spacing:.14em;text-transform:uppercase;padding:6px 9px}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--linea);background:var(--papel)}
+.kpis>div{padding:16px 18px;border-left:1px solid var(--linea)}
+.kpis>div:first-child{border-left:0}
+.kpis span{display:block;font:600 11px/1.3 var(--t);letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
+.kpis b{font:400 34px/1.1 var(--d)}
+.kpis small{display:block;font:500 12.5px/1.3 var(--t);color:var(--gris)}
+.pg{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:30px;margin-top:30px}
+.pg h3{font:400 26px/1.1 var(--d);margin:0 0 12px}
+.bandeja .msg{margin-bottom:14px}
+.bandeja header{display:flex;justify-content:space-between;font:700 13px var(--t);margin-bottom:5px}
+.bandeja header span{font-weight:500;color:var(--gris)}
+.bandeja .chat{padding:12px}
+.bandeja .burbuja{max-width:100%}
+table.ag{width:100%;border-collapse:collapse;font:500 12.5px/1.3 var(--t);background:var(--papel)}
+table.ag th,table.ag td{border:1px solid var(--linea);padding:8px 6px;text-align:center;vertical-align:top}
+table.ag th{font-weight:700;background:var(--hueso2)}
+table.ag td.ll{background:#DCE6E0;color:#23392E;font-weight:600}
+table.ag td.lb{color:var(--rio)}
+.lst{border-top:1px solid var(--linea);margin-top:6px}
+.lst>div{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--linea);font:500 14px/1.35 var(--t);flex-wrap:wrap}
+.lst>div b{font-weight:700}
+.lst>div.g2{font:400 22px var(--d);border-bottom:2px solid var(--tinta)}
+table.pr{width:100%;border-collapse:collapse;font:500 14px/1.3 var(--t)}
+table.pr td,table.pr th{padding:7px 0;border-bottom:1px solid var(--linea);text-align:left}
+table.pr th{font:700 11px/1 var(--t);letter-spacing:.1em;text-transform:uppercase;color:var(--gris)}
+table.pr td:last-child{text-align:right;white-space:nowrap}
+table.pr input{width:110px;border:1px solid var(--linea);background:#fff;padding:7px 8px;font:600 14px var(--t);text-align:right}
+.paravos{margin-top:40px;background:var(--rio);color:#fff;padding:30px 32px;display:grid;grid-template-columns:1fr 2fr;gap:30px}
+.paravos h3{font:400 40px/1 var(--d);margin:0}
+.paravos ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:16px 26px}
+.paravos li b{display:block;font:400 21px/1.15 var(--d);margin-bottom:3px}
+.paravos li{font:500 14px/1.4 var(--t);border-top:1px solid rgba(255,255,255,.4);padding-top:10px}
+
+@media (max-width:1060px){
+  .nota-g{grid-template-columns:minmax(0,1fr)}
+  .carta{position:static}
+  .tipos{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .cols{grid-template-columns:1fr 1fr;gap:30px 0}
+  .cols>article:nth-child(3){padding-left:0;border-left:0}
+  .barra nav{display:none}
+  .barra .wrap{justify-content:space-between}
+}
+@media (max-width:760px){
+  .wrap{padding:0 16px}
+  .tapa{min-height:auto}
+  .tapa .wrap{padding-top:18px;padding-bottom:28px}
+  .cab .ed{font-size:10.5px;padding-top:6px}
+  .cab .ed b{font-size:15px}
+  .titulares{grid-template-columns:1fr;gap:26px;padding-top:150px}
+  .pie-foto{right:16px}
+  .indice{padding:44px 0}
+  .indice .g{grid-template-columns:1fr;gap:30px}
+  .entradas a{grid-template-columns:48px 1fr;gap:12px}
+  .entradas .n{font-size:32px}
+  .entradas .p{display:none}
+  .nota{padding:48px 0 60px}
+  .nota-cab{grid-template-columns:1fr;gap:0}
+  .nota-cab .n{font-size:76px}
+  .pared{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:8px}
+  .med{grid-template-columns:1fr 1fr;gap:14px}
+  .med .campo:nth-child(3){grid-column:1/3}
+  .campo .row{flex-direction:column;align-items:stretch;gap:6px}
+  .campo .row input[type=number]{width:100%}
+  .datos{grid-template-columns:1fr}
+  .dias{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .ficha .pr{margin-left:0;width:100%}
+  .cols{grid-template-columns:1fr}
+  .cols>article{padding:20px 0;border-left:0;border-top:1px solid var(--linea)}
+  .cols>article:first-child{border-top:0;padding-top:0}
+  .cols article:nth-child(4){padding:18px 16px}
+  .sec-h p{margin-left:0}
+  .rep{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+  .r1,.c1{grid-column:1/3;grid-row:auto}
+  .r2,.r3{grid-row:auto}
+  .r1 .fx,.c1 .fx{min-height:0;aspect-ratio:4/3;height:auto}
+  .r2,.c2{grid-column:1/2}.r3,.c3{grid-column:2/3}
+  .c3 .fx{aspect-ratio:4/3}
+  .rep-t,.rep-a{grid-template-columns:1fr;gap:10px}
+  .rep-t h3,.rep-a h3{font-size:32px}
+  .mas{grid-template-columns:1fr;gap:12px}
+  .mas ol{grid-template-columns:1fr}
+  .mas li{padding:10px 0;border-left:0;border-top:1px solid var(--linea)}
+  .pie .g{grid-template-columns:1fr;gap:26px}
+  .kpis{grid-template-columns:1fr 1fr}
+  .kpis>div:nth-child(3){border-left:0}
+  .kpis>div:nth-child(n+3){border-top:1px solid var(--linea)}
+  .pg{grid-template-columns:minmax(0,1fr)}
+  table.ag{table-layout:fixed;font-size:10px}
+  table.ag th,table.ag td{padding:6px 2px;overflow-wrap:anywhere}
+  table.ag tr>*:first-child{width:46px}
+  table.pr input{width:92px}
+  .paravos{grid-template-columns:1fr;padding:24px 18px}
+  .paravos ul{grid-template-columns:1fr}
+  .modo button{padding:7px 11px}
+  .movil{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--tinta);color:#fff;padding:10px 16px;align-items:center;justify-content:space-between;gap:10px}
+  .movil b{font:400 20px/1 var(--d)}
+  .movil a{background:#1F7A4D;color:#fff;text-decoration:none;font:700 13px/1 var(--t);padding:11px 14px}
+  .pie{padding-bottom:84px}
+}
+@media (max-width:420px){
+  .cab .nom{font-size:104px}
+  .tipos button{min-height:86px;font-size:11px}
+}
+</style>
+<script>
+/* Ilustraciones propias si una foto no carga */
+var ILU={
+tapa:'<svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg"><rect width="1600" height="900" fill="#34403C"/><rect width="1600" height="560" fill="#4F625A"/><circle cx="1380" cy="190" r="70" fill="#C9A77A" opacity=".35"/><path d="M0 560C300 520 600 545 900 528S1400 515 1600 535V560H0Z" fill="#40514A"/><g stroke="#8FA79A" stroke-width="2" opacity=".35"><path d="M80 650h300M520 700h360M180 770h260M980 640h380M760 800h420M1200 740h300"/></g><rect x="860" y="330" width="560" height="230" fill="#D9D2C4"/><rect x="835" y="306" width="610" height="26" fill="#2E3236"/><g fill="#2E3236"><rect x="900" y="368" width="220" height="168"/><rect x="1150" y="368" width="100" height="168"/><rect x="1280" y="368" width="100" height="90"/></g><g fill="#8DA6A0"><rect x="912" y="380" width="94" height="144"/><rect x="1014" y="380" width="94" height="144"/><rect x="1162" y="380" width="76" height="144"/><rect x="1292" y="380" width="76" height="66"/></g><rect x="820" y="560" width="640" height="12" fill="#2E3236"/></svg>',
+rio:'<svg viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg"><rect width="800" height="600" fill="#3C4A45"/><rect width="800" height="330" fill="#56685F"/><circle cx="610" cy="150" r="46" fill="#D9B98C" opacity=".55"/><path d="M0 330C140 300 260 318 420 306S700 296 800 312V330H0Z" fill="#41534A"/><g stroke="#8FA79A" stroke-width="2" opacity=".5"><path d="M40 400h180M300 430h240M90 470h160M520 380h200M380 500h260"/></g><rect x="150" y="170" width="430" height="210" fill="#E9E3D7"/><rect x="130" y="152" width="470" height="22" fill="#2E3236"/><g fill="#2E3236"><rect x="180" y="205" width="160" height="150"/><rect x="370" y="205" width="80" height="150"/><rect x="480" y="205" width="70" height="70"/></g><g fill="#8DA6A0"><rect x="190" y="215" width="66" height="130"/><rect x="264" y="215" width="66" height="130"/><rect x="380" y="215" width="60" height="130"/><rect x="490" y="215" width="50" height="50"/></g><path d="M190 215l40 0-40 60z" fill="#B7CBC4" opacity=".6"/><rect x="120" y="380" width="490" height="10" fill="#2E3236"/></svg>',
+casa:'<svg viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg"><rect width="800" height="600" fill="#E9E3D7"/><rect y="470" width="800" height="130" fill="#C9C1B1"/><path d="M120 250L400 90L680 250Z" fill="#2E3236"/><rect x="150" y="250" width="500" height="220" fill="#F3EFE7"/><g fill="#383E42"><rect x="190" y="290" width="150" height="120"/><rect x="460" y="290" width="150" height="120"/><rect x="365" y="320" width="70" height="150"/></g><g fill="#9DB3B6"><rect x="200" y="300" width="62" height="100"/><rect x="268" y="300" width="62" height="100"/><rect x="470" y="300" width="62" height="100"/><rect x="538" y="300" width="62" height="100"/></g><rect x="372" y="328" width="56" height="134" fill="#6C7277"/><g stroke="#4E6B5C" stroke-width="3" fill="none"><path d="M60 470c10-60 40-80 50-90M90 470c0-40 20-70 34-80"/></g></svg>',
+interior:'<svg viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg"><rect width="800" height="600" fill="#EDE7DC"/><rect y="440" width="800" height="160" fill="#B07A3E" opacity=".55"/><rect x="200" y="90" width="400" height="320" fill="#383E42"/><rect x="214" y="104" width="181" height="292" fill="#9DB3A9"/><rect x="405" y="104" width="181" height="292" fill="#9DB3A9"/><path d="M214 300c60-30 120-10 181-40v136H214Z" fill="#4E6B5C" opacity=".7"/><path d="M405 270c60-20 120 10 181-30v156H405Z" fill="#4E6B5C" opacity=".7"/><rect x="180" y="410" width="440" height="14" fill="#F3EFE7"/></svg>',
+show:'<svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg"><rect width="800" height="500" fill="#2E3236"/><rect y="400" width="800" height="100" fill="#1E2124"/><g><rect x="70" y="110" width="170" height="250" fill="#F3EFE7"/><rect x="82" y="122" width="146" height="226" fill="#7E958C"/><rect x="300" y="80" width="200" height="280" fill="#B07A3E"/><rect x="314" y="94" width="84" height="252" fill="#7E958C"/><rect x="402" y="94" width="84" height="252" fill="#7E958C"/><rect x="560" y="130" width="170" height="230" fill="#141414"/><rect x="572" y="142" width="146" height="206" fill="#7E958C"/></g><g fill="#E9E3D7" font-family="Georgia,serif" font-size="22"><text x="70" y="395">Blanco</text><text x="300" y="395">Roble Dorado</text><text x="560" y="395">Negro Mate</text></g></svg>'
+};
+function ilu(el){var k=el.getAttribute('data-k')||'casa';var d=document.createElement('div');d.className='ilu '+(el.className||'');d.setAttribute('role','img');d.setAttribute('aria-label',(el.alt||'Ilustración')+' (ilustración)');d.innerHTML=ILU[k]||ILU.casa;el.replaceWith(d);}
+function logoF(el){var s=document.createElement('span');s.className='logo-t';s.textContent='NEU';el.replaceWith(s);}
+</script>
+</head>
+<body>
+
+<div class="firma">Prototipo preparado para <b>NEU Aberturas</b> · 18 de noviembre de 2026</div>
+
+<header class="barra">
+  <div class="wrap">
+    <a class="mini" href="#tapa" aria-label="NEU Aberturas, ir a la tapa">NEU</a>
+    <nav aria-label="En este número">
+      <a href="#nota"><b>01</b>La ventana en tu color</a>
+      <a href="#otras"><b>02</b>Otras secciones</a>
+      <a href="#obras"><b>03</b>Obras</a>
+      <a href="#" data-duenio><b>04</b>Ver como dueño</a>
+    </nav>
+    <div class="modo" role="group" aria-label="Cambiar vista">
+      <button type="button" id="m-cli" aria-pressed="true">Cliente</button>
+      <button type="button" id="m-due" aria-pressed="false">Ver como dueño</button>
+    </div>
+  </div>
+</header>
+
+<main>
+<div class="cliente">
+
+<!-- TAPA -->
+<section class="tapa" id="tapa">
+  <img class="tapa-img" data-k="tapa" src="https://neuaberturas.com/wp-content/uploads/2024/09/AL-RIO-1-1067x800.jpg" alt="Obra Casa al Río, Paraná" onerror="ilu(this)">
+  <div class="wrap">
+    <div class="cab">
+      <h1 class="nom">NEU<span>Aberturas de PVC</span></h1>
+      <div class="ed"><b>Paraná · Entre Ríos</b>Noviembre 2026<br>Edición para vos</div>
+    </div>
+    <p class="lema">"Más Conocimiento. Mayor Compromiso."</p>
+    <div class="titulares">
+      <div>
+        <h2 class="tit-p">La ventana, en <em>tu</em> color.</h2>
+        <p class="bajada">Cotizamos la abertura que estás necesitando. Elegí tipología, color de adentro y de afuera, y mandá el pedido por WhatsApp.</p>
+        <div class="btns">
+          <a class="btn" href="#nota">Armar mi ventana</a>
+          <a class="btn claro" href="#obras">Ver la obra de tapa</a>
+        </div>
+      </div>
+      <ul class="lineas-tapa">
+        <li><b>12 colores</b><span>De Blanco a Turner Oak Malt, con vista adentro y afuera</span></li>
+        <li><b>8 tipologías</b><span>Corrediza, oscilobatiente, plegadiza a medida y más</span></li>
+        <li><b>Showroom</b><span>Gabriela Mistral 2267, Paraná</span></li>
+      </ul>
+    </div>
+  </div>
+  <span class="pie-foto">EN TAPA: CASA AL RÍO, PARANÁ</span>
+</section>
+
+<!-- ÍNDICE -->
+<section class="indice" id="indice">
+  <div class="wrap g">
+    <div>
+      <span class="sc" style="color:var(--rio)">En este número</span>
+      <h2>Lo que hay adentro</h2>
+      <ol class="entradas">
+        <li><a href="#nota"><span class="n">01</span><span><b>La ventana en tu color</b><small>Cotizador con 12 colores, bicolor y comparador</small></span><span class="p">PÁG. 04</span></a></li>
+        <li><a href="#otras"><span class="n">02</span><span><b>Otras secciones</b><small>Puertas Oblak, Deck y Siding, Mamparas, Pisos SPC</small></span><span class="p">PÁG. 12</span></a></li>
+        <li><a href="#obras"><span class="n">03</span><span><b>Reportaje de obras</b><small>Casa al Río y Casa y Familia, en Paraná</small></span><span class="p">PÁG. 16</span></a></li>
+        <li><a href="#" data-duenio><span class="n">04</span><span><b>Ver como dueño</b><small>Cómo le llegan los pedidos a NEU</small></span><span class="p">PÁG. 22</span></a></li>
+      </ol>
+    </div>
+    <aside class="editorial">
+      <span class="sc" style="color:var(--roble)">Editorial</span>
+      <h3>Quiénes somos</h3>
+      <ul class="b">
+        <li>Empresa familiar, más de 6 años de experiencia</li>
+        <li>Soluciones de alto rendimiento en aberturas de PVC a medida</li>
+        <li>Perfiles y herrajes alemanes de primera calidad</li>
+        <li>Perfiles con refuerzo de acero y doble vidrio</li>
+        <li>Asesoramiento sin cargo</li>
+      </ul>
+      <p class="firma-ed">Más Conocimiento. Mayor Compromiso.</p>
+    </aside>
+  </div>
+</section>
+
+<!-- NOTA CENTRAL -->
+<section class="nota" id="nota">
+  <div class="wrap">
+    <div class="nota-cab">
+      <span class="n">01</span>
+      <div>
+        <span class="sc" style="color:var(--rio)">Nota central · Cotizador</span>
+        <h2>La ventana en tu color</h2>
+        <p>Probá cada color sobre tu ventana, de adentro y de afuera. El precio y el mensaje se arman solos.</p>
+      </div>
+    </div>
+
+    <div class="nota-g">
+      <div>
+        <!-- 1 tipología -->
+        <div class="paso">
+          <div class="paso-h"><i>i.</i><h3>Tipología</h3><small>Las 8 que trabaja NEU en PVC</small></div>
+          <div class="tipos" id="tipos"></div>
+          <div class="sub" id="sub"></div>
+        </div>
+
+        <!-- ventana -->
+        <div class="escena">
+          <div class="escena-top">
+            <span class="sc" id="vista-lbl">Vista desde afuera</span>
+            <div class="seg" role="group" aria-label="Ver lado">
+              <button type="button" data-v="ext" aria-pressed="true">Exterior</button>
+              <button type="button" data-v="int" aria-pressed="false">Interior</button>
+            </div>
+          </div>
+          <svg id="svg-v" viewBox="0 0 560 420" role="img" aria-label="Ventana con el color y las medidas elegidas"></svg>
+          <div class="ficha">
+            <div><span>Afuera </span><b id="f-ext"></b></div>
+            <div><span>Adentro </span><b id="f-int"></b></div>
+            <div><span>Superficie </span><b id="f-m2"></b></div>
+            <div class="pr"><span id="f-pr"></span><span class="pe">Precio de ejemplo</span></div>
+          </div>
+        </div>
+
+        <!-- 2 color -->
+        <div class="paso" id="paso-color">
+          <div class="paso-h"><i>ii.</i><h3>Pared de colores</h3><small>12 colores reales · los foliados con veta de madera</small></div>
+          <div class="bic">
+            <label class="sw"><input type="checkbox" id="bicolor" checked> Bicolor: un color adentro y otro afuera</label>
+            <div class="lados" id="lados">
+              <button type="button" class="lado" data-l="ext" aria-pressed="true"><i id="li-ext"></i><span>Pintando afuera<small id="ln-ext"></small></span></button>
+              <button type="button" class="lado" data-l="int" aria-pressed="false"><i id="li-int"></i><span>Pintando adentro<small id="ln-int"></small></span></button>
+            </div>
+          </div>
+          <div class="pared" id="pared"></div>
+          <div class="cmp">
+            <div class="cmp-h">
+              <span class="sc">Comparador · misma ventana, 2 colores</span>
+              <label style="font:600 13px var(--t)">Comparar con
+                <select id="cmp-sel" aria-label="Color a comparar"></select></label>
+            </div>
+            <div class="cmp-g">
+              <div><svg id="cmp-a" viewBox="0 0 560 420" role="img" aria-label="Color actual"></svg><b id="cmp-an"></b><span id="cmp-ap"></span><span class="pe">Precio de ejemplo</span></div>
+              <div><svg id="cmp-b" viewBox="0 0 560 420" role="img" aria-label="Color a comparar"></svg><b id="cmp-bn"></b><span id="cmp-bp"></span><span class="pe">Precio de ejemplo</span><br><button type="button" id="cmp-usar">Usar este color afuera</button></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3 medidas -->
+        <div class="paso">
+          <div class="paso-h"><i>iii.</i><h3>Medidas</h3><small>En centímetros, del vano</small></div>
+          <div class="med">
+            <div class="campo"><label for="ancho">Ancho</label><div class="row"><input type="number" id="ancho" min="40" max="500" value="150" inputmode="numeric"><input type="range" id="r-ancho" min="40" max="500" value="150" aria-label="Ancho"></div></div>
+            <div class="campo"><label for="alto">Alto</label><div class="row"><input type="number" id="alto" min="40" max="260" value="110" inputmode="numeric"><input type="range" id="r-alto" min="40" max="260" value="110" aria-label="Alto"></div></div>
+            <div class="campo"><span class="lb">Cantidad</span><div class="cant"><button type="button" id="c-menos" aria-label="Una menos">−</button><input type="number" id="cant" min="1" max="60" value="1" aria-label="Cantidad"><button type="button" id="c-mas" aria-label="Una más">+</button></div></div>
+          </div>
+        </div>
+
+        <!-- 4 vidrio + accesorios -->
+        <div class="paso">
+          <div class="paso-h"><i>iv.</i><h3>Vidrio y accesorios</h3></div>
+          <div class="ops" id="vidrios"></div>
+          <div class="ops" style="margin-top:8px">
+            <label class="op" id="op-mosq"><input type="checkbox" id="mosq"><span><b>Mosquitero</b><small id="t-mosq"></small></span></label>
+            <label class="op" id="op-lim"><input type="checkbox" id="lim"><span><b>Limitadores de apertura</b><small id="t-lim"></small></span></label>
+          </div>
+        </div>
+
+        <div class="pedido">
+          <div class="pedido-h"><h3>Tu pedido</h3><button type="button" class="btn" id="agregar">Agregar y armar otra</button></div>
+          <ol id="lista"></ol>
+          <div class="sum"><span id="k-n"></span><span><b id="k-sub"></b><span class="pe cl">Precio de ejemplo</span></span></div>
+        </div>
+
+        <!-- 5 datos -->
+        <div class="paso" style="margin-top:26px">
+          <div class="paso-h"><i>v.</i><h3>Tus datos</h3><small>Para que NEU te responda y vaya a medir</small></div>
+          <div class="datos">
+            <div class="campo"><label for="nombre">Nombre</label><input type="text" id="nombre" autocomplete="given-name" placeholder="Tu nombre"></div>
+            <div class="campo"><label for="loc">Localidad</label><input type="text" id="loc" placeholder="Ej.: Paraná"></div>
+            <div class="campo"><label for="cuando">¿Para cuándo?</label><select id="cuando"><option>Lo antes posible</option><option>En el próximo mes</option><option>En 2 o 3 meses</option><option>Estoy en obra, a coordinar</option></select></div>
+          </div>
+          <div class="campo" style="margin-top:16px"><span class="lb">Día para que vayan a medir</span>
+            <div class="dias" id="dias"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- carta del lector -->
+      <aside class="carta" id="carta">
+        <div class="carta-h">
+          <span class="sc" style="color:var(--roble)">Carta del lector</span>
+          <h3>Así le llega tu pedido a NEU</h3>
+          <p>Se escribe mientras elegís. Es el texto exacto que se envía.</p>
+        </div>
+        <div class="chat">
+          <div class="chat-top"><span class="av">NEU</span><span><b>NEU Aberturas</b><small>+54 343 414-1714</small></span></div>
+          <div class="chat-body" id="chat-body"><div class="burbuja"><span id="btxt"></span><span class="cursor"></span><span class="hora"><span id="bhora"></span><svg viewBox="0 0 16 10" aria-label="Leído"><path d="M1 5.5l2.6 2.6L9.5 2M6.5 7.6l.6.5L13 2" fill="none" stroke="#3B9AE1" stroke-width="1.5" stroke-linecap="round"/></svg></span></div></div>
+        </div>
+        <div class="tot">
+          <div><span>Total estimado</span><b id="k-tot"></b><span class="pe">Precio de ejemplo</span></div>
+          <div><span id="k-al">Anticipo</span><b id="k-ant"></b><span class="pe">Precio de ejemplo</span></div>
+        </div>
+        <a class="btn wa" id="btn-wa" href="#" target="_blank" rel="noopener">Enviar por WhatsApp</a>
+        <p class="nota-p">Abre WhatsApp con este mismo texto. NEU confirma el precio final después de medir.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- OTRAS SECCIONES -->
+<section class="otras" id="otras">
+  <div class="wrap">
+    <div class="sec-h"><span class="n">02</span><h2>Otras secciones</h2><p>También en el showroom de Gabriela Mistral 2267</p></div>
+    <div class="cols">
+      <article>
+        <svg class="ico" viewBox="0 0 300 84" aria-hidden="true"><rect x="10" y="4" width="46" height="78" fill="none" stroke="#2E3236" stroke-width="2"/><rect x="18" y="14" width="30" height="24" fill="none" stroke="#B07A3E" stroke-width="1.5"/><rect x="18" y="46" width="30" height="26" fill="none" stroke="#B07A3E" stroke-width="1.5"/><circle cx="50" cy="46" r="2.5" fill="#2E3236"/><path d="M70 82H300" stroke="#D9D2C4"/></svg>
+        <span class="sc k">Puertas</span>
+        <h3>Oblak</h3>
+        <ul class="b">
+          <li>Puertas de la marca Oblak</li>
+          <li>Para verlas en persona: showroom en Paraná</li>
+          <li>Asesoramiento sin cargo</li>
+        </ul>
+        <a class="l" data-wa="Hola NEU Aberturas, quiero consultar por puertas Oblak." href="#" target="_blank" rel="noopener">Consultar por Oblak</a>
+      </article>
+      <article>
+        <svg class="ico" viewBox="0 0 240 120" aria-hidden="true"><g stroke="#4E6B5C" stroke-width="2" fill="none"><path d="M10 100L120 70L230 100"/><path d="M30 95L130 68M55 98L150 70M80 101L172 73M105 104L196 77"/></g><g stroke="#B07A3E" stroke-width="1.5"><path d="M30 10V60M48 10V60M66 10V60M84 10V60M102 10V60"/></g></svg>
+        <span class="sc k">Exteriores</span>
+        <h3>Deck y Siding</h3>
+        <ul class="b">
+          <li>En WPC: compuesto de madera y polímero</li>
+          <li>Deck para pisos exteriores</li>
+          <li>Siding para revestir paredes</li>
+        </ul>
+        <a class="l" data-wa="Hola NEU Aberturas, quiero consultar por deck y siding WPC." href="#" target="_blank" rel="noopener">Consultar por WPC</a>
+      </article>
+      <article>
+        <svg class="ico" viewBox="0 0 200 84" aria-hidden="true"><rect x="20" y="4" width="70" height="78" fill="#DCE6E0" stroke="#2E3236" stroke-width="2"/><path d="M90 4L150 16V82H90" fill="#EEF3EF" stroke="#2E3236" stroke-width="2"/><path d="M32 18l18 0-18 22z" fill="#fff" opacity=".7"/></svg>
+        <span class="sc k">Baño</span>
+        <h3>Mamparas de vidrio</h3>
+        <ul class="b">
+          <li>Mamparas en vidrio</li>
+          <li>Se cotizan con medida del espacio</li>
+        </ul>
+        <a class="l" data-wa="Hola NEU Aberturas, quiero consultar por una mampara de vidrio." href="#" target="_blank" rel="noopener">Consultar por mamparas</a>
+      </article>
+      <article>
+        <svg class="ico" viewBox="0 0 260 84" aria-hidden="true"><g stroke="#2E3236" stroke-width="1.5"><rect x="4" y="10" width="252" height="66" fill="#E2C9A6"/><path d="M4 32H256M4 54H256M60 10V32M150 10V32M230 10V32M30 32V54M110 32V54M200 32V54M80 54V76M170 54V76"/></g></svg>
+        <span class="sc k">Interiores</span>
+        <h3>Pisos vinílicos SPC</h3>
+        <ul class="b">
+          <li>SPC: núcleo de piedra y polímero</li>
+          <li>Consultá terminaciones en el showroom</li>
+        </ul>
+        <a class="l" data-wa="Hola NEU Aberturas, quiero consultar por pisos vinílicos SPC." href="#" target="_blank" rel="noopener">Consultar por pisos SPC</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- OBRAS -->
+<section class="obras" id="obras">
+  <div class="wrap">
+    <div class="sec-h"><span class="n">03</span><h2>Reportaje de obras</h2><p>Fotos de obras reales de NEU</p></div>
+    <div class="rep-t">
+        <div><span class="sc" style="color:var(--rio)">Paraná</span><h3>Casa al Río</h3></div>
+        <ul class="b"><li>La obra de nuestra tapa</li><li>Aberturas de PVC a medida frente al paisaje</li></ul>
+    </div>
+    <div class="rep">
+      <figure class="r1"><img class="fx" data-k="rio" src="https://neuaberturas.com/wp-content/uploads/2024/09/AL-RIO-2-1067x800.jpg" alt="Casa al Río, vista 2" onerror="ilu(this)"><figcaption>Casa al Río · Paraná</figcaption></figure>
+      <figure class="r2"><img class="fx" data-k="interior" src="https://neuaberturas.com/wp-content/uploads/2024/09/AL-RIO-3-1067x800.jpg" alt="Casa al Río, vista 3" onerror="ilu(this)"><figcaption>Detalle</figcaption></figure>
+      <figure class="r3"><img class="fx" data-k="rio" src="https://neuaberturas.com/wp-content/uploads/2024/09/AL-RIO-4-1067x800.jpg" alt="Casa al Río, vista 4" onerror="ilu(this)"><figcaption>Exterior</figcaption></figure>
+    </div>
+    <div class="rep-a">
+        <div><span class="sc" style="color:var(--rio)">Paraná</span><h3>Casa y Familia</h3></div>
+        <div>
+          <ul class="b"><li>Ventanas en gris antracita</li></ul>
+          <button type="button" class="btn os" id="probar-ant" style="margin-top:12px">Probá el Antracita en tu ventana</button>
+        </div>
+    </div>
+    <div class="rep">
+      <figure class="c1"><img class="fx" data-k="casa" src="https://neuaberturas.com/wp-content/uploads/2024/09/CASA-Y-FLIA-1-1067x800.jpg" alt="Casa y Familia, vista 1" onerror="ilu(this)"><figcaption>Casa y Familia · Paraná</figcaption></figure>
+      <figure class="c2"><img class="fx" data-k="casa" src="https://neuaberturas.com/wp-content/uploads/2024/09/CASA-Y-FLIA-2-1067x800.jpg" alt="Casa y Familia, vista 2" onerror="ilu(this)"><figcaption>Gris antracita</figcaption></figure>
+      <figure class="c3"><img class="fx" data-k="interior" src="https://neuaberturas.com/wp-content/uploads/2024/09/CASA-Y-FLIA-3-1067x800.jpg" alt="Casa y Familia, vista 3" onerror="ilu(this)"><figcaption>Interior</figcaption></figure>
+    </div>
+    <div class="mas">
+      <h3>Más obras</h3>
+      <ol>
+        <li><b>Oficinas Estilo Industrial</b><span>Paraná</span></li>
+        <li><b>La casa propia</b><span>Villa Libertador San Martín</span></li>
+        <li><b>Reformas que enamoran</b><span>Villa Libertador San Martín</span></li>
+      </ol>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- PANEL DEL DUEÑO -->
+<section class="panel" id="panel">
+  <div class="wrap">
+    <div class="panel-h">
+      <div><span class="ej">Panel de ejemplo</span><h2>Lo que ve NEU esta semana</h2></div>
+      <button type="button" class="btn os" data-cliente>Volver a la vista cliente</button>
+    </div>
+    <div class="kpis">
+      <div><span>Consultas por la web</span><b>23</b><small>esta semana · ejemplo</small></div>
+      <div><span>Presupuestos respondidos solos</span><b>23</b><small>el cliente ya vio el precio</small></div>
+      <div><span>Tiempo ahorrado</span><b>7 h 40 min</b><small>a 20 min por presupuesto a mano</small></div>
+      <div><span>Anticipos cobrados</span><b id="kp-ant"></b><span class="pe">Precio de ejemplo</span></div>
+    </div>
+    <div class="pg">
+      <div>
+        <h3>Consultas que entraron</h3>
+        <div class="bandeja" id="bandeja"></div>
+      </div>
+      <div>
+        <h3>Mediciones de la semana</h3>
+        <table class="ag" id="agenda"></table>
+        <h3 style="margin-top:28px">Anticipos cobrados</h3>
+        <div class="lst" id="anticipos"></div>
+        <h3 style="margin-top:28px">Frente a un intermediario</h3>
+        <div class="lst" id="ahorro"></div>
+        <h3 style="margin-top:28px">Tabla de precios (la editás vos)</h3>
+        <table class="pr" id="precios"></table>
+      </div>
+    </div>
+    <div class="paravos">
+      <h3>Para vos, NEU</h3>
+      <ul>
+        <li><b>Menos mensajes pidiendo precio</b>El cliente ya vio un estimado antes de escribirte.</li>
+        <li><b>Pedidos completos</b>Llegan con tipología, medidas, color de cada lado y vidrio.</li>
+        <li><b>Agenda de mediciones con cupos</b>El cliente elige un día libre; los llenos no se ofrecen.</li>
+        <li><b>Anticipo antes de confirmar</b>Se pide con el presupuesto, antes de encargar perfiles.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="pie">
+  <div class="wrap">
+    <div class="g">
+      <div>
+        <img class="logo" src="https://neuaberturas.com/wp-content/uploads/2024/09/logo-neu-aberturas-1132x800.png" alt="NEU Aberturas" onerror="logoF(this)">
+        <p style="margin-top:14px;font:italic 400 18px/1.3 var(--d)">Más Conocimiento. Mayor Compromiso.</p>
+        <p style="color:#B9B4AA;font-size:13.5px">Aberturas de PVC a medida · perfiles y herrajes alemanes</p>
+      </div>
+      <div>
+        <h4>Showroom</h4>
+        <p>Gabriela Mistral 2267, Paraná, Entre Ríos</p>
+        <h4 style="margin-top:18px">Contacto</h4>
+        <p><a id="pie-wa" href="https://wa.me/5493434141714" target="_blank" rel="noopener">+54 343 414-1714</a> (tel. y WhatsApp)</p>
+        <p><a href="mailto:neuaberturas@gmail.com">neuaberturas@gmail.com</a></p>
+        <p><a href="https://www.instagram.com/neuaberturas/" target="_blank" rel="noopener">@neuaberturas</a></p>
+      </div>
+      <div>
+        <img class="sh" data-k="show" src="https://neuaberturas.com/wp-content/uploads/2024/09/nuevo-showroom.jpg" alt="Showroom de NEU Aberturas" onerror="ilu(this)">
+      </div>
+    </div>
+    <div class="legal">Prototipo de demostración preparado para NEU Aberturas por Resolviendo Kos · No es la web oficial. Todos los precios son de ejemplo.</div>
+  </div>
+</footer>
+
+<div class="movil" id="movil"><span><b id="mv-tot"></b><span class="pe cl">Precio de ejemplo</span></span><a href="#carta">Ver mensaje</a></div>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const fmt=n=>"$"+(Math.round(n/1000)*1000).toLocaleString("es-AR");
+const WA="5493434141714";
+const P={
+  tipos:[
+    {k:"corrediza",n:"Corrediza",m2:430000,h:[2,3],hl:"Rieles"},
+    {k:"oscilo",n:"Oscilobatiente",m2:560000,h:[1]},
+    {k:"practicable",n:"Practicable",m2:520000,h:[1,2],hl:"Hojas"},
+    {k:"banderola",n:"Abatible / banderola",m2:480000,h:[1]},
+    {k:"proyectante",n:"Proyectante",m2:500000,h:[1]},
+    {k:"fijo",n:"Paño fijo",m2:360000,h:[1]},
+    {k:"plegadiza",n:"Plegadiza a medida",m2:620000,h:[3,4,5],hl:"Hojas"},
+    {k:"pivotante",n:"Pivotante",m2:580000,h:[1]}
+  ],
+  colores:[
+    ["Blanco","#F4F3EE",0],["Antracita Liso","#3A4045",0],["Black Brown","#3B2B24",1],["Habano","#7A4A2B",1],
+    ["Monument Oak","#6E5D4B",1],["Negro Mate","#1D1D1D",0],["Nogal","#5B3B26",1],["Roble Dorado","#B07A3E",1],
+    ["Sheffield Oak Alpine","#D8D1C3",1],["Titanium","#8B8F92",0],["Turner Oak Malt","#9E7750",1],["Winchester","#8A5934",1]
+  ],
+  vidrios:[{n:"Doble vidrio (DVH)",d:"Incluido en el precio por m²",m2:0},{n:"Doble vidrio con laminado de seguridad",d:"",m2:110000}],
+  foilPct:.18,bicPct:.12,rieles3:.08,hoja2:.05,mosq:95000,lim:18000,ant:.3
+};
+const S={tipo:0,hojas:2,ext:1,int:0,bicolor:true,lado:"ext",vista:"ext",ancho:150,alto:110,cant:1,vidrio:0,mosq:false,lim:false,cmp:7,dia:null};
+const lista=[];
+
+/* pictogramas de tipología */
+function pict(k){const f=`<rect x="5" y="5" width="30" height="30" fill="none" stroke="#141414" stroke-width="1.6"/>`;const d={
+  corrediza:`<path d="M20 5V35" stroke="#141414" stroke-width="1.6"/><path d="M9 20h7m-2.5-2.5L16 20l-2.5 2.5M31 20h-7m2.5-2.5L24 20l2.5 2.5" stroke="#141414" stroke-width="1.3" fill="none"/>`,
+  oscilo:`<path d="M35 5L5 20L35 35M5 35L20 5L35 35" stroke="#141414" stroke-width="1.1" stroke-dasharray="2.5 2" fill="none"/>`,
+  practicable:`<path d="M35 5L5 20L35 35" stroke="#141414" stroke-width="1.2" stroke-dasharray="2.5 2" fill="none"/>`,
+  banderola:`<path d="M5 35L20 5L35 35" stroke="#141414" stroke-width="1.2" stroke-dasharray="2.5 2" fill="none"/>`,
+  proyectante:`<path d="M5 5L20 35L35 5" stroke="#141414" stroke-width="1.2" stroke-dasharray="2.5 2" fill="none"/>`,
+  fijo:`<path d="M12 28L28 12" stroke="#141414" stroke-width="1.1"/><path d="M12 20L20 12" stroke="#141414" stroke-width="1.1"/>`,
+  plegadiza:`<path d="M5 5L12.5 35L20 5L27.5 35L35 5" stroke="#141414" stroke-width="1.2" fill="none"/>`,
+  pivotante:`<path d="M20 2V38" stroke="#141414" stroke-width="1.1" stroke-dasharray="3 2"/><path d="M10 20a10 4 0 0 0 20 0" stroke="#141414" stroke-width="1.3" fill="none"/>`}[k];
+  return `<svg viewBox="0 0 40 40" aria-hidden="true">${f}${d}</svg>`}
+
+function shade(hex,p){const n=parseInt(hex.slice(1),16);let r=n>>16,g=n>>8&255,b=n&255;const f=v=>Math.max(0,Math.min(255,Math.round(p<0?v*(1+p):v+(255-v)*p)));return "#"+[f(r),f(g),f(b)].map(v=>v.toString(16).padStart(2,"0")).join("")}
+
+/* dibujo de la ventana */
+function ventana(o,id){
+  const t=P.tipos[o.tipo].k,col=P.colores[o.color],madera=col[2]===1;
+  const a=Math.max(40,Math.min(500,o.ancho||40)),h=Math.max(40,Math.min(260,o.alto||40));
+  const sc=Math.min(420/a,300/h),w=a*sc,hh=h*sc,x=(560-w)/2-8,y=(420-hh)/2-14;
+  const pf=madera?`url(#w${id})`:col[1],dk=shade(col[1],-.35),edge=col[0]==="Blanco"||col[0]==="Sheffield Oak Alpine"?"#8C877C":dk;
+  const fr=Math.max(9,Math.min(16,Math.min(w,hh)*.07)),sh=Math.max(7,fr*.8);
+  const mirror=o.vista==="int";
+  const defs=`<defs>
+   <pattern id="w${id}" width="80" height="300" patternUnits="userSpaceOnUse"><rect width="80" height="300" fill="${col[1]}"/>
+    <path d="M6 0C9 80 3 160 8 300M19 0C16 90 23 190 18 300M33 0C36 70 29 170 34 300M47 0C44 100 51 200 46 300M62 0C65 90 58 190 63 300M74 0C71 80 77 160 73 300" stroke="${dk}" stroke-opacity=".55" stroke-width="1.1" fill="none"/>
+    <path d="M12 0C14 100 10 200 13 300M40 0C38 90 43 200 40 300M68 0C70 110 66 200 69 300" stroke="#fff" stroke-opacity=".13" stroke-width="2.2" fill="none"/>
+    <ellipse cx="28" cy="150" rx="3" ry="10" fill="none" stroke="${dk}" stroke-opacity=".5"/></pattern>
+   <linearGradient id="g${id}" x1="0" y1="0" x2="0" y2="1">${mirror?'<stop offset="0" stop-color="#BFD3D6"/><stop offset=".62" stop-color="#9FB9B5"/><stop offset=".63" stop-color="#6F8C7B"/><stop offset="1" stop-color="#4E6B5C"/>':'<stop offset="0" stop-color="#5E726B"/><stop offset="1" stop-color="#2F3B37"/>'}</linearGradient>
+   <pattern id="m${id}" width="4" height="4" patternUnits="userSpaceOnUse"><path d="M0 0H4M0 0V4" stroke="#141414" stroke-opacity=".22" stroke-width=".6"/></pattern></defs>`;
+  const wall=mirror?`<rect width="560" height="420" fill="#EEE8DD"/><rect y="380" width="560" height="40" fill="#C9A47A" opacity=".45"/>`:
+    `<rect width="560" height="420" fill="#DCD4C6"/><g stroke="#CFC6B6" stroke-width="1">${Array.from({length:14},(_,i)=>`<path d="M0 ${i*30+12}H560"/>`).join("")}</g>`;
+  const ix=x+fr,iy=y+fr,iw=w-2*fr,ih=hh-2*fr;
+  let sashes="",marks="";
+  const glass=(gx,gy,gw,gh)=>`<rect x="${gx}" y="${gy}" width="${gw}" height="${gh}" fill="url(#g${id})"/><path d="M${gx+gw*.08} ${gy+gh*.1}l${gw*.22} 0l${-gw*.22} ${gh*.32}z" fill="#fff" opacity=".18"/>${o.vidrio>=0?`<rect x="${gx+3}" y="${gy+3}" width="${gw-6}" height="${gh-6}" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="1"/>`:""}${o.vidrio===1?`<rect x="${gx+6}" y="${gy+6}" width="${gw-12}" height="${gh-12}" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width=".8" stroke-dasharray="3 3"/>`:""}`;
+  const sash=(sx,sy,sw,shh)=>`<rect x="${sx}" y="${sy}" width="${sw}" height="${shh}" fill="${pf}" stroke="${edge}" stroke-width="1"/>`+glass(sx+sh,sy+sh,sw-2*sh,shh-2*sh)+`<rect x="${sx+sh}" y="${sy+sh}" width="${sw-2*sh}" height="${shh-2*sh}" fill="none" stroke="${edge}" stroke-opacity=".6"/>`;
+  const handle=(hx,hy,vert=true)=>vert?`<rect x="${hx-2.5}" y="${hy-14}" width="5" height="28" rx="2" fill="${col[0]==="Blanco"?"#D8D6D0":"#B9BCBF"}" stroke="#555" stroke-width=".6"/>`:`<rect x="${hx-14}" y="${hy-2.5}" width="28" height="5" rx="2" fill="#B9BCBF" stroke="#555" stroke-width=".6"/>`;
+  const dash=`stroke="#141414" stroke-opacity=".55" stroke-width="1.2" stroke-dasharray="7 5" fill="none"`;
+  const n=o.hojas||1;
+  if(t==="fijo"){sashes=glass(ix,iy,iw,ih);marks=`<text x="${ix+iw/2}" y="${iy+ih/2+5}" text-anchor="middle" font-family="Kumbh Sans,sans-serif" font-size="13" font-weight="700" fill="#fff" fill-opacity=".75">F</text>`}
+  else if(t==="corrediza"){const sw=iw/n+ (n>1?6:0);for(let i=0;i<n;i++){const sx=ix+i*(iw-sw)/(n-1||1);sashes+=sash(sx,iy,sw,ih)}
+    for(let i=0;i<n;i++){const cx=ix+i*(iw-sw)/(n-1||1)+sw/2;const dir=i%2?-1:1;marks+=`<path d="M${cx-14*dir} ${iy+ih/2}h${28*dir}m${-6*dir} -6l${6*dir} 6l${-6*dir} 6" stroke="#fff" stroke-width="2" fill="none" stroke-opacity=".85"/>`}
+    for(let i=0;i<n;i++){const sx=ix+i*(iw-sw)/(n-1||1);marks+=handle(i%2?sx+sh/2:sx+sw-sh/2,iy+ih/2)}}
+  else if(t==="plegadiza"){const sw=iw/n;for(let i=0;i<n;i++)sashes+=sash(ix+i*sw,iy,sw,ih);
+    let p=`M${ix} ${iy}`;for(let i=0;i<n;i++){p+=` L${ix+(i+.5)*sw} ${iy+ih} L${ix+(i+1)*sw} ${iy}`}marks=`<path d="${p}" ${dash}/>`+handle(ix+iw-sh/2,iy+ih/2)}
+  else if(t==="practicable"&&n===2){const sw=iw/2;sashes=sash(ix,iy,sw,ih)+sash(ix+sw,iy,sw,ih);
+    marks=`<path d="M${ix} ${iy}L${ix+sw} ${iy+ih/2}L${ix} ${iy+ih}M${ix+iw} ${iy}L${ix+sw} ${iy+ih/2}L${ix+iw} ${iy+ih}" ${dash}/>`+handle(ix+sw-sh/2,iy+ih/2)}
+  else{sashes=sash(ix,iy,iw,ih);const L=ix,R=ix+iw,T=iy,B=iy+ih,M=iy+ih/2,C=ix+iw/2;
+    if(t==="practicable")marks=`<path d="M${R} ${T}L${L} ${M}L${R} ${B}" ${dash}/>`+handle(R-sh/2,M);
+    if(t==="oscilo")marks=`<path d="M${R} ${T}L${L} ${M}L${R} ${B}" ${dash}/><path d="M${L} ${B}L${C} ${T}L${R} ${B}" ${dash} stroke-dasharray="3 4"/>`+handle(R-sh/2,M);
+    if(t==="banderola")marks=`<path d="M${L} ${B}L${C} ${T}L${R} ${B}" ${dash}/>`+handle(C,T+sh/2,false);
+    if(t==="proyectante")marks=`<path d="M${L} ${T}L${C} ${B}L${R} ${T}" ${dash}/>`+handle(C,B-sh/2,false);
+    if(t==="pivotante")marks=`<path d="M${C} ${y-6}V${y+hh+6}" stroke="#B07A3E" stroke-width="1.4" stroke-dasharray="5 4"/><path d="M${C-iw*.3} ${M}a${iw*.3} ${Math.min(26,ih*.12)} 0 0 0 ${iw*.6} 0" stroke="#fff" stroke-width="1.6" fill="none" stroke-opacity=".8"/>`+handle(R-sh/2,M)}
+  if(o.lim&&t!=="fijo")marks+=`<g fill="#B07A3E"><rect x="${ix+iw-sh-14}" y="${iy+2}" width="12" height="4"/><rect x="${ix+2}" y="${iy+ih-6}" width="12" height="4"/></g>`;
+  const mos=o.mosq&&t!=="fijo"?`<rect x="${ix}" y="${iy}" width="${iw}" height="${ih}" fill="url(#m${id})"/>`:"";
+  const frame=`<path d="M${x} ${y}h${w}v${hh}h${-w}Z M${ix} ${iy}v${ih}h${iw}v${-ih}Z" fill="${pf}" fill-rule="evenodd" stroke="${edge}" stroke-width="1.2"/>`;
+  const sill=mirror?`<rect x="${x-14}" y="${y+hh}" width="${w+28}" height="9" fill="#F7F4EE" stroke="#BDB5A6"/>`:`<rect x="${x-10}" y="${y+hh}" width="${w+20}" height="7" fill="#B4AB9B"/>`;
+  const cotas=o.cotas===false?"":`<g font-family="Kumbh Sans,sans-serif" font-size="13" font-weight="700" fill="#141414" stroke-width="1"><line x1="${x}" y1="${y+hh+26}" x2="${x+w}" y2="${y+hh+26}" stroke="#141414"/><line x1="${x}" y1="${y+hh+19}" x2="${x}" y2="${y+hh+33}" stroke="#141414"/><line x1="${x+w}" y1="${y+hh+19}" x2="${x+w}" y2="${y+hh+33}" stroke="#141414"/><rect x="${x+w/2-34}" y="${y+hh+17}" width="68" height="18" fill="${mirror?"#EEE8DD":"#DCD4C6"}"/><text x="${x+w/2}" y="${y+hh+31}" text-anchor="middle">${a} cm</text>
+    <line x1="${x+w+22}" y1="${y}" x2="${x+w+22}" y2="${y+hh}" stroke="#141414"/><line x1="${x+w+15}" y1="${y}" x2="${x+w+29}" y2="${y}" stroke="#141414"/><line x1="${x+w+15}" y1="${y+hh}" x2="${x+w+29}" y2="${y+hh}" stroke="#141414"/><text x="${x+w+40}" y="${y+hh/2}" transform="rotate(90 ${x+w+40} ${y+hh/2})" text-anchor="middle">${h} cm</text></g>`;
+  const inner=`${frame}${sashes}${mos}${marks}`;
+  return defs+wall+sill+(mirror?`<g transform="translate(${2*x+w} 0) scale(-1 1)">${inner}</g>`:inner)+cotas;
+}
+
+/* cálculo */
+function calc(s){
+  const T=P.tipos[s.tipo],a=Math.max(40,Math.min(500,s.ancho||0)),h=Math.max(40,Math.min(260,s.alto||0)),c=Math.max(1,Math.min(60,Math.round(s.cant||1)));
+  const m2r=a*h/10000,m2=Math.max(.8,m2r);
+  let u=m2*T.m2;
+  if(T.k==="corrediza"&&s.hojas===3)u*=1+P.rieles3;
+  if(T.k==="practicable"&&s.hojas===2)u*=1+P.hoja2;
+  const ie=s.bicolor?s.int:s.ext;
+  if(P.colores[s.ext][2]||P.colores[s.ext][0]!=="Blanco"||P.colores[ie][0]!=="Blanco")u*=1+P.foilPct;
+  if(s.bicolor&&s.ext!==s.int)u*=1+P.bicPct;
+  u+=m2*P.vidrios[s.vidrio].m2;
+  if(s.mosq&&T.k!=="fijo")u+=P.mosq;
+  if(s.lim&&T.k!=="fijo")u+=P.lim*(T.k==="corrediza"||T.k==="plegadiza"?1:s.hojas||1);
+  return{a,h,c,m2:m2r,u,sub:u*c};
+}
+const all=()=>[...lista,{...S}];
+function totales(){let sub=0,n=0;all().forEach(x=>{const r=calc(x);sub+=r.sub;n+=r.c});return{sub,n,ant:sub*P.ant}}
+const cIn=x=>x.bicolor?x.int:x.ext;
+
+/* render */
+function tipos(){$("#tipos").innerHTML=P.tipos.map((t,i)=>`<button type="button" data-i="${i}" aria-pressed="${S.tipo===i}">${pict(t.k)}${t.n}</button>`).join("");
+  const T=P.tipos[S.tipo];$("#sub").innerHTML=T.h.length>1?`<span>${T.hl}</span><div class="seg" role="group">${T.h.map(v=>`<button type="button" data-h="${v}" aria-pressed="${S.hojas===v}">${v}</button>`).join("")}</div>`:""}
+$("#tipos").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;S.tipo=+b.dataset.i;S.hojas=P.tipos[S.tipo].h[0];tipos();upd()});
+$("#sub").addEventListener("click",e=>{const b=e.target.closest("button[data-h]");if(!b)return;S.hojas=+b.dataset.h;tipos();upd()});
+
+function sw(i){const c=P.colores[i];return `background-color:${c[1]}`}
+function pared(){$("#pared").innerHTML=P.colores.map((c,i)=>{const e=S.ext===i,n=cIn(S)===i;return `<button type="button" class="chip${e?" e":""}${n&&S.bicolor?" i":""}${n&&!S.bicolor?" e":""}" data-i="${i}" aria-label="${c[0]}"><span class="m${c[2]?" veta":""}" style="${sw(i)}"></span><span class="tag te">${S.bicolor?"AFUERA":"ELEGIDO"}</span><span class="tag ti">ADENTRO</span><b>${c[0]}</b><small>${c[2]?"Foliado madera":"Liso"}</small></button>`}).join("");
+  ["ext","int"].forEach(l=>{const i=l==="ext"?S.ext:cIn(S),c=P.colores[i];const el=$("#li-"+l);el.className=c[2]?"veta":"";el.style.backgroundColor=c[1];$("#ln-"+l).textContent=c[0]});
+  $$("#lados .lado").forEach(b=>b.setAttribute("aria-pressed",S.bicolor&&b.dataset.l===S.lado));
+  $("#lados").style.display=S.bicolor?"flex":"none";
+  $("#cmp-sel").innerHTML=P.colores.map((c,i)=>`<option value="${i}"${i===S.cmp?" selected":""}>${c[0]}</option>`).join("");
+}
+$("#pared").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;const i=+b.dataset.i;
+  if(!S.bicolor){S.ext=i;S.int=i}else if(S.lado==="ext")S.ext=i;else S.int=i;
+  if(S.bicolor){S.vista=S.lado;vista()}if(S.cmp===S.ext)S.cmp=(S.ext+6)%12;pared();upd()});
+$("#lados").addEventListener("click",e=>{const b=e.target.closest(".lado");if(!b)return;S.lado=b.dataset.l;S.vista=S.lado;vista();pared();upd()});
+$("#bicolor").addEventListener("change",e=>{S.bicolor=e.target.checked;if(!S.bicolor){S.int=S.ext;S.lado="ext"}pared();upd()});
+function vista(){$$(".escena .seg button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===S.vista));$("#vista-lbl").textContent=S.vista==="ext"?"Vista desde afuera":"Vista desde adentro"}
+$$(".escena .seg button").forEach(b=>b.onclick=()=>{S.vista=b.dataset.v;vista();upd()});
+$("#cmp-sel").addEventListener("change",e=>{S.cmp=+e.target.value;upd()});
+$("#cmp-usar").onclick=()=>{S.ext=S.cmp;if(!S.bicolor)S.int=S.cmp;S.vista="ext";vista();pared();upd();$("#svg-v").scrollIntoView({behavior:"smooth",block:"center"})};
+$("#probar-ant").onclick=()=>{S.ext=1;if(!S.bicolor)S.int=1;S.vista="ext";vista();pared();upd();document.getElementById("nota").scrollIntoView({behavior:"smooth"})};
+
+function vidrios(){$("#vidrios").innerHTML=P.vidrios.map((v,i)=>`<label class="op"><input type="radio" name="vid" value="${i}"${S.vidrio===i?" checked":""}><span><b>${v.n}</b><small>${v.m2?"+ "+fmt(v.m2)+" por m²":v.d}${v.m2?'<span class="pe">Precio de ejemplo</span>':""}</small></span></label>`).join("")}
+$("#vidrios").addEventListener("change",e=>{S.vidrio=+e.target.value;upd()});
+
+function desc(x){const r=calc(x),T=P.tipos[x.tipo];const hj=T.h.length>1?` de ${x.hojas} ${T.hl.toLowerCase()}`:"";
+  const col=x.bicolor&&x.ext!==x.int?`afuera ${P.colores[x.ext][0]} / adentro ${P.colores[x.int][0]}`:P.colores[x.ext][0];
+  const ac=[x.mosq&&T.k!=="fijo"?"mosquitero":"",x.lim&&T.k!=="fijo"?"limitadores de apertura":""].filter(Boolean).join(" + ");
+  return `${r.c>1?r.c+" × ":""}${T.n}${hj} · ${r.a} × ${r.h} cm\n   Color: ${col}\n   ${P.vidrios[x.vidrio].n}${ac?" · "+ac:""}\n   ${fmt(r.sub)} (precio de ejemplo)`}
+
+let objetivo="",escrito="",tmr=null;
+function tipear(){clearTimeout(tmr);let i=0;while(i<escrito.length&&i<objetivo.length&&escrito[i]===objetivo[i])i++;escrito=escrito.slice(0,i);
+  (function paso(){if(escrito.length<objetivo.length){escrito=objetivo.slice(0,escrito.length+Math.max(2,Math.ceil((objetivo.length-escrito.length)/22)));$("#btxt").textContent=escrito;tmr=setTimeout(paso,16)}else $("#btxt").textContent=objetivo})()}
+function mensaje(){const t=totales(),nom=$("#nombre").value.trim(),loc=$("#loc").value.trim();
+  const L=[`Hola NEU Aberturas, soy ${nom||"(tu nombre)"}${loc?" de "+loc:""}. Armé este pedido en la web:`,"",all().map((x,i)=>`${i+1}. ${desc(x)}`).join("\n\n"),"",
+   `Total estimado: ${fmt(t.sub)} (precio de ejemplo)`,`Anticipo ${Math.round(P.ant*100)}%: ${fmt(t.ant)} (precio de ejemplo)`,`Lo necesito: ${$("#cuando").value.toLowerCase()}`,`Medición: ${S.dia||"a coordinar"}`,"","¿Me confirman?"];
+  objetivo=L.join("\n");tipear();$("#btn-wa").href=`https://wa.me/${WA}?text=${encodeURIComponent(objetivo)}`;
+  const d=new Date();$("#bhora").textContent=String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0")}
+
+function upd(){
+  S.ancho=+$("#ancho").value;S.alto=+$("#alto").value;S.cant=Math.max(1,+$("#cant").value||1);S.mosq=$("#mosq").checked;S.lim=$("#lim").checked;
+  const r=calc(S),t=totales(),T=P.tipos[S.tipo];
+  const vc=S.vista==="ext"?S.ext:cIn(S);
+  $("#svg-v").innerHTML=ventana({...S,color:vc},"v");
+  const ca={...S,vista:"ext",cotas:false};
+  $("#cmp-a").innerHTML=ventana({...ca,color:S.ext},"a");$("#cmp-b").innerHTML=ventana({...ca,color:S.cmp},"b");
+  $("#cmp-an").textContent=P.colores[S.ext][0]+" (actual)";$("#cmp-bn").textContent=P.colores[S.cmp][0];
+  $("#cmp-ap").textContent=fmt(r.u)+" c/u";$("#cmp-bp").textContent=fmt(calc({...S,ext:S.cmp,int:S.bicolor?S.int:S.cmp}).u)+" c/u";
+  $("#f-ext").textContent=P.colores[S.ext][0];$("#f-int").textContent=P.colores[cIn(S)][0];
+  $("#f-m2").textContent=(r.m2*r.c).toLocaleString("es-AR",{maximumFractionDigits:2})+" m²";
+  $("#f-pr").textContent=fmt(r.sub);
+  $("#op-mosq").classList.toggle("off",T.k==="fijo");$("#op-lim").classList.toggle("off",T.k==="fijo");
+  $("#lista").innerHTML=all().map((x,i)=>{const c=calc(x),arm=i===lista.length;return `<li class="${arm?"arm":""}"><span>${i+1}. ${P.tipos[x.tipo].n} ${c.a}×${c.h}${c.c>1?" ×"+c.c:""} · ${P.colores[x.ext][0]}${x.bicolor&&x.ext!==x.int?" / "+P.colores[x.int][0]:""}${arm?" (armando)":""}</span><span>${fmt(c.sub)}<span class="pe cl">Precio de ejemplo</span>${arm?"":`<button type="button" data-q="${i}">quitar</button>`}</span></li>`}).join("");
+  $("#k-n").textContent=t.n===1?"1 abertura":t.n+" aberturas";$("#k-sub").textContent=fmt(t.sub);
+  $("#k-tot").textContent=fmt(t.sub);$("#k-ant").textContent=fmt(t.ant);$("#k-al").textContent=`Anticipo ${Math.round(P.ant*100)}%`;$("#mv-tot").textContent=fmt(t.sub);
+  $("#t-mosq").innerHTML=`+ ${fmt(P.mosq)} por abertura<span class="pe">Precio de ejemplo</span>`;$("#t-lim").innerHTML=`+ ${fmt(P.lim)} por hoja<span class="pe">Precio de ejemplo</span>`;
+  mensaje();
+}
+$("#lista").addEventListener("click",e=>{const q=e.target.dataset.q;if(q!==undefined){lista.splice(+q,1);upd()}});
+$("#agregar").onclick=()=>{lista.push({...S});upd()};
+[["ancho","r-ancho"],["alto","r-alto"]].forEach(([n,r])=>{$("#"+n).addEventListener("input",()=>{$("#"+r).value=$("#"+n).value;upd()});$("#"+r).addEventListener("input",()=>{$("#"+n).value=$("#"+r).value;upd()})});
+["#cant","#nombre","#loc"].forEach(s=>$(s).addEventListener("input",upd));["#mosq","#lim","#cuando"].forEach(s=>$(s).addEventListener("change",upd));
+$("#c-menos").onclick=()=>{$("#cant").value=Math.max(1,+$("#cant").value-1);upd()};$("#c-mas").onclick=()=>{$("#cant").value=Math.min(60,+$("#cant").value+1);upd()};
+
+/* días de medición con cupos de ejemplo */
+const DN=["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"],MN=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+function dias(){const el=$("#dias");el.innerHTML="";const d=new Date();let n=0,k=0;while(n<8&&k<20){d.setDate(d.getDate()+1);k++;if(d.getDay()===0)continue;
+  const lleno=d.getDate()%4===1,lbl=`${DN[d.getDay()]} ${d.getDate()} ${MN[d.getMonth()]}`;const b=document.createElement("button");b.type="button";
+  b.innerHTML=`${DN[d.getDay()]} ${d.getDate()}<small>${lleno?"sin cupo":d.getDay()===6?"1 cupo":"2 cupos"}</small>`;b.disabled=lleno;b.setAttribute("aria-pressed",S.dia===lbl);
+  b.onclick=()=>{S.dia=lbl;dias();upd()};el.appendChild(b);n++}}
+
+/* links de otras secciones */
+$$("[data-wa]").forEach(a=>a.href=`https://wa.me/${WA}?text=${encodeURIComponent(a.dataset.wa)}`);
+
+/* dueño */
+function modo(d){document.body.classList.toggle("duenio",d);$("#m-cli").setAttribute("aria-pressed",!d);$("#m-due").setAttribute("aria-pressed",d);window.scrollTo({top:0,behavior:"instant"})}
+$("#m-cli").onclick=()=>modo(false);$("#m-due").onclick=()=>modo(true);
+$$("[data-duenio]").forEach(a=>a.addEventListener("click",e=>{e.preventDefault();modo(true)}));$$("[data-cliente]").forEach(a=>a.onclick=()=>modo(false));
+const IN=[
+ ["Cliente de ejemplo 1","09:14",{n:"Cliente de ejemplo 1",l:"Paraná",it:[{tipo:0,hojas:2,ext:1,int:0,bicolor:true,ancho:180,alto:110,cant:3,vidrio:0,mosq:true,lim:false}],c:"lo antes posible",m:"Mié 25 nov"}],
+ ["Cliente de ejemplo 2","11:52",{n:"Cliente de ejemplo 2",l:"Oro Verde",it:[{tipo:1,hojas:1,ext:7,int:7,bicolor:false,ancho:100,alto:120,cant:2,vidrio:1,mosq:false,lim:true},{tipo:5,hojas:1,ext:7,int:7,bicolor:false,ancho:60,alto:120,cant:1,vidrio:0,mosq:false,lim:false}],c:"en el próximo mes",m:"Vie 27 nov"}],
+ ["Cliente de ejemplo 3","17:30",{n:"Cliente de ejemplo 3",l:"Villa Libertador San Martín",it:[{tipo:6,hojas:4,ext:5,int:0,bicolor:true,ancho:360,alto:220,cant:1,vidrio:1,mosq:false,lim:false}],c:"estoy en obra, a coordinar",m:"a coordinar"}]];
+function msgEj(o){const sub=o.it.reduce((s,x)=>s+calc(x).sub,0);return [`Hola NEU Aberturas, soy ${o.n} de ${o.l}. Armé este pedido en la web:`,"",o.it.map((x,i)=>`${i+1}. ${desc(x)}`).join("\n\n"),"",`Total estimado: ${fmt(sub)} (precio de ejemplo)`,`Anticipo ${Math.round(P.ant*100)}%: ${fmt(sub*P.ant)} (precio de ejemplo)`,`Lo necesito: ${o.c}`,`Medición: ${o.m}`].join("\n")}
+const tick=`<svg viewBox="0 0 16 10" aria-hidden="true"><path d="M1 5.5l2.6 2.6L9.5 2M6.5 7.6l.6.5L13 2" fill="none" stroke="#3B9AE1" stroke-width="1.5" stroke-linecap="round"/></svg>`;
+const ANT=[["Cliente de ejemplo 1 · 3 corredizas",IN[0][2]],["Cliente de ejemplo 2 · oscilobatientes",IN[1][2]],["Cliente de ejemplo 4 · paños fijos",{it:[{tipo:5,hojas:1,ext:0,int:0,bicolor:false,ancho:120,alto:200,cant:4,vidrio:0}]}]];
+function panel(){
+  $("#bandeja").innerHTML=IN.map(m=>`<div class="msg"><header>${m[0]}<span>hoy ${m[1]}</span></header><div class="chat"><div class="burbuja">${msgEj(m[2])}<span class="hora">${m[1]} ${tick}</span></div></div></div>`).join("");
+  let tot=0;$("#anticipos").innerHTML=ANT.map(a=>{const s=a[1].it.reduce((t,x)=>t+calc({mosq:false,lim:false,...x}).sub,0)*P.ant;tot+=s;return `<div><span>${a[0]}</span><span><b>${fmt(s)}</b><span class="pe">Precio de ejemplo</span></span></div>`}).join("")+`<div class="g2"><span>Total cobrado</span><span>${fmt(tot)}<span class="pe">Precio de ejemplo</span></span></div>`;
+  $("#kp-ant").textContent=fmt(tot);
+  const ventas=tot/P.ant,com=ventas*.1;
+  $("#ahorro").innerHTML=`<div><span>Pedidos de la semana</span><span><b>${fmt(ventas)}</b><span class="pe">Precio de ejemplo</span></span></div><div><span>Comisión de un intermediario (10%)</span><span><b>${fmt(com)}</b><span class="pe">Precio de ejemplo</span></span></div><div class="g2"><span>Con tu web: $0 de comisión</span><span>${fmt(com)} ahorrados<span class="pe">Precio de ejemplo</span></span></div>`;
+}
+$("#agenda").innerHTML=`<tr><th></th><th>Lun</th><th>Mar</th><th>Mié</th><th>Jue</th><th>Vie</th><th>Sáb</th></tr>
+<tr><th>Mañana</th><td class="ll">Paraná · Ejemplo 1</td><td class="lb">libre</td><td class="ll">Paraná · obra</td><td class="ll">Oro Verde · Ejemplo 2</td><td class="lb">libre</td><td class="ll">Paraná · showroom</td></tr>
+<tr><th>Tarde</th><td class="lb">libre</td><td class="ll">Crespo · Ejemplo 5</td><td class="lb">libre</td><td class="lb">libre</td><td class="ll">V. L. S. Martín · Ejemplo 3</td><td>—</td></tr>`;
+function precios(){const rows=[...P.tipos.map((t,i)=>[t.n+" (por m²)",()=>P.tipos[i].m2,v=>P.tipos[i].m2=v,1000]),[P.vidrios[1].n+" (por m²)",()=>P.vidrios[1].m2,v=>P.vidrios[1].m2=v,1000],["Mosquitero (por abertura)",()=>P.mosq,v=>P.mosq=v,1000],["Limitador de apertura (por hoja)",()=>P.lim,v=>P.lim=v,1000],
+  ["Recargo color foliado o liso no blanco (%)",()=>Math.round(P.foilPct*100),v=>P.foilPct=v/100,1],["Recargo bicolor (%)",()=>Math.round(P.bicPct*100),v=>P.bicPct=v/100,1],["Anticipo (%)",()=>Math.round(P.ant*100),v=>P.ant=v/100,1]];
+  $("#precios").innerHTML="<tr><th>Ítem</th><th style='text-align:right'>Valor</th></tr>"+rows.map((r,i)=>`<tr><td>${r[0]}</td><td><input type="number" min="0" step="${r[3]}" data-i="${i}" value="${r[1]()}" aria-label="${r[0]}"><span class="pe">${r[3]===1?"Ejemplo":"Precio de ejemplo"}</span></td></tr>`).join("");
+  $$("#precios input").forEach(inp=>inp.addEventListener("input",()=>{const v=+inp.value;if(inp.value!==""&&v>=0){rows[+inp.dataset.i][2](v);vidrios();upd();panel()}}))}
+
+tipos();pared();vista();vidrios();dias();precios();panel();upd();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="NEU Aberturas"></script>
+</body>
+</html>
