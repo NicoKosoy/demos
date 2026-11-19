@@ -1,0 +1,584 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Cabañas del Bosque · Mar Azul</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Solway:wght@300;400;500;700;800&family=Inclusive+Sans:ital@0;1&display=swap" rel="stylesheet">
+<script>
+window.PH="data:image/svg+xml,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 560"><rect width="800" height="560" fill="#dff4f2"/><rect x="120" y="250" width="560" height="220" rx="10" fill="#2bb3c0"/><g stroke="#fff" stroke-width="3" opacity=".6"><path d="M150 320 q30-14 60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0"/><path d="M150 390 q30-14 60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0"/></g><g fill="#1f3b2d"><path d="M80 250 l40-150 40 150z"/><path d="M640 250 l45-170 45 170z"/><path d="M570 250 l30-110 30 110z"/></g></svg>');
+function ph(i){i.onerror=null;i.src=window.PH;i.classList.add("is-fallback");}
+</script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0}
+img{max-width:100%;display:block}
+button,input,select{font:inherit;color:inherit}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.ej{font-size:.68em;font-weight:500;letter-spacing:.02em;opacity:.72;white-space:nowrap;margin-left:.35em;font-style:normal;text-transform:none}
+/* calendario */
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem;text-transform:capitalize}
+.cal-nav{border:1px solid var(--line);background:transparent;width:2.2rem;height:2.2rem;border-radius:50%;cursor:pointer;font-size:1.1rem;line-height:1}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cal-dow{font-size:.7rem;text-align:center;opacity:.6;padding:.2rem 0}
+.cal-day{aspect-ratio:1/1;border:0;border-radius:6px;background:var(--cal-free,rgba(0,0,0,.04));cursor:pointer;font-size:.82rem;font-variant-numeric:tabular-nums;position:relative;min-width:0;padding:0}
+.cal-day:hover:not(:disabled){outline:2px solid var(--accent)}
+.cal-day.is-busy{background:var(--busy);color:var(--busy-ink,inherit);text-decoration:line-through;cursor:not-allowed;opacity:.75}
+.cal-day.is-past{opacity:.3;cursor:default}
+.cal-day.is-range{background:var(--range)}
+.cal-day.is-edge{background:var(--accent);color:var(--accent-ink,#fff);font-weight:700}
+.cal-day.s-fiestas::after,.cal-day.s-enero::after,.cal-day.s-carnaval::after,.cal-day.s-febrero::after,.cal-day.s-santa::after{content:"";position:absolute;left:50%;bottom:3px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:var(--accent2,var(--accent));opacity:.7}
+/* burbuja whatsapp */
+.wa-phone{background:var(--wa-bg,#e5ddd5);border-radius:18px;padding:12px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+.wa-bar{display:flex;align-items:center;gap:.6rem;background:#075e54;color:#fff;margin:-12px -12px 12px;padding:.6rem .8rem;border-radius:18px 18px 0 0;font-size:.85rem}
+.wa-bar i{width:30px;height:30px;border-radius:50%;background:#dfe5e7;display:grid;place-items:center;color:#075e54;font-style:normal;font-weight:700}
+.wa-bar small{display:block;opacity:.8;font-size:.7rem}
+.wa-bubble{background:#dcf8c6;color:#111;border-radius:10px 0 10px 10px;padding:.6rem .7rem 1.2rem;font-size:.88rem;line-height:1.4;margin-left:auto;max-width:94%;position:relative;box-shadow:0 1px 1px rgba(0,0,0,.12);word-wrap:break-word}
+.wa-meta{position:absolute;right:.5rem;bottom:.25rem;font-size:.66rem;color:#667}
+.wa-send{display:flex;align-items:center;justify-content:center;gap:.5rem;margin-top:.8rem;background:#25d366;color:#06301a;text-decoration:none;font-weight:700;border-radius:999px;padding:.85rem 1rem;font-family:system-ui,sans-serif}
+.wa-send.is-off{opacity:.5}
+/* panel dueño */
+#owner[hidden]{display:none}
+.own-msg{list-style:none;margin:0 0 .9rem}
+.own-msg-top{display:flex;justify-content:space-between;gap:.5rem;font-size:.8rem;margin-bottom:.3rem;align-items:center}
+.own-tag{font-size:.68rem;padding:.15rem .5rem;border-radius:999px;background:#fde7c4;color:#6b4300;white-space:nowrap}
+.own-tag.is-paid{background:#cfeedd;color:#0c5a32}
+.own-bubble{background:#fff;color:#111;border-radius:0 10px 10px 10px;padding:.55rem .7rem 1.1rem;font-size:.8rem;line-height:1.4;position:relative;font-family:system-ui,sans-serif;box-shadow:0 1px 1px rgba(0,0,0,.12)}
+.own-time{position:absolute;right:.5rem;bottom:.2rem;font-size:.64rem;color:#778}
+.own-week-wrap{overflow-x:auto}
+#own-week{border-collapse:collapse;font-size:.74rem;min-width:560px;width:100%}
+#own-week th,#own-week td{border:1px solid var(--line);padding:.35rem .4rem;text-align:center;white-space:nowrap}
+#own-week tbody th{text-align:left}
+.wk-busy{background:var(--busy)}
+.wk-free{opacity:.6}
+.is-fallback{object-fit:contain!important;background:var(--ph-bg,#eee)}
+.own-grid>*,.book>*,.log>*,.cols>*,.units>*{min-width:0}
+
+:root{--pine:#1f3b2d;--pool:#2bb3c0;--pool-d:#14838f;--chlor:#dff4f2;--sand:#efe6d2;--terra:#c8553d;--ink:#17231c;--muted:#56645b;--line:rgba(23,35,28,.18);--accent:#14838f;--accent2:#c8553d;--busy:#cfd8d1;--range:#bfe7ea;--ph-bg:#dff4f2;--slab:"Solway",Rockwell,serif;--sans:"Inclusive Sans",system-ui,sans-serif}
+body{background:#fbfaf6;color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55}
+a{color:inherit}
+.sig{font-size:.75rem;color:var(--muted);padding:.6rem 16px;border-bottom:1px solid var(--line);display:flex;justify-content:center;gap:.4rem 1rem;flex-wrap:wrap}
+.sig b{color:var(--ink);font-weight:600}
+.wrap{max-width:1200px;margin:0 auto;padding:0 16px}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px}
+.grid>*{min-width:0}
+/* cabecera */
+.top{display:flex;justify-content:space-between;align-items:center;padding:1.1rem 0;gap:1rem;flex-wrap:wrap}
+.logo{font-family:var(--slab);font-weight:800;font-size:1.1rem;letter-spacing:-.01em;color:var(--pine)}
+.logo span{display:block;font:400 .72rem var(--sans);color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.nav{display:flex;gap:1.2rem;font-size:.9rem;flex-wrap:wrap}
+.nav a{text-decoration:none;border-bottom:2px solid transparent}
+.nav a:hover{border-color:var(--pool)}
+.hero{padding:2rem 0 3rem}
+.kicker{font:700 .78rem var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--terra)}
+.hero h1{grid-column:1/8;font-family:var(--slab);font-weight:800;font-size:clamp(2.6rem,6.4vw,5.6rem);line-height:.95;letter-spacing:-.03em;margin:.6rem 0 1.2rem;color:var(--pine)}
+.hero h1 em{font-style:normal;color:var(--pool-d)}
+.hero-side{grid-column:8/13;align-self:end}
+.hero-side p{margin:0 0 1rem;color:var(--muted)}
+.btn{display:inline-flex;align-items:center;gap:.5rem;border-radius:4px;padding:.85rem 1.2rem;font-weight:600;text-decoration:none;cursor:pointer;border:2px solid var(--pine);background:var(--pine);color:#fff;font-size:.95rem}
+.btn.alt{background:transparent;color:var(--pine)}
+.hero-photo{grid-column:1/13;margin:0;position:relative;background:var(--chlor);border-radius:6px;overflow:hidden}
+.hero-photo img{width:100%;height:auto}
+.hero-photo figcaption{position:absolute;right:10px;bottom:10px;background:rgba(255,255,255,.85);font-size:.7rem;padding:.25rem .5rem;border-radius:3px}
+/* números */
+.nums{border-top:3px solid var(--pine);border-bottom:1px solid var(--line);padding:0}
+.nums ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}
+.nums li{padding:1.4rem 1rem 1.4rem 0;border-right:1px solid var(--line)}
+.nums li+li{padding-left:1rem}
+.nums li:last-child{border-right:0}
+.nums b{display:block;font-family:var(--slab);font-weight:800;font-size:clamp(1.8rem,3.6vw,2.9rem);line-height:1;color:var(--pine);letter-spacing:-.02em}
+.nums span{font-size:.84rem;color:var(--muted)}
+section.blk{padding:clamp(48px,7vw,96px) 0;border-bottom:1px solid var(--line)}
+.lbl{grid-column:1/4;font:700 .78rem var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--terra)}
+.lbl b{display:block;font-family:var(--slab);font-size:1rem;color:var(--ink);letter-spacing:0;text-transform:none;margin-top:.3rem}
+.body{grid-column:4/13}
+h2{font-family:var(--slab);font-weight:700;font-size:clamp(1.8rem,3.4vw,2.7rem);line-height:1.05;letter-spacing:-.02em;margin:0 0 1.2rem;color:var(--pine)}
+/* pileta */
+.pool{display:grid;grid-template-columns:1.2fr 1fr;gap:24px;align-items:center}
+.pool svg{width:100%;height:auto;display:block}
+.pool ul{margin:0;padding-left:1.1rem}
+.pool li{margin-bottom:.45rem}
+/* unidades */
+.types{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.type{border-top:3px solid var(--pine);padding-top:1rem;display:flex;flex-direction:column;gap:.7rem}
+.type figure{margin:0;background:var(--chlor)}
+.type figure img{width:100%;height:auto}
+.type .more{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.type .more img{width:100%;height:auto;background:var(--chlor)}
+.type h3{font-family:var(--slab);font-weight:700;font-size:1.45rem;margin:0;display:flex;justify-content:space-between;gap:1rem;align-items:baseline}
+.type h3 small{font:600 .8rem var(--sans);color:var(--pool-d);white-space:nowrap}
+.type ul{margin:0;padding-left:1.1rem;color:var(--muted);font-size:.93rem}
+.type .row{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;margin-top:auto}
+.cmp{display:inline-flex;gap:.4rem;align-items:center;font-size:.88rem;border:1px solid var(--line);padding:.5rem .7rem;border-radius:4px;cursor:pointer;background:#fff}
+.type.is-picked{box-shadow:0 0 0 3px var(--pool) inset;padding:1rem;border-radius:4px}
+.photo-note{font-size:.72rem;color:var(--muted);margin:-.3rem 0 0}
+.price{font-size:.92rem}
+.price b{font-family:var(--slab);font-size:1.2rem}
+/* comparador */
+.cmpbox{margin-top:2rem;background:var(--chlor);border-radius:6px;padding:1.2rem}
+.cmpbox h3{font-family:var(--slab);margin:0 0 .3rem}
+.cmpbox p{margin:0 0 .8rem;color:var(--muted);font-size:.9rem}
+.cmp-wrap{overflow-x:auto}
+.cmp-t{border-collapse:collapse;width:100%;min-width:480px;font-size:.9rem;background:#fff}
+.cmp-t th,.cmp-t td{border:1px solid var(--line);padding:.6rem .7rem;text-align:left;vertical-align:top}
+.cmp-t thead th{background:var(--pine);color:#fff;font-family:var(--slab);font-weight:500}
+/* temporadas */
+.tbl-wrap{overflow-x:auto}
+.tbl{border-collapse:collapse;width:100%;min-width:640px;font-size:.88rem}
+.tbl th,.tbl td{padding:.65rem .5rem;border-bottom:1px solid var(--line);text-align:left}
+.tbl thead th{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.tbl td small{display:block;color:var(--muted);font-size:.74rem}
+/* reservar */
+.book{background:var(--pine);color:#eef4ef;padding:clamp(48px,7vw,96px) 0}
+.book h2{color:#fff}
+.book .lbl{color:var(--pool)}
+.book .lbl b{color:#fff}
+.bk{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.bk>*{min-width:0}
+.card{background:#fff;color:var(--ink);border-radius:6px;padding:1.2rem}
+.card h3{font:700 .76rem var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--terra);margin:0 0 .8rem}
+.fld{display:grid;gap:.3rem;margin-bottom:.8rem;font-size:.84rem;color:var(--muted)}
+.fld input,.fld select{border:1px solid var(--line);border-radius:4px;padding:.65rem .7rem;width:100%;background:#fff;color:var(--ink)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
+.pax{display:flex;gap:.5rem;align-items:center}
+.pax button{width:2.3rem;height:2.3rem;border:1px solid var(--line);background:#fff;border-radius:4px;cursor:pointer}
+.pax input{width:4rem;text-align:center}
+.sync{font-size:.78rem;color:var(--pool-d);margin:.6rem 0 0}
+.legend{display:flex;gap:1rem;flex-wrap:wrap;font-size:.72rem;color:var(--muted);margin-top:.6rem}
+.legend i{display:inline-block;width:10px;height:10px;margin-right:.3rem;vertical-align:-1px;border-radius:2px}
+.sum{display:grid;grid-template-columns:repeat(2,1fr);gap:0;border:1px solid rgba(255,255,255,.25);border-radius:6px;margin-bottom:1rem}
+.sum div{padding:.8rem 1rem;border-bottom:1px solid rgba(255,255,255,.18)}
+.sum div:nth-child(odd){border-right:1px solid rgba(255,255,255,.18)}
+.sum small{display:block;font-size:.72rem;opacity:.75;letter-spacing:.06em;text-transform:uppercase}
+.sum b{font-family:var(--slab);font-size:1.3rem;font-weight:500}
+.sum .full{grid-column:1/-1;border-right:0!important}
+.warn{color:#ffd27a;font-size:.85rem;min-height:1.1em;margin:.2rem 0 .6rem}
+/* barrio */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.two>*{min-width:0}
+.two ul{margin:0;padding-left:1.1rem}
+.two li{margin-bottom:.4rem}
+details{border-bottom:1px solid var(--line);padding:.85rem 0}
+summary{cursor:pointer;font-weight:600}
+details p{margin:.45rem 0 0;color:var(--muted)}
+/* dueño */
+.ownbtn{position:fixed;left:16px;bottom:16px;z-index:30;background:var(--terra);border-color:var(--terra);box-shadow:0 8px 22px rgba(0,0,0,.2)}
+#owner{background:var(--sand);padding:clamp(40px,6vw,80px) 0;border-top:6px solid var(--terra)}
+.flag{display:inline-block;background:var(--terra);color:#fff;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.3rem .6rem;border-radius:3px;margin-bottom:.8rem}
+.own{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.own>*{min-width:0}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.kpi{background:#fff;border-radius:6px;padding:1rem;border-top:3px solid var(--pool)}
+.kpi small{font-size:.72rem;color:var(--muted)}
+.kpi b{display:block;font-family:var(--slab);font-size:1.7rem}
+#own-inbox{padding:0;margin:0}
+.foryou{background:var(--pine);color:#fff;border-radius:6px;padding:1.3rem 1.4rem;margin-top:20px}
+.foryou h3{font-family:var(--slab);margin:0 0 .5rem;font-size:1.4rem}
+.foryou ul{margin:0;padding-left:1.1rem}
+.foryou li{margin-bottom:.35rem}
+footer{padding:28px 16px 90px;text-align:center;font-size:.78rem;color:var(--muted)}
+@media (max-width:900px){
+ .hero h1,.hero-side,.lbl,.body{grid-column:1/-1}
+ .nums ul{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .nums li{padding:1rem!important;border-bottom:1px solid var(--line)}
+ .nums li:nth-child(2n){border-right:0}
+ .pool,.types,.bk,.two,.own{grid-template-columns:1fr}
+}
+@media (max-width:420px){.row2,.kpis{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="sig"><span>Prototipo preparado para <b>Cabañas del Bosque</b> · 19 de noviembre de 2026</span><span>4,4 en Tripadvisor · 58 opiniones</span></div>
+
+<div class="wrap">
+ <div class="top">
+  <div class="logo">Cabañas del Bosque<span>Mar Azul · Calle 43</span></div>
+  <nav class="nav"><a href="#pileta">Pileta</a><a href="#unidades">Unidades</a><a href="#temporadas">Temporadas</a><a href="#reservar">Reservar</a></nav>
+ </div>
+ <header class="hero">
+  <div class="grid">
+   <div style="grid-column:1/-1"><span class="kicker">4.000 m² de pinos en Mar Azul</span></div>
+   <h1>Una pileta de <em>11 × 5</em> y diez cabañas entre pinos.</h1>
+   <div class="hero-side">
+    <p>Cabañas y estudios de 2 a 8 personas, cada uno con parrilla, jardín y cochera. Elegí tipo, mirá fechas libres y pedí la reserva con seña.</p>
+    <a class="btn" href="#reservar">Ver fechas libres</a> <a class="btn alt" href="#unidades">Comparar unidades</a>
+   </div>
+   <figure class="hero-photo"><img src="https://www.welcomeargentina.com/plantillas/webp/15455-top.webp" alt="Cabañas del Bosque, Mar Azul" onerror="ph(this)"><figcaption>Foto de Cabañas del Bosque</figcaption></figure>
+  </div>
+ </header>
+</div>
+
+<div class="wrap nums"><ul>
+ <li><b>10</b><span>cabañas y estudios</span></li>
+ <li><b>4.000 m²</b><span>de predio</span></li>
+ <li><b>700 m²</b><span>de área de pileta</span></li>
+ <li><b>1,40 m</b><span>de profundidad</span></li>
+ <li><b>14 h</b><span>ingreso · salida 10 h</span></li>
+</ul></div>
+
+<main>
+<section class="blk" id="pileta"><div class="wrap grid">
+ <div class="lbl">01<b>La pileta</b></div>
+ <div class="body">
+  <h2>El centro del complejo</h2>
+  <div class="pool">
+   <svg viewBox="0 0 520 300" role="img" aria-label="Plano de la pileta de 11 por 5 metros">
+    <rect x="10" y="10" width="500" height="280" rx="8" fill="#efe6d2"/>
+    <rect x="60" y="60" width="330" height="150" rx="6" fill="#2bb3c0"/>
+    <rect x="410" y="150" width="70" height="60" rx="30" fill="#7fd3da"/>
+    <g stroke="#fff" stroke-width="2" opacity=".55" fill="none"><path d="M80 110 q20-10 40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0"/><path d="M80 160 q20-10 40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0"/></g>
+    <g font-family="Solway,serif" font-size="15" fill="#17231c"><text x="190" y="45">11 m</text><text x="18" y="140" transform="rotate(-90 26 140)">5 m</text><text x="405" y="235">chicos</text><text x="70" y="250">solárium húmedo · 1,40 m de profundidad</text></g>
+    <path d="M60 52 H390" stroke="#17231c" stroke-width="1.5"/><path d="M50 60 V210" stroke="#17231c" stroke-width="1.5"/>
+   </svg>
+   <ul>
+    <li>11 × 5 m y 1,40 m de profundidad</li>
+    <li>Climatizada en temporada alta</li>
+    <li>Pileta para chicos al lado</li>
+    <li>Solárium húmedo</li>
+    <li>Servicio de toallas</li>
+    <li>Área de 700 m²</li>
+   </ul>
+  </div>
+ </div>
+</div></section>
+
+<section class="blk" id="unidades"><div class="wrap grid">
+ <div class="lbl">02<b>Unidades</b></div>
+ <div class="body">
+  <h2>De estudio para dos a dúplex para ocho</h2>
+  <p style="color:var(--muted);margin-top:-.5rem">Todas con parrilla, jardín privado y cochera semicubierta. Marcá hasta 3 y comparalas abajo.</p>
+  <div class="types">
+   <article class="type" data-pick-unit="grande">
+    <h3>Dúplex grande <small>6 a 8 personas</small></h3>
+    <figure><img src="https://www.welcomeargentina.com/plantillas/webp/grandes/15455-00Gr.webp" alt="Dúplex grande" loading="lazy" onerror="ph(this)"></figure>
+    <div class="more"><img src="https://www.welcomeargentina.com/plantillas/webp/grandes/15455-01Gr.webp" alt="" loading="lazy" onerror="ph(this)"><img src="https://www.welcomeargentina.com/plantillas/webp/grandes/15455-02Gr.webp" alt="" loading="lazy" onerror="ph(this)"></div>
+    <p class="photo-note">Fotos del complejo · en la versión final van las de cada unidad</p>
+    <ul><li>Dos plantas</li><li>Para familias grandes o dos parejas con chicos</li></ul>
+    <div class="price">Enero <b>$ 210.000</b><span class="ej">Precio de ejemplo</span> / noche</div>
+    <div class="row"><label class="cmp"><input type="checkbox" data-cmp="grande"> Comparar</label><button class="btn" type="button" data-pick-unit="grande" data-go>Reservar esta</button></div>
+   </article>
+   <article class="type" data-pick-unit="duplex">
+    <h3>Dúplex <small>5 a 6 personas</small></h3>
+    <figure><img src="https://www.welcomeargentina.com/plantillas/webp/grandes/15455-03Gr.webp" alt="Dúplex" loading="lazy" onerror="ph(this)"></figure>
+    <div class="more"><img src="https://www.welcomeargentina.com/plantillas/webp/grandes/15455-04Gr.webp" alt="" loading="lazy" onerror="ph(this)"><img src="https://www.welcomeargentina.com/plantillas/webp/grandes/15455-05Gr.webp" alt="" loading="lazy" onerror="ph(this)"></div>
+    <p class="photo-note">Fotos del complejo · en la versión final van las de cada unidad</p>
+    <ul><li>Dos plantas</li><li>Hogar y aire acondicionado</li></ul>
+    <div class="price">Enero <b>$ 176.000</b><span class="ej">Precio de ejemplo</span> / noche</div>
+    <div class="row"><label class="cmp"><input type="checkbox" data-cmp="duplex"> Comparar</label><button class="btn" type="button" data-pick-unit="duplex" data-go>Reservar esta</button></div>
+   </article>
+   <article class="type" data-pick-unit="cab4">
+    <h3>Cabaña para 4 <small>hasta 4 personas</small></h3>
+    <figure><img src="https://www.welcomeargentina.com/plantillas/webp/grandes/15455-06Gr.webp" alt="Cabaña para 4" loading="lazy" onerror="ph(this)"></figure>
+    <div class="more"><img src="https://www.welcomeargentina.com/plantillas/webp/grandes/15455-07Gr.webp" alt="" loading="lazy" onerror="ph(this)"><img src="https://www.welcomeargentina.com/plantillas/webp/grandes/15455-08Gr.webp" alt="" loading="lazy" onerror="ph(this)"></div>
+    <p class="photo-note">Fotos del complejo · en la versión final van las de cada unidad</p>
+    <ul><li>Parrilla y jardín propio</li><li>Cochera semicubierta</li></ul>
+    <div class="price">Enero <b>$ 140.000</b><span class="ej">Precio de ejemplo</span> / noche</div>
+    <div class="row"><label class="cmp"><input type="checkbox" data-cmp="cab4"> Comparar</label><button class="btn" type="button" data-pick-unit="cab4" data-go>Reservar esta</button></div>
+   </article>
+   <article class="type" data-pick-unit="cab4j">
+    <h3>Cabaña para 4 con jacuzzi <small>hasta 4 personas</small></h3>
+    <figure><img src="https://www.welcomeargentina.com/plantillas/webp/grandes/15455-09Gr.webp" alt="Cabaña para 4 con jacuzzi doble" loading="lazy" onerror="ph(this)"></figure>
+    <div class="more"><img src="https://www.welcomeargentina.com/plantillas/webp/grandes/15455-10Gr.webp" alt="" loading="lazy" onerror="ph(this)"><img src="https://www.welcomeargentina.com/plantillas/webp/grandes/15455-11Gr.webp" alt="" loading="lazy" onerror="ph(this)"></div>
+    <p class="photo-note">Fotos del complejo · en la versión final van las de cada unidad</p>
+    <ul><li>Jacuzzi doble</li><li>Parrilla y jardín propio</li></ul>
+    <div class="price">Enero <b>$ 160.000</b><span class="ej">Precio de ejemplo</span> / noche</div>
+    <div class="row"><label class="cmp"><input type="checkbox" data-cmp="cab4j"> Comparar</label><button class="btn" type="button" data-pick-unit="cab4j" data-go>Reservar esta</button></div>
+   </article>
+   <article class="type" data-pick-unit="estudio">
+    <h3>Estudio <small>2 personas · 40 m²</small></h3>
+    <figure><img src="https://www.welcomeargentina.com/plantillas/webp/grandes/15455-12Gr.webp" alt="Estudio" loading="lazy" onerror="ph(this)"></figure>
+    <p class="photo-note">Foto del complejo · en la versión final va la de cada unidad</p>
+    <ul><li>40 m² en una planta</li><li>Jacuzzi opcional</li></ul>
+    <div class="price">Enero <b>$ 104.000</b><span class="ej">Precio de ejemplo</span> / noche</div>
+    <div class="row"><label class="cmp"><input type="checkbox" data-cmp="estudio"> Comparar</label><button class="btn" type="button" data-pick-unit="estudio" data-go>Reservar este</button></div>
+   </article>
+   <article class="type" data-pick-unit="std2">
+    <h3>Cabaña estándar <small>2 personas</small></h3>
+    <figure><img src="https://www.welcomeargentina.com/plantillas/webp/grandes/15455-01Gr.webp" alt="Cabaña estándar" loading="lazy" onerror="ph(this)"></figure>
+    <p class="photo-note">Foto del complejo · en la versión final va la de cada unidad</p>
+    <ul><li>Para parejas</li><li>Parrilla y jardín propio</li></ul>
+    <div class="price">Enero <b>$ 92.000</b><span class="ej">Precio de ejemplo</span> / noche</div>
+    <div class="row"><label class="cmp"><input type="checkbox" data-cmp="std2"> Comparar</label><button class="btn" type="button" data-pick-unit="std2" data-go>Reservar esta</button></div>
+   </article>
+  </div>
+  <div class="cmpbox" id="comparar">
+   <h3>Comparador</h3>
+   <p id="cmp-hint">Marcá "Comparar" en 2 o 3 unidades para verlas lado a lado.</p>
+   <div class="cmp-wrap"><table class="cmp-t" id="cmp-t"></table></div>
+  </div>
+ </div>
+</div></section>
+
+<section class="blk" id="temporadas"><div class="wrap grid">
+ <div class="lbl">03<b>Temporadas</b></div>
+ <div class="body">
+  <h2>Verano 2027, día por día</h2>
+  <div class="tbl-wrap"><table class="tbl">
+   <thead><tr><th>Temporada</th><th>Estándar 2</th><th>Estudio</th><th>Cabaña 4</th><th>Dúplex 6</th><th>Dúplex 8</th></tr></thead>
+   <tbody>
+    <tr><td>Diciembre<small>1 al 25 dic</small></td><td>$ 58.000<span class="ej">Precio de ejemplo</span></td><td>$ 65.000<span class="ej">Precio de ejemplo</span></td><td>$ 88.000<span class="ej">Precio de ejemplo</span></td><td>$ 110.000<span class="ej">Precio de ejemplo</span></td><td>$ 131.000<span class="ej">Precio de ejemplo</span></td></tr>
+    <tr><td>Fiestas<small>26 dic al 3 ene</small></td><td>$ 87.000<span class="ej">Precio de ejemplo</span></td><td>$ 99.000<span class="ej">Precio de ejemplo</span></td><td>$ 133.000<span class="ej">Precio de ejemplo</span></td><td>$ 167.000<span class="ej">Precio de ejemplo</span></td><td>$ 200.000<span class="ej">Precio de ejemplo</span></td></tr>
+    <tr><td>Enero<small>4 al 31 ene</small></td><td>$ 92.000<span class="ej">Precio de ejemplo</span></td><td>$ 104.000<span class="ej">Precio de ejemplo</span></td><td>$ 140.000<span class="ej">Precio de ejemplo</span></td><td>$ 176.000<span class="ej">Precio de ejemplo</span></td><td>$ 210.000<span class="ej">Precio de ejemplo</span></td></tr>
+    <tr><td>Febrero<small>1 al 28 feb</small></td><td>$ 78.000<span class="ej">Precio de ejemplo</span></td><td>$ 88.000<span class="ej">Precio de ejemplo</span></td><td>$ 119.000<span class="ej">Precio de ejemplo</span></td><td>$ 150.000<span class="ej">Precio de ejemplo</span></td><td>$ 178.000<span class="ej">Precio de ejemplo</span></td></tr>
+    <tr><td>Carnaval<small>6 al 9 feb</small></td><td>$ 97.000<span class="ej">Precio de ejemplo</span></td><td>$ 109.000<span class="ej">Precio de ejemplo</span></td><td>$ 147.000<span class="ej">Precio de ejemplo</span></td><td>$ 185.000<span class="ej">Precio de ejemplo</span></td><td>$ 220.000<span class="ej">Precio de ejemplo</span></td></tr>
+    <tr><td>Semana Santa<small>25 al 28 mar</small></td><td>$ 64.000<span class="ej">Precio de ejemplo</span></td><td>$ 73.000<span class="ej">Precio de ejemplo</span></td><td>$ 98.000<span class="ej">Precio de ejemplo</span></td><td>$ 123.000<span class="ej">Precio de ejemplo</span></td><td>$ 147.000<span class="ej">Precio de ejemplo</span></td></tr>
+    <tr><td>Temporada baja<small>resto del año</small></td><td>$ 46.000<span class="ej">Precio de ejemplo</span></td><td>$ 52.000<span class="ej">Precio de ejemplo</span></td><td>$ 70.000<span class="ej">Precio de ejemplo</span></td><td>$ 88.000<span class="ej">Precio de ejemplo</span></td><td>$ 105.000<span class="ej">Precio de ejemplo</span></td></tr>
+   </tbody>
+  </table></div>
+  <ul style="color:var(--muted);font-size:.88rem;padding-left:1.1rem"><li>Por noche y por unidad, con desayuno.</li><li>Seña del 30% por Mercado Pago para confirmar.</li></ul>
+ </div>
+</div></section>
+
+<section class="book" id="reservar"><div class="wrap grid">
+ <div class="lbl">04<b>Reservar</b></div>
+ <div class="body">
+  <h2>Fechas libres y pedido con seña</h2>
+  <div class="bk">
+   <div class="card">
+    <h3>1 · Unidad y fechas</h3>
+    <label class="fld">Tipo de unidad<select id="f-unit"></select></label>
+    <div id="cal"></div>
+    <div class="legend"><span><i style="background:#cfd8d1"></i>Ocupado (ejemplo)</span><span><i style="background:#14838f"></i>Tus fechas</span><span><i style="background:#c8553d;border-radius:50%"></i>Temporada alta</span></div>
+    <p class="sync">↻ Se sincroniza con Booking y Airbnb: no hay dobles reservas.</p>
+    <div class="row2" style="margin-top:.8rem"><label class="fld">Llegada<input type="date" id="f-in"></label><label class="fld">Salida<input type="date" id="f-out"></label></div>
+    <div class="fld">Personas<div class="pax"><button type="button" data-pax="-1" aria-label="Menos">−</button><input id="f-pax" type="number" min="1" max="12" inputmode="numeric"><button type="button" data-pax="1" aria-label="Más">+</button></div></div>
+    <label class="fld">Tu nombre<input id="f-name" placeholder="Ej.: Andrea" autocomplete="given-name"></label>
+   </div>
+   <div>
+    <div class="sum" aria-live="polite">
+     <div class="full"><small>Unidad</small><b id="q-unit">—</b></div>
+     <div><small>Estadía</small><b id="q-nights">—</b></div>
+     <div><small>Temporada</small><b id="q-season">—</b></div>
+     <div><small>Total <span class="ej">Precio de ejemplo</span></small><b id="q-total">—</b></div>
+     <div><small>Seña 30% <span class="ej">Precio de ejemplo</span></small><b id="q-sena">—</b></div>
+    </div>
+    <p class="warn" id="q-warn"></p>
+    <div class="wa-phone">
+     <div class="wa-bar"><i>B</i><div>Cabañas del Bosque<small>Así le llega tu pedido</small></div></div>
+     <div class="wa-bubble"><span id="wa-bubble"></span><span class="wa-meta"><span id="wa-time"></span> ✓✓</span></div>
+    </div>
+    <a class="wa-send" id="wa-send" href="#" target="_blank" rel="noopener">Enviar por WhatsApp y pagar la seña</a>
+   </div>
+  </div>
+ </div>
+</div></section>
+
+<section class="blk" id="marazul"><div class="wrap grid">
+ <div class="lbl">05<b>Mar Azul</b></div>
+ <div class="body">
+  <h2>Calle 43, entre Copacabana y Punta del Este</h2>
+  <div class="two">
+   <ul>
+    <li>Calles de arena entre pinos</li>
+    <li>Playas anchas, sin edificios altos</li>
+    <li>Carpa en la playa para huéspedes</li>
+    <li>Reserva Faro Querandí, al sur</li>
+    <li>Mar de las Pampas y Las Gaviotas, al lado</li>
+   </ul>
+   <div>
+    <ul>
+     <li>Desde Buenos Aires: Ruta 2 y Ruta 11 hasta Villa Gesell</li>
+     <li>Seguir al sur hasta Mar Azul</li>
+     <li>Recepción las 24 horas</li>
+    </ul>
+    <p><a href="https://www.google.com/maps/search/?api=1&query=Caba%C3%B1as+del+Bosque+Mar+Azul+Calle+43" target="_blank" rel="noopener" style="color:var(--pool-d);font-weight:600">Abrir en Google Maps →</a></p>
+   </div>
+  </div>
+  <h2 style="margin-top:2.5rem;font-size:1.6rem">Preguntas frecuentes</h2>
+  <details open><summary>¿A qué hora es el ingreso?</summary><p>Ingreso desde las 14 h y salida hasta las 10 h.</p></details>
+  <details><summary>¿La pileta está climatizada?</summary><p>Sí, en temporada alta. Hay pileta para chicos y servicio de toallas.</p></details>
+  <details><summary>¿Qué incluye?</summary><p>Desayuno, parrilla, jardín privado, cochera semicubierta y carpa en la playa.</p></details>
+  <details><summary>¿Cómo se confirma?</summary><p>Con la seña del 30% por Mercado Pago; el resto al llegar.</p></details>
+ </div>
+</div></section>
+
+<section id="owner" hidden aria-label="Panel del dueño"><div class="wrap">
+ <span class="flag">Panel de ejemplo</span>
+ <h2>Lo que ven ustedes del otro lado</h2>
+ <div class="own">
+  <div>
+   <div class="kpis"><div class="kpi"><small>Señas cobradas (ejemplo)</small><b id="own-senas">—</b></div><div class="kpi"><small>Ahorro vs. 15% de Booking (ejemplo)</small><b id="own-ahorro">—</b></div></div>
+   <h3 style="font-family:var(--slab)">Consultas que entraron</h3>
+   <ul id="own-inbox"></ul>
+  </div>
+  <div>
+   <h3 style="font-family:var(--slab)">Cupos, semana del 10 de enero</h3>
+   <div class="own-week-wrap"><table id="own-week"></table></div>
+   <div class="foryou"><h3>Para vos, Cabañas del Bosque</h3><ul>
+    <li>Menos mensajes repetidos: precio y fechas libres a la vista.</li>
+    <li>Las 10 unidades con cupos por tipo y por fecha.</li>
+    <li>La seña entra antes de confirmar, por Mercado Pago.</li>
+    <li>Sin comisión por cada reserva directa.</li>
+   </ul></div>
+  </div>
+ </div>
+</div></section>
+</main>
+
+<button class="btn ownbtn" type="button" data-owner-toggle aria-expanded="false">Ver como dueño</button>
+<footer>Prototipo de demostración preparado para Cabañas del Bosque por Resolviendo Kos · No es la web oficial</footer>
+
+<script>window.CFG={"short": "Cabañas del Bosque", "wa": "5492266537703", "minNights": 2, "defaultUnit": "cab4", "defaultPax": 4, "units": [{"id": "grande", "name": "Dúplex grande (6 a 8)", "max": 8, "base": 105000, "rate": {"baja": 105000, "diciembre": 131000, "fiestas": 200000, "enero": 210000, "carnaval": 220000, "febrero": 178000, "santa": 147000}}, {"id": "duplex", "name": "Dúplex (5 a 6)", "max": 6, "base": 88000, "rate": {"baja": 88000, "diciembre": 110000, "fiestas": 167000, "enero": 176000, "carnaval": 185000, "febrero": 150000, "santa": 123000}}, {"id": "cab4", "name": "Cabaña para 4", "max": 4, "base": 70000, "rate": {"baja": 70000, "diciembre": 88000, "fiestas": 133000, "enero": 140000, "carnaval": 147000, "febrero": 119000, "santa": 98000}}, {"id": "cab4j", "name": "Cabaña para 4 con jacuzzi doble", "max": 4, "base": 80000, "rate": {"baja": 80000, "diciembre": 100000, "fiestas": 152000, "enero": 160000, "carnaval": 168000, "febrero": 136000, "santa": 112000}}, {"id": "estudio", "name": "Estudio 40 m²", "max": 2, "base": 52000, "rate": {"baja": 52000, "diciembre": 65000, "fiestas": 99000, "enero": 104000, "carnaval": 109000, "febrero": 88000, "santa": 73000}}, {"id": "std2", "name": "Cabaña estándar para 2", "max": 2, "base": 46000, "rate": {"baja": 46000, "diciembre": 58000, "fiestas": 87000, "enero": 92000, "carnaval": 97000, "febrero": 78000, "santa": 64000}}], "ownerDemo": [{"name": "Carolina (ejemplo)", "unit": "grande", "inD": "2027-01-09", "outD": "2027-01-16", "pax": 7, "pet": false, "paid": true, "at": "08:54"}, {"name": "Matías (ejemplo)", "unit": "cab4j", "inD": "2027-01-11", "outD": "2027-01-14", "pax": 2, "pet": false, "paid": true, "at": "13:20"}, {"name": "Familia Paz (ejemplo)", "unit": "duplex", "inD": "2027-02-06", "outD": "2027-02-10", "pax": 5, "pet": false, "paid": false, "at": "21:05"}], "seasons": [{"key": "carnaval", "name": "Carnaval", "from": "2027-02-06", "to": "2027-02-09"}, {"key": "fiestas", "name": "Fiestas", "from": "2026-12-26", "to": "2027-01-03"}, {"key": "enero", "name": "Enero", "from": "2027-01-04", "to": "2027-01-31"}, {"key": "febrero", "name": "Febrero", "from": "2027-02-01", "to": "2027-02-28"}, {"key": "santa", "name": "Semana Santa", "from": "2027-03-25", "to": "2027-03-28"}, {"key": "diciembre", "name": "Diciembre", "from": "2026-12-01", "to": "2026-12-25"}, {"key": "baja", "name": "Temporada baja"}], "defaultIn": "2027-01-10", "defaultOut": "2027-01-15", "ownerWeek": "2027-01-10"};</script>
+<script>(function(){
+"use strict";
+var C = window.CFG;
+var $ = function(s){return document.querySelector(s);};
+var $$ = function(s){return Array.prototype.slice.call(document.querySelectorAll(s));};
+var MES = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+var MESC = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+var DOW = ["L","M","M","J","V","S","D"];
+function pad(n){return (n<10?"0":"")+n;}
+function iso(d){return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());}
+function parse(s){var p=s.split("-");return new Date(+p[0],+p[1]-1,+p[2]);}
+function money(n){return "$\u00a0"+Math.round(n).toLocaleString("es-AR");}
+function nice(s){var d=parse(s);return d.getDate()+" de "+MES[d.getMonth()];}
+function seasonOf(s){for(var i=0;i<C.seasons.length;i++){var z=C.seasons[i];if(z.from&&s>=z.from&&s<=z.to)return z;}return C.seasons[C.seasons.length-1];}
+function unitById(id){for(var i=0;i<C.units.length;i++)if(C.units[i].id===id)return C.units[i];return C.units[0];}
+function hash(str){var h=2166136261;for(var i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619);}return (h>>>0)/4294967295;}
+function demoBusy(uid,s){var L=C.ownerDemo||[];for(var i=0;i<L.length;i++){if(L[i].unit===uid&&s>=L[i].inD&&s<L[i].outD)return true;}return false;}
+function busy(uid,s){if(demoBusy(uid,s))return true;var z=seasonOf(s);var p=z.key==="baja"?0.18:0.42;var wk=Math.floor((parse(s)-parse("2026-11-02"))/864e5/4);return hash(uid+":"+wk)<p;}
+window.KOS={money:money,seasonOf:seasonOf,unitById:unitById,nice:nice,busy:busy};
+
+var st={unit:C.defaultUnit||C.units[0].id,inD:C.defaultIn,outD:C.defaultOut,pax:C.defaultPax||2,name:"",pet:false,calMonth:null};
+function rangeBusy(uid,a,b){var d=parse(a);while(iso(d)<b){if(busy(uid,iso(d)))return true;d.setDate(d.getDate()+1);}return false;}
+function findFree(){var n=Math.round((parse(st.outD)-parse(st.inD))/864e5)||5;var d=parse(st.inD);for(var k=0;k<60;k++){var a=iso(d),e=new Date(d);e.setDate(e.getDate()+n);var b=iso(e);if(!rangeBusy(st.unit,a,b)){st.inD=a;st.outD=b;return;}d.setDate(d.getDate()+1);}}
+function nights(){if(!st.inD||!st.outD)return 0;return Math.max(0,Math.round((parse(st.outD)-parse(st.inD))/864e5));}
+function total(){var u=unitById(st.unit),t=0,n=nights();var d=parse(st.inD);for(var i=0;i<n;i++){var s=iso(d);t+=u.rate[seasonOf(s).key];d.setDate(d.getDate()+1);}return t;}
+function message(o){
+  var u=unitById(o.unit);var n=o.n;
+  var who=o.name?o.name:"(tu nombre)";
+  var t="Hola "+C.short+"! Soy "+who+". ";
+  t+="Quiero reservar "+u.name+" del "+nice(o.inD)+" al "+nice(o.outD)+" ("+n+(n===1?" noche":" noches")+") para "+o.pax+(o.pax===1?" persona":" personas")+(o.pet?", con mascota":"")+".\n";
+  t+="Total: "+money(o.total)+" (precio de ejemplo)\n";
+  t+="Seña 30%: "+money(o.total*0.3)+" por Mercado Pago\n";
+  t+="¿Me confirman?";
+  return t;
+}
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function fmtBubble(t){return esc(t).replace(/\n/g,"<br>");}
+function nowHM(){var d=new Date();return pad(d.getHours())+":"+pad(d.getMinutes());}
+
+function render(){
+  var u=unitById(st.unit),n=nights(),t=total();
+  var warn="";
+  if(st.pax>u.max)warn=u.name+" es para hasta "+u.max+" personas.";
+  else if(n>0&&rangeBusy(st.unit,st.inD,st.outD))warn="Esas fechas tienen noches ocupadas en "+u.name+". Probá otras o elegí otra unidad.";
+  var ok=n>0&&!warn;
+  var set=function(sel,v){var e=$(sel);if(e)e.textContent=v;};
+  set("#q-nights",n?n+(n===1?" noche":" noches"):"—");
+  set("#q-total",n?money(t):"—");
+  set("#q-sena",n?money(t*0.3):"—");
+  set("#q-unit",u.name);
+  set("#q-season",n?seasonOf(st.inD).name:"—");
+  set("#q-warn",warn);
+  var msg=message({unit:st.unit,inD:st.inD,outD:st.outD,n:n,pax:st.pax,pet:st.pet,total:t,name:st.name});
+  var b=$("#wa-bubble");if(b)b.innerHTML=fmtBubble(msg);
+  set("#wa-time",nowHM());
+  var a=$("#wa-send");if(a){a.href="https://wa.me/"+C.wa+"?text="+encodeURIComponent(msg);a.setAttribute("aria-disabled",ok?"false":"true");a.classList.toggle("is-off",!ok);}
+  $$("[data-pick-unit]").forEach(function(el){el.classList.toggle("is-picked",el.getAttribute("data-pick-unit")===st.unit);});
+  var fu=$("#f-unit");if(fu&&fu.value!==st.unit)fu.value=st.unit;
+  var fi=$("#f-in");if(fi&&fi.value!==st.inD)fi.value=st.inD;
+  var fo=$("#f-out");if(fo&&fo.value!==st.outD)fo.value=st.outD;
+  var fp=$("#f-pax");if(fp&&+fp.value!==st.pax)fp.value=st.pax;
+  renderCal();
+  if(typeof C.onRender==="function")C.onRender(st,{n:n,total:t,unit:u});
+}
+function renderCal(){
+  var box=$("#cal");if(!box)return;
+  if(!st.calMonth){var d0=parse(st.inD);st.calMonth=new Date(d0.getFullYear(),d0.getMonth(),1);}
+  var m=st.calMonth,y=m.getFullYear(),mo=m.getMonth();
+  var first=(new Date(y,mo,1).getDay()+6)%7,days=new Date(y,mo+1,0).getDate();
+  var h='<div class="cal-head"><button type="button" class="cal-nav" data-cal="-1" aria-label="Mes anterior">‹</button><strong>'+MES[mo]+" "+y+'</strong><button type="button" class="cal-nav" data-cal="1" aria-label="Mes siguiente">›</button></div><div class="cal-grid">';
+  DOW.forEach(function(x){h+='<span class="cal-dow">'+x+"</span>";});
+  for(var i=0;i<first;i++)h+='<span class="cal-empty"></span>';
+  var today=iso(new Date());
+  for(var dd=1;dd<=days;dd++){
+    var s=y+"-"+pad(mo+1)+"-"+pad(dd);
+    var past=s<today,b=busy(st.unit,s);
+    var cls="cal-day";if(past)cls+=" is-past";if(b)cls+=" is-busy";
+    if(s===st.inD||s===st.outD)cls+=" is-edge";else if(st.inD&&st.outD&&s>st.inD&&s<st.outD)cls+=" is-range";
+    var z=seasonOf(s);cls+=" s-"+z.key;
+    h+='<button type="button" class="'+cls+'" data-day="'+s+'"'+(past||b?" disabled":"")+' title="'+z.name+(b?" · ocupado (ejemplo)":"")+'">'+dd+"</button>";
+  }
+  h+="</div>";
+  box.innerHTML=h;
+}
+var picking=0;
+document.addEventListener("click",function(e){
+  var t=e.target.closest?e.target.closest("[data-cal],[data-day],[data-pick-unit],[data-owner-toggle],[data-pax]"):null;
+  if(!t)return;
+  if(t.hasAttribute("data-cal")){var m=st.calMonth;st.calMonth=new Date(m.getFullYear(),m.getMonth()+(+t.getAttribute("data-cal")),1);renderCal();return;}
+  if(t.hasAttribute("data-day")){var s=t.getAttribute("data-day");
+    if(picking===0||s<=st.inD){st.inD=s;var o=parse(s);o.setDate(o.getDate()+(C.minNights||2));st.outD=iso(o);picking=1;}
+    else{st.outD=s;picking=0;}
+    render();return;}
+  if(t.hasAttribute("data-pick-unit")){st.unit=t.getAttribute("data-pick-unit");var u=unitById(st.unit);if(st.pax>u.max)st.pax=u.max;render();
+    if(t.hasAttribute("data-go")){var r=$("#reservar");if(r)r.scrollIntoView({behavior:"smooth",block:"start"});}return;}
+  if(t.hasAttribute("data-pax")){st.pax=Math.max(1,Math.min(12,st.pax+(+t.getAttribute("data-pax"))));render();return;}
+  if(t.hasAttribute("data-owner-toggle")){var p=$("#owner");if(!p)return;var open=p.hasAttribute("hidden");if(open){p.removeAttribute("hidden");fillOwner();}else p.setAttribute("hidden","");
+    $$("[data-owner-toggle]").forEach(function(b){b.setAttribute("aria-expanded",open?"true":"false");});
+    if(open)p.scrollIntoView({behavior:"smooth",block:"start"});return;}
+});
+function bind(sel,ev,fn){var e=$(sel);if(e)e.addEventListener(ev,fn);}
+bind("#f-unit","change",function(e){st.unit=e.target.value;render();});
+bind("#f-in","change",function(e){if(!e.target.value)return;st.inD=e.target.value;if(st.outD<=st.inD){var o=parse(st.inD);o.setDate(o.getDate()+(C.minNights||2));st.outD=iso(o);}st.calMonth=null;render();});
+bind("#f-out","change",function(e){if(!e.target.value)return;st.outD=e.target.value;render();});
+bind("#f-pax","input",function(e){var v=parseInt(e.target.value,10);if(v>0){st.pax=v;render();}});
+bind("#f-name","input",function(e){st.name=e.target.value.trim();render();});
+bind("#f-pet","change",function(e){st.pet=e.target.checked;render();});
+bind("#wa-send","click",function(e){if(this.getAttribute("aria-disabled")==="true"){e.preventDefault();var w=$("#q-warn");if(w&&!w.textContent)w.textContent="Elegí fechas para ver el total.";}});
+var fu=$("#f-unit");if(fu&&!fu.options.length){C.units.forEach(function(u){var o=document.createElement("option");o.value=u.id;o.textContent=u.name+" · hasta "+u.max;fu.appendChild(o);});}
+
+function fillOwner(){
+  var box=$("#own-inbox");if(box&&!box.childElementCount){
+    C.ownerDemo.forEach(function(q){
+      var u=unitById(q.unit),n=Math.round((parse(q.outD)-parse(q.inD))/864e5),t=0,d=parse(q.inD);
+      for(var i=0;i<n;i++){t+=u.rate[seasonOf(iso(d)).key];d.setDate(d.getDate()+1);}
+      q._t=t;
+      var li=document.createElement("li");li.className="own-msg";
+      li.innerHTML='<div class="own-msg-top"><b>'+esc(q.name)+'</b><span class="own-tag '+(q.paid?"is-paid":"")+'">'+(q.paid?"Seña cobrada":"Esperando seña")+'</span></div><div class="own-bubble">'+fmtBubble(message({unit:q.unit,inD:q.inD,outD:q.outD,n:n,pax:q.pax,pet:q.pet,total:t,name:q.name}))+'<span class="own-time">'+q.at+"</span></div>";
+      box.appendChild(li);
+    });
+  }
+  var paid=0,tot=0;C.ownerDemo.forEach(function(q){if(q.paid){paid+=q._t*0.3;tot+=q._t;}});
+  var s=$("#own-senas");if(s)s.textContent=money(paid);
+  var a=$("#own-ahorro");if(a)a.textContent=money(tot*0.15);
+  var wk=$("#own-week");if(wk&&!wk.childElementCount){
+    var start=parse(C.ownerWeek);var h='<thead><tr><th>Unidad</th>';
+    for(var i=0;i<7;i++){var d=new Date(start);d.setDate(d.getDate()+i);h+="<th>"+["dom","lun","mar","mié","jue","vie","sáb"][d.getDay()]+" "+d.getDate()+"</th>";}
+    h+="</tr></thead><tbody>";
+    C.units.forEach(function(u){h+="<tr><th>"+esc(u.name)+"</th>";for(var i=0;i<7;i++){var d=new Date(start);d.setDate(d.getDate()+i);var b=busy(u.id,iso(d));h+='<td class="'+(b?"wk-busy":"wk-free")+'">'+(b?"Ocupada":"Libre")+"</td>";}h+="</tr>";});
+    wk.innerHTML=h+"</tbody>";
+  }
+}
+findFree();
+render();
+setInterval(function(){var e=$("#wa-time");if(e)e.textContent=nowHM();},30000);
+})();
+</script>
+<script>
+(function(){
+ var C=window.CFG,K=window.KOS;
+ var info={grande:["6 a 8","Dos plantas","—"],duplex:["5 a 6","Dos plantas","—"],cab4:["Hasta 4","Una o dos","—"],cab4j:["Hasta 4","Una o dos","Doble"],estudio:["2","Una · 40 m²","Opcional"],std2:["2","Una","—"]};
+ var sel=[];
+ function draw(){
+  var t=document.getElementById("cmp-t"),h=document.getElementById("cmp-hint");
+  if(sel.length<2){t.innerHTML="";h.textContent=sel.length?"Marcá una más para comparar.":"Marcá \"Comparar\" en 2 o 3 unidades para verlas lado a lado.";return;}
+  h.textContent="Precios por noche.";
+  var us=sel.map(K.unitById);
+  var r='<thead><tr><th></th>'+us.map(function(u){return "<th>"+u.name+"</th>";}).join("")+"</tr></thead><tbody>";
+  var rows=[["Personas",function(u){return info[u.id][0];}],["Plantas",function(u){return info[u.id][1];}],["Jacuzzi",function(u){return info[u.id][2];}],["Enero",function(u){return K.money(u.rate.enero)+'<span class="ej">Precio de ejemplo</span>';}],["Febrero",function(u){return K.money(u.rate.febrero)+'<span class="ej">Precio de ejemplo</span>';}],["Semana Santa",function(u){return K.money(u.rate.santa)+'<span class="ej">Precio de ejemplo</span>';}],["",function(u){return '<button class="btn" type="button" data-pick-unit="'+u.id+'" data-go>Reservar</button>';}]];
+  rows.forEach(function(x){r+="<tr><th>"+x[0]+"</th>"+us.map(function(u){return "<td>"+x[1](u)+"</td>";}).join("")+"</tr>";});
+  t.innerHTML=r+"</tbody>";
+ }
+ document.querySelectorAll("[data-cmp]").forEach(function(c){c.addEventListener("change",function(){var id=c.getAttribute("data-cmp");if(c.checked){sel.push(id);if(sel.length>3){var o=sel.shift();var oc=document.querySelector('[data-cmp="'+o+'"]');if(oc)oc.checked=false;}}else sel=sel.filter(function(x){return x!==id;});draw();});});
+ ["grande","cab4j"].forEach(function(id){var c=document.querySelector('[data-cmp="'+id+'"]');c.checked=true;sel.push(id);});draw();
+ document.querySelectorAll(".cmp").forEach(function(l){l.addEventListener("click",function(e){e.stopPropagation();});});
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Cabañas del Bosque"></script>
+</body>
+</html>
