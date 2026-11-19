@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>MADO Aberturas · La lista de tu casa (prototipo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Overpass:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --crema:#F3EDE3; --crema2:#E9E0D1; --papel:#FBF8F2; --ladrillo:#B9472B; --ladrillo2:#9A3820; --carbon:#24211E; --oliva:#7D8B6A; --mostaza:#E2B13C;
+  --gris:#6E665D; --linea:#D8CDBC; --wa:#D9FDD3; --wafondo:#ECE5DD;
+  --d:"Dela Gothic One","Arial Black",sans-serif; --t:"Overpass",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--crema);color:var(--carbon);font:16px/1.5 var(--t);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--mostaza);outline-offset:2px}
+a{color:inherit}
+.wrap{max-width:1240px;margin:0 auto;padding:0 32px}
+.pe{display:inline-block;font:600 10px/1.2 var(--t);letter-spacing:.02em;color:var(--gris);margin-left:6px;white-space:nowrap;vertical-align:middle;text-transform:none}
+.osc .pe{color:#bdb3a6}
+.et{font:800 11.5px/1 var(--t);letter-spacing:.14em;text-transform:uppercase}
+ul.b{margin:0;padding:0;list-style:none}
+ul.b li{position:relative;padding-left:20px;margin:6px 0}
+ul.b li::before{content:"";position:absolute;left:0;top:.45em;width:10px;height:10px;background:var(--ladrillo);border-radius:2px}
+
+.firma{font:400 12px/1.4 var(--t);color:var(--gris);text-align:center;padding:8px 0;border-bottom:1px dashed var(--linea)}
+.firma b{color:var(--carbon);font-weight:700}
+header.top{position:sticky;top:0;z-index:40;background:var(--crema);border-bottom:3px solid var(--carbon)}
+header.top .wrap{display:flex;align-items:center;gap:20px;height:64px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo img{height:34px;width:auto}
+.logo .wm{display:none;font:400 26px/1 var(--d);letter-spacing:.02em}
+.logo .wm small{font:700 11px/1 var(--t);letter-spacing:.2em;margin-left:6px;vertical-align:middle;color:var(--ladrillo)}
+.logo.sin img{display:none}.logo.sin .wm{display:block}
+.dir{font-size:13px;color:var(--gris);margin-left:auto}
+.dir b{color:var(--carbon)}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--ladrillo);color:#fff;border:0;border-radius:999px;padding:11px 18px;font-weight:700;font-size:14px;text-decoration:none;cursor:pointer}
+.btn:hover{background:var(--ladrillo2)}
+.btn.neg{background:var(--carbon)}
+.btn.lin{background:transparent;color:var(--carbon);box-shadow:inset 0 0 0 2px var(--carbon)}
+.btn svg{width:16px;height:16px}
+
+/* portada con planta */
+.portada{padding:48px 0 40px}
+.portada .wrap{display:grid;grid-template-columns:1fr 1.15fr;gap:44px;align-items:center}
+.portada h1{font:400 clamp(34px,4.4vw,60px)/1.02 var(--d);margin:16px 0 20px;letter-spacing:-.01em}
+.portada h1 span{color:var(--ladrillo)}
+.portada p.baj{font-size:17px;max-width:480px;margin:0 0 20px;color:#4b443d}
+.hechos{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 26px}
+.hechos span{background:var(--papel);border:2px solid var(--carbon);border-radius:999px;padding:5px 12px;font-size:13px;font-weight:700}
+.planta{background:var(--papel);border:3px solid var(--carbon);border-radius:18px;padding:16px 16px 10px;box-shadow:8px 8px 0 var(--carbon);position:relative}
+.planta .et{display:flex;justify-content:space-between;margin-bottom:8px;color:var(--gris)}
+.planta svg{width:100%;height:auto;display:block}
+.amb{cursor:pointer}
+.amb rect{fill:#F7F1E6;transition:fill .2s}
+.amb:hover rect,.amb:focus rect{fill:#F1D9C9}
+.amb.on rect{fill:var(--ladrillo)}
+.amb.on text{fill:#fff}
+.amb text{font:700 13px var(--t);fill:var(--carbon);pointer-events:none}
+.amb text.s{font:500 11px var(--t);fill:var(--gris)}
+.amb.on text.s{fill:#ffe6da}
+.amb:focus{outline:none}
+.muro{fill:none;stroke:var(--carbon);stroke-width:7;stroke-linejoin:round}
+.vent{stroke:var(--oliva);stroke-width:5}
+.planta .ayuda{font-size:12.5px;color:var(--gris);margin:8px 2px 0}
+
+/* rubros */
+.rubros{display:grid;grid-template-columns:repeat(4,1fr);border-top:3px solid var(--carbon);border-bottom:3px solid var(--carbon);background:var(--papel)}
+.rubros div{padding:20px 22px;border-left:2px dashed var(--linea)}
+.rubros div:first-child{border-left:0}
+.rubros h3{font:400 19px/1.1 var(--d);margin:0 0 8px}
+.rubros ul.b{font-size:14px;color:#4b443d}
+
+/* armado */
+section.sec{padding:64px 0}
+.cab{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:26px}
+.cab h2{font:400 clamp(28px,3vw,40px)/1.06 var(--d);margin:10px 0 0;max-width:640px}
+.vistas{display:flex;background:var(--carbon);border-radius:999px;padding:4px;gap:4px}
+.vistas button{border:0;background:none;color:#e8e0d4;border-radius:999px;padding:9px 18px;cursor:pointer;font-weight:700;font-size:14px}
+.vistas button[aria-selected=true]{background:var(--mostaza);color:var(--carbon)}
+.armado{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 360px;gap:22px;align-items:start}
+.bloque{background:var(--papel);border:2px solid var(--carbon);border-radius:14px;padding:18px;margin-bottom:16px}
+.bloque h3{font:800 12px/1 var(--t);letter-spacing:.14em;text-transform:uppercase;margin:0 0 12px;display:flex;align-items:center;gap:8px}
+.bloque h3 i{font:400 13px/1 var(--d);font-style:normal;background:var(--carbon);color:var(--crema);width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center}
+.pills{display:flex;flex-wrap:wrap;gap:6px}
+.pills .opt{border:2px solid var(--carbon);background:#fff;padding:7px 12px;border-radius:999px;cursor:pointer;font-size:13.5px;font-weight:600;display:inline-flex;align-items:center;gap:7px}
+.pills .opt[aria-pressed=true]{background:var(--carbon);color:#fff}
+.sw{width:13px;height:13px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.3)}
+.med{display:grid;grid-template-columns:1fr 1fr 84px;gap:10px}
+.med label,.campo label{display:flex;flex-direction:column;font-size:12.5px;font-weight:600;color:var(--gris);gap:5px}
+.med input,.campo input{border:2px solid var(--carbon);background:#fff;padding:9px 10px;border-radius:10px;width:100%;font-size:15px}
+.chk{display:flex;align-items:center;gap:8px;font-size:14px;margin:6px 0;flex-wrap:wrap}
+.chk input{accent-color:var(--ladrillo);width:17px;height:17px}
+.chk small{color:var(--gris)}
+.campo{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.campo .full{grid-column:1/-1}
+.tablero{background:var(--carbon);color:var(--crema);border-radius:14px;padding:18px;position:sticky;top:84px}
+.tablero .et{display:flex;justify-content:space-between;color:var(--mostaza)}
+#q-plano{background:#2f2b27;border-radius:10px;margin:12px 0;height:280px;padding:10px;display:flex;align-items:center;justify-content:center;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:20px 20px}
+#q-plano svg{width:100%;height:100%}
+#q-plano .cota{font:600 11px var(--t);fill:#e8e0d4}
+.mini{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mini div{background:#33302b;border-radius:10px;padding:9px 11px;font-size:12px;color:#bdb3a6}
+.mini b{display:block;font:400 17px/1.25 var(--d);color:#fff;margin-top:2px}
+.mini .pe{display:block;margin:2px 0 0}
+.sumar{width:100%;justify-content:center;margin-top:12px;padding:14px;font-size:15px;background:var(--mostaza);color:var(--carbon)}
+.sumar:hover{background:#f0c556}
+.tablero p{font-size:12.5px;color:#bdb3a6;margin:10px 0 0}
+.remito{background:#fff;border:2px solid var(--carbon);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.remito .rh{background:var(--ladrillo);color:#fff;padding:10px 14px;display:flex;justify-content:space-between;align-items:center}
+.remito .rh b{font:400 16px var(--d)}
+.remito .rh span{font-size:12px;font-weight:700;background:rgba(0,0,0,.2);padding:2px 8px;border-radius:999px}
+#q-lista{list-style:none;margin:0;padding:6px 14px;max-height:260px;overflow:auto}
+#q-lista li{display:grid;grid-template-columns:22px 1fr auto 24px;gap:8px;align-items:start;padding:9px 0;border-bottom:1px dashed var(--linea);font-size:13px;line-height:1.35}
+#q-lista li.vacio{display:block;color:var(--gris);font-size:13px}
+.li-n{font:400 12px var(--d);color:var(--ladrillo)}
+.li-p{text-align:right;font-weight:700;white-space:nowrap}
+.li-p .pe{display:block;margin:0}
+.li-x{border:0;background:var(--crema2);border-radius:50%;width:22px;height:22px;cursor:pointer;line-height:1}
+.remito .rt{display:flex;justify-content:space-between;padding:10px 14px;background:var(--crema2);font-weight:800}
+.chat{background:var(--wafondo);border-radius:14px;overflow:hidden;border:2px solid var(--carbon)}
+.chat .hd{background:#075E54;color:#fff;padding:9px 12px;display:flex;align-items:center;gap:10px}
+.chat .av{width:32px;height:32px;border-radius:50%;background:var(--ladrillo);display:flex;align-items:center;justify-content:center;font:400 13px var(--d)}
+.chat .hd b{display:block;font-size:14px}
+.chat .hd small{font-size:11.5px;opacity:.85}
+.chat .bd{padding:12px 10px}
+.burb{background:var(--wa);border-radius:8px 0 8px 8px;padding:9px 11px 18px;font-size:13.5px;line-height:1.45;margin-left:16px;position:relative;color:#111;box-shadow:0 1px 0 rgba(0,0,0,.08)}
+.burb::after{content:"";position:absolute;right:-8px;top:0;border:8px solid transparent;border-top-color:var(--wa);border-left-color:var(--wa)}
+.burb i{font-style:normal;color:#55705f;font-size:12px}
+.burb .hr{position:absolute;right:9px;bottom:4px;font-size:10.5px;color:#667}
+.typing{font-size:11.5px;color:#3a8;margin:0 0 6px 16px}
+.chat .ft{padding:0 10px 12px}
+.chat .ft .btn{width:100%;justify-content:center;background:#25D366;color:#063019}
+.chat .ft p{text-align:center;font-size:11.5px;color:var(--gris);margin:6px 0 0}
+
+/* dueño */
+.d-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+.caja{min-width:0;background:var(--papel);border:2px solid var(--carbon);border-radius:14px;padding:18px}
+.caja.ancha{grid-column:span 2}
+.caja h3{font:400 19px/1.15 var(--d);margin:0 0 12px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
+.ej{font:800 10px/1 var(--t);letter-spacing:.12em;text-transform:uppercase;background:var(--mostaza);color:var(--carbon);padding:5px 9px;border-radius:999px}
+.o-msg{background:var(--wa);border-radius:10px;padding:10px 12px;margin-bottom:10px;font-size:13px}
+.o-h{display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px}
+.o-h span{color:var(--gris)}
+.o-msg p{margin:0;line-height:1.4}
+.o-tag{display:inline-block;margin-top:6px;font-size:11px;font-weight:700;background:rgba(185,71,43,.12);color:var(--ladrillo2);padding:2px 8px;border-radius:999px}
+#o-agenda{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.o-dia{background:#fff;border:2px solid var(--carbon);border-radius:10px;padding:8px;font-size:12px;min-height:120px}
+.o-dn b{display:block;font-size:13px}
+.o-dn span{font-size:11px;color:var(--oliva);font-weight:700}
+.o-dia ul{list-style:none;margin:8px 0 0;padding:0}
+.o-dia li{background:var(--crema2);border-radius:6px;padding:4px 6px;margin-bottom:4px;line-height:1.3}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+td,th{padding:8px 6px;border-bottom:1px dashed var(--linea);text-align:left}
+th{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gris)}
+td.r{text-align:right;white-space:nowrap}
+tfoot td{font-weight:800;border-bottom:0}
+.o-big{font:400 36px/1 var(--d);color:var(--ladrillo);margin:4px 0 10px}
+#q-tabla{display:grid;grid-template-columns:1.3fr 1fr;gap:22px;align-items:start}
+.in{display:inline-flex;align-items:center;gap:4px}
+.in input{width:110px;border:2px solid var(--carbon);border-radius:8px;padding:5px 8px;background:#fff}
+#q-tabla-ok{font-size:12.5px;color:var(--oliva);font-weight:700;min-height:18px;margin:8px 0 0}
+.para{background:var(--ladrillo);color:#fff;border-radius:18px;padding:34px;margin-top:18px;display:grid;grid-template-columns:1fr 1.5fr;gap:30px;align-items:center}
+.para h3{font:400 32px/1.05 var(--d);margin:0}
+.para ul.b li::before{background:var(--mostaza)}
+.para ul.b li{margin:10px 0;font-size:16px}
+
+.como{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.como div{background:var(--papel);border:2px solid var(--carbon);border-radius:14px;padding:16px}
+.como b{font:400 30px/1 var(--d);color:var(--ladrillo)}
+.como h4{margin:8px 0 4px;font-size:16px}
+.como ul{font-size:14px;color:#4b443d}
+
+footer{border-top:3px solid var(--carbon);padding:24px 0;font-size:12.5px;color:var(--gris)}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer b{color:var(--carbon)}
+
+@media (max-width:1100px){
+  .armado{grid-template-columns:1fr 1fr}
+  .col3{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .col3 .remito{margin:0}
+  .tablero{position:static}
+  .d-grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:760px){
+  .wrap{padding:0 16px}
+  .dir{display:none}
+  header.top .wrap{justify-content:space-between}
+  .portada{padding:28px 0 32px}
+  .portada .wrap{grid-template-columns:1fr;gap:26px}
+  .planta{box-shadow:5px 5px 0 var(--carbon);padding:10px 10px 8px}
+  .rubros{grid-template-columns:1fr 1fr}
+  .rubros div{border-left:0;border-top:2px dashed var(--linea);padding:16px}
+  .rubros div:nth-child(-n+2){border-top:0}
+  .rubros div:nth-child(even){border-left:2px dashed var(--linea)}
+  section.sec{padding:44px 0}
+  .armado{grid-template-columns:1fr}
+  .col3{grid-template-columns:1fr}
+  .med{grid-template-columns:1fr 1fr}
+  .med label:last-child{grid-column:1/-1}
+  #q-plano{height:230px}
+  .d-grid{grid-template-columns:1fr}
+  .caja.ancha{grid-column:auto}
+  .dd{grid-template-columns:1fr!important}
+  #o-agenda{grid-template-columns:1fr 1fr}
+  #q-tabla{grid-template-columns:1fr}
+  .para{grid-template-columns:1fr;padding:24px 20px;gap:10px}
+  .como{grid-template-columns:1fr 1fr}
+  .vistas{width:100%}.vistas button{flex:1;padding:9px 6px}
+}
+</style>
+</head>
+<body>
+<div class="firma">Prototipo preparado para <b>MADO Aberturas</b> · 19 de noviembre de 2026</div>
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#" aria-label="MADO Aberturas"><img src="https://mado.ar/assets/imgs/Mado-web-100.png" alt="MADO" onerror="this.parentNode.classList.add('sin')"><span class="wm">MADO<small>ABERTURAS</small></span></a>
+    <span class="dir"><b>J. V. González 609</b> · Godoy Cruz, Mendoza</span>
+    <a class="btn" href="#armar">Armar mi lista</a>
+  </div>
+</header>
+
+<section class="portada">
+  <div class="wrap">
+    <div>
+      <div class="et" style="color:var(--ladrillo)">Sistema integral de aberturas</div>
+      <h1>Aluminio 100 % virgen Aluar. <span>Y toda tu casa en una sola lista.</span></h1>
+      <p class="baj">Tocá un ambiente de la planta, cargá la medida y sumalo. Ventanas, puertas y claraboyas, con el precio estimado al instante.</p>
+      <div class="hechos"><span>+20 años</span><span>Estándar y a medida</span><span>Puertas de exterior e interior</span><span>Claraboyas de todas las medidas</span></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <a class="btn" href="#armar">Empezar por la planta</a>
+        <a class="btn lin" href="#armar" data-vista="duenio" data-scroll="armar">Ver como dueño</a>
+      </div>
+    </div>
+    <div class="planta">
+      <div class="et"><span>Planta tipo · tocá un ambiente</span><span id="amb-sel">Ninguno elegido</span></div>
+      <svg viewBox="0 0 600 420" role="group" aria-label="Planta de una casa con ambientes para elegir">
+        <g class="amb" tabindex="0" role="button" data-t="pb" data-a="Living" data-w="200" data-h="210"><rect x="6" y="6" width="324" height="224"/><text x="26" y="40">Living</text><text class="s" x="26" y="58">Puerta balcón</text></g>
+        <g class="amb" tabindex="0" role="button" data-t="c2" data-a="Cocina" data-w="150" data-h="110"><rect x="330" y="6" width="264" height="144"/><text x="350" y="40">Cocina</text><text class="s" x="350" y="58">Ventana corrediza</text></g>
+        <g class="amb" tabindex="0" role="button" data-t="ban" data-a="Baño" data-w="60" data-h="40"><rect x="330" y="150" width="120" height="110"/><text x="344" y="182">Baño</text><text class="s" x="344" y="200">Banderola</text></g>
+        <g class="amb" tabindex="0" role="button" data-t="cla" data-a="Pasillo" data-w="80" data-h="80"><rect x="450" y="150" width="144" height="110"/><text x="464" y="182">Pasillo</text><text class="s" x="464" y="200">Claraboya</text></g>
+        <g class="amb" tabindex="0" role="button" data-t="c2" data-a="Dormitorio" data-w="150" data-h="110" data-x="mos"><rect x="6" y="230" width="194" height="184"/><text x="22" y="266">Dormitorio</text><text class="s" x="22" y="284">Corrediza + mosquitero</text></g>
+        <g class="amb" tabindex="0" role="button" data-t="pint" data-a="Dormitorio 2" data-w="80" data-h="200"><rect x="200" y="230" width="200" height="184"/><text x="216" y="266">Dormitorio 2</text><text class="s" x="216" y="284">Puerta de interior</text></g>
+        <g class="amb" tabindex="0" role="button" data-t="pext" data-a="Entrada" data-w="90" data-h="205"><rect x="400" y="260" width="194" height="154"/><text x="416" y="296">Entrada</text><text class="s" x="416" y="314">Puerta de exterior</text></g>
+        <path class="muro" d="M6 6H594V414H6Z M330 6V230 M6 230H400 M330 150H594 M450 150V260 M400 230V414 M400 260H594"/>
+        <g class="vent"><line x1="90" y1="6" x2="250" y2="6"/><line x1="400" y1="6" x2="530" y2="6"/><line x1="594" y1="180" x2="594" y2="230"/><line x1="6" y1="290" x2="6" y2="370"/></g>
+        <path d="M470 414 A50 50 0 0 1 520 364" fill="none" stroke="#B9472B" stroke-width="2" stroke-dasharray="4 3"/><line x1="470" y1="414" x2="470" y2="364" stroke="#B9472B" stroke-width="3"/>
+        <path d="M356 230 A40 40 0 0 0 396 270" fill="none" stroke="#B9472B" stroke-width="2" stroke-dasharray="4 3"/>
+        <rect x="532" y="200" width="48" height="48" fill="none" stroke="#E2B13C" stroke-width="3" stroke-dasharray="6 4"/>
+      </svg>
+      <p class="ayuda">Elegís el ambiente y el cotizador se arma solo con la abertura típica. Después ajustás la medida.</p>
+    </div>
+  </div>
+</section>
+
+<div class="rubros">
+  <div><h3>Aberturas de aluminio</h3><ul class="b"><li>Aluminio 100 % virgen Aluar</li><li>Estándar y a medida</li></ul></div>
+  <div><h3>Puertas de exterior</h3><ul class="b"><li>Madera y acero</li><li>Para el frente de la casa</li></ul></div>
+  <div><h3>Puertas de interior</h3><ul class="b"><li>Placas y plegadizas</li><li>Para cada ambiente</li></ul></div>
+  <div><h3>Claraboyas</h3><ul class="b"><li>De todas las medidas</li><li>Luz natural en pasillos y baños</li></ul></div>
+</div>
+
+<section class="sec" id="armar">
+  <div class="wrap">
+    <div class="cab">
+      <div><div class="et" style="color:var(--ladrillo)">Cotizador · MADO</div><h2>Sumá abertura por abertura y mirá el total de la casa.</h2></div>
+      <div class="vistas" role="tablist" aria-label="Vista"><button role="tab" data-vista="cliente" aria-selected="true">Vista cliente</button><button role="tab" data-vista="duenio" aria-selected="false">Ver como dueño</button></div>
+    </div>
+
+    <div data-panel="cliente">
+      <div class="armado">
+        <div>
+          <div class="bloque"><h3><i>1</i> Abertura</h3><div class="pills" id="q-tipo"></div></div>
+          <div class="bloque"><h3><i>2</i> Medida</h3>
+            <div class="pills" id="q-linea" style="margin-bottom:12px"></div>
+            <div class="med">
+              <label>Ancho (cm)<input id="q-ancho" type="number" min="30" max="600" inputmode="numeric"></label>
+              <label>Alto (cm)<input id="q-alto" type="number" min="30" max="600" inputmode="numeric"></label>
+              <label>Cantidad<input id="q-cant" type="number" min="1" max="40" inputmode="numeric"></label>
+            </div>
+          </div>
+          <div class="bloque"><h3><i>3</i> Vidrio y color</h3><div class="pills" id="q-vidrio" style="margin-bottom:10px"></div><div class="pills" id="q-color"></div></div>
+          <div class="bloque"><h3><i>4</i> Agregados</h3><div id="q-extras"></div></div>
+          <div class="bloque"><h3><i>5</i> Tus datos</h3>
+            <div class="campo">
+              <label>Tu nombre<input id="q-nombre" type="text" placeholder="Ej.: Sofía" autocomplete="given-name"></label>
+              <label>Día para medir<input id="q-fecha" type="date"></label>
+              <label class="full">Barrio<input id="q-barrio" type="text" placeholder="Ej.: Villa Hipódromo"></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="tablero osc">
+          <div class="et"><span>Plano en vivo</span><span id="q-resumen" style="color:#e8e0d4;letter-spacing:.04em;text-transform:none;font-weight:600"></span></div>
+          <div id="q-plano"></div>
+          <div class="mini">
+            <div>Superficie<b id="q-m2"></b></div>
+            <div>Esta abertura<b id="q-total"></b></div>
+            <div>Rango<b id="q-rango" style="font-size:14px"></b></div>
+            <div>Seña (30 %)<b id="q-sena"></b></div>
+          </div>
+          <button class="btn sumar" type="button" id="sumar">+ Sumar a la lista</button>
+          <p>La medida final la toma MADO en tu casa antes de fabricar.</p>
+        </div>
+
+        <div class="col3">
+          <div class="remito">
+            <div class="rh"><b>Mi lista</b><span><span id="q-lista-n">0</span> ítems</span></div>
+            <ul id="q-lista"></ul>
+            <div class="rt"><span>Total de la casa</span><span id="q-lista-total"></span></div>
+          </div>
+          <div class="chat" aria-live="polite">
+            <div class="hd"><div class="av">M</div><div><b>MADO Aberturas</b><small>Así le llega tu pedido</small></div></div>
+            <div class="bd"><p class="typing" id="q-typing" hidden>escribiendo…</p><div class="burb"><span id="q-bubble"></span><span class="hr" id="q-hora"></span></div></div>
+            <div class="ft"><a class="btn" id="q-wa" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .5l-.4.6-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l2 1c.3.1.5.2.5.3.1.2.1.7-.1 1.2z"/></svg>Enviar por WhatsApp</a><p>Se abre WhatsApp con este mismo texto.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div data-panel="duenio" hidden>
+      <div class="d-grid">
+        <div class="caja"><h3>Pedidos de hoy <span class="ej">Panel de ejemplo</span></h3><div id="o-consultas"></div></div>
+        <div class="caja ancha"><h3>Mediciones de la semana <span class="ej">Panel de ejemplo</span></h3><div id="o-agenda"></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px" class="dd">
+            <div><h3 style="font-size:16px">Señas cobradas</h3><div id="o-senas"></div></div>
+            <div><h3 style="font-size:16px">Sin comisión</h3><div id="o-ahorro"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="caja" style="margin-top:18px"><h3>Precios de MADO (los cambian ustedes) <span class="ej">Panel de ejemplo</span></h3><div id="q-tabla"></div><p id="q-tabla-ok" aria-live="polite"></p></div>
+      <div class="para">
+        <h3>Para vos, MADO</h3>
+        <ul class="b">
+          <li>Menos mensajes repetidos: el pedido llega con cada ambiente y su medida.</li>
+          <li>Agenda de mediciones con cupos por día.</li>
+          <li>Seña que entra antes de confirmar la visita.</li>
+          <li>Sin comisión por pedido: el cliente llega directo.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="cab"><div><div class="et" style="color:var(--ladrillo)">Cómo funciona</div><h2>De la planta al WhatsApp.</h2></div></div>
+    <div class="como">
+      <div><b>1</b><h4>Tocá el ambiente</h4><ul class="b"><li>Se elige la abertura típica</li></ul></div>
+      <div><b>2</b><h4>Ajustá la medida</h4><ul class="b"><li>Plano con cotas en vivo</li></ul></div>
+      <div><b>3</b><h4>Sumá a la lista</h4><ul class="b"><li>Total de toda la casa</li></ul></div>
+      <div><b>4</b><h4>Mandá el pedido</h4><ul class="b"><li>Llega por WhatsApp, listo para medir</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap"><span>Prototipo de demostración preparado para <b>MADO Aberturas</b> por Resolviendo Kos · No es la web oficial</span><span>Precios de ejemplo · Godoy Cruz, Mendoza</span></div></footer>
+
+<script>
+window.CFG={
+  negocio:'MADO Aberturas',corto:'MADO',wa:'5492612075560',sena:0.3,glass:'#bcd9dc',lineaLabel:'Medida',
+  lineas:[{id:'med',n:'A medida',f:1},{id:'std',n:'Estándar',f:0.85}],
+  tipos:[
+    {id:'c2',n:'Ventana corrediza',k:'corr',n2:2,p:185000,w:150,h:110},
+    {id:'ban',n:'Banderola',k:'banderola',p:200000,w:60,h:40,min:0.3},
+    {id:'fi',n:'Paño fijo',k:'fijo',p:135000,w:100,h:100},
+    {id:'pb',n:'Puerta balcón',k:'corr',n2:2,p:205000,w:200,h:210},
+    {id:'pext',n:'Puerta de exterior',k:'puerta',p:420000,w:90,h:205,noVidrio:1,min:1.6},
+    {id:'pint',n:'Puerta de interior',k:'puertaInt',p:150000,w:80,h:200,noVidrio:1,min:1.4},
+    {id:'cla',n:'Claraboya',k:'claraboya',p:260000,w:80,h:80,noVidrio:1,min:0.4}
+  ],
+  vidrios:[{id:'f4',n:'Float 4 mm',f:1},{id:'lam',n:'Laminado 3+3',f:1.18},{id:'dvh',n:'DVH',f:1.35}],
+  colores:[{id:'bl',n:'Blanco',hex:'#f1efe9',f:1},{id:'ne',n:'Negro',hex:'#1e1c1a',f:1.08},{id:'ma',n:'Símil madera',hex:'#8b5a33',f:1.14}],
+  extras:[{id:'mos',n:'Mosquitero',p:42000},{id:'col',n:'Colocación',p:16000,m2:1}],
+  owner:{
+    consultas:[
+      {nombre:'Sofía · Villa Hipódromo',hora:'08:55',estado:'Seña pagada',txt:'Living: 1 × Puerta balcón 200 × 210 cm\nCocina: 1 × Ventana corrediza 150 × 110 cm\nPasillo: 1 × Claraboya 80 × 80 cm'},
+      {nombre:'Diego · Dorrego',hora:'10:20',estado:'Esperando seña',txt:'Entrada: 1 × Puerta de exterior 90 × 205 cm\n3 × Puerta de interior 80 × 200 cm'}
+    ],
+    agenda:[{dia:'Lun 23',cupos:2,items:['Medir · Hipódromo']},{dia:'Mar 24',cupos:2,items:['Medir · Dorrego','Colocar · Centro']},{dia:'Mié 25',cupos:2,items:[]},{dia:'Jue 26',cupos:2,items:['Colocar · Godoy Cruz']},{dia:'Vie 27',cupos:2,items:['Medir · Luján']}],
+    senas:[{nombre:'Sofía',det:'Lista de 3 ítems',monto:298000},{nombre:'Ana',det:'2 puertas de interior',monto:96000}],
+    ahorro:{obras:10,ticket:750000,pct:0.08}
+  }
+};
+</script>
+<script>(function(){
+"use strict";
+var C=window.CFG, $=function(s){return document.getElementById(s)};
+var fmt=new Intl.NumberFormat('es-AR',{maximumFractionDigits:0});
+function money(n){return '$ '+fmt.format(Math.round(n/100)*100)}
+var PE='<span class="pe">Precio de ejemplo</span>';
+var S={tipo:C.tipos[0].id,linea:C.lineas[0].id,vidrio:C.vidrios[0].id,color:C.colores[0].id,extras:{},ancho:C.tipos[0].w||150,alto:C.tipos[0].h||110,cant:1,nombre:'',fecha:'',barrio:''};
+var precios={}; C.tipos.forEach(function(t){precios[t.id]=t.p});
+var fact={}; C.lineas.forEach(function(l){fact[l.id]=l.f});
+function by(a,id){for(var i=0;i<a.length;i++)if(a[i].id===id)return a[i];return a[0]}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+
+/* ---------- opciones ---------- */
+function opts(el,arr,key,render){
+  if(!el)return;
+  el.innerHTML='';
+  arr.forEach(function(o){
+    var b=document.createElement('button');b.type='button';b.className='opt';b.dataset.id=o.id;
+    b.innerHTML=render?render(o):esc(o.n);
+    b.setAttribute('aria-pressed',S[key]===o.id?'true':'false');
+    b.onclick=function(){S[key]=o.id;
+      if(key==='tipo'){S.ancho=o.w||S.ancho;S.alto=o.h||S.alto;syncInputs()}
+      [].forEach.call(el.children,function(c){c.setAttribute('aria-pressed',c.dataset.id===o.id?'true':'false')});
+      update();};
+    el.appendChild(b);
+  });
+}
+function extrasUI(){
+  var el=$('q-extras');if(!el)return;el.innerHTML='';
+  C.extras.forEach(function(x){
+    var l=document.createElement('label');l.className='chk';
+    l.innerHTML='<input type="checkbox"> <span>'+esc(x.n)+'</span> <small>+ '+money(x.p)+(x.m2?' por m²':'')+'</small>'+PE;
+    l.querySelector('input').onchange=function(e){S.extras[x.id]=e.target.checked;update()};
+    el.appendChild(l);
+  });
+}
+function syncInputs(){
+  ['ancho','alto','cant'].forEach(function(k){var i=$('q-'+k);if(i)i.value=S[k];var r=$('q-'+k+'-r');if(r)r.value=S[k]});
+}
+function bindInputs(){
+  ['ancho','alto','cant'].forEach(function(k){
+    ['q-'+k,'q-'+k+'-r'].forEach(function(id){var i=$(id);if(!i)return;
+      i.addEventListener('input',function(){var v=parseInt(i.value,10);if(isNaN(v))return;
+        var mn=k==='cant'?1:30,mx=k==='cant'?40:600;if(v<mn||v>mx){if(i.type==='range'){}else return}
+        S[k]=Math.min(mx,Math.max(mn,v));var o=$(id===('q-'+k)?'q-'+k+'-r':'q-'+k);if(o)o.value=S[k];update()});
+      i.addEventListener('blur',function(){syncInputs()});
+    });
+  });
+  ['nombre','fecha','barrio'].forEach(function(k){var i=$('q-'+k);if(i)i.addEventListener('input',function(){S[k]=i.value.trim();update()})});
+}
+
+/* ---------- cálculo ---------- */
+function calc(){
+  var t=by(C.tipos,S.tipo),v=by(C.vidrios,S.vidrio),co=by(C.colores,S.color);
+  var m2=Math.max(S.ancho*S.alto/10000,t.min||0.5);
+  var u=precios[t.id]*m2*(fact[S.linea]||1)*(t.noVidrio?1:v.f)*co.f;
+  C.extras.forEach(function(x){if(S.extras[x.id])u+=x.m2?x.p*m2:x.p});
+  var tot=u*S.cant;
+  return {m2:m2,unit:u,total:tot,lo:tot*.92,hi:tot*1.08,sena:tot*(C.sena||0.3),t:t,v:v,co:co,l:by(C.lineas,S.linea)};
+}
+
+/* ---------- plano ---------- */
+function plano(k,w,h,col,glass,n){
+  var W=Math.max(30,w),H=Math.max(30,h),sc=260/Math.max(W,H),pw=W*sc,ph=H*sc,ox=46,oy=22,f=Math.max(5,Math.min(9,pw/26));
+  var g=glass||'#cfe3ea',st='stroke="'+col+'"',s=[];
+  function R(x,y,ww,hh,fill,extra){s.push('<rect x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+Math.max(1,ww).toFixed(1)+'" height="'+Math.max(1,hh).toFixed(1)+'" fill="'+fill+'" '+(extra||'')+'/>')}
+  function L(x1,y1,x2,y2,c,dash,wd){s.push('<line x1="'+x1.toFixed(1)+'" y1="'+y1.toFixed(1)+'" x2="'+x2.toFixed(1)+'" y2="'+y2.toFixed(1)+'" stroke="'+(c||col)+'" stroke-width="'+(wd||1.4)+'"'+(dash?' stroke-dasharray="5 4"':'')+'/>')}
+  function glassP(x,y,ww,hh){R(x,y,ww,hh,g,'');L(x+ww*.15,y+hh*.55,x+ww*.45,y+hh*.25,'#ffffff',false,2);L(x+ww*.25,y+hh*.68,x+ww*.5,y+hh*.45,'#ffffff',false,1.2)}
+  var x=ox,y=oy;
+  if(k==='claraboya'){R(x,y,pw,ph,col);R(x+f,y+f,pw-2*f,ph-2*f,g);L(x+f,y+f,x+pw-f,y+ph-f,'#fff',1,1);L(x+pw-f,y+f,x+f,y+ph-f,'#fff',1,1);s.push('<ellipse cx="'+(x+pw/2)+'" cy="'+(y+ph/2)+'" rx="'+(pw/4)+'" ry="'+(ph/4)+'" fill="none" stroke="#fff" stroke-width="1.5"/>')}
+  else if(k==='espejo'){s.push('<rect x="'+x+'" y="'+y+'" width="'+pw+'" height="'+ph+'" rx="'+Math.min(pw,ph)*.08+'" fill="#dfe6e8" stroke="'+col+'" stroke-width="3"/>');L(x+pw*.2,y+ph*.35,x+pw*.5,y+ph*.12,'#fff',0,3);L(x+pw*.3,y+ph*.5,x+pw*.62,y+ph*.22,'#fff',0,2)}
+  else{
+    R(x,y,pw,ph,col);
+    var ix=x+f,iy=y+f,iw=pw-2*f,ih=ph-2*f;
+    if(k==='corr'){var p=n||2,sw=iw/p;for(var i=0;i<p;i++){var sx=ix+i*sw-(i?f*.4:0);R(sx,iy,sw+f*.4,ih,col);glassP(sx+f*.7,iy+f*.7,sw+f*.4-1.4*f,ih-1.4*f)}
+      var my=iy+ih/2;L(ix+iw*.18,my,ix+iw*.32,my,'#123',0,1.6);s.push('<path d="M'+(ix+iw*.32)+' '+(my-4)+' l6 4 -6 4z" fill="#123"/>');L(ix+iw*.68,my,ix+iw*.82,my,'#123',0,1.6);s.push('<path d="M'+(ix+iw*.68)+' '+(my-4)+' l-6 4 6 4z" fill="#123"/>')}
+    else if(k==='oscilo'){R(ix,iy,iw,ih,col);glassP(ix+f*.7,iy+f*.7,iw-1.4*f,ih-1.4*f);L(ix+f,iy+f,ix+iw-f,iy+ih/2,'#123',1,1);L(ix+iw-f,iy+ih/2,ix+f,iy+ih-f,'#123',1,1);L(ix+f,iy+ih-f,ix+iw/2,iy+f,'#123',1,1);L(ix+iw/2,iy+f,ix+iw-f,iy+ih-f,'#123',1,1)}
+    else if(k==='banderola'){R(ix,iy,iw,ih,col);glassP(ix+f*.7,iy+f*.7,iw-1.4*f,ih-1.4*f);L(ix+f,iy+ih-f,ix+iw/2,iy+f,'#123',1,1);L(ix+iw/2,iy+f,ix+iw-f,iy+ih-f,'#123',1,1)}
+    else if(k==='fijo'){glassP(ix,iy,iw,ih)}
+    else if(k==='puerta'||k==='puertaVid'||k==='puertaInt'){
+      if(k==='puertaInt'){R(ix,iy,iw,ih,'#e8dcc8');R(ix+iw*.12,iy+ih*.08,iw*.76,ih*.38,'none','stroke="'+col+'" stroke-width="1.2" opacity=".5"');R(ix+iw*.12,iy+ih*.54,iw*.76,ih*.38,'none','stroke="'+col+'" stroke-width="1.2" opacity=".5"')}
+      else if(k==='puertaVid'){R(ix,iy,iw,ih,col);glassP(ix+f,iy+f,iw-2*f,ih*.62);R(ix+f,iy+ih*.62+2*f,iw-2*f,ih*.38-3*f,'none','stroke="#fff" stroke-opacity=".35"')}
+      else{R(ix,iy,iw,ih,col);for(var j=1;j<7;j++)L(ix+f,iy+ih*j/7,ix+iw-f,iy+ih*j/7,'#ffffff',0,.6)}
+      s.push('<rect x="'+(ix+iw-f*2.6)+'" y="'+(iy+ih*.5)+'" width="'+(f*1.2)+'" height="'+(ih*.1)+'" rx="2" fill="#c9b37e"/>')}
+    else if(k==='mampara'){R(ix,iy,iw,ih,'#fff');glassP(ix,iy,iw*.5,ih);R(ix+iw*.5-1,iy,f*.5,ih,col);glassP(ix+iw*.48,iy+f*.4,iw*.52,ih-f*.4);L(x-8,y+ph,x+pw+8,y+ph,'#777',0,2)}
+    else if(k==='mosq'){R(ix,iy,iw,ih,'#e6ece8');for(var a=0;a<iw;a+=6)L(ix+a,iy,ix+a,iy+ih,'#8a9690',0,.4);for(var b=0;b<ih;b+=6)L(ix,iy+b,ix+iw,iy+b,'#8a9690',0,.4)}
+    else if(k==='roller'){R(ix,iy,iw,ih*.16,col);R(ix,iy+ih*.16,iw,ih*.74,'#d9d3c7');for(var c=1;c<10;c++)L(ix,iy+ih*.16+ih*.074*c,ix+iw,iy+ih*.16+ih*.074*c,'#b6ad9c',0,.7);R(ix+iw*.46,iy+ih*.9,iw*.08,f,col)}
+    else if(k==='placard'){var q=n||2,qw=iw/q;for(var m=0;m<q;m++){R(ix+m*qw,iy,qw,ih,'#e9e1d2','stroke="'+col+'" stroke-width="'+f*.6+'"');L(ix+m*qw+qw*.5,iy+ih*.45,ix+m*qw+qw*.5,iy+ih*.55,col,0,3)}}
+    else if(k==='baranda'){R(x,y,pw,ph,'none');s.pop();glassP(x+f,y+f,pw-2*f,ph-2*f);R(x,y,pw,f,col);for(var z=0;z<=3;z++)R(x+z*(pw-f)/3,y,f*.8,ph,col)}
+  }
+  // cotas
+  var cy=oy+ph+20,cx=ox-22;
+  L(ox,cy,ox+pw,cy,'#556',0,1);L(ox,cy-5,ox,cy+5,'#556',0,1);L(ox+pw,cy-5,ox+pw,cy+5,'#556',0,1);
+  s.push('<text x="'+(ox+pw/2)+'" y="'+(cy+15)+'" text-anchor="middle" class="cota">'+W+' cm</text>');
+  L(cx,oy,cx,oy+ph,'#556',0,1);L(cx-5,oy,cx+5,oy,'#556',0,1);L(cx-5,oy+ph,cx+5,oy+ph,'#556',0,1);
+  s.push('<text x="'+(cx-6)+'" y="'+(oy+ph/2)+'" text-anchor="middle" class="cota" transform="rotate(-90 '+(cx-6)+' '+(oy+ph/2)+')">'+H+' cm</text>');
+  return '<svg viewBox="0 0 '+(pw+70)+' '+(ph+56)+'" role="img" aria-label="Plano de la abertura: '+W+' por '+H+' cm" preserveAspectRatio="xMidYMid meet">'+s.join('')+'</svg>';
+}
+
+/* ---------- mensaje ---------- */
+function msg(r){
+  if(LIST.length){var sum=0,L=['¡Hola '+C.corto+'! Soy '+(S.nombre||'[tu nombre]')+'. Quiero presupuesto de esta lista:'];
+    LIST.forEach(function(it){sum+=it.total;L.push('• '+(it.amb?it.amb+': ':'')+it.desc)});
+    L.push('• Estimado en la web: '+money(sum)+' (precio de ejemplo)');L.push('• Seña para reservar la medición: '+money(sum*(C.sena||0.3)));
+    L.push('• Medición: '+(S.fecha?fechaTxt(S.fecha):'[elegí un día]')+(S.barrio?' · '+S.barrio:''));L.push('¿Me confirman el día?');return L.join('\n')}
+  var ex=C.extras.filter(function(x){return S.extras[x.id]}).map(function(x){return x.n});
+  var t=r.t, lines=['¡Hola '+C.corto+'! Soy '+(S.nombre||'[tu nombre]')+'. Quiero un presupuesto:',
+    '• '+S.cant+' × '+t.n+' de '+S.ancho+' × '+S.alto+' cm',
+    '• '+(C.lineaLabel||'Línea')+': '+r.l.n+(t.noVidrio?'':' · '+r.v.n)+' · '+r.co.n];
+  if(ex.length)lines.push('• Con: '+ex.join(', '));
+  lines.push('• Estimado en la web: '+money(r.total)+' (precio de ejemplo)');
+  lines.push('• Seña para reservar la medición: '+money(r.sena));
+  lines.push('• Medición: '+(S.fecha?fechaTxt(S.fecha):'[elegí un día]')+(S.barrio?' · '+S.barrio:''));
+  lines.push('¿Me confirman el día?');
+  return lines.join('\n');
+}
+function fechaTxt(v){var p=v.split('-');if(p.length<3)return v;var d=new Date(+p[0],+p[1]-1,+p[2]);return d.toLocaleDateString('es-AR',{weekday:'long',day:'numeric',month:'long'})}
+var LIST=[];
+function itemDesc(r){return S.cant+' × '+r.t.n+' '+S.ancho+' × '+S.alto+' cm · '+r.l.n+(r.t.noVidrio?'':' · '+r.v.n)+' · '+r.co.n+(C.extras.filter(function(x){return S.extras[x.id]}).map(function(x){return ' + '+x.n}).join(''))}
+function listUI(){var el=document.getElementById('q-lista');if(!el)return;var sum=0;
+  el.innerHTML=LIST.length?LIST.map(function(it,i){sum+=it.total;return '<li><span class="li-n">'+(i+1)+'</span><span class="li-d">'+(it.amb?'<b>'+esc(it.amb)+'</b> ':'')+esc(it.desc)+'</span><span class="li-p">'+money(it.total)+PE+'</span><button type="button" class="li-x" data-i="'+i+'" aria-label="Quitar">×</button></li>'}).join(''):'<li class="vacio">Todavía no sumaste nada. Elegí un ambiente o una abertura y tocá «Sumar a la lista».</li>';
+  [].forEach.call(el.querySelectorAll('.li-x'),function(b){b.onclick=function(){LIST.splice(+b.dataset.i,1);update()}});
+  var t=document.getElementById('q-lista-total');if(t)t.innerHTML=money(sum)+PE;
+  var c=document.getElementById('q-lista-n');if(c)c.textContent=LIST.length;}
+var typingT;
+function update(){
+  var r=calc(),bt=$('q-bubble');
+  var pl=$('q-plano');if(pl)pl.innerHTML=plano(r.t.k,S.ancho,S.alto,r.co.hex,C.glass,r.t.n2);
+  var set=function(id,v){var e=$(id);if(e)e.innerHTML=v};
+  set('q-total',money(r.total)+PE);set('q-rango',money(r.lo)+' a '+money(r.hi)+PE);set('q-sena',money(r.sena)+PE);
+  set('q-unit',money(r.unit)+PE);set('q-m2',r.m2.toFixed(2).replace('.',',')+' m²');
+  set('q-resumen',esc(S.cant+' × '+r.t.n+' · '+r.l.n));
+  var m=msg(r);
+  if(bt){var w=$('q-typing');if(w){w.hidden=false;clearTimeout(typingT);typingT=setTimeout(function(){w.hidden=true},700)}
+    bt.innerHTML=esc(m).replace(/\n/g,'<br>').replace(/\(precio de ejemplo\)/,'<i>(precio de ejemplo)</i>');}
+  var tm=$('q-hora');if(tm){var d=new Date();tm.textContent=('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)}
+  var a=$('q-wa');if(a)a.href='https://wa.me/'+C.wa+'?text='+encodeURIComponent(m);
+  listUI();
+  if(C.onUpdate)C.onUpdate(r,S);
+}
+
+/* ---------- tabla editable ---------- */
+function tabla(){
+  var el=$('q-tabla');if(!el)return;
+  var h='<table><thead><tr><th>Abertura</th><th>Precio base por m²</th></tr></thead><tbody>';
+  C.tipos.forEach(function(t){h+='<tr><td>'+esc(t.n)+'</td><td><label class="in">$ <input type="number" min="0" step="1000" data-t="'+t.id+'" value="'+t.p+'" aria-label="Precio por m² de '+esc(t.n)+'"></label>'+PE+'</td></tr>'});
+  h+='</tbody></table><table><thead><tr><th>'+(C.lineaLabel||'Línea')+'</th><th>Multiplicador</th></tr></thead><tbody>';
+  C.lineas.forEach(function(l){h+='<tr><td>'+esc(l.n)+'</td><td><label class="in">× <input type="number" min="0.5" max="4" step="0.05" data-l="'+l.id+'" value="'+l.f+'" aria-label="Multiplicador de '+esc(l.n)+'"></label></td></tr>'});
+  h+='</tbody></table>';
+  el.innerHTML=h;
+  [].forEach.call(el.querySelectorAll('input'),function(i){i.addEventListener('input',function(){var v=parseFloat(i.value);if(isNaN(v)||v<0)return;
+    if(i.dataset.t)precios[i.dataset.t]=v;else fact[i.dataset.l]=v;update();
+    var ok=$('q-tabla-ok');if(ok){ok.textContent='Actualizado: el cotizador ya usa este precio.';clearTimeout(ok._t);ok._t=setTimeout(function(){ok.textContent=''},2200)}})});
+}
+
+/* ---------- panel dueño ---------- */
+function owner(){
+  var o=C.owner;if(!o)return;
+  var e=$('o-consultas');if(e)e.innerHTML=o.consultas.map(function(c){return '<div class="o-msg"><div class="o-h"><b>'+esc(c.nombre)+'</b><span>'+esc(c.hora)+'</span></div><p>'+esc(c.txt).replace(/\n/g,'<br>')+'</p><div class="o-tag">'+esc(c.estado)+'</div></div>'}).join('');
+  e=$('o-agenda');if(e)e.innerHTML=o.agenda.map(function(d){var lib=d.cupos-d.items.length;return '<div class="o-dia"><div class="o-dn"><b>'+esc(d.dia)+'</b><span>'+(lib>0?lib+' cupo'+(lib>1?'s':'')+' libre'+(lib>1?'s':''):'completo')+'</span></div><ul>'+d.items.map(function(i){return '<li>'+esc(i)+'</li>'}).join('')+'</ul></div>'}).join('');
+  e=$('o-senas');if(e){var tot=0;e.innerHTML='<table><tbody>'+o.senas.map(function(s){tot+=s.monto;return '<tr><td>'+esc(s.nombre)+'</td><td>'+esc(s.det)+'</td><td class="r">'+money(s.monto)+'</td></tr>'}).join('')+'</tbody><tfoot><tr><td colspan="2">Señas cobradas esta semana</td><td class="r">'+money(tot)+'</td></tr></tfoot></table>'+PE}
+  e=$('o-ahorro');if(e){var a=o.ahorro,com=a.obras*a.ticket*a.pct;e.innerHTML='<div class="o-big">'+money(com)+PE+'</div><ul class="b"><li>'+a.obras+' obras por mes cerradas desde la web</li><li>Ticket promedio de '+money(a.ticket)+' (de ejemplo)</li><li>Un intermediario que cobra '+Math.round(a.pct*100)+'% se llevaría esa cifra cada mes</li><li>Acá la consulta llega directo y sin comisión</li></ul>'}
+}
+function tabs(){
+  [].forEach.call(document.querySelectorAll('[data-vista]'),function(b){b.addEventListener('click',function(){
+    var v=b.dataset.vista;[].forEach.call(document.querySelectorAll('[data-vista]'),function(x){x.setAttribute('aria-selected',x.dataset.vista===v?'true':'false')});
+    [].forEach.call(document.querySelectorAll('[data-panel]'),function(p){p.hidden=p.dataset.panel!==v});
+    if(b.dataset.scroll){var t=document.getElementById(b.dataset.scroll);if(t)t.scrollIntoView({behavior:'smooth',block:'start'})}
+  })});
+}
+window.QZ={S:S,list:LIST,add:function(amb){var r=calc();LIST.push({amb:amb||S.amb||'',desc:itemDesc(r),total:r.total});S.amb='';update()},update:update,money:money,plano:plano,set:function(k,v){S[k]=v;syncInputs();update()},
+  pick:function(key,id){S[key]=id;var el=$('q-'+key);if(el)[].forEach.call(el.children,function(c){c.setAttribute('aria-pressed',c.dataset.id===id?'true':'false')});var t=by(C.tipos,id);if(key==='tipo'&&t){S.ancho=t.w||S.ancho;S.alto=t.h||S.alto;syncInputs()}update()}};
+document.addEventListener('DOMContentLoaded',function(){
+  opts($('q-tipo'),C.tipos,'tipo',C.rTipo);opts($('q-linea'),C.lineas,'linea',C.rLinea);opts($('q-vidrio'),C.vidrios,'vidrio');
+  opts($('q-color'),C.colores,'color',function(c){return '<i class="sw" style="background:'+c.hex+'"></i>'+esc(c.n)});
+  extrasUI();syncInputs();bindInputs();tabla();owner();tabs();
+  var f=$('q-fecha');if(f){var d=new Date();d.setDate(d.getDate()+1);f.min=d.toISOString().slice(0,10)}
+  update();
+});
+})();
+</script>
+<script>
+(function(){
+  var sel=document.getElementById('amb-sel');
+  [].forEach.call(document.querySelectorAll('.amb'),function(g){
+    function go(){[].forEach.call(document.querySelectorAll('.amb'),function(x){x.classList.toggle('on',x===g)});
+      QZ.S.amb=g.dataset.a;sel.textContent=g.dataset.a;QZ.pick('tipo',g.dataset.t);QZ.S.ancho=+g.dataset.w;QZ.S.alto=+g.dataset.h;
+      var mo=document.querySelector('#q-extras input');if(mo){mo.checked=g.dataset.x==='mos';QZ.S.extras.mos=mo.checked}
+      QZ.set('ancho',+g.dataset.w);
+      if(window.innerWidth<760)document.getElementById('armar').scrollIntoView({behavior:'smooth'});}
+    g.addEventListener('click',go);g.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}});
+  });
+  document.getElementById('sumar').addEventListener('click',function(){QZ.add();sel.textContent='Ninguno elegido';[].forEach.call(document.querySelectorAll('.amb'),function(x){x.classList.remove('on')})});
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="MADO Aberturas"></script>
+</body>
+</html>
