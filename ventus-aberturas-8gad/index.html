@@ -1,0 +1,775 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Ventus · Cotizador de aberturas (prototipo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gemunu+Libre:wght@400;500;600;700;800&family=Cairo:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<script>function noimg(i){var f=i.parentNode;if(f){f.classList.add('sinfoto')}i.remove()}</script>
+<style>
+:root{
+  --cartel:#17469E; --cartel2:#0F336F; --asfalto:#1E2126; --asfalto2:#2A2E35; --cal:#F4F2EC; --cal2:#E8E5DC;
+  --cielo:#CFE3F2; --ambar:#F3A712; --tinta:#16181C; --gris:#5F646C; --linea:#D6D2C7;
+  --wa:#D9FDD3; --wafondo:#ECE5DD;
+  --d:"Gemunu Libre","Arial Narrow",sans-serif; --t:"Cairo",system-ui,sans-serif; --m:"Share Tech Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--cal);color:var(--tinta);font:15.5px/1.55 var(--t);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--ambar);outline-offset:2px}
+a{color:inherit}
+.wrap{max-width:1240px;margin:0 auto;padding:0 32px}
+.pe{display:inline-block;font:500 10px/1.2 var(--t);color:var(--gris);margin-left:6px;white-space:nowrap;vertical-align:middle}
+.osc .pe,.cartel .pe{color:#b9c6dc}
+.k{font:600 12px/1.2 var(--m);letter-spacing:.14em;text-transform:uppercase;color:var(--gris)}
+ul.b{margin:0;padding:0;list-style:none}
+ul.b li{position:relative;padding-left:20px;margin:5px 0}
+ul.b li::before{content:"";position:absolute;left:0;top:.55em;width:10px;height:10px;border-radius:2px;background:var(--ambar)}
+h1,h2,h3{font-family:var(--d);font-weight:700;letter-spacing:.01em;line-height:.95;margin:0}
+h2{font-size:clamp(38px,5vw,64px);text-transform:uppercase}
+
+/* firma */
+.firma{font:400 12px/1.4 var(--t);color:var(--gris);padding:7px 0;text-align:center;border-bottom:1px solid var(--linea);background:var(--cal)}
+.firma b{color:var(--tinta);font-weight:600}
+
+/* header */
+header.top{position:sticky;top:0;z-index:40;background:rgba(30,33,38,.96);backdrop-filter:blur(8px);color:var(--cal)}
+header.top .wrap{display:flex;align-items:center;gap:22px;height:60px}
+.marca{display:flex;align-items:center;gap:12px;text-decoration:none}
+.marca .wm{font:800 30px/1 var(--d);letter-spacing:.18em}
+.marca small{font:400 11px/1.1 var(--m);color:#a9b0bb;letter-spacing:.08em}
+header nav{display:flex;gap:18px;margin-left:auto;font-weight:600;font-size:14px}
+header nav a{text-decoration:none;opacity:.85}
+header nav a:hover{opacity:1;color:var(--ambar)}
+.vistas{display:flex;background:var(--asfalto2);border-radius:999px;padding:3px}
+.vistas button{border:0;background:none;padding:6px 14px;border-radius:999px;cursor:pointer;font-weight:600;font-size:13px;color:#cdd2d9}
+.vistas button[aria-selected=true]{background:var(--ambar);color:var(--asfalto)}
+
+/* hero */
+.hero{position:relative;min-height:620px;background:var(--asfalto);color:#fff;overflow:hidden}
+.hero figure{position:absolute;inset:0;margin:0}
+.hero figure img{width:100%;height:100%;object-fit:cover;filter:saturate(.9) brightness(.78)}
+.hero figure::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(20,22,26,.55),rgba(20,22,26,.05) 70%)}
+.hero .wrap{position:relative;display:grid;grid-template-columns:minmax(0,640px) 1fr;align-items:end;min-height:620px;padding-top:56px;padding-bottom:56px;gap:32px}
+.cartel{background:var(--cartel);border:4px solid #fff;outline:3px solid var(--cartel);border-radius:14px;padding:26px 30px 24px;box-shadow:0 30px 60px rgba(0,0,0,.35)}
+.escudo{display:inline-flex;align-items:center;gap:10px;font:600 13px/1 var(--m);letter-spacing:.12em}
+.escudo i{display:inline-grid;place-items:center;width:38px;height:42px;background:#fff;color:var(--cartel);font:800 22px/1 var(--d);font-style:normal;clip-path:polygon(0 0,100% 0,100% 70%,50% 100%,0 70%)}
+.cartel h1{font-size:clamp(56px,8vw,104px);text-transform:uppercase;margin:16px 0 10px}
+.cartel h1 span{color:var(--ambar)}
+.cartel p{margin:0 0 16px;max-width:46ch;color:#dfe7f5}
+.salidas{display:grid;gap:0;border-top:2px solid rgba(255,255,255,.5);margin-top:6px}
+.salidas a{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.28);text-decoration:none;font:600 20px/1.1 var(--d);text-transform:uppercase;letter-spacing:.03em}
+.salidas a b{font:400 13px/1.2 var(--t);text-transform:none;letter-spacing:0;color:#c9d6ee}
+.salidas a::after{content:"→";font:700 26px/1 var(--d);color:var(--ambar)}
+.btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:8px;padding:12px 18px;font-weight:700;cursor:pointer;text-decoration:none}
+.btn.am{background:var(--ambar);color:var(--asfalto)}
+.btn.bl{background:#fff;color:var(--cartel)}
+.btn.os{background:var(--asfalto);color:#fff}
+.btn.wa{background:#1FA855;color:#fff}
+.btn.ln{background:transparent;border:1.5px solid currentColor}
+.mojon{justify-self:end;align-self:end;width:120px;background:#fff;color:var(--asfalto);border-radius:10px 10px 0 0;padding:34px 10px 40px;text-align:center;position:relative;box-shadow:0 20px 40px rgba(0,0,0,.3)}
+.mojon::before{content:"";position:absolute;left:0;right:0;top:12px;height:14px;background:var(--ambar)}
+.mojon b{display:block;font:800 52px/1 var(--d);margin-top:6px}
+.mojon span{font:500 12px/1.2 var(--m);letter-spacing:.1em}
+
+/* ruta (hitos) */
+.ruta{background:var(--asfalto);color:#fff;padding:34px 0 30px;position:relative}
+.ruta .linea{position:absolute;left:0;right:0;top:64px;height:0;border-top:3px dashed rgba(255,255,255,.45)}
+.ruta ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,1fr);gap:18px;position:relative}
+.ruta li{padding-top:52px;position:relative}
+.ruta li::before{content:attr(data-km);position:absolute;top:14px;left:0;background:var(--ambar);color:var(--asfalto);font:700 14px/1 var(--m);padding:6px 8px;border-radius:4px}
+.ruta li b{display:block;font:700 26px/1 var(--d);text-transform:uppercase;margin-bottom:4px}
+.ruta li span{font-size:13.5px;color:#c4c9d1}
+
+/* secciones */
+section.s{padding:84px 0}
+.head{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:34px;flex-wrap:wrap}
+.head p{max-width:52ch;margin:0;color:var(--gris)}
+
+/* cotizador */
+.cot{display:grid;grid-template-columns:minmax(0,1fr) 440px;gap:28px;align-items:start}
+.pasos{display:grid;gap:0;border-left:3px solid var(--asfalto);margin-left:14px}
+.paso{position:relative;padding:4px 0 26px 30px}
+.paso::before{content:attr(data-n);position:absolute;left:-17px;top:0;width:31px;height:31px;border-radius:6px;background:var(--asfalto);color:var(--ambar);display:grid;place-items:center;font:700 14px/1 var(--m)}
+.paso h3{font-size:26px;text-transform:uppercase;margin:3px 0 10px}
+.paso h3 small{font:400 13px/1.3 var(--t);text-transform:none;color:var(--gris);margin-left:8px}
+.ops{display:flex;flex-wrap:wrap;gap:8px}
+.op{border:1.5px solid var(--linea);background:#fff;border-radius:8px;padding:8px 13px;cursor:pointer;font-weight:600;font-size:14px;line-height:1.2;text-align:left}
+.op small{display:block;font-weight:400;font-size:11.5px;color:var(--gris)}
+.op[aria-pressed=true]{border-color:var(--cartel);background:var(--cartel);color:#fff}
+.op[aria-pressed=true] small{color:#c9d6ee}
+.op:disabled{opacity:.35;cursor:not-allowed}
+.op .sw{display:inline-block;width:14px;height:14px;border-radius:50%;vertical-align:-2px;margin-right:6px;border:1px solid rgba(0,0,0,.25)}
+.med{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.med label{display:grid;gap:4px;font-size:13px;color:var(--gris);font-weight:600}
+.med input[type=number],.datos input,.datos select{width:100%;border:1.5px solid var(--linea);border-radius:8px;padding:9px 10px;background:#fff;font:500 16px var(--m);color:var(--tinta)}
+.med input[type=range]{width:100%;accent-color:var(--cartel)}
+.rosa-w{display:grid;grid-template-columns:190px 1fr;gap:20px;align-items:center}
+.rosa button{cursor:pointer}
+.rosa .pt{fill:#fff;stroke:var(--asfalto);stroke-width:1.5}
+.rosa .pt.on{fill:var(--ambar)}
+.rosa text{font:700 13px var(--m);fill:var(--asfalto);pointer-events:none}
+.consejo{background:#fff;border:1.5px solid var(--linea);border-left:6px solid var(--ambar);border-radius:8px;padding:12px 14px}
+.consejo b{font:700 20px/1 var(--d);text-transform:uppercase;display:block;margin-bottom:4px}
+.consejo .btn{margin-top:8px;padding:7px 12px;font-size:13px}
+.chk{display:flex;flex-wrap:wrap;gap:8px}
+.chk label{display:flex;align-items:center;gap:8px;border:1.5px solid var(--linea);background:#fff;border-radius:8px;padding:8px 12px;font-weight:600;font-size:14px;cursor:pointer}
+.chk input{accent-color:var(--cartel);width:16px;height:16px}
+.datos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.datos label{display:grid;gap:4px;font-size:13px;color:var(--gris);font-weight:600}
+.datos input,.datos select{font-family:var(--t)}
+
+.tablero{position:sticky;top:76px;display:grid;gap:14px}
+.plano{background:var(--asfalto);color:#fff;border-radius:12px;padding:16px 16px 12px}
+.plano .tt{display:flex;justify-content:space-between;align-items:center;font:500 12px/1 var(--m);letter-spacing:.08em;color:#aeb5bf;margin-bottom:8px}
+.plano svg{width:100%;height:auto;display:block}
+.plano .tot{display:flex;justify-content:space-between;align-items:baseline;border-top:1px dashed #4a5059;margin-top:10px;padding-top:10px;gap:10px;flex-wrap:wrap}
+.plano .tot b{font:700 40px/1 var(--d);color:var(--ambar)}
+.plano .tot small{color:#aeb5bf;font-size:12px}
+.desg{font:400 12.5px/1.6 var(--m);color:#c9ced6;margin:6px 0 0;padding:0;list-style:none}
+.desg li{display:flex;justify-content:space-between;gap:10px}
+.desg .pe{color:#8f98a3}
+.chat{background:var(--wafondo);border-radius:12px;padding:12px;border:1px solid #d6cfc4}
+.chat .cab{display:flex;align-items:center;gap:10px;font-size:13px;margin-bottom:8px}
+.chat .av{width:34px;height:34px;border-radius:50%;background:var(--cartel);color:#fff;display:grid;place-items:center;font:700 16px var(--d)}
+.chat .cab b{display:block;font-size:14px}
+.chat .cab span{color:var(--gris);font-size:12px}
+.burbuja{background:var(--wa);border-radius:10px 2px 10px 10px;padding:10px 12px;font-size:13.5px;line-height:1.45;white-space:pre-wrap;margin-left:28px;box-shadow:0 1px 1px rgba(0,0,0,.08);position:relative;min-height:60px}
+.burbuja .hora{display:block;text-align:right;font-size:10.5px;color:#6b7a6a;margin-top:4px}
+.burbuja .cursor{display:inline-block;width:7px;height:14px;background:#2b8a4b;vertical-align:-2px;animation:parp 1s steps(1) infinite}
+@keyframes parp{50%{opacity:0}}
+.chat .btn{width:100%;justify-content:center;margin-top:10px}
+.chat .seg{display:block;text-align:center;font-size:12.5px;margin-top:8px;color:var(--cartel);font-weight:700}
+
+/* dueño */
+.panel-ej{display:inline-block;background:var(--ambar);color:var(--asfalto);font:700 11px/1 var(--m);letter-spacing:.1em;padding:6px 8px;border-radius:4px;text-transform:uppercase}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border:2px solid var(--asfalto);border-radius:10px;overflow:hidden;background:#fff;margin:16px 0 24px}
+.kpis div{padding:16px;border-right:1px solid var(--linea)}
+.kpis div:last-child{border-right:0}
+.kpis b{display:block;font:700 40px/1 var(--d)}
+.kpis span{font-size:13px;color:var(--gris)}
+.duo{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:start}
+.bandeja{display:grid;gap:10px}
+.cons{background:var(--wafondo);border-radius:10px;padding:10px 12px;border:1px solid #d6cfc4}
+.cons .q{display:flex;justify-content:space-between;font-size:12.5px;color:var(--gris);margin-bottom:6px;gap:8px;flex-wrap:wrap}
+.cons .q b{color:var(--tinta)}
+.cons .burbuja{margin-left:0;font-size:12.5px;min-height:0}
+.tag{display:inline-block;font:600 11px/1 var(--m);padding:4px 6px;border-radius:4px;background:var(--cartel);color:#fff}
+.tag.pvc{background:#2D7D5B}.tag.cor{background:#8A4FA3}
+.agenda{width:100%;border-collapse:collapse;background:#fff;border:2px solid var(--asfalto);font-size:13px}
+.agenda th,.agenda td{border:1px solid var(--linea);padding:7px 6px;text-align:center}
+.agenda th{background:var(--asfalto);color:#fff;font:600 12px var(--m)}
+.agenda td.ocu{background:var(--cielo);font-weight:600}
+.agenda td.lib{color:#2D7D5B;font-weight:700}
+.precios{width:100%;border-collapse:collapse;background:#fff;font-size:14px;margin-top:6px}
+.precios th,.precios td{border-bottom:1px solid var(--linea);padding:7px 8px;text-align:left}
+.precios th{font:600 12px var(--m);color:var(--gris);text-transform:uppercase}
+.precios input{width:110px;border:1.5px solid var(--linea);border-radius:6px;padding:5px 7px;font:500 14px var(--m)}
+.paravos{background:var(--cartel);color:#fff;border-radius:12px;padding:22px 24px;margin-top:24px}
+.paravos h3{font-size:32px;text-transform:uppercase;margin-bottom:10px}
+.paravos ul.b li::before{background:#fff}
+.ahorro{background:#fff;border:2px solid var(--asfalto);border-radius:10px;padding:14px 16px;margin-top:16px}
+.ahorro b{font:700 30px/1 var(--d)}
+
+/* líneas */
+.directorio{background:var(--cartel2);color:#fff;border-radius:14px;padding:8px;border:4px solid #fff;outline:3px solid var(--cartel2)}
+.fila{display:grid;grid-template-columns:200px 1fr 110px;gap:18px;align-items:center;padding:16px 18px;border-bottom:1px solid rgba(255,255,255,.22)}
+.fila:last-child{border-bottom:0}
+.fila h3{font-size:34px;text-transform:uppercase}
+.fila h3 small{display:block;font:400 12px/1.3 var(--t);text-transform:none;color:#c9d6ee;margin-top:4px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips span{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);border-radius:4px;padding:4px 8px;font:500 13.5px/1.2 var(--m)}
+.fila .quien{font:600 13px/1.3 var(--t);text-align:right;color:var(--ambar)}
+.colores{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px}
+.colores div{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600}
+.colores i{width:28px;height:28px;border-radius:6px;border:1px solid rgba(0,0,0,.2)}
+
+/* obras */
+.tira{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(280px,360px);gap:16px;overflow-x:auto;padding:4px 32px 18px;scroll-snap-type:x mandatory}
+.obra{scroll-snap-align:start;background:#fff;border-radius:10px;overflow:hidden;border:1px solid var(--linea);display:flex;flex-direction:column}
+.obra figure{margin:0;aspect-ratio:4/3;background:var(--cal2);position:relative}
+.obra img{width:100%;height:100%;object-fit:cover}
+.obra .info{padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.obra .info b{font:700 21px/1 var(--d);text-transform:uppercase}
+.obra .info small{display:block;color:var(--gris);font-size:12.5px}
+.obra .info button{border:1.5px solid var(--cartel);color:var(--cartel);background:none;border-radius:6px;padding:6px 9px;font-weight:700;font-size:12.5px;cursor:pointer;white-space:nowrap}
+.sinfoto{background:repeating-linear-gradient(90deg,transparent 0 48%,#c6ccd4 48% 52%,transparent 52% 100%),linear-gradient(#dfe7ef,#cfdbe6)!important}
+.sinfoto::after{content:"Ventus · Río Cuarto";position:absolute;left:12px;bottom:10px;font:600 12px var(--m);color:var(--gris)}
+
+/* cómo */
+.como{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.como table{width:100%;border-collapse:collapse;background:#fff;border:2px solid var(--asfalto)}
+.como td{padding:10px 12px;border-bottom:1px solid var(--linea);vertical-align:top;font-size:14.5px}
+.como td:first-child{font:700 22px/1 var(--d);color:var(--cartel);width:54px}
+
+footer{background:var(--asfalto);color:#c4c9d1;padding:50px 0 26px;font-size:14px}
+footer .g{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:28px}
+footer b{color:#fff}
+footer .wm{font:800 40px/1 var(--d);letter-spacing:.18em;color:#fff}
+footer .aviso{border-top:1px solid #3a3f47;margin-top:30px;padding-top:16px;font-size:12px;color:#8f98a3;text-align:center}
+
+[hidden]{display:none!important}
+
+@media (max-width:1020px){
+  .cot{grid-template-columns:1fr}
+  .tablero{position:static}
+  .duo{grid-template-columns:1fr}
+  .ruta ol{grid-template-columns:repeat(3,1fr)}
+}
+@media (max-width:720px){
+  .wrap{padding:0 16px}
+  header nav{display:none}
+  .vistas{margin-left:auto}
+  .vistas button{padding:6px 10px}
+  .marca small{display:none}
+  .hero,.hero .wrap{min-height:0}
+  .hero .wrap{grid-template-columns:1fr;padding-top:180px;padding-bottom:24px}
+  .mojon{display:none}
+  .cartel{padding:20px 18px}
+  .ruta .linea{display:none}
+  .ruta ol{grid-template-columns:1fr 1fr}
+  section.s{padding:56px 0}
+  .med{grid-template-columns:1fr 1fr}
+  .rosa-w{grid-template-columns:1fr;justify-items:center}
+  .datos{grid-template-columns:1fr}
+  .kpis{grid-template-columns:1fr 1fr}
+  .kpis div:nth-child(2){border-right:0}
+  .kpis div:nth-child(-n+2){border-bottom:1px solid var(--linea)}
+  .fila{grid-template-columns:1fr;gap:10px}
+  .fila .quien{text-align:left}
+  .tira{padding:4px 16px 18px;grid-auto-columns:82%}
+  .como{grid-template-columns:1fr}
+  footer .g{grid-template-columns:1fr}
+  .agenda{font-size:11.5px}
+  .precios input{width:90px}
+}
+</style>
+</head>
+<body>
+
+<div class="firma">Prototipo preparado para <b>Ventus S.A.</b> · 20 de noviembre de 2026</div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="marca" href="#inicio"><span class="wm">VENTUS</span><small>RUTA 8 · KM 606<br>RÍO CUARTO</small></a>
+    <nav><a href="#cotizar">Cotizar</a><a href="#lineas">Líneas</a><a href="#obras">Obras</a><a href="#fabrica">Fábrica</a></nav>
+    <div class="vistas" role="tablist" aria-label="Vista">
+      <button role="tab" data-vista="cliente" aria-selected="true">Cliente</button>
+      <button role="tab" data-vista="dueno" aria-selected="false" data-scroll="cotizar">Ver como dueño</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero" id="inicio">
+  <figure><img src="https://ventusaberturas.com.ar/vent249/wp-content/uploads/2024/11/img-cerramiento-exterior-ducasse.webp" alt="Cerramiento con sistema Ducasse hecho por Ventus" onerror="noimg(this)"></figure>
+  <div class="wrap">
+    <div class="cartel">
+      <span class="escudo"><i>8</i>RUTA NACIONAL 8 · KM 606 · RÍO CUARTO</span>
+      <h1>Del km 606<br><span>a tu obra</span></h1>
+      <p>Aluminio Aluar, PVC y cerramientos Ducasse fabricados con CNC en la zona sur de Río Cuarto. Cotizá en un minuto y el pedido le llega al vendedor de esa línea.</p>
+      <div class="salidas">
+        <a href="#cotizar" data-mat="alu">Aluminio <b>A30 New, Módena, A40 RPT, Enkel, Imperia · Martín</b></a>
+        <a href="#cotizar" data-mat="pvc">PVC <b>Prime, Jumbo, Advance, Efficient · Guadalupe</b></a>
+        <a href="#cotizar" data-mat="duc">Cerramientos <b>Sistema Ducasse · Martín</b></a>
+      </div>
+      <div class="btns">
+        <a class="btn am" href="#cotizar">Cotizar en 1 minuto</a>
+        <a class="btn ln" href="#obras" style="color:#fff">Ver obras en Río Cuarto</a>
+      </div>
+    </div>
+    <div class="mojon" aria-hidden="true"><span>RN 8</span><b>606</b><span>KM</span></div>
+  </div>
+</section>
+
+<section class="ruta" id="fabrica" aria-label="Historia">
+  <div class="linea"></div>
+  <div class="wrap">
+    <ol>
+      <li data-km="1960"><b>El Colono</b><span>Construcciones Metálicas El Colono, del grupo Solaro</span></li>
+      <li data-km="1982"><b>Acero S.A.</b><span>La segunda empresa del grupo</span></li>
+      <li data-km="2017"><b>Nace Ventus</b><span>Fabricación propia de aluminio y PVC con CNC</span></li>
+      <li data-km="14.000 m²"><b>Polo sur</b><span>Dentro de un proyecto comercial de más de 14.000 m² cubiertos</span></li>
+      <li data-km="L a V"><b>8 a 17:30</b><span>Ruta 8 y Av. Sabattini 3600, con corte de 13 a 13:30</span></li>
+    </ol>
+  </div>
+</section>
+
+<!-- COTIZADOR / PANEL -->
+<section class="s" id="cotizar">
+  <div class="wrap">
+
+    <div data-panel="cliente">
+      <div class="head">
+        <div><span class="k">Cotizador en línea</span><h2>Armá tu abertura</h2></div>
+        <ul class="b" style="max-width:52ch;color:var(--gris)">
+          <li>Precio estimado al instante, con plano a medida</li>
+          <li>El pedido va directo a Martín (aluminio) o Guadalupe (PVC)</li>
+          <li>Después se mide en obra y se confirma el precio final</li>
+        </ul>
+      </div>
+
+      <div class="cot">
+        <div class="pasos">
+          <div class="paso" data-n="01"><h3>Material</h3><div class="ops" id="q-mat"></div></div>
+          <div class="paso" data-n="02"><h3>Línea <small id="lineaNota"></small></h3><div class="ops" id="q-linea"></div></div>
+          <div class="paso" data-n="03"><h3>Tipo de abertura</h3><div class="ops" id="q-tipo"></div></div>
+          <div class="paso" data-n="04"><h3>Medidas <small>en centímetros, vano terminado</small></h3>
+            <div class="med">
+              <label>Ancho <input type="number" id="q-ancho" min="40" max="600" step="5"><input type="range" id="r-ancho" min="40" max="600" step="5"></label>
+              <label>Alto <input type="number" id="q-alto" min="40" max="300" step="5"><input type="range" id="r-alto" min="40" max="300" step="5"></label>
+              <label>Cantidad <input type="number" id="q-cant" min="1" max="40" step="1"></label>
+            </div>
+          </div>
+          <div class="paso" data-n="05"><h3>¿Para dónde da? <small>el sol de Río Cuarto define el vidrio</small></h3>
+            <div class="rosa-w">
+              <svg class="rosa" id="rosa" viewBox="0 0 190 190" width="190" height="190" role="group" aria-label="Orientación de la abertura"></svg>
+              <div class="consejo" id="consejo"></div>
+            </div>
+          </div>
+          <div class="paso" data-n="06"><h3>Vidrio</h3><div class="ops" id="q-vidrio"></div></div>
+          <div class="paso" data-n="07"><h3>Color</h3><div class="ops" id="q-color"></div></div>
+          <div class="paso" data-n="08"><h3>Extras</h3>
+            <div class="chk" id="q-extras"></div>
+          </div>
+          <div class="paso" data-n="09"><h3>Tus datos y visita de medición</h3>
+            <div class="datos">
+              <label>Nombre <input id="q-nombre" placeholder="Ej.: Laura" autocomplete="given-name"></label>
+              <label>Barrio o localidad <input id="q-barrio" placeholder="Ej.: Barrio Golf"></label>
+              <label>Día para medir <select id="q-dia"></select></label>
+              <label>Turno <select id="q-turno"><option>mañana (8 a 13)</option><option>tarde (13:30 a 17:30)</option></select></label>
+            </div>
+          </div>
+        </div>
+
+        <aside class="tablero" aria-live="polite">
+          <div class="plano">
+            <div class="tt"><span id="p-tit">PLANO · ESC. AUTOMÁTICA</span><span id="p-m2"></span></div>
+            <svg id="plano" viewBox="0 0 400 300" role="img" aria-label="Plano de la abertura"></svg>
+            <ul class="desg" id="desg"></ul>
+            <div class="tot"><div><small>Estimado para <span id="t-cant"></span></small><br><b id="t-total"></b><span class="pe">precio de ejemplo</span></div><small id="t-rango"></small></div>
+          </div>
+          <div class="chat">
+            <div class="cab"><div class="av" id="c-av">M</div><div><b id="c-quien">Martín · Aluminio</b><span id="c-num">WhatsApp de Ventus</span></div></div>
+            <div class="burbuja" id="burbuja"></div>
+            <a class="btn wa" id="c-btn" href="#" target="_blank" rel="noopener">Enviar por WhatsApp</a>
+            <a class="seg" id="c-paola" href="#" target="_blank" rel="noopener" hidden>Pasarle la cortina a Paola →</a>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- PANEL DUEÑO -->
+    <div data-panel="dueno" hidden>
+      <div class="head">
+        <div><span class="panel-ej">Panel de ejemplo</span><h2 style="margin-top:10px">Lo que ve Ventus</h2></div>
+        <p>Así entrarían los pedidos del cotizador. Datos inventados para mostrar cómo funciona: nada de esto es real.</p>
+      </div>
+      <div class="kpis">
+        <div><b>23</b><span>consultas esta semana</span></div>
+        <div><b>11</b><span>mediciones agendadas</span></div>
+        <div><b id="k-senas"></b><span>señas cobradas <span class="pe">precio de ejemplo</span></span></div>
+        <div><b>-62%</b><span>mensajes de "¿cuánto sale?"</span></div>
+      </div>
+      <div class="duo">
+        <div>
+          <span class="k">Bandeja · repartida por vendedor</span>
+          <div class="bandeja" id="bandeja" style="margin-top:10px"></div>
+        </div>
+        <div>
+          <span class="k">Mediciones de la semana · cupos</span>
+          <table class="agenda" style="margin-top:10px" id="agenda"></table>
+          <div class="ahorro">
+            <span class="k">Frente a vender por un intermediario</span>
+            <p style="margin:6px 0 0">Sobre <span id="a-base"></span> vendidos en el mes, una comisión de 13% serían <b id="a-ahorro"></b><span class="pe">precio de ejemplo</span>. Con el cotizador propio, cero comisión por pedido.</p>
+          </div>
+          <div style="margin-top:16px">
+            <span class="k">Tabla de precios · editable</span>
+            <table class="precios"><thead><tr><th>Línea</th><th>$ por m²</th></tr></thead><tbody id="tprecios"></tbody></table>
+            <p style="font-size:12.5px;color:var(--gris);margin:6px 0 0">Cambiá un valor y el cotizador del cliente se actualiza al toque. Todos son precios de ejemplo.</p>
+          </div>
+        </div>
+      </div>
+      <div class="paravos">
+        <h3>Para vos, Ventus</h3>
+        <ul class="b">
+          <li>Menos mensajes repetidos: el cliente llega con línea, medida, vidrio y color ya elegidos.</li>
+          <li>Cada pedido le cae al vendedor que corresponde: Martín, Guadalupe o Paola.</li>
+          <li>Agenda de mediciones con cupos por turno, sin pisarse.</li>
+          <li>Seña que entra antes de confirmar la fabricación, y sin comisión por pedido.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- LÍNEAS -->
+<section class="s" id="lineas" style="background:var(--cal2)">
+  <div class="wrap">
+    <div class="head">
+      <div><span class="k">Lo que fabrica Ventus</span><h2>Carta de perfiles</h2></div>
+      <ul class="b" style="max-width:48ch;color:var(--gris)">
+        <li>Perfiles Aluar, con líneas de ruptura de puente térmico (RPT)</li>
+        <li>PVC en blanco y en símil madera</li>
+        <li>Barandas, piel de vidrio y frente integral para obra grande</li>
+      </ul>
+    </div>
+    <div class="directorio">
+      <div class="fila"><h3>Aluminio<small>Corredizas, batientes, puertas</small></h3>
+        <div class="chips"><span>A30 New</span><span>A40</span><span>A40 RPT</span><span>A40 Compact</span><span>A40 Compact RPT</span><span>Enkel</span><span>Imperia</span><span>Módena</span><span>Módena RPT</span></div>
+        <div class="quien">Martín<br>3585 17-9032</div></div>
+      <div class="fila"><h3>PVC<small>Corredizas y doble contacto</small></h3>
+        <div class="chips"><span>Prime</span><span>Jumbo</span><span>Advance</span><span>Efficient</span><span>Puerta pivotante</span></div>
+        <div class="quien">Guadalupe<br>3584 35-1240</div></div>
+      <div class="fila"><h3>Ducasse<small>Cerramientos de vidrio</small></h3>
+        <div class="chips"><span>Tauro Centro VD</span><span>Sigma VD</span><span>Tauro PL VD 80</span><span>Twin Opuesto VD</span><span>Twin Telescópico VD</span></div>
+        <div class="quien">Martín<br>3585 17-9032</div></div>
+      <div class="fila"><h3>Fachadas<small>Obra y comercio</small></h3>
+        <div class="chips"><span>Piel de vidrio</span><span>Frente integral</span><span>Baranda City</span><span>Baranda Foil</span><span>Baranda Imperia</span></div>
+        <div class="quien">Martín<br>3585 17-9032</div></div>
+      <div class="fila"><h3>Cortinas<small>Y toldos</small></h3>
+        <div class="chips"><span>Hunter Douglas</span><span>Sunset de tela</span><span>Sunset verticales</span><span>Manuales o automáticas</span></div>
+        <div class="quien">Paola<br>3585 02-7144</div></div>
+    </div>
+    <div class="colores">
+      <div><i style="background:#F7F7F4"></i>Blanco</div>
+      <div><i style="background:#1D1D1F"></i>Negro mate (aluminio)</div>
+      <div><i style="background:linear-gradient(115deg,#B9803F,#9A6430 40%,#C08A4A 60%,#8E5A2A)"></i>Golden Oak (PVC)</div>
+      <div><i style="background:linear-gradient(115deg,#7A5638,#5E412A 45%,#86603F 60%,#51371F)"></i>Turner Oak (PVC)</div>
+    </div>
+  </div>
+</section>
+
+<!-- OBRAS -->
+<section class="s" id="obras">
+  <div class="wrap">
+    <div class="head">
+      <div><span class="k">Tramos recorridos</span><h2>Obras en Río Cuarto y la zona</h2></div>
+      <p>Fotos de la web de Ventus. Tocá "Quiero algo así" y el cotizador arranca con esa idea.</p>
+    </div>
+  </div>
+  <div class="tira" id="tira"></div>
+</section>
+
+<!-- CÓMO -->
+<section class="s" style="background:var(--cal2)">
+  <div class="wrap como">
+    <div>
+      <span class="k">Cómo funciona</span><h2 style="margin:6px 0 18px">De la web a la obra</h2>
+      <table>
+        <tr><td>01</td><td>Elegís línea, tipo, medida, vidrio y color. Ves el precio estimado.</td></tr>
+        <tr><td>02</td><td>El pedido sale por WhatsApp al vendedor de esa línea, con todo cargado.</td></tr>
+        <tr><td>03</td><td>Ventus mide en obra el día y turno que elegiste.</td></tr>
+        <tr><td>04</td><td>Con la seña se confirma la fabricación; después, colocación.</td></tr>
+      </table>
+    </div>
+    <div>
+      <span class="k">Qué incluye el estimado</span><h2 style="margin:6px 0 18px">Y qué no</h2>
+      <table>
+        <tr><td>Sí</td><td>Perfil, vidrio, herrajes y color elegidos, por unidad y cantidad.</td></tr>
+        <tr><td>Sí</td><td>Mosquitero, cortina y colocación si los marcás.</td></tr>
+        <tr><td>No</td><td>Premarcos, obra húmeda ni retiro de aberturas viejas.</td></tr>
+        <tr><td>Ojo</td><td>El precio final se confirma después de medir.</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="g">
+      <div><div class="wm">VENTUS</div><p>Ventus S.A. · Fabricantes de aberturas de aluminio y PVC.<br>Av. Amadeo Sabattini 3600 y Ruta Nacional 8 (km 606), Río Cuarto.</p></div>
+      <div><b>Horario</b><br>Lunes a viernes 8:00 a 13:00 y 13:30 a 17:30<br><br><b>Mail</b><br>ventas@ventus.com.ar</div>
+      <div><b>WhatsApp</b><br>Aluminio · Martín 3585 17-9032<br>PVC · Guadalupe 3584 35-1240<br>Cortinas · Paola 3585 02-7144<br><br>Instagram @ventus_aberturas</div>
+    </div>
+    <div class="aviso">Prototipo de demostración preparado para Ventus por Resolviendo Kos · No es la web oficial · Los precios son de ejemplo</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+var $=function(id){return document.getElementById(id)};
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function fmt(n){return '$'+Math.round(n).toLocaleString('es-AR')}
+var PE='<span class="pe">precio de ejemplo</span>';
+
+var VEND={alu:{n:'Martín',l:'Aluminio',wa:'5493585179032',tel:'3585 17-9032'},pvc:{n:'Guadalupe',l:'PVC',wa:'5493584351240',tel:'3584 35-1240'},cor:{n:'Paola',l:'Cortinas',wa:'5493585027144',tel:'3585 02-7144'}};
+var C={
+ mats:[{id:'alu',n:'Aluminio',d:'Perfiles Aluar'},{id:'pvc',n:'PVC',d:'Aislación térmica'},{id:'duc',n:'Cerramiento Ducasse',d:'Paños de vidrio'}],
+ lineas:[
+  {id:'a30',m:'alu',n:'A30 New',p:185000,t:['corr','pv','fijo','vent']},
+  {id:'mod',m:'alu',n:'Módena',p:215000,t:['corr','pv','fijo','bat','vent','pta']},
+  {id:'modr',m:'alu',n:'Módena RPT',p:285000,t:['corr','pv','fijo','bat','pta'],rpt:1},
+  {id:'a40',m:'alu',n:'A40',p:245000,t:['corr','pv','fijo','bat','osc','pta']},
+  {id:'a40r',m:'alu',n:'A40 RPT',p:325000,t:['corr','pv','fijo','bat','osc','pta'],rpt:1},
+  {id:'a40c',m:'alu',n:'A40 Compact',p:265000,t:['corr','pv','fijo']},
+  {id:'a40cr',m:'alu',n:'A40 Compact RPT',p:340000,t:['corr','pv','fijo'],rpt:1},
+  {id:'enk',m:'alu',n:'Enkel',p:300000,t:['bat','fijo','piv']},
+  {id:'imp',m:'alu',n:'Imperia',p:360000,t:['corr','pv','fijo']},
+  {id:'prime',m:'pvc',n:'Prime',p:300000,t:['corr','pv']},
+  {id:'jumbo',m:'pvc',n:'Jumbo',p:345000,t:['corr','pv']},
+  {id:'adv',m:'pvc',n:'Advance',p:390000,t:['corr','pv']},
+  {id:'eff',m:'pvc',n:'Efficient',p:420000,t:['bat','osc','fijo','piv']},
+  {id:'tauro',m:'duc',n:'Tauro Centro VD',p:260000,t:['cerr']},
+  {id:'sigma',m:'duc',n:'Sigma VD',p:250000,t:['cerr']},
+  {id:'taurop',m:'duc',n:'Tauro PL VD 80',p:275000,t:['cerr']},
+  {id:'twino',m:'duc',n:'Twin Opuesto VD',p:290000,t:['cerr']},
+  {id:'twint',m:'duc',n:'Twin Telescópico VD',p:310000,t:['cerr']}
+ ],
+ tipos:[
+  {id:'corr',n:'Ventana corrediza',d:'2 hojas',f:1,w:150,h:110},
+  {id:'pv',n:'Puerta-ventana corrediza',d:'2 hojas',f:1.05,w:200,h:205},
+  {id:'fijo',n:'Paño fijo',d:'sin apertura',f:.7,w:120,h:120},
+  {id:'bat',n:'Ventana batiente',d:'1 hoja',f:1.15,w:80,h:110},
+  {id:'osc',n:'Oscilobatiente',d:'abre y ventila',f:1.3,w:90,h:120},
+  {id:'vent',n:'Ventiluz',d:'proyectante',f:1.1,w:60,h:40},
+  {id:'pta',n:'Puerta',d:'1 hoja con vidrio',f:1.25,w:90,h:205},
+  {id:'piv',n:'Puerta pivotante',d:'doble contacto',f:1.45,w:110,h:220},
+  {id:'cerr',n:'Cerramiento de vidrio',d:'galería o quincho',f:1,w:400,h:230}
+ ],
+ vidrios:[
+  {id:'s4',n:'Float 4 mm',d:'simple',p:0},
+  {id:'lam',n:'Laminado 3+3',d:'seguridad',p:32000},
+  {id:'dvh',n:'DVH 4/9/4',d:'doble vidriado',p:58000},
+  {id:'dvhs',n:'DVH control solar',d:'Low-E',p:105000},
+  {id:'tem',n:'Templado 8 mm',d:'para cerramientos',p:70000}
+ ],
+ colores:[
+  {id:'bla',n:'Blanco',hex:'#F7F7F4',r:0},
+  {id:'neg',n:'Negro mate',hex:'#1D1D1F',r:.08,m:'alu duc'},
+  {id:'gold',n:'Golden Oak',hex:'#A8702F',r:.15,m:'pvc'},
+  {id:'turn',n:'Turner Oak',hex:'#6A4B30',r:.15,m:'pvc'}
+ ],
+ extras:[
+  {id:'mos',n:'Mosquitero',p:42000,u:1},
+  {id:'cor',n:'Cortina Sunset o Hunter Douglas',p:78000,m2:1},
+  {id:'col',n:'Colocación en obra',r:.12}
+ ],
+ orient:{
+  N:{t:'Norte',c:'Sol casi todo el día en invierno y alto en verano.',v:'dvh',x:'DVH 4/9/4 y, si el paño es grande, control solar.'},
+  NE:{t:'Noreste',c:'Sol de mañana, del lado lindo.',v:'dvh',x:'DVH 4/9/4 alcanza.'},
+  E:{t:'Este',c:'Sol de mañana, suave.',v:'dvh',x:'DVH 4/9/4 alcanza.'},
+  SE:{t:'Sureste',c:'Cara fría, poco sol.',v:'dvh',x:'DVH y línea RPT para que no condense.',rpt:1},
+  S:{t:'Sur',c:'Cara fría, sin sol directo.',v:'dvh',x:'DVH y línea RPT para que no condense.',rpt:1},
+  SO:{t:'Suroeste',c:'Frío con algo de sol de tarde.',v:'dvh',x:'DVH 4/9/4; RPT si es dormitorio.',rpt:1},
+  O:{t:'Oeste',c:'El sol fuerte de la tarde pega de frente.',v:'dvhs',x:'DVH con control solar Low-E.'},
+  NO:{t:'Noroeste',c:'Sol de mediodía y tarde, el más caluroso.',v:'dvhs',x:'DVH con control solar Low-E.'}
+ }
+};
+var S={mat:'alu',linea:'a40r',tipo:'corr',ancho:150,alto:110,cant:2,ori:'O',vidrio:'dvhs',color:'neg',ex:{mos:true,col:true},nombre:'',barrio:'',dia:'',turno:'mañana (8 a 13)'};
+function by(a,id){for(var i=0;i<a.length;i++)if(a[i].id===id)return a[i];return null}
+
+/* ---- opciones ---- */
+function renderOps(){
+  $('q-mat').innerHTML=C.mats.map(function(m){return '<button class="op" data-id="'+m.id+'" aria-pressed="'+(S.mat===m.id)+'">'+esc(m.n)+'<small>'+esc(m.d)+'</small></button>'}).join('');
+  var ls=C.lineas.filter(function(l){return l.m===S.mat});
+  if(!by(ls,S.linea))S.linea=ls[0].id;
+  $('q-linea').innerHTML=ls.map(function(l){return '<button class="op" data-id="'+l.id+'" aria-pressed="'+(S.linea===l.id)+'">'+esc(l.n)+'<small>desde '+fmt(l.p)+'/m² · ejemplo</small></button>'}).join('');
+  var L=by(C.lineas,S.linea);
+  $('lineaNota').textContent=L.rpt?'con ruptura de puente térmico':'';
+  if(L.t.indexOf(S.tipo)<0){S.tipo=L.t[0];var t0=by(C.tipos,S.tipo);S.ancho=t0.w;S.alto=t0.h}
+  $('q-tipo').innerHTML=C.tipos.map(function(t){var ok=L.t.indexOf(t.id)>=0;return '<button class="op" data-id="'+t.id+'" aria-pressed="'+(S.tipo===t.id)+'"'+(ok?'':' disabled')+'>'+esc(t.n)+'<small>'+esc(t.d)+'</small></button>'}).join('');
+  $('q-vidrio').innerHTML=C.vidrios.map(function(v){return '<button class="op" data-id="'+v.id+'" aria-pressed="'+(S.vidrio===v.id)+'">'+esc(v.n)+'<small>'+esc(v.d)+(v.p?' · +'+fmt(v.p)+'/m² ejemplo':'')+'</small></button>'}).join('');
+  var cs=C.colores.filter(function(c){return !c.m||c.m.split(' ').indexOf(S.mat)>=0});
+  if(!by(cs,S.color))S.color='bla';
+  $('q-color').innerHTML=cs.map(function(c){return '<button class="op" data-id="'+c.id+'" aria-pressed="'+(S.color===c.id)+'"><i class="sw" style="background:'+c.hex+'"></i>'+esc(c.n)+(c.r?'<small>+'+Math.round(c.r*100)+'% · ejemplo</small>':'<small>sin recargo</small>')+'</button>'}).join('');
+  $('q-extras').innerHTML=C.extras.map(function(e){var lab=e.r?'+'+Math.round(e.r*100)+'%':(e.m2?'+'+fmt(e.p)+'/m²':'+'+fmt(e.p)+' c/u');return '<label><input type="checkbox" data-id="'+e.id+'"'+(S.ex[e.id]?' checked':'')+'>'+esc(e.n)+' <span class="pe">'+lab+' · precio de ejemplo</span></label>'}).join('');
+}
+function bindOps(){
+  $('q-mat').addEventListener('click',function(e){var b=e.target.closest('.op');if(!b)return;S.mat=b.dataset.id;if(S.mat==='duc'){S.vidrio='tem'}else if(S.vidrio==='tem'){S.vidrio='dvh'}renderOps();syncInputs();update()});
+  $('q-linea').addEventListener('click',function(e){var b=e.target.closest('.op');if(!b)return;S.linea=b.dataset.id;renderOps();syncInputs();update()});
+  $('q-tipo').addEventListener('click',function(e){var b=e.target.closest('.op');if(!b||b.disabled)return;S.tipo=b.dataset.id;var t=by(C.tipos,S.tipo);S.ancho=t.w;S.alto=t.h;renderOps();syncInputs();update()});
+  $('q-vidrio').addEventListener('click',function(e){var b=e.target.closest('.op');if(!b)return;S.vidrio=b.dataset.id;renderOps();update()});
+  $('q-color').addEventListener('click',function(e){var b=e.target.closest('.op');if(!b)return;S.color=b.dataset.id;renderOps();update()});
+  $('q-extras').addEventListener('change',function(e){var i=e.target;if(i.dataset.id){S.ex[i.dataset.id]=i.checked;update()}});
+}
+function syncInputs(){
+  $('q-ancho').value=S.ancho;$('r-ancho').value=S.ancho;$('q-alto').value=S.alto;$('r-alto').value=S.alto;$('q-cant').value=S.cant;
+}
+function bindInputs(){
+  function num(id,k,min,max){$(id).addEventListener('input',function(){var v=parseInt(this.value,10);if(isNaN(v))return;S[k]=Math.max(min,Math.min(max,v));if(id.indexOf('ancho')>0){$('q-ancho').value=$('r-ancho').value=S.ancho}if(id.indexOf('alto')>0){$('q-alto').value=$('r-alto').value=S.alto}update()})}
+  num('q-ancho','ancho',40,600);num('r-ancho','ancho',40,600);num('q-alto','alto',40,300);num('r-alto','alto',40,300);num('q-cant','cant',1,40);
+  ['nombre','barrio','dia','turno'].forEach(function(k){var el=$('q-'+k);el.addEventListener('input',function(){S[k]=el.value;update()});el.addEventListener('change',function(){S[k]=el.value;update()})});
+}
+function dias(){
+  var sel=$('q-dia'),d=new Date(),out=[],n=['dom','lun','mar','mié','jue','vie','sáb'];
+  while(out.length<8){d.setDate(d.getDate()+1);var w=d.getDay();if(w>0&&w<6)out.push(n[w]+' '+d.getDate()+'/'+(d.getMonth()+1))}
+  sel.innerHTML=out.map(function(o){return '<option>'+o+'</option>'}).join('');S.dia=out[1]||out[0];sel.value=S.dia;
+}
+
+/* ---- rosa de los vientos ---- */
+function rosa(){
+  var pts=['N','NE','E','SE','S','SO','O','NO'],h='<circle cx="95" cy="95" r="62" fill="none" stroke="#1E2126" stroke-width="1.5" stroke-dasharray="3 4"/>';
+  h+='<path d="M95 40 L103 95 L95 150 L87 95 Z" fill="#1E2126"/><path d="M40 95 L95 87 L150 95 L95 103 Z" fill="#9aa1ab"/>';
+  pts.forEach(function(p,i){var a=(i*45-90)*Math.PI/180,x=95+76*Math.cos(a),y=95+76*Math.sin(a);
+    h+='<g data-o="'+p+'" tabindex="0" role="button" aria-label="'+C.orient[p].t+'" style="cursor:pointer"><circle class="pt'+(S.ori===p?' on':'')+'" cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="15"/><text x="'+x.toFixed(1)+'" y="'+(y+4.5).toFixed(1)+'" text-anchor="middle">'+p+'</text></g>'});
+  h+='<circle cx="95" cy="95" r="6" fill="#F3A712"/>';
+  $('rosa').innerHTML=h;
+  var O=C.orient[S.ori],L=by(C.lineas,S.linea),vs=by(C.vidrios,O.v);
+  var sugRpt=O.rpt&&!L.rpt&&S.mat==='alu';
+  $('consejo').innerHTML='<b>Da al '+esc(O.t)+'</b>'+esc(O.c)+'<br><strong>Te conviene:</strong> '+esc(O.x)+
+    ((S.vidrio!==O.v&&S.mat!=='duc')?'<br><button class="btn os" id="aplicar">Usar '+esc(vs.n)+'</button>':(S.mat!=='duc'?'<br><span style="color:#2D7D5B;font-weight:700">✓ Ya elegiste el vidrio indicado</span>':''))+
+    (sugRpt?'<br><small style="color:var(--gris)">Mirá las líneas RPT: Módena RPT, A40 RPT o A40 Compact RPT.</small>':'');
+  var ap=$('aplicar');if(ap)ap.onclick=function(){S.vidrio=O.v;renderOps();update()};
+}
+function bindRosa(){
+  function pick(e){var g=e.target.closest('[data-o]');if(!g)return;if(e.type==='keydown'&&e.key!=='Enter'&&e.key!==' ')return;e.preventDefault();S.ori=g.dataset.o;update()}
+  $('rosa').addEventListener('click',pick);$('rosa').addEventListener('keydown',pick);
+}
+
+/* ---- cálculo ---- */
+function calc(){
+  var L=by(C.lineas,S.linea),T=by(C.tipos,S.tipo),V=by(C.vidrios,S.vidrio),K=by(C.colores,S.color)||C.colores[0];
+  var m2=Math.max(.5,S.ancho*S.alto/10000);
+  var perfil=L.p*m2*T.f, vid=V.p*m2*(T.id==='fijo'?1:.85), col=perfil*K.r;
+  var unidad=perfil+vid+col;
+  var items=[['Perfil '+L.n+' · '+T.n,perfil*S.cant],['Vidrio '+V.n,vid*S.cant]];
+  if(col)items.push(['Color '+K.n,col*S.cant]);
+  var sub=unidad*S.cant;
+  if(S.ex.mos&&T.id!=='fijo'&&T.id!=='cerr'){items.push(['Mosquitero',42000*S.cant]);sub+=42000*S.cant}
+  if(S.ex.cor){var c=78000*m2*S.cant;items.push(['Cortina',c]);sub+=c}
+  if(S.ex.col){var co=sub*.12;items.push(['Colocación',co]);sub+=co}
+  return {L:L,T:T,V:V,K:K,m2:m2,items:items,total:sub,sena:sub*.3};
+}
+function vendedor(){return S.mat==='pvc'?VEND.pvc:VEND.alu}
+
+/* ---- plano ---- */
+function plano(r){
+  var W=400,H=300,pad=46,maxW=W-pad-20,maxH=H-pad-20,ratio=S.ancho/S.alto;
+  var w=maxW,h=w/ratio;if(h>maxH){h=maxH;w=h*ratio}
+  var x=pad+(maxW-w)/2,y=14+(maxH-h)/2,fr=Math.max(5,Math.min(10,w*.03));
+  var K=r.K,stroke=K.id==='bla'?'#E9EBEE':(K.id==='neg'?'#3a3d42':K.hex);
+  var g='<defs><linearGradient id="vg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9ec6e6" stop-opacity=".55"/><stop offset=".55" stop-color="#cfe3f2" stop-opacity=".25"/><stop offset="1" stop-color="#9ec6e6" stop-opacity=".5"/></linearGradient></defs>';
+  g+='<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="'+stroke+'" rx="2"/>';
+  var ix=x+fr,iy=y+fr,iw=w-2*fr,ih=h-2*fr;
+  function glass(a,b,c,d){return '<rect x="'+a+'" y="'+b+'" width="'+c+'" height="'+d+'" fill="url(#vg)" stroke="'+stroke+'" stroke-width="'+(fr*.6)+'"/><line x1="'+(a+c*.15)+'" y1="'+(b+d*.75)+'" x2="'+(a+c*.45)+'" y2="'+(b+d*.2)+'" stroke="#fff" stroke-opacity=".35" stroke-width="2"/>'}
+  var t=S.tipo,arrow='#F3A712';
+  if(t==='corr'||t==='pv'){
+    var hw=iw/2+fr/2;g+=glass(ix,iy,hw,ih)+glass(ix+iw-hw,iy,hw,ih);
+    g+='<path d="M'+(ix+hw*.3)+' '+(iy+ih/2)+' h'+(hw*.4)+' m-8 -6 l8 6 l-8 6" stroke="'+arrow+'" stroke-width="2.5" fill="none"/>';
+    g+='<path d="M'+(ix+iw-hw*.3)+' '+(iy+ih/2)+' h-'+(hw*.4)+' m8 -6 l-8 6 l8 6" stroke="'+arrow+'" stroke-width="2.5" fill="none"/>';
+  }else if(t==='fijo'){g+=glass(ix,iy,iw,ih)+'<text x="'+(ix+iw/2)+'" y="'+(iy+ih/2+8)+'" text-anchor="middle" font-family="Share Tech Mono" font-size="22" fill="#F3A712">F</text>'}
+  else if(t==='cerr'){var n=Math.max(3,Math.round(S.ancho/70)),pw=iw/n;for(var i=0;i<n;i++)g+=glass(ix+i*pw,iy,pw,ih);
+    g+='<path d="M'+(ix+pw*.5)+' '+(iy+ih-14)+' H'+(ix+iw-pw*.5)+'" stroke="'+arrow+'" stroke-width="2.5" stroke-dasharray="6 5"/>'}
+  else{g+=glass(ix,iy,iw,ih);
+    if(t==='bat'||t==='osc'||t==='pta'||t==='piv'){g+='<path d="M'+(ix+iw)+' '+iy+' L'+ix+' '+(iy+ih/2)+' L'+(ix+iw)+' '+(iy+ih)+'" stroke="'+arrow+'" stroke-width="2" fill="none" stroke-dasharray="7 5"/>'}
+    if(t==='osc'||t==='vent'){g+='<path d="M'+ix+' '+(iy+ih)+' L'+(ix+iw/2)+' '+iy+' L'+(ix+iw)+' '+(iy+ih)+'" stroke="#fff" stroke-width="1.6" fill="none" stroke-dasharray="4 4"/>'}
+    if(t==='pta'||t==='piv'){g+='<rect x="'+(ix+iw-16)+'" y="'+(iy+ih*.5-14)+'" width="5" height="28" rx="2" fill="#F3A712"/>'}
+  }
+  var cy=y+h+18;
+  g+='<g font-family="Share Tech Mono" font-size="13" fill="#cfd4db" stroke="#cfd4db">';
+  g+='<line x1="'+x+'" y1="'+cy+'" x2="'+(x+w)+'" y2="'+cy+'"/><line x1="'+x+'" y1="'+(cy-5)+'" x2="'+x+'" y2="'+(cy+5)+'"/><line x1="'+(x+w)+'" y1="'+(cy-5)+'" x2="'+(x+w)+'" y2="'+(cy+5)+'"/>';
+  g+='<text stroke="none" x="'+(x+w/2)+'" y="'+(cy+16)+'" text-anchor="middle">'+S.ancho+' cm</text>';
+  var cx=x-18;
+  g+='<line x1="'+cx+'" y1="'+y+'" x2="'+cx+'" y2="'+(y+h)+'"/><line x1="'+(cx-5)+'" y1="'+y+'" x2="'+(cx+5)+'" y2="'+y+'"/><line x1="'+(cx-5)+'" y1="'+(y+h)+'" x2="'+(cx+5)+'" y2="'+(y+h)+'"/>';
+  g+='<text stroke="none" x="'+(cx-6)+'" y="'+(y+h/2)+'" text-anchor="middle" transform="rotate(-90 '+(cx-6)+' '+(y+h/2)+')">'+S.alto+' cm</text></g>';
+  var O=C.orient[S.ori];g+='<text x="'+(W-8)+'" y="14" text-anchor="end" font-family="Share Tech Mono" font-size="12" fill="#F3A712">DA AL '+O.t.toUpperCase()+'</text>';
+  $('plano').innerHTML=g;
+}
+
+/* ---- burbuja ---- */
+var tipeo=null,lastMsg='';
+function mensaje(r){
+  var V=vendedor(),nom=S.nombre.trim()||'(tu nombre)',bar=S.barrio.trim();
+  var ext=[];if(S.ex.mos&&S.tipo!=='fijo'&&S.tipo!=='cerr')ext.push('mosquitero');if(S.ex.cor)ext.push('cortina');if(S.ex.col)ext.push('colocación');
+  var m2=r.m2.toFixed(2).replace('.',',');
+  return 'Hola '+V.n+', soy '+nom+(bar?' ('+bar+')':'')+'. Quiero cotizar en Ventus:\n'+
+   '• '+S.cant+' × '+r.T.n+' — '+(S.mat==='duc'?'Ducasse ':(S.mat==='pvc'?'PVC ':'Aluminio '))+r.L.n+'\n'+
+   '• Medida: '+(S.ancho/100).toFixed(2).replace('.',',')+' × '+(S.alto/100).toFixed(2).replace('.',',')+' m ('+m2+' m² c/u)\n'+
+   '• Vidrio: '+r.V.n+' · Color: '+r.K.n+'\n'+
+   '• Da al '+C.orient[S.ori].t+(ext.length?'\n• Extras: '+ext.join(', '):'')+'\n'+
+   'Estimado web: '+fmt(r.total)+' (precio de ejemplo)\n'+
+   'Seña 30% para confirmar fabricación: '+fmt(r.sena)+'\n'+
+   '¿Pueden venir a medir el '+S.dia+' a la '+S.turno+'?';
+}
+function burbuja(msg){
+  var el=$('burbuja');if(msg===lastMsg)return;
+  var prev=lastMsg;lastMsg=msg;clearInterval(tipeo);
+  var i=0;while(i<prev.length&&i<msg.length&&prev[i]===msg[i])i++;
+  var hora=new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
+  function draw(n,c){el.innerHTML=esc(msg.slice(0,n))+(c?'<span class="cursor"></span>':'')+'<span class="hora">'+hora+' ✓✓</span>'}
+  if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches){draw(msg.length);return}
+  var n=i;tipeo=setInterval(function(){n=Math.min(msg.length,n+3);draw(n,n<msg.length);if(n>=msg.length)clearInterval(tipeo)},14);
+}
+
+function update(){
+  var r=calc(),V=vendedor();
+  plano(r);rosa();
+  $('p-m2').textContent=r.m2.toFixed(2).replace('.',',')+' m² c/u';
+  $('p-tit').textContent=(r.T.n+' · '+r.L.n).toUpperCase();
+  $('desg').innerHTML=r.items.map(function(it){return '<li><span>'+esc(it[0])+'</span><span>'+fmt(it[1])+PE+'</span></li>'}).join('')+'<li><span>Seña 30%</span><span>'+fmt(r.sena)+PE+'</span></li>';
+  $('t-cant').textContent=S.cant+(S.cant>1?' unidades':' unidad');
+  $('t-total').textContent=fmt(r.total);
+  $('t-rango').innerHTML='Rango: '+fmt(r.total*.92)+' a '+fmt(r.total*1.08)+PE;
+  $('c-av').textContent=V.n[0];$('c-quien').textContent=V.n+' · '+V.l;$('c-num').textContent='WhatsApp '+V.tel;
+  var msg=mensaje(r);burbuja(msg);
+  $('c-btn').href='https://wa.me/'+V.wa+'?text='+encodeURIComponent(msg);
+  $('c-btn').textContent='Enviar a '+V.n+' por WhatsApp';
+  var p=$('c-paola');
+  if(S.ex.cor){p.hidden=false;p.href='https://wa.me/'+VEND.cor.wa+'?text='+encodeURIComponent('Hola Paola, soy '+(S.nombre.trim()||'(tu nombre)')+'. Estoy cotizando '+S.cant+' '+r.T.n.toLowerCase()+' de '+(S.ancho/100).toFixed(2).replace('.',',')+' × '+(S.alto/100).toFixed(2).replace('.',',')+' m con '+V.n+' y quiero sumar cortinas. ¿Qué opciones tienen?')}else p.hidden=true;
+}
+
+/* ---- obras ---- */
+var U='https://ventusaberturas.com.ar/vent249/wp-content/uploads/';
+var OBRAS=[
+ {f:'2024/11/img-cerramiento-exterior-ducasse-2.webp',n:'Cerramiento Ducasse',d:'Paños de vidrio',s:{mat:'duc',linea:'twint',tipo:'cerr',ancho:400,alto:230,vidrio:'tem'}},
+ {f:'2024/11/img-obra-solaro-1.webp',n:'Barrio Golf',d:'Río Cuarto',s:{mat:'alu',linea:'a40r',tipo:'pv',ancho:240,alto:210,vidrio:'dvh'}},
+ {f:'2024/12/img-obra-moldes-casa-1.webp',n:'Casa en Moldes',d:'Zona de Río Cuarto',s:{mat:'alu',linea:'mod',tipo:'corr',ancho:150,alto:110,vidrio:'dvh'}},
+ {f:'2024/12/img-obra-barrio-riverside-4.webp',n:'Riverside',d:'Río Cuarto',s:{mat:'pvc',linea:'jumbo',tipo:'pv',ancho:220,alto:210,vidrio:'dvh'}},
+ {f:'2025/01/img-obra-mackenna-2.webp',n:'Obra en Mackenna',d:'Zona de Río Cuarto',s:{mat:'alu',linea:'a30',tipo:'corr',ancho:180,alto:120,vidrio:'dvh'}},
+ {f:'2025/02/img-obra-golf-sur-9.webp',n:'Golf Sur',d:'Río Cuarto',s:{mat:'alu',linea:'a40',tipo:'osc',ancho:90,alto:120,vidrio:'dvhs'}},
+ {f:'2024/11/img-obra-solaro-2.webp',n:'Barrio Golf',d:'Río Cuarto',s:{mat:'alu',linea:'imp',tipo:'fijo',ancho:200,alto:240,vidrio:'dvhs'}},
+ {f:'2024/12/img-obra-moldes-casa-2.webp',n:'Casa en Moldes',d:'Zona de Río Cuarto',s:{mat:'pvc',linea:'eff',tipo:'osc',ancho:100,alto:130,vidrio:'dvh'}},
+ {f:'2025/02/img-obra-mackenna-11.webp',n:'Obra en Mackenna',d:'Zona de Río Cuarto',s:{mat:'alu',linea:'enk',tipo:'piv',ancho:110,alto:220,vidrio:'lam'}}
+];
+function obras(){
+  $('tira').innerHTML=OBRAS.map(function(o,i){return '<article class="obra"><figure><img loading="lazy" src="'+U+o.f+'" alt="Obra de Ventus: '+esc(o.n)+'" onerror="noimg(this)"></figure><div class="info"><div><b>'+esc(o.n)+'</b><small>'+esc(o.d)+'</small></div><button data-i="'+i+'">Quiero algo así</button></div></article>'}).join('');
+  $('tira').addEventListener('click',function(e){var b=e.target.closest('button[data-i]');if(!b)return;var s=OBRAS[+b.dataset.i].s;for(var k in s)S[k]=s[k];renderOps();syncInputs();update();$('cotizar').scrollIntoView({behavior:'smooth'})});
+}
+
+/* ---- panel dueño ---- */
+var PRECIOS_BASE={};
+function dueno(){
+  var ej=[
+   {v:'alu',q:'hace 12 min',t:'Hola Martín, soy Romina (Barrio Golf). Quiero cotizar en Ventus:\n• 3 × Ventana corrediza — Aluminio A40 RPT\n• Medida: 1,50 × 1,10 m\n• Vidrio: DVH control solar · Color: Negro mate\nEstimado web: $1.986.000 (precio de ejemplo)'},
+   {v:'pvc',q:'hace 40 min',t:'Hola Guadalupe, soy Diego (Banda Norte). Quiero cotizar en Ventus:\n• 2 × Oscilobatiente — PVC Efficient\n• Medida: 0,90 × 1,20 m · Golden Oak\nEstimado web: $1.212.000 (precio de ejemplo)'},
+   {v:'cor',q:'hace 1 h',t:'Hola Paola, estoy cotizando 4 ventanas con Martín y quiero sumar cortinas. ¿Qué opciones tienen?'},
+   {v:'alu',q:'ayer',t:'Hola Martín, soy Pablo (Las Higueras). Quiero cotizar en Ventus:\n• 1 × Cerramiento de vidrio — Ducasse Twin Telescópico VD\n• Medida: 4,00 × 2,30 m\nEstimado web: $3.410.000 (precio de ejemplo)'}
+  ];
+  $('bandeja').innerHTML=ej.map(function(c){var V=VEND[c.v];return '<div class="cons"><div class="q"><span><span class="tag '+(c.v==='pvc'?'pvc':(c.v==='cor'?'cor':''))+'">'+V.l+'</span> para <b>'+V.n+'</b></span><span>'+c.q+' · ejemplo</span></div><div class="burbuja">'+esc(c.t)+'</div></div>'}).join('');
+  var d=['Lun','Mar','Mié','Jue','Vie'],m=[1,1,0,1,0],t=[0,1,1,0,1];
+  $('agenda').innerHTML='<tr><th></th>'+d.map(function(x){return '<th>'+x+'</th>'}).join('')+'</tr>'+
+   '<tr><th>Mañana</th>'+m.map(function(o,i){return o?'<td class="ocu">'+['Golf','Centro','','Alberdi',''][i]+'</td>':'<td class="lib">libre</td>'}).join('')+'</tr>'+
+   '<tr><th>Tarde</th>'+t.map(function(o,i){return o?'<td class="ocu">'+['','Moldes','Riverside','','Banda N.'][i]+'</td>':'<td class="lib">libre</td>'}).join('')+'</tr>';
+  $('k-senas').textContent=fmt(4860000);
+  var base=16200000;$('a-base').innerHTML=fmt(base)+PE;$('a-ahorro').textContent=fmt(base*.13);
+  $('tprecios').innerHTML=C.lineas.map(function(l){PRECIOS_BASE[l.id]=l.p;return '<tr><td>'+esc(l.n)+' <small style="color:var(--gris)">'+(l.m==='alu'?'aluminio':(l.m==='pvc'?'PVC':'Ducasse'))+'</small></td><td><input type="number" step="5000" min="0" data-id="'+l.id+'" value="'+l.p+'"><span class="pe">precio de ejemplo</span></td></tr>'}).join('');
+  $('tprecios').addEventListener('input',function(e){var i=e.target;if(!i.dataset.id)return;var v=parseInt(i.value,10);if(isNaN(v)||v<0)return;by(C.lineas,i.dataset.id).p=v;renderOps();update()});
+}
+
+function vistas(){
+  [].forEach.call(document.querySelectorAll('[data-vista]'),function(b){b.addEventListener('click',function(){
+    var v=b.dataset.vista;
+    [].forEach.call(document.querySelectorAll('[data-vista]'),function(x){x.setAttribute('aria-selected',x.dataset.vista===v?'true':'false')});
+    [].forEach.call(document.querySelectorAll('[data-panel]'),function(p){p.hidden=p.dataset.panel!==v});
+    $('cotizar').scrollIntoView({behavior:'smooth',block:'start'});
+  })});
+  [].forEach.call(document.querySelectorAll('.salidas a[data-mat]'),function(a){a.addEventListener('click',function(){S.mat=a.dataset.mat;if(S.mat==='duc')S.vidrio='tem';else if(S.vidrio==='tem')S.vidrio='dvh';renderOps();syncInputs();update()})});
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  dias();renderOps();bindOps();syncInputs();bindInputs();bindRosa();obras();dueno();vistas();update();
+});
+window.VQ={S:S,update:update};
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Ventus"></script>
+</body>
+</html>
