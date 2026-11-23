@@ -49,6 +49,35 @@ Eso significa que comprar al precio normal de Amazon rara vez da. Lo que funcion
 - Mercado Ads funciona por ACOS: el porcentaje de la venta que se va en anuncios. La herramienta lo descuenta en cada cuenta (5 % por defecto, se cambia en Configuración).
 - Para pautar en Mercado Libre suelen pedir algo de historial: reputación, días desde el alta y ventas.
 
+## Puesta en marcha (con la LLC ya creada)
+
+**1. Cuenta de Global Selling** (lo hacés vos, con los datos de la LLC)
+- Registrate en https://global-selling.mercadolibre.com como empresa. Vas a necesitar:
+  - nombre legal de la LLC, EIN y dirección en EE.UU.;
+  - documento del representante;
+  - el formulario fiscal que pida: W-9 o W-8, según cómo esté armada la LLC (consultalo con quien la armó).
+- Para cobrar: cuenta bancaria en USD a nombre de la LLC, o Payoneer. Mantené EIN, dirección y socios iguales en todos los formularios: los bancos y Payoneer lo controlan.
+- Habilitá México, Colombia, Chile y Argentina. Argentina está abierta a vendedores internacionales desde diciembre de 2024. Brasil dejalo para más adelante por los impuestos.
+
+**2. Prep center** (recibe lo que comprás, pone la etiqueta de ML y despacha)
+- Pedile que:
+  - reciba paquetes de Amazon, Sweetwater y otras tiendas;
+  - etiquete por unidad con la etiqueta que le mandás;
+  - despache el mismo día o al siguiente.
+- Costo típico: USD 1,5 a 3 por unidad. Cargá el real en Configuración.
+- Si está en Oregon, Delaware, Montana o New Hampshire, no pagás sales tax al comprar (~8 % menos de costo). En ese caso poné 0 en "Sales tax de compra".
+
+**3. Valores reales en la herramienta**
+- En el Seller Center vas a ver la comisión por categoría y el costo de envío de cada publicación. Copialos en Configuración → Países.
+
+**4. App para publicar por API**
+- Con la cuenta ya aprobada, creá la aplicación en https://global-selling.mercadolibre.com/devsite/create-application.
+- En Configuración → Conexiones, elegí "Global Selling (para publicar)" y autorizala.
+
+**5. Primera publicación de prueba**
+- Validá precios de la tanda, elegí 1 producto que pase el mínimo y publicalo con `python cli.py publicar ... --confirmar`.
+- Si sale bien, seguí con los demás.
+
 ## Instalación en Windows
 
 1. Descargá esta carpeta. En GitHub, abrí la rama `claude/wizardly-mccarthy-02vt1p`, tocá **Code → Download ZIP**, descomprimí y entrá a `ml-global-selling`.
