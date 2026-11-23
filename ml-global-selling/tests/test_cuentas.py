@@ -185,3 +185,14 @@ def test_candidatos_y_payload(tmp_path, monkeypatch):
     assert cuerpo["title"] == "Boss BD-2 Blues Driver Pedal" and cuerpo["currency_id"] == "USD"
     assert {s["site_id"] for s in cuerpo["sites_to_sell"]} == {"MLM", "MCO"}
     assert cuerpo["sale_terms"][0]["value_name"] == "5 days"
+
+
+def test_tanda_01_carga_completa(tmp_path):
+    from pathlib import Path as _P
+    from mlglobal import candidatos
+    con = db.conectar(tmp_path / "b.sqlite")
+    nuevos, _ = candidatos.cargar(con, _P(__file__).resolve().parent.parent / "candidatos" / "tanda-01.json")
+    assert nuevos == 20
+    assert db.proveedor_por_nombre(con, "Sweetwater")["dias_preparacion"] == 1
+    filas = analizar_todo(con)
+    assert all(f["equilibrio_usd"] and f["equilibrio_usd"] > f["costo_compra_usd"] for f in filas)

@@ -14,8 +14,13 @@ def cargar(con, ruta: str | Path) -> tuple[int, int]:
     db.asegurar_fuentes(con)
     nuevos = actualizados = 0
     for item in datos["productos"]:
-        fila = {k: v for k, v in item.items() if k != "precios_competencia"}
-        prov = db.proveedor_por_nombre(con, TIENDAS.get((fila.get("fuente_compra") or "").lower(), ""))
+        fila = {k: v for k, v in item.items() if k not in ("precios_competencia", "proveedor")}
+        tienda = item.get("proveedor") or {}
+        if tienda.get("nombre") and not db.proveedor_por_nombre(con, tienda["nombre"]):
+            db.insertar(con, "proveedores", {"tipo": "tienda online", "pais": "EE.UU.", "estado": "aprobado",
+                                             "acepta_dropship": "si", "acepta_etiqueta_ml": "no", **tienda})
+        prov = db.proveedor_por_nombre(con, tienda.get("nombre") or
+                                       TIENDAS.get((fila.get("fuente_compra") or "").lower(), ""))
         if prov and not fila.get("proveedor_id"):
             fila["proveedor_id"] = prov["id"]
         existente = con.execute("SELECT id FROM productos WHERE titulo = ?", (fila["titulo"],)).fetchone()
