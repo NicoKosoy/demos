@@ -41,6 +41,8 @@ CREATE TABLE IF NOT EXISTS productos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     proveedor_id INTEGER REFERENCES proveedores(id) ON DELETE SET NULL,
     titulo TEXT NOT NULL,
+    titulo_en TEXT,
+    modelo TEXT,
     rubro TEXT,
     sku TEXT,
     marca TEXT,
@@ -107,7 +109,8 @@ TABLAS = {"proveedores", "productos", "precios_mercado", "contactos", "publicaci
 
 # Columnas agregadas después de la primera versión: se suman solas a bases ya creadas.
 MIGRACIONES = {
-    "productos": {"fuente_compra": "TEXT", "condicion": "TEXT DEFAULT 'nuevo'", "sales_tax_pct": "REAL"},
+    "productos": {"fuente_compra": "TEXT", "condicion": "TEXT DEFAULT 'nuevo'", "sales_tax_pct": "REAL",
+                  "titulo_en": "TEXT", "modelo": "TEXT"},
 }
 
 # Tiendas de EE.UU. de donde se compra. Se crean solas; los días son estimados y se editan en Proveedores.

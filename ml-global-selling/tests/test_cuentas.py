@@ -160,3 +160,28 @@ def test_ebay_interpreta_resultados(tmp_path, monkeypatch):
     res = ebay.buscar("ssd 2tb", 50, 500)
     assert res[0]["precio_usd"] == 119.99 and res[0]["envio_usd"] == 0 and res[0]["feedback_pct"] == 99.5
     assert "price:[50..500]" in llamadas["params"]["filter"] and "conditions:{NEW}" in llamadas["params"]["filter"]
+
+
+def test_candidatos_y_payload(tmp_path, monkeypatch):
+    import json as _json
+    from mlglobal import candidatos, publicar
+    monkeypatch.setattr(publicar, "categoria_global",
+                        lambda texto: {"category_id": "CBT3012", "category_name": "Effects Pedals"})
+    monkeypatch.setattr(publicar, "atributos_requeridos", lambda cat: ("BRAND", "MODEL"))
+    archivo = tmp_path / "tanda.json"
+    archivo.write_text(_json.dumps({"fuente_precios": "buscador", "productos": [
+        {"titulo": "Pedal Boss BD-2", "titulo_en": "Boss BD-2 Blues Driver Pedal", "marca": "Boss",
+         "modelo": "BD-2", "upc": "761294037195", "rubro": "audio_musica", "fuente_compra": "amazon",
+         "costo_usd": 99, "peso_kg": 0.45, "largo_cm": 15, "ancho_cm": 10, "alto_cm": 8, "ruta": "3pl",
+         "precios_competencia": {"MX": 3999}}]}), encoding="utf-8")
+    con = db.conectar(tmp_path / "b.sqlite")
+    assert candidatos.cargar(con, archivo) == (1, 0)
+    assert candidatos.cargar(con, archivo) == (0, 1)  # la segunda vez actualiza, no duplica
+    prod = db.todos(con, "productos")[0]
+    assert prod["proveedor_id"] == db.proveedor_por_nombre(con, "Amazon")["id"]
+    ficha = publicar.armar_ficha(prod, analizar_todo(con))
+    assert ficha["categoria_cbt"] == "CBT3012" and ficha["precio_usd_MX"] > 99 and ficha["dias_MX"] == 5
+    cuerpo = publicar.payload_global_item(prod, ficha, ["MX", "CO"], {"MX": "MLM", "CO": "MCO"})
+    assert cuerpo["title"] == "Boss BD-2 Blues Driver Pedal" and cuerpo["currency_id"] == "USD"
+    assert {s["site_id"] for s in cuerpo["sites_to_sell"]} == {"MLM", "MCO"}
+    assert cuerpo["sale_terms"][0]["value_name"] == "5 days"

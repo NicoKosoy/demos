@@ -9,6 +9,10 @@
     python cli.py ml-codigo TG-xxxx    canjea el código por un token
     python cli.py escanear --producto 3 [--paises MX,CO]   trae precios de la competencia por API
     python cli.py escanear --texto "cable usb c 240w"      solo muestra, no guarda
+    python cli.py cargar-candidatos candidatos/tanda-01.json
+    python cli.py fichas --excel fichas.xlsx      fichas de publicación (categoría CBT, precio por país, días)
+    python cli.py publicar --producto 3 --paises MX,CO,CL --imagen https://...   muestra el JSON
+    python cli.py publicar --producto 3 --paises MX,CO,CL --imagen https://... --confirmar   lo publica
 """
 from __future__ import annotations
 
@@ -18,7 +22,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from mlglobal import analisis, config, db, demo, fx  # noqa: E402
+from mlglobal import analisis, candidatos, config, db, demo, fx, publicar  # noqa: E402
 from mlglobal import mercadolibre as ml  # noqa: E402
 
 
@@ -67,6 +71,40 @@ def cmd_escanear(args, con):
                                                  "url": ml.url_listado(cfg, texto)})
 
 
+def cmd_fichas(args, con):
+    import pandas as pd
+    filas = analisis.analizar_todo(con)
+    fichas = [publicar.armar_ficha(p, filas) for p in db.todos(con, "productos")
+              if p.get("activo", 1) and (p.get("condicion") or "nuevo") != "usado"]
+    precios = pd.DataFrame([{k: v for k, v in f.items() if k != "_detalle"} for f in filas])
+    with pd.ExcelWriter(args.excel, engine="openpyxl") as w:
+        pd.DataFrame(fichas).to_excel(w, sheet_name="Fichas", index=False)
+        precios.to_excel(w, sheet_name="Precios por país", index=False)
+    print(f"{len(fichas)} fichas en {args.excel}")
+
+
+def cmd_publicar(args, con):
+    import json
+    prod = db.uno(con, "productos", args.producto)
+    if not prod:
+        sys.exit(f"No existe el producto {args.producto}")
+    paises = args.paises.split(",")
+    cfg = config.paises()
+    ficha = publicar.armar_ficha(prod, analisis.analizar_todo(con, paises))
+    cuerpo = publicar.payload_global_item(prod, ficha, paises, {c: cfg[c]["site_id"] for c in paises},
+                                          stock=args.stock, imagenes=args.imagen)
+    print(json.dumps(cuerpo, indent=2, ensure_ascii=False))
+    if not args.confirmar:
+        print("\nNo se publicó nada. Revisá el JSON y repetí con --confirmar para publicarlo.")
+        return
+    respuesta = publicar.publicar(cuerpo)
+    print(f"Publicado: {respuesta.get('id')}")
+    for c in paises:
+        db.insertar(con, "publicaciones", {"producto_id": prod["id"], "pais": c, "precio_usd": cuerpo["price"],
+                                           "dias_disponibilidad": ficha.get(f"dias_{c}"), "estado": "publicado",
+                                           "item_id_ml": respuesta.get("id")})
+
+
 def main():
     ap = argparse.ArgumentParser(description="Analizador de productos para Mercado Libre Global Selling")
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -83,6 +121,14 @@ def main():
     e.add_argument("--producto", type=int)
     e.add_argument("--texto")
     e.add_argument("--paises")
+    sub.add_parser("cargar-candidatos").add_argument("archivo")
+    sub.add_parser("fichas").add_argument("--excel", default="fichas_publicacion.xlsx")
+    pu = sub.add_parser("publicar")
+    pu.add_argument("--producto", type=int, required=True)
+    pu.add_argument("--paises", default="MX,CO,CL")
+    pu.add_argument("--stock", type=int, default=2)
+    pu.add_argument("--imagen", action="append", default=[], help="URL de foto (repetir para varias)")
+    pu.add_argument("--confirmar", action="store_true")
     args = ap.parse_args()
 
     con = db.conectar()
@@ -105,6 +151,13 @@ def main():
         print(f"Conectado. user_id={t.get('user_id')}")
     elif args.cmd == "escanear":
         cmd_escanear(args, con)
+    elif args.cmd == "cargar-candidatos":
+        nuevos, actualizados = candidatos.cargar(con, args.archivo)
+        print(f"{nuevos} productos nuevos, {actualizados} actualizados.")
+    elif args.cmd == "fichas":
+        cmd_fichas(args, con)
+    elif args.cmd == "publicar":
+        cmd_publicar(args, con)
 
 
 if __name__ == "__main__":

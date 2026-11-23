@@ -61,6 +61,9 @@ def analizar_producto(prod: dict, prov: dict | None, mercado_por_pais: dict, pai
             alertas.append("Stock en Texas: se compra antes de vender (capital inmovilizado)")
         minimo_final = (calcular(p, cfg, general, minimo, rubro_cfg, codigo)["precio_final_comprador_local"]
                         if minimo else None)
+        equilibrio = precio_minimo(p, cfg, general, 0, 0, rubro_cfg, codigo)
+        equilibrio_final = (calcular(p, cfg, general, equilibrio, rubro_cfg, codigo)["precio_final_comprador_local"]
+                            if equilibrio else None)
         if minimo is None:
             alertas.append("Con estos costos no hay precio que llegue al margen objetivo")
         elif competitivo and competitivo < minimo:
@@ -96,6 +99,8 @@ def analizar_producto(prod: dict, prov: dict | None, mercado_por_pais: dict, pai
             "precio_local": res["precio_local"],
             "precio_minimo_usd": minimo,
             "minimo_final_comprador_local": minimo_final,
+            "equilibrio_usd": equilibrio,
+            "equilibrio_final_comprador_local": equilibrio_final,
             "fuente_compra": prod.get("fuente_compra") or "",
             "condicion": condicion,
             "costo_compra_usd": round(float(prod.get("costo_usd") or 0), 2),

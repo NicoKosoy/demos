@@ -10,9 +10,9 @@ import streamlit as st
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from mlglobal import analisis, config, db, demo, ebay, fx  # noqa: E402
+from mlglobal import analisis, candidatos, config, db, demo, ebay, fx  # noqa: E402
 from mlglobal import mercadolibre as ml  # noqa: E402
-from mlglobal import plantillas  # noqa: E402
+from mlglobal import plantillas, publicar  # noqa: E402
 
 st.set_page_config(page_title="Analizador ML Global", layout="wide")
 
@@ -71,6 +71,9 @@ COLUMNAS_OPORTUNIDADES = {
     "margen_pct": st.column_config.NumberColumn("Margen", format="%.1f %%"),
     "precio_final_comprador_local": st.column_config.NumberColumn("Paga el comprador (local)", format="%.0f",
                                                                   help="Con envío e impuestos de importación"),
+    "equilibrio_final_comprador_local": st.column_config.NumberColumn(
+        "Para no perder, el comprador paga", format="%.0f",
+        help="Si en ML se vende por debajo de esto (moneda local), perdés plata"),
     "minimo_final_comprador_local": st.column_config.NumberColumn(
         "Mín. que tiene que pagar el comprador", format="%.0f",
         help="Lo que pagaría el comprador (con impuestos) a tu precio mínimo. Comparalo con la competencia."),
@@ -368,6 +371,9 @@ def form_producto(clave: str, datos: dict | None = None) -> dict | None:
     provs = {p["id"]: p["nombre"] for p in db.todos(con, "proveedores", "nombre")}
     with st.form(clave, clear_on_submit=datos is None):
         titulo = st.text_input("Título *", d.get("titulo", ""))
+        c1, c2 = st.columns([3, 1])
+        titulo_en = c1.text_input("Título en inglés (Global Selling lo pide)", d.get("titulo_en") or "")
+        modelo = c2.text_input("Modelo", d.get("modelo") or "")
         c1, c2, c3 = st.columns(3)
         ids_prov = [None] + list(provs)
         proveedor_id = c1.selectbox("Proveedor", ids_prov, index=ids_prov.index(d.get("proveedor_id"))
@@ -419,7 +425,7 @@ def form_producto(clave: str, datos: dict | None = None) -> dict | None:
                     "prep_usd": prep, "precio_venta_usd": precio or None, "peso_kg": peso, "largo_cm": largo or None,
                     "ancho_cm": ancho or None, "alto_cm": alto or None, "ruta": ruta, "busqueda": busqueda,
                     "url_proveedor": url, "notas": notas, "activo": int(activo), "fuente_compra": fuente,
-                    "condicion": condicion, "sales_tax_pct": tax}
+                    "condicion": condicion, "sales_tax_pct": tax, "titulo_en": titulo_en, "modelo": modelo}
     return None
 
 
@@ -450,6 +456,30 @@ def pagina_productos():
             if st.button("Borrar este producto", key=f"borrar_{pid}"):
                 db.borrar(con, "productos", pid)
                 st.rerun()
+    if prods:
+        if st.button("Preparar fichas de publicación (Excel)"):
+            with st.spinner("Buscando categoría de Global Selling y atributos obligatorios…"):
+                filas = analisis.analizar_todo(con)
+                fichas = [publicar.armar_ficha(x, filas) for x in db.todos(con, "productos")
+                          if x.get("activo", 1) and (x.get("condicion") or "nuevo") != "usado"]
+                st.session_state["fichas_xlsx"] = a_excel({
+                    "Fichas": pd.DataFrame(fichas),
+                    "Precios por país": pd.DataFrame([{k: v for k, v in f.items() if k != "_detalle"}
+                                                      for f in filas])})
+        if st.session_state.get("fichas_xlsx"):
+            st.download_button("Descargar fichas", st.session_state["fichas_xlsx"],
+                               file_name="fichas_publicacion.xlsx")
+    with st.expander("Cargar una tanda de candidatos (archivo .json de la carpeta candidatos/)"):
+        carpeta = Path(__file__).resolve().parent / "candidatos"
+        archivos = sorted(carpeta.glob("*.json")) if carpeta.exists() else []
+        if archivos:
+            elegido = st.selectbox("Tanda", archivos, format_func=lambda a: a.name)
+            if st.button("Cargar tanda"):
+                nuevos, act = candidatos.cargar(con, elegido)
+                st.success(f"{nuevos} nuevos, {act} actualizados.")
+                st.rerun()
+        else:
+            st.caption("No hay tandas en la carpeta candidatos/.")
     with st.expander("Importar productos desde un CSV (catálogo del proveedor)"):
         plantilla = pd.DataFrame(columns=["titulo", "rubro", "fuente_compra", "sku", "marca", "upc", "costo_usd",
                                           "envio_local_usd",
@@ -854,9 +884,10 @@ def pagina_configuracion():
                 ml.guardar_credenciales(cid, secreto, redirect)
                 st.rerun()
         if cred.get("client_id"):
-            dominios = {c: PAISES[c]["dominio_auth"] for c in PAISES}
-            pais_auth = st.selectbox("País de tu cuenta de Mercado Libre", list(dominios), format_func=nombre_pais,
-                                     index=list(dominios).index("AR") if "AR" in dominios else 0)
+            dominios = {"GS": "https://global-selling.mercadolibre.com", **{c: PAISES[c]["dominio_auth"] for c in PAISES}}
+            pais_auth = st.selectbox("Cuenta de Mercado Libre", list(dominios),
+                                     format_func=lambda c: "Global Selling (para publicar)" if c == "GS"
+                                     else f"{nombre_pais(c)} (solo para leer precios)")
             st.link_button("Autorizar en Mercado Libre", ml.url_autorizacion(dominios[pais_auth]))
             codigo = st.text_input("Pegá acá la dirección (o el código TG-...)")
             if st.button("Conectar") and codigo:

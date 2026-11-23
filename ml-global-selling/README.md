@@ -71,6 +71,26 @@ En Mac o Linux: `python3 -m venv .venv && source .venv/bin/activate && pip insta
 7. **Oportunidades**: ranking por puntaje, con filtro por costo de compra. La columna **"Mín. que tiene que pagar el comprador"** frente a **"Competencia"** te dice rápido si hay negocio. En "Detalle" está la cuenta completa por país.
 8. Publicá lo que da y guardalo como borrador en Oportunidades → Publicaciones. **Cuando entre un pedido**, actualizá el costo del producto con el precio de ese momento y mirá "Margen hoy" antes de comprar.
 
+## Candidatos, fichas y publicación
+
+- **Tandas de candidatos**: en `candidatos/` hay archivos `.json` con productos ya relevados (costo en EE.UU., peso, caja, riesgos). Se cargan desde Productos → "Cargar una tanda de candidatos" o con `python cli.py cargar-candidatos candidatos/tanda-01.json`.
+- **Validación rápida sin API**: en Oportunidades, la columna **"Para no perder, el comprador paga"** dice el precio local por debajo del cual ese producto pierde plata en cada país. Abrí el listado de ML de ese país: si los vendedores están bastante por encima, es candidato.
+- **Fichas de publicación**: Productos → "Preparar fichas de publicación" arma un Excel con:
+  - título en inglés y en español;
+  - categoría de Global Selling y atributos obligatorios de esa categoría (sin token);
+  - precio en USD y días de disponibilidad por país;
+  - peso, caja y link de compra.
+
+  Con eso se publica a mano desde el Seller Center.
+- **Publicar por API** (cuando tengas la cuenta de Global Selling conectada):
+  ```
+  python cli.py publicar --producto 3 --paises MX,CO,CL --imagen https://foto1 --imagen https://foto2
+  ```
+  - Sin `--confirmar`, solo muestra lo que mandaría, para revisarlo.
+  - Con `--confirmar`, lo publica y lo registra en Publicaciones.
+  - Mercado Libre no tiene ambiente de prueba: arrancá con un producto y ajustá según el error que devuelva (suele pedir atributos extra o fotos).
+  - Las fotos tienen que ser propias o del fabricante con permiso, no copiadas de Amazon.
+
 ## Cómo hace las cuentas
 
 - **Ganancia por venta** = precio − comisión − cargo fijo − envío internacional a tu cargo − publicidad − cobro/retiro − reserva para reclamos − (costo × (1 + sales tax) + envío hasta el prep center + prep + almacenaje en Texas).
