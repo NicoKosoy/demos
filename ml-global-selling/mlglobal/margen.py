@@ -27,6 +27,8 @@ class Producto:
     largo_cm: float = 0.0
     ancho_cm: float = 0.0
     alto_cm: float = 0.0
+    sales_tax_pct: float = 0.0     # impuesto de compra en EE.UU. (Amazon/eBay/Walmart lo cobran según el estado)
+    almacenaje_usd: float = 0.0    # depósito de ML en Texas, por unidad
 
     @classmethod
     def desde_dict(cls, d: dict) -> "Producto":
@@ -34,7 +36,8 @@ class Producto:
 
     @property
     def costo_total(self) -> float:
-        return self.costo_usd + self.envio_local_usd + self.prep_usd
+        return (self.costo_usd * (1 + self.sales_tax_pct / 100) + self.envio_local_usd + self.prep_usd
+                + self.almacenaje_usd)
 
 
 def peso_volumetrico(p: Producto, divisor: float = 5000) -> float:
@@ -110,8 +113,9 @@ def calcular(p: Producto, cfg_pais: dict, general: dict, precio_usd: float,
     fijo = cargo_fijo(cfg_pais, precio)
     payout = precio * _num(general.get("payout_pct")) / 100
     reserva = precio * _num(general.get("reserva_reclamos_pct")) / 100
+    publicidad = precio * _num(general.get("publicidad_pct")) / 100
     costo = p.costo_total
-    ganancia = precio - comision - fijo - envio_vendedor - payout - reserva - costo
+    ganancia = precio - comision - fijo - envio_vendedor - payout - reserva - publicidad - costo
     impuesto = impuesto_comprador(cfg_pais, precio + envio_comprador)
     final_usd = precio + envio_comprador + impuesto
     tc = float(cfg_pais["usd_a_local"])
@@ -127,6 +131,7 @@ def calcular(p: Producto, cfg_pais: dict, general: dict, precio_usd: float,
         "envio_vendedor_usd": round(envio_vendedor, 2),
         "payout_usd": round(payout, 2),
         "reserva_usd": round(reserva, 2),
+        "publicidad_usd": round(publicidad, 2),
         "ganancia_usd": round(ganancia, 2),
         "margen_pct": round(ganancia / precio * 100, 1) if precio > 0 else 0.0,
         "roi_pct": round(ganancia / costo * 100, 1) if costo > 0 else 0.0,
@@ -145,7 +150,7 @@ def precio_minimo(p: Producto, cfg_pais: dict, general: dict, margen_obj_pct: fl
     pf = peso_facturable(p, general.get("divisor_volumetrico", 5000))
     envio_total = costo_envio_internacional(cfg_pais, pf)
     k = 1 - (comision_pct(cfg_pais, rubro_cfg, pais) + _num(general.get("payout_pct"))
-             + _num(general.get("reserva_reclamos_pct"))) / 100
+             + _num(general.get("reserva_reclamos_pct")) + _num(general.get("publicidad_pct"))) / 100
     if k - m <= 0:
         return None
     # Entre cortes (cargo fijo, umbral de envío gratis) la ganancia es lineal en el precio.

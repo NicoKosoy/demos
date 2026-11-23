@@ -16,15 +16,21 @@ def calcular_demora(proveedor: dict | None, producto: dict, general: dict, cfg_p
 
     - ruta 'directo': el proveedor despacha con la etiqueta de Mercado Libre. Cuenta solo su preparación:
       el primer escaneo del correo ya es "despachado".
-    - ruta '3pl': el proveedor manda a tu depósito/prep center, que reetiqueta y despacha.
+    - ruta '3pl': el proveedor (o Amazon/eBay/Walmart) manda a tu prep center, que reetiqueta y despacha.
       Suma el tránsito hasta el 3PL y el día de proceso.
+    - ruta 'full': stock enviado antes al depósito de Mercado Libre en Texas. No hay demora que declarar.
     """
     proveedor = proveedor or {}
+    ruta = (producto.get("ruta") or "directo").lower()
+    if ruta == "full":
+        # El stock ya está en el depósito de Mercado Libre en Texas: no se declara demora.
+        tmin, tmax = cfg_pais.get("transito_full_dias") or cfg_pais.get("transito_internacional_dias", [5, 10])
+        return {"ruta": ruta, "dias_necesarios": 0.0, "dias_a_declarar": 0, "demora_confirmada": True,
+                "entrega_min": int(math.ceil(tmin)), "entrega_max": int(math.ceil(tmax)), "alerta_exposicion": False}
     prep = _num(proveedor.get("dias_preparacion"))
     confirmada = prep is not None
     if prep is None:
         prep = float(general["dias_proveedor_por_defecto"])
-    ruta = (producto.get("ruta") or "directo").lower()
     transito = extra = 0.0
     if ruta == "3pl":
         transito = _num(proveedor.get("dias_transito_local"))

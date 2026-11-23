@@ -10,7 +10,7 @@ import streamlit as st
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from mlglobal import analisis, config, db, demo, fx  # noqa: E402
+from mlglobal import analisis, config, db, demo, ebay, fx  # noqa: E402
 from mlglobal import mercadolibre as ml  # noqa: E402
 from mlglobal import plantillas  # noqa: E402
 
@@ -19,7 +19,9 @@ st.set_page_config(page_title="Analizador ML Global", layout="wide")
 
 @st.cache_resource
 def conexion():
-    return db.conectar()
+    c = db.conectar()
+    db.asegurar_fuentes(c)
+    return c
 
 
 con = conexion()
@@ -27,7 +29,12 @@ PAISES = config.paises()
 GENERAL = config.general()
 RUBROS = config.rubros()
 NOMBRE_RUBRO = {r["id"]: r["nombre"] for r in RUBROS}
-VEREDICTOS = ["Publicar", "Confirmar demora", "Revisar", "No conviene", "Pierde plata"]
+VEREDICTOS = ["Publicar", "Confirmar demora", "Revisar", "No conviene", "Pierde plata", "No permitido"]
+RUTAS = {"3pl": "Compro por pedido → prep center → ML", "full": "Stock en el depósito de ML en Texas",
+         "directo": "El proveedor despacha con etiqueta ML"}
+FUENTES_COMPRA = {"amazon": "Amazon", "ebay": "eBay", "walmart": "Walmart", "proveedor": "Proveedor mayorista",
+                  "otro": "Otra tienda"}
+CONDICIONES = ["nuevo", "reacondicionado", "usado"]
 
 
 def nombre_pais(c: str) -> str:
@@ -52,6 +59,8 @@ def a_excel(hojas: dict[str, pd.DataFrame]) -> bytes:
 COLUMNAS_OPORTUNIDADES = {
     "producto": st.column_config.TextColumn("Producto", width="large"),
     "pais_nombre": "País",
+    "fuente_compra": st.column_config.TextColumn("Compra en"),
+    "costo_compra_usd": st.column_config.NumberColumn("Costo USD", format="$ %.2f"),
     "veredicto": "Veredicto",
     "puntaje": st.column_config.ProgressColumn("Puntaje", min_value=0, max_value=100, format="%d"),
     "precio_usd": st.column_config.NumberColumn("Precio USD", format="$ %.2f"),
@@ -62,6 +71,9 @@ COLUMNAS_OPORTUNIDADES = {
     "margen_pct": st.column_config.NumberColumn("Margen", format="%.1f %%"),
     "precio_final_comprador_local": st.column_config.NumberColumn("Paga el comprador (local)", format="%.0f",
                                                                   help="Con envío e impuestos de importación"),
+    "minimo_final_comprador_local": st.column_config.NumberColumn(
+        "Mín. que tiene que pagar el comprador", format="%.0f",
+        help="Lo que pagaría el comprador (con impuestos) a tu precio mínimo. Comparalo con la competencia."),
     "mediana_competencia_local": st.column_config.NumberColumn("Competencia (mediana local)", format="%.0f"),
     "dif_vs_competencia_pct": st.column_config.NumberColumn("vs competencia", format="%+.0f %%"),
     "dias_a_declarar": st.column_config.NumberColumn("Días a declarar", format="%d",
@@ -75,8 +87,8 @@ COLUMNAS_OPORTUNIDADES = {
 
 # ---------------------------------------------------------------- barra lateral
 st.sidebar.title("Analizador ML Global")
-pagina = st.sidebar.radio("Sección", ["Oportunidades", "Calculadora rápida", "Productos", "Proveedores",
-                                      "Precios de mercado", "Configuración"])
+pagina = st.sidebar.radio("Sección", ["Oportunidades", "Buscar ofertas", "Calculadora rápida", "Productos",
+                                      "Proveedores", "Precios de mercado", "Configuración"])
 estado_ml = ml.estado_token()
 st.sidebar.caption("API de Mercado Libre: " + ("conectada" if estado_ml["conectado"] else "sin conectar"))
 pendientes = db.seguimientos_pendientes(con)
@@ -110,11 +122,14 @@ def tabla_detalle(filas: list[dict]) -> pd.DataFrame:
         ("Envío internacional a tu cargo (USD)", lambda f: -f["envio_vendedor_usd"]),
         ("Cobro / retiro (USD)", lambda f: -f["_detalle"]["resultado"]["payout_usd"]),
         ("Reserva reclamos (USD)", lambda f: -f["_detalle"]["resultado"]["reserva_usd"]),
-        ("Producto + envío local + prep (USD)", lambda f: -f["costo_producto_usd"]),
+        ("Publicidad (USD)", lambda f: -f["publicidad_usd"]),
+        ("Producto con sales tax + envío + prep (USD)", lambda f: -f["costo_producto_usd"]),
         ("GANANCIA (USD)", lambda f: f["ganancia_usd"]),
         ("Margen sobre precio", lambda f: f"{f['margen_pct']:.1f} %"),
         ("ROI sobre costo", lambda f: f"{f['_detalle']['resultado']['roi_pct']:.0f} %"),
         ("Precio mínimo para tu margen (USD)", lambda f: f["precio_minimo_usd"]),
+        ("…el comprador pagaría (moneda local)", lambda f: (f"{f['minimo_final_comprador_local']:,.0f} {f['moneda']}"
+                                                           if f["minimo_final_comprador_local"] else "—")),
         ("Impuestos que paga el comprador (USD)", lambda f: f["_detalle"]["resultado"]["impuesto_comprador_usd"]),
         ("Paga el comprador (moneda local)", lambda f: f"{f['precio_final_comprador_local']:,.0f} {f['moneda']}"),
         ("Competencia, mediana (moneda local)", lambda f: (f"{f['mediana_competencia_local']:,.0f} {f['moneda']}"
@@ -137,12 +152,16 @@ def pagina_oportunidades():
             st.rerun()
         return
     df = pd.DataFrame(filas)
+    df["fuente_compra"] = df["fuente_compra"].map(lambda f: FUENTES_COMPRA.get(f, f or ""))
     c1, c2, c3, c4 = st.columns(4)
     paises_sel = c1.multiselect("Países", list(PAISES), default=GENERAL["paises_activos"], format_func=nombre_pais)
     ver_sel = c2.multiselect("Veredicto", VEREDICTOS, placeholder="Todos")
     rub_sel = c3.multiselect("Rubro", sorted(df["rubro"].unique()), placeholder="Todos")
     min_pts = c4.slider("Puntaje mínimo", 0, 100, 0)
-    vista = df[df["pais"].isin(paises_sel) & (df["puntaje"] >= min_pts)]
+    tope = float(max(500.0, df["costo_compra_usd"].max()))
+    cmin, cmax = st.slider("Costo de compra (USD)", 0.0, tope, (0.0, tope), step=5.0)
+    vista = df[df["pais"].isin(paises_sel) & (df["puntaje"] >= min_pts)
+               & df["costo_compra_usd"].between(cmin, cmax)]
     if ver_sel:
         vista = vista[vista["veredicto"].isin(ver_sel)]
     if rub_sel:
@@ -189,7 +208,15 @@ def pagina_oportunidades():
                          "JOIN productos pr ON pr.id = pu.producto_id ORDER BY pu.fecha DESC")
     if pubs:
         st.subheader("Publicaciones")
-        editadas = st.data_editor(pd.DataFrame(pubs), hide_index=True, disabled=["id", "producto", "fecha"],
+        st.caption("Cuando entra un pedido, actualizá el costo del producto (precio de hoy en Amazon/eBay) y mirá "
+                   "'Margen hoy' antes de comprarlo.")
+        ids_prod = {r["id"]: r["producto_id"] for r in db.filas(con, "SELECT id, producto_id FROM publicaciones")}
+        for pub in pubs:
+            hoy = analisis.margen_a_precio(con, ids_prod[pub["id"]], pub["pais"], n(pub["precio_usd"]))
+            pub["margen_hoy_pct"] = hoy["margen_pct"] if hoy else None
+            pub["ganancia_hoy_usd"] = hoy["ganancia_usd"] if hoy else None
+        editadas = st.data_editor(pd.DataFrame(pubs), hide_index=True,
+                                  disabled=["id", "producto", "fecha", "margen_hoy_pct", "ganancia_hoy_usd"],
                                   column_config={"estado": st.column_config.SelectboxColumn(
                                       "estado", options=["borrador", "publicado", "pausado", "cerrado"])},
                                   key="ed_pubs")
@@ -199,6 +226,99 @@ def pagina_oportunidades():
                     "pais": r["pais"], "precio_usd": n(r["precio_usd"]), "estado": r["estado"],
                     "dias_disponibilidad": int(n(r["dias_disponibilidad"])), "item_id_ml": r["item_id_ml"]})
             st.success("Listo.")
+
+
+# ---------------------------------------------------------------- buscar ofertas
+def pagina_buscar():
+    st.title("Buscar ofertas en EE.UU.")
+    st.caption("Productos NUEVOS en Amazon, eBay y Walmart. Global Selling no acepta usados. Después de agregarlos, "
+               "traé los precios de la competencia en 'Precios de mercado' y mirá el ranking en 'Oportunidades'.")
+    c1, c2, c3 = st.columns([3, 1, 1])
+    texto = c1.text_input("Qué buscar", placeholder="ej.: pedal overdrive, ssd nvme 2tb, hotend")
+    pmin = c2.number_input("Desde USD", 0.0, value=float(GENERAL["costo_min_busqueda_usd"]), step=10.0)
+    pmax = c3.number_input("Hasta USD", 0.0, value=float(GENERAL["costo_max_busqueda_usd"]), step=10.0)
+    with st.expander("Ideas por rubro"):
+        st.dataframe(pd.DataFrame([{"Rubro": r["nombre"], "Riesgo": r["riesgo"], "Ideas": r.get("ideas", ""),
+                                    "Ojo": r.get("nota", "")} for r in RUBROS]), hide_index=True)
+    if texto:
+        cols = st.columns(3)
+        for col, (tienda, url) in zip(cols, ebay.links_busqueda(texto, pmin, pmax).items()):
+            col.link_button(f"Ver en {tienda} (nuevos, USD {pmin:g}-{pmax:g})", url)
+
+    st.subheader("eBay: resultados acá mismo")
+    if not ebay.configurado():
+        st.info("Conectá eBay en Configuración → Conexiones (es gratis) para traer los resultados acá y "
+                "agregarlos con un clic. Mientras, usá los links de arriba y el formulario de abajo.")
+    else:
+        c1, c2 = st.columns(2)
+        orden = c1.selectbox("Orden", ["", "price"],
+                             format_func={"": "Más relevantes", "price": "Más baratos primero"}.get)
+        limite = c2.slider("Cantidad", 10, 200, 50, step=10)
+        if st.button("Buscar en eBay", disabled=not texto):
+            try:
+                st.session_state["ebay_res"] = ebay.buscar(texto, pmin, pmax, True, limite, orden or None,
+                                                           GENERAL.get("zip_prep_center", ""))
+                st.session_state["ebay_texto"] = texto
+            except ebay.ErrorEbay as e:
+                st.error(str(e))
+        res = st.session_state.get("ebay_res")
+        if res:
+            df = pd.DataFrame(res)
+            df.insert(0, "agregar", False)
+            editado = st.data_editor(
+                df[["agregar", "imagen", "titulo", "precio_usd", "envio_usd", "feedback_pct", "feedback_cantidad",
+                    "vendedor", "url"]],
+                hide_index=True, key="ed_ebay",
+                disabled=["imagen", "titulo", "precio_usd", "envio_usd", "feedback_pct", "feedback_cantidad",
+                          "vendedor", "url"],
+                column_config={"agregar": st.column_config.CheckboxColumn("Agregar"),
+                               "imagen": st.column_config.ImageColumn("Foto"),
+                               "titulo": st.column_config.TextColumn("Título", width="large"),
+                               "precio_usd": st.column_config.NumberColumn("Precio", format="$ %.2f"),
+                               "envio_usd": st.column_config.NumberColumn("Envío", format="$ %.2f"),
+                               "feedback_pct": st.column_config.NumberColumn("Feedback", format="%.1f %%"),
+                               "feedback_cantidad": "Opiniones", "vendedor": "Vendedor",
+                               "url": st.column_config.LinkColumn("Link", display_text="abrir")})
+            c1, c2, c3 = st.columns(3)
+            rubro = c1.selectbox("Rubro de los elegidos", list(NOMBRE_RUBRO), format_func=NOMBRE_RUBRO.get)
+            ruta = c2.selectbox("Logística", list(RUTAS), format_func=RUTAS.get, key="ruta_ebay")
+            peso = c3.number_input("Peso estimado por unidad (kg)", 0.0, value=0.5, step=0.1)
+            if st.button("Agregar los elegidos a Productos"):
+                prov = db.proveedor_por_nombre(con, "eBay") or {}
+                elegidos = editado[editado["agregar"]]
+                for _, r in elegidos.iterrows():
+                    db.insertar(con, "productos", {
+                        "titulo": str(r["titulo"])[:200], "rubro": rubro, "fuente_compra": "ebay",
+                        "proveedor_id": prov.get("id"), "costo_usd": float(r["precio_usd"]),
+                        "envio_local_usd": n(r["envio_usd"]), "peso_kg": peso, "ruta": ruta, "condicion": "nuevo",
+                        "prep_usd": GENERAL["prep_por_unidad_usd"] if ruta != "directo" else 0,
+                        "url_proveedor": r["url"], "busqueda": st.session_state.get("ebay_texto", texto)})
+                st.success(f"{len(elegidos)} producto(s) agregados. Revisá peso y medidas en Productos.")
+
+    st.subheader("Agregar una oferta a mano")
+    with st.form("oferta_manual", clear_on_submit=True):
+        titulo = st.text_input("Título *")
+        c1, c2, c3, c4 = st.columns(4)
+        fuente = c1.selectbox("Tienda", ["amazon", "walmart", "ebay", "otro"], format_func=FUENTES_COMPRA.get)
+        precio = c2.number_input("Precio (USD) *", 0.0, step=1.0)
+        envio = c3.number_input("Envío hasta tu prep center (USD)", 0.0, step=1.0)
+        peso = c4.number_input("Peso (kg)", 0.0, value=0.5, step=0.1)
+        c1, c2, c3 = st.columns(3)
+        url = c1.text_input("Link")
+        rubro = c2.selectbox("Rubro", list(NOMBRE_RUBRO), format_func=NOMBRE_RUBRO.get)
+        ruta = c3.selectbox("Logística", list(RUTAS), format_func=RUTAS.get)
+        busqueda = st.text_input("Cómo buscarlo en Mercado Libre", value=texto or "")
+        if st.form_submit_button("Agregar"):
+            if not titulo or not precio:
+                st.error("Faltan el título o el precio.")
+            else:
+                prov = db.proveedor_por_nombre(con, FUENTES_COMPRA[fuente]) or {}
+                db.insertar(con, "productos", {
+                    "titulo": titulo, "fuente_compra": fuente, "proveedor_id": prov.get("id"), "costo_usd": precio,
+                    "envio_local_usd": envio, "peso_kg": peso, "url_proveedor": url, "rubro": rubro, "ruta": ruta,
+                    "condicion": "nuevo", "busqueda": busqueda or titulo,
+                    "prep_usd": GENERAL["prep_por_unidad_usd"] if ruta != "directo" else 0})
+                st.success("Agregado.")
 
 
 # ---------------------------------------------------------------- calculadora
@@ -215,11 +335,11 @@ def pagina_calculadora():
     ancho = c2.number_input("Ancho caja (cm)", 0.0, value=0.0)
     alto = c3.number_input("Alto caja (cm)", 0.0, value=0.0)
     rubro = c4.selectbox("Rubro", list(NOMBRE_RUBRO), format_func=NOMBRE_RUBRO.get)
-    c1, c2, c3 = st.columns(3)
-    ruta = c1.selectbox("Ruta", ["directo", "3pl"], format_func={"directo": "Proveedor despacha con etiqueta ML",
-                                                                "3pl": "Pasa por mi 3PL / prep center"}.get)
-    dias = c2.number_input("Días hábiles que tarda el proveedor (0 = no sé)", 0.0, value=0.0, step=1.0)
-    precio = c3.number_input("Precio de venta USD (0 = calcularlo)", 0.0, value=0.0, step=1.0)
+    c1, c2, c3, c4 = st.columns(4)
+    ruta = c1.selectbox("Logística", list(RUTAS), format_func=RUTAS.get)
+    dias = c2.number_input("Días hasta que el proveedor despacha (0 = no sé)", 0.0, value=0.0, step=1.0)
+    tax = c3.number_input("Sales tax de la compra (%)", 0.0, 15.0, float(GENERAL["sales_tax_compra_pct"]))
+    precio = c4.number_input("Precio de venta USD (0 = calcularlo)", 0.0, value=0.0, step=1.0)
     st.write("Precio de la competencia en cada país (mediana, moneda local; 0 = no sé)")
     cols = st.columns(len(GENERAL["paises_activos"]))
     mercado = {}
@@ -229,8 +349,8 @@ def pagina_calculadora():
             mercado[codigo] = {"precio_mediana_local": v, "fuente": "manual"}
     prod = {"id": 0, "titulo": "Prueba", "rubro": rubro, "costo_usd": costo, "envio_local_usd": envio_local,
             "prep_usd": prep, "peso_kg": peso, "largo_cm": largo, "ancho_cm": ancho, "alto_cm": alto, "ruta": ruta,
-            "precio_venta_usd": precio or None}
-    prov = {"dias_preparacion": dias or None}
+            "precio_venta_usd": precio or None, "sales_tax_pct": tax}
+    prov = {"dias_preparacion": dias or None, "dias_transito_local": GENERAL["dias_transito_local_por_defecto"]}
     filas = analisis.analizar_producto(prod, prov, mercado, PAISES, GENERAL, RUBROS)
     st.dataframe(tabla_detalle(filas))
     for f in filas:
@@ -260,7 +380,16 @@ def form_producto(clave: str, datos: dict | None = None) -> dict | None:
         riesgo = c3.selectbox("Riesgo regulatorio", riesgos, index=riesgos.index(d.get("riesgo") or ""),
                               format_func=lambda r: r or "el del rubro")
         c1, c2, c3 = st.columns(3)
-        sku = c1.text_input("SKU del proveedor", d.get("sku") or "")
+        fuentes = list(FUENTES_COMPRA)
+        fuente = c1.selectbox("Dónde se compra", fuentes, format_func=FUENTES_COMPRA.get,
+                              index=fuentes.index(d["fuente_compra"]) if d.get("fuente_compra") in fuentes else 0)
+        condicion = c2.selectbox("Condición", CONDICIONES, index=CONDICIONES.index(d.get("condicion") or "nuevo"),
+                                 help="Global Selling solo acepta productos nuevos")
+        tax_actual = d.get("sales_tax_pct")
+        tax = c3.number_input("Sales tax de compra (%) — vacío = el general", 0.0, 15.0,
+                              value=None if tax_actual in (None, "") else float(tax_actual))
+        c1, c2, c3 = st.columns(3)
+        sku = c1.text_input("SKU / ASIN / item de eBay", d.get("sku") or "")
         marca = c2.text_input("Marca", d.get("marca") or "")
         upc = c3.text_input("UPC / EAN", d.get("upc") or "")
         c1, c2, c3, c4 = st.columns(4)
@@ -274,10 +403,9 @@ def form_producto(clave: str, datos: dict | None = None) -> dict | None:
         ancho = c3.number_input("Ancho (cm)", 0.0, value=n(d.get("ancho_cm")))
         alto = c4.number_input("Alto (cm)", 0.0, value=n(d.get("alto_cm")))
         c1, c2 = st.columns(2)
-        rutas = ["directo", "3pl"]
-        ruta = c1.selectbox("Ruta de despacho", rutas, index=rutas.index(d.get("ruta") or "directo"),
-                            format_func={"directo": "Proveedor despacha con etiqueta ML",
-                                         "3pl": "Pasa por mi 3PL / prep center"}.get)
+        rutas = list(RUTAS)
+        ruta = c1.selectbox("Logística", rutas, index=rutas.index(d["ruta"]) if d.get("ruta") in rutas else 0,
+                            format_func=RUTAS.get)
         busqueda = c2.text_input("Palabras para buscarlo en ML", d.get("busqueda") or "")
         url = st.text_input("Link del producto en el proveedor", d.get("url_proveedor") or "")
         notas = st.text_area("Notas", d.get("notas") or "")
@@ -290,7 +418,8 @@ def form_producto(clave: str, datos: dict | None = None) -> dict | None:
                     "sku": sku, "marca": marca, "upc": upc, "costo_usd": costo, "envio_local_usd": envio_local,
                     "prep_usd": prep, "precio_venta_usd": precio or None, "peso_kg": peso, "largo_cm": largo or None,
                     "ancho_cm": ancho or None, "alto_cm": alto or None, "ruta": ruta, "busqueda": busqueda,
-                    "url_proveedor": url, "notas": notas, "activo": int(activo)}
+                    "url_proveedor": url, "notas": notas, "activo": int(activo), "fuente_compra": fuente,
+                    "condicion": condicion, "sales_tax_pct": tax}
     return None
 
 
@@ -322,7 +451,8 @@ def pagina_productos():
                 db.borrar(con, "productos", pid)
                 st.rerun()
     with st.expander("Importar productos desde un CSV (catálogo del proveedor)"):
-        plantilla = pd.DataFrame(columns=["titulo", "rubro", "sku", "marca", "upc", "costo_usd", "envio_local_usd",
+        plantilla = pd.DataFrame(columns=["titulo", "rubro", "fuente_compra", "sku", "marca", "upc", "costo_usd",
+                                          "envio_local_usd",
                                           "prep_usd", "peso_kg", "largo_cm", "ancho_cm", "alto_cm", "ruta",
                                           "busqueda", "url_proveedor"])
         st.download_button("Descargar planilla modelo", plantilla.to_csv(index=False).encode("utf-8"),
@@ -486,6 +616,30 @@ def pagina_mercado():
     if not estado_ml["conectado"]:
         st.caption("Sin la API conectada: abrí el link de cada país, mirá los primeros resultados nuevos y anotá "
                    "el precio más bajo, el del medio y el más alto.")
+    else:
+        sin_precios = [x for x in prods if x.get("activo", 1) and not db.ultimos_precios(con, x["id"])]
+        if sin_precios and st.button(f"Traer precios por API de los {len(sin_precios)} productos que no tienen"):
+            barra = st.progress(0.0)
+            errores = []
+            for i, x in enumerate(sin_precios):
+                busq = x.get("busqueda") or x["titulo"]
+                for codigo in GENERAL["paises_activos"]:
+                    try:
+                        resumen = ml.resumir(ml.buscar(PAISES[codigo]["site_id"], busq))
+                    except ml.ErrorML as e:
+                        errores.append(str(e))
+                        break
+                    if resumen:
+                        db.insertar(con, "precios_mercado", {**resumen, "producto_id": x["id"], "pais": codigo,
+                                                             "fuente": "api",
+                                                             "url": ml.url_listado(PAISES[codigo], busq)})
+                barra.progress((i + 1) / len(sin_precios))
+                if errores and "no autorizó" in errores[-1]:
+                    break
+            if errores:
+                st.error(errores[-1])
+            else:
+                st.success("Listo.")
     for codigo in GENERAL["paises_activos"]:
         cfg = PAISES[codigo]
         with st.expander(f"{cfg['nombre']} ({cfg['moneda']})"):
@@ -534,7 +688,7 @@ def pagina_configuracion():
     st.title("Configuración")
     st.warning("Los valores de fábrica (comisiones, tabla de envíos, impuestos) son ESTIMADOS para arrancar. "
                "Cuando tengas la cuenta de Global Selling, copiá los reales de tu Seller Center.")
-    t_general, t_paises, t_rubros, t_api = st.tabs(["General", "Países", "Rubros", "API de Mercado Libre"])
+    t_general, t_paises, t_rubros, t_api = st.tabs(["General", "Países", "Rubros", "Conexiones"])
 
     with t_general, st.form("general"):
         g = GENERAL
@@ -555,6 +709,20 @@ def pagina_configuracion():
         dprov = c1.number_input("Demora supuesta si el proveedor no informó", 0, 30, int(g["dias_proveedor_por_defecto"]))
         dtran = c2.number_input("Tránsito supuesto hasta el 3PL", 0, 30, int(g["dias_transito_local_por_defecto"]))
         dmax = c3.number_input("Máximo de días recomendado", 1, 60, int(g["max_dias_recomendado"]))
+        st.markdown("**Compra en EE.UU., logística y publicidad**")
+        c1, c2, c3, c4 = st.columns(4)
+        tax = c1.number_input("Sales tax de compra (%)", 0.0, 15.0, float(g["sales_tax_compra_pct"]),
+                              help="0 si tu prep center está en Oregon, Delaware, Montana o New Hampshire, "
+                                   "o si comprás con certificado de reventa")
+        publicidad = c2.number_input("Publicidad, ACOS (% del precio)", 0.0, 50.0, float(g["publicidad_pct"]))
+        prep_u = c3.number_input("Prep center por unidad (USD)", 0.0, value=float(g["prep_por_unidad_usd"]))
+        zip_prep = c4.text_input("Código postal del prep center", g.get("zip_prep_center", ""),
+                                 help="Para que eBay calcule el envío hasta ahí")
+        c1, c2, c3, c4 = st.columns(4)
+        alm = c1.number_input("Depósito Texas: USD por unidad y mes", 0.0, value=float(g["full_almacenaje_usd_mes"]))
+        meses = c2.number_input("Meses que tarda en venderse", 0.0, 24.0, float(g["full_meses_stock"]))
+        bmin = c3.number_input("Buscar desde (USD)", 0.0, value=float(g["costo_min_busqueda_usd"]))
+        bmax = c4.number_input("Buscar hasta (USD)", 0.0, value=float(g["costo_max_busqueda_usd"]))
         c1, c2 = st.columns(2)
         empresa = c1.text_input("Nombre de tu empresa (para los mensajes)", g["empresa"])
         firma = c2.text_input("Firma (para los mensajes)", g["firma"])
@@ -565,7 +733,10 @@ def pagina_configuracion():
                 "payout_pct": payout, "reserva_reclamos_pct": reserva, "divisor_volumetrico": divisor,
                 "dias_despacho_estandar": estandar, "colchon_dias": colchon, "dias_3pl": dias3pl,
                 "dias_proveedor_por_defecto": dprov, "dias_transito_local_por_defecto": dtran,
-                "max_dias_recomendado": dmax, "empresa": empresa, "firma": firma, "paises_activos": activos})
+                "max_dias_recomendado": dmax, "empresa": empresa, "firma": firma, "paises_activos": activos,
+                "sales_tax_compra_pct": tax, "publicidad_pct": publicidad, "prep_por_unidad_usd": prep_u,
+                "zip_prep_center": zip_prep.strip(), "full_almacenaje_usd_mes": alm, "full_meses_stock": meses,
+                "costo_min_busqueda_usd": bmin, "costo_max_busqueda_usd": bmax})
             st.rerun()
 
     with t_paises:
@@ -651,6 +822,24 @@ def pagina_configuracion():
             st.rerun()
 
     with t_api:
+        st.subheader("eBay (para buscar ofertas)")
+        st.markdown(
+            "1. Registrate gratis en **developer.ebay.com** con tu cuenta de eBay.\n"
+            "2. En **Application Keys**, creá un keyset de **Production**.\n"
+            "3. Copiá acá el **App ID (Client ID)** y el **Cert ID (Client Secret)**.")
+        ce = ebay.credenciales()
+        with st.form("cred_ebay"):
+            eid = st.text_input("App ID (Client ID)", ce.get("client_id", ""))
+            esec = st.text_input("Cert ID (Client Secret)", ce.get("client_secret", ""), type="password")
+            if st.form_submit_button("Guardar credenciales de eBay"):
+                ebay.guardar_credenciales(eid, esec)
+                st.rerun()
+        if ebay.configurado() and st.button("Probar eBay"):
+            try:
+                st.dataframe(pd.DataFrame(ebay.buscar("ssd nvme 2tb", 50, 500, limite=5)))
+            except ebay.ErrorEbay as e:
+                st.error(str(e))
+        st.subheader("Mercado Libre (para traer precios de la competencia)")
         st.markdown(
             "1. Entrá a **developers.mercadolibre.com.ar → Mis aplicaciones → Crear aplicación** (con tu usuario de ML).\n"
             "2. En *Redirect URI* poné una dirección https (por ejemplo `https://www.google.com`).\n"
@@ -691,6 +880,7 @@ def pagina_configuracion():
         st.rerun()
 
 
-{"Oportunidades": pagina_oportunidades, "Calculadora rápida": pagina_calculadora, "Productos": pagina_productos,
+{"Oportunidades": pagina_oportunidades, "Buscar ofertas": pagina_buscar, "Calculadora rápida": pagina_calculadora,
+ "Productos": pagina_productos,
  "Proveedores": pagina_proveedores, "Precios de mercado": pagina_mercado,
  "Configuración": pagina_configuracion}[pagina]()

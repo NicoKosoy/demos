@@ -9,7 +9,7 @@ sys.path.insert(0, str(RAIZ))
 
 AppTest = pytest.importorskip("streamlit.testing.v1").AppTest
 
-SECCIONES = ["Oportunidades", "Calculadora rápida", "Productos", "Proveedores", "Precios de mercado",
+SECCIONES = ["Oportunidades", "Buscar ofertas", "Calculadora rápida", "Productos", "Proveedores", "Precios de mercado",
              "Configuración"]
 
 

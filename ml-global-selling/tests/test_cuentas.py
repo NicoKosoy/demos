@@ -86,6 +86,77 @@ def test_demo_de_punta_a_punta(tmp_path):
     demo.cargar_ejemplos(con)
     filas = analizar_todo(con)
     assert len(filas) == 5 * 5
-    assert {f["veredicto"] for f in filas} >= {"Publicar", "Pierde plata"}
+    assert {f["veredicto"] for f in filas} >= {"Publicar", "Pierde plata", "No permitido"}
     demo.borrar_ejemplos(con)
     assert analizar_todo(con) == []
+
+
+def test_sales_tax_y_publicidad():
+    p = Producto(costo_usd=100, sales_tax_pct=8.25, peso_kg=0.3)
+    r = calcular(p, PAIS, {**GENERAL, "publicidad_pct": 5}, 200)
+    # 200 - 30 comisión - 5 envío - 3 payout - 6 reserva - 10 publicidad - 108,25 costo = 37,75
+    assert r["publicidad_usd"] == 10 and r["ganancia_usd"] == 37.75
+    precio = precio_minimo(p, PAIS, {**GENERAL, "publicidad_pct": 5})
+    assert calcular(p, PAIS, {**GENERAL, "publicidad_pct": 5}, precio)["margen_pct"] >= 25
+
+
+def test_ruta_full_sin_demora():
+    d = calcular_demora({}, {"ruta": "full"}, GENERAL, {**PAIS, "transito_full_dias": [2, 4]})
+    assert d["dias_a_declarar"] == 0 and d["entrega_max"] == 4 and d["demora_confirmada"]
+
+
+def test_usado_no_permitido_y_margen_de_hoy(tmp_path):
+    from mlglobal.analisis import margen_a_precio
+    con = db.conectar(tmp_path / "b.sqlite")
+    demo.cargar_ejemplos(con)
+    filas = analizar_todo(con)
+    usados = [f for f in filas if f["condicion"] == "usado"]
+    assert usados and all(f["veredicto"] == "No permitido" for f in usados)
+    pid = filas[0]["producto_id"]
+    antes = margen_a_precio(con, pid, "MX", 150)["ganancia_usd"]
+    db.actualizar(con, "productos", pid, {"costo_usd": 80})  # subió el precio en Amazon
+    assert margen_a_precio(con, pid, "MX", 150)["ganancia_usd"] < antes
+
+
+def test_migra_base_vieja(tmp_path):
+    import sqlite3
+    ruta = tmp_path / "vieja.sqlite"
+    vieja = sqlite3.connect(ruta)
+    vieja.execute("CREATE TABLE productos (id INTEGER PRIMARY KEY, titulo TEXT NOT NULL, costo_usd REAL)")
+    vieja.commit()
+    vieja.close()
+    con = db.conectar(ruta)
+    assert {"fuente_compra", "condicion", "sales_tax_pct"} <= set(db.columnas(con, "productos"))
+    db.asegurar_fuentes(con)
+    db.asegurar_fuentes(con)
+    assert len(db.todos(con, "proveedores")) == 3
+
+
+def test_ebay_interpreta_resultados(tmp_path, monkeypatch):
+    from mlglobal import ebay
+
+    class Resp:
+        def __init__(self, status, datos):
+            self.status_code, self._datos, self.text = status, datos, ""
+
+        def json(self):
+            return self._datos
+
+    monkeypatch.setattr(ebay, "RUTA_CREDENCIALES", tmp_path / "c.json")
+    monkeypatch.setattr(ebay, "RUTA_TOKEN", tmp_path / "t.json")
+    monkeypatch.setattr(ebay, "DATOS_DIR", tmp_path)
+    ebay.guardar_credenciales("id", "secreto")
+    llamadas = {}
+    monkeypatch.setattr(ebay.requests, "post", lambda *a, **k: Resp(200, {"access_token": "T", "expires_in": 7200}))
+
+    def falso_get(url, params=None, headers=None, timeout=None):
+        llamadas["params"] = params
+        return Resp(200, {"itemSummaries": [
+            {"title": "SSD 2TB", "price": {"value": "119.99"}, "condition": "New",
+             "shippingOptions": [{"shippingCost": {"value": "0.00"}}],
+             "seller": {"username": "tienda", "feedbackPercentage": "99.5", "feedbackScore": 1200},
+             "itemWebUrl": "https://www.ebay.com/itm/1", "itemId": "v1|1|0"}]})
+    monkeypatch.setattr(ebay.requests, "get", falso_get)
+    res = ebay.buscar("ssd 2tb", 50, 500)
+    assert res[0]["precio_usd"] == 119.99 and res[0]["envio_usd"] == 0 and res[0]["feedback_pct"] == 99.5
+    assert "price:[50..500]" in llamadas["params"]["filter"] and "conditions:{NEW}" in llamadas["params"]["filter"]

@@ -7,11 +7,23 @@ from .margen import Producto, calcular, precio_competitivo, precio_minimo
 from .puntaje import calcular_puntaje
 
 
+def armar_producto(prod: dict, general: dict) -> Producto:
+    """Producto con el sales tax de compra y, si va al depósito de Texas, el almacenaje."""
+    tax = prod.get("sales_tax_pct")
+    almacenaje = 0.0
+    if (prod.get("ruta") or "").lower() == "full":
+        almacenaje = float(general.get("full_almacenaje_usd_mes", 0)) * float(general.get("full_meses_stock", 0))
+    return Producto.desde_dict({**prod, "almacenaje_usd": almacenaje,
+                                "sales_tax_pct": general.get("sales_tax_compra_pct", 0) if tax in (None, "") else tax})
+
+
 def analizar_producto(prod: dict, prov: dict | None, mercado_por_pais: dict, paises_cfg: dict,
                       general: dict, rubros: list[dict], paises: list[str] | None = None) -> list[dict]:
     rubro_cfg = next((r for r in rubros if r["id"] == prod.get("rubro")), None)
     riesgo = prod.get("riesgo") or (rubro_cfg or {}).get("riesgo", "medio")
-    p = Producto.desde_dict(prod)
+    condicion = (prod.get("condicion") or "nuevo").lower()
+    ruta = (prod.get("ruta") or "directo").lower()
+    p = armar_producto(prod, general)
     salida = []
     for codigo in paises or general["paises_activos"]:
         cfg = paises_cfg.get(codigo)
@@ -39,8 +51,16 @@ def analizar_producto(prod: dict, prov: dict | None, mercado_por_pais: dict, pai
         pun = calcular_puntaje(res, dem, riesgo, general, mediana_usd)
         if pun["veredicto"] == "Publicar" and not dem["demora_confirmada"]:
             pun["veredicto"] = "Confirmar demora"
-
         alertas = []
+        if condicion == "usado":
+            pun["veredicto"], pun["puntaje"] = "No permitido", 0
+            alertas.append("Global Selling solo acepta productos nuevos")
+        elif condicion == "reacondicionado":
+            alertas.append("Reacondicionado: confirmar con Mercado Libre si se permite en este país")
+        if ruta == "full":
+            alertas.append("Stock en Texas: se compra antes de vender (capital inmovilizado)")
+        minimo_final = (calcular(p, cfg, general, minimo, rubro_cfg, codigo)["precio_final_comprador_local"]
+                        if minimo else None)
         if minimo is None:
             alertas.append("Con estos costos no hay precio que llegue al margen objetivo")
         elif competitivo and competitivo < minimo:
@@ -75,12 +95,17 @@ def analizar_producto(prod: dict, prov: dict | None, mercado_por_pais: dict, pai
             "origen_precio": origen,
             "precio_local": res["precio_local"],
             "precio_minimo_usd": minimo,
+            "minimo_final_comprador_local": minimo_final,
+            "fuente_compra": prod.get("fuente_compra") or "",
+            "condicion": condicion,
+            "costo_compra_usd": round(float(prod.get("costo_usd") or 0), 2),
             "precio_competitivo_usd": competitivo,
             "ganancia_usd": res["ganancia_usd"],
             "margen_pct": res["margen_pct"],
             "roi_pct": res["roi_pct"],
             "comision_usd": res["comision_usd"],
             "envio_vendedor_usd": res["envio_vendedor_usd"],
+            "publicidad_usd": res["publicidad_usd"],
             "cargos_usd": round(res["cargo_fijo_usd"] + res["payout_usd"] + res["reserva_usd"], 2),
             "costo_producto_usd": res["costo_producto_usd"],
             "precio_final_comprador_local": res["precio_final_comprador_local"],
@@ -98,6 +123,17 @@ def analizar_producto(prod: dict, prov: dict | None, mercado_por_pais: dict, pai
             "_detalle": {"resultado": res, "demora": dem, "puntaje": pun["partes"]},
         })
     return salida
+
+
+def margen_a_precio(con, producto_id: int, pais: str, precio_usd: float) -> dict | None:
+    """Cuenta con el costo de HOY a un precio dado (sirve cuando entra un pedido)."""
+    prod = db.uno(con, "productos", producto_id)
+    paises_cfg = config.paises()
+    if not prod or pais not in paises_cfg:
+        return None
+    general = config.general()
+    rubro_cfg = config.rubro(prod.get("rubro"))
+    return calcular(armar_producto(prod, general), paises_cfg[pais], general, precio_usd, rubro_cfg, pais)
 
 
 def analizar_todo(con, paises: list[str] | None = None, solo_activos: bool = True) -> list[dict]:

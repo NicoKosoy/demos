@@ -55,6 +55,9 @@ CREATE TABLE IF NOT EXISTS productos (
     ancho_cm REAL,
     alto_cm REAL,
     ruta TEXT DEFAULT 'directo',
+    fuente_compra TEXT,
+    condicion TEXT DEFAULT 'nuevo',
+    sales_tax_pct REAL,
     precio_venta_usd REAL,
     busqueda TEXT,
     riesgo TEXT,
@@ -102,6 +105,27 @@ CREATE TABLE IF NOT EXISTS publicaciones (
 
 TABLAS = {"proveedores", "productos", "precios_mercado", "contactos", "publicaciones"}
 
+# Columnas agregadas después de la primera versión: se suman solas a bases ya creadas.
+MIGRACIONES = {
+    "productos": {"fuente_compra": "TEXT", "condicion": "TEXT DEFAULT 'nuevo'", "sales_tax_pct": "REAL"},
+}
+
+# Tiendas de EE.UU. de donde se compra. Se crean solas; los días son estimados y se editan en Proveedores.
+FUENTES = [
+    {"nombre": "Amazon", "tipo": "tienda online", "pais": "EE.UU.", "web": "https://www.amazon.com",
+     "estado": "aprobado", "acepta_dropship": "si", "acepta_etiqueta_ml": "no", "dias_preparacion": 1,
+     "dias_transito_local": 2, "confiabilidad": 4,
+     "notas": "Prime llega en 1-2 días al prep center. Amazon Business acepta certificados de reventa (sin sales tax)."},
+    {"nombre": "eBay", "tipo": "tienda online", "pais": "EE.UU.", "web": "https://www.ebay.com",
+     "estado": "aprobado", "acepta_dropship": "si", "acepta_etiqueta_ml": "no", "dias_preparacion": 2,
+     "dias_transito_local": 4, "confiabilidad": 3,
+     "notas": "Solo 'Nuevo', vendedores con +98 % de feedback y devolución aceptada."},
+    {"nombre": "Walmart", "tipo": "tienda online", "pais": "EE.UU.", "web": "https://www.walmart.com",
+     "estado": "aprobado", "acepta_dropship": "si", "acepta_etiqueta_ml": "no", "dias_preparacion": 1,
+     "dias_transito_local": 3, "confiabilidad": 4,
+     "notas": "Ojo con los vendedores de terceros dentro de Walmart: mirá quién despacha."},
+]
+
 
 def conectar(ruta: str | Path | None = None) -> sqlite3.Connection:
     ruta = Path(ruta or RUTA_DB)
@@ -110,7 +134,25 @@ def conectar(ruta: str | Path | None = None) -> sqlite3.Connection:
     con.row_factory = sqlite3.Row
     con.execute("PRAGMA foreign_keys = ON")
     con.executescript(ESQUEMA)
+    for tabla, nuevas in MIGRACIONES.items():
+        existentes = {r["name"] for r in con.execute(f"PRAGMA table_info({tabla})")}
+        for col, tipo in nuevas.items():
+            if col not in existentes:
+                con.execute(f"ALTER TABLE {tabla} ADD COLUMN {col} {tipo}")
+    con.commit()
     return con
+
+
+def asegurar_fuentes(con: sqlite3.Connection) -> None:
+    """Crea Amazon, eBay y Walmart como proveedores si todavía no están."""
+    for fuente in FUENTES:
+        if not con.execute("SELECT 1 FROM proveedores WHERE nombre = ?", (fuente["nombre"],)).fetchone():
+            insertar(con, "proveedores", fuente)
+
+
+def proveedor_por_nombre(con: sqlite3.Connection, nombre: str) -> dict | None:
+    r = con.execute("SELECT * FROM proveedores WHERE nombre = ?", (nombre,)).fetchone()
+    return dict(r) if r else None
 
 
 def _tabla(tabla: str) -> str:
