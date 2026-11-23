@@ -17,8 +17,9 @@ from mlglobal import plantillas, publicar  # noqa: E402
 st.set_page_config(page_title="Analizador ML Global", layout="wide")
 
 
-@st.cache_resource
 def conexion():
+    """Una conexión nueva en cada ejecución: Streamlit atiende cada pestaña en su propio hilo
+    y una conexión SQLite compartida entre hilos falla ("bad parameter or other API misuse")."""
     c = db.conectar()
     db.asegurar_fuentes(c)
     return c

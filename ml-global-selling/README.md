@@ -89,6 +89,8 @@ Eso significa que comprar al precio normal de Amazon rara vez da. Lo que funcion
 3. Doble clic en **`instalar.bat`**. Se hace una sola vez y tarda un par de minutos.
 4. Doble clic en **`iniciar.bat`**. Se abre el navegador en http://localhost:8501.
 
+**Para actualizar** a la última versión: cerrá la herramienta (la ventana negra) y hacé doble clic en **`actualizar.bat`**. Baja los cambios de GitHub sin tocar tus datos (`datos/`).
+
 Para verla funcionando sin cargar nada, tocá **"Cargar datos de ejemplo"** en Oportunidades. Los precios de ejemplo son inventados y se borran desde la barra lateral.
 
 En Mac o Linux: `python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt && streamlit run app.py`

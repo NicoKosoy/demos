@@ -133,7 +133,7 @@ FUENTES = [
 def conectar(ruta: str | Path | None = None) -> sqlite3.Connection:
     ruta = Path(ruta or RUTA_DB)
     ruta.parent.mkdir(parents=True, exist_ok=True)
-    con = sqlite3.connect(ruta, check_same_thread=False)
+    con = sqlite3.connect(ruta, timeout=30)  # una conexión por hilo; si otra pestaña está escribiendo, espera
     con.row_factory = sqlite3.Row
     con.execute("PRAGMA foreign_keys = ON")
     con.executescript(ESQUEMA)
