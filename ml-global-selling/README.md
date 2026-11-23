@@ -71,8 +71,12 @@ Eso significa que comprar al precio normal de Amazon rara vez da. Lo que funcion
 - En el Seller Center vas a ver la comisión por categoría y el costo de envío de cada publicación. Copialos en Configuración → Países.
 
 **4. App para publicar por API**
-- Con la cuenta ya aprobada, creá la aplicación en https://global-selling.mercadolibre.com/devsite/create-application.
-- En Configuración → Conexiones, elegí "Global Selling (para publicar)" y autorizala.
+- En el Seller Center tocá **Developers** (al pie) → DevCenter → **Crear aplicación** ([guía](https://global-selling.mercadolibre.com/devsite/create-application)).
+- Configurala así:
+  - Redirect URI: una dirección https (ej. `https://www.google.com`);
+  - **PKCE desactivado**;
+  - permisos de lectura y de publicaciones/ventas.
+- Copiá el App ID y la Secret Key en Configuración → Conexiones, elegí "Global Selling (para publicar)" y tocá Autorizar.
 
 **5. Primera publicación de prueba**
 - Validá precios de la tanda, elegí 1 producto que pase el mínimo y publicalo con `python cli.py publicar ... --confirmar`.

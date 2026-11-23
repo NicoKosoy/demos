@@ -871,9 +871,12 @@ def pagina_configuracion():
                 st.error(str(e))
         st.subheader("Mercado Libre (para traer precios de la competencia)")
         st.markdown(
-            "1. Entrá a **developers.mercadolibre.com.ar → Mis aplicaciones → Crear aplicación** (con tu usuario de ML).\n"
-            "2. En *Redirect URI* poné una dirección https (por ejemplo `https://www.google.com`).\n"
-            "3. Copiá acá el **Client ID** y el **Client Secret**, guardá y tocá *Autorizar*.\n"
+            "1. **Para publicar** (cuenta de Global Selling): en el Seller Center tocá **Developers** (al pie de la "
+            "página) → DevCenter → **Crear aplicación**. Para solo leer precios alcanza una app de "
+            "developers.mercadolibre.com.ar.\n"
+            "2. En *Redirect URI* poné una dirección https (por ejemplo `https://www.google.com`). "
+            "Dejá **PKCE desactivado** y marcá los permisos de lectura y de publicaciones/ventas.\n"
+            "3. Copiá acá el **App ID (Client ID)** y la **Secret Key**, guardá, elegí *Global Selling* y tocá *Autorizar*.\n"
             "4. Después de aceptar, el navegador va a una dirección que tiene `?code=TG-...`: copiala entera y pegala abajo.")
         cred = ml.credenciales()
         with st.form("cred_ml"):
