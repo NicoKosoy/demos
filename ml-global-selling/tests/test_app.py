@@ -28,3 +28,16 @@ def test_seccion_sin_errores(base_temporal, seccion):
     at.run()
     at.sidebar.radio[0].set_value(seccion).run()
     assert not at.exception, at.exception
+
+
+def test_cargar_tanda_desde_la_app(tmp_path, monkeypatch):
+    from mlglobal import config, db
+    monkeypatch.setattr(config, "DATOS_DIR", tmp_path)
+    monkeypatch.setattr(db, "RUTA_DB", tmp_path / "base.sqlite")
+    at = AppTest.from_file(str(RAIZ / "app.py"), default_timeout=60)
+    at.run()
+    at.sidebar.radio[0].set_value("Productos").run()
+    next(b for b in at.button if b.label == "Cargar tanda").click().run()
+    assert not at.exception, at.exception
+    assert any("Tanda cargada: 20 productos nuevos" in m.value for m in at.success)
+    assert len(db.todos(db.conectar(tmp_path / "base.sqlite"), "productos")) == 20

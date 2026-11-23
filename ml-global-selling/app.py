@@ -38,6 +38,12 @@ FUENTES_COMPRA = {"amazon": "Amazon", "ebay": "eBay", "walmart": "Walmart", "pro
 CONDICIONES = ["nuevo", "reacondicionado", "usado"]
 
 
+def avisar(mensaje: str) -> None:
+    """Guarda un aviso para mostrarlo después de recargar la pantalla (si no, st.rerun lo borra)."""
+    st.session_state["aviso"] = mensaje
+    st.rerun()
+
+
 def nombre_pais(c: str) -> str:
     return PAISES[c]["nombre"] if c in PAISES else c
 
@@ -102,7 +108,7 @@ if demo.hay_ejemplos(con):
     st.sidebar.info("Hay datos de EJEMPLO cargados (precios inventados).")
     if st.sidebar.button("Borrar datos de ejemplo"):
         demo.borrar_ejemplos(con)
-        st.rerun()
+        avisar("Datos de ejemplo borrados.")
 st.sidebar.caption(f"Tus datos: {db.RUTA_DB}")
 
 
@@ -153,7 +159,7 @@ def pagina_oportunidades():
         st.info("Todavía no hay productos. Cargalos en **Productos** o mirá un ejemplo armado.")
         if st.button("Cargar datos de ejemplo"):
             demo.cargar_ejemplos(con)
-            st.rerun()
+            avisar("Datos de ejemplo cargados.")
         return
     df = pd.DataFrame(filas)
     df["fuente_compra"] = df["fuente_compra"].map(lambda f: FUENTES_COMPRA.get(f, f or ""))
@@ -443,8 +449,7 @@ def pagina_productos():
         nuevo = form_producto("nuevo_producto")
         if nuevo:
             db.insertar(con, "productos", nuevo)
-            st.success("Producto agregado.")
-            st.rerun()
+            avisar("Producto agregado.")
     if prods:
         with st.expander("Editar o borrar un producto"):
             pid = st.selectbox("Producto", [p["id"] for p in prods],
@@ -452,11 +457,10 @@ def pagina_productos():
             cambios = form_producto(f"editar_producto_{pid}", db.uno(con, "productos", pid))
             if cambios:
                 db.actualizar(con, "productos", pid, cambios)
-                st.success("Guardado.")
-                st.rerun()
+                avisar("Guardado.")
             if st.button("Borrar este producto", key=f"borrar_{pid}"):
                 db.borrar(con, "productos", pid)
-                st.rerun()
+                avisar("Producto borrado.")
     if prods:
         if st.button("Preparar fichas de publicación (Excel)"):
             with st.spinner("Buscando categoría de Global Selling y atributos obligatorios…"):
@@ -477,8 +481,7 @@ def pagina_productos():
             elegido = st.selectbox("Tanda", archivos, format_func=lambda a: a.name)
             if st.button("Cargar tanda"):
                 nuevos, act = candidatos.cargar(con, elegido)
-                st.success(f"{nuevos} nuevos, {act} actualizados.")
-                st.rerun()
+                avisar(f"Tanda cargada: {nuevos} productos nuevos y {act} actualizados. Ya están en Oportunidades.")
         else:
             st.caption("No hay tandas en la carpeta candidatos/.")
     with st.expander("Importar productos desde un CSV (catálogo del proveedor)"):
@@ -569,7 +572,7 @@ def pagina_proveedores():
         nuevo = form_proveedor("nuevo_proveedor")
         if nuevo:
             db.insertar(con, "proveedores", nuevo)
-            st.rerun()
+            avisar("Proveedor agregado.")
     if not provs:
         return
     nombres = {p["id"]: p["nombre"] for p in provs}
@@ -578,10 +581,10 @@ def pagina_proveedores():
         cambios = form_proveedor(f"form_prov_{vid}", db.uno(con, "proveedores", vid))
         if cambios:
             db.actualizar(con, "proveedores", vid, cambios)
-            st.rerun()
+            avisar("Proveedor guardado.")
         if st.button("Borrar este proveedor", key=f"borrar_prov_{vid}"):
             db.borrar(con, "proveedores", vid)
-            st.rerun()
+            avisar("Proveedor borrado.")
 
     st.subheader("Preguntarle la demora y las condiciones")
     vid = st.selectbox("Proveedor", list(nombres), format_func=nombres.get, key="msg_prov")
@@ -606,8 +609,7 @@ def pagina_proveedores():
     if c3.button("Ya lo envié"):
         db.registrar_contacto(con, vid, "whatsapp" if tipo == "whatsapp" else "email", "enviado",
                               (asunto + "\n\n" + cuerpo).strip())
-        st.success("Registrado. Te aviso en 3 días si no responde.")
-        st.rerun()
+        avisar("Registrado. Te aviso en 3 días si no responde.")
 
     st.subheader("Anotar lo que respondió")
     with st.form(f"respuesta_{vid}", clear_on_submit=True):
@@ -688,9 +690,8 @@ def pagina_mercado():
                     if resumen:
                         db.insertar(con, "precios_mercado", {**resumen, "producto_id": pid, "pais": codigo,
                                                              "fuente": "api", "url": ml.url_listado(cfg, texto)})
-                        st.success(f"Mediana {resumen['precio_mediana_local']:,.0f} {cfg['moneda']} "
+                        avisar(f"Mediana {resumen['precio_mediana_local']:,.0f} {cfg['moneda']} "
                                    f"({resumen['resultados']} resultados, {resumen['internacionales']} internacionales)")
-                        st.rerun()
                     else:
                         st.warning("Sin resultados.")
                 except ml.ErrorML as e:
@@ -711,7 +712,7 @@ def pagina_mercado():
                                                              "precio_max_local": pmax or None,
                                                              "internacionales": inter, "fuente": "manual",
                                                              "url": ml.url_listado(cfg, texto)})
-                        st.rerun()
+                        avisar(f"Precio de {cfg['nombre']} guardado.")
 
 
 # ---------------------------------------------------------------- configuración
@@ -768,7 +769,7 @@ def pagina_configuracion():
                 "sales_tax_compra_pct": tax, "publicidad_pct": publicidad, "prep_por_unidad_usd": prep_u,
                 "zip_prep_center": zip_prep.strip(), "full_almacenaje_usd_mes": alm, "full_meses_stock": meses,
                 "costo_min_busqueda_usd": bmin, "costo_max_busqueda_usd": bmax})
-            st.rerun()
+            avisar("Configuración general guardada.")
 
     with t_paises:
         if st.button("Actualizar tipos de cambio de hoy"):
@@ -827,7 +828,7 @@ def pagina_configuracion():
                             "envio": {"a_cargo_vendedor": modo, "umbral_envio_gratis_usd": umbral,
                                       "tabla_usd_por_kg": filas_tabla or cfg["envio"]["tabla_usd_por_kg"]},
                             "impuestos_comprador": {"tramos": filas_tramos, "iva_por_dentro_pct": por_dentro}}})
-                        st.rerun()
+                        avisar(f"{cfg['nombre']} guardado.")
 
     with t_rubros:
         st.caption("Si ML te cobra otra comisión en un rubro, ponela en la columna del país. Vacío = la del país.")
@@ -850,7 +851,7 @@ def pagina_configuracion():
                 nuevos.append({**{k: r.get(k) or "" for k in ("id", "nombre", "riesgo", "nota", "ideas")},
                                "comision_pct": comisiones})
             config.guardar_cambios("rubros", {"rubros": nuevos})
-            st.rerun()
+            avisar("Rubros guardados.")
 
     with t_api:
         st.subheader("eBay (para buscar ofertas)")
@@ -864,7 +865,7 @@ def pagina_configuracion():
             esec = st.text_input("Cert ID (Client Secret)", ce.get("client_secret", ""), type="password")
             if st.form_submit_button("Guardar credenciales de eBay"):
                 ebay.guardar_credenciales(eid, esec)
-                st.rerun()
+                avisar("Credenciales de eBay guardadas.")
         if ebay.configurado() and st.button("Probar eBay"):
             try:
                 st.dataframe(pd.DataFrame(ebay.buscar("ssd nvme 2tb", 50, 500, limite=5)))
@@ -886,7 +887,7 @@ def pagina_configuracion():
             redirect = st.text_input("Redirect URI", cred.get("redirect_uri", "https://www.google.com"))
             if st.form_submit_button("Guardar credenciales"):
                 ml.guardar_credenciales(cid, secreto, redirect)
-                st.rerun()
+                avisar("Credenciales de Mercado Libre guardadas. Ahora tocá 'Autorizar en Mercado Libre'.")
         if cred.get("client_id"):
             dominios = {"GS": "https://global-selling.mercadolibre.com", **{c: PAISES[c]["dominio_auth"] for c in PAISES}}
             pais_auth = st.selectbox("Cuenta de Mercado Libre", list(dominios),
@@ -912,8 +913,11 @@ def pagina_configuracion():
     if st.button("Volver a los valores de fábrica (no borra productos ni proveedores)"):
         for nombre in ("general", "paises", "rubros"):
             config.restablecer(nombre)
-        st.rerun()
+        avisar("Volviste a los valores de fábrica.")
 
+
+if "aviso" in st.session_state:
+    st.success(st.session_state.pop("aviso"))
 
 {"Oportunidades": pagina_oportunidades, "Buscar ofertas": pagina_buscar, "Calculadora rápida": pagina_calculadora,
  "Productos": pagina_productos,
