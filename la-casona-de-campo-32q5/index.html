@@ -1,0 +1,492 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>La Casona de Campo · Prototipo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kurale&family=Hind+Vadodara:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cal:#f3ede2; --cal2:#e9e0cf; --adobe:#b5562f; --adobe-d:#8e3f1f;
+  --naranjo:#2e4430; --naranjo-l:#55704f; --tinta:#231a14; --gris:#6b5e52;
+  --lapacho:#c24d7c; --wa:#dcf8c6; --wabg:#e7ddd3;
+  --disp:'Kurale', Georgia, serif; --text:'Hind Vadodara', 'Segoe UI', sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--cal);color:var(--tinta);font-family:var(--text);font-size:17px;line-height:1.5;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit}
+button{font:inherit;cursor:pointer}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+/* firma */
+.firma{font-size:13px;color:var(--gris);padding:10px 0;border-bottom:1px solid var(--cal2);letter-spacing:.01em}
+.firma .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+/* barra */
+.barra{position:sticky;top:0;z-index:20;background:rgba(243,237,226,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--cal2)}
+.barra .wrap{display:flex;align-items:center;justify-content:space-between;height:60px;gap:12px}
+.marca{font-family:var(--disp);font-size:22px;text-decoration:none;white-space:nowrap}
+.marca small{font-family:var(--text);font-size:12px;color:var(--gris);margin-left:8px;letter-spacing:.08em;text-transform:uppercase}
+.modo{display:flex;border:1.5px solid var(--tinta);border-radius:999px;overflow:hidden;flex-shrink:0}
+.modo button{border:0;background:transparent;padding:7px 14px;font-size:14px;font-weight:600}
+.modo button[aria-pressed=true]{background:var(--tinta);color:var(--cal)}
+/* portada: planta de patio */
+.portada{padding:56px 0 40px}
+.portada .wrap{display:grid;grid-template-columns:1.05fr 1fr;gap:48px;align-items:center}
+.kicker{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--adobe-d);font-weight:600}
+h1{font-family:var(--disp);font-weight:400;font-size:clamp(38px,5.2vw,66px);line-height:1.02;margin:14px 0 18px;letter-spacing:-.01em}
+h1 em{font-style:normal;color:var(--adobe)}
+.bajada{list-style:none;padding:0;margin:0 0 26px;display:grid;gap:6px}
+.bajada li{padding-left:22px;position:relative}
+.bajada li::before{content:"";position:absolute;left:0;top:.62em;width:10px;height:10px;border:2px solid var(--adobe);transform:rotate(45deg)}
+.cta{display:inline-flex;align-items:center;gap:10px;background:var(--naranjo);color:#fff;text-decoration:none;padding:14px 22px;border-radius:4px;font-weight:600}
+.cta.sec{background:transparent;color:var(--tinta);border:1.5px solid var(--tinta);margin-left:8px}
+.planta{position:relative;aspect-ratio:1/1;max-width:520px;justify-self:end;width:100%}
+.planta svg{width:100%;height:100%}
+.planta .g{cursor:pointer;transition:fill .2s}
+.planta .g:hover,.planta .g:focus{fill:var(--adobe)}
+.planta .lbl{font-family:var(--text);font-size:13px;font-weight:600;letter-spacing:.14em;fill:var(--tinta);pointer-events:none;text-transform:uppercase}
+.planta .patio-img{clip-path:inset(22% 22% 22% 22%)}
+.cifras{display:grid;grid-template-columns:repeat(4,1fr);border-top:1.5px solid var(--tinta);border-bottom:1.5px solid var(--tinta);margin-top:44px}
+.cifras div{padding:16px 18px;border-right:1px solid var(--cal2)}
+.cifras div:last-child{border-right:0}
+.cifras b{font-family:var(--disp);font-weight:400;font-size:34px;display:block;line-height:1}
+.cifras span{font-size:13px;color:var(--gris)}
+/* secciones como galerías */
+.galeria{padding:72px 0;border-top:1px solid var(--cal2)}
+.rot{display:flex;align-items:baseline;gap:16px;margin-bottom:28px}
+.rot .pto{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#fff;background:var(--adobe);padding:4px 10px;border-radius:2px;white-space:nowrap}
+h2{font-family:var(--disp);font-weight:400;font-size:clamp(30px,3.6vw,44px);line-height:1.08;margin:0}
+/* la casa */
+.casa{display:grid;grid-template-columns:repeat(12,1fr);gap:18px}
+.foto{position:relative;background:var(--cal2);border-radius:3px;overflow:hidden}
+.foto img{width:100%;height:100%;object-fit:cover}
+.foto figcaption{position:absolute;left:10px;bottom:10px;background:var(--cal);font-size:13px;padding:3px 9px;border-radius:2px}
+.f1{grid-column:span 7;aspect-ratio:4/3}
+.f2{grid-column:span 5;aspect-ratio:4/5}
+.f3{grid-column:span 4;aspect-ratio:1/1}
+.f4{grid-column:span 4;aspect-ratio:1/1}
+.f5{grid-column:span 4;aspect-ratio:1/1}
+.espacios{grid-column:1/-1;display:grid;grid-template-columns:repeat(5,1fr);gap:0;border:1.5px solid var(--tinta);margin-top:8px}
+.espacios div{padding:16px;border-right:1px solid var(--cal2)}
+.espacios div:last-child{border-right:0}
+.espacios b{display:block;font-family:var(--disp);font-weight:400;font-size:20px;line-height:1.15;margin-bottom:4px}
+.espacios span{font-size:14px;color:var(--gris)}
+/* cotizador */
+.cotiza{display:grid;grid-template-columns:1.15fr .85fr;gap:36px;align-items:start}
+.cotiza>*,.panel>*,.reglas>*{min-width:0}
+#fechaSel{max-width:100%}
+.paso{border-top:1.5px solid var(--tinta);padding:18px 0 22px}
+.paso h3{margin:0 0 12px;font-size:14px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;display:flex;gap:10px}
+.paso h3 i{font-style:normal;color:var(--adobe)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid var(--tinta);background:transparent;border-radius:999px;padding:8px 16px;font-size:15px}
+.chip[aria-pressed=true]{background:var(--tinta);color:var(--cal)}
+.ej{font-size:12px;color:var(--gris);font-style:italic;white-space:nowrap}
+div.ej{white-space:normal}
+.rango{display:flex;align-items:center;gap:16px}
+.rango input{flex:1;accent-color:var(--adobe)}
+.rango output{font-family:var(--disp);font-size:30px;min-width:70px;text-align:right}
+.menus{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.menu{border:1.5px solid var(--cal2);background:#fbf8f2;text-align:left;padding:14px;border-radius:3px}
+.menu[aria-pressed=true]{border-color:var(--adobe);box-shadow:inset 0 0 0 1px var(--adobe)}
+.menu b{font-family:var(--disp);font-weight:400;font-size:19px;display:block}
+.menu ul{margin:6px 0 8px;padding-left:16px;font-size:13.5px;color:var(--gris)}
+.menu .pr{font-weight:600}
+.extras label{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px dashed var(--cal2);font-size:15.5px}
+.extras label span:first-child{display:flex;gap:10px;align-items:center}
+.extras input{accent-color:var(--adobe);width:18px;height:18px}
+.campo{width:100%;padding:12px 14px;border:1.5px solid var(--tinta);background:#fbf8f2;border-radius:3px;font:inherit}
+/* reloj de 8 horas */
+.reloj{background:var(--naranjo);color:#f3ede2;padding:20px;border-radius:4px}
+.reloj .top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.reloj select{background:transparent;color:inherit;border:1px solid rgba(243,237,226,.5);padding:5px 8px;border-radius:3px;font:inherit}
+.reloj select option{color:var(--tinta)}
+.franja{display:flex;height:46px;margin:14px 0 8px;border-radius:3px;overflow:hidden}
+.franja div{display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:600;color:var(--tinta);border-right:2px solid var(--naranjo);text-align:center;line-height:1.1;padding:0 4px}
+.horas{display:flex;justify-content:space-between;font-size:12px;opacity:.8}
+/* resumen + burbuja */
+.resumen{position:sticky;top:80px}
+.total{border:1.5px solid var(--tinta);padding:18px;background:#fbf8f2;border-radius:3px}
+.total .lin{display:flex;justify-content:space-between;gap:10px;font-size:15px;padding:4px 0}
+.total .big{font-family:var(--disp);font-size:34px;line-height:1.1;margin:6px 0}
+.chat{background:var(--wabg);border-radius:6px;padding:14px;margin-top:14px;background-image:radial-gradient(rgba(0,0,0,.035) 1px,transparent 1px);background-size:10px 10px}
+.chat .hd{font-size:12.5px;color:var(--gris);margin-bottom:8px;display:flex;justify-content:space-between}
+.burbuja{background:var(--wa);border-radius:8px 0 8px 8px;padding:10px 12px 18px;font-size:14.5px;white-space:pre-wrap;position:relative;margin-left:22px;box-shadow:0 1px 1px rgba(0,0,0,.12)}
+.burbuja::after{content:attr(data-hora) " ✓✓";position:absolute;right:8px;bottom:3px;font-size:11px;color:#5b8a64}
+.burbuja .cursor{display:inline-block;width:2px;height:1em;background:var(--tinta);vertical-align:-2px;animation:t 1s steps(1) infinite}
+@keyframes t{50%{opacity:0}}
+.wa-btn{display:flex;justify-content:center;align-items:center;gap:10px;width:100%;margin-top:12px;background:#1f7a4d;color:#fff;border:0;padding:14px;border-radius:4px;font-weight:600;text-decoration:none}
+/* calendario */
+.fechas{display:grid;grid-template-columns:1fr 1fr 1fr;gap:22px}
+.mes h4{font-family:var(--disp);font-weight:400;font-size:22px;margin:0 0 8px}
+.dias{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;font-size:13px}
+.dias .dn{color:var(--gris);text-align:center;font-size:11px;padding:2px 0}
+.dia{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;border-radius:2px;border:0;background:transparent;font-size:13px;color:#a89a8b}
+.dia.libre{background:#fbf8f2;color:var(--tinta);border:1.5px solid var(--naranjo-l);font-weight:600}
+.dia.ocup{background:var(--cal2);color:#a89a8b;text-decoration:line-through}
+.dia.sel{background:var(--adobe);color:#fff;border-color:var(--adobe)}
+.leyenda{display:flex;gap:18px;font-size:13px;color:var(--gris);margin-top:14px;flex-wrap:wrap}
+.leyenda i{display:inline-block;width:12px;height:12px;vertical-align:-1px;margin-right:6px;border-radius:2px}
+/* cómo funciona */
+.reglas{display:grid;grid-template-columns:1fr 1fr;gap:36px}
+.reglas ul{list-style:none;margin:0;padding:0;border-top:1.5px solid var(--tinta)}
+.reglas li{display:flex;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px solid var(--cal2);font-size:15.5px}
+.reglas li b{font-weight:600;text-align:right}
+.reglas h3{font-family:var(--disp);font-weight:400;font-size:24px;margin:0 0 10px}
+.llegar{display:inline-block;margin-top:16px;font-weight:600;color:var(--adobe-d)}
+/* dueño */
+#duenio{display:none}
+body.owner #duenio{display:block}
+body.owner #cliente{display:none}
+.panel-tag{display:inline-block;background:var(--lapacho);color:#fff;font-size:12px;letter-spacing:.14em;text-transform:uppercase;padding:4px 10px;border-radius:2px;font-weight:600}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1.5px solid var(--tinta);margin:22px 0 30px}
+.kpis div{padding:16px;border-right:1px solid var(--cal2)}
+.kpis div:last-child{border-right:0}
+.kpis b{font-family:var(--disp);font-weight:400;font-size:30px;display:block}
+.kpis span{font-size:13px;color:var(--gris)}
+.panel{display:grid;grid-template-columns:1.1fr .9fr;gap:30px}
+.panel h3{font-size:14px;letter-spacing:.14em;text-transform:uppercase;margin:0 0 12px}
+.inbox{display:grid;gap:12px}
+.inbox .item .meta{font-size:12.5px;color:var(--gris);margin-bottom:4px;display:flex;justify-content:space-between;gap:8px}
+.inbox .burbuja{margin-left:0;border-radius:0 8px 8px 8px;background:#fff}
+.estado{font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:999px;background:var(--cal2)}
+.estado.ok{background:#d6e6d0;color:var(--naranjo)}
+.agenda{width:100%;border-collapse:collapse;font-size:14.5px}
+.agenda td,.agenda th{padding:9px 6px;border-bottom:1px solid var(--cal2);text-align:left}
+.agenda th{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--gris);font-weight:600}
+.ahorro{margin-top:24px;border:1.5px solid var(--tinta);padding:16px;background:#fbf8f2}
+.ahorro b{font-family:var(--disp);font-weight:400;font-size:26px}
+.paravos{margin-top:40px;background:var(--naranjo);color:var(--cal);padding:28px;border-radius:4px}
+.paravos h3{font-family:var(--disp);font-weight:400;font-size:28px;margin:0 0 12px;text-transform:none;letter-spacing:0}
+.paravos ul{margin:0;padding-left:20px;display:grid;gap:6px}
+footer{border-top:1.5px solid var(--tinta);padding:26px 0 40px;font-size:13.5px;color:var(--gris);margin-top:20px}
+.ilus{width:100%;height:100%;background:linear-gradient(var(--cal2),var(--cal2))}
+@media (max-width:900px){
+  .portada{padding:30px 0 20px}
+  .portada .wrap,.cotiza,.reglas,.panel{grid-template-columns:1fr}
+  .planta{justify-self:center;max-width:420px}
+  .cifras,.kpis{grid-template-columns:1fr 1fr}
+  .cifras div:nth-child(2),.kpis div:nth-child(2){border-right:0}
+  .cifras div:nth-child(-n+2),.kpis div:nth-child(-n+2){border-bottom:1px solid var(--cal2)}
+  .espacios{grid-template-columns:1fr 1fr}
+  .espacios div{border-bottom:1px solid var(--cal2)}
+  .f1,.f2{grid-column:1/-1}
+  .f3,.f4,.f5{grid-column:span 6}
+  .f5{display:none}
+  .menus{grid-template-columns:1fr}
+  .fechas{grid-template-columns:1fr}
+  .fechas .mes:nth-child(3){display:none}
+  .resumen{position:static}
+  .galeria{padding:52px 0}
+}
+@media (max-width:520px){
+  .wrap{padding:0 16px}
+  body{font-size:16px}
+  .marca small{display:none}
+  .marca{font-size:18px}
+  .barra .wrap{gap:8px}
+  .modo button{padding:6px 10px;font-size:13px}
+  .cta.sec{margin:10px 0 0}
+  .casa{gap:10px}
+  .espacios{grid-template-columns:1fr}
+  .rot{flex-direction:column;gap:8px}
+  .franja div{font-size:10.5px}
+}
+</style>
+</head>
+<body>
+
+<div class="firma"><div class="wrap"><span>Prototipo preparado para La Casona de Campo · 24 de noviembre de 2026</span><span>San Miguel de Tucumán</span></div></div>
+
+<header class="barra"><div class="wrap">
+  <a class="marca" href="#top">La Casona de Campo<small>Eventos al aire libre</small></a>
+  <div class="modo" role="group" aria-label="Vista">
+    <button id="bCli" aria-pressed="true">Cliente</button>
+    <button id="bDue" aria-pressed="false">Ver como dueño</button>
+  </div>
+</div></header>
+
+<main id="cliente">
+<section class="portada" id="top"><div class="wrap">
+  <div>
+    <div class="kicker">Salón de eventos al aire libre · desde el año 2000</div>
+    <h1>Galerías, patios y <em>250 invitados</em> bajo un mismo techo de campo.</h1>
+    <ul class="bajada">
+      <li>Salón techado, galerías y patios para la noche entera</li>
+      <li>Departamento para la novia y estacionamiento privado</li>
+      <li>Cotizá en un minuto y mirá qué sábados quedan libres</li>
+    </ul>
+    <a class="cta" href="#cotizar">Cotizar mi evento</a><a class="cta sec" href="#fechas">Ver fechas</a>
+  </div>
+  <div class="planta" aria-label="Planta de La Casona: cada galería lleva a una sección">
+    <svg viewBox="0 0 400 400" role="img">
+      <defs>
+        <pattern id="baldosa" width="16" height="16" patternUnits="userSpaceOnUse"><rect width="16" height="16" fill="#e9e0cf"/><path d="M0 8h16M8 0v16" stroke="#dccfb9" stroke-width="1"/></pattern>
+        <clipPath id="cp"><rect x="92" y="92" width="216" height="216"/></clipPath>
+      </defs>
+      <rect x="4" y="4" width="392" height="392" fill="none" stroke="#231a14" stroke-width="3"/>
+      <!-- galerías -->
+      <a href="#la-casa"><rect class="g" tabindex="0" x="14" y="14" width="372" height="70" fill="#d9a184"/><text class="lbl" x="200" y="55" text-anchor="middle">Galería norte · La casa</text></a>
+      <a href="#cotizar"><rect class="g" tabindex="0" x="316" y="92" width="70" height="216" fill="#c98463"/><text class="lbl" transform="translate(356 200) rotate(90)" text-anchor="middle">Este · Cotizar</text></a>
+      <a href="#fechas"><rect class="g" tabindex="0" x="14" y="316" width="372" height="70" fill="#d9a184"/><text class="lbl" x="200" y="356" text-anchor="middle">Galería sur · Fechas libres</text></a>
+      <a href="#como"><rect class="g" tabindex="0" x="14" y="92" width="70" height="216" fill="#c98463"/><text class="lbl" transform="translate(44 200) rotate(-90)" text-anchor="middle">Oeste · Cómo funciona</text></a>
+      <!-- columnas -->
+      <g fill="#231a14">
+        <circle cx="92" cy="92" r="5"/><circle cx="146" cy="92" r="4"/><circle cx="200" cy="92" r="4"/><circle cx="254" cy="92" r="4"/><circle cx="308" cy="92" r="5"/>
+        <circle cx="92" cy="308" r="5"/><circle cx="146" cy="308" r="4"/><circle cx="200" cy="308" r="4"/><circle cx="254" cy="308" r="4"/><circle cx="308" cy="308" r="5"/>
+        <circle cx="92" cy="146" r="4"/><circle cx="92" cy="200" r="4"/><circle cx="92" cy="254" r="4"/>
+        <circle cx="308" cy="146" r="4"/><circle cx="308" cy="200" r="4"/><circle cx="308" cy="254" r="4"/>
+      </g>
+      <!-- patio con foto -->
+      <rect x="96" y="96" width="208" height="208" fill="url(#baldosa)"/>
+      <image href="https://static.wixstatic.com/media/8cf893_8c215068da8f45be9c7d6da6dac68cb8~mv2.jpg" x="96" y="96" width="208" height="208" preserveAspectRatio="xMidYMid slice" onerror="this.remove()"/>
+      <rect x="96" y="96" width="208" height="208" fill="none" stroke="#f3ede2" stroke-width="3"/>
+      <rect x="150" y="270" width="100" height="22" fill="#f3ede2"/><text x="200" y="285" text-anchor="middle" font-size="12" font-family="Hind Vadodara, sans-serif" font-weight="600" letter-spacing="2" fill="#231a14">EL PATIO</text>
+    </svg>
+  </div>
+</div>
+<div class="wrap"><div class="cifras">
+  <div><b>2000</b><span>Año en que abrió la casona</span></div>
+  <div><b>250</b><span>Invitados como máximo</span></div>
+  <div><b>8 h</b><span>Duración máxima del evento</span></div>
+  <div><b>1</b><span>Departamento para la novia</span></div>
+</div></div>
+</section>
+
+<section class="galeria" id="la-casa"><div class="wrap">
+  <div class="rot"><span class="pto">Galería norte</span><h2>La casa, espacio por espacio</h2></div>
+  <div class="casa">
+    <figure class="foto f1" style="margin:0"><img loading="lazy" alt="La Casona de Campo" src="https://static.wixstatic.com/media/8cf893_f5e97ac907604fc6bda23a88f1c8e4b2~mv2.jpg" onerror="ilus(this)"><figcaption>La casona</figcaption></figure>
+    <figure class="foto f2" style="margin:0"><img loading="lazy" alt="Galerías de La Casona de Campo" src="https://static.wixstatic.com/media/8cf893_89ce0c033c9c4e1faa38eecdce3fa944~mv2.jpeg" onerror="ilus(this)"><figcaption>Galerías</figcaption></figure>
+    <figure class="foto f3" style="margin:0"><img loading="lazy" alt="Patio de La Casona de Campo" src="https://static.wixstatic.com/media/8cf893_684e33c56baa4239a2a0a39d6525576b~mv2.jpg" onerror="ilus(this)"></figure>
+    <figure class="foto f4" style="margin:0"><img loading="lazy" alt="Evento en La Casona de Campo" src="https://static.wixstatic.com/media/8cf893_eb6b99bd5a244ba58537c8fc82250394~mv2.jpg" onerror="ilus(this)"></figure>
+    <figure class="foto f5" style="margin:0"><img loading="lazy" alt="Detalle de La Casona de Campo" src="https://static.wixstatic.com/media/8cf893_52abcb467d5c4768a0f3dc26535bcdcd~mv2.jpg" onerror="ilus(this)"></figure>
+    <div class="espacios">
+      <div><b>Galerías y patios</b><span>Amplias, al aire libre</span></div>
+      <div><b>Salón techado</b><span>Por si refresca o llueve</span></div>
+      <div><b>Espacio de catering</b><span>Para tu servicio de comida</span></div>
+      <div><b>Departamento para la novia</b><span>Para prepararse tranquila</span></div>
+      <div><b>Estacionamiento privado</b><span>Sin límite de autos</span></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="galeria" id="cotizar"><div class="wrap">
+  <div class="rot"><span class="pto">Galería este</span><h2>Cotizá tu noche en la casona</h2></div>
+  <div class="cotiza">
+    <div>
+      <div class="paso"><h3><i>01</i> Tipo de evento</h3>
+        <div class="chips" id="tipos"></div></div>
+      <div class="paso"><h3><i>02</i> Fecha</h3>
+        <div id="fechaTxt" style="font-size:15.5px">Elegí un sábado libre en <a href="#fechas">el calendario</a> o acá: <select id="fechaSel" class="campo" style="width:auto;padding:6px 10px"></select></div></div>
+      <div class="paso"><h3><i>03</i> Invitados</h3>
+        <div class="rango"><input type="range" id="inv" min="50" max="250" step="10" value="150" aria-label="Invitados"><output id="invOut">150</output></div>
+        <div class="ej">Capacidad máxima de la casona: 250 invitados</div></div>
+      <div class="paso"><h3><i>04</i> Menú</h3>
+        <div class="menus" id="menus"></div>
+        <div class="ej" style="margin-top:6px">Nombres y menús de ejemplo: se reemplazan por los de la casona.</div></div>
+      <div class="paso"><h3><i>05</i> Extras</h3>
+        <div class="extras" id="extras"></div></div>
+      <div class="paso"><h3><i>06</i> Las 8 horas de tu fiesta</h3>
+        <div class="reloj">
+          <div class="top"><span>Arranca a las <select id="hora"><option>19:00</option><option>20:00</option><option selected>21:00</option><option>22:00</option><option>13:00</option></select></span><span id="fin" style="font-family:var(--disp);font-size:20px"></span></div>
+          <div class="franja" id="franja"></div>
+          <div class="horas" id="horas"></div>
+        </div></div>
+      <div class="paso"><h3><i>07</i> Tus datos</h3>
+        <input class="campo" id="nombre" placeholder="Tu nombre" autocomplete="name"></div>
+    </div>
+    <aside class="resumen">
+      <div class="total">
+        <div class="lin"><span>Estimado total</span><span class="ej">Precio de ejemplo</span></div>
+        <div class="big" id="tot">—</div>
+        <div class="lin"><span>Por persona</span><span><b id="pp">—</b> <span class="ej">Precio de ejemplo</span></span></div>
+        <div class="lin"><span>Seña para reservar (30%)</span><span><b id="sena">—</b> <span class="ej">Precio de ejemplo</span></span></div>
+      </div>
+      <div class="chat">
+        <div class="hd"><span>Así le llega a La Casona por WhatsApp</span><span>en vivo</span></div>
+        <div class="burbuja" id="burbuja" data-hora="21:14"></div>
+      </div>
+      <a class="wa-btn" id="waBtn" href="#" target="_blank" rel="noopener">Enviar consulta por WhatsApp</a>
+    </aside>
+  </div>
+</div></section>
+
+<section class="galeria" id="fechas"><div class="wrap">
+  <div class="rot"><span class="pto">Galería sur</span><h2>Sábados libres</h2></div>
+  <div class="fechas" id="cal"></div>
+  <div class="leyenda"><span><i style="background:#fbf8f2;border:1.5px solid var(--naranjo-l)"></i>Libre (tocá para elegir)</span><span><i style="background:var(--cal2)"></i>Ocupado</span><span class="ej">Disponibilidad de ejemplo</span></div>
+</div></section>
+
+<section class="galeria" id="como"><div class="wrap">
+  <div class="rot"><span class="pto">Galería oeste</span><h2>Cómo funciona</h2></div>
+  <div class="reglas">
+    <div><h3>La casona</h3><ul>
+      <li><span>Capacidad máxima</span><b>250 invitados</b></li>
+      <li><span>Duración máxima del evento</span><b>8 horas</b></li>
+      <li><span>Espacios</span><b>Galerías, patios y salón techado</b></li>
+      <li><span>Para la novia</span><b>Departamento propio</b></li>
+      <li><span>Autos</span><b>Estacionamiento privado</b></li>
+    </ul>
+    <a class="llegar" href="https://maps.google.com/?cid=13625829202429791160" target="_blank" rel="noopener">Cómo llegar en Google Maps →</a></div>
+    <div><h3>Reservar</h3><ul>
+      <li><span>1. Cotizás acá</span><b>Rango al instante</b></li>
+      <li><span>2. Elegís un sábado libre</span><b>Lo ves en el calendario</b></li>
+      <li><span>3. Escribís por WhatsApp</span><b>Con todo cargado</b></li>
+      <li><span>4. Visitás la casona</span><b>Con día y hora</b></li>
+      <li><span>5. Seña y fecha confirmada</span><b>30% <span class="ej">de ejemplo</span></b></li>
+    </ul></div>
+  </div>
+</div></section>
+</main>
+
+<main id="duenio"><section class="galeria" style="border-top:0;padding-top:44px"><div class="wrap">
+  <span class="panel-tag">Panel de ejemplo</span>
+  <h2 style="margin-top:12px">Lo que ves vos, del otro lado</h2>
+  <div class="kpis">
+    <div><b>14</b><span>Consultas este mes, con fecha e invitados</span></div>
+    <div><b>5</b><span>Visitas a la casona agendadas</span></div>
+    <div><b>3</b><span>Señas cobradas</span></div>
+    <div><b>$ 4.212.000</b><span>En señas <span class="ej">Precio de ejemplo</span></span></div>
+  </div>
+  <div class="panel">
+    <div><h3>Consultas que entraron</h3><div class="inbox" id="inbox"></div></div>
+    <div><h3>Sábados de la temporada</h3>
+      <table class="agenda"><thead><tr><th>Fecha</th><th>Evento</th><th>Estado</th></tr></thead><tbody id="agenda"></tbody></table>
+      <div class="ahorro"><div class="ej">Frente a un portal con comisión del 10% por reserva · Precio de ejemplo</div><b>$ 1.404.000</b> que quedan en la casona este mes</div>
+    </div>
+  </div>
+  <div class="paravos">
+    <h3>Para vos, La Casona de Campo</h3>
+    <ul>
+      <li>Menos mensajes repetidos: el que escribe ya trae fecha, invitados y menú.</li>
+      <li>Agenda con cupos: cada sábado libre u ocupado, a la vista del cliente.</li>
+      <li>La seña entra antes de confirmar la fecha.</li>
+      <li>Sin comisión por reserva: el canal es tuyo, sin otros salones al lado.</li>
+    </ul>
+  </div>
+</div></section></main>
+
+<footer><div class="wrap">Prototipo de demostración preparado para La Casona de Campo por Resolviendo Kos · No es la web oficial. Fotos de la web pública de La Casona de Campo. Precios, menús, disponibilidad y panel son de ejemplo.</div></footer>
+
+<script>
+const ILUS="data:image/svg+xml;utf8,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="#e9e0cf"/><path d="M40 140 L200 60 L360 140 Z" fill="#b5562f"/><rect x="70" y="140" width="260" height="110" fill="#f3ede2"/><g fill="#e9e0cf">'+[0,1,2,3,4].map(i=>'<path d="M'+(85+i*50)+' 250 v-55 a18 18 0 0 1 36 0 v55z"/>').join('')+'</g><rect y="250" width="400" height="50" fill="#55704f"/></svg>');
+function ilus(img){img.onerror=null;img.src=ILUS;}
+const $=id=>document.getElementById(id);
+const fmt=n=>"$ "+(Math.round(n/1000)*1000).toLocaleString("es-AR");
+const TIPOS=["Casamiento","15 años","Cumpleaños","Corporativo","Egresados"];
+const MENUS=[
+ {id:"campo",n:"Menú Campo",pp:52000,d:["Recepción de bocados","Plato principal","Postre"]},
+ {id:"casona",n:"Menú Casona",pp:68000,d:["Recepción con islas","Entrada y principal","Mesa de postres"]},
+ {id:"gran",n:"Menú Gran Fiesta",pp:85000,d:["Islas y pasos","Principal a elección","Fin de fiesta"]}];
+const EXTRAS=[
+ {id:"barra",n:"Barra libre de tragos",v:9000,pp:true},
+ {id:"dulce",n:"Mesa dulce",v:7000,pp:true},
+ {id:"dj",n:"DJ, sonido y luces",v:650000},
+ {id:"cere",n:"Ceremonia en el patio",v:380000}];
+const st={tipo:"Casamiento",menu:"casona",inv:150,ex:new Set(["dj"]),fecha:null,hora:"21:00",nombre:""};
+// tipos
+$("tipos").innerHTML=TIPOS.map(t=>`<button class="chip" aria-pressed="${t===st.tipo}" data-t="${t}">${t}</button>`).join("");
+$("tipos").onclick=e=>{const b=e.target.closest("[data-t]");if(!b)return;st.tipo=b.dataset.t;[...$("tipos").children].forEach(c=>c.setAttribute("aria-pressed",c===b));upd();};
+// menus
+$("menus").innerHTML=MENUS.map(m=>`<button class="menu" data-m="${m.id}" aria-pressed="${m.id===st.menu}"><b>${m.n}</b><ul>${m.d.map(x=>`<li>${x}</li>`).join("")}</ul><span class="pr">${fmt(m.pp)} por persona</span><br><span class="ej">Precio de ejemplo</span></button>`).join("");
+$("menus").onclick=e=>{const b=e.target.closest("[data-m]");if(!b)return;st.menu=b.dataset.m;[...$("menus").children].forEach(c=>c.setAttribute("aria-pressed",c===b));upd();};
+// extras
+$("extras").innerHTML=EXTRAS.map(x=>`<label><span><input type="checkbox" data-x="${x.id}" ${st.ex.has(x.id)?"checked":""}>${x.n}</span><span>+ ${fmt(x.v)}${x.pp?" p/p":""} <span class="ej">Precio de ejemplo</span></span></label>`).join("");
+$("extras").onchange=e=>{const id=e.target.dataset.x;e.target.checked?st.ex.add(id):st.ex.delete(id);upd();};
+$("inv").oninput=e=>{st.inv=+e.target.value;$("invOut").textContent=st.inv;upd();};
+$("nombre").oninput=e=>{st.nombre=e.target.value.trim();upd();};
+$("hora").onchange=e=>{st.hora=e.target.value;reloj();upd();};
+// calendario de ejemplo
+const MESES=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+const DIAS=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
+const hoy=new Date(2026,10,24);
+const sabados=[];
+const isoOf=f=>f.getFullYear()+"-"+String(f.getMonth()+1).padStart(2,"0")+"-"+String(f.getDate()).padStart(2,"0");
+function ocupado(d){const k=d.getDate()*7+d.getMonth()*3;return k%5===0||k%7===1||k%4===2;}
+function cal(){
+  let h="";
+  for(let m=0;m<3;m++){
+    const y=new Date(hoy.getFullYear(),hoy.getMonth()+1+m,1);
+    const ult=new Date(y.getFullYear(),y.getMonth()+1,0).getDate();
+    let cel=["D","L","M","M","J","V","S"].map(x=>`<div class="dn">${x}</div>`).join("");
+    for(let i=0;i<y.getDay();i++)cel+="<div></div>";
+    for(let d=1;d<=ult;d++){
+      const f=new Date(y.getFullYear(),y.getMonth(),d);
+      if(f.getDay()===6){const oc=ocupado(f);const iso=isoOf(f);if(!oc)sabados.push(f);
+        cel+=`<button class="dia ${oc?"ocup":"libre"}" ${oc?"disabled":""} data-f="${iso}" aria-label="Sábado ${d} ${oc?"ocupado":"libre"}">${d}</button>`;}
+      else cel+=`<div class="dia">${d}</div>`;
+    }
+    h+=`<div class="mes"><h4>${MESES[y.getMonth()]} ${y.getFullYear()}</h4><div class="dias">${cel}</div></div>`;
+  }
+  $("cal").innerHTML=h;
+  $("fechaSel").innerHTML=`<option value="">a definir</option>`+sabados.map(f=>`<option value="${isoOf(f)}">Sábado ${f.getDate()} de ${MESES[f.getMonth()]}</option>`).join("");
+}
+cal();
+function setFecha(iso){st.fecha=iso||null;$("fechaSel").value=iso||"";document.querySelectorAll(".dia.libre").forEach(b=>b.classList.toggle("sel",b.dataset.f===iso));upd();}
+$("cal").onclick=e=>{const b=e.target.closest(".dia.libre");if(!b)return;setFecha(b.dataset.f);};
+$("fechaSel").onchange=e=>setFecha(e.target.value);
+function fechaTxt(){if(!st.fecha)return"a definir";const [y,m,d]=st.fecha.split("-").map(Number);return`sábado ${d} de ${MESES[m-1]} de ${y}`;}
+// reloj de 8 horas
+const FASES=[["Recepción",1.5,"#e8c9a8"],["Cena",2,"#d9a184"],["Baile",3,"#f3ede2"],["Fin de fiesta",1.5,"#c98463"]];
+function reloj(){
+  const h0=parseInt(st.hora);
+  $("franja").innerHTML=FASES.map(f=>`<div style="flex:${f[1]};background:${f[2]}">${f[0]}</div>`).join("");
+  let t=h0,marks=[];for(let i=0;i<=8;i+=2){marks.push(String((h0+i)%24).padStart(2,"0")+":00");}
+  $("horas").innerHTML=marks.map(x=>`<span>${x}</span>`).join("");
+  $("fin").textContent="Termina a las "+String((h0+8)%24).padStart(2,"0")+":00";
+}
+reloj();
+// cálculo + burbuja
+let typing=null,shown="";
+function calc(){
+  const m=MENUS.find(x=>x.id===st.menu);let pp=m.pp,fijo=0;
+  EXTRAS.forEach(x=>{if(st.ex.has(x.id)){x.pp?pp+=x.v:fijo+=x.v;}});
+  const tot=pp*st.inv+fijo;return{m,pp,tot,lo:tot*.92,hi:tot*1.08,sena:tot*.3};
+}
+function texto(c){
+  const ex=EXTRAS.filter(x=>st.ex.has(x.id)).map(x=>/^DJ/.test(x.n)?x.n:x.n.charAt(0).toLowerCase()+x.n.slice(1));
+  const fin=String((parseInt(st.hora)+8)%24).padStart(2,"0")+":00";
+  return `Hola, La Casona de Campo. Soy ${st.nombre||"(tu nombre)"}.
+Quiero hacer un ${st.tipo.toLowerCase()} el ${fechaTxt()}.
+Seríamos ${st.inv} invitados, con el ${c.m.n}${ex.length?" y "+ex.join(", "):""}.
+Horario: de ${st.hora} a ${fin}.
+Me dio un estimado de ${fmt(c.lo)} a ${fmt(c.hi)} y una seña de ${fmt(c.sena)}.
+¿Podemos coordinar una visita a la casona?`;
+}
+function upd(){
+  const c=calc();
+  $("tot").textContent=fmt(c.lo)+" – "+fmt(c.hi);
+  $("pp").textContent=fmt(c.pp);$("sena").textContent=fmt(c.sena);
+  const t=texto(c);
+  $("waBtn").href="https://wa.me/543814640016?text="+encodeURIComponent(t);
+  escribir(t);
+}
+function escribir(t){
+  clearInterval(typing);
+  let i=0;while(i<shown.length&&i<t.length&&shown[i]===t[i])i++;
+  const b=$("burbuja");
+  typing=setInterval(()=>{i=Math.min(t.length,i+3);shown=t.slice(0,i);b.textContent=shown;
+    if(i<t.length){const c=document.createElement("span");c.className="cursor";b.appendChild(c);}else clearInterval(typing);},16);
+}
+upd();
+// panel dueño (ejemplo)
+const INBOX=[
+ {q:"Hace 12 min",e:"Nueva",t:"Hola, La Casona de Campo. Soy Valentina.\nQuiero hacer un casamiento el sábado 20 de marzo de 2027.\nSeríamos 210 invitados, con el Menú Casona y barra libre de tragos.\nHorario: de 21:00 a 05:00.\n¿Podemos coordinar una visita a la casona?"},
+ {q:"Ayer, 19:40",e:"Visita agendada",t:"Hola, La Casona de Campo. Soy Martín.\nQuiero hacer un 15 años el sábado 6 de febrero de 2027.\nSeríamos 180 invitados, con el Menú Gran Fiesta y DJ, sonido y luces.\n¿Podemos coordinar una visita a la casona?"},
+ {q:"Lunes, 10:05",e:"Seña cobrada",ok:1,t:"Hola, La Casona de Campo. Soy Carolina.\nQuiero hacer un corporativo el sábado 19 de diciembre de 2026.\nSeríamos 120 invitados, con el Menú Campo.\n¿Podemos coordinar una visita a la casona?"}];
+$("inbox").innerHTML=INBOX.map(x=>`<div class="item"><div class="meta"><span>${x.q} · WhatsApp</span><span class="estado ${x.ok?"ok":""}">${x.e}</span></div><div class="burbuja" data-hora="">${x.t}</div></div>`).join("");
+const occ=[];document.querySelectorAll(".dia").forEach(b=>{if(b.dataset.f)occ.push([b.dataset.f,b.classList.contains("ocup")]);});
+const EV=["Casamiento · 200","15 años · 180","Corporativo · 120","Casamiento · 240","Egresados · 160","Cumpleaños · 130"];
+$("agenda").innerHTML=occ.slice(0,8).map(([f,o],i)=>{const [y,m,d]=f.split("-").map(Number);return`<tr><td>Sáb ${d}/${m}</td><td>${o?EV[i%EV.length]:"—"}</td><td><span class="estado ${o?"ok":""}">${o?"Señado":"Libre"}</span></td></tr>`;}).join("");
+// modo
+function modo(o){document.body.classList.toggle("owner",o);$("bDue").setAttribute("aria-pressed",o);$("bCli").setAttribute("aria-pressed",!o);window.scrollTo({top:0});}
+$("bDue").onclick=()=>modo(true);$("bCli").onclick=()=>modo(false);
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="La Casona de Campo"></script>
+</body>
+</html>
