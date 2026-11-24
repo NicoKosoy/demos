@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Cristalmet · Cotizador de aberturas y rollers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tenor+Sans&family=Gelasio:ital,wght@0,400;0,500;0,600;1,400&family=Cutive+Mono&display=swap" rel="stylesheet">
+<style>
+:root{
+  --negro:#0E0E0E; --carbon:#1C1C1B; --papel:#F7F6F2; --gris:#8B8A85; --linea:#DAD8D0; --bronce:#9C6B3C; --bronce2:#C08A57; --lago:#3E6E86;
+  --d:'Tenor Sans',sans-serif; --t:'Gelasio',Georgia,serif; --m:'Cutive Mono',monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--papel);color:var(--negro);font:16px/1.55 var(--t);-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+a{color:inherit}
+.wrap{max-width:1240px;margin:0 auto;padding:0 28px}
+.pe{display:inline-block;margin-left:6px;font:400 11px/1 var(--m);color:var(--gris);white-space:nowrap;vertical-align:middle}
+.firma{background:var(--negro);color:#9c9a93;font:400 12px/1.4 var(--m);text-align:center;padding:7px 16px;border-bottom:1px solid #2a2a28}
+.firma b{color:#e9e7e0;font-weight:400}
+/* header */
+.top{position:sticky;top:0;z-index:30;background:var(--negro);color:var(--papel)}
+.top .wrap{display:flex;align-items:center;gap:26px;height:64px}
+.logo{font:400 22px/1 var(--d);letter-spacing:.42em;text-decoration:none;color:var(--papel)}
+.top nav{display:flex;gap:22px;margin-left:auto}
+.top nav a{font:400 12px var(--d);letter-spacing:.18em;text-transform:uppercase;text-decoration:none;color:#c9c7bf}
+.top nav a:hover{color:var(--bronce2)}
+.vistas{display:flex;gap:0;border:1px solid #4a4a47}
+.vistas button{font:400 11.5px var(--d);letter-spacing:.14em;text-transform:uppercase;background:transparent;color:#c9c7bf;border:0;padding:9px 13px;cursor:pointer}
+.vistas button[aria-selected=true]{background:var(--papel);color:var(--negro)}
+/* hero visor */
+.hero{background:var(--negro);color:var(--papel);padding:36px 0 0;overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1fr 1.35fr;gap:40px;align-items:end}
+.hero .k{color:var(--bronce2)}
+.hero h1{font:400 clamp(44px,6.4vw,96px)/.98 var(--d);letter-spacing:-.01em;margin:16px 0 18px}
+.hero h1 span{display:block;font:italic 400 .42em/1.2 var(--t);color:#c9c7bf;letter-spacing:0;margin-top:12px}
+.hero p.baj{color:#c9c7bf;max-width:42ch;margin:0 0 24px}
+.visor{position:relative;aspect-ratio:5/4;background:#2b2b29;border:14px solid var(--carbon);outline:1px solid #3a3a37;margin-bottom:-60px;box-shadow:0 30px 60px -20px rgba(0,0,0,.6)}
+.visor img,.visor .ill{width:100%;height:100%;object-fit:cover}
+.visor:before{content:"";position:absolute;left:50%;top:0;bottom:0;width:10px;margin-left:-5px;background:var(--carbon);z-index:2}
+.visor:after{content:"";position:absolute;left:0;right:0;top:38%;height:10px;background:var(--carbon);z-index:2}
+.visor figcaption{position:absolute;right:-14px;bottom:-40px;font:400 12px var(--m);color:var(--gris)}
+.k{font:400 11.5px/1 var(--d);letter-spacing:.24em;text-transform:uppercase;color:var(--bronce)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:400 12.5px var(--d);letter-spacing:.16em;text-transform:uppercase;text-decoration:none;padding:15px 22px;border:1px solid currentColor;cursor:pointer;background:transparent;color:inherit}
+.btn.b{background:var(--bronce);border-color:var(--bronce);color:#fff}
+.btn.b:hover{background:#86592f}
+.btn.wa{background:#1d7f4b;border-color:#1d7f4b;color:#fff;width:100%}
+.btns{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:40px}
+/* cifras */
+.cifras{border-bottom:1px solid var(--linea);padding:96px 0 34px}
+.cifras .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.cifras div{padding:0 22px;border-left:1px solid var(--linea)}
+.cifras div:first-child{border-left:0;padding-left:0}
+.cifras b{display:block;font:400 46px/1 var(--d)}
+.cifras span{font-size:14px;color:var(--gris)}
+/* contacto de hoja */
+.hoja{padding:70px 0;border-bottom:1px solid var(--linea)}
+.tira{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:14px;background:var(--carbon);margin-top:26px;scrollbar-width:thin}
+.tira figure{flex:0 0 300px;margin:0;scroll-snap-align:start;background:#111;padding:8px 8px 26px;position:relative}
+.tira img,.tira .ill{width:100%;aspect-ratio:3/2;object-fit:cover;filter:grayscale(.15)}
+.tira figcaption{position:absolute;left:8px;right:8px;bottom:6px;display:flex;justify-content:space-between;font:400 11px var(--m);color:#e0b886}
+.head{display:flex;justify-content:space-between;align-items:end;gap:30px;flex-wrap:wrap}
+h2{font:400 clamp(32px,3.8vw,52px)/1.05 var(--d);margin:12px 0 0;letter-spacing:-.005em}
+.nota{font-size:13.5px;color:var(--gris)}
+ul.b{list-style:none;margin:0;padding:0}
+ul.b li{padding-left:18px;position:relative;margin:4px 0}
+ul.b li:before{content:"";position:absolute;left:0;top:.7em;width:9px;height:1px;background:var(--bronce)}
+/* configurador */
+.s{padding:76px 0}
+.escena{display:grid;grid-template-columns:1.25fr .75fr;gap:0;border:1px solid var(--negro);margin-top:28px;background:#fff}
+.vista{position:relative;background:var(--carbon);padding:22px;display:grid;place-items:center;min-height:420px}
+svg#vista{width:100%;max-width:640px;height:auto}
+.vista .leyenda{position:absolute;left:16px;top:14px;font:400 11px var(--m);color:#a7a59e;letter-spacing:.04em}
+.vista .luz{position:absolute;right:16px;top:12px;display:flex;align-items:center;gap:8px;font:400 11px var(--m);color:#a7a59e}
+.vista .luz input{width:130px;accent-color:var(--bronce2)}
+.cuenta{padding:22px;border-left:1px solid var(--negro);display:flex;flex-direction:column;gap:12px}
+.cuenta h3{font:400 13px var(--d);letter-spacing:.2em;text-transform:uppercase;margin:0}
+.desg{list-style:none;margin:0;padding:0;font-size:14px}
+.desg li{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px dotted var(--linea)}
+.desg li span:last-child{text-align:right;white-space:nowrap}
+.tot b{display:block;font:400 42px/1 var(--d)}
+.tot small{color:var(--gris);font-size:13px}
+.ctrl{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--negro);border-top:0}
+.ctrl section{padding:18px;border-left:1px solid var(--linea)}
+.ctrl section:first-child{border-left:0}
+.ctrl h4{font:400 12px var(--d);letter-spacing:.2em;text-transform:uppercase;margin:0 0 12px;display:flex;gap:8px;align-items:baseline}
+.ctrl h4 i{font:400 12px var(--m);font-style:normal;color:var(--bronce)}
+.grupo{margin-bottom:14px}
+.grupo>span{display:block;font:400 11px var(--m);color:var(--gris);margin-bottom:6px}
+.ops{display:flex;flex-wrap:wrap;gap:6px}
+.op{font:400 13.5px/1.2 var(--t);border:1px solid var(--linea);background:var(--papel);padding:8px 10px;cursor:pointer;color:var(--negro);text-align:left}
+.op small{display:block;font-size:11px;color:var(--gris)}
+.op[aria-pressed=true]{background:var(--negro);border-color:var(--negro);color:var(--papel)}
+.op[aria-pressed=true] small{color:#b9b7b0}
+.op:disabled{opacity:.35;cursor:not-allowed}
+.op:focus-visible,.btn:focus-visible,.sw:focus-visible{outline:2px solid var(--bronce);outline-offset:2px}
+.sws{display:flex;flex-wrap:wrap;gap:7px}
+.sw{width:34px;height:34px;border-radius:50%;border:1px solid var(--linea);cursor:pointer;padding:0;position:relative}
+.sw[aria-pressed=true]{outline:2px solid var(--negro);outline-offset:2px}
+.swn{font-size:13px;margin-top:8px;min-height:20px}
+.med{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+label.f{display:grid;gap:4px;font:400 11px var(--m);color:var(--gris)}
+input,select{font:400 15px var(--t);padding:8px 9px;border:1px solid var(--linea);background:var(--papel);color:var(--negro);width:100%;border-radius:0}
+input[type=range]{padding:0;accent-color:var(--bronce)}
+.chat{border:1px solid var(--negro);border-top:0;display:grid;grid-template-columns:1.1fr .9fr}
+.chat .lado{padding:20px;background:#ECE5DD}
+.chat .cab{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.chat .av{width:36px;height:36px;border-radius:50%;background:var(--negro);color:var(--papel);display:grid;place-items:center;font:400 13px var(--d);letter-spacing:.1em}
+.chat .cab b{font:400 14px var(--d);letter-spacing:.08em;display:block}
+.chat .cab span{font:400 11px var(--m);color:#6d665d}
+.burbuja{background:#DCF8C6;border-radius:8px 0 8px 8px;padding:11px 13px 20px;font:400 13.5px/1.5 -apple-system,'Segoe UI',sans-serif;white-space:pre-wrap;position:relative;box-shadow:0 1px 1px rgba(0,0,0,.12);min-height:90px;margin-left:24px}
+.burbuja:after{content:attr(data-h) " ✓✓";position:absolute;right:9px;bottom:4px;font-size:10.5px;color:#5c8e6a}
+.cursor{display:inline-block;width:7px;height:14px;background:#5c8e6a;vertical-align:-2px;animation:tit 1s steps(2) infinite}
+@keyframes tit{50%{opacity:0}}
+.chat .datos{padding:20px;display:grid;gap:10px;align-content:start}
+.chat .datos .fila{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+/* muestrario */
+.muestrario{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:26px}
+.muestrario h3{font:400 13px var(--d);letter-spacing:.2em;text-transform:uppercase;margin:0 0 12px}
+.placas{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.placa{aspect-ratio:1/2;position:relative;border:1px solid var(--linea)}
+.placa span{position:absolute;left:0;right:0;bottom:-34px;font:400 10.5px/1.15 var(--m);color:var(--gris);text-align:center}
+.muestrario>div{padding-bottom:38px}
+/* rollers */
+.rollers{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--negro);margin-top:24px}
+.rollers div{padding:18px 18px 0 0}
+.rollers h3{font:400 20px/1.1 var(--d);margin:0 0 8px}
+.rollers ul.b li{font-size:14px}
+/* dueño */
+.panel-ej{display:inline-block;font:400 11px var(--d);letter-spacing:.2em;text-transform:uppercase;background:var(--bronce);color:#fff;padding:6px 10px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--negro);margin:24px 0}
+.kpis div{padding:18px;border-left:1px solid var(--linea)}
+.kpis div:first-child{border-left:0}
+.kpis b{display:block;font:400 38px/1 var(--d)}
+.kpis span{font-size:13px;color:var(--gris)}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.bandeja{display:grid;gap:10px;margin-top:12px}
+.msg{background:#ECE5DD;padding:10px}
+.msg .meta{display:flex;justify-content:space-between;font:400 11px var(--m);color:#6d665d;margin-bottom:6px}
+.msg .burbuja{margin-left:0;min-height:0;font-size:12.5px}
+.msg .burbuja:after{content:attr(data-h)}
+table{width:100%;border-collapse:collapse;font-size:14px;background:#fff}
+th,td{border-bottom:1px solid var(--linea);padding:8px;text-align:left}
+th{font:400 11px var(--d);letter-spacing:.16em;text-transform:uppercase;color:var(--gris)}
+td.c,th.c{text-align:center}
+.cupo{font:400 11px var(--m);padding:2px 6px;display:inline-block}
+.cupo.l{background:#e6efe9}
+.cupo.o{background:#f2e3d3;color:#7a4d22}
+.cupo.x{background:#eee;color:#999}
+.precios input{width:120px;padding:5px 7px;font-size:14px}
+.ahorro{background:var(--negro);color:var(--papel);padding:18px;margin-top:14px}
+.ahorro .pe{color:#a7a59e}
+.paravos{margin-top:30px;border-top:1px solid var(--negro);padding-top:18px;display:grid;grid-template-columns:.8fr 1.2fr;gap:28px}
+.paravos h3{font:400 30px/1.05 var(--d);margin:0}
+footer{background:var(--negro);color:#bdbbb3;padding:50px 0 24px}
+footer .wrap{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:30px}
+footer .logo{font-size:26px}
+footer ul{list-style:none;padding:0;margin:0;font-size:14.5px}
+footer li{margin:5px 0}
+footer a{color:var(--papel)}
+.legal{grid-column:1/-1;border-top:1px solid #2e2e2b;padding-top:16px;font:400 12px var(--m);color:#8f8d86}
+.ill{background:#2b2b29 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 200' preserveAspectRatio='xMidYMid slice'%3E%3Crect width='300' height='200' fill='%23D9D6CC'/%3E%3Cpath d='M0 120 L60 70 L95 95 L150 45 L205 100 L250 75 L300 105 V200 H0Z' fill='%238B8A85'/%3E%3Cpath d='M140 54 L150 45 L162 57 L152 53Z' fill='%23F7F6F2'/%3E%3Crect y='140' width='300' height='60' fill='%233E6E86'/%3E%3Crect x='40' y='20' width='220' height='160' fill='none' stroke='%231C1C1B' stroke-width='10'/%3E%3Cpath d='M150 20 V180 M40 88 H260' stroke='%231C1C1B' stroke-width='6'/%3E%3C/svg%3E") center/cover no-repeat}
+[hidden]{display:none!important}
+@media (max-width:1000px){
+  .hero .wrap{grid-template-columns:1fr}
+  .visor{margin-bottom:-40px}
+  .escena{grid-template-columns:1fr}
+  .cuenta{border-left:0;border-top:1px solid var(--negro)}
+  .ctrl{grid-template-columns:1fr 1fr}
+  .ctrl section:nth-child(3){border-left:0}
+  .ctrl section:nth-child(-n+2){border-bottom:1px solid var(--linea)}
+  .chat{grid-template-columns:1fr}
+  .muestrario{grid-template-columns:1fr}
+  .rollers{grid-template-columns:1fr 1fr}
+  .duo,.paravos{grid-template-columns:1fr}
+  footer .wrap{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  .wrap{padding:0 16px}
+  .top .wrap{height:56px;gap:10px}
+  .top nav{display:none}
+  .logo{font-size:17px;letter-spacing:.3em}
+  .vistas{margin-left:auto}
+  .vistas button{padding:7px 8px;font-size:10px;letter-spacing:.08em}
+  .visor{border-width:9px}
+  .cifras{padding-top:70px}
+  .cifras .wrap{grid-template-columns:1fr 1fr;row-gap:22px}
+  .cifras div:nth-child(3){border-left:0;padding-left:0}
+  .cifras b{font-size:36px}
+  .s,.hoja{padding:52px 0}
+  .tira figure{flex-basis:240px}
+  .vista{min-height:0;padding:40px 10px 14px}
+  .vista .luz{left:16px;right:auto;top:auto;bottom:8px}
+  .vista{padding-bottom:40px}
+  .ctrl{grid-template-columns:1fr}
+  .ctrl section{border-left:0;border-bottom:1px solid var(--linea)}
+  .placas{grid-template-columns:repeat(7,1fr);gap:3px}
+  .placa span{font-size:8.5px;bottom:-38px}
+  .rollers{grid-template-columns:1fr}
+  .kpis{grid-template-columns:1fr 1fr}
+  .kpis div:nth-child(3){border-left:0}
+  .kpis div:nth-child(-n+2){border-bottom:1px solid var(--linea)}
+  .kpis b{font-size:30px}
+  .precios input{width:96px}
+  table{font-size:12.5px}
+  th,td{padding:6px 4px}
+}
+</style>
+<script>function noimg(el){var d=document.createElement('div');d.className='ill';d.setAttribute('role','img');d.setAttribute('aria-label',el.alt||'Ilustración');el.replaceWith(d)}</script>
+</head>
+<body>
+
+<div class="firma">Prototipo preparado para <b>Cristalmet</b> · 24 de noviembre de 2026</div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#inicio">CRISTALMET</a>
+    <nav><a href="#trabajos">Trabajos</a><a href="#cotizar">Cotizar</a><a href="#colores">Colores</a><a href="#rollers">Rollers</a></nav>
+    <div class="vistas" role="tablist" aria-label="Vista">
+      <button role="tab" data-vista="cliente" aria-selected="true">Cliente</button>
+      <button role="tab" data-vista="dueno" aria-selected="false">Ver como dueño</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero" id="inicio">
+  <div class="wrap">
+    <div>
+      <span class="k">San Martín de los Andes · Manuel Castilla 227</span>
+      <h1>17.000 aberturas colocadas.<span>La próxima ya se puede cotizar desde acá, con el roller incluido.</span></h1>
+      <p class="baj">Aluminio, aluminio con RPT y PVC de altas prestaciones, fabricados e instalados por una empresa familiar de San Martín de los Andes. Elegí, medí y mandá el pedido en un minuto.</p>
+      <div class="btns">
+        <a class="btn b" href="#cotizar">Cotizar abertura + roller</a>
+        <a class="btn" href="#trabajos">Ver trabajos</a>
+      </div>
+    </div>
+    <figure class="visor">
+      <img src="https://cristalmet.com/wp-content/uploads/2026/07/DJI_20260617042412_0053_D-HDR-1-scaled.jpg" alt="Obra de Cristalmet en San Martín de los Andes" onerror="noimg(this)">
+      <figcaption>Una invitación a ver más allá</figcaption>
+    </figure>
+  </div>
+</section>
+
+<div class="cifras">
+  <div class="wrap">
+    <div><b>+7.000</b><span>obras terminadas</span></div>
+    <div><b>+17.000</b><span>aberturas colocadas</span></div>
+    <div><b>+20</b><span>años fabricando e instalando</span></div>
+    <div><b>14</b><span>colores entre aluminio y PVC</span></div>
+  </div>
+</div>
+
+<section class="hoja" id="trabajos">
+  <div class="wrap">
+    <div class="head"><div><span class="k">Nuestros trabajos</span><h2>Hoja de contactos</h2></div><p class="nota" style="margin:0">Deslizá · fotos de cristalmet.com</p></div>
+    <div class="tira" tabindex="0" aria-label="Trabajos de Cristalmet">
+      <figure><img loading="lazy" src="https://cristalmet.com/wp-content/uploads/2026/07/A745243-HDR-scaled.jpg" alt="Trabajo de Cristalmet" onerror="noimg(this)"><figcaption><span>01</span><span>CRISTALMET</span></figcaption></figure>
+      <figure><img loading="lazy" src="https://cristalmet.com/wp-content/uploads/2026/07/A745008-HDR-scaled.jpg" alt="Trabajo de Cristalmet" onerror="noimg(this)"><figcaption><span>02</span><span>CRISTALMET</span></figcaption></figure>
+      <figure><img loading="lazy" src="https://cristalmet.com/wp-content/uploads/2026/07/A745283-HDR-scaled.jpg" alt="Trabajo de Cristalmet" onerror="noimg(this)"><figcaption><span>03</span><span>CRISTALMET</span></figcaption></figure>
+      <figure><img loading="lazy" src="https://cristalmet.com/wp-content/uploads/2025/04/IMG_6013-1-scaled.jpg" alt="Trabajo de Cristalmet" onerror="noimg(this)"><figcaption><span>04</span><span>CRISTALMET</span></figcaption></figure>
+      <figure><img loading="lazy" src="https://cristalmet.com/wp-content/uploads/2025/04/IMG_4980-scaled.jpg" alt="Trabajo de Cristalmet" onerror="noimg(this)"><figcaption><span>05</span><span>CRISTALMET</span></figcaption></figure>
+      <figure><img loading="lazy" src="https://cristalmet.com/wp-content/uploads/2025/04/IMG_2420-scaled.jpg" alt="Trabajo de Cristalmet" onerror="noimg(this)"><figcaption><span>06</span><span>CRISTALMET</span></figcaption></figure>
+      <figure><img loading="lazy" src="https://cristalmet.com/wp-content/uploads/2025/04/de76ad50-7a54-44b2-8ffa-fcbc6462cfc7-1.jpg" alt="Trabajo de Cristalmet" onerror="noimg(this)"><figcaption><span>07</span><span>CRISTALMET</span></figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section class="s" id="cotizar">
+  <div class="wrap">
+
+    <div data-panel="cliente">
+      <div class="head">
+        <div><span class="k">Cotizador · abertura + roller</span><h2>Mirá cómo queda antes de pedirla</h2></div>
+        <ul class="b nota" style="max-width:48ch">
+          <li>Precio estimado al instante, con la vista desde adentro</li>
+          <li>Abertura y roller en un mismo pedido, con una sola medición</li>
+          <li>El pedido llega al WhatsApp de Cristalmet con todo cargado</li>
+        </ul>
+      </div>
+
+      <div class="escena">
+        <div class="vista">
+          <span class="leyenda" id="v-ley">VISTA DESDE ADENTRO</span>
+          <label class="luz">ROLLER <input type="range" id="r-roller" min="0" max="100" value="35" aria-label="Bajar o subir el roller"></label>
+          <svg id="vista" viewBox="0 0 640 400" role="img" aria-label="Vista de la abertura con el roller"></svg>
+        </div>
+        <div class="cuenta" aria-live="polite">
+          <h3>Tu pedido</h3>
+          <ul class="desg" id="desg"></ul>
+          <div class="tot"><small>Estimado total · <span id="t-cant"></span></small><b id="t-total"></b><span class="pe" style="margin-left:0">precio de ejemplo</span></div>
+          <small class="nota" id="t-sena"></small>
+          <small class="nota">Se confirma después de medir en obra.</small>
+        </div>
+      </div>
+
+      <div class="ctrl">
+        <section>
+          <h4><i>01</i>Proyecto</h4>
+          <div class="grupo"><span>Tipo de proyecto</span><div class="ops" id="q-proy"></div></div>
+          <div class="grupo"><span>Material</span><div class="ops" id="q-mat"></div></div>
+        </section>
+        <section>
+          <h4><i>02</i>Abertura</h4>
+          <div class="grupo"><span>Tipo</span><div class="ops" id="q-tipo"></div></div>
+          <div class="grupo"><span>Vidrio</span><div class="ops" id="q-vidrio"></div></div>
+        </section>
+        <section>
+          <h4><i>03</i>Medida y color</h4>
+          <div class="med grupo">
+            <label class="f">Ancho cm <input type="number" id="q-ancho" min="40" max="400" step="5"></label>
+            <label class="f">Alto cm <input type="number" id="q-alto" min="40" max="260" step="5"></label>
+            <label class="f">Cantidad <input type="number" id="q-cant" min="1" max="80" step="1"></label>
+          </div>
+          <div class="grupo"><span id="colTit">Color</span><div class="sws" id="q-color"></div><div class="swn" id="colNom"></div></div>
+        </section>
+        <section>
+          <h4><i>04</i>Roller</h4>
+          <div class="grupo"><span>Tipo de tela</span><div class="ops" id="q-rtipo"></div></div>
+          <div class="grupo"><span>Modelo</span><select id="q-rmod" aria-label="Modelo de roller"></select></div>
+          <div class="grupo"><span>Motor</span><div class="ops" id="q-motor"></div></div>
+        </section>
+      </div>
+
+      <div class="chat">
+        <div class="lado">
+          <div class="cab"><div class="av">CM</div><div><b>CRISTALMET</b><span>WhatsApp · 2994 70-3986</span></div></div>
+          <div class="burbuja" id="burbuja" data-h="ahora"></div>
+        </div>
+        <div class="datos">
+          <span class="k">Tus datos</span>
+          <label class="f">Nombre <input id="q-nombre" placeholder="Ej.: Lucía" autocomplete="given-name"></label>
+          <label class="f">Barrio o localidad <input id="q-barrio" placeholder="Ej.: Vega Plana"></label>
+          <div class="fila">
+            <label class="f">Día para medir <select id="q-dia"></select></label>
+            <label class="f">Horario <select id="q-turno"><option>9 a 13</option><option>13 a 17:30</option></select></label>
+          </div>
+          <a class="btn wa" id="c-btn" href="#" target="_blank" rel="noopener">Enviar pedido por WhatsApp</a>
+          <small class="nota">¿Tenés plano de carpinterías? Mandalo en PDF después por el mismo chat.</small>
+        </div>
+      </div>
+    </div>
+
+    <div data-panel="dueno" hidden>
+      <div class="head">
+        <div><span class="panel-ej">Panel de ejemplo</span><h2>Lo que ve Cristalmet</h2></div>
+        <p class="nota" style="max-width:46ch;margin:0">Así entrarían los pedidos del cotizador. Datos inventados para mostrar cómo funciona: nada de esto es real.</p>
+      </div>
+      <div class="kpis">
+        <div><b>21</b><span>consultas esta semana</span></div>
+        <div><b>8</b><span>con roller incluido</span></div>
+        <div><b id="k-senas"></b><span>señas cobradas <span class="pe">precio de ejemplo</span></span></div>
+        <div><b>12</b><span>mediciones agendadas</span></div>
+      </div>
+      <div class="duo">
+        <div>
+          <span class="k">Consultas que entraron</span>
+          <div class="bandeja" id="bandeja"></div>
+        </div>
+        <div>
+          <span class="k">Mediciones de la semana · cupos</span>
+          <table id="agenda" style="margin-top:12px"></table>
+          <div class="ahorro">
+            <span class="k" style="color:var(--bronce2)">Frente a vender por un intermediario</span>
+            <p style="margin:8px 0 0">Sobre <span id="a-base"></span> vendidos en el mes, una comisión de 12% serían <b id="a-ahorro"></b>. Con el cotizador propio, cero comisión por pedido.</p>
+          </div>
+          <div style="margin-top:18px">
+            <span class="k">Tabla de precios · editable</span>
+            <table class="precios" style="margin-top:10px"><thead><tr><th>Material</th><th>$ por m²</th></tr></thead><tbody id="tprecios"></tbody></table>
+            <p class="nota" style="margin:6px 0 0">Cambiá un valor y el cotizador del cliente se actualiza al toque.</p>
+          </div>
+        </div>
+      </div>
+      <div class="paravos">
+        <h3>Para vos,<br>Cristalmet</h3>
+        <ul class="b">
+          <li>Menos mensajes repetidos: llegan material, color, medida y roller ya elegidos.</li>
+          <li>Abertura y roller en un solo pedido: una venta más por visita.</li>
+          <li>Agenda de mediciones con cupos por día, sin pisarse.</li>
+          <li>Seña que entra antes de fabricar y cero comisión por pedido.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="s" id="colores" style="padding-top:0">
+  <div class="wrap">
+    <div class="head"><div><span class="k">Muestrario</span><h2>Los 14 colores, uno al lado del otro</h2></div><p class="nota" style="margin:0">Colores de referencia: el tono real se ve en el local.</p></div>
+    <div class="muestrario">
+      <div><h3>Aluminio</h3><div class="placas" id="pl-alu"></div></div>
+      <div><h3>PVC</h3><div class="placas" id="pl-pvc"></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="s" id="rollers" style="background:#fff;border-top:1px solid var(--linea)">
+  <div class="wrap">
+    <div class="head"><div><span class="k">Rollers</span><h2>La luz, a gusto</h2></div><p class="nota" style="margin:0">Más de 15 años haciendo cortinas roller.</p></div>
+    <div class="rollers">
+      <div><h3>Screen</h3><ul class="b"><li>Okiata, Paris, Firenze</li><li>Shantung y Shantung 2</li><li>Roma (1% de apertura)</li></ul></div>
+      <div><h3>Blackout</h3><ul class="b"><li>Nerezza: 0% de apertura</li><li>Alma de fibra de vidrio laminada en PVC</li><li>Negro, blanco, beige, gris</li></ul></div>
+      <div><h3>Dobles</h3><ul class="b"><li>Stripe Vision</li><li>Negro, blanco, lila</li></ul></div>
+      <div><h3>Motor</h3><ul class="b"><li>Manual</li><li>Automático</li><li>Se elige en el cotizador</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div><span class="logo">CRISTALMET</span><p style="max-width:40ch">Aberturas de aluminio y PVC de altas prestaciones, rollers y artículos para el hogar. San Martín de los Andes y ciudades aledañas.</p></div>
+    <ul>
+      <li>Manuel Castilla 227 · Av. Koessler 1738</li>
+      <li>Lunes a viernes de 9 a 17:30 h</li>
+      <li>WhatsApp <a href="https://wa.me/5492994703986">2994 70-3986</a> · (02972) 42-3317</li>
+      <li><a href="mailto:ventas@cristalmet.com">ventas@cristalmet.com</a></li>
+    </ul>
+    <ul>
+      <li><a href="https://www.instagram.com/cristalmetok/" target="_blank" rel="noopener">Instagram @cristalmetok</a></li>
+      <li><a href="https://www.facebook.com/Cristalmet/" target="_blank" rel="noopener">Facebook</a></li>
+      <li>Trabajan con Alcemar, Rial, GU, Giesse y Vasa</li>
+    </ul>
+    <div class="legal">Prototipo de demostración preparado para Cristalmet por Resolviendo Kos · No es la web oficial · Todos los precios son de ejemplo</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+var $=function(id){return document.getElementById(id)};
+var fmt=function(n){return '$'+Math.round(n).toLocaleString('es-AR')};
+var esc=function(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
+var PE='<span class="pe">precio de ejemplo</span>';
+var WA='5492994703986';
+var C={
+  proy:[{id:'casa',n:'Casa'},{id:'amp',n:'Ampliación'},{id:'edif',n:'Edificio'}],
+  mat:[{id:'alu',n:'Aluminio',s:'línea tradicional',p:395000},{id:'rpt',n:'Aluminio RPT',s:'rotura de puente térmico',p:585000},{id:'pvc',n:'PVC',s:'altas prestaciones',p:540000}],
+  tipos:[{id:'corr',n:'Corrediza',f:1,a:180,h:120},{id:'abrir',n:'De abrir',f:1.12,a:90,h:120},{id:'osc',n:'Oscilobatiente',f:1.22,a:90,h:130,solo:'pvc'},{id:'pbal',n:'Puerta balcón',f:1.15,a:160,h:210},{id:'fijo',n:'Paño fijo',f:.72,a:120,h:150}],
+  vidrios:[{id:'dvh',n:'DVH',f:1},{id:'lam',n:'DVH laminado',f:1.15}],
+  colores:{
+    alu:[{n:'Blanco',c:'#F1F0EC',r:0},{n:'Negro',c:'#141414',r:.1},{n:'Negro texturado',c:'#262624',r:.12,tx:1},{n:'Gris',c:'#8E9092',r:.1},{n:'Bronce colonial',c:'#5E4128',r:.1},{n:'Naranja',c:'#D46F2A',r:.14},{n:'Bicolor RPT',c:'#F1F0EC',c2:'#141414',r:.16,solo:'rpt'}],
+    pvc:[{n:'Blanco',c:'#F3F2EE',r:0},{n:'Gris antracita',c:'#383C3F',r:.15},{n:'Negro',c:'#161616',r:.15},{n:'Monument',c:'#55585A',r:.15},{n:'Roble dorado',c:'#A66A2E',r:.18,wood:1},{n:'Nogal',c:'#5A3A22',r:.18,wood:1},{n:'Lenga',c:'#8D4E35',r:.18,wood:1}]
+  },
+  rtipos:[{id:'no',n:'Sin roller'},{id:'screen',n:'Screen',p:78000},{id:'black',n:'Blackout',p:92000},{id:'doble',n:'Doble',p:128000}],
+  rmods:{screen:['Screen Okiata','Screen Paris','Screen Firenze','Screen Shantung','Screen Shantung 2','Screen Roma (1% de apertura)'],black:['Blackout Nerezza (0% de apertura)'],doble:['Stripe Vision']},
+  motores:[{id:'man',n:'Manual',p:0},{id:'auto',n:'Automático',p:215000}]
+};
+var S={proy:'casa',mat:'pvc',tipo:'corr',vidrio:'dvh',ancho:180,alto:120,cant:3,col:0,rtipo:'screen',rmod:'Screen Okiata',motor:'man',baja:35,nombre:'',barrio:'',dia:'',turno:'9 a 13'};
+function find(l,id){for(var i=0;i<l.length;i++)if(l[i].id===id)return l[i]}
+function colList(){return C.colores[S.mat==='pvc'?'pvc':'alu'].filter(function(c){return !c.solo||c.solo===S.mat})}
+
+function ops(cont,list,key){
+  $(cont).innerHTML=list.map(function(o){var dis=o.solo&&o.solo!==S.mat;return '<button type="button" class="op" data-v="'+o.id+'" aria-pressed="'+(S[key]===o.id)+'"'+(dis?' disabled title="Solo en PVC"':'')+'>'+esc(o.n)+(o.s?'<small>'+esc(o.s)+'</small>':'')+(o.p&&key==='motor'?'<small>+'+fmt(o.p)+' c/u · precio de ejemplo</small>':'')+'</button>'}).join('');
+}
+function bindOps(cont,key,after){$(cont).addEventListener('click',function(e){var b=e.target.closest('.op');if(!b||b.disabled)return;S[key]=b.dataset.v;if(after)after();renderAll()})}
+
+function renderCtrls(){
+  ops('q-proy',C.proy,'proy');ops('q-mat',C.mat,'mat');ops('q-tipo',C.tipos,'tipo');ops('q-vidrio',C.vidrios,'vidrio');ops('q-rtipo',C.rtipos,'rtipo');ops('q-motor',C.motores,'motor');
+  var cl=colList();if(S.col>=cl.length)S.col=0;
+  $('colTit').textContent='Color · '+(S.mat==='pvc'?'PVC':'aluminio');
+  $('q-color').innerHTML=cl.map(function(c,i){var bg=c.c2?'linear-gradient(135deg,'+c.c+' 50%,'+c.c2+' 50%)':(c.wood?'repeating-linear-gradient(100deg,'+c.c+' 0 5px,rgba(0,0,0,.12) 5px 7px)':c.c);return '<button type="button" class="sw" data-i="'+i+'" style="background:'+bg+'" aria-label="'+esc(c.n)+'" aria-pressed="'+(S.col===i)+'"></button>'}).join('');
+  var c=cl[S.col];$('colNom').innerHTML=esc(c.n)+(c.r?' <span class="pe">+'+Math.round(c.r*100)+'% · precio de ejemplo</span>':'');
+  var m=C.rmods[S.rtipo];$('q-rmod').disabled=!m;$('q-rmod').innerHTML=m?m.map(function(x){return '<option'+(x===S.rmod?' selected':'')+'>'+x+'</option>'}).join(''):'<option>—</option>';
+  if(m&&m.indexOf(S.rmod)<0)S.rmod=m[0];
+  $('q-motor').style.opacity=S.rtipo==='no'?.4:1;
+}
+bindOps('q-proy','proy',function(){if(S.proy==='edif'&&S.cant<8)S.cant=12;$('q-cant').value=S.cant});
+bindOps('q-mat','mat',function(){S.col=0;if(S.tipo==='osc'&&S.mat!=='pvc')S.tipo='abrir'});
+bindOps('q-tipo','tipo',function(){var t=find(C.tipos,S.tipo);S.ancho=t.a;S.alto=t.h;$('q-ancho').value=S.ancho;$('q-alto').value=S.alto});
+bindOps('q-vidrio','vidrio');bindOps('q-rtipo','rtipo');bindOps('q-motor','motor');
+$('q-color').addEventListener('click',function(e){var b=e.target.closest('.sw');if(!b)return;S.col=+b.dataset.i;renderAll()});
+$('q-rmod').addEventListener('change',function(){S.rmod=this.value;renderAll()});
+
+function calc(){
+  var m=find(C.mat,S.mat),t=find(C.tipos,S.tipo),v=find(C.vidrios,S.vidrio),c=colList()[S.col];
+  var m2=Math.max(.6,S.ancho*S.alto/10000);var ab=m2*m.p*t.f*v.f*(1+c.r)*S.cant;var rows=[[S.cant+' × '+t.n+' · '+m.n+' · '+c.n,ab]];
+  var rt=find(C.rtipos,S.rtipo),ro=0;if(rt.p){ro=m2*rt.p*S.cant;rows.push([S.cant+' × Roller '+S.rmod.replace(/ \(.*\)/,''),ro]);var mo=find(C.motores,S.motor);if(mo.p){rows.push([S.cant+' × Motor automático',mo.p*S.cant]);ro+=mo.p*S.cant}}
+  var total=ab+ro;return {m:m,t:t,v:v,c:c,rt:rt,m2:m2,rows:rows,total:total,sena:total*.3};
+}
+
+function vista(r){
+  var W=640,H=400;var sc=Math.min(520/S.ancho,320/S.alto);var w=S.ancho*sc,h=S.alto*sc,x=(W-w)/2,y=(H-h)/2+6;
+  var col=r.c.c,col2=r.c.c2||r.c.c,fr=S.mat==='alu'?7:(S.mat==='rpt'?9:11);
+  var g='<defs><clipPath id="vano"><rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'"/></clipPath><linearGradient id="cielo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9fb9c6"/><stop offset="1" stop-color="#dfe4e0"/></linearGradient></defs>';
+  g+='<rect width="'+W+'" height="'+H+'" fill="#1C1C1B"/><rect x="'+(x-26)+'" y="'+(y-26)+'" width="'+(w+52)+'" height="'+(h+52)+'" fill="#2a2a28"/>';
+  g+='<g clip-path="url(#vano)"><rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="url(#cielo)"/>';
+  var base=y+h*.62;g+='<path d="M'+x+' '+(base)+' L'+(x+w*.18)+' '+(base-h*.28)+' L'+(x+w*.32)+' '+(base-h*.12)+' L'+(x+w*.52)+' '+(base-h*.4)+' L'+(x+w*.72)+' '+(base-h*.1)+' L'+(x+w*.86)+' '+(base-h*.22)+' L'+(x+w)+' '+(base-h*.06)+' V'+(y+h)+' H'+x+'Z" fill="#6f7f78"/>';
+  g+='<path d="M'+(x+w*.47)+' '+(base-h*.35)+' L'+(x+w*.52)+' '+(base-h*.4)+' L'+(x+w*.57)+' '+(base-h*.34)+'Z" fill="#fff"/>';
+  g+='<rect x="'+x+'" y="'+(base+h*.04)+'" width="'+w+'" height="'+(h*.4)+'" fill="#3E6E86"/><path d="M'+(x+10)+' '+(base+h*.12)+' H'+(x+w-10)+'" stroke="#fff" opacity=".3"/>';
+  g+='<path d="M'+x+' '+(base+h*.05)+' L'+(x+w)+' '+(base+h*.02)+' V'+(base+h*.07)+' H'+x+'Z" fill="#2f4a3e"/>';
+  /* roller */
+  if(r.rt.p){var bh=h*S.baja/100;var op=S.rtipo==='black'?1:(S.rtipo==='screen'?(S.rmod.indexOf('Roma')>=0?.82:.66):.9);
+    var tela=S.rtipo==='black'?'#2d2d2b':'#b9b09c';
+    if(S.rtipo==='doble'){for(var i=0;i<bh;i+=16)g+='<rect x="'+x+'" y="'+(y+i)+'" width="'+w+'" height="'+Math.min(8,bh-i)+'" fill="#ece8de" opacity=".93"/>'}
+    else g+='<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+bh+'" fill="'+tela+'" opacity="'+op+'"/>';
+    if(S.rtipo==='screen'&&bh>4){for(var j=4;j<bh;j+=5)g+='<path d="M'+x+' '+(y+j)+' H'+(x+w)+'" stroke="#d6cfbe" stroke-width=".6" opacity=".5"/>'}
+    g+='<rect x="'+x+'" y="'+(y+bh-3)+'" width="'+w+'" height="5" fill="#bdbab0"/>';}
+  g+='</g>';
+  /* marco */
+  function marco(px,py,pw,ph,c1){g+='<rect x="'+(px+fr/2)+'" y="'+(py+fr/2)+'" width="'+(pw-fr)+'" height="'+(ph-fr)+'" fill="none" stroke="'+c1+'" stroke-width="'+fr+'"/>'}
+  marco(x,y,w,h,col2);
+  if(S.tipo==='corr'){marco(x+fr,y+fr,w/2,h-2*fr,col2);marco(x+w/2-fr,y+fr,w/2,h-2*fr,col2);g+='<rect x="'+(x+w/2-fr-3)+'" y="'+(y+h/2-18)+'" width="4" height="36" fill="#bdbab0"/>'}
+  else if(S.tipo==='abrir'||S.tipo==='osc'){marco(x+fr,y+fr,w-2*fr,h-2*fr,col2);g+='<rect x="'+(x+w-2*fr-8)+'" y="'+(y+h/2-14)+'" width="4" height="28" fill="#bdbab0"/>';if(S.tipo==='osc')g+='<path d="M'+(x+2*fr)+' '+(y+h-2*fr)+' L'+(x+w/2)+' '+(y+2*fr)+' L'+(x+w-2*fr)+' '+(y+h-2*fr)+'" stroke="#bdbab0" stroke-dasharray="6 6" fill="none" opacity=".7"/>'}
+  else if(S.tipo==='pbal'){marco(x+fr,y+fr,w/2-fr,h-2*fr,col2);marco(x+w/2,y+fr,w/2-fr,h-2*fr,col2)}
+  /* contramarco interior */
+  if(r.c.c2){g+='<rect x="'+(x-4)+'" y="'+(y-4)+'" width="'+(w+8)+'" height="'+(h+8)+'" fill="none" stroke="'+col+'" stroke-width="3"/>'}
+  g+='<rect x="'+(x-34)+'" y="'+(y+h+20)+'" width="'+(w+68)+'" height="10" fill="#3a3936"/>';
+  g+='<text x="'+(W/2)+'" y="'+(y+h+50)+'" text-anchor="middle" style="font:13px Cutive Mono,monospace;fill:#a7a59e">'+S.ancho+' × '+S.alto+' cm · '+esc(r.m.n)+' · '+esc(r.c.n)+'</text>';
+  $('vista').innerHTML=g;
+  $('v-ley').textContent='VISTA DESDE ADENTRO · '+(r.rt.p?S.rmod.replace(/ \(.*\)/,'').toUpperCase():'SIN ROLLER');
+  document.querySelector('.vista .luz').style.visibility=r.rt.p?'visible':'hidden';
+}
+
+var typing=null,lastTxt='';
+function mensaje(r){
+  var nom=S.nombre.trim()||'(tu nombre)';var p=find(C.proy,S.proy).n.toLowerCase();
+  var t='Hola Cristalmet, soy '+nom+'. Quiero cotizar para '+(S.proy==='amp'?'una ampliación':(S.proy==='edif'?'un edificio':'una casa'))+':\n'+
+   '• '+S.cant+' × '+r.t.n+' · '+r.m.n+' · color '+r.c.n+'\n'+
+   '• Medida: '+(S.ancho/100).toFixed(2).replace('.',',')+' × '+(S.alto/100).toFixed(2).replace('.',',')+' m · Vidrio '+r.v.n+'\n'+
+   (r.rt.p?'• Roller: '+S.rmod.replace(/ \(.*\)/,'')+' · motor '+find(C.motores,S.motor).n.toLowerCase()+'\n':'• Sin roller\n')+
+   '• Obra en: '+(S.barrio.trim()||'San Martín de los Andes')+'\n'+
+   'Estimado web: '+fmt(r.total)+' (precio de ejemplo)\n'+
+   'Seña para fabricar (30%): '+fmt(r.sena)+'\n'+
+   'Medición: '+S.dia+', de '+S.turno+' h. ¿Me confirman?';
+  return t;
+}
+function escribir(t){var b=$('burbuja');if(t===lastTxt)return;var prev=lastTxt;lastTxt=t;clearInterval(typing);var i=0;while(i<prev.length&&i<t.length&&prev[i]===t[i])i++;
+  typing=setInterval(function(){i=Math.min(t.length,i+3);b.innerHTML=esc(t.slice(0,i))+(i<t.length?'<span class="cursor"></span>':'');if(i>=t.length)clearInterval(typing)},16)}
+
+function render(){var r=calc();vista(r);
+  $('desg').innerHTML=r.rows.map(function(x){return '<li><span>'+esc(x[0])+'</span><span>'+fmt(x[1])+PE+'</span></li>'}).join('');
+  $('t-cant').textContent=S.cant+(S.cant>1?' unidades':' unidad')+' · '+r.m2.toFixed(2).replace('.',',')+' m² c/u';
+  $('t-total').textContent=fmt(r.total);$('t-sena').innerHTML='Seña para fabricar (30%): '+fmt(r.sena)+PE;
+  var t=mensaje(r);escribir(t);$('c-btn').href='https://wa.me/'+WA+'?text='+encodeURIComponent(t)}
+function renderAll(){renderCtrls();render()}
+
+function num(id,k,min,max){$(id).addEventListener('input',function(){var v=+this.value;if(!v)return;S[k]=Math.max(min,Math.min(max,v));render()});$(id).addEventListener('change',function(){this.value=S[k]})}
+num('q-ancho','ancho',40,400);num('q-alto','alto',40,260);num('q-cant','cant',1,80);
+$('r-roller').addEventListener('input',function(){S.baja=+this.value;render()});
+$('q-nombre').addEventListener('input',function(){S.nombre=this.value;render()});
+$('q-barrio').addEventListener('input',function(){S.barrio=this.value;render()});
+$('q-dia').addEventListener('change',function(){S.dia=this.value;render()});
+$('q-turno').addEventListener('change',function(){S.turno=this.value;render()});
+(function(){var d=new Date(),out=[],nom=['dom','lun','mar','mié','jue','vie','sáb'];while(out.length<8){d.setDate(d.getDate()+1);if(d.getDay()===0||d.getDay()===6)continue;out.push(nom[d.getDay()]+' '+d.getDate()+'/'+(d.getMonth()+1))}$('q-dia').innerHTML=out.map(function(x){return '<option>'+x+'</option>'}).join('');S.dia=out[0]})();
+$('q-ancho').value=S.ancho;$('q-alto').value=S.alto;$('q-cant').value=S.cant;
+renderAll();
+
+/* muestrario */
+function placas(id,list){$(id).innerHTML=list.map(function(c){var bg=c.c2?'linear-gradient(90deg,'+c.c+' 50%,'+c.c2+' 50%)':(c.wood?'repeating-linear-gradient(95deg,'+c.c+' 0 7px,rgba(0,0,0,.13) 7px 9px)':(c.tx?'radial-gradient(rgba(255,255,255,.08) 1px,transparent 1px) 0 0/4px 4px,'+c.c:c.c));return '<div class="placa" style="background:'+bg+'"><span>'+esc(c.n)+'</span></div>'}).join('')}
+placas('pl-alu',C.colores.alu);placas('pl-pvc',C.colores.pvc);
+
+/* panel dueño */
+var demo=[
+ {q:'hace 25 min',t:'Hola Cristalmet, soy Lucía. Quiero cotizar para una casa:\n• 4 × Oscilobatiente · PVC · color Lenga\n• Medida: 0,90 × 1,30 m · Vidrio DVH\n• Roller: Blackout Nerezza · motor manual\nEstimado web: $3.586.000 (precio de ejemplo)'},
+ {q:'hace 2 h',t:'Hola Cristalmet, soy Javier. Quiero cotizar para una ampliación:\n• 2 × Corrediza · Aluminio RPT · color Negro texturado\n• Medida: 2,40 × 2,10 m · Vidrio DVH laminado\n• Roller: Screen Roma · motor automático\nEstimado web: $8.903.000 (precio de ejemplo)'},
+ {q:'ayer',t:'Hola Cristalmet, soy Estudio Lácar. Quiero cotizar para un edificio:\n• 18 × De abrir · Aluminio · color Blanco\n• Medida: 1,20 × 1,10 m · Vidrio DVH\n• Sin roller\nEstimado web: $11.263.000 (precio de ejemplo)'}
+];
+$('bandeja').innerHTML=demo.map(function(d){return '<div class="msg"><div class="meta"><span>WhatsApp · desde el cotizador</span><span>'+d.q+'</span></div><div class="burbuja" data-h="'+d.q+'">'+esc(d.t)+'</div></div>'}).join('');
+var ag=[['Lun',[1,2]],['Mar',[0,1]],['Mié',[2,2]],['Jue',[0,0]],['Vie',[1,2]]];
+$('agenda').innerHTML='<thead><tr><th>Día</th><th class="c">9 a 13</th><th class="c">13 a 17:30</th></tr></thead><tbody>'+ag.map(function(a){return '<tr><td>'+a[0]+'</td>'+a[1].map(function(n){return '<td class="c"><span class="cupo '+(n===0?'x':(n===2?'o':'l'))+'">'+(n===0?'lleno':(n===2?'2 libres':'1 libre'))+'</span></td>'}).join('')+'</tr>'}).join('')+'</tbody>';
+var vendido=42800000;$('k-senas').textContent=fmt(5130000);$('a-base').innerHTML=fmt(vendido)+PE;$('a-ahorro').innerHTML=fmt(vendido*.12)+PE;
+$('tprecios').innerHTML=C.mat.map(function(m){return '<tr><td>'+esc(m.n)+'</td><td><input type="number" step="5000" min="0" data-id="'+m.id+'" value="'+m.p+'" aria-label="Precio por m² de '+esc(m.n)+'"><span class="pe">precio de ejemplo</span></td></tr>'}).join('')+
+ C.rtipos.filter(function(x){return x.p}).map(function(x){return '<tr><td>Roller '+esc(x.n)+'</td><td><input type="number" step="1000" min="0" data-r="'+x.id+'" value="'+x.p+'" aria-label="Precio por m² roller '+esc(x.n)+'"><span class="pe">precio de ejemplo</span></td></tr>'}).join('');
+$('tprecios').addEventListener('input',function(e){var v=Math.max(0,+e.target.value||0);if(e.target.dataset.id)find(C.mat,e.target.dataset.id).p=v;if(e.target.dataset.r)find(C.rtipos,e.target.dataset.r).p=v;render()});
+
+var tabs=document.querySelectorAll('.vistas button');
+[].forEach.call(tabs,function(b){b.addEventListener('click',function(){var v=b.dataset.vista;[].forEach.call(tabs,function(x){x.setAttribute('aria-selected',x===b)});
+  document.querySelector('[data-panel=cliente]').hidden=v!=='cliente';document.querySelector('[data-panel=dueno]').hidden=v!=='dueno';$('cotizar').scrollIntoView({behavior:'smooth'})})});
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Cristalmet"></script>
+</body>
+</html>
