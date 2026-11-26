@@ -1,0 +1,580 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Graciela Bravo Inmobiliaria · Río Cuarto</title>
+<meta name="description" content="Prototipo de catálogo para Graciela Bravo Inmobiliaria: casas, quintas, departamentos y alquileres en Río Cuarto.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Eczar:wght@400;500;600;700;800&family=Fustat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cal:#F3ECE1;      /* cal de pared */
+  --cal2:#EADFCF;
+  --ladrillo:#A9432B;
+  --ladrillo2:#8A3422;
+  --oliva:#2E3826;
+  --oliva2:#46533A;
+  --tinta:#211C17;
+  --gris:#6E655B;
+  --linea:#CDBFAC;
+  --wa:#DCF8C6;
+  --wafondo:#ECE5DD;
+  --d:'Eczar', Georgia, serif;
+  --t:'Fustat', 'Segoe UI', system-ui, sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--cal);color:var(--tinta);font-family:var(--t);font-size:16px;line-height:1.5;overflow-x:hidden}
+img{max-width:100%;display:block}
+button,input,select{font:inherit;color:inherit}
+a{color:inherit}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+@media(max-width:600px){.wrap{padding:0 16px}}
+.ej{font-family:var(--t);font-size:.66rem;font-weight:500;letter-spacing:.02em;color:var(--gris);white-space:nowrap;vertical-align:middle;margin-left:.35em;font-style:normal}
+.ej.claro{color:#d9cdbb}
+
+/* firma */
+.firma{font-size:.78rem;color:var(--gris);border-bottom:1px solid var(--linea);padding:7px 0}
+.firma .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+/* cabecera */
+header.top{padding:18px 0 14px}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.marca{display:flex;align-items:center;gap:12px;text-decoration:none}
+.marca img{height:46px;width:auto}
+.marca .txt{font-family:var(--d);font-weight:700;font-size:1.35rem;line-height:1}
+.marca .txt small{display:block;font-family:var(--t);font-weight:600;font-size:.62rem;letter-spacing:.22em;color:var(--ladrillo);margin-top:4px}
+.vista{display:flex;border:1.5px solid var(--oliva);border-radius:999px;padding:3px;background:#fff8}
+.vista button{border:0;background:none;padding:7px 16px;border-radius:999px;cursor:pointer;font-weight:600;font-size:.88rem}
+.vista button.on{background:var(--oliva);color:var(--cal)}
+
+/* portada */
+.portada{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;padding:28px 0 46px;align-items:center}
+.kicker{font-weight:700;font-size:.74rem;letter-spacing:.2em;color:var(--ladrillo);text-transform:uppercase}
+h1{font-family:var(--d);font-weight:600;font-size:clamp(2.1rem,4.6vw,3.7rem);line-height:1.02;letter-spacing:-.015em;margin:14px 0 18px}
+h1 em{font-style:normal;color:var(--ladrillo)}
+.datos{list-style:none;display:flex;flex-wrap:wrap;gap:8px 22px;font-size:.95rem;color:var(--oliva2)}
+.datos li{display:flex;gap:8px;align-items:baseline}
+.datos b{font-family:var(--d);font-size:1.5rem;color:var(--tinta);font-weight:700}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+.btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:4px;padding:12px 18px;font-weight:700;cursor:pointer;text-decoration:none;font-size:.95rem}
+.btn.l{background:var(--ladrillo);color:#fff}
+.btn.l:hover{background:var(--ladrillo2)}
+.btn.o{background:transparent;border:1.5px solid var(--oliva);color:var(--oliva)}
+.btn.wa{background:#1f9d55;color:#fff}
+
+/* balanza */
+.balanza{background:var(--oliva);color:var(--cal);border-radius:6px;padding:22px 22px 18px;position:relative}
+.balanza h3{font-family:var(--d);font-weight:600;font-size:1.3rem;line-height:1.1}
+.balanza p.sub{font-size:.84rem;color:#cfd6c4;margin:4px 0 6px}
+.balanza svg{width:100%;height:auto;display:block}
+.bal-ctrl{display:grid;gap:10px}
+.bal-ctrl label{font-size:.78rem;color:#cfd6c4;display:flex;justify-content:space-between}
+.bal-ctrl output{font-family:var(--d);font-weight:700;color:#fff;font-size:1rem}
+input[type=range]{width:100%;accent-color:var(--ladrillo)}
+.bal-ctrl select{background:#3b4731;border:1px solid #5d6a50;border-radius:4px;padding:8px;color:var(--cal);width:100%}
+.bal-res{margin-top:12px;border-top:1px dashed #6b7860;padding-top:10px;font-size:.88rem;display:grid;gap:3px}
+.bal-res b{font-family:var(--d);font-size:1.15rem}
+
+/* filtros */
+.filtros{position:sticky;top:0;z-index:20;background:var(--cal);border-top:2px solid var(--tinta);border-bottom:1px solid var(--linea)}
+.filtros .wrap{display:flex;gap:10px;align-items:center;padding-top:10px;padding-bottom:10px;overflow-x:auto;scrollbar-width:none}
+.filtros .wrap::-webkit-scrollbar{display:none}
+.seg{display:flex;border:1px solid var(--linea);border-radius:4px;overflow:hidden;flex:none}
+.seg button{border:0;background:#fff6;padding:7px 12px;cursor:pointer;font-size:.85rem;font-weight:600}
+.seg button.on{background:var(--tinta);color:var(--cal)}
+.filtros select{flex:none;border:1px solid var(--linea);border-radius:4px;padding:7px 10px;background:#fff6;font-size:.85rem}
+.cuenta{flex:none;margin-left:auto;font-size:.82rem;color:var(--gris);white-space:nowrap}
+
+/* fachada */
+.fachada{padding:34px 0 20px}
+.piso{position:relative;padding:26px 0 0}
+.piso-tit{display:flex;align-items:baseline;gap:14px;margin-bottom:16px}
+.piso-tit h2{font-family:var(--d);font-weight:600;font-size:1.6rem;line-height:1}
+.piso-tit span{font-size:.82rem;color:var(--gris)}
+.ventanas{padding:0 6px;display:flex;flex-wrap:wrap;gap:22px 18px;align-items:flex-end}
+.cornisa{height:14px;margin-top:22px;background:linear-gradient(var(--tinta) 0 3px,transparent 3px 6px,var(--linea) 6px 8px,transparent 8px)}
+.vent{flex:1 1 220px;max-width:340px;cursor:pointer;background:none;border:0;text-align:left;display:flex;flex-direction:column}
+.vent.ancha{flex:2 1 360px;max-width:520px}
+.vent .marco{position:relative;border:6px solid #fff;outline:1px solid var(--linea);border-radius:200px 200px 3px 3px;overflow:hidden;background:var(--cal2);aspect-ratio:3/3.2;box-shadow:0 10px 20px -14px #0007}
+.vent.ancha .marco{aspect-ratio:16/11;border-radius:260px 260px 3px 3px}
+.vent .marco img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.vent:hover .marco img{transform:scale(1.04)}
+.vent .alfeizar{height:9px;background:var(--cal2);border:1px solid var(--linea);margin:0 -6px;border-radius:2px}
+.vent .eti{position:absolute;left:10px;bottom:10px;background:var(--cal);font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:2px}
+.vent .eti.alq{background:var(--oliva);color:var(--cal)}
+.vent .info{padding:10px 2px 0}
+.vent .precio{font-family:var(--d);font-weight:700;font-size:1.35rem;line-height:1.1}
+.vent .tit{font-weight:600;font-size:.95rem;margin-top:2px}
+.vent .mini{font-size:.82rem;color:var(--gris)}
+.vacio{padding:40px 0;color:var(--gris);display:none}
+
+/* consulta + burbuja */
+.consulta{background:var(--cal2);padding:56px 0;margin-top:30px;border-top:1px solid var(--linea)}
+.consulta .grid{display:grid;grid-template-columns:1fr 380px;gap:40px;align-items:start}
+.consulta h2,.sec h2{font-family:var(--d);font-weight:600;font-size:clamp(1.7rem,3vw,2.3rem);line-height:1.05;margin-bottom:6px}
+.pasos{list-style:none;display:grid;gap:16px;margin-top:20px}
+.pasos li{display:grid;grid-template-columns:34px 1fr;gap:12px}
+.pasos .n{width:34px;height:34px;border-radius:50%;background:var(--ladrillo);color:#fff;font-family:var(--d);font-weight:700;display:grid;place-items:center}
+.pasos label{font-weight:700;font-size:.9rem;display:block;margin-bottom:6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--linea);background:#fff8;border-radius:999px;padding:6px 12px;font-size:.85rem;cursor:pointer;font-weight:500}
+.chip.on{background:var(--oliva);border-color:var(--oliva);color:var(--cal)}
+.campo{width:100%;border:1px solid var(--linea);border-radius:4px;padding:10px;background:#fff}
+.tel{position:sticky;top:70px;background:var(--wafondo);border-radius:22px;border:8px solid var(--tinta);overflow:hidden;box-shadow:0 20px 40px -20px #0008}
+.tel .bar{background:#075E54;color:#fff;padding:10px 14px;display:flex;gap:10px;align-items:center}
+.tel .av{width:34px;height:34px;border-radius:50%;background:var(--ladrillo);display:grid;place-items:center;font-family:var(--d);font-weight:700}
+.tel .bar b{font-size:.92rem;display:block;line-height:1.1}
+.tel .bar small{font-size:.72rem;opacity:.8}
+.tel .chat{padding:16px 12px 14px;min-height:280px;display:flex;flex-direction:column;justify-content:flex-end;background-image:radial-gradient(#d9cfc4 1px,transparent 1px);background-size:14px 14px}
+.burb{background:var(--wa);border-radius:8px 0 8px 8px;padding:9px 11px 18px;font-size:.88rem;line-height:1.42;align-self:flex-end;max-width:94%;position:relative;white-space:pre-wrap;box-shadow:0 1px 1px #0002}
+.burb .hora{position:absolute;right:8px;bottom:3px;font-size:.64rem;color:#667}
+.burb .cur{display:inline-block;width:2px;height:1em;background:#075E54;vertical-align:-2px;animation:t 1s steps(2) infinite}
+@keyframes t{50%{opacity:0}}
+.burb mark{background:#bfe8a0;border-radius:2px;padding:0 2px}
+.tel .pie{padding:10px 12px;background:#f0f0f0}
+.tel .pie .btn{width:100%;justify-content:center}
+.burb.in{background:#fff;border-radius:0 8px 8px 8px;align-self:flex-start}
+
+/* ficha */
+dialog.ficha{border:0;padding:0;max-width:980px;width:calc(100% - 24px);margin:auto;background:var(--cal);border-radius:6px;max-height:calc(100vh - 24px)}
+dialog.ficha::backdrop{background:#211c17cc}
+.f-in{display:grid;grid-template-columns:1.2fr 1fr;min-height:0}
+.f-gal{position:relative;align-self:start}
+.f-gal .tiras{background:var(--tinta)}
+.f-gal .grande{aspect-ratio:4/3;width:100%;object-fit:cover}
+.f-gal .tiras{display:flex;gap:6px;padding:8px;overflow-x:auto}
+.f-gal .tiras img{width:72px;height:54px;object-fit:cover;cursor:pointer;opacity:.6;border-radius:2px;flex:none}
+.f-gal .tiras img.on{opacity:1;outline:2px solid var(--ladrillo)}
+.f-txt{padding:22px 24px;overflow:auto}
+.f-txt h3{font-family:var(--d);font-weight:600;font-size:1.6rem;line-height:1.08}
+.f-txt .precio{font-family:var(--d);font-weight:700;font-size:1.7rem;color:var(--ladrillo);margin:6px 0}
+.f-cifras{display:flex;gap:16px;flex-wrap:wrap;border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);padding:8px 0;margin:10px 0;font-size:.85rem}
+.f-cifras b{display:block;font-family:var(--d);font-size:1.15rem}
+.f-txt ul{padding-left:18px;font-size:.9rem;display:grid;gap:2px}
+.f-map{margin-top:14px}
+.f-map svg{width:100%;height:auto;border:1px solid var(--linea);border-radius:4px;background:#efe6d8}
+.f-map small{font-size:.72rem;color:var(--gris)}
+.f-acc{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.f-par{grid-column:1/-1;padding:16px 24px 22px;border-top:1px solid var(--linea)}
+.f-par h4{font-family:var(--d);font-size:1.1rem;margin-bottom:10px}
+.par{display:flex;gap:12px;overflow-x:auto}
+.par button{flex:0 0 180px;border:1px solid var(--linea);background:#fff8;border-radius:4px;padding:6px;text-align:left;cursor:pointer}
+.par img{width:100%;height:96px;object-fit:cover;border-radius:2px}
+.par b{font-family:var(--d);font-size:1rem;display:block;margin-top:4px}
+.par span{font-size:.78rem;color:var(--gris);display:block}
+.cerrar{position:absolute;top:10px;right:10px;z-index:3;border:0;background:var(--cal);border-radius:50%;width:36px;height:36px;font-size:1.2rem;cursor:pointer}
+
+/* tasación */
+.sec{padding:56px 0}
+.tasa{display:grid;grid-template-columns:.9fr 1.1fr;gap:40px}
+.tasa ul.bul{list-style:none;display:grid;gap:8px;margin-top:14px}
+.tasa ul.bul li{padding-left:22px;position:relative}
+.tasa ul.bul li:before{content:"";position:absolute;left:0;top:.55em;width:11px;height:11px;background:var(--ladrillo);border-radius:6px 6px 1px 1px}
+.tasa form{background:#fff;border:1px solid var(--linea);border-radius:6px;padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tasa form .full{grid-column:1/-1}
+.tasa form label{font-size:.8rem;font-weight:700;display:grid;gap:4px}
+
+/* dueño */
+#dueno{display:none}
+body.modo-dueno #cliente{display:none}
+body.modo-dueno #dueno{display:block}
+.panel-ej{display:inline-block;background:var(--ladrillo);color:#fff;font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:4px 10px;border-radius:2px}
+.d-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:24px;margin-top:22px}
+.d-grid>*{min-width:0}
+table.senas .ej,.ahorro .ej{display:block;margin:0}
+.caja{background:#fff;border:1px solid var(--linea);border-radius:6px;padding:18px}
+.caja h3{font-family:var(--d);font-weight:600;font-size:1.25rem;margin-bottom:12px;display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.caja h3 small{font-family:var(--t);font-size:.74rem;color:var(--gris);font-weight:500}
+.inbox{display:grid;gap:10px;background:var(--wafondo);padding:12px;border-radius:4px}
+.inbox .burb{align-self:auto;max-width:100%;font-size:.82rem}
+.inbox .quien{font-size:.72rem;font-weight:700;color:#075E54;margin-bottom:2px}
+.agenda{width:100%;min-width:600px;border-collapse:collapse;font-size:.8rem}
+.agenda th{font-weight:700;text-align:left;padding:6px 4px;border-bottom:2px solid var(--tinta)}
+.agenda td{padding:6px 4px;border-bottom:1px solid var(--linea);vertical-align:top}
+.agenda .v{display:block;background:var(--cal2);border-left:3px solid var(--ladrillo);padding:3px 5px;margin-bottom:3px;border-radius:2px}
+.agenda .l{color:#a99c8a}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.kpi{border-top:3px solid var(--oliva);padding-top:8px}
+.kpi b{font-family:var(--d);font-size:1.6rem;display:block;line-height:1}
+.kpi span{font-size:.78rem;color:var(--gris)}
+table.senas{width:100%;border-collapse:collapse;font-size:.85rem}
+table.senas td{padding:7px 4px;border-bottom:1px solid var(--linea)}
+table.senas td:last-child{text-align:right;font-weight:700;white-space:nowrap}
+.ahorro{display:grid;gap:8px;font-size:.9rem}
+.ahorro .fila{display:flex;justify-content:space-between;gap:10px;border-bottom:1px dashed var(--linea);padding-bottom:6px}
+.paravos{background:var(--oliva);color:var(--cal);border-radius:6px;padding:24px;margin-top:24px}
+.paravos h3{font-family:var(--d);font-weight:600;font-size:1.6rem}
+.paravos ul{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:12px 24px;margin-top:14px}
+.paravos li{padding-left:20px;position:relative;font-size:.95rem}
+.paravos li:before{content:"→";position:absolute;left:0;color:#e9a58f}
+
+footer{border-top:2px solid var(--tinta);padding:26px 0 34px;font-size:.85rem;color:var(--gris)}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer b{color:var(--tinta)}
+
+@media(max-width:900px){
+  .portada{grid-template-columns:1fr;gap:26px}
+  .consulta .grid{grid-template-columns:1fr}
+  .tel{position:relative;top:0}
+  .f-in{grid-template-columns:1fr}
+  .tasa{grid-template-columns:1fr}
+  .d-grid{grid-template-columns:minmax(0,1fr)}
+  .paravos ul{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .vent,.vent.ancha{flex:1 1 100%;max-width:none}
+  .vent .marco{aspect-ratio:4/3}
+  .vent.ancha .marco{aspect-ratio:4/3;border-radius:200px 200px 3px 3px}
+  .tasa form{grid-template-columns:1fr}
+  .kpis{grid-template-columns:1fr 1fr}
+  .marca img{height:38px}
+  .vista button{padding:6px 11px;font-size:.8rem}
+  .f-txt{padding:18px 16px}
+  .f-par{padding:14px 16px 18px}
+}
+@media print{
+  body *{visibility:hidden}
+  dialog.ficha,dialog.ficha *{visibility:visible}
+  dialog.ficha{position:absolute;inset:0;max-height:none;width:100%}
+  .cerrar,.f-acc,.f-par,.f-gal .tiras{display:none!important}
+}
+</style>
+</head>
+<body>
+
+<div class="firma"><div class="wrap"><span>Prototipo preparado para <b>Graciela Bravo Inmobiliaria</b> · 26 de noviembre de 2026</span><span>Río Cuarto, Córdoba</span></div></div>
+
+<header class="top"><div class="wrap">
+  <a class="marca" href="#">
+    <img src="https://gracielabravo.com/images/logo.png" alt="Graciela Bravo" onerror="this.remove()">
+    <span class="txt">Graciela Bravo<small>ASESORAMIENTO INTEGRAL</small></span>
+  </a>
+  <div class="vista" role="tablist">
+    <button class="on" data-v="cliente">Ver como cliente</button>
+    <button data-v="dueno">Ver como dueño</button>
+  </div>
+</div></header>
+
+<main id="cliente">
+<section class="wrap portada">
+  <div>
+    <span class="kicker">Inmobiliaria en Río Cuarto</span>
+    <h1>De <em>USD 35.000</em> en Alberdi Norte a una quinta con pileta de <em>USD 300.000</em> en Banda Norte.</h1>
+    <ul class="datos">
+      <li><b id="nProp">10</b> propiedades en esta muestra</li>
+      <li><b>6</b> barrios y zonas</li>
+      <li><b>2.343</b> m² la quinta más grande</li>
+    </ul>
+    <div class="cta">
+      <a class="btn l" href="#fachada">Ver propiedades</a>
+      <a class="btn o" href="#tasar">Tasá tu propiedad</a>
+    </div>
+  </div>
+  <aside class="balanza" aria-label="Balanza de permuta">
+    <h3>La balanza de la permuta</h3>
+    <p class="sub">¿Tenés una propiedad y querés cambiarla? Mirá cuánto te falta (o te sobra).</p>
+    <svg viewBox="0 0 320 150" aria-hidden="true">
+      <polygon points="150,140 170,140 163,40 157,40" fill="#c9b79c"/>
+      <rect x="120" y="138" width="80" height="8" rx="2" fill="#c9b79c"/>
+      <g id="brazo" style="transform-origin:160px 40px;transition:transform .6s cubic-bezier(.3,1.6,.5,1)">
+        <rect x="40" y="37" width="240" height="6" rx="3" fill="#F3ECE1"/>
+        <circle cx="160" cy="40" r="7" fill="#A9432B"/>
+        <g id="platoA"><line x1="55" y1="40" x2="40" y2="92" stroke="#cfd6c4"/><line x1="55" y1="40" x2="70" y2="92" stroke="#cfd6c4"/><path d="M26 92 h58 q-4 14 -29 14 q-25 0 -29 -14z" fill="#A9432B"/><text x="55" y="88" text-anchor="middle" font-size="10" fill="#F3ECE1" font-family="Fustat">LO TUYO</text></g>
+        <g id="platoB"><line x1="265" y1="40" x2="250" y2="92" stroke="#cfd6c4"/><line x1="265" y1="40" x2="280" y2="92" stroke="#cfd6c4"/><path d="M236 92 h58 q-4 14 -29 14 q-25 0 -29 -14z" fill="#F3ECE1"/><text x="265" y="88" text-anchor="middle" font-size="10" fill="#F3ECE1" font-family="Fustat">LA NUEVA</text></g>
+      </g>
+    </svg>
+    <div class="bal-ctrl">
+      <label>Tu propiedad vale aprox. <output id="balOut">USD 120.000</output></label>
+      <input type="range" id="balVal" min="20000" max="400000" step="5000" value="120000">
+      <select id="balProp" aria-label="Propiedad que te interesa"></select>
+    </div>
+    <div class="bal-res" id="balRes"></div>
+  </aside>
+</section>
+
+<nav class="filtros" aria-label="Filtros"><div class="wrap">
+  <div class="seg" id="fOp"><button class="on" data-v="">Todas</button><button data-v="venta">Venta</button><button data-v="alquiler">Alquiler</button></div>
+  <select id="fTipo" aria-label="Tipo"><option value="">Tipo: todos</option></select>
+  <select id="fBarrio" aria-label="Barrio"><option value="">Barrio: todos</option></select>
+  <select id="fPrecio" aria-label="Precio">
+    <option value="">Precio: cualquiera</option><option value="0-60000">Hasta USD 60.000</option><option value="60000-180000">USD 60.000 a 180.000</option><option value="180000-99999999">Más de USD 180.000</option>
+  </select>
+  <select id="fDorm" aria-label="Dormitorios"><option value="">Dormitorios</option><option value="1">1 o más</option><option value="2">2 o más</option><option value="3">3 o más</option><option value="4">4 o más</option></select>
+  <span class="cuenta" id="cuenta"></span>
+</div></nav>
+
+<section class="wrap fachada" id="fachada">
+  <div id="pisos"></div>
+  <p class="vacio" id="vacio">No hay propiedades con esos filtros. Probá sacando alguno o escribile a Graciela: ella consigue.</p>
+</section>
+
+<section class="consulta" id="consulta"><div class="wrap grid">
+  <div>
+    <span class="kicker">Consulta armada</span>
+    <h2>Elegí y mirá el mensaje que le llega a Graciela</h2>
+    <ol class="pasos">
+      <li><span class="n">1</span><div><label>Propiedad</label><select class="campo" id="cProp"></select></div></li>
+      <li><span class="n">2</span><div><label>¿Qué buscás?</label><div class="chips" id="cOp"><button class="chip" data-v="comprar">Comprar</button><button class="chip" data-v="alquilar">Alquilar</button><button class="chip" data-v="invertir">Invertir</button></div></div></li>
+      <li><span class="n">3</span><div><label>Día para visitarla</label><div class="chips" id="cDia"></div></div></li>
+      <li><span class="n">4</span><div><label>Horario</label><div class="chips" id="cHora"><button class="chip" data-v="10:00">10:00</button><button class="chip" data-v="11:30">11:30</button><button class="chip" data-v="17:00">17:00</button><button class="chip" data-v="18:30">18:30</button></div></div></li>
+      <li><span class="n">5</span><div><label>¿Cómo pagarías?</label><div class="chips" id="cPago"><button class="chip" data-v="contado">Contado</button><button class="chip" data-v="permuta">Con permuta</button><button class="chip" data-v="financiación">Necesito financiación</button></div>
+        <input class="campo" id="cPerm" placeholder="¿Qué entregarías? (ej. depto 2 dorm. en Centro)" style="margin-top:8px;display:none"></div></li>
+      <li><span class="n">6</span><div><label>Tu nombre</label><input class="campo" id="cNom" placeholder="Nombre y apellido" autocomplete="name"></div></li>
+    </ol>
+  </div>
+  <div class="tel" aria-live="polite">
+    <div class="bar"><span class="av">GB</span><div><b>Graciela Bravo Inmobiliaria</b><small>en línea</small></div></div>
+    <div class="chat"><div class="burb" id="burb"></div></div>
+    <div class="pie"><a class="btn wa" id="waBtn" target="_blank" rel="noopener">Enviar por WhatsApp</a></div>
+  </div>
+</div></section>
+
+<section class="sec" id="tasar"><div class="wrap tasa">
+  <div>
+    <span class="kicker">Para propietarios</span>
+    <h2>Tasá tu propiedad con Graciela</h2>
+    <ul class="bul">
+      <li>Completás 5 datos, sin llamadas.</li>
+      <li>Graciela te responde por WhatsApp con un rango de valor.</li>
+      <li>Si querés vender o permutar, te arma la estrategia.</li>
+      <li>Sin compromiso.</li>
+    </ul>
+  </div>
+  <form id="fTasa">
+    <label>Tipo<select class="campo" id="tTipo"><option>Casa</option><option>Departamento</option><option>Quinta</option><option>Terreno</option><option>Local</option></select></label>
+    <label>Barrio<input class="campo" id="tBarrio" placeholder="ej. Banda Norte" required></label>
+    <label>m² cubiertos<input class="campo" id="tM2" inputmode="numeric" placeholder="ej. 120"></label>
+    <label>Dormitorios<select class="campo" id="tDorm"><option>1</option><option>2</option><option selected>3</option><option>4 o más</option></select></label>
+    <label class="full">Tu nombre<input class="campo" id="tNom" placeholder="Nombre y apellido" required></label>
+    <button class="btn l full" type="submit" style="justify-content:center">Pedir tasación por WhatsApp</button>
+  </form>
+</div></section>
+</main>
+
+<main id="dueno"><section class="sec" style="padding-top:20px"><div class="wrap">
+  <span class="panel-ej">Panel de ejemplo</span>
+  <h2 style="margin-top:12px">Así lo ve Graciela: semana del 30 de noviembre</h2>
+  <div class="d-grid">
+    <div class="caja">
+      <h3>Consultas que entraron <small>datos de ejemplo</small></h3>
+      <div class="inbox" id="inbox"></div>
+    </div>
+    <div style="display:grid;gap:24px;align-content:start">
+      <div class="caja">
+        <h3>Esta semana <small>ejemplo</small></h3>
+        <div class="kpis">
+          <div class="kpi"><b>14</b><span>consultas con propiedad indicada</span></div>
+          <div class="kpi"><b>6</b><span>visitas agendadas</span></div>
+          <div class="kpi"><b>3</b><span>pedidos de tasación</span></div>
+        </div>
+      </div>
+      <div class="caja">
+        <h3>Reservas y señas cobradas <small>ejemplo</small></h3>
+        <table class="senas">
+          <tr><td>Reserva · Casa Banda Norte (USD 180.000)</td><td>USD 2.000<span class="ej">Precio de ejemplo</span></td></tr>
+          <tr><td>Depósito · Monoambiente Banda Norte</td><td>$380.000<span class="ej">Precio de ejemplo</span></td></tr>
+          <tr><td>Reserva · Complejo Bº Universidad</td><td>USD 1.500<span class="ej">Precio de ejemplo</span></td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="caja" style="grid-column:1/-1">
+      <h3>Agenda de visitas <small>ejemplo · lunes 30/11 a sábado 5/12</small></h3>
+      <div style="overflow-x:auto"><table class="agenda" id="agenda"></table></div>
+    </div>
+    <div class="caja" style="grid-column:1/-1">
+      <h3>Lo que te ahorrás frente al portal <small>referencia</small></h3>
+      <div class="ahorro">
+        <div class="fila"><span>Plan alto de portal (referencia Zonaprop 2024)</span><b>≈ $1.500.000 / mes<span class="ej">Precio de ejemplo</span></b></div>
+        <div class="fila"><span>Catálogo propio con carga de propiedades</span><b>desde $40.000 / mes<span class="ej">Precio de ejemplo</span></b></div>
+        <div class="fila"><span>Comisión por consulta o por reserva</span><b>$0</b></div>
+      </div>
+    </div>
+  </div>
+  <div class="paravos">
+    <h3>Para vos, Graciela</h3>
+    <ul>
+      <li>Menos mensajes repetidos: la consulta llega con propiedad, día y forma de pago.</li>
+      <li>Agenda de visitas con horarios fijos, sin ida y vuelta.</li>
+      <li>La reserva o el depósito se pide antes de confirmar la operación.</li>
+      <li>Tus 30 propiedades con buscador propio, sin comisión por consulta ni portal de por medio.</li>
+    </ul>
+  </div>
+</div></section></main>
+
+<dialog class="ficha" id="ficha"><button class="cerrar" id="cerrar" aria-label="Cerrar">×</button><div id="fichaIn"></div></dialog>
+
+<footer><div class="wrap">
+  <span>Prototipo de demostración preparado para <b>Graciela Bravo Inmobiliaria</b> por Resolviendo Kos · No es la web oficial</span>
+  <span>Propiedades y fotos tomadas de gracielabravo.com</span>
+</div></footer>
+
+<script>
+const WA='5493585610300';
+const IMG='https://gracielabravo.com/images/propiedades/';
+const P=[
+ {id:170,t:'Quinta con pileta sobre Manco Capac',op:'venta',tipo:'Quinta',barrio:'Banda Norte',usd:300000,precio:'USD 300.000',nota:'negociables',cub:200,tot:2343,dor:4,ban:2,permuta:true,
+  f:['Pileta de 10 x 4,60 m','Quincho con asador','2 cocheras más estacionamiento','Calefactores, hogar a leña y frío-calor','Placares en todos los ambientes, aberturas de cedro','Apta para subdividir','Acepta permuta menor'],img:['9457.png','5031.jpg','8507.jpg']},
+ {id:193,t:'Casa luminosa con quincho',op:'venta',tipo:'Casa',barrio:'Banda Norte',usd:180000,precio:'USD 180.000',dor:3,ban:2,
+  f:['Cocina con muebles de cedro y desayunador','Cochera','Entrepiso','Quincho cerrado con asador y gas','Muy luminosa'],img:['6128.jpg','5397.jpg','6922.jpg']},
+ {id:201,t:'Complejo de 8 departamentos',op:'venta',tipo:'Complejo',barrio:'Universidad',usd:170000,precio:'USD 170.000',dor:null,ban:null,dorTxt:'8 unidades de 1 y 2 dorm.',
+  f:['8 unidades de 1 y 2 dormitorios','Pensado como inversión'],img:['5610.jpg']},
+ {id:381,t:'Local y 3 viviendas en block',op:'venta',tipo:'Local + viviendas',barrio:'Banda Norte',usd:160000,precio:'USD 160.000',dor:null,ban:null,
+  f:['Local comercial','3 viviendas','Se vende en block'],img:['8276.jpeg']},
+ {id:126,t:'Casa con cochera y escritura',op:'venta',tipo:'Casa',barrio:'San José de Calazans',usd:60000,precio:'USD 60.000',cub:110,dor:3,ban:2,
+  f:['Todos los servicios','Escritura y plano','Cochera de 18 m²','Rejas en todas las aberturas'],img:['4512.jpg','3751.jpg','2145.jpg']},
+ {id:207,t:'Departamento en 9 de Julio al 500',op:'venta',tipo:'Departamento',barrio:'Centro',usd:42000,precio:'USD 42.000',dor:1,ban:1,
+  f:['1 dormitorio','Zona 9 de Julio al 500'],img:['1447.jpeg']},
+ {id:164,t:'Casa en lote de 600 m²',op:'venta',tipo:'Casa',barrio:'Alberdi Norte',usd:35000,precio:'USD 35.000',cub:85,tot:600,dor:2,
+  f:['85 m² cubiertos','Terreno de 600 m²'],img:['4108.jpg']},
+ {id:401,t:'Casa de 4 dormitorios',op:'venta',tipo:'Casa',barrio:'Universidad',usd:null,precio:'Consultar',cub:130,dor:4,ban:2,
+  f:['130 m² cubiertos','4 dormitorios y 2 baños'],img:['3466.jpeg']},
+ {id:57,t:'10 hectáreas sobre Ruta 8',op:'venta',tipo:'Fracción',barrio:'Ruta 8 · Aero Club',usd:null,precio:'USD 15 el m²',tot:100000,
+  f:['10 hectáreas','Sobre Ruta 8, zona Aero Club'],img:['6215.jpg']},
+ {id:491,t:'Monoambiente con opción cochera',op:'alquiler',tipo:'Monoambiente',barrio:'Banda Norte',usd:null,ars:290000,precio:'$290.000',nota:'sin cochera · $380.000 con cochera',dor:0,
+  f:['Monoambiente','Opción con cochera'],img:['6704.jpeg']}
+];
+const FALL='data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300"><rect width="300" height="300" fill="#EADFCF"/><path d="M60 190 L150 110 L240 190 Z" fill="#A9432B"/><rect x="80" y="190" width="140" height="70" fill="#2E3826"/><rect x="135" y="215" width="30" height="45" fill="#F3ECE1"/><circle cx="235" cy="80" r="18" fill="#d8b48a"/></svg>');
+function fb(i){i.onerror=null;i.src=FALL}
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const ej='<span class="ej">Precio de ejemplo</span>';
+const fmt=n=>'USD '+n.toLocaleString('es-AR');
+
+/* filtros */
+const tipos=[...new Set(P.map(p=>p.tipo))], barrios=[...new Set(P.map(p=>p.barrio))];
+tipos.forEach(t=>$('#fTipo').insertAdjacentHTML('beforeend',`<option>${t}</option>`));
+barrios.forEach(b=>$('#fBarrio').insertAdjacentHTML('beforeend',`<option>${b}</option>`));
+let F={op:''};
+function pasa(p){
+  if(F.op&&p.op!==F.op)return false;
+  const t=$('#fTipo').value,b=$('#fBarrio').value,pr=$('#fPrecio').value,d=$('#fDorm').value;
+  if(t&&p.tipo!==t)return false; if(b&&p.barrio!==b)return false;
+  if(pr){const[a,z]=pr.split('-').map(Number); if(p.usd==null||p.usd<a||p.usd>z)return false}
+  if(d&&(p.dor==null||p.dor<+d))return false;
+  return true;
+}
+const PISOS=[
+ {k:'Terraza',r:'más de USD 180.000',f:p=>p.usd>=180000},
+ {k:'Primer piso',r:'USD 60.000 a 179.000',f:p=>p.usd>=60000&&p.usd<180000},
+ {k:'Planta baja',r:'hasta USD 59.000',f:p=>p.usd!=null&&p.usd<60000},
+ {k:'Patio',r:'precio a consultar, por m² y alquileres',f:p=>p.usd==null}
+];
+function vent(p,i){
+  const ancha=(p.id===170||p.id===57);
+  return `<button class="vent${ancha?' ancha':''}" data-id="${p.id}" aria-label="${p.t}">
+    <div class="marco"><img loading="lazy" src="${IMG+p.img[0]}" alt="${p.t}" onerror="fb(this)"><span class="eti ${p.op==='alquiler'?'alq':''}">${p.op}</span></div>
+    <div class="alfeizar"></div>
+    <div class="info"><div class="precio">${p.precio}${ej}</div>${p.nota?`<div class="mini">${p.nota}</div>`:''}<div class="tit">${p.t}</div>
+    <div class="mini">${p.barrio}${p.dor?` · ${p.dor} dorm.`:''}${p.cub?` · ${p.cub} m²`:''}</div></div></button>`;
+}
+function pintar(){
+  const L=P.filter(pasa); let h='';
+  PISOS.forEach(pi=>{const xs=L.filter(pi.f); if(!xs.length)return;
+    h+=`<div class="piso"><div class="piso-tit"><h2>${pi.k}</h2><span>${pi.r} · ${xs.length} ${xs.length>1?'propiedades':'propiedad'}</span></div><div class="ventanas">${xs.map(vent).join('')}</div><div class="cornisa"></div></div>`});
+  $('#pisos').innerHTML=h; $('#vacio').style.display=L.length?'none':'block';
+  $('#cuenta').textContent=L.length+' de '+P.length;
+  $$('.vent').forEach(b=>b.onclick=()=>abrir(+b.dataset.id));
+}
+$$('#fOp button').forEach(b=>b.onclick=()=>{$$('#fOp button').forEach(x=>x.classList.remove('on'));b.classList.add('on');F.op=b.dataset.v;pintar()});
+['#fTipo','#fBarrio','#fPrecio','#fDorm'].forEach(s=>$(s).onchange=pintar);
+
+/* mapa esquemático */
+const POS={'Banda Norte':[205,52],'Centro':[190,128],'Alberdi Norte':[110,112],'Universidad':[95,168],'San José de Calazans':[262,160],'Ruta 8 · Aero Club':[300,40]};
+function mapa(b){
+  const z=Object.entries(POS).map(([n,[x,y]])=>`<g><circle cx="${x}" cy="${y}" r="${n===b?13:5}" fill="${n===b?'#A9432B':'#b9a88f'}" ${n===b?'stroke="#fff" stroke-width="3"':''}/><text x="${x}" y="${y+(n===b?26:17)}" text-anchor="middle" font-size="10" font-family="Fustat" font-weight="${n===b?700:400}" fill="#211C17">${n}</text></g>`).join('');
+  return `<svg viewBox="0 0 360 200" role="img" aria-label="Esquema de barrios"><path d="M0 92 C60 80 100 100 160 88 S270 70 360 84 L360 100 C270 88 220 106 160 104 S60 96 0 108Z" fill="#9fb3b8"/><text x="20" y="104" font-size="9" fill="#46533A" font-family="Fustat" font-style="italic">río Cuarto</text><path d="M300 0 L330 200" stroke="#cdbfac" stroke-width="5"/><text x="318" y="190" font-size="8" fill="#6E655B" font-family="Fustat">Ruta 8</text>${z}</svg>`;
+}
+
+/* ficha */
+function abrir(id){
+  const p=P.find(x=>x.id===id); if(!p)return;
+  const par=P.filter(x=>x.id!==id).map(x=>({x,s:(x.barrio===p.barrio?2:0)+(x.tipo===p.tipo?2:0)+(x.op===p.op?1:0)+(p.usd&&x.usd?(Math.abs(x.usd-p.usd)/p.usd<.4?2:0):0)})).sort((a,b)=>b.s-a.s).slice(0,4).map(o=>o.x);
+  $('#fichaIn').innerHTML=`<div class="f-in">
+   <div class="f-gal"><img class="grande" id="gG" src="${IMG+p.img[0]}" alt="${p.t}" onerror="fb(this)">
+     ${p.img.length>1?`<div class="tiras">${p.img.map((m,i)=>`<img src="${IMG+m}" class="${i?'':'on'}" alt="Foto ${i+1}" onerror="fb(this)" data-i="${i}">`).join('')}</div>`:''}</div>
+   <div class="f-txt"><span class="kicker">${p.op} · ${p.tipo} · Ref. ${p.id}</span><h3>${p.t}</h3>
+     <div class="precio">${p.precio}${ej}</div>${p.nota?`<div class="mini" style="font-size:.85rem;color:var(--gris)">${p.nota}</div>`:''}
+     <div class="f-cifras">${p.dor!=null?`<span><b>${p.dor||'Mono'}</b>${p.dor?'dormitorios':'ambiente'}</span>`:p.dorTxt?`<span><b>8</b>unidades</span>`:''}${p.ban?`<span><b>${p.ban}</b>baños</span>`:''}${p.cub?`<span><b>${p.cub} m²</b>cubiertos</span>`:''}${p.tot?`<span><b>${p.tot.toLocaleString('es-AR')} m²</b>terreno</span>`:''}</div>
+     <ul>${p.f.map(x=>`<li>${x}</li>`).join('')}</ul>
+     <div class="f-map">${mapa(p.barrio)}<small>Esquema aproximado del barrio, no a escala.</small></div>
+     <div class="f-acc"><button class="btn l" id="fCons">Armar consulta</button><a class="btn wa" target="_blank" rel="noopener" href="https://wa.me/${WA}?text=${encodeURIComponent(`Hola Graciela, me interesa "${p.t}" (Ref. ${p.id}, ${p.barrio}, ${p.precio}). ¿Me pasás más info?`)}">WhatsApp directo</a><button class="btn o" onclick="window.print()">Imprimir ficha</button></div>
+   </div>
+   <div class="f-par"><h4>Propiedades parecidas</h4><div class="par">${par.map(x=>`<button data-id="${x.id}"><img src="${IMG+x.img[0]}" alt="" onerror="fb(this)"><b>${x.precio}${ej}</b><span>${x.t}</span><span>${x.barrio}</span></button>`).join('')}</div></div>
+  </div>`;
+  $$('#fichaIn .tiras img').forEach(im=>im.onclick=()=>{$('#gG').src=im.src;$$('#fichaIn .tiras img').forEach(x=>x.classList.remove('on'));im.classList.add('on')});
+  $$('#fichaIn .par button').forEach(b=>b.onclick=()=>abrir(+b.dataset.id));
+  $('#fCons').onclick=()=>{$('#ficha').close();C.prop=p.id;$('#cProp').value=p.id;if(!C.op)setChip('cOp',p.op==='alquiler'?'alquilar':'comprar');escribir();$('#consulta').scrollIntoView()};
+  const d=$('#ficha'); if(!d.open)d.showModal(); d.scrollTop=0; $('#fichaIn').scrollTop=0;
+}
+$('#cerrar').onclick=()=>$('#ficha').close();
+$('#ficha').addEventListener('click',e=>{if(e.target.id==='ficha')$('#ficha').close()});
+
+/* balanza */
+const vend=P.filter(p=>p.usd);
+vend.forEach(p=>$('#balProp').insertAdjacentHTML('beforeend',`<option value="${p.id}">${p.t} · ${p.precio}</option>`));
+function balanza(){
+  const v=+$('#balVal').value, p=P.find(x=>x.id==$('#balProp').value);
+  $('#balOut').textContent=fmt(v);
+  const d=p.usd-v, ang=Math.max(-14,Math.min(14,d/p.usd*20));
+  $('#brazo').style.transform=`rotate(${ang}deg)`;
+  $('#platoA').style.transform=`rotate(${-ang}deg)`;$('#platoA').style.transformOrigin='55px 40px';
+  $('#platoB').style.transform=`rotate(${-ang}deg)`;$('#platoB').style.transformOrigin='265px 40px';
+  $('#balRes').innerHTML=`<span>${p.t} · ${p.precio}<span class="ej claro">Precio de ejemplo</span></span>`+
+   (d>0?`<span>Te faltan <b>${fmt(d)}</b><span class="ej claro">Precio de ejemplo</span></span>`:d<0?`<span>Te sobran <b>${fmt(-d)}</b><span class="ej claro">Precio de ejemplo</span>: buscá una más grande</span>`:`<span><b>Quedan parejas</b></span>`)+
+   `<span style="font-size:.78rem;color:#cfd6c4">${p.permuta?'✓ Esta propiedad acepta permuta menor.':'Permuta a consultar con Graciela.'}</span>`+
+   `<button class="btn l" id="balCons" style="margin-top:8px;justify-content:center">Consultar esta permuta</button>`;
+  $('#balCons').onclick=()=>{C.prop=p.id;$('#cProp').value=p.id;setChip('cOp','comprar');setChip('cPago','permuta');$('#cPerm').style.display='block';if(!$('#cPerm').value)$('#cPerm').value='propiedad de '+fmt(v);escribir();$('#consulta').scrollIntoView()};
+}
+$('#balProp').value=170; $('#balVal').oninput=balanza; $('#balProp').onchange=balanza;
+
+/* consulta */
+const DIAS=[['vie 27/11','viernes 27 de noviembre'],['sáb 28/11','sábado 28 de noviembre'],['lun 30/11','lunes 30 de noviembre'],['mar 1/12','martes 1 de diciembre'],['mié 2/12','miércoles 2 de diciembre']];
+$('#cDia').innerHTML=DIAS.map(([a,b])=>`<button class="chip" data-v="${b}">${a}</button>`).join('');
+P.forEach(p=>$('#cProp').insertAdjacentHTML('beforeend',`<option value="${p.id}">${p.t} · ${p.barrio} · ${p.precio}</option>`));
+const C={prop:170,op:'',dia:'',hora:'',pago:''};
+function setChip(g,v){const key={cOp:'op',cDia:'dia',cHora:'hora',cPago:'pago'}[g];C[key]=v;$$('#'+g+' .chip').forEach(x=>x.classList.toggle('on',x.dataset.v===v))}
+['cOp','cDia','cHora','cPago'].forEach(g=>$$('#'+g+' .chip').forEach(b=>b.onclick=()=>{setChip(g,b.dataset.v);if(g==='cPago')$('#cPerm').style.display=b.dataset.v==='permuta'?'block':'none';escribir()}));
+$('#cProp').onchange=e=>{C.prop=+e.target.value;escribir()};
+$('#cNom').oninput=escribir;$('#cPerm').oninput=escribir;
+function texto(html){
+  const p=P.find(x=>x.id==C.prop), m=s=>html?`<mark>${s}</mark>`:s, f=s=>html?`<span style="color:#889">${s}</span>`:s;
+  const nom=$('#cNom').value.trim();
+  let t=`Hola Graciela${nom?', soy '+m(nom):''}.\n`;
+  t+=`${C.op?'Quiero '+m(C.op):'Me interesa'}: ${m(p.t)} (Ref. ${p.id}, ${p.barrio}, ${p.precio}${html?' <span class="ej">Precio de ejemplo</span>':''}).\n`;
+  t+=C.dia?`¿Puedo visitarla el ${m(C.dia)}${C.hora?' a las '+m(C.hora):''}?\n`:f('¿Puedo visitarla el …?')+'\n';
+  if(C.pago){t+=`Pagaría ${C.pago==='permuta'?'con '+m('permuta')+($('#cPerm').value.trim()?': entrego '+m($('#cPerm').value.trim()):''):m(C.pago==='contado'?'de contado':'con financiación')}.\n`}
+  t+='¡Gracias!';
+  return t;
+}
+function escribir(){
+  $('#burb').innerHTML=texto(true)+'<span class="cur"></span><span class="hora">'+new Date().toTimeString().slice(0,5)+' ✓✓</span>';
+  $('#waBtn').href='https://wa.me/'+WA+'?text='+encodeURIComponent(texto(false));
+}
+$('#cProp').value=170;
+
+/* tasación */
+$('#fTasa').onsubmit=e=>{e.preventDefault();
+  const t=`Hola Graciela, soy ${$('#tNom').value.trim()}. Quiero tasar mi propiedad:\n• ${$('#tTipo').value} en ${$('#tBarrio').value.trim()}\n• ${$('#tM2').value||'¿?'} m² cubiertos\n• ${$('#tDorm').value} dormitorios\n¿Cuándo podrías verla?`;
+  window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(t),'_blank','noopener');
+};
+
+/* dueño */
+const IN=[
+ ['Lucía M.','09:12','Hola Graciela, soy Lucía M.\nQuiero comprar: Casa luminosa con quincho (Ref. 193, Banda Norte, USD 180.000).\n¿Puedo visitarla el lunes 30 de noviembre a las 17:00?\nPagaría de contado.'],
+ ['Martín R.','10:40','Hola Graciela, soy Martín R.\nQuiero comprar: Quinta con pileta sobre Manco Capac (Ref. 170, Banda Norte, USD 300.000).\n¿Puedo visitarla el sábado 28 de noviembre a las 11:30?\nPagaría con permuta: entrego casa 3 dorm. en Centro.'],
+ ['Sofía G.','12:05','Hola Graciela, soy Sofía G.\nQuiero alquilar: Monoambiente con opción cochera (Ref. 491, Banda Norte, $290.000).\n¿Puedo visitarla el martes 1 de diciembre a las 18:30?'],
+ ['Diego P.','16:22','Hola Graciela, soy Diego P. Quiero tasar mi propiedad:\n• Casa en Bº Universidad\n• 120 m² cubiertos\n• 3 dormitorios']
+];
+$('#inbox').innerHTML=IN.map(([q,h,t])=>`<div class="burb in"><div class="quien">${q} · datos de ejemplo</div>${t.replace(/(USD [\d.]+|\$[\d.]+)/g,'$1 (precio de ejemplo)')}<span class="hora">${h}</span></div>`).join('');
+const AG={lun:['17:00 Casa Ref. 193 · Lucía M.'],mar:['18:30 Mono Ref. 491 · Sofía G.'],'mié':['10:00 Tasación Bº Universidad'],jue:['11:30 Complejo Ref. 201'],vie:[],'sáb':['11:30 Quinta Ref. 170 · Martín R.','17:00 Casa Ref. 126']};
+$('#agenda').innerHTML='<tr>'+['lun 30','mar 1','mié 2','jue 3','vie 4','sáb 5'].map(d=>`<th>${d}</th>`).join('')+'</tr><tr>'+Object.values(AG).map(v=>`<td>${v.length?v.map(x=>`<span class="v">${x}</span>`).join(''):'<span class="l">libre</span>'}</td>`).join('')+'</tr>';
+$$('.vista button').forEach(b=>b.onclick=()=>{$$('.vista button').forEach(x=>x.classList.toggle('on',x===b));document.body.classList.toggle('modo-dueno',b.dataset.v==='dueno');window.scrollTo(0,0)});
+
+pintar();balanza();escribir();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Graciela Bravo Inmobiliaria"></script>
+</body>
+</html>
