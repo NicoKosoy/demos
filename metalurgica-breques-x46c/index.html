@@ -1,0 +1,654 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Metalúrgica Breques · Cotizador de aberturas (prototipo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Red+Rose:wght@400;600;700&family=Recursive:slnt,wght,CASL,MONO@-15..0,300..800,0..1,0..1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --papel:#F2EFE9; --hoja:#FBFAF7; --grafito:#1F2326; --grafito2:#2C3236;
+  --alu:#BFC4C8; --alu2:#E3E6E8; --roble:#A86B32; --roble2:#7E4E22;
+  --verde:#2F7A4F; --tinta:#2A2F33; --linea:#D8D3C9; --vidrio:#CFE2EA;
+  --r:10px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--papel);color:var(--tinta);font-family:"Recursive",system-ui,sans-serif;font-variation-settings:"CASL" 0,"MONO" 0;line-height:1.5;-webkit-font-smoothing:antialiased}
+.mono{font-family:"Recursive",ui-monospace,monospace;font-variation-settings:"MONO" 1,"CASL" 0}
+h1,h2,h3{font-family:"Red Rose",Georgia,serif;font-weight:700;line-height:1.05;margin:0;color:var(--grafito);letter-spacing:-.01em}
+a{color:inherit}
+button{font:inherit;cursor:pointer}
+.wrap{max-width:1240px;margin:0 auto;padding:0 20px}
+.firma{font-size:12.5px;color:#6b6d6c;padding:8px 20px;text-align:center;border-bottom:1px solid var(--linea);background:var(--hoja)}
+.firma b{color:var(--grafito);font-weight:600}
+.ej{font-size:10.5px;letter-spacing:.02em;color:#7b7d7b;font-weight:500;white-space:nowrap;margin-left:4px;font-variation-settings:"MONO" 1}
+/* header */
+header.top{position:sticky;top:0;z-index:20;background:rgba(242,239,233,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--linea)}
+header.top .wrap{display:flex;align-items:center;gap:20px;height:62px}
+.marca{display:flex;align-items:baseline;gap:10px;text-decoration:none}
+.marca strong{font-family:"Red Rose";font-size:26px;letter-spacing:.06em;color:var(--grafito)}
+.marca span{font-size:12px;color:#6b6d6c}
+nav.menu{margin-left:auto;display:flex;gap:18px;font-size:14px}
+nav.menu a{text-decoration:none;color:#3c4246}
+nav.menu a:hover{color:var(--roble2)}
+.btn-duenio{border:1.5px solid var(--grafito);background:var(--grafito);color:#fff;border-radius:999px;padding:8px 14px;font-size:13.5px;font-weight:600}
+.btn-duenio:hover{background:var(--roble2);border-color:var(--roble2)}
+/* hero */
+.hero{display:grid;grid-template-columns:1fr 1fr;min-height:560px;position:relative;border-bottom:1px solid var(--linea)}
+.hero .mitad{position:relative;padding:56px 48px 48px;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden}
+.hero .alu{background:linear-gradient(115deg,#d6dadd 0%,#eef0f1 22%,#c3c8cc 40%,#e9ebec 62%,#b9bfc3 100%)}
+.hero .alu::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.18) 0 1px,transparent 1px 3px);pointer-events:none}
+.hero .pvc{background-color:#9a6430;background-image:url(https://metalurgicabreques.com.ar/img/golden_oak.png),repeating-linear-gradient(92deg,#a66c34 0 6px,#94602d 6px 9px,#b07a3e 9px 15px,#8d5a28 15px 18px);background-size:cover,auto;color:#fff}
+.hero .pvc::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(30,20,10,.05),rgba(30,20,10,.55))}
+.hero .tag{position:absolute;top:24px;left:48px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:600}
+.hero .alu .tag{color:#3c4246}
+.hero .pvc .tag{color:#fff;z-index:1}
+.hero .mitad>*{position:relative;z-index:1}
+.hero .mitad>.tag{position:absolute}
+.hero h1{font-size:clamp(40px,5.4vw,78px)}
+.hero .pvc h1{color:#fff}
+.hero p.baj{max-width:34ch;font-size:16px;margin:18px 0 0}
+.hero .pvc p.baj{color:#f6efe6}
+.hero .costura{position:absolute;left:50%;top:0;bottom:0;width:0;border-left:2px dashed rgba(31,35,38,.55);z-index:3}
+.hero .sello{position:absolute;left:50%;top:96px;transform:translate(-50%,0) rotate(-8deg);z-index:4;width:150px;height:150px;border-radius:50%;background:var(--grafito);color:#fff;display:grid;place-items:center;text-align:center;box-shadow:0 0 0 6px var(--papel),0 0 0 7px var(--grafito)}
+.hero .sello b{display:block;font-family:"Red Rose";font-size:46px;line-height:1}
+.hero .sello small{font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+.hero .cta{display:inline-flex;gap:10px;margin-top:26px;flex-wrap:wrap}
+.btn{border-radius:999px;padding:12px 20px;font-weight:600;font-size:15px;border:1.5px solid var(--grafito);text-decoration:none;display:inline-block}
+.btn.osc{background:var(--grafito);color:#fff}
+.btn.cla{background:transparent;color:var(--grafito)}
+.hero .pvc .btn.cla{border-color:#fff;color:#fff}
+/* datos */
+.datos{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--linea);background:var(--hoja)}
+.datos div{padding:18px 22px;border-right:1px solid var(--linea)}
+.datos div:last-child{border-right:0}
+.datos b{font-family:"Red Rose";font-size:24px;display:block;color:var(--grafito)}
+.datos span{font-size:13px;color:#5f6466}
+section{padding:72px 0}
+.kicker{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--roble2);font-weight:700;margin-bottom:10px}
+.sec-h{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:28px;flex-wrap:wrap}
+.sec-h h2{font-size:clamp(30px,3.6vw,48px);max-width:18ch}
+.sec-h ul{margin:0;padding-left:18px;font-size:14.5px;max-width:46ch;color:#4a4f52}
+/* cotizador */
+.cot{display:grid;grid-template-columns:330px 1fr 340px;gap:18px;align-items:start}
+.cot>*{min-width:0}
+.pedido td{overflow-wrap:anywhere}
+.pedido td.n .ej{display:block;margin:0}
+.panel{background:var(--hoja);border:1px solid var(--linea);border-radius:var(--r);padding:18px}
+.paso{border-bottom:1px solid var(--linea);padding:14px 0}
+.paso:first-child{padding-top:0}
+.paso:last-child{border-bottom:0;padding-bottom:0}
+.paso h4{margin:0 0 10px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:#4a4f52;display:flex;gap:8px;align-items:center}
+.paso h4 i{font-style:normal;width:22px;height:22px;border-radius:50%;background:var(--grafito);color:#fff;display:grid;place-items:center;font-size:11.5px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid #c9c4ba;background:#fff;border-radius:999px;padding:6px 11px;font-size:13px;color:var(--tinta)}
+.chip[aria-pressed=true]{background:var(--grafito);color:#fff;border-color:var(--grafito)}
+.chip small{opacity:.7;font-size:10.5px;margin-left:3px}
+.med{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.med label{font-size:12px;color:#5f6466;display:block}
+.med input{width:100%;padding:9px 10px;border:1px solid #c9c4ba;border-radius:8px;font:inherit;font-size:16px;background:#fff;font-variation-settings:"MONO" 1}
+select{width:100%;padding:9px 10px;border:1px solid #c9c4ba;border-radius:8px;font:inherit;font-size:14px;background:#fff}
+.fols{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.fol{aspect-ratio:1;border-radius:6px;border:2px solid transparent;background-size:cover;background-position:center;position:relative;padding:0}
+.fol[aria-pressed=true]{border-color:var(--grafito);box-shadow:0 0 0 2px #fff inset}
+.folname{font-size:12.5px;margin-top:8px;color:#4a4f52}
+.check{display:flex;gap:8px;align-items:center;font-size:14px;margin:6px 0}
+/* lamina */
+.lamina{background:var(--grafito);border-radius:var(--r);padding:18px;color:#e9ecee;position:sticky;top:78px}
+.lamina .cab{display:flex;justify-content:space-between;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#aab1b6}
+.escena{position:relative;margin:12px 0 8px;background:#272c30;border-radius:8px;background-image:linear-gradient(#30363a 1px,transparent 1px),linear-gradient(90deg,#30363a 1px,transparent 1px);background-size:22px 22px;touch-action:none;user-select:none}
+.escena svg{display:block;width:100%;height:auto}
+.dos{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.precio{border-radius:8px;padding:12px;position:relative}
+.precio.a{background:#e3e6e8;color:var(--grafito)}
+.precio.p{background:#7e4e22;color:#fff}
+.precio .t{font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.8}
+.precio b{font-family:"Red Rose";font-size:26px;display:block;line-height:1.1;margin:4px 0}
+.precio .ej{color:inherit;opacity:.75;margin:0}
+.precio button{margin-top:8px;width:100%;border-radius:999px;border:0;padding:8px;font-weight:700;font-size:13px}
+.precio.a button{background:var(--grafito);color:#fff}
+.precio.p button{background:#fff;color:#7e4e22}
+.precio button:disabled{opacity:.45;cursor:not-allowed}
+.nodisp{font-size:12px;opacity:.85;margin-top:6px}
+.ayuda{font-size:12.5px;color:#aab1b6;margin-top:10px}
+/* chat */
+.chat{background:#E8DFD2;border-radius:var(--r);overflow:hidden;border:1px solid var(--linea);position:sticky;top:78px}
+.chat .bar{background:#1f5c45;color:#fff;padding:10px 14px;display:flex;gap:10px;align-items:center}
+.chat .bar .av{width:34px;height:34px;border-radius:50%;background:#fff;color:#1f5c45;display:grid;place-items:center;font-family:"Red Rose";font-weight:700}
+.chat .bar small{display:block;opacity:.8;font-size:11.5px}
+.chat .cuerpo{padding:14px;min-height:260px;background-image:radial-gradient(rgba(0,0,0,.035) 1px,transparent 1px);background-size:14px 14px}
+.burb{background:#DCF8C6;border-radius:10px 10px 2px 10px;padding:10px 12px 18px;font-size:13.5px;white-space:pre-wrap;box-shadow:0 1px 1px rgba(0,0,0,.12);position:relative;margin-left:18px}
+.burb .h{position:absolute;right:8px;bottom:3px;font-size:10.5px;color:#6b7d6b}
+.datoscli{padding:12px 14px;background:var(--hoja);border-top:1px solid var(--linea);display:grid;gap:8px}
+.datoscli input,.datoscli select{padding:8px 10px;border:1px solid #c9c4ba;border-radius:8px;font:inherit;font-size:14px;width:100%;background:#fff}
+.wa{display:block;text-align:center;background:#1f8a4c;color:#fff;border-radius:999px;padding:12px;font-weight:700;text-decoration:none}
+.wa.off{background:#9fb5a6;pointer-events:none}
+/* pedido */
+.pedido{margin-top:18px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--linea);vertical-align:top}
+th{font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:#6b6d6c;font-weight:600}
+td.n{white-space:nowrap;text-align:right}
+.quitar{border:0;background:none;color:#a33;font-size:13px}
+.vacio{color:#7b7d7b;font-size:14px;padding:12px 0}
+.tot{display:flex;justify-content:flex-end;gap:24px;padding-top:12px;font-size:15px;flex-wrap:wrap}
+.tot b{font-family:"Red Rose";font-size:22px}
+/* lineas */
+.lin{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.lin .col{background:var(--hoja);border:1px solid var(--linea);border-radius:var(--r);overflow:hidden}
+.lin .col h3{font-size:24px;padding:18px 18px 4px}
+.lin .col p.s{margin:0 18px 10px;font-size:13.5px;color:#5f6466}
+.lin table td:first-child{font-weight:600;padding-left:18px}
+.lin table th:first-child{padding-left:18px}
+.lin .col.p h3{color:var(--roble2)}
+/* foliados */
+.tira{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:0;border-radius:var(--r);overflow:hidden;border:1px solid var(--linea)}
+.tira button{border:0;padding:0;aspect-ratio:3/4;background-size:cover;background-position:center;position:relative;display:flex;align-items:flex-end}
+.tira button span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;background:rgba(20,22,24,.72);color:#fff;font-size:11px;width:100%;padding:5px 6px;text-align:left}
+.tira button:hover span,.tira button[aria-pressed=true] span{background:var(--verde)}
+/* fotos */
+.fotos{display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:220px 220px;gap:10px}
+.fotos figure{margin:0;border-radius:var(--r);overflow:hidden;position:relative;background:#d9d6cf}
+.fotos figure:first-child{grid-row:span 2}
+.fotos img{width:100%;height:100%;object-fit:cover;display:block}
+.fotos figcaption{position:absolute;left:10px;bottom:10px;background:rgba(31,35,38,.82);color:#fff;font-size:12.5px;padding:5px 9px;border-radius:999px}
+.fotos .ilu{position:absolute;inset:0;display:none}
+.fotos figure.fail img{display:none}
+.fotos figure.fail .ilu{display:block}
+/* como */
+.como{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.como>div{border-top:3px solid var(--grafito);padding-top:14px}
+.como h3{font-size:22px;margin-bottom:8px}
+.como ul{margin:0;padding-left:18px;font-size:14.5px;color:#4a4f52}
+.como li{margin:3px 0}
+/* duenio */
+#duenio{display:none;background:var(--grafito);color:#e9ecee}
+#duenio.on{display:block}
+#duenio h2,#duenio h3{color:#fff}
+.pe{display:inline-block;background:#f2c14e;color:#1f2326;font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border-radius:4px}
+.dgrid{display:grid;grid-template-columns:1.2fr 1fr;gap:18px;margin-top:22px}
+.dcard{background:var(--grafito2);border:1px solid #3a4146;border-radius:var(--r);padding:18px}
+.dcard h3{font-size:20px;margin-bottom:12px}
+.dcard table th{color:#9aa2a7;border-color:#3a4146}
+.dcard table td{border-color:#3a4146}
+.consulta{background:#DCF8C6;color:#1f2326;border-radius:10px 10px 2px 10px;padding:9px 11px;font-size:12.5px;white-space:pre-wrap;margin-bottom:10px}
+.consulta .q{font-size:11px;color:#4d6a52;display:block;margin-bottom:4px}
+.agenda{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.agenda div{background:#20262a;border-radius:6px;padding:8px;font-size:12px;min-height:84px}
+.agenda b{display:block;color:#fff;font-size:12.5px;margin-bottom:4px}
+.slot{display:block;border-radius:4px;padding:3px 5px;margin-top:4px;background:#2f7a4f;color:#fff}
+.slot.libre{background:transparent;border:1px dashed #5c666c;color:#aab1b6}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.kpis div{background:#20262a;border-radius:8px;padding:12px}
+.kpis b{font-family:"Red Rose";font-size:24px;color:#fff;display:block}
+.kpis span{font-size:12px;color:#aab1b6}
+.precios input{width:110px;padding:6px 8px;border-radius:6px;border:1px solid #4a5258;background:#1a1f22;color:#fff;font:inherit;font-size:13.5px;text-align:right;font-variation-settings:"MONO" 1}
+.paravos{margin-top:18px;background:var(--papel);color:var(--tinta);border-radius:var(--r);padding:22px}
+.paravos h3,#duenio .paravos h3{color:var(--grafito);font-size:26px;margin-bottom:10px}
+.paravos ul{margin:0;padding-left:18px;columns:2;column-gap:30px;font-size:15px}
+.paravos li{margin:4px 0;break-inside:avoid}
+footer{background:var(--hoja);border-top:1px solid var(--linea);padding:36px 0 26px;font-size:14px}
+footer .g{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:24px}
+footer h4{font-family:"Red Rose";font-size:18px;margin:0 0 8px;color:var(--grafito)}
+footer ul{list-style:none;margin:0;padding:0}
+footer li{margin:3px 0}
+.legal{margin-top:26px;font-size:12px;color:#7b7d7b;text-align:center;border-top:1px solid var(--linea);padding-top:14px}
+@media (max-width:1100px){
+  .cot{grid-template-columns:1fr 1fr}
+  .cot .chatcol{grid-column:1 / -1}
+  .chat,.lamina{position:static}
+}
+@media (max-width:760px){
+  nav.menu{display:none}
+  header.top .wrap{height:56px}
+  .marca span{display:none}
+  .hero{grid-template-columns:1fr;min-height:0}
+  .hero .mitad{padding:56px 20px 30px;min-height:300px}
+  .hero .tag{left:20px}
+  .hero .costura{left:0;right:0;top:50%;bottom:auto;width:auto;height:0;border-left:0;border-top:2px dashed rgba(31,35,38,.55)}
+  .hero .sello{left:auto;right:16px;top:50%;transform:translate(0,-50%) rotate(-8deg);width:108px;height:108px}
+  .hero .sello b{font-size:34px}
+  .datos{grid-template-columns:1fr 1fr}
+  .datos div:nth-child(2){border-right:0}
+  .datos div:nth-child(-n+2){border-bottom:1px solid var(--linea)}
+  section{padding:52px 0}
+  .cot{grid-template-columns:1fr}
+  .cot>div:nth-child(2){order:-1}
+  .lin{grid-template-columns:1fr}
+  .tira{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .tira button{aspect-ratio:2/1}
+  .fotos{grid-template-columns:1fr 1fr;grid-template-rows:200px 140px 140px}
+  .fotos figure:first-child{grid-column:span 2;grid-row:auto}
+  .como{grid-template-columns:1fr}
+  .dgrid{grid-template-columns:1fr}
+  .agenda{grid-template-columns:repeat(5,minmax(58px,1fr));overflow-x:auto}
+  .kpis{grid-template-columns:1fr}
+  .paravos ul{columns:1}
+  footer .g{grid-template-columns:1fr}
+  .fols{grid-template-columns:repeat(6,1fr)}
+}
+</style>
+</head>
+<body>
+<div class="firma">Prototipo preparado para <b>Metalúrgica Breques</b> · 26 de noviembre de 2026 · Esperanza, Santa Fe</div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="marca" href="#"><strong>BREQUES</strong><span>Metalúrgica · Esperanza</span></a>
+    <nav class="menu">
+      <a href="#cotizar">Cotizar</a><a href="#lineas">Líneas</a><a href="#foliados">Foliados</a><a href="#trabajos">Trabajos</a>
+    </nav>
+    <button class="btn-duenio" id="abrirDuenio" type="button">Ver como dueño</button>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="mitad alu">
+    <span class="tag">Aluminio · planta propia</span>
+    <h1>Lo fabricamos en Esperanza.</h1>
+    <p class="baj">Módena, A-30, A-40, Mediterránea RPT y Niza, cortadas y armadas en Saavedra 2340.</p>
+    <div class="cta"><a class="btn osc" href="#cotizar">Cotizar mi abertura</a></div>
+  </div>
+  <div class="mitad pvc">
+    <span class="tag">PVC Ventex · Red Ventex</span>
+    <h1>Lo instalamos nosotros.</h1>
+    <p class="baj">Siete sistemas de PVC y 18 foliados, de Golden Oak a Jet Black.</p>
+    <div class="cta"><a class="btn cla" href="#foliados">Ver los 18 foliados</a></div>
+  </div>
+  <div class="costura" aria-hidden="true"></div>
+  <div class="sello" aria-hidden="true"><div><b>+60</b><small>años en<br>Esperanza</small></div></div>
+</div>
+
+<div class="datos">
+  <div><b>+60 años</b><span>Empresa familiar en Esperanza</span></div>
+  <div><b>6 líneas</b><span>de aluminio fabricadas en planta</span></div>
+  <div><b>7 sistemas</b><span>de PVC Ventex, con DVH</span></div>
+  <div><b>18 foliados</b><span>alemanes para PVC</span></div>
+</div>
+
+<section id="cotizar">
+  <div class="wrap">
+    <div class="sec-h">
+      <div><div class="kicker">Cotizador · mismo vano, dos materiales</div><h2>¿Aluminio o PVC? Movés la línea y lo ves.</h2></div>
+      <ul>
+        <li>Cargás tipología y medidas una sola vez.</li>
+        <li>El dibujo muestra la mitad en aluminio y la mitad en PVC: arrastrá la línea del medio.</li>
+        <li>Ves los dos precios estimados y sumás el que te convence.</li>
+      </ul>
+    </div>
+
+    <div class="cot">
+      <div class="panel" id="controles">
+        <div class="paso"><h4><i>1</i>Tipología</h4><div class="chips" id="tipos"></div></div>
+        <div class="paso"><h4><i>2</i>Medidas del vano (cm)</h4>
+          <div class="med">
+            <div><label for="ancho">Ancho</label><input id="ancho" type="number" inputmode="numeric" min="40" max="400" value="150"></div>
+            <div><label for="alto">Alto</label><input id="alto" type="number" inputmode="numeric" min="40" max="260" value="110"></div>
+          </div>
+        </div>
+        <div class="paso"><h4><i>3</i>Aluminio: línea y color</h4>
+          <select id="linea" aria-label="Línea de aluminio"></select>
+          <div class="chips" id="colAlu" style="margin-top:8px"></div>
+        </div>
+        <div class="paso"><h4><i>4</i>PVC: foliado</h4>
+          <div class="fols" id="fols"></div>
+          <div class="folname" id="folname"></div>
+        </div>
+        <div class="paso"><h4><i>5</i>Vidrio y extras</h4>
+          <div class="chips" id="vidrios"></div>
+          <label class="check"><input type="checkbox" id="mosq"> Mosquitero</label>
+          <label class="check"><input type="checkbox" id="coloc" checked> Colocación en obra</label>
+          <label class="check" style="margin-bottom:0">Cantidad <input type="number" id="cant" value="1" min="1" max="40" style="width:64px;padding:5px 8px;border:1px solid #c9c4ba;border-radius:6px;font:inherit"></label>
+        </div>
+      </div>
+
+      <div>
+        <div class="lamina">
+          <div class="cab"><span id="labTipo">Ventana corrediza</span><span class="mono" id="labMed">150 × 110 cm</span></div>
+          <div class="escena" id="escena">
+            <svg id="svg" viewBox="0 0 600 440" role="img" aria-label="Dibujo de la abertura: mitad aluminio, mitad PVC">
+              <defs>
+                <pattern id="patFol" patternUnits="userSpaceOnUse" width="160" height="160">
+                  <rect width="160" height="160" id="folBase" fill="#a86b32"/>
+                  <image id="folImg" href="" width="160" height="160" preserveAspectRatio="xMidYMid slice"/>
+                </pattern>
+                <linearGradient id="gAlu" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" id="ga1" stop-color="#e9ebec"/><stop offset=".5" id="ga2" stop-color="#b9bfc3"/><stop offset="1" id="ga3" stop-color="#dfe2e4"/>
+                </linearGradient>
+                <linearGradient id="gVid" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#d9ecf2"/><stop offset=".55" stop-color="#b8d5e0"/><stop offset="1" stop-color="#cfe4ec"/>
+                </linearGradient>
+                <clipPath id="clipAlu"><rect id="clipRect" x="0" y="0" width="300" height="440"/></clipPath>
+              </defs>
+              <g id="gPvc"></g>
+              <g id="gAluWrap" clip-path="url(#clipAlu)"><g id="gAlu2"></g></g>
+              <g id="cotas"></g>
+              <g id="divisor" style="cursor:ew-resize">
+                <line id="divL" x1="300" y1="0" x2="300" y2="440" stroke="#F2C14E" stroke-width="2.5" stroke-dasharray="7 5"/>
+                <circle id="divC" cx="300" cy="220" r="17" fill="#F2C14E"/>
+                <path id="divP" d="M292 220 l-6 0 M308 220 l6 0" stroke="#1F2326" stroke-width="2.5"/>
+                <text id="divT" x="300" y="225" text-anchor="middle" font-size="14" font-weight="700" fill="#1F2326">⇆</text>
+              </g>
+              <text x="14" y="26" fill="#e9ecee" font-size="12" letter-spacing="2">ALUMINIO</text>
+              <text x="586" y="26" fill="#e9ecee" font-size="12" letter-spacing="2" text-anchor="end">PVC VENTEX</text>
+            </svg>
+          </div>
+          <div class="dos">
+            <div class="precio a"><span class="t">Aluminio · <span id="linNom">Módena</span></span><b id="pA">$ 0</b><span class="ej">Precio de ejemplo</span><div class="nodisp" id="ndA"></div><button type="button" id="addA">Sumar en aluminio</button></div>
+            <div class="precio p"><span class="t">PVC · <span id="folNom">Golden Oak</span></span><b id="pP">$ 0</b><span class="ej">Precio de ejemplo</span><div class="nodisp" id="ndP"></div><button type="button" id="addP">Sumar en PVC</button></div>
+          </div>
+          <div class="ayuda">Arrastrá la línea amarilla para comparar. Los perfiles de PVC son más anchos: el dibujo lo respeta.</div>
+        </div>
+
+        <div class="panel pedido">
+          <div class="kicker" style="margin-bottom:4px">Tu obra</div>
+          <table><thead><tr><th>Pos.</th><th>Abertura</th><th class="n">Importe</th><th></th></tr></thead><tbody id="lista"></tbody></table>
+          <div class="vacio" id="vacio">Todavía no sumaste aberturas. Elegí aluminio o PVC en el dibujo.</div>
+          <div class="tot"><span>Total estimado <b id="tot">$ 0</b> <span class="ej">Precio de ejemplo</span></span><span>Seña 20% <b id="sena">$ 0</b> <span class="ej">Precio de ejemplo</span></span></div>
+        </div>
+      </div>
+
+      <div class="chatcol">
+        <div class="chat">
+          <div class="bar"><div class="av">B</div><div><b>Metalúrgica Breques</b><small>Así le llega tu pedido</small></div></div>
+          <div class="cuerpo"><div class="burb" id="burb"></div></div>
+          <div class="datoscli">
+            <input id="nom" placeholder="Tu nombre" autocomplete="name">
+            <select id="loc" aria-label="Localidad de la obra">
+              <option>Esperanza</option><option>Humboldt</option><option>Franck</option><option>San Carlos Centro</option><option>San Jerónimo Norte</option><option>Pilar</option><option>Santa Fe</option><option>Rafaela</option><option>Otra localidad</option>
+            </select>
+            <select id="dia" aria-label="Día para medir"></select>
+            <a class="wa off" id="wa" href="#" target="_blank" rel="noopener">Enviar por WhatsApp</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="lineas" style="background:var(--hoja);border-top:1px solid var(--linea);border-bottom:1px solid var(--linea)">
+  <div class="wrap">
+    <div class="sec-h"><div><div class="kicker">Lo que fabrica y lo que instala</div><h2>Dos materiales, un solo taller.</h2></div></div>
+    <div class="lin">
+      <div class="col">
+        <h3>Aluminio</h3><p class="s">Fabricado en su planta de Esperanza.</p>
+        <table><thead><tr><th>Línea</th><th>Para qué</th></tr></thead><tbody>
+          <tr><td>Módena</td><td>Marco de 50 mm · simple o DVH · corrediza, batiente, proyectante, paño fijo y puerta</td></tr>
+          <tr><td>A-30</td><td>Línea media · obra residencial</td></tr>
+          <tr><td>A-40</td><td>Con RPT · máxima eficiencia</td></tr>
+          <tr><td>Mediterránea / RPT</td><td>Alta prestación · vanos grandes</td></tr>
+          <tr><td>Niza</td><td>Línea Alcemar</td></tr>
+          <tr><td>Fachadas</td><td>Integral · Vidriado · Frame</td></tr>
+        </tbody></table>
+      </div>
+      <div class="col p">
+        <h3>PVC Ventex</h3><p class="s">Comercializado e instalado por Breques (Red Ventex).</p>
+        <table><thead><tr><th>Sistema</th><th>Detalle</th></tr></thead><tbody>
+          <tr><td>Ventanas</td><td>Corrediza · Oscilobatiente · Banderola · Proyectante · Practicable</td></tr>
+          <tr><td>Grandes vanos</td><td>Plegadiza · Paralela</td></tr>
+          <tr><td>Puertas</td><td>Machimbre · Vidriada (hasta 1000×2300 una hoja, 1800×2300 dos hojas)</td></tr>
+          <tr><td>Puertas de frente</td><td>Pampa · Lanín · Ranurada</td></tr>
+          <tr><td>Vidrio</td><td>Simple o DVH</td></tr>
+          <tr><td>Además</td><td>Barandas de aluminio · Parasoles · Mamparas</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="foliados">
+  <div class="wrap">
+    <div class="sec-h"><div><div class="kicker">Foliados alemanes</div><h2>Tocá uno y el dibujo se viste.</h2></div>
+      <ul><li>Los 18 foliados de su web.</li><li>El que elegís pasa al cotizador y al pedido.</li></ul></div>
+    <div class="tira" id="tira"></div>
+  </div>
+</section>
+
+<section id="trabajos" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-h"><div><div class="kicker">De su web</div><h2>Trabajos de Breques</h2></div></div>
+    <div class="fotos" id="fotos"></div>
+  </div>
+</section>
+
+<section style="background:var(--hoja);border-top:1px solid var(--linea)">
+  <div class="wrap">
+    <div class="sec-h"><div><div class="kicker">Cómo funciona</div><h2>Del vano al taller, sin idas y vueltas.</h2></div></div>
+    <div class="como">
+      <div><h3>1 · El cliente cotiza</h3><ul><li>Elige tipología y medidas.</li><li>Compara aluminio y PVC en el mismo dibujo.</li><li>Arma la obra con varias posiciones.</li></ul></div>
+      <div><h3>2 · Llega el WhatsApp</h3><ul><li>Con medidas, línea, foliado y vidrio.</li><li>Con localidad y día para medir.</li><li>Con total y seña estimados.</li></ul></div>
+      <div><h3>3 · Breques confirma</h3><ul><li>Mide en obra y ajusta el precio real.</li><li>Cobra la seña antes de fabricar.</li><li>Fabrica o pide el PVC con todo definido.</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section id="duenio">
+  <div class="wrap">
+    <div class="sec-h" style="margin-bottom:6px">
+      <div><span class="pe">Panel de ejemplo</span><h2 style="margin-top:12px">Lo que ve Breques cada mañana</h2></div>
+      <button class="btn cla" type="button" id="cerrarDuenio" style="color:#fff;border-color:#fff">Volver a la vista del cliente</button>
+    </div>
+    <div class="dgrid">
+      <div class="dcard">
+        <h3>Consultas que entraron</h3>
+        <div class="consulta"><span class="q">Hoy 7:42 · Panel de ejemplo</span>Hola Breques, soy Marina de Humboldt. Quiero presupuesto:
+V1 · Ventana corrediza 180 × 110 cm · PVC Ventex, foliado Golden Oak, DVH · $ 1.312.000
+V2 · Ventana banderola 60 × 40 cm · PVC Ventex, foliado Golden Oak, DVH · $ 182.000
+Total estimado: $ 1.494.000 · Seña 20%: $ 298.800 (precios de ejemplo)
+¿Pueden venir a medir el jueves?</div>
+        <div class="consulta"><span class="q">Ayer 18:10 · Panel de ejemplo</span>Hola Breques, soy Raúl de Esperanza. Quiero presupuesto:
+P1 · Puerta de rebatir 90 × 205 cm · Aluminio A-40 RPT, negro, DVH · $ 1.106.000
+Total estimado: $ 1.106.000 · Seña 20%: $ 221.200 (precios de ejemplo)
+¿Pueden venir a medir el martes?</div>
+        <div class="consulta"><span class="q">Ayer 11:25 · Panel de ejemplo</span>Hola Breques, soy Lucía de Franck. Quiero presupuesto:
+V1 · Paño fijo 240 × 120 cm · Aluminio Módena, blanco, DVH · $ 690.000 (precio de ejemplo)
+¿Pueden venir a medir el viernes?</div>
+      </div>
+      <div class="dcard">
+        <h3>Esta semana</h3>
+        <div class="kpis">
+          <div><b>14</b><span>pedidos con medidas</span></div>
+          <div><b>$ 1,9 M</b><span>en señas cobradas · precio de ejemplo</span></div>
+          <div><b>$ 0</b><span>de comisión por consulta</span></div>
+        </div>
+        <div class="agenda" id="agenda"></div>
+        <table style="margin-top:14px"><thead><tr><th>Seña</th><th>Cliente</th><th class="n">Importe</th></tr></thead><tbody>
+          <tr><td>Lun</td><td>Familia Gómez · Esperanza</td><td class="n">$ 410.000 <span class="ej">Precio de ejemplo</span></td></tr>
+          <tr><td>Mar</td><td>Raúl · Esperanza</td><td class="n">$ 221.200 <span class="ej">Precio de ejemplo</span></td></tr>
+          <tr><td>Mié</td><td>Obra Bv. Colonizadores</td><td class="n">$ 1.280.000 <span class="ej">Precio de ejemplo</span></td></tr>
+        </tbody></table>
+        <p style="font-size:12.5px;color:#aab1b6;margin:10px 0 0">Frente a un portal de presupuestos que cobra por contacto o por venta: con su propio cotizador no hay comisión por pedido. Cifras de ejemplo.</p>
+      </div>
+    </div>
+    <div class="dcard" style="margin-top:18px">
+      <h3>Tabla de precios (la cambian ustedes)</h3>
+      <div style="overflow-x:auto"><table class="precios"><thead><tr><th>Concepto</th><th class="n">Precio por m² / unidad</th></tr></thead><tbody id="tablaPrecios"></tbody></table></div>
+      <p style="font-size:12.5px;color:#aab1b6;margin:10px 0 0">Todos los valores son precios de ejemplo. Al cambiar uno, el cotizador se actualiza al instante.</p>
+    </div>
+    <div class="paravos">
+      <h3>Para vos, Breques</h3>
+      <ul>
+        <li>Menos mensajes repetidos de “¿cuánto sale una ventana?”: el cliente ya llega con medidas, línea y vidrio.</li>
+        <li>Agenda de mediciones con cupos, en su horario de lunes a viernes.</li>
+        <li>La seña entra antes de confirmar la fabricación.</li>
+        <li>Sin comisión por presupuesto ni por venta: el cotizador es suyo.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="g">
+      <div><h4>Metalúrgica Breques</h4><ul><li>Saavedra 2340, Esperanza, Santa Fe</li><li>Lun a jue 7 a 16 · vie 7 a 15</li></ul></div>
+      <div><h4>Contacto</h4><ul><li>+54 3496 444030</li><li>+54 3496 443618</li><li>ventas@metalurgicabreques.com.ar</li></ul></div>
+      <div><h4>Redes</h4><ul><li>Instagram @metalurgica.breques</li><li>metalurgicabreques.com.ar</li></ul></div>
+    </div>
+    <div class="legal">Prototipo de demostración preparado para Metalúrgica Breques por Resolviendo Kos · No es la web oficial · Todos los precios son de ejemplo</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+const IMG='https://metalurgicabreques.com.ar/img/';
+const WA='543496444030';
+const fmt=n=>'$ '+Math.round(n).toLocaleString('es-AR');
+const P={ // precios de ejemplo por m2
+  lineas:{'Módena':260000,'A-30':300000,'A-40 RPT':420000,'Mediterránea':380000,'Mediterránea RPT':470000,'Niza':340000},
+  pvc:360000, foliado:0.18, dvh:45000, lam:80000, mosq:55000, coloc:0.08
+};
+const TIPOS=[
+  {id:'corr',n:'Ventana corrediza',f:1,alu:true,pvc:true,pre:'V'},
+  {id:'osc',n:'Oscilobatiente',f:1.15,alu:false,pvc:true,pre:'V'},
+  {id:'band',n:'Banderola',f:.9,alu:true,pvc:true,pre:'V'},
+  {id:'proy',n:'Proyectante',f:1,alu:true,pvc:true,pre:'V'},
+  {id:'fijo',n:'Paño fijo',f:.7,alu:true,pvc:true,pre:'F'},
+  {id:'puer',n:'Puerta de rebatir',f:1.35,alu:true,pvc:true,pre:'P'},
+  {id:'pleg',n:'Plegadiza',f:1.5,alu:false,pvc:true,pre:'P'},
+  {id:'para',n:'Paralela',f:1.4,alu:false,pvc:true,pre:'P'}
+];
+const COLALU=[['Blanco','#f4f4f2','#e2e3e1','#fafafa'],['Negro','#2b2d2f','#151617','#3a3c3e'],['Anodizado natural','#e9ebec','#b9bfc3','#dfe2e4'],['Bronce','#7a5a3a','#5c4129','#8e6c48']];
+const FOL=[['Grey Oak','grey_oak','#8c8680'],['Natural Oak','natural_oak','#b98d5c'],['Golden Oak','golden_oak','#a86b32'],['Lenga','lenga','#9c5a36'],['Cherry','cherry','#7d3a22'],['Sipo','sipo','#7a4126'],['Turner Oak','turner_oak','#8a6a48'],['Nogal','nogal','#5e3b22'],['Sapelli','sapelli','#6e3723'],['Wengué','wengue','#3b2a20'],['Blanco','blanco','#f4f3ef'],['Marfil','marfil','#ece3cd'],['Gris Metalizado','gris_metalizado','#9aa0a4'],['Peltre','peltre','#6f7377'],['Verde','verde','#2f5a3e'],['Gris Grafito','gris_grafito','#3c4145'],['Brown Mat','brown_mat','#4a3328'],['Jet Black','jet_black','#141414']];
+const VID=[['Simple',0],['DVH',P.dvh],['DVH laminado 3+3',P.lam]];
+const S={tipo:'corr',linea:'Módena',col:0,fol:2,vid:1,div:300};
+const items=[];
+const $=id=>document.getElementById(id);
+
+// build chips
+function chip(txt,pressed,on){const b=document.createElement('button');b.type='button';b.className='chip';b.innerHTML=txt;b.setAttribute('aria-pressed',pressed);b.onclick=on;return b}
+function renderTipos(){const c=$('tipos');c.innerHTML='';TIPOS.forEach(t=>c.appendChild(chip(t.n+(t.alu?'':'<small>solo PVC</small>'),S.tipo===t.id,()=>{S.tipo=t.id;renderTipos();upd()})))}
+function renderCol(){const c=$('colAlu');c.innerHTML='';COLALU.forEach((k,i)=>c.appendChild(chip(k[0],S.col===i,()=>{S.col=i;renderCol();upd()})))}
+function renderVid(){const c=$('vidrios');c.innerHTML='';VID.forEach((v,i)=>c.appendChild(chip(v[0],S.vid===i,()=>{S.vid=i;renderVid();upd()})))}
+const sel=$('linea');Object.keys(P.lineas).forEach(k=>{const o=document.createElement('option');o.textContent=k;sel.appendChild(o)});
+sel.onchange=()=>{S.linea=sel.value;upd()};
+function renderFols(){
+  const c=$('fols');c.innerHTML='';const t=$('tira');t.innerHTML='';
+  FOL.forEach((f,i)=>{
+    const b=document.createElement('button');b.type='button';b.className='fol';b.title=f[0];b.setAttribute('aria-label',f[0]);
+    b.style.backgroundColor=f[2];b.style.backgroundImage='url('+IMG+f[1]+'.png)';b.setAttribute('aria-pressed',S.fol===i);
+    b.onclick=()=>{S.fol=i;renderFols();upd()};c.appendChild(b);
+    const b2=document.createElement('button');b2.type='button';b2.style.backgroundColor=f[2];b2.style.backgroundImage='url('+IMG+f[1]+'.png)';
+    b2.setAttribute('aria-pressed',S.fol===i);b2.innerHTML='<span>'+f[0]+'</span>';
+    b2.onclick=()=>{S.fol=i;renderFols();upd();document.getElementById('cotizar').scrollIntoView({behavior:'smooth'})};t.appendChild(b2);
+  });
+  $('folname').textContent='Foliado: '+FOL[S.fol][0];
+}
+
+function dims(){let w=+$('ancho').value||150,h=+$('alto').value||110;w=Math.min(Math.max(w,40),400);h=Math.min(Math.max(h,40),260);return{w,h}}
+function precio(mat){
+  const t=TIPOS.find(x=>x.id===S.tipo),{w,h}=dims();const m2=Math.max(w*h/10000,.5);
+  let base=mat==='alu'?P.lineas[S.linea]:P.pvc*(1+(FOL[S.fol][1]==='blanco'?0:P.foliado));
+  let v=m2*base*t.f+m2*VID[S.vid][1];
+  if($('mosq').checked && S.tipo!=='fijo') v+=P.mosq;
+  if($('coloc').checked) v*=1+P.coloc;
+  return v*(+$('cant').value||1);
+}
+
+// drawing
+const NS='http://www.w3.org/2000/svg';
+function el(n,a){const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);return e}
+function drawWin(g,fill,prof,stroke){
+  g.innerHTML='';const {w,h}=dims();const max=Math.min(500/w,360/h);const W=w*max,H=h*max,x=(600-W)/2,y=(440-H)/2+8;
+  g.appendChild(el('rect',{x,y,width:W,height:H,fill,stroke,'stroke-width':1}));
+  const ins=(ax,ay,aw,ah)=>{g.appendChild(el('rect',{x:ax,y:ay,width:aw,height:ah,fill:'url(#gVid)',stroke,'stroke-width':1}));g.appendChild(el('path',{d:`M${ax+aw*.15} ${ay+ah*.25} l${aw*.18} -${ah*.12} M${ax+aw*.15} ${ay+ah*.4} l${aw*.3} -${ah*.2}`,stroke:'#fff','stroke-opacity':.55,'stroke-width':2}))};
+  const p=prof;const ix=x+p,iy=y+p,iw=W-2*p,ih=H-2*p;
+  const t=S.tipo;
+  const sash=(sx,sy,sw,sh)=>{g.appendChild(el('rect',{x:sx,y:sy,width:sw,height:sh,fill,stroke,'stroke-width':1}));ins(sx+p*.8,sy+p*.8,sw-1.6*p,sh-1.6*p)};
+  if(t==='corr'){sash(ix,iy,iw/2+p*.4,ih);sash(ix+iw/2-p*.4,iy,iw/2+p*.4,ih);g.appendChild(el('path',{d:`M${ix+iw*.7} ${iy+ih/2} l${iw*.12} 0 m-8 -6 l8 6 l-8 6`,stroke:'#1f2326','stroke-width':2,fill:'none'}))}
+  else if(t==='pleg'){const n=Math.max(3,Math.round(dims().w/70));for(let i=0;i<n;i++)sash(ix+i*iw/n,iy,iw/n,ih);for(let i=0;i<n;i++){const sx=ix+i*iw/n;g.appendChild(el('path',{d:i%2?`M${sx+iw/n} ${iy+p} L${sx+p} ${iy+ih/2} L${sx+iw/n} ${iy+ih-p}`:`M${sx} ${iy+p} L${sx+iw/n-p} ${iy+ih/2} L${sx} ${iy+ih-p}`,stroke:'#1f2326','stroke-width':1.2,fill:'none','stroke-dasharray':'5 4'}))}}
+  else if(t==='para'){sash(ix,iy,iw/2,ih);ins(ix+iw/2,iy,iw/2,ih);g.appendChild(el('path',{d:`M${ix+iw*.18} ${iy+ih*.55} l${iw*.2} 0 m-8 -6 l8 6 l-8 6`,stroke:'#1f2326','stroke-width':2,fill:'none'}))}
+  else if(t==='fijo'){ins(ix,iy,iw,ih)}
+  else{sash(ix,iy,iw,ih);const sx=ix+p*.8,sy=iy+p*.8,sw=iw-1.6*p,sh=ih-1.6*p;let d='';
+    if(t==='band')d=`M${sx} ${sy+sh} L${sx+sw/2} ${sy} L${sx+sw} ${sy+sh}`;
+    if(t==='proy')d=`M${sx} ${sy} L${sx+sw/2} ${sy+sh} L${sx+sw} ${sy}`;
+    if(t==='osc')d=`M${sx+sw} ${sy} L${sx} ${sy+sh/2} L${sx+sw} ${sy+sh} M${sx} ${sy+sh} L${sx+sw/2} ${sy} L${sx+sw} ${sy+sh}`;
+    if(t==='puer')d=`M${sx+sw} ${sy} L${sx} ${sy+sh/2} L${sx+sw} ${sy+sh}`;
+    g.appendChild(el('path',{d,stroke:'#1f2326','stroke-width':1.2,fill:'none','stroke-dasharray':'6 4'}));
+    if(t==='puer')g.appendChild(el('rect',{x:sx+sw*.08,y:sy+sh*.5,width:5,height:28,rx:2,fill:'#1f2326'}));
+  }
+  return{x,y,W,H};
+}
+function upd(){
+  const t=TIPOS.find(x=>x.id===S.tipo),{w,h}=dims();
+  const c=COLALU[S.col];$('ga1').setAttribute('stop-color',c[3]);$('ga2').setAttribute('stop-color',c[2]);$('ga3').setAttribute('stop-color',c[1]);
+  const f=FOL[S.fol];$('folBase').setAttribute('fill',f[2]);$('folImg').setAttribute('href','');const pre=new Image();pre.onload=()=>{if(FOL[S.fol]===f)$('folImg').setAttribute('href',pre.src)};pre.src=IMG+f[1]+'.png';
+  const r=drawWin($('gPvc'),'url(#patFol)',Math.max(14,Math.min(26,(Math.min(dims().w,dims().h))*.11)),'#2a1c12');
+  drawWin($('gAlu2'),'url(#gAlu)',Math.max(9,Math.min(17,(Math.min(dims().w,dims().h))*.07)),'#5a6064');
+  const cg=$('cotas');cg.innerHTML='';
+  cg.appendChild(el('line',{x1:r.x,y1:r.y+r.H+16,x2:r.x+r.W,y2:r.y+r.H+16,stroke:'#F2C14E','stroke-width':1}));
+  const tw=el('text',{x:r.x+r.W/2,y:r.y+r.H+32,'text-anchor':'middle',fill:'#F2C14E','font-size':13});tw.textContent=w+' cm';cg.appendChild(tw);
+  cg.appendChild(el('line',{x1:r.x-16,y1:r.y,x2:r.x-16,y2:r.y+r.H,stroke:'#F2C14E','stroke-width':1}));
+  const th=el('text',{x:r.x-22,y:r.y+r.H/2,'text-anchor':'middle',fill:'#F2C14E','font-size':13,transform:`rotate(-90 ${r.x-22} ${r.y+r.H/2})`});th.textContent=h+' cm';cg.appendChild(th);
+  setDiv(S.div);
+  $('labTipo').textContent=t.n;$('labMed').textContent=w+' × '+h+' cm';$('linNom').textContent=S.linea+' · '+c[0];$('folNom').textContent=f[0];
+  $('pA').textContent=t.alu?fmt(precio('alu')):'Consultar';$('pP').textContent=fmt(precio('pvc'));
+  $('addA').disabled=!t.alu;$('ndA').textContent=t.alu?'':'Esta tipología la trabajan en PVC. En aluminio, se consulta.';
+  $('ndP').textContent='';
+  burb();
+}
+function setDiv(x){S.div=Math.max(30,Math.min(570,x));$('clipRect').setAttribute('width',S.div);['divL'].forEach(id=>{$(id).setAttribute('x1',S.div);$(id).setAttribute('x2',S.div)});$('divC').setAttribute('cx',S.div);$('divT').setAttribute('x',S.div);$('divP').setAttribute('d',`M${S.div-8} 220 l-6 0 M${S.div+8} 220 l6 0`)}
+const esc=$('escena');let drag=false;
+function px(e){const r=$('svg').getBoundingClientRect();return (e.clientX-r.left)/r.width*600}
+esc.addEventListener('pointerdown',e=>{drag=true;esc.setPointerCapture(e.pointerId);setDiv(px(e))});
+esc.addEventListener('pointermove',e=>{if(drag)setDiv(px(e))});
+esc.addEventListener('pointerup',()=>drag=false);esc.addEventListener('pointercancel',()=>drag=false);
+// demo sweep
+let sw=0;const sweep=setInterval(()=>{if(drag||sw>60){clearInterval(sweep);if(!drag)setDiv(300);return}sw++;setDiv(300+Math.sin(sw/9)*120)},40);
+esc.addEventListener('pointerdown',()=>clearInterval(sweep),{once:true});
+
+function addItem(mat){
+  const t=TIPOS.find(x=>x.id===S.tipo),{w,h}=dims();if(mat==='alu'&&!t.alu)return;
+  const n=items.filter(i=>i.pre===t.pre).length+1;const cant=+$('cant').value||1;
+  const desc=t.n+' '+w+' × '+h+' cm · '+(mat==='alu'?'Aluminio '+S.linea+', '+COLALU[S.col][0].toLowerCase():'PVC Ventex, foliado '+FOL[S.fol][0])+', '+VID[S.vid][0]+($('mosq').checked&&S.tipo!=='fijo'?', con mosquitero':'')+(cant>1?' · ×'+cant:'');
+  items.push({pre:t.pre,pos:t.pre+n,desc,v:precio(mat)});renderLista();
+}
+$('addA').onclick=()=>addItem('alu');$('addP').onclick=()=>addItem('pvc');
+function renderLista(){
+  const tb=$('lista');tb.innerHTML='';items.forEach((it,i)=>{const tr=document.createElement('tr');tr.innerHTML=`<td class="mono">${it.pos}</td><td>${it.desc}</td><td class="n">${fmt(it.v)} <span class="ej">Precio de ejemplo</span></td><td><button class="quitar" type="button" aria-label="Quitar">✕</button></td>`;tr.querySelector('button').onclick=()=>{items.splice(i,1);renum();renderLista()};tb.appendChild(tr)});
+  $('vacio').style.display=items.length?'none':'block';const tot=items.reduce((a,b)=>a+b.v,0);$('tot').textContent=fmt(tot);$('sena').textContent=fmt(tot*.2);burb();
+}
+function renum(){const c={};items.forEach(i=>{c[i.pre]=(c[i.pre]||0)+1;i.pos=i.pre+c[i.pre]})}
+// dias
+const dsel=$('dia');const DN=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+(function(){const d=new Date();let k=0;const o0=document.createElement('option');o0.value='';o0.textContent='Día para medir (opcional)';dsel.appendChild(o0);for(let i=1;k<6&&i<14;i++){const x=new Date(d);x.setDate(d.getDate()+i);const wd=x.getDay();if(wd===0||wd===6)continue;k++;const o=document.createElement('option');o.value=DN[wd]+' '+x.getDate()+'/'+(x.getMonth()+1);o.textContent=o.value.charAt(0).toUpperCase()+o.value.slice(1)+(wd===5?' · 7 a 15':' · 7 a 16');dsel.appendChild(o)}})();
+function burb(){
+  const nom=$('nom').value.trim(),loc=$('loc').value,dia=dsel.value;
+  let txt='Hola Breques, soy '+(nom||'…')+' de '+loc+'. Quiero presupuesto:\n';
+  if(items.length){items.forEach(i=>txt+=i.pos+' · '+i.desc+' · '+fmt(i.v)+'\n');const tot=items.reduce((a,b)=>a+b.v,0);txt+='Total estimado: '+fmt(tot)+' (precios de ejemplo)\nSeña 20% para confirmar: '+fmt(tot*.2)+'\n'}
+  else{const t=TIPOS.find(x=>x.id===S.tipo),{w,h}=dims();txt+='(armando) '+t.n+' '+w+' × '+h+' cm · comparando aluminio '+S.linea+' y PVC '+FOL[S.fol][0]+'\n'}
+  txt+=dia?'¿Pueden venir a medir el '+dia+'?':'¿Cuándo pueden venir a medir?';
+  const now=new Date();$('burb').innerHTML='';$('burb').append(document.createTextNode(txt));const s=document.createElement('span');s.className='h';s.textContent=now.getHours()+':'+String(now.getMinutes()).padStart(2,'0')+' ✓✓';$('burb').appendChild(s);
+  const ok=items.length&&nom;const a=$('wa');a.classList.toggle('off',!ok);a.textContent=ok?'Enviar por WhatsApp':(items.length?'Poné tu nombre para enviar':'Sumá una abertura para enviar');
+  a.href='https://wa.me/'+WA+'?text='+encodeURIComponent(txt);
+}
+['ancho','alto','cant'].forEach(id=>$(id).addEventListener('input',upd));['mosq','coloc'].forEach(id=>$(id).addEventListener('change',upd));
+['nom','loc','dia'].forEach(id=>$(id).addEventListener('input',burb));$('loc').addEventListener('change',burb);dsel.addEventListener('change',burb);
+
+// fotos
+const FOT=[['modena.jpg','Línea Módena'],['modena1.jpg','Módena en obra'],['barandaA.jpeg','Barandas de aluminio'],['parasoles.jpg','Parasoles'],['mampara1.jpg','Mamparas']];
+const fo=$('fotos');FOT.forEach(f=>{const fig=document.createElement('figure');fig.innerHTML=`<img src="${IMG+f[0]}" alt="${f[1]} · Metalúrgica Breques" loading="lazy"><svg class="ilu" viewBox="0 0 200 140" preserveAspectRatio="xMidYMid slice"><rect width="200" height="140" fill="#c9cdd0"/><rect x="40" y="22" width="120" height="96" fill="#e3e6e8" stroke="#6f7377" stroke-width="4"/><line x1="100" y1="22" x2="100" y2="118" stroke="#6f7377" stroke-width="4"/><rect x="48" y="30" width="48" height="80" fill="#cfe2ea"/><rect x="104" y="30" width="48" height="80" fill="#cfe2ea"/></svg><figcaption>${f[1]}</figcaption>`;fig.querySelector('img').onerror=()=>fig.classList.add('fail');fo.appendChild(fig)});
+
+// duenio
+const agenda=$('agenda');['Lun','Mar','Mié','Jue','Vie'].forEach((d,i)=>{const busy=[[1,1],[1,0],[0,1],[1,1],[0,0]][i];const box=document.createElement('div');box.innerHTML='<b>'+d+'</b>'+['8:00','11:00'].map((h,j)=>`<span class="slot ${busy[j]?'':'libre'}">${h} ${busy[j]?['Humboldt','Esperanza','Franck','Esperanza','Pilar'][i]:'libre'}</span>`).join('');agenda.appendChild(box)});
+const tp=$('tablaPrecios');
+function filaP(label,get,set,unit){const tr=document.createElement('tr');tr.innerHTML=`<td>${label}</td><td class="n"><input type="number" step="1000" value="${get()}"> <span class="ej">${unit} · Precio de ejemplo</span></td>`;tr.querySelector('input').oninput=e=>{set(+e.target.value||0);upd();};tp.appendChild(tr)}
+Object.keys(P.lineas).forEach(k=>filaP('Aluminio '+k,()=>P.lineas[k],v=>P.lineas[k]=v,'por m²'));
+filaP('PVC Ventex (blanco)',()=>P.pvc,v=>P.pvc=v,'por m²');
+filaP('Recargo foliado (%)',()=>P.foliado*100,v=>P.foliado=v/100,'%');
+filaP('DVH',()=>P.dvh,v=>{P.dvh=v;VID[1][1]=v},'por m²');
+filaP('DVH laminado 3+3',()=>P.lam,v=>{P.lam=v;VID[2][1]=v},'por m²');
+filaP('Mosquitero',()=>P.mosq,v=>P.mosq=v,'por unidad');
+const D=$('duenio');
+$('abrirDuenio').onclick=()=>{D.classList.add('on');D.scrollIntoView({behavior:'smooth'})};
+$('cerrarDuenio').onclick=()=>{D.classList.remove('on');document.getElementById('cotizar').scrollIntoView({behavior:'smooth'})};
+
+renderTipos();renderCol();renderVid();renderFols();upd();
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Metalúrgica Breques"></script>
+</body>
+</html>
