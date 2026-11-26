@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Femart Aberturas · Cotizador (prototipo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Stardos+Stencil:wght@400;700&family=Ruda:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--trigo:#E9DDBF;--papel:#F6F1E4;--hoja:#FFFCF5;--tinta:#1A1A18;--acero:#36546B;--acero2:#24394A;--tolva:#C23B22;--linea:#D9CCAA;--gris:#6A6556;--vidrio:#CFE0E6;--r:6px}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--papel);color:var(--tinta);font-family:"Ruda",system-ui,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3,.st{font-family:"Stardos Stencil","Courier New",monospace;font-weight:700;margin:0;line-height:1;letter-spacing:.01em;text-transform:uppercase}
+button{font:inherit;cursor:pointer}
+a{color:inherit}
+.wrap{max-width:1220px;margin:0 auto;padding:0 20px}
+.firma{font-size:12.5px;color:var(--gris);text-align:center;padding:7px 16px;border-bottom:1px solid var(--linea);background:var(--hoja)}
+.firma b{color:var(--tinta)}
+.ej{font-size:10.5px;color:#857f6e;font-weight:600;white-space:nowrap;margin-left:4px;letter-spacing:.02em}
+header{background:var(--tinta);color:var(--papel)}
+header .wrap{display:flex;align-items:center;gap:18px;height:60px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo img{height:34px;width:auto;display:block}
+.logo .txt{font-family:"Stardos Stencil";font-size:26px;letter-spacing:.06em}
+.logo small{font-size:11.5px;opacity:.7;letter-spacing:.08em;text-transform:uppercase}
+header nav{margin-left:auto;display:flex;gap:18px;font-size:14px}
+header nav a{text-decoration:none;opacity:.85}
+.bd{background:var(--tolva);color:#fff;border:0;border-radius:var(--r);padding:9px 14px;font-weight:700;font-size:13.5px}
+/* hero */
+.hero{background:var(--trigo);border-bottom:3px solid var(--tinta)}
+.hero .wrap{display:grid;grid-template-columns:1.05fr 1fr;gap:28px;padding-top:46px;padding-bottom:46px;align-items:center}
+.hero .k{display:inline-block;border:2px solid var(--tinta);padding:4px 10px;font-weight:800;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase}
+.hero h1{font-size:clamp(44px,6vw,86px);margin:16px 0 14px}
+.hero h1 em{font-style:normal;color:var(--tolva)}
+.hero ul{margin:0;padding-left:18px;font-size:16px;max-width:42ch}
+.hero li{margin:3px 0}
+.hero .acc{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+.btn{display:inline-block;border-radius:var(--r);padding:12px 18px;font-weight:800;text-decoration:none;border:2px solid var(--tinta);font-size:15px}
+.btn.o{background:var(--tinta);color:var(--papel)}
+.btn.c{background:transparent}
+.cajones{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.cajon{position:relative;aspect-ratio:3/4.3;border:3px solid var(--tinta);background:#cdbf9c;overflow:hidden;padding:0;text-align:left}
+.cajon img{width:100%;height:100%;object-fit:cover;display:block}
+.cajon .ilu{position:absolute;inset:0;display:none;background:repeating-linear-gradient(0deg,#d8c79d 0 22px,#c9b78a 22px 24px)}
+.cajon.fail img{display:none}.cajon.fail .ilu{display:block}
+.cajon .rot{position:absolute;left:0;right:0;bottom:0;background:var(--tinta);color:var(--trigo);padding:8px 10px;font-family:"Stardos Stencil";font-size:20px;letter-spacing:.06em}
+.cajon .rot small{display:block;font-family:"Ruda";font-size:11.5px;letter-spacing:.04em;opacity:.8;text-transform:none}
+.cajon:hover .rot{background:var(--tolva);color:#fff}
+.cajon .n{position:absolute;top:8px;left:8px;background:var(--trigo);border:2px solid var(--tinta);font-family:"Stardos Stencil";font-size:15px;padding:1px 7px}
+.franja{background:var(--tinta);color:var(--trigo);overflow:hidden;white-space:nowrap;font-family:"Stardos Stencil";font-size:18px;letter-spacing:.12em;padding:10px 0}
+.franja span{display:inline-block;animation:corre 38s linear infinite}
+@keyframes corre{to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.franja span{animation:none}}
+section{padding:64px 0}
+.sh{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:24px}
+.sh h2{font-size:clamp(32px,4.2vw,56px);max-width:16ch}
+.sh ul{margin:0;padding-left:18px;font-size:14.5px;color:#4b473c;max-width:44ch}
+.kk{font-weight:800;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--tolva);margin-bottom:8px}
+/* tabs */
+.tabs{display:flex;gap:0;border:3px solid var(--tinta);border-bottom:0;width:max-content;max-width:100%}
+.tab{border:0;border-right:3px solid var(--tinta);background:var(--hoja);padding:10px 18px;font-family:"Stardos Stencil";font-size:20px;letter-spacing:.06em}
+.tab:last-child{border-right:0}
+.tab[aria-selected=true]{background:var(--tinta);color:var(--trigo)}
+.mesa{border:3px solid var(--tinta);background:var(--hoja);display:grid;grid-template-columns:300px 1fr 330px}
+.mesa>*{min-width:0}
+.ctl{padding:18px;border-right:3px solid var(--tinta)}
+.g{margin-bottom:16px}
+.g>b{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:7px;color:#4b473c}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:2px solid var(--tinta);background:var(--hoja);padding:6px 10px;font-size:13px;font-weight:600;border-radius:var(--r)}
+.chip[aria-pressed=true]{background:var(--acero);border-color:var(--acero);color:#fff}
+.dd{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.dd label{font-size:12px;color:var(--gris)}
+.dd input,.ctl select{width:100%;padding:9px 10px;border:2px solid var(--tinta);border-radius:var(--r);font:inherit;font-size:16px;background:#fff}
+.ck{display:flex;gap:8px;align-items:center;font-size:14px;margin:5px 0}
+.esc{padding:18px;display:flex;flex-direction:column;gap:12px;background:repeating-linear-gradient(0deg,transparent 0 31px,rgba(54,84,107,.07) 31px 32px),repeating-linear-gradient(90deg,transparent 0 31px,rgba(54,84,107,.07) 31px 32px)}
+.esc .cab{display:flex;justify-content:space-between;gap:10px;font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+.esc svg{width:100%;height:auto;display:block;background:#EFE6D0;border:2px solid var(--tinta)}
+.veh{display:flex;flex-wrap:wrap;gap:6px}
+.veredicto{border:2px solid var(--tinta);padding:10px 12px;font-weight:700;font-size:15px;display:flex;gap:10px;align-items:center}
+.veredicto i{font-style:normal;font-family:"Stardos Stencil";font-size:18px;padding:2px 8px;color:#fff}
+.ok i{background:#2f6b3f}.justo i{background:#c98a1c}.no i{background:var(--tolva)}
+.veredicto small{display:block;font-weight:500;font-size:12.5px;color:#4b473c}
+.precio{background:var(--acero);color:#fff;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.precio b{font-family:"Stardos Stencil";font-size:34px;display:block;line-height:1}
+.precio .ej{color:#c9d6df}
+.precio button{background:var(--trigo);border:0;border-radius:var(--r);padding:10px 14px;font-weight:800;color:var(--tinta)}
+/* remito */
+.rem{border-left:3px solid var(--tinta);display:flex;flex-direction:column}
+.rem .hd{background:var(--tinta);color:var(--trigo);padding:12px 14px;display:flex;justify-content:space-between;align-items:center}
+.rem .hd .st{font-size:20px}
+.rem .hd small{font-size:11.5px;opacity:.75}
+.renglones{padding:10px 14px;border-bottom:2px dashed var(--linea);font-size:13.5px}
+.renglon{display:grid;grid-template-columns:34px 1fr auto 20px;gap:6px;padding:6px 0;border-bottom:1px solid var(--linea)}
+.renglon b{font-family:"Stardos Stencil"}
+.renglon .v{text-align:right;white-space:nowrap}
+.renglon .v .ej{display:block;margin:0}
+.renglon button{border:0;background:none;color:var(--tolva)}
+.vac{color:var(--gris);padding:6px 0}
+.totales{padding:10px 14px;font-size:14px;display:grid;gap:4px}
+.totales div{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.totales div>span:last-child{text-align:right}
+.totales b{font-family:"Stardos Stencil";font-size:20px}
+.wa-chat{background:#E9E1CF;padding:12px 14px;flex:1}
+.burb{background:#DCF8C6;border-radius:8px 8px 2px 8px;padding:9px 11px 16px;font-size:13px;white-space:pre-wrap;position:relative;box-shadow:0 1px 1px rgba(0,0,0,.12)}
+.burb .h{position:absolute;right:7px;bottom:2px;font-size:10px;color:#6b7d6b}
+.cli{padding:12px 14px;display:grid;gap:8px;border-top:2px solid var(--tinta)}
+.cli input,.cli select{width:100%;padding:8px 10px;border:2px solid var(--tinta);border-radius:var(--r);font:inherit;font-size:14px;background:#fff}
+.wa{display:block;text-align:center;background:#1f8a4c;color:#fff;border-radius:var(--r);padding:12px;font-weight:800;text-decoration:none}
+.wa.off{background:#9fb5a6;pointer-events:none}
+/* fabrica */
+.fab{display:grid;grid-template-columns:1fr 1fr;gap:0;border:3px solid var(--tinta)}
+.fab figure{margin:0;position:relative;min-height:320px;background:#cdbf9c}
+.fab figure img{width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0}
+.fab figure.fail img{display:none}
+.fab figure.fail{background:repeating-linear-gradient(0deg,#d8c79d 0 22px,#c9b78a 22px 24px)}
+.fab figure.fail::before{content:"FEMART";position:absolute;inset:0;display:grid;place-items:center;font-family:"Stardos Stencil",monospace;font-size:64px;color:rgba(26,26,24,.18);letter-spacing:.1em}
+.fab figure figcaption{position:absolute;left:0;bottom:0;background:var(--tinta);color:var(--trigo);font-family:"Stardos Stencil";padding:6px 10px;font-size:16px}
+.fab figure+figure{border-left:3px solid var(--tinta)}
+.lista3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:22px}
+.lista3>div{border-top:3px solid var(--tinta);padding-top:12px}
+.lista3 h3{font-size:24px;margin-bottom:8px}
+.lista3 ul{margin:0;padding-left:18px;font-size:14.5px;color:#4b473c}
+/* duenio */
+#duenio{display:none;background:var(--acero2);color:#e7edf1}
+#duenio.on{display:block}
+#duenio h2{color:#fff}
+.pe{display:inline-block;background:var(--trigo);color:var(--tinta);font-weight:800;font-size:11.5px;letter-spacing:.1em;padding:4px 9px;text-transform:uppercase}
+.dg{display:grid;grid-template-columns:1.15fr 1fr;gap:16px;margin-top:20px}
+.dc{background:#2d4558;border:1px solid #3e5a70;padding:16px}
+.dc h3{font-size:22px;color:#fff;margin-bottom:12px}
+.cons{background:#DCF8C6;color:var(--tinta);border-radius:8px 8px 2px 8px;padding:8px 10px;font-size:12.5px;white-space:pre-wrap;margin-bottom:10px}
+.cons .q{display:block;font-size:11px;color:#4d6a52;margin-bottom:3px}
+.kp{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.kp div{background:#24394A;padding:10px}
+.kp b{font-family:"Stardos Stencil";font-size:24px;color:#fff;display:block}
+.kp span{font-size:12px;color:#b5c4cf}
+.rep{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.rep div{background:#24394A;padding:8px;font-size:12px;min-height:90px}
+.rep b{color:#fff;display:block;margin-bottom:4px}
+.rep span{display:block;overflow-wrap:anywhere;font-size:11px;background:var(--tolva);color:#fff;padding:2px 5px;margin-top:4px}
+.rep span.l{background:transparent;border:1px dashed #6f8798;color:#b5c4cf}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{padding:8px 6px;border-bottom:1px solid #3e5a70;text-align:left}
+th{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#b5c4cf}
+td.n{text-align:right;white-space:nowrap}
+.tp input{width:110px;padding:6px 8px;background:#1b2c39;border:1px solid #4f6b80;color:#fff;font:inherit;text-align:right}
+#duenio .ej{color:#9fb2c0}
+.pv{margin-top:16px;background:var(--trigo);color:var(--tinta);padding:20px;border:3px solid var(--tinta)}
+.pv h3{font-size:28px;margin-bottom:8px}
+.pv ul{margin:0;padding-left:18px;columns:2;column-gap:28px;font-size:15px}
+.pv li{break-inside:avoid;margin:3px 0}
+footer{background:var(--tinta);color:var(--trigo);padding:34px 0 22px;font-size:14px}
+footer .gg{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:20px}
+footer h4{font-family:"Stardos Stencil";font-size:18px;margin:0 0 6px;text-transform:uppercase}
+footer ul{list-style:none;margin:0;padding:0}
+.legal{margin-top:22px;border-top:1px solid #3a382f;padding-top:12px;font-size:12px;opacity:.75;text-align:center}
+@media (max-width:1080px){.mesa{grid-template-columns:1fr 1fr}.rem{grid-column:1/-1;border-left:0;border-top:3px solid var(--tinta)}}
+@media (max-width:760px){
+  header nav{display:none}.logo small{display:none}
+  .hero .wrap{grid-template-columns:1fr;padding-top:30px;padding-bottom:30px}
+  .cajon .rot{font-size:15px;padding:6px}.cajon .rot small{display:none}
+  section{padding:48px 0}
+  .tabs{width:100%}.tab{flex:1;font-size:16px;padding:10px 6px}
+  .mesa{grid-template-columns:1fr}
+  .ctl{border-right:0;border-bottom:3px solid var(--tinta)}
+  .esc{order:-1;border-bottom:3px solid var(--tinta)}
+  .fab{grid-template-columns:1fr}.fab figure+figure{border-left:0;border-top:3px solid var(--tinta)}
+  .fab figure{min-height:220px}
+  .lista3{grid-template-columns:1fr}
+  .dg{grid-template-columns:1fr}.kp{grid-template-columns:1fr}
+  .rep{grid-template-columns:repeat(5,minmax(60px,1fr));overflow-x:auto}
+  .pv ul{columns:1}
+  footer .gg{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="firma">Prototipo preparado para <b>Femart Aberturas</b> · 26 de noviembre de 2026 · San Jerónimo Norte</div>
+<header>
+  <div class="wrap">
+    <a class="logo" href="#"><img src="https://femartaberturas.com.ar/wp-content/uploads/2026/01/Logo-Femart-Final.webp" alt="Femart" onerror="this.outerHTML='<span class=&quot;txt&quot;>FEMART</span>'"><small>Fábrica de aberturas</small></a>
+    <nav><a href="#cotizar">Cotizar</a><a href="#fabrica">La fábrica</a></nav>
+    <button class="bd" id="abrir" type="button">Ver como dueño</button>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <div>
+      <span class="k">1ro de Mayo 725 · San Jerónimo Norte</span>
+      <h1>Nº 1 de la región. <em>Ahora con precio.</em></h1>
+      <ul>
+        <li>Ventanas, puertas y portones de aluminio a medida.</li>
+        <li>Fabricados en San Jerónimo Norte y colocados por Femart.</li>
+        <li>Envíos a toda la provincia con distribución propia.</li>
+      </ul>
+      <div class="acc"><a class="btn o" href="#cotizar">Cotizar ahora</a><a class="btn c" href="#portones" id="irPorton">¿Entra mi camioneta?</a></div>
+    </div>
+    <div class="cajones" id="cajones"></div>
+  </div>
+</div>
+<div class="franja" aria-hidden="true"><span>VENTANAS · PUERTAS · PORTONES · LÍNEA MASS · DISTRIBUCIÓN PROPIA · SANTA FE · VENTANAS · PUERTAS · PORTONES · LÍNEA MASS · DISTRIBUCIÓN PROPIA · SANTA FE · VENTANAS · PUERTAS · PORTONES · LÍNEA MASS · DISTRIBUCIÓN PROPIA · SANTA FE · VENTANAS · PUERTAS · PORTONES · LÍNEA MASS · DISTRIBUCIÓN PROPIA · SANTA FE ·&nbsp;</span></div>
+
+<section id="cotizar">
+  <div class="wrap">
+    <div class="sh"><div><div class="kk">Cotizador Femart</div><h2>Medida, modelo y precio en un minuto.</h2></div>
+      <ul><li>Elegís ventana, puerta o portón.</li><li>Cargás la medida y ves el dibujo a escala.</li><li>En portones, el cotizador te dice si entra tu vehículo.</li></ul></div>
+    <div class="tabs" role="tablist" id="tabs"></div>
+    <div class="mesa">
+      <div class="ctl" id="ctl"></div>
+      <div class="esc">
+        <div class="cab"><span id="cabT">Ventana</span><span id="cabM">150 × 110 cm</span></div>
+        <svg id="svg" viewBox="0 0 600 400" role="img" aria-label="Dibujo de la abertura a escala"></svg>
+        <div id="vehBox" style="display:none">
+          <div class="g" style="margin-bottom:8px"><b>¿Qué tiene que pasar?</b><div class="veh" id="veh"></div></div>
+          <div class="veredicto" id="ver"></div>
+        </div>
+        <div class="precio"><div><span style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;opacity:.85">Precio estimado</span><b id="pr">$ 0</b><span class="ej">Precio de ejemplo</span></div><button type="button" id="sumar">Sumar al remito</button></div>
+      </div>
+      <div class="rem">
+        <div class="hd"><span class="st">Remito</span><small id="remN">Nº 0001 · borrador</small></div>
+        <div class="renglones" id="reng"><div class="vac">Sumá aberturas para armar el remito.</div></div>
+        <div class="totales">
+          <div><span>Total estimado</span><span><b id="tot">$ 0</b> <span class="ej">Precio de ejemplo</span></span></div>
+          <div><span>Seña 30% para fabricar</span><span><b id="sena">$ 0</b> <span class="ej">Precio de ejemplo</span></span></div>
+        </div>
+        <div class="wa-chat"><div class="burb" id="burb"></div></div>
+        <div class="cli">
+          <input id="nom" placeholder="Tu nombre" autocomplete="name">
+          <select id="loc" aria-label="Localidad de entrega">
+            <option>San Jerónimo Norte</option><option>San Jerónimo Sud</option><option>Esperanza</option><option>Humboldt</option><option>San Carlos Centro</option><option>Franck</option><option>Santa Fe</option><option>Rafaela</option><option>Otra localidad de Santa Fe</option>
+          </select>
+          <select id="ent" aria-label="Entrega"><option>Entrega con distribución propia + colocación</option><option>Entrega con distribución propia, sin colocación</option><option>Retiro en fábrica</option></select>
+          <a class="wa off" id="wa" href="#" target="_blank" rel="noopener">Enviar por WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="fabrica" style="padding-top:0">
+  <div class="wrap">
+    <div class="sh"><div><div class="kk">Somos la fábrica</div><h2>Hecho en San Jerónimo Norte.</h2></div></div>
+    <div class="fab">
+      <figure><img src="https://femartaberturas.com.ar/wp-content/uploads/2026/01/Fabrica-Femart-1024x607.webp" alt="Fábrica Femart" loading="lazy" onerror="this.parentNode.classList.add('fail')"><figcaption>La fábrica</figcaption></figure>
+      <figure><img src="https://femartaberturas.com.ar/wp-content/uploads/2026/01/Femart-Aberturas-colocacion-1024x607.webp" alt="Colocación Femart" loading="lazy" onerror="this.parentNode.classList.add('fail')"><figcaption>Colocación</figcaption></figure>
+    </div>
+    <div class="lista3">
+      <div><h3>Cómo funciona</h3><ul><li>El cliente arma el remito con medidas.</li><li>Femart recibe el WhatsApp completo.</li><li>Se confirma la medida y se cobra la seña.</li></ul></div>
+      <div><h3>Qué incluye</h3><ul><li>Fabricación a medida en aluminio.</li><li>Distribución propia en la provincia.</li><li>Colocación, si el cliente la elige.</li></ul></div>
+      <div><h3>Para quién</h3><ul><li>Casas, oficinas, empresas y locales.</li><li>Galpones y accesos de campo.</li><li>Obras en toda la provincia de Santa Fe.</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section id="duenio">
+  <div class="wrap">
+    <div class="sh" style="margin-bottom:4px"><div><span class="pe">Panel de ejemplo</span><h2 style="margin-top:12px">Lo que ve Femart</h2></div><button class="btn c" type="button" id="cerrar" style="color:#fff;border-color:#fff">Volver a la vista del cliente</button></div>
+    <div class="dg">
+      <div class="dc"><h3>Consultas que entraron</h3>
+        <div class="cons"><span class="q">Hoy 8:05 · Panel de ejemplo</span>Hola Femart, soy Germán de Humboldt. Quiero presupuesto:
+1 · Portón corredizo 340 × 220 cm · tablero tubular · pasa camioneta con trailer · $ 2.980.000
+Total estimado: $ 2.980.000 · Seña 30%: $ 894.000 (precios de ejemplo)
+Entrega con distribución propia + colocación.</div>
+        <div class="cons"><span class="q">Ayer 19:40 · Panel de ejemplo</span>Hola Femart, soy Silvina de Esperanza. Quiero presupuesto:
+1 · Ventana corrediza 150 × 110 cm · Línea Mass · DVH · ×3 · $ 1.420.000
+2 · Puerta de frente 90 × 205 cm · tablero tubular · $ 610.000
+Total estimado: $ 2.030.000 (precios de ejemplo)
+Retiro en fábrica.</div>
+      </div>
+      <div class="dc"><h3>Esta semana</h3>
+        <div class="kp"><div><b>11</b><span>remitos con medidas</span></div><div><b>$ 2,4 M</b><span>en señas · precio de ejemplo</span></div><div><b>$ 0</b><span>comisión por consulta</span></div></div>
+        <b style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#b5c4cf">Reparto y colocación</b>
+        <div class="rep" id="rep" style="margin-top:6px"></div>
+        <p style="font-size:12.5px;color:#b5c4cf;margin:10px 0 0">Frente a un portal que cobra por contacto o por venta, el cotizador es propio: no hay comisión por pedido. Cifras de ejemplo.</p>
+      </div>
+    </div>
+    <div class="dc" style="margin-top:16px"><h3>Tabla de precios (la cambian ustedes)</h3>
+      <div style="overflow-x:auto"><table class="tp"><thead><tr><th>Concepto</th><th class="n">Valor</th></tr></thead><tbody id="tp"></tbody></table></div>
+    </div>
+    <div class="pv"><h3>Para vos, Femart</h3><ul>
+      <li>Menos “¿cuánto sale?” sin medidas: el WhatsApp llega con el remito armado.</li>
+      <li>Reparto y colocación ordenados por día y por localidad.</li>
+      <li>La seña entra antes de mandar a fabricar.</li>
+      <li>Sin comisión por reserva ni por venta: el cotizador es de Femart.</li>
+    </ul></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="gg">
+      <div><h4>Femart Aberturas</h4><ul><li>1ro de Mayo 725 · San Jerónimo Norte · Santa Fe</li></ul></div>
+      <div><h4>Contacto</h4><ul><li>+54 9 3404 439824</li><li>femar@live.com.ar</li></ul></div>
+      <div><h4>Redes</h4><ul><li>Instagram @femart_aberturas</li><li>femartaberturas.com.ar</li></ul></div>
+    </div>
+    <div class="legal">Prototipo de demostración preparado para Femart Aberturas por Resolviendo Kos · No es la web oficial · Todos los precios son de ejemplo</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+const U='https://femartaberturas.com.ar/wp-content/uploads/2026/01/';
+const WA='5493404439824';
+const $=id=>document.getElementById(id);
+const fmt=n=>'$ '+Math.round(n).toLocaleString('es-AR');
+const P={vent:230000,dvh:45000,mosq:50000,puerta:420000,puertaM2:120000,porton:290000,motor:650000,coloc:.08,visor:.06,ciego:-.05};
+const PROD={
+ ventana:{n:'Ventanas',tipos:[['Corrediza',1],['De abrir',1.12],['Banderola',.92],['Paño fijo',.7],['Corrediza con tablero tubular',1.25]],w:150,h:110,min:[40,30],max:[400,240]},
+ puerta:{n:'Puertas',tipos:[['Puerta de frente',1],['Puerta ventana',.9],['Puerta de servicio',.8],['Puerta doble hoja',1.6]],w:90,h:205,min:[60,180],max:[220,260]},
+ porton:{n:'Portones',tipos:[['Corredizo',1],['Batiente 2 hojas',1.05],['Levadizo',1.25]],w:300,h:220,min:[200,180],max:[700,400]}
+};
+const RELL=[['Tablero tubular',0],['Chapa ciega',P.ciego],['Tubular con visor',P.visor]];
+const VEH=[['Auto',180,150],['Camioneta',195,195],['Camioneta con trailer',205,200],['Tractor chico',230,265],['Camión de reparto',250,320]];
+const S={p:'ventana',t:0,w:150,h:110,vid:0,rell:0,motor:false,mosq:false,coloc:true,cant:1,veh:1};
+const items=[];
+
+// cajones
+const CJ=[['ventana','Femart-Ventanas-1-768x1024.webp','Ventanas','A medida, herméticas'],['puerta','Femart-Puertas-9-768x1024.webp','Puertas','Casas, oficinas y locales'],['porton','Femart-Portones-1-769x1024.webp','Portones','Donde la seguridad es clave']];
+CJ.forEach((c,i)=>{const b=document.createElement('button');b.type='button';b.className='cajon';b.innerHTML=`<img src="${U+c[1]}" alt="${c[2]} Femart" loading="lazy"><span class="ilu"></span><span class="n">0${i+1}</span><span class="rot">${c[2]}<small>${c[3]}</small></span>`;b.querySelector('img').onerror=()=>b.classList.add('fail');b.onclick=()=>{setP(c[0]);$('cotizar').scrollIntoView({behavior:'smooth'})};$('cajones').appendChild(b)});
+$('irPorton').onclick=e=>{e.preventDefault();setP('porton');$('cotizar').scrollIntoView({behavior:'smooth'})};
+
+function chip(t,on,f){const b=document.createElement('button');b.type='button';b.className='chip';b.textContent=t;b.setAttribute('aria-pressed',on);b.onclick=f;return b}
+function tabs(){const c=$('tabs');c.innerHTML='';Object.keys(PROD).forEach(k=>{const b=document.createElement('button');b.type='button';b.className='tab';b.setAttribute('role','tab');b.setAttribute('aria-selected',S.p===k);b.textContent=PROD[k].n;b.onclick=()=>setP(k);c.appendChild(b)})}
+function setP(k){S.p=k;S.t=0;S.w=PROD[k].w;S.h=PROD[k].h;tabs();ctl();upd()}
+function ctl(){
+  const c=$('ctl');c.innerHTML='';const pr=PROD[S.p];
+  const g=(t)=>{const d=document.createElement('div');d.className='g';d.innerHTML='<b>'+t+'</b>';c.appendChild(d);return d};
+  const g1=g('Modelo');const ch=document.createElement('div');ch.className='chips';pr.tipos.forEach((t,i)=>ch.appendChild(chip(t[0],S.t===i,()=>{S.t=i;ctl();upd()})));g1.appendChild(ch);
+  const g2=g('Medidas (cm)');g2.insertAdjacentHTML('beforeend',`<div class="dd"><div><label for="w">Ancho</label><input id="w" type="number" inputmode="numeric" value="${S.w}" min="${pr.min[0]}" max="${pr.max[0]}"></div><div><label for="h">Alto</label><input id="h" type="number" inputmode="numeric" value="${S.h}" min="${pr.min[1]}" max="${pr.max[1]}"></div></div>`);
+  $('w').oninput=e=>{S.w=+e.target.value;upd()};$('h').oninput=e=>{S.h=+e.target.value;upd()};
+  if(S.p==='ventana'){const g3=g('Línea y vidrio');const c3=document.createElement('div');c3.className='chips';c3.appendChild(chip('Línea Mass Femart',true,()=>{}));[['Vidrio simple',0],['DVH',1]].forEach(v=>c3.appendChild(chip(v[0],S.vid===v[1],()=>{S.vid=v[1];ctl();upd()})));g3.appendChild(c3);
+    g3.insertAdjacentHTML('beforeend','<label class="ck"><input type="checkbox" id="mq"'+(S.mosq?' checked':'')+'> Mosquitero</label>');$('mq').onchange=e=>{S.mosq=e.target.checked;upd()}}
+  else{const g3=g('Relleno');const c3=document.createElement('div');c3.className='chips';RELL.forEach((r,i)=>c3.appendChild(chip(r[0],S.rell===i,()=>{S.rell=i;ctl();upd()})));g3.appendChild(c3)}
+  if(S.p==='porton'){const g4=g('Automatización');g4.insertAdjacentHTML('beforeend','<label class="ck"><input type="checkbox" id="mt"'+(S.motor?' checked':'')+'> Motor con 2 controles</label>');$('mt').onchange=e=>{S.motor=e.target.checked;upd()}}
+  const g5=g('Cantidad y colocación');g5.insertAdjacentHTML('beforeend',`<div class="dd"><div><label for="q">Cantidad</label><input id="q" type="number" min="1" max="30" value="${S.cant}"></div><div style="display:flex;align-items:end"><label class="ck"><input type="checkbox" id="cl"${S.coloc?' checked':''}> Colocación</label></div></div>`);
+  $('q').oninput=e=>{S.cant=Math.max(1,+e.target.value||1);upd()};$('cl').onchange=e=>{S.coloc=e.target.checked;upd()};
+}
+function cl(v,a,b){return Math.min(Math.max(v||a,a),b)}
+function med(){const pr=PROD[S.p];return{w:cl(S.w,pr.min[0],pr.max[0]),h:cl(S.h,pr.min[1],pr.max[1])}}
+function precio(){
+  const pr=PROD[S.p],{w,h}=med(),m2=Math.max(w*h/1e4,.4),f=pr.tipos[S.t][1];let v;
+  if(S.p==='ventana'){v=m2*P.vent*f+(S.vid?m2*P.dvh:0)+(S.mosq&&S.t!==3?P.mosq:0)}
+  else if(S.p==='puerta'){v=(P.puerta+m2*P.puertaM2)*f*(1+RELL[S.rell][1])}
+  else{v=m2*P.porton*f*(1+RELL[S.rell][1])+(S.motor?P.motor:0)}
+  if(S.coloc)v*=1+P.coloc;return v*S.cant;
+}
+const NS='http://www.w3.org/2000/svg';function el(n,a,t){const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);if(t)e.textContent=t;return e}
+function draw(){
+  const s=$('svg');s.innerHTML='';const {w,h}=med();const isP=S.p==='porton';
+  const vh=isP?VEH[S.veh]:null;const corr=isP&&PROD.porton.tipos[S.t][0]==='Corredizo';const refW=isP?(corr?2*w+80:Math.max(w,vh[1])+180):w+120,refH=isP?Math.max(h,vh[2])+60:Math.max(h,170)+50;
+  const sc=Math.min(560/refW,340/refH);const gy=370;const W=w*sc,H=h*sc;const x=corr?(600-2*W)/2:(600-W)/2,y=gy-H-(S.p==='ventana'?90*sc:0);
+  // pared
+  s.appendChild(el('rect',{x:0,y:0,width:600,height:gy,fill:'#EFE6D0'}));
+  for(let yy=gy;yy>0;yy-=14)s.appendChild(el('line',{x1:0,y1:yy,x2:600,y2:yy,stroke:'#e2d6b9','stroke-width':1}));
+  s.appendChild(el('rect',{x:0,y:gy,width:600,height:30,fill:'#bdb193'}));
+  s.appendChild(el('line',{x1:0,y1:gy,x2:600,y2:gy,stroke:'#1A1A18','stroke-width':2}));
+  const fr='#9aa3a8',st='#1A1A18';
+  s.appendChild(el('rect',{x:x-4,y:y-4,width:W+8,height:H+8,fill:'#d8cfb8'}));
+  s.appendChild(el('rect',{x,y,width:W,height:H,fill:fr,stroke:st,'stroke-width':2}));
+  const p=Math.max(5,Math.min(12,W*.03));
+  const glass=(a,b,c,d)=>{s.appendChild(el('rect',{x:a,y:b,width:c,height:d,fill:'#CFE0E6',stroke:st,'stroke-width':1}));s.appendChild(el('path',{d:`M${a+c*.15} ${b+d*.3} l${c*.2} -${d*.14}`,stroke:'#fff','stroke-width':2,opacity:.7}))};
+  const tub=(a,b,c,d)=>{s.appendChild(el('rect',{x:a,y:b,width:c,height:d,fill:'#b9c0c4',stroke:st,'stroke-width':1}));const n=Math.max(3,Math.floor(d/9));for(let i=1;i<n;i++)s.appendChild(el('line',{x1:a,y1:b+i*d/n,x2:a+c,y2:b+i*d/n,stroke:'#7d878d','stroke-width':1.2}))};
+  const fill=(a,b,c,d)=>{const r=RELL[S.rell][0];if(r==='Chapa ciega')s.appendChild(el('rect',{x:a,y:b,width:c,height:d,fill:'#aeb6ba',stroke:st,'stroke-width':1}));else if(r==='Tubular con visor'){tub(a,b+d*.3,c,d*.7);glass(a,b,c,d*.3)}else tub(a,b,c,d)};
+  const ix=x+p,iy=y+p,iw=W-2*p,ih=H-2*p,t=PROD[S.p].tipos[S.t][0];
+  if(S.p==='ventana'){
+    if(t==='Paño fijo')glass(ix,iy,iw,ih);
+    else if(t.startsWith('Corrediza')){const tt=t.includes('tablero');const half=iw/2;[0,1].forEach(i=>{const a=ix+i*(half-p/2);s.appendChild(el('rect',{x:a,y:iy,width:half+p/2,height:ih,fill:fr,stroke:st}));if(tt){glass(a+p,iy+p,half-1.5*p,ih*.55);tub(a+p,iy+p+ih*.55,half-1.5*p,ih*.45-2*p)}else glass(a+p,iy+p,half-1.5*p,ih-2*p)});s.appendChild(el('path',{d:`M${ix+iw*.62} ${iy+ih/2} h${iw*.14} m-7 -6 l7 6 l-7 6`,stroke:st,'stroke-width':2,fill:'none'}))}
+    else{glass(ix,iy,iw,ih);const d=t==='Banderola'?`M${ix} ${iy+ih} L${ix+iw/2} ${iy} L${ix+iw} ${iy+ih}`:`M${ix+iw} ${iy} L${ix} ${iy+ih/2} L${ix+iw} ${iy+ih}`;s.appendChild(el('path',{d,stroke:st,'stroke-dasharray':'6 4',fill:'none'}))}
+    s.appendChild(el('rect',{x:x-10,y:y+H+4,width:W+20,height:7,fill:'#cbbf9f',stroke:st}));
+  }else if(S.p==='puerta'){
+    if(t==='Puerta doble hoja'){[0,1].forEach(i=>fill(ix+i*iw/2+(i?p/2:0),iy,iw/2-p/2,ih));}
+    else if(t==='Puerta ventana'){glass(ix,iy,iw,ih*.7);tub(ix,iy+ih*.7,iw,ih*.3)}
+    else fill(ix,iy,iw,ih);
+    s.appendChild(el('rect',{x:ix+iw*.84,y:iy+ih*.5,width:5,height:26,rx:2,fill:st}));
+    // persona escala
+    const ph=170*sc,px=x+W+40*sc;s.appendChild(el('circle',{cx:px,cy:gy-ph+11*sc,r:11*sc,fill:'#1A1A18'}));s.appendChild(el('rect',{x:px-14*sc,y:gy-ph+24*sc,width:28*sc,height:ph-24*sc,rx:10*sc,fill:'#1A1A18'}));
+    s.appendChild(el('text',{x:px,y:gy-ph-6,'text-anchor':'middle','font-size':11,fill:'#1A1A18'},'1,70 m'));
+  }else{
+    if(t==='Batiente 2 hojas'){[0,1].forEach(i=>fill(ix+i*iw/2+(i?p/2:0),iy,iw/2-p/2,ih))}
+    else fill(ix,iy,iw,ih);
+    if(t==='Corredizo'){s.appendChild(el('rect',{x:x+W,y:y,width:Math.min(W,600-x-W-4),height:H,fill:'none',stroke:'#C23B22','stroke-dasharray':'6 5','stroke-width':1.5}));s.appendChild(el('text',{x:x+W+6,y:y-8,'font-size':11,fill:'#C23B22'},'pared libre para correr: '+w+' cm'))}
+    if(t==='Levadizo'){s.appendChild(el('rect',{x,y:y,width:W,height:16*sc,fill:'rgba(194,59,34,.35)'}));s.appendChild(el('text',{x:x+4,y:y+16*sc+12,'font-size':11,fill:'#C23B22'},'−15 cm de paso al abrir'))}
+    // vehiculo frente
+    const vw=vh[1]*sc,vhh=vh[2]*sc,vx=x+W/2-vw/2,vy=gy-vhh;const free=libre();const col=free.okW&&free.okH?'#2f6b3f':'#C23B22';
+    const g=el('g',{opacity:.92});
+    g.appendChild(el('rect',{x:vx,y:vy+vhh*.38,width:vw,height:vhh*.48,rx:6,fill:'none',stroke:col,'stroke-width':3}));
+    g.appendChild(el('path',{d:`M${vx+vw*.14} ${vy+vhh*.38} L${vx+vw*.24} ${vy} H${vx+vw*.76} L${vx+vw*.86} ${vy+vhh*.38}`,fill:'none',stroke:col,'stroke-width':3}));
+    g.appendChild(el('rect',{x:vx+vw*.06,y:gy-vhh*.16,width:vw*.18,height:vhh*.16,fill:col}));g.appendChild(el('rect',{x:vx+vw*.76,y:gy-vhh*.16,width:vw*.18,height:vhh*.16,fill:col}));
+    s.appendChild(g);
+  }
+  // cotas
+  const c='#C23B22';s.appendChild(el('line',{x1:x,y1:y-16,x2:x+W,y2:y-16,stroke:c}));s.appendChild(el('text',{x:x+W/2,y:y-22,'text-anchor':'middle','font-size':13,'font-weight':700,fill:c},w+' cm'));
+  s.appendChild(el('line',{x1:x-16,y1:y,x2:x-16,y2:y+H,stroke:c}));s.appendChild(el('text',{x:x-22,y:y+H/2,'text-anchor':'middle','font-size':13,'font-weight':700,fill:c,transform:`rotate(-90 ${x-22} ${y+H/2})`},h+' cm'));
+}
+function libre(){const {w,h}=med();const t=PROD.porton.tipos[S.t][0];const pw=w-(t==='Batiente 2 hojas'?16:10),ph=h-(t==='Levadizo'?15:0);const v=VEH[S.veh];const mw=pw-v[1],mh=ph-v[2];return{pw,ph,mw,mh,okW:mw>=0,okH:mh>=0}}
+function veredicto(){const f=libre(),v=VEH[S.veh];const box=$('ver');let cls,tag,txt;
+  if(!f.okW||!f.okH){cls='no';tag='NO ENTRA';txt=(!f.okW?'Faltan '+(-f.mw)+' cm de ancho':'')+(!f.okW&&!f.okH?' y ':'')+(!f.okH?'faltan '+(-f.mh)+' cm de alto':'')}
+  else if(f.mw<60||f.mh<15){cls='justo';tag='JUSTO';txt='Pasa, pero con '+Math.round(f.mw/2)+' cm por lado. Recomendamos al menos 30 cm por lado.'}
+  else{cls='ok';tag='ENTRA';txt='Paso libre '+f.pw+' × '+f.ph+' cm: sobran '+Math.round(f.mw/2)+' cm por lado.'}
+  box.className='veredicto '+cls;box.innerHTML=`<i>${tag}</i><span>${v[0]} (${v[1]} × ${v[2]} cm aprox.)<small>${txt}</small></span>`;return tag}
+function veh(){const c=$('veh');c.innerHTML='';VEH.forEach((v,i)=>c.appendChild(chip(v[0],S.veh===i,()=>{S.veh=i;veh();upd()})))}
+function desc(){const pr=PROD[S.p],{w,h}=med(),t=pr.tipos[S.t][0];let d=(S.p==='ventana'?'Ventana ':S.p==='porton'?'Portón ':'')+t.toLowerCase().replace(/^puerta/,'Puerta')+' '+w+' × '+h+' cm';
+  if(S.p==='ventana')d+=' · Línea Mass · '+(S.vid?'DVH':'vidrio simple')+(S.mosq?' · mosquitero':'');else d+=' · '+RELL[S.rell][0].toLowerCase();
+  if(S.p==='porton'){d+=(S.motor?' · con motor':'')+' · '+(veredicto()==='NO ENTRA'?'no entra ':'pasa ')+VEH[S.veh][0].toLowerCase()}
+  if(S.cant>1)d+=' · ×'+S.cant;return d.charAt(0).toUpperCase()+d.slice(1)}
+function upd(){const {w,h}=med();$('cabT').textContent={ventana:'Ventana',puerta:'Puerta',porton:'Portón'}[S.p]+' · '+PROD[S.p].tipos[S.t][0];$('cabM').textContent=w+' × '+h+' cm';$('vehBox').style.display=S.p==='porton'?'block':'none';if(S.p==='porton')veredicto();draw();$('pr').textContent=fmt(precio());burb()}
+$('sumar').onclick=()=>{items.push({d:desc(),v:precio()});rem()};
+function rem(){const r=$('reng');r.innerHTML='';if(!items.length)r.innerHTML='<div class="vac">Sumá aberturas para armar el remito.</div>';
+  items.forEach((it,i)=>{const d=document.createElement('div');d.className='renglon';d.innerHTML=`<b>${String(i+1).padStart(2,'0')}</b><span>${it.d}</span><span class="v">${fmt(it.v)}<span class="ej">Precio de ejemplo</span></span><button type="button" aria-label="Quitar">✕</button>`;d.querySelector('button').onclick=()=>{items.splice(i,1);rem()};r.appendChild(d)});
+  const t=items.reduce((a,b)=>a+b.v,0);$('tot').textContent=fmt(t);$('sena').textContent=fmt(t*.3);$('remN').textContent='Nº 0001 · '+items.length+' renglón'+(items.length===1?'':'es');burb()}
+function burb(){const nom=$('nom').value.trim();let t='Hola Femart, soy '+(nom||'…')+' de '+$('loc').value+'. Quiero presupuesto:\n';
+  if(items.length){items.forEach((it,i)=>t+=(i+1)+' · '+it.d+' · '+fmt(it.v)+'\n');const tot=items.reduce((a,b)=>a+b.v,0);t+='Total estimado: '+fmt(tot)+' (precios de ejemplo)\nSeña 30% para fabricar: '+fmt(tot*.3)+'\n'}
+  else t+='(armando) '+desc()+'\n';
+  t+=$('ent').value+'.';const b=$('burb');b.textContent=t;const n=new Date(),s=document.createElement('span');s.className='h';s.textContent=n.getHours()+':'+String(n.getMinutes()).padStart(2,'0')+' ✓✓';b.appendChild(s);
+  const ok=items.length&&nom,a=$('wa');a.classList.toggle('off',!ok);a.textContent=ok?'Enviar por WhatsApp':(items.length?'Poné tu nombre para enviar':'Sumá una abertura para enviar');a.href='https://wa.me/'+WA+'?text='+encodeURIComponent(t)}
+['nom','loc','ent'].forEach(id=>{$(id).addEventListener('input',burb);$(id).addEventListener('change',burb)});
+// duenio
+const rep=$('rep');['Lun','Mar','Mié','Jue','Vie'].forEach((d,i)=>{const x=[['Esperanza','Humboldt'],['Santa Fe'],['San Carlos','Franck'],[],['Rafaela']][i];const b=document.createElement('div');b.innerHTML='<b>'+d+'</b>'+(x.length?x.map(z=>'<span>'+z+'</span>').join(''):'<span class="l">cupo libre</span>')+(x.length<2?'<span class="l">cupo libre</span>':'');rep.appendChild(b)});
+const tp=$('tp');function fp(l,g,s,u){const tr=document.createElement('tr');tr.innerHTML=`<td>${l}</td><td class="n"><input type="number" step="1000" value="${g()}"> <span class="ej">${u} · Precio de ejemplo</span></td>`;tr.querySelector('input').oninput=e=>{s(+e.target.value||0);upd()};tp.appendChild(tr)}
+fp('Ventana Línea Mass',()=>P.vent,v=>P.vent=v,'por m²');fp('DVH',()=>P.dvh,v=>P.dvh=v,'por m²');fp('Mosquitero',()=>P.mosq,v=>P.mosq=v,'por unidad');
+fp('Puerta (base)',()=>P.puerta,v=>P.puerta=v,'por unidad');fp('Puerta (por m²)',()=>P.puertaM2,v=>P.puertaM2=v,'por m²');fp('Portón',()=>P.porton,v=>P.porton=v,'por m²');fp('Motor de portón',()=>P.motor,v=>P.motor=v,'por unidad');
+const D=$('duenio');$('abrir').onclick=()=>{D.classList.add('on');D.scrollIntoView({behavior:'smooth'})};$('cerrar').onclick=()=>{D.classList.remove('on');$('cotizar').scrollIntoView({behavior:'smooth'})};
+tabs();ctl();veh();upd();
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Femart Aberturas"></script>
+</body>
+</html>
