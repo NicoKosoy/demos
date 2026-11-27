@@ -1,0 +1,1395 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Aluminio Gonella · Cotizador por capas (prototipo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bellefair&family=Sarabun:wght@300;400;600;700&family=Reddit+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script>
+/* Reemplaza una foto que no carga por una ilustración propia (nunca un recuadro vacío) */
+function fb(img, kind){
+  if(!img || !img.parentNode) return;
+  var d = document.createElement('div');
+  d.className = 'illus';
+  d.setAttribute('role','img');
+  d.setAttribute('aria-label', img.alt || 'Ilustración');
+  d.innerHTML = (window.ILLUS && ILLUS[kind]) ? ILLUS[kind] : '';
+  if(!d.innerHTML){ d.dataset.kind = kind; }
+  img.parentNode.replaceChild(d, img);
+}
+window.ILLUS = {
+  pergola:'<svg viewBox="0 0 200 140" aria-hidden="true"><path d="M10 128h180" stroke="#A46A36" stroke-width="2"/><rect x="24" y="40" width="6" height="88" fill="#1E3B2C"/><rect x="170" y="40" width="6" height="88" fill="#1E3B2C"/><rect x="18" y="34" width="164" height="8" fill="#7A4B26"/><g fill="#A46A36">'+Array.from({length:14},function(_,i){return '<rect x="'+(24+i*11.5)+'" y="26" width="5" height="8"/>';}).join('')+'</g><g fill="#1E3B2C" opacity=".18">'+Array.from({length:14},function(_,i){return '<rect x="'+(34+i*11.5)+'" y="122" width="6" height="6"/>';}).join('')+'</g></svg>',
+  ventana:'<svg viewBox="0 0 200 140" aria-hidden="true"><rect x="40" y="18" width="120" height="104" fill="none" stroke="#1E3B2C" stroke-width="7"/><rect x="47" y="25" width="56" height="90" fill="#CFE1D8"/><rect x="97" y="25" width="56" height="90" fill="#CFE1D8" stroke="#1E3B2C" stroke-width="3"/><path d="M60 70h22m-6-5 6 5-6 5M140 70h-22m6-5-6 5 6 5" stroke="#A46A36" stroke-width="2" fill="none"/></svg>',
+  baranda:'<svg viewBox="0 0 200 140" aria-hidden="true"><path d="M10 112h180" stroke="#1E3B2C" stroke-width="4"/><g fill="#CFE1D8" stroke="#1E3B2C" stroke-width="1.5"><rect x="22" y="48" width="48" height="62"/><rect x="76" y="48" width="48" height="62"/><rect x="130" y="48" width="48" height="62"/></g><path d="M18 44h164" stroke="#A46A36" stroke-width="5" stroke-linecap="round"/></svg>',
+  techo:'<svg viewBox="0 0 200 140" aria-hidden="true"><path d="M20 30 180 60" stroke="#1E3B2C" stroke-width="6"/><path d="M28 38 172 65" stroke="#CFE1D8" stroke-width="10" opacity=".9"/><rect x="168" y="60" width="6" height="68" fill="#1E3B2C"/><path d="M10 128h180" stroke="#A46A36" stroke-width="2"/><circle cx="60" cy="16" r="9" fill="#A46A36" opacity=".6"/></svg>',
+  mampara:'<svg viewBox="0 0 200 140" aria-hidden="true"><rect x="58" y="14" width="84" height="114" fill="#CFE1D8" opacity=".8" stroke="#1E3B2C" stroke-width="3"/><path d="M100 14v114" stroke="#1E3B2C" stroke-width="2"/><circle cx="92" cy="72" r="3" fill="#A46A36"/><path d="M40 128h120" stroke="#A46A36" stroke-width="2"/></svg>',
+  frente:'<svg viewBox="0 0 200 140" aria-hidden="true"><rect x="14" y="14" width="172" height="114" fill="#CFE1D8" stroke="#1E3B2C" stroke-width="5"/><path d="M57 14v114M100 14v114M143 14v114M14 44h172" stroke="#1E3B2C" stroke-width="3"/></svg>',
+  parasol:'<svg viewBox="0 0 200 140" aria-hidden="true"><rect x="20" y="16" width="160" height="110" fill="#CFE1D8" opacity=".6"/><g fill="#7A4B26">'+Array.from({length:12},function(_,i){return '<rect x="'+(24+i*13.2)+'" y="12" width="7" height="118" rx="1"/>';}).join('')+'</g></svg>',
+  puerta:'<svg viewBox="0 0 200 140" aria-hidden="true"><rect x="66" y="10" width="68" height="120" fill="#1E3B2C"/><path d="M84 10v120" stroke="#A46A36" stroke-dasharray="4 4"/><rect x="122" y="40" width="4" height="60" fill="#A46A36"/><path d="M40 130h120" stroke="#A46A36" stroke-width="2"/></svg>'
+};
+</script>
+<style>
+:root{
+  --leaf:#1E3B2C;      /* verde hoja oscuro */
+  --leaf-2:#2E5641;
+  --leaf-3:#0F2219;
+  --cream:#F3ECDF;
+  --paper:#FBF7EF;
+  --sand:#E5D8C1;
+  --line:#D6C7AC;
+  --bronze:#A46A36;
+  --bronze-2:#C88B52;
+  --wood:#7A4B26;
+  --ink:#1B231E;
+  --ink-2:#56615A;
+  --glass:#CFE1D8;
+  --wa-bg:#ECE5D8;
+  --wa-bubble:#D9FDD3;
+  --r:10px;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:"Sarabun",system-ui,sans-serif;font-size:16px;line-height:1.5;overflow-x:hidden}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--bronze);outline-offset:2px}
+img{max-width:100%}
+.wrap{max-width:1200px;margin:0 auto;padding:0 16px}
+@media(min-width:700px){.wrap{padding:0 28px}}
+.mono{font-family:"Reddit Mono",ui-monospace,monospace}
+.disp{font-family:"Bellefair",Georgia,serif;font-weight:400}
+.pe{font-size:11px;color:var(--ink-2);font-weight:400;letter-spacing:.01em;white-space:nowrap;font-family:"Sarabun",sans-serif}
+.pe::before{content:"· "}
+.dark .pe{color:#BFD0C4}
+
+/* Firma */
+.firma{font-size:12.5px;color:var(--ink-2);padding:10px 0 0;letter-spacing:.02em}
+.firma span{border-bottom:1px solid var(--line);padding-bottom:3px}
+
+/* Header */
+.top{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 0 10px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
+.logo img{height:40px;width:auto;border-radius:3px;mix-blend-mode:multiply}
+.logo .illus{display:none}
+.logo .wm{font-family:"Bellefair",serif;font-size:24px;line-height:1}
+.logo .wm small{display:block;font-family:"Sarabun",sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2)}
+.nav{display:flex;gap:4px 18px;align-items:center;flex-wrap:wrap;font-size:14.5px}
+.nav a{color:var(--ink);text-decoration:none}
+.nav a:hover{color:var(--bronze)}
+.btn-owner{border:1.5px solid var(--leaf);background:transparent;color:var(--leaf);border-radius:999px;padding:7px 14px;font-weight:600;cursor:pointer;font-size:14px}
+.btn-owner:hover{background:var(--leaf);color:var(--cream)}
+
+/* Hero = corte de la casa */
+.hero{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:32px;align-items:center;padding:18px 0 34px}
+@media(max-width:920px){.hero{grid-template-columns:1fr;gap:18px}}
+.kicker{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--bronze);font-weight:600}
+.hero h1{font-family:"Bellefair",serif;font-weight:400;font-size:clamp(40px,6.4vw,78px);line-height:.98;margin:10px 0 14px;letter-spacing:-.01em}
+.hero h1 em{font-style:normal;color:var(--bronze)}
+.hero .lede{font-size:18px;max-width:40ch;margin:0 0 18px;color:var(--ink-2)}
+.cifras{list-style:none;padding:0;margin:0 0 20px;display:grid;gap:8px;border-left:2px solid var(--bronze);padding-left:14px}
+.cifras li{font-size:15px}
+.cifras b{font-family:"Reddit Mono",monospace;font-weight:600;color:var(--leaf);margin-right:6px}
+.cta-row{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:999px;padding:12px 20px;font-weight:600;cursor:pointer;text-decoration:none;font-size:15.5px}
+.btn-leaf{background:var(--leaf);color:var(--cream)}
+.btn-leaf:hover{background:var(--leaf-2)}
+.btn-ghost{background:transparent;color:var(--leaf);border:1.5px solid var(--leaf)}
+
+.corte{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 14px 10px;position:relative}
+.corte-head{display:flex;justify-content:space-between;gap:10px;align-items:baseline;flex-wrap:wrap;font-size:13px;color:var(--ink-2);margin:0 4px 6px}
+.corte-head b{font-family:"Bellefair",serif;font-weight:400;font-size:20px;color:var(--ink)}
+.corte svg{width:100%;height:auto;display:block}
+.capa{cursor:pointer}
+.capa .hit{fill:transparent}
+.capa .tag circle{fill:var(--paper);stroke:var(--bronze);stroke-width:1.5}
+.capa .tag text{font-family:"Reddit Mono",monospace;font-size:13px;fill:var(--bronze);font-weight:600}
+.capa:hover .tag circle,.capa.on .tag circle,.capa:focus .tag circle{fill:var(--bronze)}
+.capa:hover .tag text,.capa.on .tag text,.capa:focus .tag text{fill:var(--paper)}
+.capa:hover .hl,.capa.on .hl{filter:drop-shadow(0 0 0 rgba(0,0,0,0));opacity:1}
+.capa .hl{transition:opacity .2s}
+.capa:focus{outline:none}
+.capa:focus-visible .hit{stroke:var(--bronze);stroke-width:2;stroke-dasharray:4 3}
+.leyenda{list-style:none;margin:8px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+@media(max-width:560px){.leyenda{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.leyenda button{width:100%;text-align:left;border:1px solid var(--line);background:var(--cream);border-radius:8px;padding:7px 9px;cursor:pointer;font-size:13.5px;display:flex;gap:8px;align-items:center;line-height:1.2}
+.leyenda button:hover,.leyenda button.on{border-color:var(--bronze);background:#fff}
+.leyenda .n{font-family:"Reddit Mono",monospace;color:var(--bronze);font-weight:600;font-size:12px;border:1.5px solid var(--bronze);border-radius:50%;width:22px;height:22px;display:inline-grid;place-items:center;flex:none}
+
+/* Secciones */
+section{scroll-margin-top:12px}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+.sec-head h2{font-family:"Bellefair",serif;font-weight:400;font-size:clamp(32px,4.4vw,50px);line-height:1;margin:0}
+.sec-head p{margin:0;color:var(--ink-2);max-width:46ch;font-size:15px}
+.num-sec{font-family:"Reddit Mono",monospace;font-size:12px;color:var(--bronze);letter-spacing:.1em;display:block;margin-bottom:6px}
+
+/* Cotizador */
+.cotizador{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:0;margin:0 0 40px;overflow:hidden}
+.tabs{display:flex;gap:0;background:var(--sand);border-bottom:1px solid var(--line);padding:10px 10px 0;flex-wrap:wrap}
+.tab{border:1px solid transparent;border-bottom:0;background:transparent;padding:10px 16px 11px;border-radius:10px 10px 0 0;cursor:pointer;font-weight:600;font-size:15px;color:var(--ink-2);display:flex;flex-direction:column;align-items:flex-start;line-height:1.15;margin-bottom:-1px}
+.tab small{font-weight:400;font-size:12px;font-family:"Reddit Mono",monospace;letter-spacing:.02em}
+.tab[aria-selected="true"]{background:var(--paper);border-color:var(--line);color:var(--leaf)}
+@media(max-width:560px){.tab{padding:9px 10px 10px;font-size:14px;flex:1 1 30%}.tab small{font-size:10.5px}}
+.panel{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.12fr);gap:0}
+@media(max-width:900px){.panel{grid-template-columns:1fr}}
+.cfg{padding:22px 22px 24px;border-right:1px solid var(--line)}
+@media(max-width:900px){.cfg{border-right:0;border-bottom:1px solid var(--line);padding:18px 16px}}
+.vista{padding:18px 20px 22px;background:
+  linear-gradient(rgba(214,199,172,.35) 1px,transparent 1px) 0 0/22px 22px,
+  linear-gradient(90deg,rgba(214,199,172,.35) 1px,transparent 1px) 0 0/22px 22px,var(--paper);position:relative}
+@media(max-width:900px){.vista{padding:14px 12px 18px}}
+.vista svg{width:100%;height:auto;display:block}
+.vista-head{display:flex;justify-content:space-between;gap:8px;font-family:"Reddit Mono",monospace;font-size:11.5px;color:var(--ink-2);letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px;flex-wrap:wrap}
+.f{margin:0 0 16px}
+.f>label,.f>.lab{display:block;font-weight:600;font-size:14px;margin-bottom:6px}
+.f .note{font-size:12.5px;color:var(--ink-2);margin-top:4px}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg input{position:absolute;opacity:0;pointer-events:none;width:1px;height:1px}
+.seg label{border:1.5px solid var(--line);border-radius:7px;padding:7px 11px;cursor:pointer;font-size:14px;background:#fff;display:inline-flex;align-items:center;gap:7px;line-height:1.2}
+.seg input:checked+label{border-color:var(--leaf);background:var(--leaf);color:var(--cream)}
+.seg input:focus-visible+label{outline:2px solid var(--bronze);outline-offset:2px}
+.seg input:disabled+label{opacity:.38;cursor:not-allowed}
+.sw{width:13px;height:13px;border-radius:50%;border:1px solid rgba(0,0,0,.3);display:inline-block}
+.sw.madera{background:repeating-linear-gradient(100deg,#8A5A30 0 3px,#A46A36 3px 6px)}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.medida{display:flex;flex-direction:column;gap:4px}
+.medida .box{display:flex;align-items:center;border:1.5px solid var(--line);border-radius:7px;background:#fff}
+.medida .box:focus-within{border-color:var(--leaf)}
+.medida input[type=number]{border:0;background:transparent;width:100%;padding:8px 10px;font-family:"Reddit Mono",monospace;font-size:18px;font-weight:600;min-width:0}
+.medida input[type=number]:focus{outline:none}
+.medida .u{padding-right:10px;color:var(--ink-2);font-size:13px}
+input[type=range]{width:100%;accent-color:var(--leaf);margin:4px 0 0}
+.chk{display:flex;align-items:center;gap:9px;cursor:pointer;font-size:14.5px}
+.chk input{width:18px;height:18px;accent-color:var(--leaf)}
+.qty{display:inline-flex;align-items:center;border:1.5px solid var(--line);border-radius:7px;background:#fff}
+.qty button{border:0;background:none;width:36px;height:36px;font-size:18px;cursor:pointer}
+.qty output{min-width:30px;text-align:center;font-family:"Reddit Mono",monospace;font-weight:600}
+.row2{display:flex;gap:18px;flex-wrap:wrap;align-items:center}
+
+.precio{margin-top:14px;background:var(--leaf);color:var(--cream);border-radius:12px;padding:14px 16px;display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+.precio .lbl{font-size:12.5px;opacity:.85;letter-spacing:.04em}
+.precio .val{font-family:"Bellefair",serif;font-size:30px;line-height:1.05}
+@media(max-width:420px){.precio .val{font-size:25px}}
+.precio .pe{color:#CFE0D4}
+.precio .det{font-size:12.5px;opacity:.85;font-family:"Reddit Mono",monospace}
+.add{background:var(--bronze);color:#fff;border:0;border-radius:999px;padding:11px 18px;font-weight:600;cursor:pointer;font-size:15px}
+.add:hover{background:var(--wood)}
+.add.ok{background:#3F7A55}
+
+/* sombra */
+.sun-ctrl{display:flex;align-items:center;gap:12px;margin-top:8px;font-family:"Reddit Mono",monospace;font-size:13px}
+.sun-ctrl input{flex:1}
+.sombra-out{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:10px}
+.sombra-out div{background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:12.5px;color:var(--ink-2);line-height:1.25}
+.sombra-out b{display:block;font-family:"Reddit Mono",monospace;font-size:17px;color:var(--leaf)}
+.planta{margin-top:10px;display:grid;grid-template-columns:150px 1fr;gap:12px;align-items:center}
+.planta svg{max-width:150px}
+.planta ul{margin:0;padding-left:16px;font-size:13px;color:var(--ink-2)}
+@media(max-width:420px){.planta{grid-template-columns:110px 1fr}.sombra-out b{font-size:15px}}
+
+/* tabla precios */
+details.precios{border-top:1px solid var(--line);background:var(--cream)}
+details.precios summary{cursor:pointer;padding:14px 22px;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+details.precios summary::-webkit-details-marker{display:none}
+details.precios summary span{font-weight:400;font-size:13px;color:var(--bronze)}
+.ptabla{padding:0 22px 20px}
+@media(max-width:560px){.ptabla{padding:0 12px 16px}details.precios summary{padding:12px}}
+.ptabla .aviso{font-size:13px;background:#fff;border:1px dashed var(--bronze);border-radius:8px;padding:8px 12px;margin:0 0 12px;display:inline-block}
+.pgrid{display:grid;align-items:start;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media(max-width:900px){.pgrid{grid-template-columns:1fr}}
+.pgrid table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.pgrid caption{text-align:left;font-family:"Bellefair",serif;font-size:19px;padding:0 0 4px}
+.pgrid td{padding:6px 8px;border-top:1px solid var(--sand);vertical-align:middle}
+.pgrid td:first-child{width:52%}
+.pgrid input{width:100%;min-width:0;max-width:120px;border:1px solid var(--line);border-radius:5px;padding:4px 6px;font-family:"Reddit Mono",monospace;font-size:13px;text-align:right}
+.pgrid .u{font-size:11.5px;color:var(--ink-2);white-space:nowrap}
+.pgrid .pe{display:block;font-size:10.5px}
+.pgrid .pe::before{content:""}
+
+/* Pedido + burbuja */
+.pedido{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,420px);gap:26px;align-items:start;margin-bottom:56px}
+@media(max-width:900px){.pedido{grid-template-columns:1fr}}
+.items{list-style:none;margin:0 0 16px;padding:0;border-top:1px solid var(--line)}
+.items li{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:10px;padding:12px 0;border-bottom:1px solid var(--line);align-items:start}
+.items .ix{font-family:"Reddit Mono",monospace;color:var(--bronze);font-weight:600}
+.items .d{font-size:14.5px}
+.items .d .p{display:block;font-family:"Reddit Mono",monospace;font-size:13.5px;color:var(--leaf);margin-top:2px}
+.items button{border:1px solid var(--line);background:#fff;border-radius:6px;padding:3px 8px;cursor:pointer;font-size:12.5px;color:var(--ink-2)}
+.items .vacio{display:block;color:var(--ink-2);font-size:14px;padding:14px 0}
+.totales{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:18px;display:grid;gap:6px}
+.totales div{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline}
+.totales .big{font-family:"Bellefair",serif;font-size:26px}
+.datos{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:560px){.datos{grid-template-columns:1fr}}
+.datos label{display:block;font-weight:600;font-size:14px;margin-bottom:5px}
+.datos input,.datos select{width:100%;border:1.5px solid var(--line);border-radius:7px;padding:9px 10px;background:#fff;font-size:15px}
+.datos input:focus,.datos select:focus{outline:none;border-color:var(--leaf)}
+.datos .full{grid-column:1/-1}
+.datos input.need{border-color:#B5452B}
+
+.chat{border-radius:18px;overflow:hidden;border:1px solid #CFC6B5;background:var(--wa-bg);position:sticky;top:14px;box-shadow:0 12px 30px -18px rgba(15,34,25,.45)}
+@media(max-width:900px){.chat{position:static}}
+.chat-top{background:#1F5C4A;color:#fff;padding:10px 14px;display:flex;align-items:center;gap:10px}
+.chat-top .av{width:34px;height:34px;border-radius:50%;background:var(--cream);color:var(--leaf);display:grid;place-items:center;font-family:"Bellefair",serif;font-size:19px;flex:none}
+.chat-top .nm{font-weight:600;font-size:15px;line-height:1.1}
+.chat-top .st{font-size:12px;opacity:.85}
+.chat-body{padding:14px 12px 12px;min-height:260px;background-image:radial-gradient(rgba(122,75,38,.07) 1px,transparent 1px);background-size:14px 14px}
+.chat-note{font-size:11.5px;text-align:center;background:#FFF5D6;color:#5B4A22;border-radius:7px;padding:5px 8px;margin:0 auto 10px;max-width:290px}
+.bub{background:var(--wa-bubble);border-radius:10px 2px 10px 10px;padding:9px 11px 6px;margin-left:24px;font-size:14px;line-height:1.42;white-space:pre-wrap;word-wrap:break-word;overflow-wrap:anywhere;position:relative;box-shadow:0 1px 1px rgba(0,0,0,.08);color:#111B21}
+.bub .caret{display:inline-block;width:7px;height:15px;background:#1F5C4A;vertical-align:-2px;animation:blink 1s steps(1) infinite;margin-left:1px}
+@keyframes blink{50%{opacity:0}}
+.bub .meta{display:block;text-align:right;font-size:11px;color:#667781;margin-top:2px;font-family:"Sarabun",sans-serif}
+.chat-foot{padding:10px 12px 14px;display:grid;gap:8px}
+.btn-wa{display:flex;justify-content:center;align-items:center;gap:8px;background:#1F7A4D;color:#fff;border-radius:999px;padding:13px 16px;font-weight:700;text-decoration:none;font-size:15.5px}
+.btn-wa:hover{background:#17623D}
+.chat-foot small{font-size:12px;color:var(--ink-2);text-align:center}
+
+/* Obras */
+.obras{display:grid;grid-auto-flow:dense;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:170px;gap:10px;margin-bottom:22px}
+.obras figure{margin:0;position:relative;overflow:hidden;border-radius:10px;background:var(--sand)}
+.obras figure.t{grid-row:span 2}
+.obras figure.w{grid-column:span 2}
+.obras img{width:100%;height:100%;object-fit:cover;display:block}
+.obras .illus{width:100%;height:100%}
+.obras figcaption{position:absolute;left:8px;bottom:8px;background:rgba(15,34,25,.82);color:var(--cream);font-size:12.5px;padding:4px 9px;border-radius:5px;line-height:1.2}
+@media(max-width:700px){.obras{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:140px}.obras figure.w{grid-column:span 2}.obras figure.t{grid-row:span 1}}
+.illus{display:grid;place-items:center;background:linear-gradient(180deg,#EFE6D5,#E2D3B8);width:100%;height:100%}
+.illus svg{width:72%;max-width:240px;height:auto}
+.lineas{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:26px;margin-bottom:56px}
+@media(max-width:800px){.lineas{grid-template-columns:1fr}}
+.lineas table{width:100%;border-collapse:collapse;font-size:15px}
+.lineas th{text-align:left;font-family:"Reddit Mono",monospace;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);font-weight:400;padding:0 0 6px}
+.lineas td{padding:9px 0;border-top:1px solid var(--line);vertical-align:top}
+.lineas td:first-child{font-family:"Bellefair",serif;font-size:20px;width:40%}
+.prod-list{display:flex;flex-wrap:wrap;gap:6px;list-style:none;padding:0;margin:0}
+.prod-list li{border:1px solid var(--line);border-radius:999px;padding:4px 11px;font-size:13.5px;background:var(--paper)}
+
+/* Cómo funciona */
+.como{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:26px;margin-bottom:56px}
+@media(max-width:800px){.como{grid-template-columns:1fr}}
+.pasos{list-style:none;counter-reset:p;padding:0;margin:0}
+.pasos li{counter-increment:p;display:grid;grid-template-columns:38px 1fr;gap:10px;padding:10px 0;border-top:1px solid var(--line);font-size:15px}
+.pasos li::before{content:counter(p,decimal-leading-zero);font-family:"Reddit Mono",monospace;color:var(--bronze);font-weight:600}
+.cond{margin:0;padding-left:18px;font-size:15px}
+.cond li{margin:6px 0}
+h3{font-family:"Bellefair",serif;font-weight:400;font-size:26px;margin:0 0 8px}
+
+/* Dueño (sección) */
+.dueno{background:var(--leaf);color:var(--cream);border-radius:18px;padding:28px 24px;margin-bottom:40px;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:26px;align-items:center}
+@media(max-width:800px){.dueno{grid-template-columns:1fr;padding:22px 16px}}
+.dueno h2{font-family:"Bellefair",serif;font-weight:400;font-size:clamp(30px,4vw,44px);line-height:1.02;margin:0 0 12px}
+.dueno ul{margin:0;padding-left:18px}
+.dueno li{margin:7px 0}
+.dueno .btn{background:var(--cream);color:var(--leaf)}
+.mini-feed{background:var(--leaf-3);border-radius:12px;padding:12px;font-size:13px;display:grid;gap:8px}
+.mini-feed .row{display:flex;justify-content:space-between;gap:8px;border-bottom:1px solid rgba(243,236,223,.12);padding-bottom:6px;flex-wrap:wrap}
+.mini-feed .row:last-child{border:0}
+
+/* Panel del dueño (overlay) */
+.owner{position:fixed;inset:0;z-index:50;background:rgba(15,34,25,.55);display:flex;justify-content:flex-end}
+.owner-in{width:min(980px,100%);height:100%;overflow:auto;background:var(--cream);padding:0 0 40px;box-shadow:-20px 0 40px -20px rgba(0,0,0,.4)}
+.owner-bar{position:sticky;top:0;background:var(--leaf);color:var(--cream);padding:12px 18px;display:flex;justify-content:space-between;align-items:center;gap:10px;z-index:2}
+.owner-bar b{font-family:"Bellefair",serif;font-weight:400;font-size:22px}
+.owner-bar .ej{font-family:"Reddit Mono",monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;background:var(--bronze);color:#fff;padding:3px 8px;border-radius:4px;margin-left:8px;vertical-align:3px}
+.owner-bar button{background:var(--cream);color:var(--leaf);border:0;border-radius:999px;padding:8px 14px;font-weight:700;cursor:pointer}
+.owner-body{padding:18px}
+@media(min-width:700px){.owner-body{padding:22px 28px}}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:22px}
+@media(max-width:700px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.kpi{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.kpi .k{font-size:12.5px;color:var(--ink-2);line-height:1.25}
+.kpi .v{font-family:"Bellefair",serif;font-size:28px;line-height:1.1;color:var(--leaf)}
+.ogrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px}
+@media(max-width:800px){.ogrid{grid-template-columns:1fr}}
+.ocard{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px}
+.ocard h3{font-size:22px;margin-bottom:10px;display:flex;justify-content:space-between;gap:8px;align-items:baseline;flex-wrap:wrap}
+.ocard h3 small{font-family:"Reddit Mono",monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--bronze)}
+.inbox{display:grid;gap:10px;background:var(--wa-bg);border-radius:10px;padding:10px;max-height:520px;overflow:auto}
+.inbox .bub{margin-left:0;margin-right:18px;background:#fff;border-radius:2px 10px 10px 10px;font-size:13px}
+.inbox .from{font-weight:700;color:#1F5C4A;font-size:12.5px;display:block;margin-bottom:2px;white-space:normal}
+.agenda{display:grid;gap:6px}
+.dia{display:grid;grid-template-columns:62px minmax(0,1fr);gap:10px;border-top:1px solid var(--line);padding-top:6px}
+.dia .dn{font-family:"Reddit Mono",monospace;font-size:12px;color:var(--ink-2);line-height:1.2}
+.dia .dn b{display:block;font-size:15px;color:var(--ink)}
+.slots{display:flex;flex-direction:column;gap:4px}
+.slot{font-size:13px;border-radius:6px;padding:5px 8px;background:#fff;border-left:3px solid var(--leaf);line-height:1.25}
+.slot.col{border-left-color:var(--bronze)}
+.slot.free{background:transparent;border:1px dashed var(--line);color:var(--ink-2)}
+.cupos{font-family:"Reddit Mono",monospace;font-size:11px;color:var(--ink-2)}
+.otable{width:100%;border-collapse:collapse;font-size:13.5px}
+.otable th{text-align:left;font-weight:600;font-size:12px;color:var(--ink-2);padding:4px 0}
+.otable td{border-top:1px solid var(--line);padding:7px 0;vertical-align:top}
+.otable td.r{text-align:right;font-family:"Reddit Mono",monospace;white-space:nowrap}
+.otable td.r .pe{display:block}
+.otable td.r .pe::before{content:""}
+.ahorro{display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:13.5px}
+.ahorro div{border:1px solid var(--line);border-radius:8px;padding:10px;background:#fff}
+.ahorro b{display:block;font-family:"Bellefair",serif;font-size:19px;font-weight:400;margin-bottom:4px}
+.ahorro ul{margin:0;padding-left:16px}
+.paravos{background:var(--leaf);color:var(--cream);border-radius:12px;padding:16px 18px;margin-top:20px}
+.paravos h3{color:var(--cream)}
+.paravos ul{margin:0;padding-left:18px}
+.paravos li{margin:6px 0}
+
+footer{border-top:1px solid var(--line);padding:22px 0 30px;font-size:14px;color:var(--ink-2)}
+footer .fgrid{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer a{color:var(--leaf)}
+footer .sig{margin-top:14px;font-size:12.5px}
+.lema{font-family:"Bellefair",serif;font-size:22px;color:var(--ink)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <p class="firma"><span>Prototipo preparado para Aluminio Gonella · 27 de noviembre de 2026</span></p>
+
+  <header class="top">
+    <a class="logo" href="#inicio" aria-label="Aluminio Gonella, inicio">
+      <img src="https://aluminiogonella.com/wp-content/uploads/2024/06/cropped-WhatsApp-Image-2023-12-14-at-09.58.43-300x91.jpeg" alt="Aluminio Gonella" onerror="this.style.display='none';document.getElementById('wm').hidden=false">
+      <span class="wm" id="wm" hidden>Aluminio Gonella<small>Yerba Buena · Tucumán</small></span>
+    </a>
+    <nav class="nav" aria-label="Secciones">
+      <a href="#cotizar">Cotizar</a>
+      <a href="#obras">Obras</a>
+      <a href="#como">Cómo funciona</a>
+      <button class="btn-owner" type="button" data-owner>Ver como dueño</button>
+    </nav>
+  </header>
+
+  <!-- HERO: la casa por capas -->
+  <section class="hero" id="inicio">
+    <div>
+      <div class="kicker">Empresa familiar de Yerba Buena · más de 50 años</div>
+      <h1>512 obras terminadas. <em>La tuya se cotiza por capas.</em></h1>
+      <p class="lede">Tocá una parte de la casa —la ventana, la pérgola, la baranda— y armá tu presupuesto con medidas reales.</p>
+      <ul class="cifras">
+        <li><b>512+</b>obras finalizadas</li>
+        <li><b>300+</b>trabajadores de la construcción que los eligen</li>
+        <li><b>Hydro</b>Línea 640, HA, Nordical y 750</li>
+      </ul>
+      <div class="cta-row">
+        <a class="btn btn-leaf" href="#cotizar">Empezar a cotizar</a>
+        <a class="btn btn-ghost" href="#obras">Ver obras</a>
+      </div>
+    </div>
+
+    <figure class="corte" style="margin:0">
+      <div class="corte-head"><b>Catálogo por capas de la casa</b><span class="mono">ALZADA · CASA CON GALERÍA</span></div>
+      <svg id="casa" viewBox="0 0 820 470" role="group" aria-label="Alzada de una casa con galería. Cada parte abre su cotizador.">
+        <defs>
+          <pattern id="wood" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(8)"><rect width="8" height="8" fill="#9A6436"/><rect width="3" height="8" fill="#7A4B26"/></pattern>
+          <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#C9B896" stroke-width="1.2"/></pattern>
+        </defs>
+        <!-- suelo y jardín -->
+        <path d="M0 430H820" stroke="#7A4B26" stroke-width="2"/>
+        <g stroke="#2E5641" stroke-width="1.5" fill="none" opacity=".7">
+          <path d="M760 430c2-10 6-14 10-18M768 430c0-9 2-13 6-16M600 430c1-6 3-9 6-11M612 430c0-5 2-8 4-10M30 430c1-7 4-10 7-12"/>
+        </g>
+        <!-- árbol (lapacho estilizado) -->
+        <g opacity=".9">
+          <path d="M790 430V330" stroke="#7A4B26" stroke-width="5"/>
+          <circle cx="790" cy="300" r="34" fill="#2E5641"/><circle cx="770" cy="322" r="22" fill="#1E3B2C"/><circle cx="808" cy="326" r="20" fill="#1E3B2C"/>
+        </g>
+        <!-- cuerpo de la casa -->
+        <rect x="90" y="280" width="380" height="150" fill="#EFE5D3" stroke="#56615A" stroke-width="1.5"/>
+        <rect x="90" y="140" width="290" height="140" fill="#E8DCC5" stroke="#56615A" stroke-width="1.5"/>
+        <rect x="80" y="128" width="310" height="14" fill="#56615A"/>
+        <rect x="80" y="276" width="400" height="8" fill="#56615A"/>
+        <rect x="90" y="284" width="18" height="146" fill="url(#hatch)"/>
+
+        <!-- 4 Techo de vidrio (invernadero lateral) -->
+        <g class="capa" tabindex="0" role="button" aria-label="4 · Techos de vidrio" data-go="techo">
+          <rect class="hit" x="8" y="320" width="86" height="112"/>
+          <path d="M90 330 18 356V430" fill="none" stroke="#1E3B2C" stroke-width="4"/>
+          <path d="M88 334 22 358" stroke="#B9D7CB" stroke-width="8" class="hl"/>
+          <rect x="20" y="360" width="68" height="70" fill="#CFE1D8" opacity=".55" stroke="#1E3B2C" stroke-width="2"/>
+          <path d="M54 360v70" stroke="#1E3B2C" stroke-width="2"/>
+          <g class="tag"><circle cx="40" cy="315" r="13"/><text x="40" y="320" text-anchor="middle">4</text></g>
+        </g>
+
+        <!-- 2 Puerta pivotante -->
+        <g class="capa" tabindex="0" role="button" aria-label="2 · Puerta pivotante" data-go="pivot">
+          <rect class="hit" x="120" y="296" width="80" height="136"/>
+          <rect x="128" y="304" width="64" height="126" fill="#1E3B2C"/>
+          <path d="M144 304v126" stroke="#C88B52" stroke-dasharray="4 4" stroke-width="1.2"/>
+          <rect x="178" y="335" width="4" height="62" fill="#C88B52"/>
+          <g class="tag"><circle cx="160" cy="290" r="13" transform="translate(0 0)"/><text x="160" y="295" text-anchor="middle">2</text></g>
+        </g>
+
+        <!-- 1 Carpintería -->
+        <g class="capa" tabindex="0" role="button" aria-label="1 · Carpinterías" data-go="carp">
+          <rect class="hit" x="236" y="300" width="214" height="110"/>
+          <rect x="244" y="310" width="198" height="94" fill="#CFE1D8" stroke="#1E3B2C" stroke-width="6"/>
+          <path d="M310 310v94M376 310v94" stroke="#1E3B2C" stroke-width="4"/>
+          <path d="M262 357h28m-6-5 6 5-6 5M424 357h-28m6-5-6 5 6 5" stroke="#A46A36" stroke-width="2" fill="none"/>
+          <g class="tag"><circle cx="343" cy="296" r="13"/><text x="343" y="301" text-anchor="middle">1</text></g>
+        </g>
+
+        <!-- 5 Parasoles simil madera (planta alta) -->
+        <g class="capa" tabindex="0" role="button" aria-label="5 · Parasoles simil madera" data-go="parasol">
+          <rect class="hit" x="150" y="160" width="200" height="110"/>
+          <rect x="160" y="172" width="180" height="92" fill="#CFE1D8" opacity=".7" stroke="#56615A"/>
+          <g fill="url(#wood)">
+            <rect x="160" y="166" width="8" height="104"/><rect x="175" y="166" width="8" height="104"/><rect x="190" y="166" width="8" height="104"/><rect x="205" y="166" width="8" height="104"/><rect x="220" y="166" width="8" height="104"/><rect x="235" y="166" width="8" height="104"/><rect x="250" y="166" width="8" height="104"/><rect x="265" y="166" width="8" height="104"/><rect x="280" y="166" width="8" height="104"/><rect x="295" y="166" width="8" height="104"/><rect x="310" y="166" width="8" height="104"/><rect x="325" y="166" width="8" height="104"/>
+          </g>
+          <g class="tag"><circle cx="250" cy="156" r="13"/><text x="250" y="161" text-anchor="middle">5</text></g>
+        </g>
+
+        <!-- 6 Baranda de vidrio (terraza) -->
+        <g class="capa" tabindex="0" role="button" aria-label="6 · Barandas" data-go="baranda">
+          <rect class="hit" x="382" y="228" width="98" height="52"/>
+          <rect x="386" y="240" width="40" height="36" fill="#CFE1D8" opacity=".8" stroke="#1E3B2C" stroke-width="1.5"/>
+          <rect x="430" y="240" width="44" height="36" fill="#CFE1D8" opacity=".8" stroke="#1E3B2C" stroke-width="1.5"/>
+          <path d="M384 238h92" stroke="#A46A36" stroke-width="4" stroke-linecap="round"/>
+          <g class="tag"><circle cx="452" cy="222" r="13"/><text x="452" y="227" text-anchor="middle">6</text></g>
+        </g>
+
+        <!-- 3 Pérgola de la galería -->
+        <g class="capa" tabindex="0" role="button" aria-label="3 · Pérgolas" data-go="pergola">
+          <rect class="hit" x="470" y="282" width="270" height="150"/>
+          <rect x="470" y="298" width="266" height="10" fill="url(#wood)"/>
+          <g fill="#7A4B26">
+            <rect x="476" y="288" width="6" height="10"/><rect x="494" y="288" width="6" height="10"/><rect x="512" y="288" width="6" height="10"/><rect x="530" y="288" width="6" height="10"/><rect x="548" y="288" width="6" height="10"/><rect x="566" y="288" width="6" height="10"/><rect x="584" y="288" width="6" height="10"/><rect x="602" y="288" width="6" height="10"/><rect x="620" y="288" width="6" height="10"/><rect x="638" y="288" width="6" height="10"/><rect x="656" y="288" width="6" height="10"/><rect x="674" y="288" width="6" height="10"/><rect x="692" y="288" width="6" height="10"/><rect x="710" y="288" width="6" height="10"/><rect x="726" y="288" width="6" height="10"/>
+          </g>
+          <rect x="726" y="308" width="9" height="122" fill="#1E3B2C"/>
+          <path d="M480 430h250" stroke="#1E3B2C" stroke-width="10" opacity=".14" class="hl"/>
+          <!-- mesa y sillas -->
+          <g stroke="#56615A" stroke-width="2" fill="none"><path d="M580 400h70M590 400v30M640 400v30M566 430v-24h12M664 430v-24h-12"/></g>
+          <g class="tag"><circle cx="604" cy="272" r="13"/><text x="604" y="277" text-anchor="middle">3</text></g>
+        </g>
+
+        <!-- sol -->
+        <g opacity=".85"><circle cx="690" cy="70" r="22" fill="#C88B52"/><g stroke="#C88B52" stroke-width="2"><path d="M690 34v-12M690 118v-12M654 70h-12M738 70h-12M664 44l-8-8M724 104l8 8M716 44l8-8M656 104l-8 8"/></g></g>
+      </svg>
+      <ul class="leyenda" id="leyenda">
+        <li><button type="button" data-go="carp"><span class="n">1</span>Carpinterías</button></li>
+        <li><button type="button" data-go="pivot"><span class="n">2</span>Puerta Pivotante</button></li>
+        <li><button type="button" data-go="pergola"><span class="n">3</span>Pérgolas</button></li>
+        <li><button type="button" data-go="techo"><span class="n">4</span>Techos de Vidrio</button></li>
+        <li><button type="button" data-go="parasol"><span class="n">5</span>Parasoles</button></li>
+        <li><button type="button" data-go="baranda"><span class="n">6</span>Barandas</button></li>
+      </ul>
+    </figure>
+  </section>
+
+  <!-- COTIZADOR -->
+  <section id="cotizar">
+    <div class="sec-head">
+      <div><span class="num-sec">01 — COTIZADOR</span><h2>Elegí la familia, medí, sumá al pedido</h2></div>
+      <p>El precio es un rango estimado. La medida final la toma Gonella en tu obra.</p>
+    </div>
+
+    <div class="cotizador">
+      <div class="tabs" role="tablist" aria-label="Familias de productos">
+        <button class="tab" role="tab" id="t-carp" aria-controls="p-carp" aria-selected="true" data-tab="carp">Carpinterías<small>ancho × alto</small></button>
+        <button class="tab" role="tab" id="t-som" aria-controls="p-som" aria-selected="false" data-tab="som" tabindex="-1">Pérgolas y techos<small>por m² · sombra</small></button>
+        <button class="tab" role="tab" id="t-bar" aria-controls="p-bar" aria-selected="false" data-tab="bar" tabindex="-1">Barandas<small>por metro lineal</small></button>
+      </div>
+
+      <!-- Panel Carpinterías -->
+      <div class="panel" role="tabpanel" id="p-carp" aria-labelledby="t-carp">
+        <form class="cfg" id="f-carp" onsubmit="return false">
+          <div class="f"><span class="lab">Tipo</span>
+            <div class="seg" id="c-tipo"></div></div>
+          <div class="f"><span class="lab">Línea Hydro</span>
+            <div class="seg" id="c-linea"></div>
+            <div class="note">La línea definitiva la recomienda Gonella según el vano y el uso.</div></div>
+          <div class="f pair">
+            <div class="medida"><label for="c-w">Ancho</label><div class="box"><input type="number" id="c-w" min="40" max="600" step="1" value="150" inputmode="numeric"><span class="u">cm</span></div><input type="range" id="c-wr" min="40" max="600" value="150" aria-label="Ancho en cm"></div>
+            <div class="medida"><label for="c-h">Alto</label><div class="box"><input type="number" id="c-h" min="40" max="300" step="1" value="110" inputmode="numeric"><span class="u">cm</span></div><input type="range" id="c-hr" min="40" max="300" value="110" aria-label="Alto en cm"></div>
+          </div>
+          <div class="f" id="c-hojas-f"><span class="lab">Hojas</span><div class="seg" id="c-hojas"></div></div>
+          <div class="f"><span class="lab">Color / terminación</span><div class="seg" id="c-color"></div>
+            <div class="note">Terminaciones de ejemplo: se confirman con Gonella.</div></div>
+          <div class="f" id="c-vidrio-f"><span class="lab">Vidrio</span><div class="seg" id="c-vidrio"></div></div>
+          <div class="f row2">
+            <label class="chk" id="c-mosq-l"><input type="checkbox" id="c-mosq" checked> Con mosquitero</label>
+            <div class="row2" style="gap:8px"><span class="lab" style="font-weight:600;font-size:14px">Cantidad</span>
+              <div class="qty"><button type="button" data-q="carp" data-d="-1" aria-label="Menos">−</button><output id="c-q">1</output><button type="button" data-q="carp" data-d="1" aria-label="Más">+</button></div></div>
+          </div>
+          <div class="precio">
+            <div><div class="lbl">Estimado de esta abertura</div><div class="val" id="c-precio">—</div><span class="pe">Precio de ejemplo</span><div class="det" id="c-det"></div></div>
+            <button class="add" type="button" data-add="carp">Agregar al pedido</button>
+          </div>
+        </form>
+        <div class="vista">
+          <div class="vista-head"><span>Vista exterior · plano en vivo</span><span id="c-tag"></span></div>
+          <svg id="svg-carp" viewBox="0 0 560 420" role="img" aria-label="Plano de la abertura con cotas"></svg>
+        </div>
+      </div>
+
+      <!-- Panel Pérgolas y techos -->
+      <div class="panel" role="tabpanel" id="p-som" aria-labelledby="t-som" hidden>
+        <form class="cfg" id="f-som" onsubmit="return false">
+          <div class="f"><span class="lab">Producto</span><div class="seg" id="s-prod"></div></div>
+          <div class="f pair">
+            <div class="medida"><label for="s-w">Ancho (frente)</label><div class="box"><input type="number" id="s-w" min="1.5" max="10" step="0.1" value="4.5" inputmode="decimal"><span class="u">m</span></div><input type="range" id="s-wr" min="1.5" max="10" step="0.1" value="4.5" aria-label="Ancho en metros"></div>
+            <div class="medida"><label for="s-d">Salida (fondo)</label><div class="box"><input type="number" id="s-d" min="1" max="6" step="0.1" value="3.5" inputmode="decimal"><span class="u">m</span></div><input type="range" id="s-dr" min="1" max="6" step="0.1" value="3.5" aria-label="Fondo en metros"></div>
+          </div>
+          <div class="f pair">
+            <div class="medida"><label for="s-h">Altura libre</label><div class="box"><input type="number" id="s-h" min="2.2" max="3.4" step="0.05" value="2.6" inputmode="decimal"><span class="u">m</span></div></div>
+            <div><span class="lab" style="display:block;font-weight:600;font-size:14px;margin-bottom:6px">La galería mira al</span><div class="seg" id="s-orient"></div></div>
+          </div>
+          <div class="f"><span class="lab">Terminación</span><div class="seg" id="s-fin"></div></div>
+          <div class="f" id="s-lamas-f"><span class="lab">Lamas (pérgola automática)</span><div class="seg" id="s-lamas"></div></div>
+          <div class="precio">
+            <div><div class="lbl">Estimado</div><div class="val" id="s-precio">—</div><span class="pe">Precio de ejemplo</span><div class="det" id="s-det"></div></div>
+            <button class="add" type="button" data-add="som">Agregar al pedido</button>
+          </div>
+        </form>
+        <div class="vista">
+          <div class="vista-head"><span>Corte de la galería · simulador de sombra</span><span>Verano en Yerba Buena (aprox.)</span></div>
+          <svg id="svg-som" viewBox="0 0 600 340" role="img" aria-label="Corte de la galería con el sol y la sombra según la hora"></svg>
+          <div class="sun-ctrl"><label for="s-hora">Hora</label><input type="range" id="s-hora" min="6.5" max="20" step="0.25" value="15.5"><output id="s-hora-o">15:30</output></div>
+          <div class="sombra-out">
+            <div><b id="o-cub">—</b>del piso bajo cubierta</div>
+            <div><b id="o-den">—</b>de sol filtrado</div>
+            <div><b id="o-el">—</b>altura del sol</div>
+          </div>
+          <div class="planta">
+            <svg id="svg-planta" viewBox="0 0 160 130" role="img" aria-label="Planta con medidas"></svg>
+            <ul id="planta-ul"></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel Barandas -->
+      <div class="panel" role="tabpanel" id="p-bar" aria-labelledby="t-bar" hidden>
+        <form class="cfg" id="f-bar" onsubmit="return false">
+          <div class="f"><span class="lab">Material</span><div class="seg" id="b-mat"></div></div>
+          <div class="f"><span class="lab">Dónde va</span><div class="seg" id="b-ubic"></div></div>
+          <div class="f pair">
+            <div class="medida"><label for="b-L">Largo total</label><div class="box"><input type="number" id="b-L" min="1" max="40" step="0.1" value="6" inputmode="decimal"><span class="u">m</span></div><input type="range" id="b-Lr" min="1" max="40" step="0.1" value="6" aria-label="Largo en metros"></div>
+            <div><span class="lab" style="display:block;font-weight:600;font-size:14px;margin-bottom:6px">Altura</span><div class="seg" id="b-alt"></div></div>
+          </div>
+          <div class="f row2">
+            <div class="row2" style="gap:8px"><span style="font-weight:600;font-size:14px">Esquinas / quiebres</span>
+              <div class="qty"><button type="button" data-q="esq" data-d="-1" aria-label="Menos esquinas">−</button><output id="b-esq">1</output><button type="button" data-q="esq" data-d="1" aria-label="Más esquinas">+</button></div></div>
+            <label class="chk" id="b-pasam-l"><input type="checkbox" id="b-pasam" checked> Pasamanos superior</label>
+          </div>
+          <div class="precio">
+            <div><div class="lbl">Estimado</div><div class="val" id="b-precio">—</div><span class="pe">Precio de ejemplo</span><div class="det" id="b-det"></div></div>
+            <button class="add" type="button" data-add="bar">Agregar al pedido</button>
+          </div>
+        </form>
+        <div class="vista">
+          <div class="vista-head"><span>Alzada de la baranda · plano en vivo</span><span id="b-tag"></span></div>
+          <svg id="svg-bar" viewBox="0 0 600 340" role="img" aria-label="Alzada de la baranda con cotas"></svg>
+        </div>
+      </div>
+
+      <details class="precios" id="precios">
+        <summary>Tabla de precios (editable) <span>Precios de ejemplo — los cambian ustedes</span></summary>
+        <div class="ptabla">
+          <p class="aviso">Precios de ejemplo — los cambian ustedes. Al editar, se recalcula todo: cotizador, pedido y mensaje.</p>
+          <div class="pgrid" id="pgrid"></div>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- PEDIDO + MENSAJE -->
+  <section id="pedido">
+    <div class="sec-head">
+      <div><span class="num-sec">02 — TU PEDIDO</span><h2>Esto es lo que le llega a Gonella</h2></div>
+      <p>El mensaje se escribe solo mientras elegís. Lo que ves es exactamente lo que se manda.</p>
+    </div>
+    <div class="pedido">
+      <div>
+        <ul class="items" id="items"></ul>
+        <div class="totales">
+          <div><span>Total estimado</span><span><span class="big" id="tot">—</span> <span class="pe">Precio de ejemplo</span></span></div>
+          <div><span>Seña sugerida al confirmar fabricación (<span id="sena-pct">40</span> %)</span><span><b class="mono" id="sena">—</b> <span class="pe">Precio de ejemplo</span></span></div>
+        </div>
+        <form class="datos" id="f-datos" onsubmit="return false">
+          <div><label for="d-nom">Tu nombre</label><input id="d-nom" autocomplete="given-name" placeholder="Ej.: Carolina"></div>
+          <div><label for="d-loc">Localidad de la obra</label>
+            <select id="d-loc"><option>Yerba Buena</option><option>San Miguel de Tucumán</option><option>Tafí Viejo</option><option>Las Talitas</option><option>Lules</option><option>Tafí del Valle</option><option>Otra localidad</option></select></div>
+          <div><label for="d-obra">Etapa de la obra</label>
+            <select id="d-obra"><option>Obra nueva</option><option>Remodelación</option><option>Reemplazo de aberturas</option></select></div>
+          <div><label for="d-med">Para medir, prefiero</label>
+            <select id="d-med"><option>Mañana (8 a 12)</option><option>Tarde (14 a 18)</option><option>Sábado a la mañana</option></select></div>
+        </form>
+      </div>
+
+      <aside class="chat" aria-label="Vista previa del mensaje de WhatsApp">
+        <div class="chat-top"><div class="av">G</div><div><div class="nm">Aluminio Gonella</div><div class="st" id="chat-st">en línea</div></div></div>
+        <div class="chat-body">
+          <div class="chat-note">Vista previa: este es el texto exacto que va a recibir Gonella</div>
+          <div class="bub" id="bub" aria-live="polite"><span id="bub-t"></span><span class="caret" id="caret"></span><span class="meta" id="bub-meta">✓✓</span></div>
+        </div>
+        <div class="chat-foot">
+          <a class="btn-wa" id="wa" href="#" target="_blank" rel="noopener">Enviar por WhatsApp</a>
+          <small id="wa-hint">Se abre WhatsApp con este mismo texto, listo para enviar.</small>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- OBRAS -->
+  <section id="obras">
+    <div class="sec-head">
+      <div><span class="num-sec">03 — OBRAS Y SISTEMAS</span><h2>Lo que ya hicieron, capa por capa</h2></div>
+      <p>Fotos de la web de Aluminio Gonella.</p>
+    </div>
+    <div class="obras">
+      <figure class="t"><img src="https://aluminiogonella.com/wp-content/uploads/2024/06/pergola.jpg" alt="Pérgola de Aluminio Gonella" onerror="fb(this,'pergola')"><figcaption>Pérgolas</figcaption></figure>
+      <figure class="w"><img src="https://aluminiogonella.com/wp-content/uploads/2024/05/fotos-rotonda.jpg" alt="Línea Rotonda 640" onerror="fb(this,'ventana')"><figcaption>Rotonda 640</figcaption></figure>
+      <figure class="t"><img src="https://aluminiogonella.com/wp-content/uploads/2024/06/domus.jpg" alt="Obra Domus" onerror="fb(this,'frente')"><figcaption>Domus</figcaption></figure>
+      <figure class="t"><img src="https://aluminiogonella.com/wp-content/uploads/2024/06/Baranda-acero.jpg" alt="Baranda de acero" onerror="fb(this,'baranda')"><figcaption>Barandas</figcaption></figure>
+      <figure><img src="https://aluminiogonella.com/wp-content/uploads/2024/06/techo.jpg" alt="Techo de vidrio" onerror="fb(this,'techo')"><figcaption>Techos de Vidrio</figcaption></figure>
+      <figure class="t"><img src="https://aluminiogonella.com/wp-content/uploads/2024/06/nordical-2.jpg" alt="Línea Nordical" onerror="fb(this,'ventana')"><figcaption>Línea Nordical</figcaption></figure>
+      <figure class="w"><img src="https://aluminiogonella.com/wp-content/uploads/2024/06/frente.jpg" alt="Frente vidriado" onerror="fb(this,'frente')"><figcaption>Frentes Vidriados</figcaption></figure>
+      <figure><img src="https://aluminiogonella.com/wp-content/uploads/2024/06/Mampara.jpg" alt="Mampara de baño" onerror="fb(this,'mampara')"><figcaption>Mamparas de baño</figcaption></figure>
+      <figure class="w"><img src="https://aluminiogonella.com/wp-content/uploads/2024/05/CARP-1-3-1024x435.jpg" alt="Carpinterías de aluminio" onerror="fb(this,'ventana')"><figcaption>Carpinterías</figcaption></figure>
+    </div>
+    <div class="lineas">
+      <div>
+        <h3>Sistemas Hydro que trabajan</h3>
+        <table>
+          <thead><tr><th>Línea</th><th>Variantes en el cotizador</th></tr></thead>
+          <tbody>
+            <tr><td>Línea 640</td><td>"Rotonda 640"</td></tr>
+            <tr><td>Línea HA</td><td>HA 62 · HA 110 · HA 135</td></tr>
+            <tr><td>Línea Nordical</td><td>Nordical</td></tr>
+            <tr><td>Línea 750</td><td>750</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <h3>Todo lo que fabrican y colocan</h3>
+        <ul class="prod-list">
+          <li>Carpinterías</li><li>Puerta Pivotante</li><li>Frentes Vidriados</li><li>Pérgolas</li><li>Invernaderos</li><li>Techos de Vidrio</li><li>Parasoles</li><li>Barandas de Acero</li><li>Barandas de Vidrio</li><li>Puertas Automáticas</li><li>Espejos a Medida</li><li>Mamparas de baño</li><li>Cerraduras Electrónicas</li><li>Frente de Placard</li>
+        </ul>
+        <p style="font-size:14px;color:var(--ink-2);margin:12px 0 0">Obras de su web: Parasoles Simil Madera · Plaza B · Locales Comerciales · Domus · Pérgola Automática · Baranda de vidrio.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CÓMO FUNCIONA -->
+  <section id="como">
+    <div class="sec-head">
+      <div><span class="num-sec">04 — CÓMO FUNCIONA</span><h2>De la capa a la colocación</h2></div>
+    </div>
+    <div class="como">
+      <ol class="pasos">
+        <li>Tocás una capa de la casa o elegís la familia.</li>
+        <li>Cargás medidas, línea, terminación y vidrio.</li>
+        <li>Sumás todo lo que necesites a un solo pedido.</li>
+        <li>Mandás el mensaje por WhatsApp con tu nombre y localidad.</li>
+        <li>Gonella coordina la medición en obra y confirma el presupuesto final.</li>
+      </ol>
+      <div>
+        <h3>Condiciones del estimado</h3>
+        <ul class="cond">
+          <li>Precios de ejemplo, en pesos, con colocación estimada.</li>
+          <li>El rango puede variar según la medición en obra.</li>
+          <li>Seña sugerida: <span id="cond-sena">40</span> % al confirmar fabricación.</li>
+          <li>Plazo de entrega: se informa al confirmar.</li>
+          <li>Consultas también por <a href="mailto:info@aluminiogonella.com">info@aluminiogonella.com</a>.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARA EL DUEÑO -->
+  <section class="dueno" aria-labelledby="h-dueno">
+    <div>
+      <span class="num-sec" style="color:var(--bronze-2)">05 — DEL OTRO LADO DEL MOSTRADOR</span>
+      <h2 id="h-dueno">Para vos, Aluminio Gonella</h2>
+      <ul>
+        <li>Menos mensajes repetidos: el "¿cuánto sale?" llega con medidas.</li>
+        <li>Pedidos con línea Hydro, vidrio y localidad: vas a medir sabiendo qué llevar.</li>
+        <li>Agenda de mediciones y colocaciones con cupos por día.</li>
+        <li>Seña que entra antes de confirmar fabricación, y sin comisión por consulta.</li>
+      </ul>
+      <p style="margin:18px 0 0"><button class="btn" type="button" data-owner>Ver como dueño</button></p>
+    </div>
+    <div class="mini-feed dark" id="mini-feed" aria-label="Panel de ejemplo, resumen"></div>
+  </section>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div><div class="lema">"Haciendo de tu entorno un mejor lugar"</div>
+        <div>Av. Aconquija 1277, Yerba Buena, Tucumán</div></div>
+      <div><a href="mailto:info@aluminiogonella.com">info@aluminiogonella.com</a><br><a href="https://www.instagram.com/aluminiogonella/" target="_blank" rel="noopener">@aluminiogonella</a></div>
+    </div>
+    <p class="sig">Prototipo de demostración preparado para Aluminio Gonella por Resolviendo Kos · No es la web oficial</p>
+  </div>
+</footer>
+
+<!-- PANEL DEL DUEÑO -->
+<div class="owner" id="owner" role="dialog" aria-modal="true" aria-labelledby="owner-t" hidden>
+  <div class="owner-in">
+    <div class="owner-bar"><div><b id="owner-t">Panel de Gonella</b><span class="ej">Panel de ejemplo</span></div><button type="button" id="owner-close">Cerrar</button></div>
+    <div class="owner-body" id="owner-body"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var WA = "5493813649703";
+var $ = function(id){return document.getElementById(id);};
+var ars = function(n){return "$ " + Math.round(n).toLocaleString("es-AR");};
+var r1k = function(n){return Math.round(n/1000)*1000;};
+var dec = function(n,d){return Number(n).toLocaleString("es-AR",{minimumFractionDigits:d===undefined?1:d,maximumFractionDigits:d===undefined?2:d});};
+var PE = '<span class="pe">Precio de ejemplo</span>';
+
+/* ===== Precios de ejemplo (editables) ===== */
+var P = {
+  l640:{g:"Carpinterías",label:"Línea 640 (Rotonda)",v:240000,u:"m²"},
+  ha62:{g:"Carpinterías",label:"Línea HA 62",v:300000,u:"m²"},
+  ha110:{g:"Carpinterías",label:"Línea HA 110",v:380000,u:"m²"},
+  ha135:{g:"Carpinterías",label:"Línea HA 135",v:440000,u:"m²"},
+  nordical:{g:"Carpinterías",label:"Línea Nordical",v:470000,u:"m²"},
+  l750:{g:"Carpinterías",label:"Línea 750",v:520000,u:"m²"},
+  dvh:{g:"Carpinterías",label:"Adicional DVH",v:90000,u:"m²"},
+  lam:{g:"Carpinterías",label:"Adicional laminado 3+3",v:55000,u:"m²"},
+  mosq:{g:"Carpinterías",label:"Mosquitero",v:45000,u:"c/u"},
+  pivot:{g:"Carpinterías",label:"Herrajes pivotante",v:380000,u:"c/u"},
+  perg:{g:"Pérgolas y techos",label:"Pérgola fija",v:210000,u:"m²"},
+  pergA:{g:"Pérgolas y techos",label:"Pérgola automática",v:480000,u:"m²"},
+  motor:{g:"Pérgolas y techos",label:"Motor y control",v:650000,u:"c/u"},
+  techo:{g:"Pérgolas y techos",label:"Techo de vidrio",v:390000,u:"m²"},
+  paras:{g:"Pérgolas y techos",label:"Parasoles simil madera",v:260000,u:"m²"},
+  madera:{g:"Pérgolas y techos",label:"Recargo simil madera",v:10,u:"%"},
+  bAce:{g:"Barandas",label:"Baranda de acero",v:230000,u:"ml"},
+  bVid:{g:"Barandas",label:"Baranda de vidrio",v:340000,u:"ml"},
+  pasam:{g:"Barandas",label:"Pasamanos (vidrio)",v:35000,u:"ml"},
+  esq:{g:"Barandas",label:"Esquina / quiebre",v:60000,u:"c/u"},
+  escal:{g:"Barandas",label:"Recargo escalera",v:15,u:"%"},
+  sena:{g:"Barandas",label:"Seña sugerida",v:40,u:"%"}
+};
+
+/* ===== Catálogos ===== */
+var TIPOS = [
+  {id:"corrediza",n:"Ventana corrediza",hojas:[2,3,4],m:1},
+  {id:"abrir",n:"Ventana de abrir",hojas:[1,2],m:1.08},
+  {id:"pivotante",n:"Puerta Pivotante",hojas:[],m:1.15,door:true},
+  {id:"frente",n:"Frente Vidriado",hojas:[],m:0.92}
+];
+var LINEAS = [
+  {id:"l640",n:"640 Rotonda",full:"Línea 640 (Rotonda 640)"},
+  {id:"ha62",n:"HA 62",full:"Línea HA 62"},
+  {id:"ha110",n:"HA 110",full:"Línea HA 110"},
+  {id:"ha135",n:"HA 135",full:"Línea HA 135"},
+  {id:"nordical",n:"Nordical",full:"Línea Nordical"},
+  {id:"l750",n:"750",full:"Línea 750"}
+];
+var COLORES = [
+  {id:"Blanco",hex:"#F4F2EC",st:"#8E8A80",m:1},
+  {id:"Gris",hex:"#6F7572",st:"#4D524F",m:1.04},
+  {id:"Negro",hex:"#24272A",st:"#24272A",m:1.06},
+  {id:"Simil madera",hex:"url(#cw)",st:"#5E3A1D",m:"madera"}
+];
+var VIDRIOS = [{id:"Float 4 mm",k:null},{id:"Laminado 3+3",k:"lam"},{id:"DVH",k:"dvh"}];
+var PRODS = [
+  {id:"pergA",n:"Pérgola automática",dens:{cerradas:1,abiertas:.35}},
+  {id:"perg",n:"Pérgola fija",dens:.6},
+  {id:"techo",n:"Techo de vidrio",dens:.2},
+  {id:"paras",n:"Parasoles simil madera",dens:.7}
+];
+var FINS = ["Simil madera","Negro","Blanco"];
+var ORIENT = [{id:"N",n:"Norte",v:[0,1]},{id:"E",n:"Este",v:[1,0]},{id:"O",n:"Oeste",v:[-1,0]},{id:"S",n:"Sur",v:[0,-1]}];
+var MATS = [{id:"vidrio",n:"Vidrio"},{id:"acero",n:"Acero"}];
+var UBIC = ["Balcón","Terraza","Escalera","Pileta"];
+var ALTS = [90,100,110];
+
+var byId = function(a,id){for(var i=0;i<a.length;i++){if(a[i].id===id)return a[i];}return a[0];};
+
+/* ===== Estado ===== */
+var S = {
+  carp:{tipo:"corrediza",linea:"ha62",w:150,h:110,hojas:2,color:"Blanco",vidrio:"DVH",mosq:true,qty:1},
+  som:{prod:"pergA",w:4.5,d:3.5,h:2.6,orient:"O",fin:"Simil madera",lamas:"cerradas",qty:1},
+  bar:{mat:"vidrio",ubic:"Balcón",L:6,alt:100,esq:1,pasam:true,qty:1}
+};
+var hora = 15.5;
+var active = "carp";
+var items = [];
+var dirty = true;
+
+/* ===== Cálculos ===== */
+function rng(t){return {t:t,lo:r1k(t*0.92),hi:r1k(t*1.08)};}
+function colorMult(c){var o=byId(COLORES,c);return o.m==="madera"?1+P.madera.v/100:o.m;}
+function calcCarp(c){
+  var tipo=byId(TIPOS,c.tipo);
+  var area=Math.max(0.8,(c.w/100)*(c.h/100));
+  var u=area*P[c.linea].v*tipo.m*colorMult(c.color);
+  var vk=byId(VIDRIOS,c.vidrio).k;
+  if(vk && !tipo.door) u+=area*P[vk].v;
+  if(tipo.door) u+=P.pivot.v;
+  var nm=mosqCount(c);
+  if(c.mosq && nm) u+=nm*P.mosq.v;
+  var r=rng(u*c.qty); r.area=area; return r;
+}
+function mosqCount(c){ if(c.tipo==="corrediza")return Math.ceil(c.hojas/2); if(c.tipo==="abrir")return c.hojas; return 0; }
+function calcSom(c){
+  var m2=c.w*c.d;
+  var u=m2*P[c.prod].v;
+  if(c.fin==="Simil madera") u*=1+P.madera.v/100;
+  if(c.prod==="pergA") u+=P.motor.v;
+  var r=rng(u*c.qty); r.m2=m2; return r;
+}
+function calcBar(c){
+  var u=c.L*(c.mat==="vidrio"?P.bVid.v:P.bAce.v);
+  if(c.mat==="vidrio" && c.pasam) u+=c.L*P.pasam.v;
+  u+=c.esq*P.esq.v;
+  if(c.ubic==="Escalera") u*=1+P.escal.v/100;
+  return rng(u*c.qty);
+}
+function calc(fam,c){return fam==="carp"?calcCarp(c):fam==="som"?calcSom(c):calcBar(c);}
+function desc(fam,c){
+  if(fam==="carp"){
+    var t=byId(TIPOS,c.tipo), parts=[t.n, byId(LINEAS,c.linea).full, c.w+" × "+c.h+" cm"];
+    if(t.hojas.length) parts.push(c.hojas+(c.hojas>1?" hojas":" hoja"));
+    if(c.tipo==="frente") parts.push(modulos(c)+" módulos");
+    parts.push(c.color);
+    if(!t.door) parts.push("vidrio "+c.vidrio);
+    if(c.mosq && mosqCount(c)) parts.push("con mosquitero");
+    parts.push("x"+c.qty);
+    return parts.join(" · ");
+  }
+  if(fam==="som"){
+    var p=byId(PRODS,c.prod), m2=c.w*c.d;
+    var a=[p.n, dec(c.w)+" × "+dec(c.d)+" m ("+dec(m2)+" m²)", "alto "+dec(c.h,2)+" m", c.fin, "galería al "+byId(ORIENT,c.orient).n];
+    if(c.prod==="pergA") a.push("con motor");
+    a.push("x"+c.qty);
+    return a.join(" · ");
+  }
+  var b=["Baranda de "+c.mat, dec(c.L)+" m lineales", "alto "+c.alt+" cm", c.ubic, c.esq+(c.esq===1?" esquina":" esquinas")];
+  if(c.mat==="vidrio" && c.pasam) b.push("con pasamanos");
+  return b.join(" · ");
+}
+function modulos(c){return Math.max(1,Math.ceil(c.w/120));}
+
+/* ===== UI: segmentos ===== */
+function seg(el,name,opts,cur,onPick){
+  el.innerHTML="";
+  opts.forEach(function(o,i){
+    var id=name+"-"+i, inp=document.createElement("input");
+    inp.type="radio"; inp.name=name; inp.id=id; inp.value=o.v; inp.checked=(String(o.v)===String(cur));
+    if(o.dis) inp.disabled=true;
+    var lb=document.createElement("label"); lb.htmlFor=id; lb.innerHTML=o.h||o.n;
+    inp.addEventListener("change",function(){onPick(o.v);});
+    el.appendChild(inp); el.appendChild(lb);
+  });
+}
+function swatch(c){
+  if(c.id==="Simil madera") return '<span class="sw madera"></span>'+c.id;
+  return '<span class="sw" style="background:'+c.hex+'"></span>'+c.id;
+}
+function renderCarpCtl(){
+  var c=S.carp, t=byId(TIPOS,c.tipo);
+  seg($("c-tipo"),"ct",TIPOS.map(function(x){return{v:x.id,n:x.n};}),c.tipo,function(v){
+    c.tipo=v; var tt=byId(TIPOS,v);
+    if(tt.door){ c.w=Math.min(Math.max(c.w,90),200); c.h=Math.max(c.h,210); c.h=Math.min(c.h,300); }
+    if(tt.hojas.length && tt.hojas.indexOf(c.hojas)<0) c.hojas=tt.hojas[tt.hojas.length-1]>2&&v==="corrediza"?2:tt.hojas[0];
+    syncNum("c",c.w,c.h); renderCarpCtl(); changed();
+  });
+  seg($("c-linea"),"cl",LINEAS.map(function(x){return{v:x.id,n:x.n};}),c.linea,function(v){c.linea=v;changed();});
+  $("c-hojas-f").hidden=!t.hojas.length;
+  seg($("c-hojas"),"ch",t.hojas.map(function(n){return{v:n,n:String(n)};}),c.hojas,function(v){c.hojas=+v;changed();});
+  seg($("c-color"),"cc",COLORES.map(function(x){return{v:x.id,h:swatch(x)};}),c.color,function(v){c.color=v;changed();});
+  $("c-vidrio-f").hidden=!!t.door;
+  seg($("c-vidrio"),"cv",VIDRIOS.map(function(x){return{v:x.id,n:x.id};}),c.vidrio,function(v){c.vidrio=v;changed();});
+  var hasM=mosqCount(c)>0; $("c-mosq").disabled=!hasM; $("c-mosq-l").style.opacity=hasM?1:.4;
+  $("c-mosq").checked=c.mosq;
+  $("c-q").textContent=c.qty;
+  $("c-w").max=$("c-wr").max=t.door?200:600;
+}
+function renderSomCtl(){
+  var c=S.som;
+  seg($("s-prod"),"sp",PRODS.map(function(x){return{v:x.id,n:x.n};}),c.prod,function(v){c.prod=v;renderSomCtl();changed();});
+  seg($("s-orient"),"so",ORIENT.map(function(x){return{v:x.id,n:x.n};}),c.orient,function(v){c.orient=v;changed();});
+  seg($("s-fin"),"sf",FINS.map(function(x){return{v:x,n:x};}),c.fin,function(v){c.fin=v;changed();});
+  $("s-lamas-f").hidden=c.prod!=="pergA";
+  seg($("s-lamas"),"sl",[{v:"cerradas",n:"Cerradas"},{v:"abiertas",n:"Abiertas"}],c.lamas,function(v){c.lamas=v;changed();});
+}
+function renderBarCtl(){
+  var c=S.bar;
+  seg($("b-mat"),"bm",MATS.map(function(x){return{v:x.id,n:x.n};}),c.mat,function(v){c.mat=v;renderBarCtl();changed();});
+  seg($("b-ubic"),"bu",UBIC.map(function(x){return{v:x,n:x};}),c.ubic,function(v){c.ubic=v;changed();});
+  seg($("b-alt"),"ba",ALTS.map(function(x){return{v:x,n:x+" cm"};}),c.alt,function(v){c.alt=+v;changed();});
+  $("b-esq").textContent=c.esq;
+  $("b-pasam").disabled=c.mat!=="vidrio"; $("b-pasam-l").style.opacity=c.mat==="vidrio"?1:.4;
+  $("b-pasam").checked=c.pasam;
+}
+function syncNum(p,a,b){
+  if(p==="c"){ $("c-w").value=$("c-wr").value=a; $("c-h").value=$("c-hr").value=b; }
+}
+function bindPair(numId,rngId,set,lo,hi){
+  var n=$(numId), r=rngId?$(rngId):null;
+  function clamp(v){v=parseFloat(String(v).replace(",","."));if(isNaN(v))return null;return Math.min(Math.max(v,+n.min||lo),+n.max||hi);}
+  n.addEventListener("input",function(){var v=clamp(n.value);if(v===null)return;if(r)r.value=v;set(v);changed();});
+  n.addEventListener("blur",function(){var v=clamp(n.value);if(v===null)v=+n.min;n.value=v;if(r)r.value=v;set(v);changed();});
+  if(r) r.addEventListener("input",function(){n.value=r.value;set(+r.value);changed();});
+}
+
+/* ===== SVG helpers ===== */
+var NS="http://www.w3.org/2000/svg";
+function cotaH(x1,x2,y,txt,up){
+  var d=up?-1:1;
+  return '<g class="cota"><path d="M'+x1+' '+(y-8*d)+'V'+(y+5*d)+'M'+x2+' '+(y-8*d)+'V'+(y+5*d)+'M'+x1+' '+y+'H'+x2+'" stroke="#A46A36" stroke-width="1"/>'+
+    '<path d="M'+(x1+4)+' '+(y-4)+'L'+(x1-4)+' '+(y+4)+'M'+(x2+4)+' '+(y-4)+'L'+(x2-4)+' '+(y+4)+'" stroke="#A46A36" stroke-width="1.6"/>'+
+    '<rect x="'+((x1+x2)/2-txt.length*4.4-6)+'" y="'+(y-10)+'" width="'+(txt.length*8.8+12)+'" height="20" fill="#FBF7EF"/>'+
+    '<text x="'+((x1+x2)/2)+'" y="'+(y+5)+'" text-anchor="middle" font-family="Reddit Mono,monospace" font-size="14" font-weight="600" fill="#A46A36">'+txt+'</text></g>';
+}
+function cotaV(x,y1,y2,txt){
+  var cy=(y1+y2)/2;
+  return '<g class="cota"><path d="M'+(x-8)+' '+y1+'H'+(x+5)+'M'+(x-8)+' '+y2+'H'+(x+5)+'M'+x+' '+y1+'V'+y2+'" stroke="#A46A36" stroke-width="1"/>'+
+    '<path d="M'+(x-4)+' '+(y1+4)+'L'+(x+4)+' '+(y1-4)+'M'+(x-4)+' '+(y2+4)+'L'+(x+4)+' '+(y2-4)+'" stroke="#A46A36" stroke-width="1.6"/>'+
+    '<g transform="rotate(-90 '+x+' '+cy+')"><rect x="'+(x-txt.length*4.4-6)+'" y="'+(cy-10)+'" width="'+(txt.length*8.8+12)+'" height="20" fill="#FBF7EF"/>'+
+    '<text x="'+x+'" y="'+(cy+5)+'" text-anchor="middle" font-family="Reddit Mono,monospace" font-size="14" font-weight="600" fill="#A46A36">'+txt+'</text></g></g>';
+}
+var DEFS='<defs><pattern id="cw" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(4)"><rect width="10" height="10" fill="#9A6436"/><rect width="3.5" height="10" fill="#7A4B26"/><rect x="6" width="1.2" height="10" fill="#B27845"/></pattern>'+
+  '<pattern id="mq" width="5" height="5" patternUnits="userSpaceOnUse"><path d="M0 0H5M0 0V5" stroke="#1B231E" stroke-width=".5" opacity=".55"/></pattern>'+
+  '<pattern id="hz" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="#BFAE8C" stroke-width="1.4"/></pattern>'+
+  '<linearGradient id="gl" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#DDEBE4"/><stop offset=".55" stop-color="#C6DCD1"/><stop offset="1" stop-color="#B7D0C4"/></linearGradient></defs>';
+
+function drawCarp(){
+  var c=S.carp, t=byId(TIPOS,c.tipo), col=byId(COLORES,c.color);
+  var W=560,H=420, aw=400, ah=300;
+  var s=Math.min(aw/c.w, ah/c.h);
+  var fw=c.w*s, fh=c.h*s, x0=40+(aw-fw)/2+10, y0=24+(ah-fh)/2;
+  var ft=Math.max(7,Math.min(15,5.5*s));
+  var fill=col.hex, st=col.st;
+  var o=DEFS;
+  // muro alrededor
+  o+='<rect x="'+(x0-14)+'" y="'+(y0-14)+'" width="'+(fw+28)+'" height="'+(fh+28)+'" fill="url(#hz)" opacity=".6"/>';
+  o+='<rect x="'+x0+'" y="'+y0+'" width="'+fw+'" height="'+fh+'" fill="'+fill+'" stroke="'+st+'" stroke-width="1.2"/>';
+  var ix=x0+ft, iy=y0+ft, iw=fw-2*ft, ih=fh-2*ft;
+  var glass='url(#gl)';
+  var dvh=c.vidrio==="DVH"&&!t.door;
+  function pane(x,y,w,h){
+    var g='<rect x="'+x+'" y="'+y+'" width="'+Math.max(1,w)+'" height="'+Math.max(1,h)+'" fill="'+glass+'"/>';
+    g+='<path d="M'+(x+w*0.15)+' '+(y+h*0.85)+'L'+(x+w*0.45)+' '+(y+h*0.2)+'" stroke="#fff" stroke-width="2" opacity=".5"/>';
+    if(dvh) g+='<rect x="'+(x+3)+'" y="'+(y+3)+'" width="'+Math.max(1,w-6)+'" height="'+Math.max(1,h-6)+'" fill="none" stroke="#7FA393" stroke-width=".8" stroke-dasharray="3 2"/>';
+    if(c.vidrio==="Laminado 3+3"&&!t.door) g+='<rect x="'+(x+1.5)+'" y="'+(y+1.5)+'" width="'+Math.max(1,w-3)+'" height="'+Math.max(1,h-3)+'" fill="none" stroke="#5E8A78" stroke-width=".6"/>';
+    return g;
+  }
+  var sft=Math.max(5,ft*0.7);
+  if(c.tipo==="corrediza"){
+    var n=c.hojas, ov=sft, sw=(iw+ov*(n-1))/n;
+    for(var i=0;i<n;i++){
+      var sx=ix+i*(sw-ov);
+      o+='<rect x="'+sx+'" y="'+iy+'" width="'+sw+'" height="'+ih+'" fill="'+fill+'" stroke="'+st+'" stroke-width="1"/>';
+      o+=pane(sx+sft,iy+sft,sw-2*sft,ih-2*sft);
+      var moving=(n===2)||(n===3&&i!==1)||(n===4&&(i===1||i===2));
+      if(c.mosq && moving && mosqCount(c)) o+='<rect x="'+(sx+sft)+'" y="'+(iy+sft)+'" width="'+(sw-2*sft)+'" height="'+(ih-2*sft)+'" fill="url(#mq)"/>';
+      if(moving){
+        var cx=sx+sw/2, cy=iy+ih/2, dir=(i<n/2)?1:-1, L=Math.min(30,sw*0.28);
+        o+='<path d="M'+(cx-L*dir)+' '+cy+'H'+(cx+L*dir)+'M'+(cx+L*dir-7*dir)+' '+(cy-6)+'L'+(cx+L*dir)+' '+cy+'L'+(cx+L*dir-7*dir)+' '+(cy+6)+'" stroke="#A46A36" stroke-width="2" fill="none"/>';
+      }
+    }
+  } else if(c.tipo==="abrir"){
+    var n2=c.hojas, w2=iw/n2;
+    for(var j=0;j<n2;j++){
+      var ax=ix+j*w2;
+      o+='<rect x="'+ax+'" y="'+iy+'" width="'+w2+'" height="'+ih+'" fill="'+fill+'" stroke="'+st+'" stroke-width="1"/>';
+      o+=pane(ax+sft,iy+sft,w2-2*sft,ih-2*sft);
+      if(c.mosq) o+='<rect x="'+(ax+sft)+'" y="'+(iy+sft)+'" width="'+(w2-2*sft)+'" height="'+(ih-2*sft)+'" fill="url(#mq)"/>';
+      var hinge=(n2===1||j===0)?ax+sft:ax+w2-sft, far=(hinge===ax+sft)?ax+w2-sft:ax+sft;
+      o+='<path d="M'+far+' '+(iy+sft)+'L'+hinge+' '+(iy+ih/2)+'L'+far+' '+(iy+ih-sft)+'" fill="none" stroke="#A46A36" stroke-width="1.3" stroke-dasharray="6 4"/>';
+      o+='<rect x="'+(far+(far>hinge?-6:2))+'" y="'+(iy+ih/2-12)+'" width="4" height="24" rx="2" fill="#A46A36"/>';
+    }
+  } else if(c.tipo==="pivotante"){
+    o+='<rect x="'+ix+'" y="'+iy+'" width="'+iw+'" height="'+(ih+ft)+'" fill="'+fill+'" stroke="'+st+'" stroke-width="1"/>';
+    for(var g=1;g<6;g++){ o+='<path d="M'+(ix+8)+' '+(iy+ih*g/6)+'H'+(ix+iw-8)+'" stroke="'+(c.color==="Blanco"?"#CFCABE":"rgba(255,255,255,.14)")+'" stroke-width="1"/>'; }
+    var px=ix+iw*0.22;
+    o+='<path d="M'+px+' '+(iy-ft)+'V'+(iy+ih+ft)+'" stroke="#A46A36" stroke-width="1.2" stroke-dasharray="6 5"/>';
+    o+='<circle cx="'+px+'" cy="'+(iy+3)+'" r="4" fill="#A46A36"/><circle cx="'+px+'" cy="'+(iy+ih+ft-3)+'" r="4" fill="#A46A36"/>';
+    o+='<rect x="'+(ix+iw-26)+'" y="'+(iy+ih*0.25)+'" width="7" height="'+(ih*0.5)+'" rx="3" fill="#C88B52" stroke="#7A4B26"/>';
+    o+='<text x="'+(px+8)+'" y="'+(iy+16)+'" font-family="Reddit Mono,monospace" font-size="11" fill="#A46A36">eje pivote</text>';
+  } else {
+    var m=modulos(c), mw=iw/m, tr=c.h>230? ih*0.24:0;
+    for(var k=0;k<m;k++){
+      var mx=ix+k*mw;
+      if(tr) o+=pane(mx+2,iy,mw-4,tr-3);
+      o+=pane(mx+2,iy+tr+(tr?3:0),mw-4,ih-tr-(tr?3:0));
+      if(k>0) o+='<rect x="'+(mx-3)+'" y="'+iy+'" width="6" height="'+ih+'" fill="'+fill+'" stroke="'+st+'" stroke-width=".8"/>';
+    }
+    if(tr) o+='<rect x="'+ix+'" y="'+(iy+tr-3)+'" width="'+iw+'" height="6" fill="'+fill+'" stroke="'+st+'" stroke-width=".8"/>';
+  }
+  o+=cotaH(x0,x0+fw,y0+fh+34,c.w+" cm");
+  o+=cotaV(x0+fw+34,y0,y0+fh,c.h+" cm");
+  var area=(c.w*c.h/1e4);
+  o+='<text x="'+x0+'" y="'+(H-8)+'" font-family="Reddit Mono,monospace" font-size="12" fill="#56615A">'+byId(LINEAS,c.linea).full.toUpperCase()+' · '+dec(area,2)+' m² · x'+c.qty+'</text>';
+  $("svg-carp").innerHTML=o;
+  $("c-tag").textContent=t.n;
+}
+
+/* sol para Yerba Buena (lat −26,8°), fin de noviembre */
+function sunAt(t){
+  var lat=-26.8*Math.PI/180, decl=-21.3*Math.PI/180, H=15*(t-13.1)*Math.PI/180;
+  var e=-Math.cos(decl)*Math.sin(H);
+  var n=Math.sin(decl)*Math.cos(lat)-Math.cos(decl)*Math.sin(lat)*Math.cos(H);
+  var u=Math.sin(decl)*Math.sin(lat)+Math.cos(decl)*Math.cos(lat)*Math.cos(H);
+  return {e:e,n:n,u:u};
+}
+var lastShade={cub:0,el:0};
+function drawSom(){
+  var c=S.som, p=byId(PRODS,c.prod);
+  var W=600,H=340, gy=300, x0=120;
+  var s=Math.min(400/(c.d+0.9), 200/(c.h+0.5));
+  var xe=x0+c.d*s, yr=gy-c.h*s;
+  var sun=sunAt(hora), ov=byId(ORIENT,c.orient).v;
+  var pcomp=sun.e*ov[0]+sun.n*ov[1];
+  var dens=(c.prod==="pergA")?p.dens[c.lamas]:p.dens;
+  var o=DEFS+'<defs><clipPath id="cl"><rect x="0" y="0" width="600" height="300"/></clipPath></defs>';
+  // cielo
+  var day=sun.u>0.01;
+  o+='<rect x="0" y="0" width="600" height="'+gy+'" fill="'+(day?"#FBF7EF":"#E7E3DA")+'"/>';
+  // piso
+  o+='<rect x="0" y="'+gy+'" width="600" height="40" fill="#E5D8C1"/><path d="M0 '+gy+'H600" stroke="#7A4B26" stroke-width="2"/>';
+  // casa (corte)
+  o+='<rect x="'+(x0-90)+'" y="20" width="90" height="'+(gy-20)+'" fill="#EFE5D3" stroke="#56615A"/><rect x="'+(x0-14)+'" y="20" width="14" height="'+(gy-20)+'" fill="url(#hz)" stroke="#56615A"/>';
+  o+='<text x="'+(x0-82)+'" y="44" font-family="Reddit Mono,monospace" font-size="11" fill="#56615A">CASA</text>';
+  var cov=0, x1=0, x2=0, houseEnd=0;
+  if(day){
+    var off=-c.h*pcomp/sun.u; // desplazamiento de la sombra del techo (m, hacia afuera +)
+    x1=Math.max(0,off); x2=Math.min(c.d,c.d+off);
+    // sombra de la casa cuando el sol está detrás (pcomp<0)
+    var houseH=6;
+    if(pcomp<0){ houseEnd=Math.min(c.d, houseH*(-pcomp)/sun.u); }
+    var shadeLen=Math.max(0,x2-x1);
+    // unión con sombra de la casa [0,houseEnd]
+    var union=shadeLen;
+    if(houseEnd>0){ var a1=0,a2=houseEnd; var ov2=Math.max(0,Math.min(a2,x2)-Math.max(a1,x1)); union=shadeLen+houseEnd-ov2; }
+    cov=Math.min(1,union/c.d);
+    // dibujar sombra en el piso
+    var sx1=x0+(off)*s, sx2=x0+(c.d+off)*s;
+    if(sun.u>0.05){
+      o+='<polygon points="'+x0+','+yr+' '+xe+','+yr+' '+Math.min(600,sx2)+','+gy+' '+Math.max(0,sx1)+','+gy+'" fill="#1E3B2C" opacity="'+(0.06+0.10*dens)+'" clip-path="url(#cl)"/>';
+    }
+    o+='<rect x="'+Math.max(x0,Math.min(sx1,sx2))+'" y="'+gy+'" width="'+Math.max(0,Math.min(xe,Math.max(sx1,sx2))-Math.max(x0,Math.min(sx1,sx2)))+'" height="9" fill="#1E3B2C" opacity="'+(0.25+0.55*dens)+'"/>';
+    if(houseEnd>0) o+='<rect x="'+x0+'" y="'+gy+'" width="'+(houseEnd*s)+'" height="9" fill="#1E3B2C" opacity=".8"/>';
+    // sol
+    var hl=Math.sqrt(sun.u*sun.u+pcomp*pcomp)||1, R=250;
+    var cx=x0+c.d*s/2+(pcomp/hl)*R, cy=gy-(sun.u/hl)*R;
+    cx=Math.max(24,Math.min(576,cx)); cy=Math.max(24,cy);
+    var mx=x0+c.d*s/2;
+    o+='<path d="M'+cx+' '+cy+'L'+xe+' '+yr+'M'+cx+' '+cy+'L'+x0+' '+yr+'" stroke="#C88B52" stroke-width="1" stroke-dasharray="5 5" opacity=".8"/>';
+    o+='<circle cx="'+cx+'" cy="'+cy+'" r="17" fill="#C88B52"/><circle cx="'+cx+'" cy="'+cy+'" r="25" fill="none" stroke="#C88B52" stroke-width="1.5" opacity=".5"/>';
+  } else {
+    o+='<circle cx="520" cy="50" r="13" fill="#56615A" opacity=".5"/><circle cx="526" cy="46" r="12" fill="#E7E3DA"/>';
+  }
+  // estructura
+  var fcol=c.fin==="Simil madera"?"url(#cw)":(c.fin==="Negro"?"#24272A":"#F4F2EC");
+  var fst=c.fin==="Blanco"?"#8E8A80":"#3A2A1C";
+  o+='<rect x="'+(xe-8)+'" y="'+yr+'" width="8" height="'+(gy-yr)+'" fill="'+fcol+'" stroke="'+fst+'" stroke-width=".8"/>';
+  o+='<rect x="'+x0+'" y="'+(yr-10)+'" width="'+(xe-x0)+'" height="10" fill="'+fcol+'" stroke="'+fst+'" stroke-width=".8"/>';
+  if(c.prod==="techo"){
+    o+='<rect x="'+x0+'" y="'+(yr-16)+'" width="'+(xe-x0)+'" height="6" fill="#B9D7CB" stroke="#5E8A78" stroke-width=".8"/>';
+  } else {
+    var gap=c.prod==="paras"?11:14, n=Math.floor((xe-x0)/gap);
+    for(var i=0;i<=n;i++){
+      var lx=x0+4+i*gap;
+      if(lx>xe-4) break;
+      if(c.prod==="pergA" && c.lamas==="abiertas") o+='<rect x="'+(lx-1)+'" y="'+(yr-24)+'" width="3" height="14" fill="'+fcol+'" stroke="'+fst+'" stroke-width=".5"/>';
+      else o+='<rect x="'+(lx-3)+'" y="'+(yr-18)+'" width="'+(c.prod==="pergA"?11:6)+'" height="8" fill="'+fcol+'" stroke="'+fst+'" stroke-width=".5"/>';
+    }
+  }
+  // cotas
+  o+=cotaH(x0,xe,gy+26,dec(c.d)+" m");
+  o+=cotaV(xe+30,yr,gy,dec(c.h,2)+" m");
+  o+='<text x="'+(x0+8)+'" y="'+(yr-30)+'" font-family="Reddit Mono,monospace" font-size="11" fill="#56615A">'+p.n.toUpperCase()+'</text>';
+  $("svg-som").innerHTML=o;
+  var hh=Math.floor(hora), mm=Math.round((hora-hh)*60);
+  $("s-hora-o").textContent=(hh<10?"0":"")+hh+":"+(mm<10?"0":"")+mm;
+  var el=Math.asin(Math.max(-1,Math.min(1,sun.u)))*180/Math.PI;
+  $("o-cub").textContent=day?Math.round(cov*100)+" %":"—";
+  $("o-den").textContent=Math.round((1-dens)*100)+" %";
+  $("o-el").textContent=day?Math.round(el)+"°":"de noche";
+  lastShade={cub:cov,el:el};
+  // planta
+  var ps=Math.min(130/c.w, 90/c.d), pw=c.w*ps, pd=c.d*ps, px=(150-pw)/2+5, py=10;
+  var q='<rect x="'+px+'" y="'+py+'" width="'+pw+'" height="5" fill="#56615A"/>';
+  q+='<rect x="'+px+'" y="'+(py+5)+'" width="'+pw+'" height="'+pd+'" fill="'+(c.prod==="techo"?"#CFE1D8":"#EFE5D3")+'" stroke="#1E3B2C" stroke-width="1.2"/>';
+  if(c.prod!=="techo"){ for(var y=py+9;y<py+5+pd-2;y+=c.prod==="paras"?4:5) q+='<path d="M'+(px+2)+' '+y+'H'+(px+pw-2)+'" stroke="#7A4B26" stroke-width="1"/>'; }
+  q+='<text x="'+(px+pw/2)+'" y="'+(py+pd+22)+'" text-anchor="middle" font-family="Reddit Mono,monospace" font-size="11" fill="#A46A36">'+dec(c.w)+' × '+dec(c.d)+' m</text>';
+  $("svg-planta").innerHTML=q;
+  var r=calcSom(c);
+  $("planta-ul").innerHTML='<li>Superficie: <b>'+dec(r.m2)+' m²</b></li><li>Frente '+dec(c.w)+' m · salida '+dec(c.d)+' m</li><li>'+(c.prod==="techo"?"Protege de la lluvia; deja pasar luz":"Lamas en sentido del frente")+'</li>';
+}
+
+function drawBar(){
+  var c=S.bar, W=600,H=340;
+  var stair=c.ubic==="Escalera";
+  var s=Math.min(480/c.L, 190/(c.alt/100)*0.9);
+  if(stair) s=Math.min(s, 400/c.L);
+  var len=c.L*s, hh=(c.alt/100)*s;
+  hh=Math.max(hh,62);
+  var x0=(W-len)/2-10, y0=250;
+  var ang=stair?-28:0;
+  var o=DEFS;
+  o+='<g transform="rotate('+ang+' '+x0+' '+y0+')'+(stair?' translate(30 60)':'')+'">';
+  // losa
+  o+='<rect x="'+(x0-10)+'" y="'+y0+'" width="'+(len+20)+'" height="14" fill="url(#hz)" stroke="#56615A"/>';
+  var nP=Math.max(1,Math.ceil(c.L/1.2)), pw=len/nP;
+  if(c.mat==="vidrio"){
+    o+='<rect x="'+x0+'" y="'+(y0-12)+'" width="'+len+'" height="12" fill="#56615A"/>';
+    for(var i=0;i<nP;i++){
+      var gx=x0+i*pw+2;
+      o+='<rect x="'+gx+'" y="'+(y0-hh)+'" width="'+(pw-4)+'" height="'+(hh-4)+'" fill="url(#gl)" opacity=".9" stroke="#5E8A78" stroke-width="1"/>';
+      o+='<path d="M'+(gx+pw*0.15)+' '+(y0-hh*0.25)+'L'+(gx+pw*0.4)+' '+(y0-hh*0.8)+'" stroke="#fff" stroke-width="2" opacity=".6"/>';
+    }
+    if(c.pasam) o+='<rect x="'+(x0-4)+'" y="'+(y0-hh-9)+'" width="'+(len+8)+'" height="8" rx="4" fill="#A46A36"/>';
+  } else {
+    var posts=Math.max(2,Math.ceil(c.L/1.2)+1), stp=len/(posts-1);
+    for(var k=1;k<=4;k++){ var ry=y0-hh*k/5; o+='<path d="M'+x0+' '+ry+'H'+(x0+len)+'" stroke="#8E9894" stroke-width="2.4"/>'; }
+    for(var j=0;j<posts;j++){ var px=x0+j*stp; o+='<rect x="'+(px-3.5)+'" y="'+(y0-hh)+'" width="7" height="'+hh+'" fill="#B4BDB9" stroke="#56615A" stroke-width=".8"/>'; }
+    o+='<rect x="'+(x0-6)+'" y="'+(y0-hh-8)+'" width="'+(len+12)+'" height="9" rx="4.5" fill="#B4BDB9" stroke="#56615A"/>';
+  }
+  for(var e=1;e<=c.esq;e++){
+    var ex=x0+len*e/(c.esq+1);
+    o+='<path d="M'+ex+' '+(y0-hh-22)+'V'+(y0+18)+'" stroke="#A46A36" stroke-dasharray="3 3"/>';
+    o+='<rect x="'+(ex-5)+'" y="'+(y0-hh-30)+'" width="10" height="10" transform="rotate(45 '+ex+' '+(y0-hh-25)+')" fill="#A46A36"/>';
+  }
+  o+=cotaH(x0,x0+len,y0+40,dec(c.L)+" m");
+  o+=cotaV(x0+len+30,y0-hh,y0,c.alt+" cm");
+  o+='</g>';
+  o+='<text x="16" y="'+(H-10)+'" font-family="Reddit Mono,monospace" font-size="12" fill="#56615A">BARANDA DE '+c.mat.toUpperCase()+' · '+c.ubic.toUpperCase()+(c.esq?' · ◆ = esquina/quiebre':'')+'</text>';
+  $("svg-bar").innerHTML=o;
+  $("b-tag").textContent=nP+(c.mat==="vidrio"?" paños":" tramos");
+}
+
+/* ===== Precio en vivo ===== */
+function showPrice(fam){
+  var pre={carp:"c",som:"s",bar:"b"}[fam], c=S[fam], r=calc(fam,c);
+  $(pre+"-precio").innerHTML='<span style="white-space:nowrap">'+ars(r.lo)+'</span> a <span style="white-space:nowrap">'+ars(r.hi)+'</span>';
+  var det="";
+  if(fam==="carp") det=dec(r.area,2)+" m² c/u · "+byId(LINEAS,c.linea).n;
+  if(fam==="som") det=dec(r.m2)+" m²"+(c.prod==="pergA"?" · incluye motor":"");
+  if(fam==="bar") det=dec(c.L)+" ml · "+c.esq+" esq.";
+  $(pre+"-det").textContent=det;
+}
+
+/* ===== Pedido y mensaje ===== */
+function totals(list){
+  var lo=0,hi=0,t=0;
+  list.forEach(function(it){var r=calc(it.fam,it.cfg);lo+=r.lo;hi+=r.hi;t+=r.t;});
+  return {lo:lo,hi:hi,t:t,sena:r1k(t*P.sena.v/100)};
+}
+function msgList(){
+  var l=items.slice();
+  if(items.length===0||dirty) l.push({fam:active,cfg:JSON.parse(JSON.stringify(S[active])),draft:items.length>0});
+  return l;
+}
+function buildMsg(list, nombre, loc, obra, med){
+  var out="Hola Aluminio Gonella, armé este pedido en el cotizador:\n";
+  list.forEach(function(it,i){
+    var r=calc(it.fam,it.cfg);
+    out+="\n"+(i+1)+") "+desc(it.fam,it.cfg)+"\n   Estimado: "+ars(r.lo)+" a "+ars(r.hi)+" (precio de ejemplo)\n";
+  });
+  var T=totals(list);
+  out+="\nTotal estimado: "+ars(T.lo)+" a "+ars(T.hi)+" (precio de ejemplo)";
+  out+="\nSeña sugerida al confirmar: "+ars(T.sena)+" ("+P.sena.v+" %, precio de ejemplo)\n";
+  out+="\nNombre: "+(nombre||"(sin completar)");
+  out+="\nObra en: "+loc+" · "+obra;
+  out+="\nPara medir prefiero: "+med;
+  out+="\n\n¿Me confirman visita para medir?";
+  return out;
+}
+var typed="", target="", typing=null;
+function setBubble(txt){
+  target=txt;
+  var i=0, n=Math.min(typed.length,target.length);
+  while(i<n && typed[i]===target[i]) i++;
+  typed=typed.slice(0,i);
+  if(!typing){
+    $("chat-st").textContent="escribiendo…"; $("caret").hidden=false;
+    typing=setInterval(function(){
+      if(typed===target){clearInterval(typing);typing=null;$("chat-st").textContent="en línea";$("caret").hidden=true;return;}
+      var step=Math.max(3,Math.ceil((target.length-typed.length)/18));
+      typed=target.slice(0,Math.min(target.length,typed.length+step));
+      $("bub-t").textContent=typed;
+    },16);
+  }
+  $("bub-t").textContent=typed;
+}
+function renderPedido(){
+  var ul=$("items");
+  if(!items.length){ ul.innerHTML='<li style="display:block"><span class="vacio">Todavía no agregaste nada. El mensaje muestra lo que estás armando ahora.</span></li>'; }
+  else{
+    ul.innerHTML=items.map(function(it,i){var r=calc(it.fam,it.cfg);
+      return '<li><span class="ix">'+String(i+1).padStart(2,"0")+'</span><span class="d">'+desc(it.fam,it.cfg)+'<span class="p">'+ars(r.lo)+' a '+ars(r.hi)+' '+PE+'</span></span><button type="button" data-del="'+i+'" aria-label="Quitar ítem '+(i+1)+'">Quitar</button></li>';}).join("");
+  }
+  var list=msgList(), T=totals(list);
+  $("tot").innerHTML='<span style="white-space:nowrap">'+ars(T.lo)+'</span> a <span style="white-space:nowrap">'+ars(T.hi)+'</span>';
+  $("sena").textContent=ars(T.sena);
+  $("sena-pct").textContent=P.sena.v; $("cond-sena").textContent=P.sena.v;
+  var nom=$("d-nom").value.trim();
+  var msg=buildMsg(list,nom,$("d-loc").value,$("d-obra").value,$("d-med").value);
+  setBubble(msg);
+  $("wa").href="https://wa.me/"+WA+"?text="+encodeURIComponent(msg);
+  var now=new Date(); $("bub-meta").textContent=(now.getHours()<10?"0":"")+now.getHours()+":"+(now.getMinutes()<10?"0":"")+now.getMinutes()+" ✓✓";
+}
+
+function changed(){
+  dirty=true;
+  if(active==="carp"){drawCarp();}
+  if(active==="som"){drawSom();}
+  if(active==="bar"){drawBar();}
+  showPrice(active);
+  renderPedido();
+}
+function redrawAll(){ drawCarp();drawSom();drawBar(); ["carp","som","bar"].forEach(showPrice); renderPedido(); renderOwner(); }
+
+/* ===== Tabs ===== */
+function setTab(t, focus){
+  active=t; dirty=true;
+  document.querySelectorAll(".tab").forEach(function(b){var on=b.dataset.tab===t;b.setAttribute("aria-selected",on);b.tabIndex=on?0:-1;if(on&&focus)b.focus();});
+  ["carp","som","bar"].forEach(function(k){$("p-"+k).hidden=(k!==t);});
+  changed();
+}
+document.querySelectorAll(".tab").forEach(function(b,i,all){
+  b.addEventListener("click",function(){setTab(b.dataset.tab);});
+  b.addEventListener("keydown",function(e){
+    if(e.key==="ArrowRight"||e.key==="ArrowLeft"){var arr=Array.prototype.slice.call(all);var j=(arr.indexOf(b)+(e.key==="ArrowRight"?1:-1)+arr.length)%arr.length;setTab(arr[j].dataset.tab,true);}
+  });
+});
+
+/* ===== Casa por capas ===== */
+function goCapa(k){
+  if(k==="carp"){S.carp.tipo="corrediza";if(S.carp.h>230){S.carp.h=110;}syncNum("c",S.carp.w,S.carp.h);renderCarpCtl();setTab("carp");}
+  else if(k==="pivot"){S.carp.tipo="pivotante";S.carp.w=Math.min(Math.max(S.carp.w,100),140);S.carp.h=Math.max(S.carp.h,240);syncNum("c",S.carp.w,S.carp.h);renderCarpCtl();setTab("carp");}
+  else if(k==="pergola"){S.som.prod="pergA";renderSomCtl();setTab("som");}
+  else if(k==="techo"){S.som.prod="techo";renderSomCtl();setTab("som");}
+  else if(k==="parasol"){S.som.prod="paras";renderSomCtl();setTab("som");}
+  else if(k==="baranda"){S.bar.mat="vidrio";renderBarCtl();setTab("bar");}
+  document.querySelectorAll("[data-go]").forEach(function(el){el.classList.toggle("on",el.dataset.go===k);});
+  $("cotizar").scrollIntoView({behavior:"smooth",block:"start"});
+}
+document.querySelectorAll("[data-go]").forEach(function(el){
+  el.addEventListener("click",function(){goCapa(el.dataset.go);});
+  el.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();goCapa(el.dataset.go);}});
+  el.addEventListener("mouseenter",function(){document.querySelectorAll('[data-go="'+el.dataset.go+'"]').forEach(function(x){x.classList.add("on");});});
+  el.addEventListener("mouseleave",function(){document.querySelectorAll('[data-go="'+el.dataset.go+'"]').forEach(function(x){x.classList.remove("on");});});
+});
+
+/* ===== Bind controles ===== */
+bindPair("c-w","c-wr",function(v){S.carp.w=Math.round(v);},40,600);
+bindPair("c-h","c-hr",function(v){S.carp.h=Math.round(v);},40,300);
+bindPair("s-w","s-wr",function(v){S.som.w=v;},1.5,10);
+bindPair("s-d","s-dr",function(v){S.som.d=v;},1,6);
+bindPair("s-h",null,function(v){S.som.h=v;},2.2,3.4);
+bindPair("b-L","b-Lr",function(v){S.bar.L=v;},1,40);
+$("c-mosq").addEventListener("change",function(){S.carp.mosq=this.checked;changed();});
+$("b-pasam").addEventListener("change",function(){S.bar.pasam=this.checked;changed();});
+$("s-hora").addEventListener("input",function(){hora=+this.value;drawSom();});
+document.querySelectorAll("[data-q]").forEach(function(b){
+  b.addEventListener("click",function(){
+    var d=+b.dataset.d;
+    if(b.dataset.q==="carp"){S.carp.qty=Math.max(1,Math.min(50,S.carp.qty+d));$("c-q").textContent=S.carp.qty;}
+    else {S.bar.esq=Math.max(0,Math.min(8,S.bar.esq+d));$("b-esq").textContent=S.bar.esq;}
+    changed();
+  });
+});
+document.querySelectorAll("[data-add]").forEach(function(b){
+  b.addEventListener("click",function(){
+    var f=b.dataset.add;
+    items.push({fam:f,cfg:JSON.parse(JSON.stringify(S[f]))});
+    dirty=false; renderPedido();
+    b.textContent="Agregado ✓"; b.classList.add("ok");
+    setTimeout(function(){b.textContent="Agregar al pedido";b.classList.remove("ok");},1400);
+  });
+});
+$("items").addEventListener("click",function(e){var d=e.target.closest("[data-del]");if(!d)return;items.splice(+d.dataset.del,1);renderPedido();});
+["d-nom","d-loc","d-obra","d-med"].forEach(function(id){$(id).addEventListener("input",function(){if(id==="d-nom")$(id).classList.remove("need");renderPedido();});$(id).addEventListener("change",renderPedido);});
+$("wa").addEventListener("click",function(e){
+  if(!$("d-nom").value.trim()){e.preventDefault();$("d-nom").classList.add("need");$("d-nom").focus();$("wa-hint").textContent="Poné tu nombre así Gonella sabe a quién responder.";}
+});
+
+/* ===== Tabla de precios ===== */
+function renderTabla(){
+  var groups={};
+  Object.keys(P).forEach(function(k){(groups[P[k].g]=groups[P[k].g]||[]).push(k);});
+  $("pgrid").innerHTML=Object.keys(groups).map(function(g){
+    return '<table><caption>'+g+'</caption><tbody>'+groups[g].map(function(k){
+      var pct=P[k].u==="%";
+      return '<tr><td><label for="pp-'+k+'">'+P[k].label+'</label>'+(pct?'':'<span class="pe">Precio de ejemplo</span>')+'</td><td><input id="pp-'+k+'" type="number" min="0" step="'+(pct?1:1000)+'" value="'+P[k].v+'" data-pk="'+k+'"></td><td class="u">'+(pct?"%":"$/"+P[k].u)+'</td></tr>';
+    }).join("")+'</tbody></table>';
+  }).join("");
+}
+$("pgrid").addEventListener("input",function(e){
+  var k=e.target.dataset.pk; if(!k)return;
+  var v=parseFloat(e.target.value); if(isNaN(v)||v<0)return;
+  P[k].v=v; redrawAll();
+});
+
+/* ===== Panel del dueño (ejemplo) ===== */
+var SAMPLES=[
+  {who:"Lucía (ejemplo)",when:"lun 30/11 · 09:12",list:[{fam:"som",cfg:{prod:"pergA",w:5,d:3.5,h:2.6,orient:"N",fin:"Simil madera",lamas:"cerradas",qty:1}}],loc:"Yerba Buena",obra:"Remodelación",med:"Mañana (8 a 12)"},
+  {who:"Martín (ejemplo)",when:"lun 30/11 · 11:40",list:[{fam:"carp",cfg:{tipo:"corrediza",linea:"ha110",w:240,h:210,hojas:2,color:"Negro",vidrio:"DVH",mosq:true,qty:2}},{fam:"carp",cfg:{tipo:"abrir",linea:"ha62",w:60,h:60,hojas:1,color:"Negro",vidrio:"Float 4 mm",mosq:false,qty:3}}],loc:"San Miguel de Tucumán",obra:"Obra nueva",med:"Tarde (14 a 18)"},
+  {who:"Estudio de arquitectura (ejemplo)",when:"mar 1/12 · 16:05",list:[{fam:"bar",cfg:{mat:"vidrio",ubic:"Balcón",L:8.4,alt:100,esq:2,pasam:true,qty:1}}],loc:"Yerba Buena",obra:"Obra nueva",med:"Mañana (8 a 12)"},
+  {who:"Sofía (ejemplo)",when:"mié 2/12 · 19:30",list:[{fam:"som",cfg:{prod:"techo",w:3.2,d:2.5,h:2.5,orient:"O",fin:"Negro",lamas:"cerradas",qty:1}},{fam:"carp",cfg:{tipo:"pivotante",linea:"l750",w:120,h:240,hojas:1,color:"Simil madera",vidrio:"DVH",mosq:false,qty:1}}],loc:"Tafí Viejo",obra:"Remodelación",med:"Sábado a la mañana"}
+];
+function renderOwner(){
+  var senas=[SAMPLES[0],SAMPLES[2],SAMPLES[1]].map(function(s){return {who:s.who,what:desc(s.list[0].fam,s.list[0].cfg).split(" · ").slice(0,2).join(" · "),amt:totals(s.list).sena};});
+  var senaTot=senas.reduce(function(a,b){return a+b.amt;},0);
+  var consultas=14, minAhorro=25;
+  var hrs=Math.floor(consultas*minAhorro/60), mins=consultas*minAhorro%60;
+  var html='';
+  html+='<div class="kpis">'+
+    '<div class="kpi"><div class="k">Consultas con medidas esta semana</div><div class="v">'+consultas+'</div></div>'+
+    '<div class="kpi"><div class="k">Señas cobradas</div><div class="v">'+ars(senaTot)+'</div>'+PE+'</div>'+
+    '<div class="kpi"><div class="k">Tiempo ahorrado en presupuestos</div><div class="v">'+hrs+' h '+mins+' min</div></div>'+
+    '<div class="kpi"><div class="k">Comisión a intermediarios</div><div class="v">$ 0</div></div></div>';
+  html+='<div class="ogrid"><div class="ocard"><h3>Consultas que entraron <small>formato del mensaje</small></h3><div class="inbox">'+
+    SAMPLES.map(function(s){return '<div class="bub"><span class="from">'+s.who+' · '+s.when+'</span>'+escapeHtml(buildMsg(s.list,s.who.replace(" (ejemplo)",""),s.loc,s.obra,s.med))+'</div>';}).join("")+'</div></div>';
+  html+='<div><div class="ocard"><h3>Agenda de la semana <small>mediciones · colocaciones</small></h3><div class="agenda">'+agenda()+'</div></div>';
+  html+='<div class="ocard" style="margin-top:20px"><h3>Señas cobradas <small>antes de fabricar</small></h3><table class="otable"><thead><tr><th>Cliente</th><th>Pedido</th><th style="text-align:right">Seña</th></tr></thead><tbody>'+
+    senas.map(function(s){return '<tr><td>'+s.who+'</td><td>'+s.what+'</td><td class="r">'+ars(s.amt)+PE+'</td></tr>';}).join("")+
+    '<tr><td colspan="2"><b>Total</b></td><td class="r"><b>'+ars(senaTot)+'</b>'+PE+'</td></tr></tbody></table></div></div></div>';
+  html+='<div class="ocard" style="margin-top:20px"><h3>Lo que te ahorrás <small>frente a presupuestar a mano</small></h3><div class="ahorro">'+
+    '<div><b>Antes</b><ul><li>"¿Cuánto sale una ventana?"</li><li>4 a 6 mensajes para pedir medidas, línea y vidrio</li><li>~'+minAhorro+' min por consulta</li></ul></div>'+
+    '<div><b>Con el cotizador</b><ul><li>Llega con medidas, línea Hydro y localidad</li><li>Una respuesta: confirmar día de medición</li><li>'+hrs+' h '+mins+' min menos esta semana</li><li>Sin comisión por consulta ni por obra</li></ul></div></div></div>';
+  html+='<div class="paravos"><h3>Para vos, Aluminio Gonella</h3><ul>'+
+    '<li>Menos mensajes repetidos: cada consulta trae medidas y línea.</li>'+
+    '<li>Vas a medir sabiendo qué se cotizó y en qué localidad.</li>'+
+    '<li>Agenda de mediciones y colocaciones con cupos por día.</li>'+
+    '<li>Seña que entra antes de confirmar fabricación, sin comisión por reserva.</li></ul></div>';
+  $("owner-body").innerHTML=html;
+  // mini feed en la sección
+  $("mini-feed").innerHTML='<div class="row"><span class="mono" style="font-size:11px;letter-spacing:.08em">PANEL DE EJEMPLO</span><span>Semana 30/11 – 5/12</span></div>'+
+    SAMPLES.slice(0,3).map(function(s){var T=totals(s.list);return '<div class="row"><span>'+s.who+' · '+s.loc+'</span><span class="mono">'+ars(T.lo)+' a '+ars(T.hi)+' '+PE+'</span></div>';}).join("")+
+    '<div class="row"><span>Señas cobradas</span><span class="mono">'+ars(senaTot)+' '+PE+'</span></div>';
+}
+function agenda(){
+  var D=[
+    ["Lun","30/11",[["m","09:00 Medición · Pérgola automática · Yerba Buena"],["m","16:00 Medición · 5 aberturas HA · San Miguel de Tucumán"]],3],
+    ["Mar","1/12",[["c","08:30 Colocación · Baranda de vidrio · Yerba Buena"]],3],
+    ["Mié","2/12",[["m","10:00 Medición · Techo de vidrio · Tafí Viejo"]],3],
+    ["Jue","3/12",[["c","08:00 Colocación · Frente vidriado · Yerba Buena"],["m","15:30 Medición · Parasoles simil madera"]],3],
+    ["Vie","4/12",[["c","08:30 Colocación · Pérgola automática"]],3],
+    ["Sáb","5/12",[["m","09:30 Medición · Puerta pivotante · Tafí Viejo"]],2]
+  ];
+  return D.map(function(d){
+    var free=d[3]-d[2].length, sl=d[2].map(function(x){return '<div class="slot'+(x[0]==="c"?" col":"")+'">'+x[1]+'</div>';}).join("");
+    for(var i=0;i<free;i++) sl+='<div class="slot free">Cupo libre</div>';
+    return '<div class="dia"><div class="dn"><b>'+d[0]+'</b>'+d[1]+'<br><span class="cupos">'+d[2].length+'/'+d[3]+' cupos</span></div><div class="slots">'+sl+'</div></div>';
+  }).join("");
+}
+function escapeHtml(s){return s.replace(/[&<>"]/g,function(ch){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch];});}
+var lastFocus=null;
+function openOwner(){lastFocus=document.activeElement;$("owner").hidden=false;document.body.style.overflow="hidden";$("owner-close").focus();}
+function closeOwner(){$("owner").hidden=true;document.body.style.overflow="";if(lastFocus)lastFocus.focus();}
+document.querySelectorAll("[data-owner]").forEach(function(b){b.addEventListener("click",openOwner);});
+$("owner-close").addEventListener("click",closeOwner);
+$("owner").addEventListener("click",function(e){if(e.target===$("owner"))closeOwner();});
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!$("owner").hidden)closeOwner();});
+
+/* ===== Init ===== */
+renderCarpCtl(); renderSomCtl(); renderBarCtl(); renderTabla();
+redrawAll();
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Aluminio Gonella"></script>
+</body>
+</html>
