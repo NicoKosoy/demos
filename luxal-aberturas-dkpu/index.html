@@ -1,0 +1,924 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Luxal · Remito de pedido</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sen:wght@400;500;600;700;800&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<script>
+/* Fallbacks de imágenes: ilustración propia en tinta de birome, nunca un recuadro vacío */
+function luxIll(k){
+  var ink='#1F3C8F', red='#B8322A', bg='#EFE5CC', s='';
+  if(k===1){ // puerta
+    s='<rect x="110" y="30" width="100" height="190" fill="none" stroke="'+ink+'" stroke-width="3"/><rect x="122" y="42" width="76" height="96" fill="#D7E2E2" stroke="'+ink+'" stroke-width="1.5"/><rect x="122" y="148" width="76" height="60" fill="none" stroke="'+ink+'" stroke-width="1.5"/><path d="M200 34L116 125L200 216" fill="none" stroke="'+ink+'" stroke-width="1.2" stroke-dasharray="5 4"/><rect x="186" y="126" width="5" height="22" fill="'+ink+'"/>';
+  } else if(k===2){ // frente integral
+    s='<rect x="40" y="50" width="240" height="160" fill="none" stroke="'+ink+'" stroke-width="3"/><path d="M100 50V210M160 50V210M220 50V210M40 120H280" stroke="'+ink+'" stroke-width="2"/><g fill="#D7E2E2" opacity=".8"><rect x="44" y="54" width="53" height="63"/><rect x="164" y="124" width="53" height="83"/></g>';
+  } else { // ventana corrediza
+    s='<rect x="50" y="60" width="220" height="140" fill="none" stroke="'+ink+'" stroke-width="3"/><rect x="60" y="70" width="104" height="120" fill="#D7E2E2" stroke="'+ink+'" stroke-width="1.5"/><rect x="156" y="70" width="104" height="120" fill="#D7E2E2" stroke="'+ink+'" stroke-width="1.5"/><path d="M90 130H130M122 124L130 130L122 136M230 130H190M198 124L190 130L198 136" fill="none" stroke="'+ink+'" stroke-width="2"/>';
+  }
+  var svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 250"><rect width="320" height="250" fill="'+bg+'"/><path d="M0 236H320" stroke="'+ink+'" stroke-opacity=".25"/>'+s+'<text x="16" y="24" font-family="Courier New,monospace" font-size="13" fill="'+red+'">OBRA LUXAL · ILUSTRACIÓN</text></svg>';
+  return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+}
+function fb(img,k){ img.onerror=null; img.src=luxIll(k||0); img.classList.add('ill'); }
+function fbLogo(img){ var s=document.createElement('span'); s.className='wordmark'; s.textContent='LUXAL'; img.replaceWith(s); }
+</script>
+<style>
+:root{
+  --manila:#E6D9B8;
+  --papel:#F4ECD6;
+  --papel2:#EFE4C8;
+  --renglon:#D2C29A;
+  --linea:#B9A677;
+  --tinta:#26262A;
+  --tinta2:#55524A;
+  --birome:#1F3C8F;
+  --birome2:#2D52B8;
+  --birome-soft:rgba(31,60,143,.09);
+  --sello:#B8322A;
+  --sello-soft:rgba(184,50,42,.1);
+  --rosa:#F1D9D0;
+  --wa:#DCF8C6;
+  --wa-bg:#E9E1D3;
+  --vidrio:#D2E2E3;
+  --vidrio2:#BBD3D6;
+  --display:'Sen','Trebuchet MS','Segoe UI',system-ui,sans-serif;
+  --mono:'Courier Prime','Courier New',ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--manila);color:var(--tinta);font-family:var(--display);font-size:16px;line-height:1.45;overflow-x:hidden}
+body.dueno{background:#E4CDC3}
+img{max-width:100%}
+a{color:var(--birome)}
+button,input,select{font:inherit;color:inherit}
+.mono{font-family:var(--mono)}
+.ej{font-family:var(--mono);font-size:.68rem;letter-spacing:.02em;color:var(--sello);font-weight:400;white-space:nowrap;vertical-align:middle}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+
+/* firma */
+.firma{font-family:var(--mono);font-size:.78rem;color:var(--tinta2);padding:10px 16px 0;max-width:1180px;margin:0 auto;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.firma b{font-weight:700;color:var(--tinta)}
+
+/* hoja de remito */
+.hoja{background:var(--papel);border:1.5px solid var(--linea);box-shadow:0 1px 0 #fff8 inset,0 10px 24px -18px #5a4a2088;position:relative}
+.hoja + .hoja{margin-top:22px}
+.perfo{height:14px;background:radial-gradient(circle at 7px 7px,var(--manila) 3.2px,transparent 3.6px) 0 0/18px 14px repeat-x;border-bottom:1px dashed var(--linea)}
+body.dueno .perfo{background-image:radial-gradient(circle at 7px 7px,#E4CDC3 3.2px,transparent 3.6px)}
+.casilla{border:1px solid var(--linea);padding:6px 10px 8px}
+.casilla small{display:block;font-family:var(--mono);font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;color:var(--tinta2)}
+.casilla .v{font-family:var(--mono);color:var(--birome);font-size:.98rem}
+
+/* cabecera */
+.cab{display:grid;grid-template-columns:1.2fr .9fr .9fr;border-bottom:1.5px solid var(--linea)}
+.cab > div{padding:16px 18px;border-right:1px solid var(--linea)}
+.cab > div:last-child{border-right:0}
+.logo{height:26px;width:auto;display:block}
+.wordmark{font-family:var(--display);font-weight:800;letter-spacing:.18em;font-size:1.35rem;color:var(--tinta)}
+.cab .razon{font-family:var(--mono);font-size:.82rem;color:var(--tinta2);margin-top:8px;line-height:1.35}
+.letra{display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center}
+.letra .x{width:54px;height:54px;border:2px solid var(--tinta);display:grid;place-items:center;font-weight:800;font-size:1.7rem;background:var(--papel2)}
+.letra small{font-family:var(--mono);font-size:.66rem;margin-top:6px;color:var(--tinta2)}
+.nro{font-family:var(--mono)}
+.nro .t{font-family:var(--display);font-weight:800;letter-spacing:.14em;font-size:1.05rem}
+.nro .n{font-size:1.15rem;color:var(--birome)}
+.nro div{font-size:.82rem;color:var(--tinta2)}
+
+.tabs{display:flex;gap:0;border-bottom:1.5px solid var(--linea)}
+.tabs button{flex:1;border:0;border-right:1px solid var(--linea);background:transparent;padding:11px 12px;cursor:pointer;font-family:var(--mono);font-size:.86rem;text-align:left;color:var(--tinta2)}
+.tabs button:last-child{border-right:0}
+.tabs button[aria-selected="true"]{background:var(--papel2);color:var(--tinta);font-weight:700;box-shadow:inset 0 -3px 0 var(--birome)}
+.tabs button.tdueno[aria-selected="true"]{background:var(--rosa);box-shadow:inset 0 -3px 0 var(--sello)}
+.tabs .k{display:block;font-family:var(--display);font-weight:800;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase}
+
+/* titular */
+.tit{display:grid;grid-template-columns:1.25fr 1fr;border-bottom:1.5px solid var(--linea)}
+.tit .izq{padding:26px 22px 24px;border-right:1px solid var(--linea)}
+.lema{font-family:var(--mono);font-size:.8rem;color:var(--sello);letter-spacing:.08em;text-transform:uppercase}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(2.3rem,5.4vw,4.3rem);line-height:.98;letter-spacing:-.02em;margin:10px 0 14px}
+h1 .bir{color:var(--birome);font-family:var(--mono);font-weight:700;font-style:italic;letter-spacing:-.04em;display:block;font-size:.62em;margin-top:6px}
+.tit ul{margin:0;padding:0;list-style:none;font-size:.98rem}
+.tit li{padding:4px 0 4px 22px;position:relative}
+.tit li:before{content:"";position:absolute;left:2px;top:12px;width:10px;height:2px;background:var(--birome)}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.btn{display:inline-flex;align-items:center;gap:8px;border:1.5px solid var(--tinta);background:var(--tinta);color:var(--papel);padding:11px 16px;font-weight:700;text-decoration:none;cursor:pointer;font-family:var(--display);font-size:.95rem}
+.btn.sec{background:transparent;color:var(--tinta)}
+.btn.bir{background:var(--birome);border-color:var(--birome)}
+.btn.wa{background:#1B7F4B;border-color:#1B7F4B;color:#fff}
+.btn:focus-visible,.tabs button:focus-visible{outline:2px solid var(--sello);outline-offset:2px}
+
+/* destinos */
+.dest{padding:18px 20px 20px;position:relative}
+.dest h2{font-size:.78rem;font-family:var(--mono);font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin:0 0 8px;color:var(--tinta2)}
+.dest table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:.92rem}
+.dest td{border-bottom:1px solid var(--renglon);padding:7px 4px}
+.dest td.c{width:28px}
+.chk{display:inline-block;width:16px;height:16px;border:1.5px solid var(--tinta);position:relative;vertical-align:-3px}
+.chk:after{content:"";position:absolute;left:3px;top:-5px;width:6px;height:13px;border:solid var(--birome);border-width:0 3px 3px 0;transform:rotate(40deg)}
+.dest td.r{text-align:right;color:var(--birome);font-size:.8rem}
+.sello{position:absolute;right:16px;bottom:18px;transform:rotate(-11deg);border:3px solid var(--sello);color:var(--sello);padding:8px 12px;font-family:var(--display);font-weight:800;text-align:center;line-height:1.05;letter-spacing:.06em;font-size:.95rem;border-radius:6px;opacity:.86;mix-blend-mode:multiply;background:transparent;pointer-events:none}
+.sello small{display:block;font-family:var(--mono);font-weight:400;font-size:.62rem;letter-spacing:.04em;margin-top:4px}
+.sello:before{content:"";position:absolute;inset:3px;border:1px solid var(--sello);border-radius:3px}
+.dest .nota{font-family:var(--mono);font-size:.74rem;color:var(--tinta2);margin-top:10px;max-width:62%}
+
+/* comprobantes (fotos) */
+.comp{padding:18px 20px 22px}
+.secth{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.secth h2{font-family:var(--display);font-weight:800;font-size:1.45rem;margin:0;letter-spacing:-.01em}
+.secth h2 .nr{font-family:var(--mono);color:var(--sello);font-weight:400;font-size:.85rem;margin-right:8px;letter-spacing:0}
+.secth p{margin:0;font-family:var(--mono);font-size:.8rem;color:var(--tinta2)}
+.fotos{display:flex;gap:14px;overflow-x:auto;padding:6px 2px 12px;scroll-snap-type:x mandatory}
+.foto{flex:0 0 auto;background:#fff;padding:7px 7px 26px;box-shadow:0 6px 14px -10px #3a2e10aa;position:relative;scroll-snap-align:start}
+.foto:nth-child(odd){transform:rotate(-1.2deg)}.foto:nth-child(even){transform:rotate(1deg)}
+.foto img{display:block;height:190px;width:auto;object-fit:cover;background:var(--papel2)}
+.foto img.ill{width:240px}
+.foto span{position:absolute;left:9px;bottom:6px;font-family:var(--mono);font-size:.7rem;color:var(--tinta2)}
+.foto:before{content:"";position:absolute;top:-8px;left:50%;width:56px;height:16px;margin-left:-28px;background:rgba(234,222,190,.85);transform:rotate(-3deg)}
+
+/* comparador */
+.cmpwrap{padding:20px 20px 22px}
+.cmp{display:grid;grid-template-columns:repeat(6,1fr);border:1px solid var(--linea)}
+.lin{border-right:1px solid var(--linea);padding:12px 12px 14px;display:flex;flex-direction:column;gap:9px;background:var(--papel);transition:background .2s}
+.lin:last-child{border-right:0}
+.lin.on{background:#E9E2CC;box-shadow:inset 0 0 0 2px var(--birome)}
+.lin .ord{font-family:var(--mono);font-size:.7rem;color:var(--tinta2)}
+.lin h3{margin:0;font-weight:800;font-size:1.15rem;letter-spacing:-.01em}
+.lin .uso{font-family:var(--mono);font-size:.76rem;color:var(--tinta2);min-height:2.6em;line-height:1.3}
+.bar small{display:block;font-family:var(--mono);font-size:.66rem;color:var(--tinta2);text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
+.cells{display:grid;grid-template-columns:repeat(5,1fr);gap:3px}
+.cells i{height:11px;border:1px solid var(--tinta2);display:block;position:relative;overflow:hidden}
+.cells i.f{background:var(--birome);border-color:var(--birome)}
+.cells i.h{background:linear-gradient(90deg,var(--birome) 50%,transparent 50%);border-color:var(--birome)}
+.bar.p .cells i.f{background:var(--sello);border-color:var(--sello)}
+.bar.p .cells i.h{background:linear-gradient(90deg,var(--sello) 50%,transparent 50%);border-color:var(--sello)}
+.lin .desde{font-family:var(--mono);font-size:.82rem;color:var(--birome);line-height:1.25}
+.lin button{margin-top:auto;border:1.5px solid var(--birome);background:transparent;color:var(--birome);font-weight:700;padding:8px 6px;cursor:pointer;font-size:.85rem}
+.lin.on button{background:var(--birome);color:#fff}
+.ref{font-family:var(--mono);font-size:.74rem;color:var(--tinta2);margin-top:10px}
+
+/* cotizador */
+.cot{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);border-top:1.5px solid var(--linea)}
+.cot > div{padding:20px}
+.cot .form{border-right:1px solid var(--linea)}
+.fld{margin-bottom:14px}
+.fld > label,.fld > .lb{display:block;font-family:var(--mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--tinta2);margin-bottom:5px}
+.opts{display:flex;flex-wrap:wrap;gap:6px}
+.opts button{border:1px solid var(--linea);background:var(--papel);padding:7px 10px;cursor:pointer;font-size:.88rem;font-weight:600;color:var(--tinta)}
+.opts button[aria-pressed="true"]{border-color:var(--birome);background:var(--birome);color:#fff}
+.opts button:disabled{opacity:.35;cursor:not-allowed}
+.sw{display:inline-block;width:12px;height:12px;border:1px solid #0005;margin-right:6px;vertical-align:-1px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.inp{width:100%;border:0;border-bottom:1.5px solid var(--tinta2);background:transparent;padding:6px 2px;font-family:var(--mono);font-size:1.05rem;color:var(--birome);border-radius:0}
+.inp:focus{outline:none;border-bottom-color:var(--birome);background:var(--birome-soft)}
+select.inp{cursor:pointer}
+.unit{display:flex;align-items:flex-end;gap:6px}
+.unit span{font-family:var(--mono);font-size:.82rem;color:var(--tinta2);padding-bottom:7px}
+.chkl{display:flex;gap:8px;align-items:center;font-size:.92rem;cursor:pointer;margin:4px 0}
+.chkl input{width:17px;height:17px;accent-color:var(--birome)}
+.aviso{font-family:var(--mono);font-size:.76rem;color:var(--sello);margin-top:6px;min-height:1em}
+
+.plano{background:var(--papel2);border:1px solid var(--linea);position:relative;background-image:linear-gradient(var(--birome-soft) 1px,transparent 1px),linear-gradient(90deg,var(--birome-soft) 1px,transparent 1px);background-size:20px 20px}
+.plano svg{display:block;width:100%;height:auto}
+.plano .rot{position:absolute;left:10px;top:8px;font-family:var(--mono);font-size:.72rem;color:var(--tinta2)}
+.precio{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;flex-wrap:wrap;border-bottom:1.5px dashed var(--linea);padding:14px 0 12px}
+.precio small{display:block;font-family:var(--mono);font-size:.72rem;color:var(--tinta2);text-transform:uppercase;letter-spacing:.05em}
+.precio .big{font-family:var(--mono);font-weight:700;font-size:clamp(1.25rem,2.6vw,1.6rem);color:var(--birome);line-height:1.15}
+.precio .det{font-family:var(--mono);font-size:.78rem;color:var(--tinta2);text-align:right}
+
+/* renglones */
+.reng{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:.86rem;margin-top:14px}
+.reng th{text-align:left;font-weight:700;font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;color:var(--tinta2);border-bottom:1.5px solid var(--tinta2);padding:6px 4px}
+.reng td{border-bottom:1px solid var(--renglon);padding:8px 4px;vertical-align:top}
+.reng tr.sel td{background:var(--birome-soft)}
+.reng tr{cursor:pointer}
+.reng .q{width:40px;color:var(--birome);font-weight:700}
+.reng .imp{text-align:right;white-space:nowrap;color:var(--birome)}
+.reng .d{color:var(--tinta)}
+.reng .x{width:30px;text-align:right}
+.reng .x button{border:0;background:none;color:var(--sello);cursor:pointer;font-size:1.05rem;padding:0 4px;font-family:var(--mono)}
+.reng tfoot td{border-bottom:0;font-weight:700;padding-top:10px}
+.addrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+
+/* chat */
+.envio{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);border-top:1.5px solid var(--linea)}
+.envio > div{padding:20px}
+.envio .datos{border-right:1px solid var(--linea)}
+.chat{background:var(--wa-bg);border:1px solid var(--linea);padding:14px 12px 16px;background-image:radial-gradient(#0000000a 1px,transparent 1px);background-size:14px 14px}
+.chat .top{font-size:.78rem;color:#4a4a4a;display:flex;align-items:center;gap:8px;margin-bottom:10px;font-weight:600}
+.chat .top i{width:28px;height:28px;border-radius:50%;background:var(--tinta);color:var(--papel);display:grid;place-items:center;font-style:normal;font-weight:800;font-size:.72rem;letter-spacing:.05em}
+.bub{background:var(--wa);border-radius:9px 0 9px 9px;padding:9px 11px 20px;margin-left:8%;position:relative;font-family:system-ui,-apple-system,'Segoe UI',sans-serif;font-size:.88rem;line-height:1.38;white-space:pre-wrap;word-break:break-word;box-shadow:0 1px 1px #0002;color:#111}
+.bub:after{content:"";position:absolute;right:-8px;top:0;border:8px solid transparent;border-top-color:var(--wa);border-left-color:var(--wa);border-right:0}
+.bub .hr{position:absolute;right:9px;bottom:4px;font-size:.66rem;color:#5c6b5c}
+.bub .cur{display:inline-block;width:7px;height:1em;background:#1B7F4B;vertical-align:-2px;animation:bl 1s steps(2) infinite}
+@keyframes bl{50%{opacity:0}}
+.bub.in{background:#fff;border-radius:0 9px 9px 9px;margin-left:0;margin-right:8%}
+.bub.in:after{left:-8px;right:auto;border-top-color:#fff;border-right:8px solid #fff;border-left:0}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips label{border:1px dashed var(--tinta2);padding:6px 9px;font-size:.85rem;cursor:pointer;display:flex;gap:6px;align-items:center}
+.chips input{accent-color:var(--birome)}
+
+/* cómo funciona / condiciones */
+.dos{display:grid;grid-template-columns:1fr 1fr;border-top:1.5px solid var(--linea)}
+.dos > div{padding:20px}
+.dos > div:first-child{border-right:1px solid var(--linea)}
+ol.pasos{list-style:none;margin:0;padding:0;counter-reset:p}
+ol.pasos li{counter-increment:p;padding:7px 0 7px 40px;position:relative;border-bottom:1px solid var(--renglon)}
+ol.pasos li:before{content:counter(p,decimal-leading-zero);position:absolute;left:0;top:7px;font-family:var(--mono);color:var(--sello);font-weight:700}
+ul.lst{margin:0;padding:0;list-style:none}
+ul.lst li{padding:6px 0 6px 20px;position:relative;border-bottom:1px solid var(--renglon)}
+ul.lst li:before{content:"—";position:absolute;left:0;color:var(--birome);font-family:var(--mono)}
+h3.mini{font-family:var(--mono);font-size:.78rem;text-transform:uppercase;letter-spacing:.07em;color:var(--tinta2);margin:0 0 8px}
+
+/* tabla de precios */
+.tp{padding:20px}
+.tp .av{font-family:var(--mono);color:var(--sello);font-size:.85rem;border:1.5px dashed var(--sello);padding:6px 10px;display:inline-block;margin-bottom:12px}
+.tpg{display:grid;grid-template-columns:repeat(3,1fr);gap:0 22px}
+.tpg table{width:100%;border-collapse:collapse;font-size:.9rem}
+.tpg caption{text-align:left;font-family:var(--mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--tinta2);padding:6px 0;border-bottom:1.5px solid var(--tinta2)}
+.tpg td{border-bottom:1px solid var(--renglon);padding:5px 2px}
+.tpg td:last-child{text-align:right;white-space:nowrap}
+.tpg input{width:110px;text-align:right;border:0;border-bottom:1px dotted var(--birome);background:transparent;font-family:var(--mono);color:var(--birome);font-size:.92rem;padding:3px 2px}
+.tpg input.pc{width:54px}
+.tpg input:focus{outline:none;background:var(--birome-soft)}
+.tpg .u{font-family:var(--mono);font-size:.7rem;color:var(--tinta2);display:block}
+
+/* pie / firmas */
+.firmas{display:grid;grid-template-columns:1fr 1fr 1fr;border-top:1.5px solid var(--linea)}
+.firmas > div{padding:26px 20px 16px;border-right:1px solid var(--linea)}
+.firmas > div:last-child{border-right:0}
+.firmas .ln{border-top:1px solid var(--tinta);padding-top:5px;font-family:var(--mono);font-size:.74rem;color:var(--tinta2);margin-top:30px}
+.firmas .rubrica{font-family:var(--mono);font-style:italic;color:var(--birome);font-size:1.3rem;height:30px;margin-bottom:-30px;transform:rotate(-4deg)}
+.firmas .dato{font-family:var(--mono);font-size:.82rem;line-height:1.5}
+.pie{font-family:var(--mono);font-size:.76rem;color:var(--tinta2);text-align:center;padding:18px 16px 36px}
+
+/* panel del dueño (duplicado) */
+#dueno{display:none}
+body.dueno #dueno{display:block}
+body.dueno .cliente{display:none}
+#dueno .hoja{background:#F6E3DB;border-color:#C9A396}
+.dup-band{font-family:var(--mono);font-size:.82rem;background:var(--sello);color:#fff;padding:7px 14px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px}
+.dgrid{display:grid;grid-template-columns:1.15fr 1fr}
+.dgrid > div{padding:20px}
+.dgrid > div:first-child{border-right:1px solid #C9A396}
+.dgrid + .dgrid{border-top:1.5px solid #C9A396}
+.consultas{display:flex;flex-direction:column;gap:10px}
+.cons{background:var(--wa-bg);padding:10px;border:1px solid #C9A396}
+.cons .meta{font-family:var(--mono);font-size:.72rem;color:var(--tinta2);display:flex;justify-content:space-between;margin-bottom:6px;gap:8px}
+.cons .meta b{color:var(--sello)}
+.cons .bub{margin-left:0;font-size:.8rem;max-height:none}
+.agenda{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:.84rem}
+.agenda th{text-align:left;font-size:.68rem;text-transform:uppercase;color:var(--tinta2);border-bottom:1.5px solid var(--tinta2);padding:5px 4px}
+.agenda td{border-bottom:1px solid #DDBFB2;padding:7px 4px;vertical-align:top}
+.tag{display:inline-block;font-size:.66rem;padding:1px 6px;border:1px solid;text-transform:uppercase;letter-spacing:.04em}
+.tag.m{color:var(--birome)}.tag.c{color:var(--sello)}.tag.l{color:#777}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid #C9A396;margin-top:4px}
+.kpis div{padding:12px;border-right:1px solid #C9A396;border-bottom:1px solid #C9A396}
+.kpis div:nth-child(2n){border-right:0}
+.kpis div:nth-last-child(-n+2){border-bottom:0}
+.kpis b{display:block;font-family:var(--mono);font-size:1.25rem;color:var(--birome)}
+.kpis small{font-family:var(--mono);font-size:.72rem;color:var(--tinta2)}
+.paravos{border:2px solid var(--tinta);padding:16px 18px;background:#FBEFE9}
+.paravos h2{margin:0 0 8px;font-weight:800;font-size:1.4rem}
+
+@media (max-width:980px){
+  .cmp{grid-template-columns:repeat(3,1fr)}
+  .lin:nth-child(3){border-right:0}
+  .lin:nth-child(-n+3){border-bottom:1px solid var(--linea)}
+  .tpg{grid-template-columns:1fr 1fr}
+}
+@media (max-width:760px){
+  .cab{grid-template-columns:1fr auto}
+  .cab > div:first-child{grid-column:1/-1;border-right:0;border-bottom:1px solid var(--linea)}
+  .tit,.cot,.envio,.dos,.dgrid,.firmas{grid-template-columns:minmax(0,1fr)}
+  .cot > div,.envio > div{min-width:0}
+  .tit .izq,.cot .form,.envio .datos,.dos > div:first-child,.dgrid > div:first-child,.firmas > div{border-right:0;border-bottom:1px solid var(--linea)}
+  .dgrid > div:first-child{border-bottom-color:#C9A396}
+  .cot > div,.envio > div,.dos > div,.dgrid > div,.tp,.cmpwrap,.comp{padding:16px 14px}
+  .tit .izq{padding:20px 14px}
+  .dest{padding:16px 14px 110px}
+  .dest .nota{max-width:none}
+  .sello{right:auto;left:50%;margin-left:-90px;bottom:16px;width:180px}
+  .cmp{grid-template-columns:1fr}
+  .lin{border-right:0;border-bottom:1px solid var(--linea);display:grid;grid-template-columns:1fr 1fr;gap:6px 14px}
+  .lin:last-child{border-bottom:0}
+  .lin .hd{grid-column:1/-1}
+  .lin .uso{min-height:0;grid-column:1/-1}
+  .lin button{grid-column:1/-1}
+  .lin .desde{grid-column:1/-1}
+  .tpg{grid-template-columns:1fr}
+  .reng{font-size:.8rem}
+  .tabs button{font-size:.78rem;padding:10px 10px}
+  .foto img{height:150px}.foto img.ill{width:190px}
+  .bub{margin-left:4%}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="firma"><span>Prototipo preparado para <b>Luxal</b> · 27 de noviembre de 2026</span><span>Remito web de ejemplo</span></div>
+
+<main class="wrap" style="padding-top:10px">
+
+<section class="hoja" aria-label="Encabezado del remito">
+  <div class="perfo"></div>
+  <div class="cab">
+    <div>
+      <img class="logo" src="https://luxal.com.ar/wp-content/uploads/2024/06/LUXAL-Logo-Web-2-80x19.png" alt="Luxal" onerror="fbLogo(this)">
+      <div class="razon">LUXAL SRL · Fabricación y colocación de aberturas de aluminio<br>Rivadavia 626 · San Carlos Sud · Santa Fe</div>
+    </div>
+    <div class="letra"><div class="x">R</div><small>Documento no válido<br>como factura</small></div>
+    <div class="nro">
+      <span class="t">REMITO</span><br>
+      <span class="n">N° 0001-<span id="nroRem">2711</span></span>
+      <div>Fecha: 27/11/2026</div>
+      <div>Origen: San Carlos Sud</div>
+    </div>
+  </div>
+  <div class="tabs" role="tablist">
+    <button role="tab" id="tabCli" aria-selected="true" onclick="setVista(false)"><span class="k">Original</span>Vista del cliente</button>
+    <button role="tab" id="tabDue" class="tdueno" aria-selected="false" onclick="setVista(true)"><span class="k">Duplicado</span>Ver como dueño</button>
+  </div>
+
+  <div class="cliente">
+  <div class="tit">
+    <div class="izq">
+      <div class="lema">Aberturas de aluminio para cada necesidad</div>
+      <h1>Nos eligen porque hacemos.<span class="bir">obras entregadas en 6 provincias</span></h1>
+      <ul>
+        <li>Fabricamos y colocamos aberturas de aluminio desde la provincia de Santa Fe para toda la región.</li>
+        <li>Más de 10 años de experiencia.</li>
+        <li>Responsabilidad · Calidad · Confiabilidad.</li>
+      </ul>
+      <div class="cta">
+        <a class="btn bir" href="#cotizador">Armá tu pedido con medidas</a>
+        <a class="btn sec" href="#lineas">Compará las 6 líneas</a>
+      </div>
+    </div>
+    <div class="dest">
+      <h2>Destinos · obras entregadas y certificadas</h2>
+      <table>
+        <tr><td class="c"><span class="chk"></span></td><td>Santa Fe</td><td class="r">origen</td></tr>
+        <tr><td class="c"><span class="chk"></span></td><td>Entre Ríos</td><td class="r">entregado</td></tr>
+        <tr><td class="c"><span class="chk"></span></td><td>Córdoba</td><td class="r">entregado</td></tr>
+        <tr><td class="c"><span class="chk"></span></td><td>Buenos Aires</td><td class="r">entregado</td></tr>
+        <tr><td class="c"><span class="chk"></span></td><td>Santiago del Estero</td><td class="r">entregado</td></tr>
+        <tr><td class="c"><span class="chk"></span></td><td>Chaco</td><td class="r">entregado</td></tr>
+      </table>
+      <p class="nota">Según luxal.com.ar: obras entregadas y certificadas en estas provincias.</p>
+      <div class="sello">ENTREGADO<br>Y CERTIFICADO<small>LUXAL SRL · SAN CARLOS SUD</small></div>
+    </div>
+  </div>
+
+  <div class="comp">
+    <div class="secth"><h2><span class="nr">ADJ.</span>Comprobantes de obra</h2><p>Fotos publicadas por Luxal en su web</p></div>
+    <div class="fotos">
+      <figure class="foto" style="margin:0"><img src="https://luxal.com.ar/wp-content/uploads/2024/03/IMG_4684-768x1024.jpg" alt="Obra de Luxal" loading="lazy" onerror="fb(this,1)"><span>adj. 01</span></figure>
+      <figure class="foto" style="margin:0"><img src="https://luxal.com.ar/wp-content/uploads/2024/03/20230219_184931-1024x768.jpg" alt="Obra de Luxal" loading="lazy" onerror="fb(this,0)"><span>adj. 02</span></figure>
+      <figure class="foto" style="margin:0"><img src="https://luxal.com.ar/wp-content/uploads/2024/03/20190805_141205-scaled.jpg" alt="Obra de Luxal" loading="lazy" onerror="fb(this,2)"><span>adj. 03</span></figure>
+      <figure class="foto" style="margin:0"><img src="https://luxal.com.ar/wp-content/uploads/2023/09/20200506_104741-1024x768.jpg" alt="Obra de Luxal" loading="lazy" onerror="fb(this,0)"><span>adj. 04</span></figure>
+      <figure class="foto" style="margin:0"><img src="https://luxal.com.ar/wp-content/uploads/2023/09/20200506_104702-scaled.jpg" alt="Obra de Luxal" loading="lazy" onerror="fb(this,1)"><span>adj. 05</span></figure>
+      <figure class="foto" style="margin:0"><img src="https://luxal.com.ar/wp-content/uploads/2025/11/Imagen-de-WhatsApp-2025-11-19-a-las-12.38.39_98bc2028-300x225.jpg" alt="Obra de Luxal" loading="lazy" onerror="fb(this,2)"><span>adj. 06</span></figure>
+      <figure class="foto" style="margin:0"><img src="https://luxal.com.ar/wp-content/uploads/2025/11/Imagen-de-WhatsApp-2025-11-19-a-las-12.38.40_af4c0d4a-300x225.jpg" alt="Obra de Luxal" loading="lazy" onerror="fb(this,0)"><span>adj. 07</span></figure>
+    </div>
+  </div>
+  </div>
+</section>
+
+<div class="cliente">
+<!-- COMPARADOR + COTIZADOR -->
+<section class="hoja" id="lineas" aria-label="Comparador de líneas y cotizador">
+  <div class="perfo"></div>
+  <div class="cmpwrap">
+    <div class="secth"><h2><span class="nr">01</span>Las 6 líneas, lado a lado</h2><p>Referencia general · orientativo</p></div>
+    <div class="cmp" id="cmp"></div>
+    <div class="ref">Barras orientativas de referencia general, no son datos técnicos certificados. La línea final la define Luxal al medir.</div>
+  </div>
+
+  <div class="cot" id="cotizador">
+    <div class="form">
+      <div class="secth" style="margin-bottom:8px"><h2><span class="nr">02</span>Renglón <span id="rengN">1</span> del pedido</h2></div>
+      <div class="fld"><span class="lb">Tipo de abertura</span><div class="opts" id="oTipo"></div></div>
+      <div class="fld"><span class="lb">Línea</span><div class="opts" id="oLinea"></div></div>
+      <div class="row2 fld">
+        <div><label for="iW">Ancho</label><div class="unit"><input class="inp" id="iW" type="number" inputmode="numeric" min="30" max="600" value="150"><span>cm</span></div></div>
+        <div><label for="iH">Alto</label><div class="unit"><input class="inp" id="iH" type="number" inputmode="numeric" min="30" max="300" value="110"><span>cm</span></div></div>
+      </div>
+      <div class="fld"><span class="lb">Hojas</span><div class="opts" id="oHojas"></div></div>
+      <div class="fld"><span class="lb">Color / terminación <span class="ej">opciones de ejemplo</span></span><div class="opts" id="oColor"></div></div>
+      <div class="fld"><label for="sVid">Vidrio</label><select class="inp" id="sVid"></select></div>
+      <div class="row2 fld">
+        <div><label for="iQ">Cantidad</label><div class="unit"><input class="inp" id="iQ" type="number" inputmode="numeric" min="1" max="99" value="1"><span>u.</span></div></div>
+        <div><span class="lb">Accesorios</span><label class="chkl"><input type="checkbox" id="cMq"> Mosquitero</label></div>
+      </div>
+      <div class="aviso" id="aviso"></div>
+    </div>
+    <div>
+      <div class="plano"><span class="rot">PLANO · vista exterior · cotas en cm</span><svg id="svg" viewBox="0 0 560 430" role="img" aria-label="Plano de la abertura elegida"></svg></div>
+      <div class="precio">
+        <div><small>Este renglón · estimado</small><span class="big" id="pR">—</span> <span class="ej">precio de ejemplo</span></div>
+        <div class="det" id="pDet"></div>
+      </div>
+      <table class="reng" aria-label="Renglones del pedido">
+        <thead><tr><th>Cant.</th><th>Descripción</th><th style="text-align:right">Importe est.</th><th></th></tr></thead>
+        <tbody id="rBody"></tbody>
+        <tfoot id="rFoot"></tfoot>
+      </table>
+      <div class="addrow">
+        <button class="btn bir" id="bAdd" type="button">+ Agregar otra abertura</button>
+        <button class="btn sec" id="bDup" type="button">Duplicar este renglón</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ENVÍO -->
+<section class="hoja" aria-label="Datos de la obra y mensaje">
+  <div class="perfo"></div>
+  <div class="envio">
+    <div class="datos">
+      <div class="secth"><h2><span class="nr">03</span>Datos de la obra</h2></div>
+      <div class="fld"><label for="iNom">Nombre</label><input class="inp" id="iNom" type="text" autocomplete="name" placeholder="Tu nombre"></div>
+      <div class="fld"><label for="iLoc">Localidad de la obra</label><input class="inp" id="iLoc" type="text" list="locs" placeholder="Ej.: San Carlos Centro"></div>
+      <datalist id="locs"><option>San Carlos Sud</option><option>San Carlos Centro</option><option>San Carlos Norte</option><option>Gessler</option><option>San Jerónimo Norte</option><option>Esperanza</option><option>Santa Fe</option><option>Rafaela</option><option>Paraná</option><option>Córdoba</option></datalist>
+      <div class="fld"><span class="lb">Servicio</span>
+        <label class="chkl"><input type="checkbox" id="cCol" checked> Con colocación en obra</label>
+        <label class="chkl"><input type="checkbox" id="cMed" checked> Quiero coordinar medición</label>
+      </div>
+      <div class="fld"><span class="lb">También quiero consultar por (a medida)</span>
+        <div class="chips" id="chips">
+          <label><input type="checkbox" value="Piel de Vidrio"> Piel de Vidrio</label>
+          <label><input type="checkbox" value="Frente Integral"> Frente Integral</label>
+          <label><input type="checkbox" value="Panel Compuesto"> Panel Compuesto</label>
+        </div>
+      </div>
+      <h3 class="mini" style="margin-top:18px">Cómo sigue</h3>
+      <ol class="pasos">
+        <li>Mandás este remito por WhatsApp, con medidas y línea.</li>
+        <li>Luxal revisa y coordina la medición en obra.</li>
+        <li>Te confirman el precio final según medida real.</li>
+        <li>Con la seña, entra a fabricación.</li>
+      </ol>
+    </div>
+    <div>
+      <div class="secth"><h2><span class="nr">04</span>Lo que le llega a Luxal</h2><p>texto exacto, en vivo</p></div>
+      <div class="chat">
+        <div class="top"><i>LX</i>Luxal · +54 9 342 698-7204</div>
+        <div class="bub" id="bub"></div>
+      </div>
+      <div class="cta">
+        <a class="btn wa" id="bWa" href="#" target="_blank" rel="noopener">Enviar remito por WhatsApp</a>
+        <button class="btn sec" id="bCopy" type="button">Copiar texto</button>
+      </div>
+    </div>
+  </div>
+  <div class="dos">
+    <div>
+      <h3 class="mini">Condiciones <span class="ej">de ejemplo</span></h3>
+      <ul class="lst">
+        <li>El importe es estimado: el precio final sale de la medición en obra.</li>
+        <li>Seña sugerida: <span id="senaPct">30</span>% del total para entrar a fabricación.</li>
+        <li>Rango de ±8% por terminaciones y herrajes.</li>
+        <li>Piel de Vidrio, Frente Integral y Panel Compuesto: se cotizan a medida.</li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="mini">Qué incluye cada renglón</h3>
+      <ul class="lst">
+        <li>Perfilería de la línea elegida, fabricada por Luxal.</li>
+        <li>Vidrio: Float 4/5/6 mm, De Seguridad, Laminado, Templado o DVH.</li>
+        <li>Mosquitero si lo marcás.</li>
+        <li>Colocación en obra si la marcás.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- TABLA DE PRECIOS -->
+<section class="hoja" aria-label="Tabla de precios editable">
+  <div class="perfo"></div>
+  <div class="tp">
+    <div class="secth"><h2><span class="nr">05</span>Lista de precios del cotizador</h2><p>se edita acá, se guarda en este navegador</p></div>
+    <div class="av">Precios de ejemplo — los cambian ustedes</div>
+    <div class="tpg" id="tpg"></div>
+    <div class="cta"><button class="btn sec" id="bReset" type="button">Volver a los precios de ejemplo</button></div>
+  </div>
+</section>
+</div>
+
+<!-- PANEL DEL DUEÑO -->
+<div id="dueno">
+<section class="hoja" aria-label="Panel del dueño">
+  <div class="perfo"></div>
+  <div class="dup-band"><span>DUPLICADO · PANEL DE EJEMPLO</span><span>Datos ficticios para mostrar cómo lo vería Luxal</span></div>
+  <div class="dgrid">
+    <div>
+      <div class="secth"><h2><span class="nr">D1</span>Consultas que entraron</h2><p>Panel de ejemplo</p></div>
+      <div class="consultas" id="consultas"></div>
+    </div>
+    <div>
+      <div class="secth"><h2><span class="nr">D2</span>Agenda de la semana</h2><p>Panel de ejemplo</p></div>
+      <table class="agenda">
+        <thead><tr><th>Día</th><th>Qué</th><th>Dónde</th></tr></thead>
+        <tbody>
+          <tr><td>Lun 30/11</td><td><span class="tag m">medición</span> 4 ventanas Módena</td><td>San Carlos Centro</td></tr>
+          <tr><td>Mar 01/12</td><td><span class="tag c">colocación</span> frente A30 New</td><td>Esperanza</td></tr>
+          <tr><td>Mié 02/12</td><td><span class="tag m">medición</span> puerta + paño fijo</td><td>Gessler</td></tr>
+          <tr><td>Jue 03/12</td><td><span class="tag l">libre</span> cupo para medir</td><td>—</td></tr>
+          <tr><td>Vie 04/12</td><td><span class="tag c">colocación</span> 6 ventanas Herrero</td><td>San Jerónimo Norte</td></tr>
+          <tr><td>Sáb 05/12</td><td><span class="tag m">medición</span> corrediza A40</td><td>Santa Fe</td></tr>
+        </tbody>
+      </table>
+      <h3 class="mini" style="margin-top:18px">Señas cobradas esta semana</h3>
+      <table class="agenda" id="senas"></table>
+    </div>
+  </div>
+  <div class="dgrid">
+    <div>
+      <div class="secth"><h2><span class="nr">D3</span>Lo que se ahorra</h2><p>Panel de ejemplo</p></div>
+      <div class="kpis" id="kpis"></div>
+    </div>
+    <div>
+      <div class="paravos">
+        <h2>Para vos, Luxal</h2>
+        <ul class="lst">
+          <li>Menos mensajes repetidos: el pedido llega con tipo, línea, medidas y vidrio.</li>
+          <li>Agenda de mediciones por día, con cupos libres a la vista.</li>
+          <li>Seña que entra antes de confirmar la fabricación.</li>
+          <li>Sin comisión por pedido: el cliente te escribe directo a tu WhatsApp.</li>
+        </ul>
+      </div>
+      <div class="cta"><button class="btn" type="button" onclick="setVista(false)">Volver a la vista del cliente</button></div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- FIRMAS -->
+<section class="hoja" aria-label="Pie del remito">
+  <div class="firmas">
+    <div><div class="dato">LUXAL SRL<br>Rivadavia 626, San Carlos Sud, Santa Fe<br><a href="mailto:hrnotta@hotmail.com">hrnotta@hotmail.com</a><br>IG <a href="https://www.instagram.com/luxal.aberturas/" target="_blank" rel="noopener">@luxal.aberturas</a></div></div>
+    <div><div class="rubrica">Cada espacio es único</div><div class="ln">Firma y aclaración · Luxal</div></div>
+    <div><div class="rubrica" id="firmaCli"></div><div class="ln">Recibí conforme · cliente</div></div>
+  </div>
+</section>
+</main>
+
+<p class="pie">Prototipo de demostración preparado para Luxal por Resolviendo Kos · No es la web oficial</p>
+
+<script>
+(function(){
+const WA = "5493426987204";
+const $ = id => document.getElementById(id);
+const fmt = n => { n = Math.round(n/1000)*1000; try{ return "$" + n.toLocaleString("es-AR"); }catch(e){ return "$" + String(n).replace(/\B(?=(\d{3})+(?!\d))/g,"."); } };
+
+const LINEAS = [
+  {id:"herrero", n:"Herrero",  uso:"Ventanas y puertas de uso simple", her:1,   hoja:1.5, fr:7},
+  {id:"ekonal",  n:"Ekonal",   uso:"Vivienda, prestación media-baja", her:2,   hoja:2,   fr:8},
+  {id:"modena",  n:"Módena",   uso:"Vivienda, uso general",           her:3,   hoja:3,   fr:9},
+  {id:"modena2", n:"Módena 2", uso:"Vivienda, hojas más grandes",     her:3.5, hoja:3.5, fr:10},
+  {id:"a30",     n:"A30 New",  uso:"Paños grandes, obras exigentes",  her:4,   hoja:4.5, fr:11},
+  {id:"a40",     n:"A40",      uso:"Alta prestación y grandes vanos", her:5,   hoja:5,   fr:13}
+];
+const TIPOS = [
+  {id:"corr",  n:"Ventana corrediza", hojas:[2,3,4], mq:true,  f:"corr_f"},
+  {id:"abrir", n:"Ventana de abrir",  hojas:[1,2],   mq:true,  f:"abrir_f"},
+  {id:"fijo",  n:"Paño fijo",         hojas:[1],     mq:false, f:"fijo_f"},
+  {id:"vent",  n:"Ventiluz",          hojas:[1],     mq:true,  f:"vent_f"},
+  {id:"puerta",n:"Puerta de abrir",   hojas:[1,2],   mq:false, f:"puerta_f"},
+  {id:"pcorr", n:"Puerta corrediza",  hojas:[2,3,4], mq:true,  f:"pcorr_f"}
+];
+const COLORES = [
+  {id:"blanco", n:"Blanco", hex:"#F3F2EC", st:"#55524A"},
+  {id:"negro",  n:"Negro",  hex:"#2B2B2E", st:"#111"},
+  {id:"anod",   n:"Anodizado natural", hex:"#BDBCB5", st:"#5E5D58"},
+  {id:"madera", n:"Símil madera", hex:"#8A5A36", st:"#4A2E17"}
+];
+const VIDRIOS = [
+  {id:"f4", n:"Float 4 mm"},{id:"f5", n:"Float 5 mm"},{id:"f6", n:"Float 6 mm"},
+  {id:"seg", n:"De Seguridad"},{id:"lam", n:"Laminado"},{id:"temp", n:"Templado"},{id:"dvh", n:"Doble Vidriado Hermético (DVH)"}
+];
+const DEF = {
+  m2:{herrero:195000, ekonal:225000, modena:280000, modena2:315000, a30:350000, a40:450000},
+  vid:{f4:0, f5:9000, f6:16000, seg:38000, lam:45000, temp:60000, dvh:90000},
+  tipo:{corr:100, abrir:110, fijo:75, vent:105, puerta:130, pcorr:115},
+  color:{blanco:0, negro:8, anod:5, madera:18},
+  mosq:45000, coloc:12, sena:30, rango:8, minm2:0.8
+};
+const clone = o => JSON.parse(JSON.stringify(o));
+let P = clone(DEF);
+try{ const s = localStorage.getItem("luxal_precios_v1"); if(s){ const o = JSON.parse(s); for(const k in DEF){ if(o[k]!==undefined){ P[k] = (typeof DEF[k]==="object") ? Object.assign(clone(DEF[k]), o[k]) : o[k]; } } } }catch(e){}
+const save = () => { try{ localStorage.setItem("luxal_precios_v1", JSON.stringify(P)); }catch(e){} };
+
+const newItem = () => ({tipo:"corr", linea:"modena", w:150, h:110, hojas:2, color:"blanco", vid:"f4", mq:false, q:1});
+let items = [newItem()];
+let cur = 0;
+const it = () => items[cur];
+const byId = (a,id) => a.find(x=>x.id===id);
+
+function mqCount(x){
+  const t = byId(TIPOS,x.tipo);
+  if(!x.mq || !t.mq) return 0;
+  if(x.tipo==="corr"||x.tipo==="pcorr") return Math.max(1, Math.floor(x.hojas/2));
+  return x.tipo==="abrir" ? x.hojas : 1;
+}
+function calc(x){
+  const area = Math.max((x.w/100)*(x.h/100), P.minm2);
+  let u = area * P.m2[x.linea] * (P.tipo[x.tipo]/100);
+  u *= 1 + (P.color[x.color]||0)/100;
+  u += area * (P.vid[x.vid]||0);
+  u += mqCount(x) * P.mosq;
+  return {area, unit:u, total:u*x.q};
+}
+function totals(){
+  let sub = items.reduce((s,x)=>s+calc(x).total,0);
+  const col = $("cCol").checked ? sub*P.coloc/100 : 0;
+  const t = sub + col, r = P.rango/100;
+  return {sub, col, t, lo:t*(1-r), hi:t*(1+r), sena:t*P.sena/100};
+}
+function desc(x){
+  const t = byId(TIPOS,x.tipo), l = byId(LINEAS,x.linea), c = byId(COLORES,x.color), v = byId(VIDRIOS,x.vid);
+  const hj = t.hojas.length>1 ? ` ${x.hojas} hoja${x.hojas>1?"s":""}` : "";
+  return {corta:`${t.n}${hj} · ${l.n}`, larga:`${t.n}${hj} · ${x.w} × ${x.h} cm · Línea ${l.n} · ${c.n} · ${v.n.replace(" (DVH)","")}${mqCount(x)?` · ${mqCount(x)} mosquitero${mqCount(x)>1?"s":""}`:""}`};
+}
+
+/* ---------- UI: opciones ---------- */
+function opts(el, arr, key, label){
+  el.innerHTML = "";
+  arr.forEach(o=>{
+    const b = document.createElement("button"); b.type="button";
+    b.innerHTML = label ? label(o) : o.n;
+    b.setAttribute("aria-pressed", String(it()[key]===o.id));
+    b.onclick = () => { it()[key] = o.id; if(key==="tipo") fixTipo(); render(); };
+    el.appendChild(b);
+  });
+}
+function fixTipo(){
+  const x = it(), t = byId(TIPOS,x.tipo);
+  if(!t.hojas.includes(x.hojas)) x.hojas = t.hojas[0];
+  if(!t.mq) x.mq = false;
+  if(x.tipo==="puerta"||x.tipo==="pcorr"){ if(x.h<190) x.h = 205; if(x.tipo==="puerta" && x.w>120 && x.hojas===1) x.w = 90; }
+  if(x.tipo==="vent"){ if(x.h>80) x.h = 50; if(x.w>150) x.w = 80; }
+}
+function renderOpts(){
+  const x = it();
+  opts($("oTipo"), TIPOS, "tipo");
+  opts($("oLinea"), LINEAS, "linea");
+  opts($("oColor"), COLORES, "color", o=>`<span class="sw" style="background:${o.hex}"></span>${o.n}`);
+  const t = byId(TIPOS,x.tipo), oh = $("oHojas"); oh.innerHTML="";
+  t.hojas.forEach(h=>{ const b=document.createElement("button"); b.type="button"; b.textContent = h + (h===1?" hoja":" hojas"); b.setAttribute("aria-pressed", String(x.hojas===h)); b.onclick=()=>{x.hojas=h; render();}; oh.appendChild(b); });
+  if(t.hojas.length===1) oh.querySelector("button").disabled = true;
+  const sv = $("sVid"); if(!sv.options.length) VIDRIOS.forEach(v=>{ const o=document.createElement("option"); o.value=v.id; o.textContent=v.n; sv.appendChild(o); });
+  sv.value = x.vid;
+  [["iW","w"],["iH","h"],["iQ","q"]].forEach(([id,k])=>{ if(document.activeElement!==$(id)) $(id).value = x[k]; });
+  $("cMq").checked = x.mq; $("cMq").disabled = !t.mq;
+  $("rengN").textContent = cur+1;
+}
+
+/* ---------- Comparador ---------- */
+function cells(v){ let s=""; for(let i=1;i<=5;i++){ s += `<i class="${v>=i?"f":(v>=i-.5?"h":"")}"></i>`; } return `<div class="cells">${s}</div>`; }
+function renderCmp(){
+  const max = Math.max(...LINEAS.map(l=>P.m2[l.id]));
+  $("cmp").innerHTML = LINEAS.map((l,i)=>{
+    const pr = Math.max(.5, Math.round((P.m2[l.id]/max)*10)/2);
+    return `<div class="lin ${it().linea===l.id?"on":""}">
+      <div class="hd"><div class="ord">${String(i+1).padStart(2,"0")} / 06</div><h3>${l.n}</h3></div>
+      <div class="uso">${l.uso}</div>
+      <div class="bar"><small>Hermeticidad</small>${cells(l.her)}</div>
+      <div class="bar"><small>Tamaño de hoja</small>${cells(l.hoja)}</div>
+      <div class="bar p"><small>Precio relativo</small>${cells(pr)}</div>
+      <div class="desde">desde ${fmt(P.m2[l.id])}/m² <span class="ej">precio de ejemplo</span></div>
+      <button type="button" data-l="${l.id}">${it().linea===l.id?"En uso en el renglón":"Usar esta línea"}</button>
+    </div>`;
+  }).join("");
+  $("cmp").querySelectorAll("button").forEach(b=>b.onclick=()=>{ it().linea=b.dataset.l; render(); $("cotizador").scrollIntoView({behavior:"smooth",block:"start"}); });
+}
+
+/* ---------- Plano SVG ---------- */
+function drawSVG(x){
+  const VW=560, VH=430, L=byId(LINEAS,x.linea), C=byId(COLORES,x.color), T=x.tipo;
+  const maxW=VW-130, maxH=VH-120;
+  const sc=Math.min(maxW/x.w, maxH/x.h);
+  const W=x.w*sc, H=x.h*sc, X0=(VW-W)/2+22, Y0=(VH-H)/2-14;
+  const fr=L.fr, ink="#1F3C8F", red="#B8322A";
+  const glass = x.vid==="dvh" ? "#BBD3D6" : (x.vid==="lam"||x.vid==="seg" ? "#C9DCDB" : "#D2E2E3");
+  let g = `<defs>
+    <pattern id="mqp" width="5" height="5" patternUnits="userSpaceOnUse"><path d="M0 0H5M0 0V5" stroke="#2A3440" stroke-width=".55" opacity=".5"/></pattern>
+    <pattern id="mad" width="14" height="6" patternUnits="userSpaceOnUse"><rect width="14" height="6" fill="#8A5A36"/><path d="M0 3Q4 1 7 3T14 3" stroke="#6A4224" fill="none" stroke-width="1"/></pattern>
+  </defs>`;
+  const fill = C.id==="madera" ? "url(#mad)" : C.hex;
+  const rect=(a,b,c,d,f,s,w)=>`<rect x="${a.toFixed(1)}" y="${b.toFixed(1)}" width="${Math.max(0,c).toFixed(1)}" height="${Math.max(0,d).toFixed(1)}" fill="${f}" stroke="${s||C.st}" stroke-width="${w||1.3}"/>`;
+  const pane=(a,b,c,d,mq)=>{
+    let s = rect(a,b,c,d,glass,C.st,1);
+    s += `<path d="M${(a+c*.12).toFixed(1)} ${(b+d*.35).toFixed(1)}L${(a+c*.35).toFixed(1)} ${(b+d*.12).toFixed(1)}M${(a+c*.12).toFixed(1)} ${(b+d*.5).toFixed(1)}L${(a+c*.5).toFixed(1)} ${(b+d*.12).toFixed(1)}" stroke="#fff" stroke-opacity=".75" stroke-width="1.4"/>`;
+    if(x.vid==="dvh") s += rect(a+4,b+4,c-8,d-8,"none","#ffffffcc",1);
+    if(mq) s += rect(a,b,c,d,"url(#mqp)","none",0);
+    return s;
+  };
+  const dash=pts=>`<polyline points="${pts}" fill="none" stroke="${ink}" stroke-width="1.2" stroke-dasharray="6 5" opacity=".8"/>`;
+  const arrow=(cx,cy,dir)=>`<path d="M${cx-20*dir} ${cy}H${cx+20*dir}M${cx+12*dir} ${cy-6}L${cx+20*dir} ${cy}L${cx+12*dir} ${cy+6}" stroke="${ink}" stroke-width="1.6" fill="none"/>`;
+  const handle=(hx,hy)=>`<rect x="${hx-2.5}" y="${hy-13}" width="5" height="26" rx="2" fill="${C.id==="negro"?"#999":"#26262A"}"/>`;
+
+  g += rect(X0,Y0,W,H,fill,C.st,1.6);
+  const ix=X0+fr, iy=Y0+fr, iw=W-2*fr, ih=H-2*fr;
+  const n=x.hojas, mqN=mqCount(x);
+  if(T==="corr"||T==="pcorr"){
+    const ov=5, pw=iw/n, s1=fr*.65;
+    for(let i=0;i<n;i++){
+      const a = ix+pw*i - (i>0?ov:0), c = pw + (i>0?ov:0) + (i<n-1?ov:0);
+      const isMq = mqN && i % 2 === 1 && Math.ceil(i/2) <= mqN;
+      g += rect(a,iy,c,ih,fill,C.st,1.1) + pane(a+s1,iy+s1,c-2*s1,ih-2*s1,isMq);
+      const dir = (i < n/2) ? 1 : -1;
+      g += arrow(a+c/2, iy+ih/2, dir);
+      if(i < n-1) g += handle(a+c-s1/2-2, iy+ih*.55);
+      if(T==="pcorr") g += rect(a+s1,iy+ih-s1-ih*.04,c-2*s1,ih*.04,fill,C.st,.8);
+    }
+  } else if(T==="abrir"||T==="puerta"){
+    const pw=iw/n, s1=fr*.65;
+    for(let i=0;i<n;i++){
+      const a=ix+pw*i;
+      g += rect(a,iy,pw,ih,fill,C.st,1.1);
+      if(T==="puerta"){
+        const gh=ih*.58;
+        g += pane(a+s1,iy+s1,pw-2*s1,gh-s1,false);
+        g += rect(a+s1,iy+gh+s1*.6,pw-2*s1,ih-gh-s1*1.6,fill,C.st,1);
+        g += `<path d="M${a+s1+6} ${iy+gh+s1*.6+ (ih-gh)/3}H${a+pw-s1-6}M${a+s1+6} ${iy+gh+s1*.6+(ih-gh)*2/3}H${a+pw-s1-6}" stroke="${C.st}" stroke-width=".8" opacity=".6"/>`;
+      } else {
+        g += pane(a+s1,iy+s1,pw-2*s1,ih-2*s1, mqN && i < mqN);
+      }
+      const hingeL = (n===1)||(i===0);
+      g += hingeL ? dash(`${a+pw-s1},${iy+s1} ${a+s1},${iy+ih/2} ${a+pw-s1},${iy+ih-s1}`) : dash(`${a+s1},${iy+s1} ${a+pw-s1},${iy+ih/2} ${a+s1},${iy+ih-s1}`);
+      g += handle(hingeL ? a+pw-s1-7 : a+s1+7, iy+ih*(T==="puerta"?.55:.5));
+    }
+  } else if(T==="fijo"){
+    g += pane(ix,iy,iw,ih,false);
+    g += `<text x="${ix+iw/2}" y="${iy+ih/2+6}" text-anchor="middle" font-family="Courier Prime,Courier New,monospace" font-size="16" fill="${ink}" opacity=".7">F</text>`;
+  } else if(T==="vent"){
+    const s1=fr*.65;
+    g += rect(ix,iy,iw,ih,fill,C.st,1.1) + pane(ix+s1,iy+s1,iw-2*s1,ih-2*s1,!!mqN);
+    g += dash(`${ix+s1},${iy+ih-s1} ${ix+iw/2},${iy+s1} ${ix+iw-s1},${iy+ih-s1}`);
+  }
+  // cotas
+  const yb=Y0+H+30, xl=X0-30;
+  g += `<g stroke="${ink}" stroke-width="1" fill="none">
+    <path d="M${X0} ${Y0+H+6}V${yb+7}M${X0+W} ${Y0+H+6}V${yb+7}M${X0} ${yb}H${X0+W}"/>
+    <path d="M${X0-6} ${Y0}H${xl-7}M${X0-6} ${Y0+H}H${xl-7}M${xl} ${Y0}V${Y0+H}"/>
+    <path d="M${X0-4} ${yb+4}L${X0+4} ${yb-4}M${X0+W-4} ${yb+4}L${X0+W+4} ${yb-4}M${xl-4} ${Y0+4}L${xl+4} ${Y0-4}M${xl-4} ${Y0+H+4}L${xl+4} ${Y0+H-4}" stroke-width="1.6"/>
+  </g>
+  <g font-family="Courier Prime,Courier New,monospace" font-weight="700" fill="${ink}">
+    <rect x="${X0+W/2-40}" y="${yb-10}" width="80" height="20" fill="#EFE4C8"/>
+    <text x="${X0+W/2}" y="${yb+5}" text-anchor="middle" font-size="15">${x.w} cm</text>
+    <g transform="translate(${xl} ${Y0+H/2}) rotate(-90)"><rect x="-40" y="-10" width="80" height="20" fill="#EFE4C8"/><text y="5" text-anchor="middle" font-size="15">${x.h} cm</text></g>
+  </g>`;
+  if(n>1 && (T==="corr"||T==="pcorr"||T==="abrir"||T==="puerta")){
+    g += `<text x="${X0+W/2}" y="${Y0-10}" text-anchor="middle" font-family="Courier Prime,Courier New,monospace" font-size="12" fill="${ink}">${n} hojas · ≈ ${Math.round(x.w/n)} cm c/u</text>`;
+  }
+  g += `<text x="${VW-12}" y="${VH-10}" text-anchor="end" font-family="Courier Prime,Courier New,monospace" font-size="12" fill="${red}">${L.n.toUpperCase()} · ${C.n.toUpperCase()}${x.vid==="dvh"?" · DVH":""}${mqN?" · MOSQ.":""}</text>`;
+  $("svg").innerHTML = g;
+}
+
+/* ---------- Aviso orientativo ---------- */
+function aviso(x){
+  const hw = (x.tipo==="corr"||x.tipo==="pcorr"||x.tipo==="abrir"||x.tipo==="puerta") ? x.w/x.hojas : x.w;
+  const m2 = hw*x.h/1e4, L = byId(LINEAS,x.linea);
+  const need = m2>3 ? 4.5 : m2>2.2 ? 3.5 : m2>1.5 ? 2.5 : 0;
+  if(L.hoja < need){
+    const sug = LINEAS.find(l=>l.hoja>=need);
+    return `Referencia general: para hojas de ese tamaño conviene una línea más robusta (p. ej. ${sug.n}). Luxal lo confirma al medir.`;
+  }
+  return "";
+}
+
+/* ---------- Renglones ---------- */
+function renderRows(){
+  $("rBody").innerHTML = items.map((x,i)=>{
+    const d = desc(x), c = calc(x);
+    return `<tr class="${i===cur?"sel":""}" data-i="${i}"><td class="q">${x.q}</td><td class="d">${d.corta} · <b style="color:var(--birome)">${x.w}×${x.h}</b><br><span style="color:var(--tinta2);font-size:.78rem">${byId(COLORES,x.color).n} · ${byId(VIDRIOS,x.vid).n.replace(" (DVH)","")}${mqCount(x)?" · mosq.":""}</span></td><td class="imp">${fmt(c.total)}<br><span class="ej">precio de ejemplo</span></td><td class="x">${items.length>1?`<button type="button" aria-label="Quitar renglón" data-del="${i}">×</button>`:""}</td></tr>`;
+  }).join("");
+  const T = totals();
+  $("rFoot").innerHTML = `${T.col?`<tr><td></td><td>Colocación (${P.coloc}%)</td><td class="imp">${fmt(T.col)}<br><span class="ej">precio de ejemplo</span></td><td></td></tr>`:""}
+    <tr><td></td><td>TOTAL ESTIMADO</td><td class="imp">${fmt(T.lo)} –<br>${fmt(T.hi)}<br><span class="ej">precio de ejemplo</span></td><td></td></tr>
+    <tr><td></td><td style="font-weight:400">Seña sugerida (${P.sena}%)</td><td class="imp" style="font-weight:400">${fmt(T.sena)}<br><span class="ej">precio de ejemplo</span></td><td></td></tr>`;
+  $("rBody").querySelectorAll("tr").forEach(tr=>tr.onclick=e=>{
+    if(e.target.dataset.del!==undefined){ items.splice(+e.target.dataset.del,1); cur=Math.min(cur,items.length-1); render(); return; }
+    cur=+tr.dataset.i; render();
+  });
+}
+
+/* ---------- Mensaje ---------- */
+let pedidoNro = "LX-" + (2700 + Math.floor(Math.random()*290));
+function mensaje(){
+  const T = totals(), nom = $("iNom").value.trim(), loc = $("iLoc").value.trim();
+  const extra = [...document.querySelectorAll("#chips input:checked")].map(i=>i.value);
+  let s = `Hola Luxal, les mando mi pedido de presupuesto (remito web ${pedidoNro}):\n\n`;
+  items.forEach((x,i)=>{ s += `${i+1}) ${x.q} × ${desc(x).larga} → ${fmt(calc(x).total)} (precio de ejemplo)\n`; });
+  if(T.col) s += `Colocación en obra: ${fmt(T.col)} (precio de ejemplo)\n`;
+  s += `\nTotal estimado: ${fmt(T.lo)} a ${fmt(T.hi)} (precio de ejemplo)\n`;
+  s += `Seña sugerida ${P.sena}%: ${fmt(T.sena)} (precio de ejemplo)\n`;
+  if(extra.length) s += `También quiero consultar por: ${extra.join(", ")}\n`;
+  s += `\nNombre: ${nom||"(a completar)"}\nObra en: ${loc||"(a completar)"}\n`;
+  if($("cMed").checked) s += `¿Cuándo pueden pasar a medir?`;
+  else s += `¿Me confirman el presupuesto?`;
+  return s;
+}
+function renderMsg(){
+  const m = mensaje();
+  const b = $("bub");
+  b.textContent = m;
+  const c = document.createElement("span"); c.className="cur"; b.appendChild(c);
+  const h = document.createElement("span"); h.className="hr"; const d=new Date(); h.textContent = String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0"); b.appendChild(h);
+  $("bWa").href = "https://wa.me/" + WA + "?text=" + encodeURIComponent(m);
+  $("firmaCli").textContent = $("iNom").value.trim();
+}
+
+/* ---------- Tabla de precios ---------- */
+function renderTabla(){
+  const row=(lab,path,val,pc,u)=>`<tr><td>${lab}${u?`<span class="u">${u}</span>`:""}</td><td><input ${pc?'class="pc"':''} type="number" inputmode="numeric" data-p="${path}" value="${val}" aria-label="${lab}"> ${pc?"%":""}${pc?"":' <span class="ej">precio de ejemplo</span>'}</td></tr>`;
+  $("tpg").innerHTML =
+    `<table><caption>Precio base por m² · por línea</caption>${LINEAS.map(l=>row(l.n,"m2."+l.id,P.m2[l.id],false,"$/m²")).join("")}</table>`+
+    `<table><caption>Vidrio · adicional por m²</caption>${VIDRIOS.map(v=>row(v.n.replace(" (DVH)",""),"vid."+v.id,P.vid[v.id],false,"$/m²")).join("")}
+      ${row("Mosquitero","mosq",P.mosq,false,"$ c/u")}</table>`+
+    `<table><caption>Ajustes</caption>${TIPOS.map(t=>row(t.n,"tipo."+t.id,P.tipo[t.id],true,"% del m² base")).join("")}
+      ${COLORES.map(c=>row(c.n,"color."+c.id,P.color[c.id],true,"recargo")).join("")}
+      ${row("Colocación","coloc",P.coloc,true,"sobre el total")}${row("Seña sugerida","sena",P.sena,true,"del total")}</table>`;
+  $("tpg").querySelectorAll("input").forEach(inp=>inp.oninput=()=>{
+    const v = parseFloat(inp.value); if(isNaN(v)||v<0) return;
+    const [a,b] = inp.dataset.p.split(".");
+    if(b) P[a][b]=v; else P[a]=v;
+    save(); render(true);
+  });
+}
+
+/* ---------- Panel del dueño ---------- */
+const EJ = [
+  {hace:"hace 2 h", nom:"Marcela G.", loc:"Esperanza", items:[{tipo:"corr",linea:"modena2",w:180,h:120,hojas:2,color:"blanco",vid:"dvh",mq:true,q:3},{tipo:"puerta",linea:"modena2",w:90,h:205,hojas:1,color:"blanco",vid:"lam",mq:false,q:1}]},
+  {hace:"ayer", nom:"Diego R.", loc:"San Jerónimo Norte", items:[{tipo:"corr",linea:"herrero",w:120,h:100,hojas:2,color:"anod",vid:"f4",mq:true,q:5}]},
+  {hace:"miércoles", nom:"Estudio de arquitectura (ej.)", loc:"Santa Fe", items:[{tipo:"pcorr",linea:"a40",w:300,h:220,hojas:3,color:"negro",vid:"dvh",mq:false,q:2},{tipo:"fijo",linea:"a40",w:150,h:220,hojas:1,color:"negro",vid:"dvh",mq:false,q:2}]}
+];
+function ejMsg(e){
+  let sub = e.items.reduce((s,x)=>s+calc(x).total,0), t = sub*(1+P.coloc/100);
+  let s = `Hola Luxal, les mando mi pedido de presupuesto:\n`;
+  e.items.forEach((x,i)=>{ s += `${i+1}) ${x.q} × ${desc(x).larga}\n`; });
+  s += `Total estimado: ${fmt(t*(1-P.rango/100))} a ${fmt(t*(1+P.rango/100))} (precio de ejemplo)\nNombre: ${e.nom}\nObra en: ${e.loc}`;
+  return {s, t};
+}
+function renderDueno(){
+  const mine = mensaje();
+  let html = `<div class="cons"><div class="meta"><b>RECIÉN ENTRADA · la que estás armando</b><span>ahora</span></div><div class="bub">${esc(mine)}</div></div>`;
+  let tot = 0;
+  EJ.forEach(e=>{ const m = ejMsg(e); tot += m.t; html += `<div class="cons"><div class="meta"><b>${e.nom}</b><span>${e.hace}</span></div><div class="bub">${esc(m.s)}</div></div>`; });
+  $("consultas").innerHTML = html;
+  const se = EJ.map(e=>({n:e.nom, v:ejMsg(e).t*P.sena/100}));
+  const sTot = se.reduce((a,b)=>a+b.v,0);
+  $("senas").innerHTML = se.map(x=>`<tr><td>${x.n}</td><td style="text-align:right;color:var(--birome)">${fmt(x.v)} <span class="ej">precio de ejemplo</span></td></tr>`).join("") + `<tr><td><b>Total señas</b></td><td style="text-align:right;color:var(--birome)"><b>${fmt(sTot)}</b> <span class="ej">precio de ejemplo</span></td></tr>`;
+  const consultas = 14, min = 20;
+  $("kpis").innerHTML = `
+    <div><b>${consultas}</b><small>consultas con medidas y línea esta semana</small></div>
+    <div><b>${Math.floor(consultas*min/60)} h ${consultas*min%60} min</b><small>ahorradas en presupuestos a mano (≈ ${min} min c/u)</small></div>
+    <div><b>$0</b><small>comisión por pedido: el cliente escribe directo</small></div>
+    <div><b>${fmt(tot*0.10)}</b><small>lo que se llevaría un intermediario con 10% de comisión <span class="ej">precio de ejemplo</span></small></div>`;
+}
+function esc(s){ return s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c])); }
+
+window.setVista = function(d){
+  document.body.classList.toggle("dueno", d);
+  $("tabCli").setAttribute("aria-selected", String(!d));
+  $("tabDue").setAttribute("aria-selected", String(d));
+  if(d){ renderDueno(); $("dueno").scrollIntoView({behavior:"smooth",block:"start"}); }
+  else window.scrollTo({top:0,behavior:"smooth"});
+};
+
+/* ---------- Render ---------- */
+function render(skipTabla){
+  const x = it();
+  renderOpts(); renderCmp(); drawSVG(x);
+  const c = calc(x), r = P.rango/100;
+  $("pR").textContent = `${fmt(c.total*(1-r))} – ${fmt(c.total*(1+r))}`;
+  $("pDet").innerHTML = `${c.area.toFixed(2).replace(".",",")} m² × ${x.q} u.<br>${fmt(c.unit)} c/u <span class="ej">precio de ejemplo</span>`;
+  $("aviso").textContent = aviso(x);
+  $("senaPct").textContent = P.sena;
+  renderRows(); renderMsg();
+  if(!skipTabla) renderTabla();
+  if(document.body.classList.contains("dueno")) renderDueno();
+}
+
+const num = (el,min,max,key)=>{ el.addEventListener("input",()=>{ const v=parseInt(el.value,10); if(isNaN(v)) return; it()[key]=Math.min(max,Math.max(min,v)); render(true); }); el.addEventListener("change",()=>{ el.value = it()[key]; }); };
+num($("iW"),30,600,"w"); num($("iH"),30,300,"h"); num($("iQ"),1,99,"q");
+$("sVid").onchange = e => { it().vid = e.target.value; render(true); };
+$("cMq").onchange = e => { it().mq = e.target.checked; render(true); };
+["cCol","cMed"].forEach(id=>$(id).onchange=()=>render(true));
+["iNom","iLoc"].forEach(id=>$(id).oninput=()=>renderMsg());
+document.querySelectorAll("#chips input").forEach(i=>i.onchange=()=>renderMsg());
+$("bAdd").onclick = () => { items.push(newItem()); cur = items.length-1; render(true); $("cotizador").scrollIntoView({behavior:"smooth"}); };
+$("bDup").onclick = () => { items.push(clone(it())); cur = items.length-1; render(true); };
+$("bReset").onclick = () => { P = clone(DEF); save(); render(); };
+$("bCopy").onclick = () => { const m = mensaje(); try{ navigator.clipboard.writeText(m).then(()=>{ $("bCopy").textContent="Copiado"; setTimeout(()=>$("bCopy").textContent="Copiar texto",1500); }); }catch(e){} };
+
+render();
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Luxal"></script>
+</body>
+</html>
