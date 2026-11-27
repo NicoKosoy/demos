@@ -1,0 +1,920 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Cabañas La Amelia · Mina Clavero</title>
+<meta name="description" content="Prototipo de demostración para Cabañas La Amelia: siete cabañas con nombre de árbol en Mina Clavero, Traslasierra.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Almendra:ital,wght@0,400;0,700;1,400&family=Palanquin:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --papel:#EDE6D3;--hoja:#F8F3E6;--pliego:#F3ECDA;--tinta:#262F20;--tinta2:#565C48;--linea:#CFC4A8;
+  --oliva:#56662B;--musgo:#8B9A55;--oxido:#9A4726;--ocre:#BE8A2A;--kiri:#86769F;--baya:#B8483F;--agua:#4E8079;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--papel);color:var(--tinta);font:17px/1.55 'Palanquin',ui-sans-serif,sans-serif;overflow-x:hidden}
+a{color:inherit}
+button,input,select{font:inherit;color:inherit}
+h1,h2,h3,.alm{font-family:'Almendra',Georgia,serif;font-weight:400;letter-spacing:.005em}
+.wrap{max-width:1200px;margin:0 auto;padding:0 32px}
+.muted{color:var(--tinta2)}
+.pe{display:inline-block;font:500 10.5px/1.2 'Palanquin',sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--oxido);border:1px solid rgba(154,71,38,.35);border-radius:2px;padding:2px 5px 1px;margin-left:6px;vertical-align:middle;white-space:nowrap}
+.ej{display:inline-block;font:600 10.5px/1 'Palanquin',sans-serif;letter-spacing:.14em;text-transform:uppercase;background:var(--ocre);color:#231b08;padding:5px 8px 4px;border-radius:2px}
+
+/* firma */
+.firma{font-size:12.5px;color:var(--tinta2);border-bottom:1px solid var(--linea);letter-spacing:.02em}
+.firma .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-top:8px;padding-bottom:8px}
+
+/* barra */
+header.bar{position:sticky;top:0;z-index:30;background:rgba(237,230,211,.95);backdrop-filter:blur(6px);border-bottom:1px solid var(--linea)}
+header.bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:64px}
+.marca{display:flex;align-items:baseline;gap:10px;text-decoration:none}
+.marca b{font:400 28px/1 'Almendra',serif}
+.marca span{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--tinta2)}
+nav.idx{display:flex;gap:22px;align-items:center;font-size:15px}
+nav.idx a{text-decoration:none;border-bottom:1px solid transparent;padding-bottom:1px}
+nav.idx a:hover{border-color:var(--tinta)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:600 15px/1 'Palanquin',sans-serif;padding:14px 22px 12px;border-radius:2px;background:var(--tinta);color:var(--hoja);text-decoration:none;border:1px solid var(--tinta);cursor:pointer;transition:transform .15s}
+.btn:hover{transform:translateY(-1px)}
+.btn.alt{background:transparent;color:var(--tinta)}
+.btn.verde{background:#1f6b45;border-color:#1f6b45;color:#fff}
+.btn.chico{padding:10px 14px 8px;font-size:14px}
+.duenio-btn{background:transparent;border:1px dashed var(--oxido);color:var(--oxido);padding:9px 14px 7px;border-radius:2px;cursor:pointer;font-weight:600;font-size:14px}
+.duenio-btn:hover{background:var(--oxido);color:var(--hoja);border-style:solid}
+
+/* portada */
+.portada{display:grid;grid-template-columns:5fr 7fr;gap:48px;padding:56px 0 40px;align-items:center}
+.etiqueta-h{border:1px solid var(--tinta);background:var(--hoja);padding:26px 28px 24px;position:relative;box-shadow:6px 6px 0 var(--linea)}
+.etiqueta-h .num{position:absolute;top:-12px;left:22px;background:var(--papel);padding:0 10px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--oxido);font-weight:600}
+.kicker{font-size:12.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--oliva);font-weight:600}
+.portada h1{font-size:clamp(40px,5.4vw,74px);line-height:.98;margin:12px 0 18px}
+.portada h1 em{font-style:italic;color:var(--oxido)}
+.lema{font:italic 400 21px/1.35 'Almendra',serif;margin:0 0 6px}
+.lema-src{font-size:13px;color:var(--tinta2);margin:0 0 18px}
+.datos{list-style:none;margin:0 0 22px;padding:14px 0 0;border-top:1px solid var(--linea);display:grid;grid-template-columns:1fr 1fr;gap:6px 18px;font-size:15px}
+.datos li{display:flex;gap:8px;align-items:baseline}
+.datos li::before{content:'';width:7px;height:7px;border:1px solid var(--oliva);transform:rotate(45deg);flex:none;position:relative;top:-1px}
+.cta{display:flex;gap:10px;flex-wrap:wrap}
+.plano-box{background:var(--hoja);border:1px solid var(--linea);padding:16px 16px 10px;position:relative}
+.plano-box svg{width:100%;height:auto;display:block}
+.plano-pie{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:12.5px;color:var(--tinta2);border-top:1px solid var(--linea);padding-top:8px;margin-top:6px}
+.pl-cab{cursor:pointer}
+.pl-cab:hover .pl-dot,.pl-cab:focus .pl-dot{fill:var(--oxido)}
+.pl-cab text{font-family:'Almendra',serif;font-size:15px;fill:var(--tinta)}
+
+/* secciones */
+section{padding:64px 0}
+.folio{display:flex;align-items:baseline;gap:16px;margin-bottom:26px;border-bottom:1px solid var(--tinta);padding-bottom:12px;flex-wrap:wrap}
+.folio .n{font:italic 400 20px 'Almendra',serif;color:var(--oxido);min-width:70px}
+.folio h2{font-size:clamp(30px,3.6vw,46px);line-height:1.02;margin:0;flex:1 1 380px}
+.folio p{margin:0;flex:1 1 300px;color:var(--tinta2);font-size:15.5px}
+
+/* buscador del herbario */
+.buscador{display:grid;grid-template-columns:auto 1fr auto;gap:18px 28px;align-items:center;background:var(--tinta);color:var(--hoja);padding:20px 24px;margin-bottom:28px}
+.buscador .lbl{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#cfd6b4;margin-bottom:8px}
+.pax{display:flex;gap:4px}
+.pax button{width:40px;height:40px;border:1px solid #5d6a4a;background:transparent;color:var(--hoja);cursor:pointer;border-radius:2px;font-weight:600}
+.pax button.on{background:var(--hoja);color:var(--tinta);border-color:var(--hoja)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chips button{border:1px solid #5d6a4a;background:transparent;color:var(--hoja);padding:8px 12px 6px;border-radius:999px;cursor:pointer;font-size:14px}
+.chips button.on{background:var(--ocre);border-color:var(--ocre);color:#231b08}
+.veredicto{font:italic 400 19px/1.3 'Almendra',serif;max-width:300px}
+.veredicto small{display:block;font:400 13px/1.4 'Palanquin',sans-serif;color:#cfd6b4;font-style:normal;margin-top:4px}
+
+.herbario{display:grid;grid-template-columns:240px 1fr;gap:32px;align-items:start}
+.indice{list-style:none;margin:0;padding:0;border-top:1px solid var(--linea);position:sticky;top:84px}
+.indice li{border-bottom:1px solid var(--linea)}
+.indice button{display:grid;grid-template-columns:28px 1fr auto;gap:8px;align-items:baseline;width:100%;text-align:left;background:none;border:0;padding:11px 6px 9px;cursor:pointer;transition:opacity .2s,background .2s}
+.indice button .r{font:italic 400 14px 'Almendra',serif;color:var(--oxido)}
+.indice button .nm{font:400 21px/1.1 'Almendra',serif}
+.indice button .lt{display:block;font:italic 400 12.5px 'Palanquin',sans-serif;color:var(--tinta2)}
+.indice button .cp{font-size:12.5px;color:var(--tinta2);white-space:nowrap}
+.indice button.on{background:var(--hoja);box-shadow:inset 3px 0 0 var(--oxido)}
+.indice button.off{opacity:.33}
+.indice button.match .cp{color:var(--oliva);font-weight:600}
+
+.lamina{background:var(--hoja);border:1px solid var(--linea);padding:28px;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:30px;position:relative}
+.lamina::after{content:'';position:absolute;inset:8px;border:1px solid rgba(38,47,32,.08);pointer-events:none}
+.lam-main{background:var(--pliego);border:1px solid var(--linea);padding:10px}
+.lam-main svg{width:100%;height:auto;display:block}
+.lam-min{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.lam-min figure{margin:0;background:var(--pliego);border:1px solid var(--linea);padding:8px 8px 6px}
+.lam-min svg{width:100%;height:auto;display:block}
+.lam-min figcaption,.lam-main figcaption{font-size:12px;color:var(--tinta2);text-align:center;font-style:italic;padding-top:4px}
+.lam-main{margin:0}
+.ficha .tag{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--oliva);font-weight:600}
+.ficha h3{font-size:clamp(40px,4.4vw,58px);line-height:1;margin:6px 0 2px}
+.ficha .latin{font:italic 400 16px 'Palanquin',sans-serif;color:var(--tinta2);margin:0 0 16px}
+.etq{border:1px solid var(--tinta);font-size:14px;margin-bottom:16px}
+.etq div{display:grid;grid-template-columns:118px 1fr;border-bottom:1px solid var(--linea)}
+.etq div:last-child{border-bottom:0}
+.etq dt,.etq dd{margin:0;padding:7px 10px 5px}
+.etq dt{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--tinta2);border-right:1px solid var(--linea)}
+.ficha ul.inc{list-style:none;margin:0 0 18px;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:5px 14px;font-size:15px}
+.ficha ul.inc li{padding-left:16px;position:relative}
+.ficha ul.inc li::before{content:'';position:absolute;left:0;top:.6em;width:8px;height:1px;background:var(--oxido)}
+.tar-mini{width:100%;border-collapse:collapse;font-size:14.5px;margin-bottom:18px}
+.tar-mini th{font-weight:600;text-align:left;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--tinta2);padding:6px 0;border-bottom:1px solid var(--tinta)}
+.tar-mini td{padding:8px 0 6px;border-bottom:1px solid var(--linea)}
+.tar-mini td:last-child{text-align:right}
+.nota-kiri{background:#ece6f1;border-left:3px solid var(--kiri);padding:10px 12px 8px;font-size:14px;margin-bottom:16px}
+
+/* calendario */
+.cal-wrap{background:var(--hoja);border:1px solid var(--linea);padding:20px;overflow:hidden}
+.cal-top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.leyenda{display:flex;gap:14px;flex-wrap:wrap;font-size:13.5px}
+.leyenda span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:14px;height:14px;display:inline-block;border:1px solid rgba(0,0,0,.15)}
+.sw.B{background:#2f5d86}.sw.K{background:var(--kiri)}.sw.W{background:#1f6b45}.sw.L{background:var(--pliego)}
+.cal-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table.cal{border-collapse:separate;border-spacing:3px;min-width:760px;width:100%;font-size:13px}
+table.cal th{font-weight:500;color:var(--tinta2);font-size:12px;padding:2px 0}
+table.cal th.d{width:44px}
+table.cal th.d b{display:block;font-size:15px;color:var(--tinta)}
+table.cal td.n{font:400 17px 'Almendra',serif;white-space:nowrap;padding-right:10px;text-align:left;width:1%}
+table.cal td.c{height:34px;border-radius:2px;background:var(--pliego);border:1px solid #e3dac2;text-align:center;font-size:11px;font-weight:600;color:#fff}
+table.cal td.c.B{background:#2f5d86;border-color:#2f5d86}
+table.cal td.c.K{background:var(--kiri);border-color:var(--kiri)}
+table.cal td.c.W{background:#1f6b45;border-color:#1f6b45}
+table.cal tr.sub td{font-size:11.5px;color:var(--tinta2)}
+table.cal tr.sub td.c{height:16px;background:transparent;border:1px dashed #cfc4a8;color:var(--oxido)}
+table.cal tr.sub td.c.x{background:repeating-linear-gradient(45deg,#e6d9c9 0 4px,transparent 4px 8px);border-style:solid;border-color:#d8c3ad}
+.cal-notas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:16px;padding-top:14px;border-top:1px solid var(--linea);font-size:14.5px}
+.cal-notas b{display:block;font:400 18px 'Almendra',serif;margin-bottom:2px}
+
+/* tarifas */
+.temporadas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border:1px solid var(--tinta);margin-bottom:22px}
+.temporadas div{padding:16px 18px 14px;border-right:1px solid var(--tinta)}
+.temporadas div:last-child{border-right:0}
+.temporadas h3{font-size:26px;margin:0 0 6px}
+.temporadas ul{margin:0;padding-left:18px;font-size:14.5px}
+.tarifas{width:100%;border-collapse:collapse;background:var(--hoja);border:1px solid var(--linea)}
+.tarifas th,.tarifas td{padding:12px 14px 10px;text-align:left;border-bottom:1px solid var(--linea);font-size:15px;vertical-align:top}
+.tarifas thead th{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--tinta2);font-weight:600;border-bottom:1px solid var(--tinta)}
+.tarifas td.nm{font:400 20px 'Almendra',serif;white-space:nowrap}
+.tarifas td.nm small{display:block;font:400 12.5px 'Palanquin',sans-serif;color:var(--tinta2)}
+.tarifas td.m b{font-weight:600}
+.tar-pie{font-size:13.5px;color:var(--tinta2);margin-top:10px}
+
+/* simulador */
+.sim{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:36px;align-items:start}
+.form{background:var(--hoja);border:1px solid var(--linea);padding:24px}
+.campo{margin-bottom:16px}
+.campo label,.campo .l{display:block;font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--tinta2);font-weight:600;margin-bottom:6px}
+.campo select,.campo input[type=date],.campo input[type=text]{width:100%;padding:11px 12px 9px;border:1px solid var(--linea);background:#fff;border-radius:2px;font-size:16px}
+.fila2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.stepper{display:flex;align-items:center;border:1px solid var(--linea);background:#fff;width:max-content}
+.stepper button{width:44px;height:44px;border:0;background:none;font-size:22px;cursor:pointer}
+.stepper output{min-width:40px;text-align:center;font-weight:600;font-size:17px}
+.check{display:flex;gap:10px;align-items:center;font-size:15px;cursor:pointer}
+.check input{width:20px;height:20px;accent-color:var(--oliva)}
+.campo label.check{font-size:15px;letter-spacing:0;text-transform:none;font-weight:400;color:var(--tinta);margin:10px 0 0}
+.aviso{font-size:14px;color:var(--oxido);min-height:20px;margin:6px 0 0}
+.resumen{border-top:1px solid var(--tinta);margin-top:8px;padding-top:12px}
+.resumen .r{display:flex;justify-content:space-between;gap:10px;padding:5px 0;font-size:15.5px;border-bottom:1px dotted var(--linea);flex-wrap:wrap}
+.resumen .r.tot{font-weight:700;font-size:18px}
+.resumen .r.sen{color:var(--oxido);font-weight:700}
+.senia-nota{font-size:13.5px;background:#f3e7d6;border-left:3px solid var(--oxido);padding:9px 12px 7px;margin:12px 0}
+.acciones{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+
+.chat{background:#e9e1d1;border:1px solid var(--linea);position:sticky;top:84px}
+.chat-head{display:flex;align-items:center;gap:10px;background:#1f5a45;color:#fff;padding:10px 14px}
+.chat-head .av{width:36px;height:36px;border-radius:50%;background:var(--hoja);display:grid;place-items:center;color:var(--tinta);font:400 18px 'Almendra',serif}
+.chat-head b{display:block;font-size:15px;line-height:1.1}
+.chat-head small{font-size:12px;opacity:.85}
+.chat-body{padding:18px 14px;min-height:300px;background-image:radial-gradient(rgba(38,47,32,.06) 1px,transparent 1px);background-size:14px 14px}
+.burbuja{background:#d9f5c8;border-radius:8px 0 8px 8px;padding:10px 12px 18px;margin-left:24px;position:relative;font-size:14.5px;line-height:1.45;white-space:pre-wrap;word-wrap:break-word;box-shadow:0 1px 1px rgba(0,0,0,.1);color:#16210f}
+.burbuja::after{content:'';position:absolute;right:-8px;top:0;border-left:8px solid #d9f5c8;border-bottom:10px solid transparent}
+.burbuja .hora{position:absolute;right:8px;bottom:3px;font-size:11px;color:#5d7052}
+.escribiendo{font-size:12.5px;color:#4b5a43;margin:0 0 8px 24px;height:16px}
+.chat-pie{padding:12px 14px;border-top:1px solid var(--linea);font-size:12.5px;color:var(--tinta2)}
+
+/* reglas + faq */
+.dos{display:grid;grid-template-columns:1fr 1fr;gap:36px}
+.reglas{border:1px solid var(--tinta);background:var(--hoja)}
+.reglas div{display:grid;grid-template-columns:150px 1fr;border-bottom:1px solid var(--linea)}
+.reglas div:last-child{border-bottom:0}
+.reglas dt,.reglas dd{margin:0;padding:11px 14px 9px;font-size:15px}
+.reglas dt{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--tinta2);font-weight:600;border-right:1px solid var(--linea)}
+.reglas ul{margin:0;padding-left:16px}
+details{border-bottom:1px solid var(--linea);padding:12px 0}
+details summary{cursor:pointer;font:400 20px 'Almendra',serif;list-style:none;display:flex;justify-content:space-between;gap:12px}
+details summary::after{content:'+';font-family:'Palanquin';color:var(--oxido)}
+details[open] summary::after{content:'–'}
+details ul{margin:8px 0 0;padding-left:18px;font-size:15px}
+
+/* alrededores */
+.alrededores{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:36px;align-items:start}
+.lugares{list-style:none;margin:0;padding:0;counter-reset:l}
+.lugares li{display:grid;grid-template-columns:40px 1fr;gap:6px 12px;padding:12px 0 10px;border-bottom:1px solid var(--linea)}
+.lugares li::before{counter-increment:l;content:counter(l,lower-roman);font:italic 400 18px 'Almendra',serif;color:var(--oxido)}
+.lugares b{font:400 20px/1.2 'Almendra',serif;display:block}
+.lugares span{font-size:14.5px;color:var(--tinta2)}
+.mapa{background:var(--hoja);border:1px solid var(--linea);padding:14px}
+.mapa svg{width:100%;height:auto;display:block}
+
+/* resenas */
+.voces{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1.3fr) minmax(0,1fr);gap:0;border-top:1px solid var(--tinta);border-bottom:1px solid var(--tinta)}
+.voces blockquote{margin:0;padding:24px 24px 20px 0;border-right:1px solid var(--linea)}
+.voces blockquote+blockquote{padding-left:24px}
+.voces blockquote p{font:italic 400 25px/1.25 'Almendra',serif;margin:0 0 10px}
+.voces cite{font-style:normal;font-size:13.5px;color:var(--tinta2)}
+.notas{padding:24px 0 20px 24px;font-size:15px}
+.notas div{display:flex;justify-content:space-between;gap:10px;border-bottom:1px dotted var(--linea);padding:6px 0}
+.notas b{font:400 22px 'Almendra',serif}
+
+/* para ustedes */
+.ustedes{background:var(--tinta);color:var(--hoja);padding:56px 0}
+.ustedes .grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:48px;align-items:start}
+.ustedes h2{font-size:clamp(32px,4vw,52px);line-height:1;margin:0 0 12px}
+.ustedes p{color:#cfd6b4;margin:0 0 18px;font-size:15.5px}
+.ustedes ol{list-style:none;margin:0;padding:0;counter-reset:u}
+.ustedes li{display:grid;grid-template-columns:46px 1fr;gap:10px;padding:14px 0 12px;border-bottom:1px solid #46523a}
+.ustedes li::before{counter-increment:u;content:counter(u);font:italic 400 30px/1 'Almendra',serif;color:var(--ocre)}
+.ustedes li b{display:block;font-size:17px}
+.ustedes li span{color:#cfd6b4;font-size:14.5px}
+.ustedes .btn{background:var(--ocre);border-color:var(--ocre);color:#231b08}
+
+footer{padding:28px 0 90px;font-size:13px;color:var(--tinta2)}
+footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-top:1px solid var(--linea);padding-top:16px}
+
+/* panel dueño */
+.flot{position:fixed;right:18px;bottom:18px;z-index:40;background:var(--oxido);color:var(--hoja);border:0;padding:13px 18px 11px;border-radius:2px;font-weight:600;cursor:pointer;box-shadow:0 10px 24px -10px rgba(0,0,0,.5)}
+.panel{position:fixed;inset:0;z-index:60;background:rgba(20,24,16,.55);display:none}
+.panel.on{display:block}
+.panel .hoja-p{position:absolute;right:0;top:0;bottom:0;width:min(940px,100%);background:var(--papel);overflow-y:auto;padding:24px 28px 40px;box-shadow:-20px 0 40px -20px rgba(0,0,0,.4)}
+.p-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.p-top h2{font-size:34px;margin:0}
+.cerrar{background:var(--tinta);color:var(--hoja);border:0;padding:10px 14px 8px;cursor:pointer;border-radius:2px;font-weight:600}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border:1px solid var(--tinta);margin:16px 0 22px;background:var(--hoja)}
+.kpis div{padding:14px 14px 12px;border-right:1px solid var(--linea)}
+.kpis div:last-child{border-right:0}
+.kpis small{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--tinta2);font-weight:600}
+.kpis b{display:block;font:400 28px/1.1 'Almendra',serif;margin:6px 0 2px}
+.p-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px}
+.p-grid>div{min-width:0}
+.p-grid h3{font-size:22px;margin:0 0 10px}
+.consulta{overflow-wrap:anywhere;background:#d9f5c8;border-radius:8px 0 8px 8px;padding:9px 11px 8px;font-size:13.5px;white-space:pre-wrap;margin-bottom:10px;color:#16210f;line-height:1.4}
+.consulta .q{display:flex;justify-content:space-between;font-size:11.5px;color:#4b5a43;margin-top:6px;gap:8px}
+.consulta .q b{color:#1f6b45}
+table.mini{width:100%;border-collapse:collapse;font-size:13.5px;background:var(--hoja)}
+table.mini th,table.mini td{padding:7px 8px 5px;border-bottom:1px solid var(--linea);text-align:left}
+table.mini th{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--tinta2);font-weight:600}
+table.mini td.c{width:28px;padding:3px}
+table.mini td.c i{display:block;height:20px;border-radius:2px;background:var(--pliego);border:1px solid #e3dac2}
+table.mini td.c i.B{background:#2f5d86;border-color:#2f5d86}
+table.mini td.c i.K{background:var(--kiri);border-color:var(--kiri)}
+table.mini td.c i.W{background:#1f6b45;border-color:#1f6b45}
+.ok{color:#1f6b45;font-weight:600}.pend{color:var(--oxido);font-weight:600}
+.ahorro{background:var(--tinta);color:var(--hoja);padding:16px 18px 14px;margin-top:16px}
+.ahorro b{font:400 30px 'Almendra',serif;color:var(--ocre)}
+.ahorro .pe{color:#e8c9a8;border-color:rgba(232,201,168,.5)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(120px);background:var(--tinta);color:var(--hoja);padding:12px 18px 10px;border-radius:2px;z-index:80;transition:transform .3s;max-width:calc(100% - 32px);font-size:14.5px}
+.toast{visibility:hidden}.toast.on{transform:translateX(-50%) translateY(0);visibility:visible}
+
+@media (max-width:980px){
+  .portada{grid-template-columns:1fr;gap:32px;padding-top:36px}
+  .herbario{grid-template-columns:1fr}
+  .indice{position:static;display:flex;overflow-x:auto;gap:0;border:1px solid var(--linea);background:var(--pliego);-webkit-overflow-scrolling:touch}
+  .indice li{border-bottom:0;border-right:1px solid var(--linea);flex:none}
+  .indice button{grid-template-columns:auto;padding:10px 14px 8px;text-align:center}
+  .indice button .r,.indice button .lt{display:none}
+  .indice button.on{box-shadow:inset 0 -3px 0 var(--oxido)}
+  .lamina{grid-template-columns:1fr}
+  .sim{grid-template-columns:1fr}
+  .chat{position:static}
+  .dos,.alrededores,.ustedes .grid{grid-template-columns:1fr}
+  .buscador{grid-template-columns:1fr}
+  .voces{grid-template-columns:1fr}
+  .voces blockquote,.voces blockquote+blockquote{padding:20px 0;border-right:0;border-bottom:1px solid var(--linea)}
+  .notas{padding:16px 0}
+  .p-grid{grid-template-columns:minmax(0,1fr)}
+  .kpis{grid-template-columns:1fr 1fr}
+  .kpis div:nth-child(2){border-right:0}
+  .kpis div:nth-child(-n+2){border-bottom:1px solid var(--linea)}
+  nav.idx a{display:none}
+}
+@media (max-width:640px){
+  .wrap{padding:0 16px}
+  body{font-size:16px}
+  section{padding:46px 0}
+  .firma .wrap{flex-direction:column;gap:2px}
+  .marca span{display:none}
+  .etiqueta-h{padding:22px 18px 18px;box-shadow:4px 4px 0 var(--linea)}
+  .datos{grid-template-columns:1fr}
+  .lamina{padding:14px}
+  .ficha ul.inc{grid-template-columns:1fr}
+  .etq div{grid-template-columns:96px 1fr}
+  .temporadas{grid-template-columns:1fr}
+  .temporadas div{border-right:0;border-bottom:1px solid var(--tinta)}
+  .temporadas div:last-child{border-bottom:0}
+  .tarifas thead{display:none}
+  .tarifas,.tarifas tbody,.tarifas tr,.tarifas td{display:block;width:100%}
+  .tarifas tr{border-bottom:1px solid var(--tinta);padding:8px 0}
+  .tarifas td{border:0;padding:4px 14px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+  .tarifas td.m::before{content:attr(data-l);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--tinta2)}
+  .tarifas td.nm{display:block}
+  .cal-notas{grid-template-columns:1fr}
+  .fila2{grid-template-columns:1fr}
+  .reglas div{grid-template-columns:1fr}
+  .reglas dt{border-right:0;padding-bottom:0}
+  .form{padding:16px}
+  .panel .hoja-p{padding:18px 16px 40px}
+  .kpis b{font-size:22px}
+  .flot{right:12px;bottom:12px;padding:11px 14px 9px;font-size:14px}
+  .cal-wrap{padding:12px}
+}
+</style>
+</head>
+<body>
+
+<div class="firma"><div class="wrap"><span>Prototipo preparado para Cabañas La Amelia · 27 nov 2026</span><span>Tripadvisor 5,0 ★ · 7 reseñas &nbsp;·&nbsp; alquilerargentina 4,7 ★ · 16 reseñas</span></div></div>
+
+<header class="bar"><div class="wrap">
+  <a class="marca" href="#top"><b>La Amelia</b><span>Cabañas · Mina Clavero</span></a>
+  <nav class="idx">
+    <a href="#herbario">Las cabañas</a>
+    <a href="#calendario">Calendario</a>
+    <a href="#tarifas">Tarifas</a>
+    <a href="#reservar">Reservar</a>
+    <button class="duenio-btn" data-duenio>Ver como dueño</button>
+  </nav>
+</div></header>
+
+<main id="top">
+<div class="wrap">
+  <div class="portada">
+    <div class="etiqueta-h">
+      <span class="num">Herbario de La Amelia</span>
+      <div class="kicker">Mina Clavero · Traslasierra · Córdoba</div>
+      <h1>Siete cabañas, siete árboles, <em>dos hectáreas</em> de parque.</h1>
+      <p class="lema">«El lugar donde descansar de verdad.»</p>
+      <p class="lema-src">Un complejo familiar manejado por sus dueños, sobre el Camino a Puerta de Garay.</p>
+      <ul class="datos">
+        <li>De 2 a 6 personas por cabaña</li>
+        <li>Pileta en el parque</li>
+        <li>Kiri: suite con piscina privada</li>
+        <li>Mascotas aceptadas</li>
+        <li>Asador y cochera en todas</li>
+        <li>Estadía mínima: 4 noches</li>
+      </ul>
+      <div class="cta">
+        <a class="btn" href="#herbario">Buscar mi cabaña</a>
+        <a class="btn alt" href="#reservar">Armar mi consulta</a>
+      </div>
+    </div>
+    <figure class="plano-box" style="margin:0">
+      <svg id="plano" viewBox="0 0 640 440" role="img" aria-label="Plano ilustrado del predio de Cabañas La Amelia"></svg>
+      <figcaption class="plano-pie"><span>Plano ilustrado del parque · no está a escala, ubicaciones de ejemplo</span><span>Tocá un árbol para ver su lámina</span></figcaption>
+    </figure>
+  </div>
+</div>
+
+<section id="herbario"><div class="wrap">
+  <div class="folio"><span class="n">Folio I</span><h2>Las siete láminas</h2><p>Cada cabaña lleva el nombre de un árbol. Decinos cuántos vienen y qué buscan: el herbario marca las que les sirven.</p></div>
+
+  <div class="buscador">
+    <div><div class="lbl">¿Cuántos vienen?</div><div class="pax" id="f-pax"></div></div>
+    <div><div class="lbl">¿Qué les importa?</div><div class="chips" id="f-chips"></div></div>
+    <div class="veredicto" id="f-ver"></div>
+  </div>
+
+  <div class="herbario">
+    <ul class="indice" id="indice"></ul>
+    <article class="lamina" id="lamina" aria-live="polite"></article>
+  </div>
+</div></section>
+
+<section id="calendario" style="padding-top:20px"><div class="wrap">
+  <div class="folio"><span class="n">Folio II</span><h2>Un solo calendario para las 7 cabañas</h2><p>Hoy La Amelia está en Booking con dos fichas: el complejo y Kiri aparte. Acá todo vive en un calendario y se sincroniza con Booking y Airbnb.</p></div>
+  <div class="cal-wrap">
+    <div class="cal-top">
+      <div class="leyenda">
+        <span><i class="sw W"></i>Reserva directa (WhatsApp / web)</span>
+        <span><i class="sw B"></i>Booking · ficha del complejo</span>
+        <span><i class="sw K"></i>Booking · ficha Kiri</span>
+        <span><i class="sw L"></i>Libre</span>
+      </div>
+      <span class="ej">Calendario de ejemplo</span>
+    </div>
+    <div class="cal-scroll"><table class="cal" id="cal"></table></div>
+    <div class="cal-notas">
+      <div><b>Sin doble reserva</b>Si Kiri entra por WhatsApp, las dos fichas de Booking se cierran solas para esas noches.</div>
+      <div><b>Se sincroniza con Booking y Airbnb</b>Calendarios iCal en los dos sentidos, cada pocos minutos.</div>
+      <div><b>Mínimo 4 noches</b>El calendario no deja reservar menos, en ningún canal.</div>
+    </div>
+  </div>
+</div></section>
+
+<section id="tarifas" style="padding-top:20px"><div class="wrap">
+  <div class="folio"><span class="n">Folio III</span><h2>Tarifas por temporada 2026–27</h2><p>Precio por noche y por cabaña. La Amelia hoy no publica montos: estos son de ejemplo, para mostrar cómo se vería.</p></div>
+  <div class="temporadas">
+    <div><h3>Alta</h3><ul><li>1 de enero al 28 de febrero de 2027</li><li>Incluye Carnaval</li></ul></div>
+    <div><h3>Media</h3><ul><li>Diciembre 2026</li><li>Semana Santa: 25/3 al 5/4/2027</li><li>Fines de semana largos</li></ul></div>
+    <div><h3>Baja</h3><ul><li>Resto del año</li><li>Ideal para quedarse más de 4 noches</li></ul></div>
+  </div>
+  <table class="tarifas" id="tarifas-t"></table>
+  <p class="tar-pie">Precios de ejemplo. Referencia pública: “desde $100.000 por noche” (alquilerargentina). Seña del 50% para confirmar.</p>
+</div></section>
+
+<section id="reservar" style="padding-top:20px"><div class="wrap">
+  <div class="folio"><span class="n">Folio IV</span><h2>Armá tu consulta y mirá el mensaje que nos llega</h2><p>Elegís cabaña, fechas y cuántos son. A la derecha se escribe, en vivo, el WhatsApp exacto que les llega a Maxi y Barby.</p></div>
+  <div class="sim">
+    <form class="form" id="form" onsubmit="return false">
+      <div class="campo"><label for="s-cab">Cabaña</label><select id="s-cab"></select></div>
+      <div class="fila2">
+        <div class="campo"><label for="s-in">Llegada (desde las 14:00)</label><input type="date" id="s-in" value="2027-01-10" min="2026-11-27"></div>
+        <div class="campo"><label for="s-out">Salida (hasta las 10:00)</label><input type="date" id="s-out" value="2027-01-15" min="2026-12-01"></div>
+      </div>
+      <div class="fila2">
+        <div class="campo"><span class="l">Personas</span><div class="stepper"><button type="button" id="s-menos" aria-label="Una persona menos">−</button><output id="s-pax">4</output><button type="button" id="s-mas" aria-label="Una persona más">+</button></div></div>
+        <div class="campo"><span class="l">Mascota</span><label class="check"><input type="checkbox" id="s-pet"> Viene con nosotros</label></div>
+      </div>
+      <div class="campo"><label for="s-name">Tu nombre</label><input type="text" id="s-name" placeholder="Ej.: Lucía" maxlength="40" autocomplete="given-name"></div>
+      <p class="aviso" id="s-aviso"></p>
+      <div class="resumen" id="s-res"></div>
+      <div class="senia-nota"><b>Seña del 50%</b>, como pide hoy La Amelia (no el 30% de otros sistemas). No se reintegra si cancela el huésped. El saldo se paga al llegar, por transferencia o en efectivo.</div>
+      <div class="acciones">
+        <button type="button" class="btn" id="s-mp">Pagar seña con Mercado Pago (demo)</button>
+        <a class="btn verde" id="s-wa" href="#" target="_blank" rel="noopener">Enviar por WhatsApp</a>
+      </div>
+    </form>
+    <aside class="chat" aria-label="Vista previa del mensaje de WhatsApp">
+      <div class="chat-head"><span class="av">A</span><div><b>Cabañas La Amelia</b><small>3544-418292 · en línea</small></div></div>
+      <div class="chat-body">
+        <p class="escribiendo" id="b-typing"></p>
+        <div class="burbuja" id="b-txt"></div>
+      </div>
+      <div class="chat-pie">Este es el texto exacto que se abre en WhatsApp al tocar “Enviar”.</div>
+    </aside>
+  </div>
+</div></section>
+
+<section style="padding-top:20px"><div class="wrap">
+  <div class="folio"><span class="n">Folio V</span><h2>Reglas de la casa y preguntas</h2><p>Las reglas reales del complejo, cortitas.</p></div>
+  <div class="dos">
+    <dl class="reglas">
+      <div><dt>Entrada</dt><dd>Desde las 14:00</dd></div>
+      <div><dt>Salida</dt><dd>Hasta las 10:00</dd></div>
+      <div><dt>Estadía</dt><dd>Mínimo 4 noches</dd></div>
+      <div><dt>Seña</dt><dd><ul><li>50% para confirmar</li><li>No reembolsable si cancela el huésped</li></ul></dd></div>
+      <div><dt>Saldo</dt><dd>Al ingresar · transferencia o efectivo</dd></div>
+      <div><dt>Mascotas</dt><dd>Aceptadas</dd></div>
+      <div><dt>No se permite</dt><dd><ul><li>Grupos de jóvenes</li><li>Fiestas ni visitas</li><li>Música fuerte</li><li>Fumar adentro</li></ul></dd></div>
+    </dl>
+    <div>
+      <details open><summary>¿Puedo ir con mi perro?</summary><ul><li>Sí, las mascotas son bienvenidas.</li><li>Avisalo al reservar (el simulador ya lo agrega al mensaje).</li></ul></details>
+      <details><summary>¿Hay ropa blanca?</summary><ul><li>Consultar al reservar.</li></ul></details>
+      <details><summary>¿A qué hora entramos y salimos?</summary><ul><li>Entrada desde las 14:00.</li><li>Salida hasta las 10:00.</li></ul></details>
+      <details><summary>¿Puedo quedarme 2 o 3 noches?</summary><ul><li>No: la estadía mínima es de 4 noches.</li></ul></details>
+      <details><summary>¿Cómo pago?</summary><ul><li>Seña del 50% para confirmar.</li><li>Saldo al llegar: transferencia o efectivo.</li></ul></details>
+      <details><summary>¿Kiri y el complejo son lo mismo?</summary><ul><li>Sí: Kiri es una de las siete cabañas de La Amelia.</li><li>En Booking figura aparte; acá se reserva todo junto.</li></ul></details>
+    </div>
+  </div>
+</div></section>
+
+<section style="padding-top:20px"><div class="wrap">
+  <div class="folio"><span class="n">Folio VI</span><h2>Alrededor del parque</h2><p>Lo que tienen cerca para los días de salida.</p></div>
+  <div class="alrededores">
+    <ol class="lugares">
+      <li><div><b>Río Mina Clavero</b><span>Balnearios Los Elefantes y Nido del Águila, con ollas y piedras.</span></div></li>
+      <li><div><b>Villa Cura Brochero</b><span>A 3 km de Mina Clavero: santuario y museo del Santo Cura Brochero.</span></div></li>
+      <li><div><b>Museo Rocsen</b><span>Cerca de Nono: el museo de colecciones de Juan Santiago Bouchon.</span></div></li>
+      <li><div><b>Camino de las Altas Cumbres</b><span>La ruta panorámica que cruza las sierras hacia Córdoba capital.</span></div></li>
+      <li><div><b>Quebrada del Condorito</b><span>Parque nacional sobre las Altas Cumbres, para ver cóndores.</span></div></li>
+    </ol>
+    <figure class="mapa" style="margin:0">
+      <svg id="mapa" viewBox="0 0 520 380" role="img" aria-label="Mapa ilustrado de la zona de Mina Clavero"></svg>
+      <figcaption class="plano-pie"><span>Mapa ilustrado, no está a escala</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Caba%C3%B1as%20La%20Amelia%20Mina%20Clavero" target="_blank" rel="noopener">Abrir en Google Maps →</a></figcaption>
+    </figure>
+  </div>
+</div></section>
+
+<section style="padding-top:20px"><div class="wrap">
+  <div class="folio"><span class="n">Folio VII</span><h2>Lo que dicen los huéspedes</h2><p>Reseñas textuales, con su fecha y su fuente.</p></div>
+  <div class="voces">
+    <blockquote><p>“Hermoso lugar, super tranquilo, ordenado y limpio.”</p><cite>Juan Carlos · febrero 2026 · alquilerargentina</cite></blockquote>
+    <blockquote><p>“Excelente Atencion, las cabañas amplias hermosas y super equipadas.”</p><cite>Romina · enero 2023 · alquilerargentina</cite></blockquote>
+    <div class="notas">
+      <div><span>Tripadvisor</span><span><b>5,0</b> ★ · 7 reseñas</span></div>
+      <div><span>alquilerargentina</span><span><b>4,7</b> ★ · 16 reseñas</span></div>
+    </div>
+  </div>
+</div></section>
+</main>
+
+<div class="ustedes"><div class="wrap grid">
+  <div>
+    <div class="kicker" style="color:var(--ocre)">Para el lado de adentro</div>
+    <h2>Para ustedes, Maxi y Barby</h2>
+    <p>Lo que cambia en el día a día del complejo.</p>
+    <button class="btn" data-duenio>Ver como dueño</button>
+  </div>
+  <ol>
+    <li><div><b>Menos mensajes repetidos</b><span>La consulta llega con cabaña, fechas, personas, mascota y total. Nada de “¿precio?” suelto.</span></div></li>
+    <li><div><b>Agenda con cupos de las 7 cabañas</b><span>Un solo calendario reemplaza la grilla semanal a mano y une las dos fichas de Booking.</span></div></li>
+    <li><div><b>La seña entra antes de confirmar</b><span>El 50% por Mercado Pago o transferencia, y recién ahí se bloquea la fecha.</span></div></li>
+    <li><div><b>Sin comisión por reserva</b><span>Lo que entra directo no paga el ~15% de Booking.</span></div></li>
+  </ol>
+</div></div>
+
+<footer><div class="wrap"><span>Prototipo de demostración preparado para Cabañas La Amelia por Resolviendo Kos · No es la web oficial</span><span>Ilustraciones botánicas propias · Camino a Puerta de Garay s/n, Mina Clavero · cablaamelia@gmail.com · @cabanas.la.amelia</span></div></footer>
+
+<button class="flot" data-duenio>Ver como dueño</button>
+
+<div class="panel" id="panel" role="dialog" aria-modal="true" aria-label="Panel del dueño (ejemplo)">
+  <div class="hoja-p">
+    <div class="p-top"><h2>El lado de Maxi y Barby</h2><span class="ej">Panel de ejemplo</span><button class="cerrar" id="p-cerrar">Cerrar ✕</button></div>
+    <p class="muted" style="margin:0;font-size:15px">Así se vería La Amelia por dentro una semana de diciembre. Datos inventados para la demo.</p>
+    <div class="kpis" id="kpis"></div>
+    <div class="p-grid">
+      <div><h3>Consultas que entraron</h3><div id="p-cons"></div></div>
+      <div>
+        <h3>Cupos de la semana · 7 al 13 dic</h3>
+        <div style="overflow-x:auto"><table class="mini" id="p-cupos"></table></div>
+        <h3 style="margin-top:20px">Señas cobradas</h3>
+        <div style="overflow-x:auto"><table class="mini" id="p-senias"></table></div>
+        <div class="ahorro" id="p-ahorro"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+'use strict';
+const INK='#2b3424';
+const f=n=>(Math.round(n*10)/10);
+function rng(seed){let s=seed>>>0;return()=>{s=(Math.imul(s,1664525)+1013904223)>>>0;return s/4294967296}}
+const $=s=>document.querySelector(s);
+const money=n=>'$'+Math.round(n).toLocaleString('es-AR');
+const PE='<span class="pe">Precio de ejemplo</span>';
+
+/* ---------- formas botánicas ---------- */
+function leaf(x,y,len,wid,a,fill,op){
+  const c=Math.cos(a),s=Math.sin(a),tx=x+c*len,ty=y+s*len,mx=x+c*len*.45,my=y+s*len*.45,px=-s*wid,py=c*wid;
+  return `<path d="M${f(x)} ${f(y)}Q${f(mx+px)} ${f(my+py)} ${f(tx)} ${f(ty)}Q${f(mx-px)} ${f(my-py)} ${f(x)} ${f(y)}Z" fill="${fill}" fill-opacity="${op||.85}" stroke="${INK}" stroke-width=".45" stroke-opacity=".55"/>`;
+}
+function outlineLeaf(cx,cy,len,wid,a,shape,teeth,fill){
+  // hoja grande con borde dentado y nervaduras (para láminas de detalle)
+  const N=60,L=[],Rr=[];
+  const c=Math.cos(a),s=Math.sin(a);
+  for(let i=0;i<=N;i++){
+    const t=i/N;let w;
+    if(shape==='delta')w=Math.pow(Math.sin(Math.PI*Math.pow(t,.62)),1.1);
+    else if(shape==='heart')w=t<.12?(.55+t*3.2):Math.sin(Math.PI*(t*.86+.14))*1.02;
+    else if(shape==='lance')w=Math.pow(Math.sin(Math.PI*t),1.4)*(1-.35*t);
+    else w=Math.sin(Math.PI*t);
+    let ww=w*wid; if(teeth&&i%2===1&&t>.05&&t<.96)ww*=0.93;
+    const along=(shape==='heart'&&t<.12)?(t-.12)*len*.9:t*len;
+    const ax=cx+c*along,ay=cy+s*along;
+    L.push([ax-s*ww,ay+c*ww]);Rr.unshift([ax+s*ww,ay-c*ww]);
+  }
+  const pts=L.concat(Rr).map(p=>f(p[0])+' '+f(p[1])).join(' L');
+  let out=`<path d="M${pts}Z" fill="${fill}" fill-opacity=".88" stroke="${INK}" stroke-width="1"/>`;
+  out+=`<path d="M${f(cx-c*12)} ${f(cy-s*12)}L${f(cx+c*len*.97)} ${f(cy+s*len*.97)}" stroke="${INK}" stroke-width="1.1" fill="none"/>`;
+  for(let k=1;k<8;k++){const t=k/8.5,ax=cx+c*t*len,ay=cy+s*t*len,w=wid*.8*Math.sin(Math.PI*Math.min(.95,t+.1)),v=(1-t)*.25+.2;
+    for(const sg of [1,-1]){const ex=ax+c*len*v+(-s)*w*sg,ey=ay+s*len*v+c*w*sg;out+=`<path d="M${f(ax)} ${f(ay)}Q${f(ax+(-s)*w*.6*sg)} ${f(ay+c*w*.6*sg)} ${f(ex)} ${f(ey)}" stroke="${INK}" stroke-width=".55" fill="none" opacity=".7"/>`;}
+  }
+  return out;
+}
+function pinnate(x,y,len,a,pairs,ll,lw,fill,droop){
+  const c=Math.cos(a),s=Math.sin(a);let o=`<path d="M${f(x)} ${f(y)}L${f(x+c*len)} ${f(y+s*len)}" stroke="${INK}" stroke-width="1" fill="none"/>`;
+  for(let i=0;i<pairs;i++){const t=.12+i/(pairs)*.84,px=x+c*len*t,py=y+s*len*t;
+    o+=leaf(px,py,ll,lw,a-1.15+(droop||0),fill);o+=leaf(px,py,ll,lw,a+1.15+(droop||0),fill);}
+  o+=leaf(x+c*len,y+s*len,ll,lw,a,fill);
+  return o;
+}
+function tape(x,y,a){return `<rect x="${f(x-16)}" y="${f(y-5)}" width="32" height="10" fill="#e9dcb8" fill-opacity=".85" stroke="#c9b98f" stroke-width=".6" transform="rotate(${a} ${f(x)} ${f(y)})"/>`}
+
+/* ---------- árboles enteros ---------- */
+const SP={
+ alamo:{seed:11,trunk:78,depth:7,kids:2,spread:.26,jit:.2,up:.36,decay:.8,width:11,thin:.7,wiggle:.12},
+ acacia:{seed:23,trunk:100,depth:6,kids:2,spread:.48,jit:.25,up:.16,decay:.76,width:12,thin:.68,wiggle:.2},
+ aguaribay:{seed:37,trunk:92,depth:6,kids:2,spread:.55,jit:.3,up:.1,decay:.78,width:13,thin:.67,wiggle:.25,droop:.22,droopDepth:2},
+ kiri:{seed:41,trunk:92,depth:4,kids:3,spread:.58,jit:.2,up:.18,decay:.66,width:13,thin:.6,wiggle:.15},
+ espinillo:{seed:53,trunk:62,depth:5,kids:2,spread:.72,jit:.3,up:0,decay:.8,width:10,thin:.66,wiggle:.55},
+ sauce:{seed:67,trunk:120,depth:4,kids:3,spread:.6,jit:.2,up:.3,decay:.72,width:14,thin:.6,wiggle:.18},
+};
+function tree(id){
+  const W=400,H=520,bx=200,by=462;
+  if(id==='cipres')return cypress();
+  const sp=SP[id],R=rng(sp.seed);let br='',fol='',top='';
+  function tip(x,y,a){
+    if(id==='alamo'){for(let i=0;i<6;i++){const g=R()<.28?'#c9a13b':(R()<.5?'#7f9550':'#97a85e');fol+=leaf(x+(R()-.5)*14,y+(R()-.5)*14,9+R()*4,5+R()*2,-Math.PI/2+(R()-.5)*2.6,g)}}
+    else if(id==='acacia'){for(let i=0;i<3;i++){const aa=a+(R()-.5)*2.4;fol+=pinnate(x,y,20+R()*8,aa,4,6.5,3,R()<.5?'#7e9150':'#93a560')}
+      if(R()<.35){for(let k=0;k<6;k++)top+=`<circle cx="${f(x+(R()-.5)*10)}" cy="${f(y+k*3.2)}" r="2.3" fill="#f6f1de" stroke="${INK}" stroke-width=".4"/>`}}
+    else if(id==='aguaribay'){let px=x,py=y;const n=7;for(let i=0;i<n;i++){const nx=px+(R()-.5)*5,ny=py+7;fol+=leaf(nx,ny,9,1.8,Math.PI/2+.9,'#6f8a4a')+leaf(nx,ny,9,1.8,Math.PI/2-.9,'#7e9a55');px=nx;py=ny}
+      br+=`<path d="M${f(x)} ${f(y)}Q${f(x+3)} ${f(y+n*4)} ${f(px)} ${f(py)}" stroke-width=".8"/>`;
+      if(R()<.45){for(let k=0;k<9;k++)top+=`<circle cx="${f(px+(R()-.5)*9)}" cy="${f(py-6+R()*10)}" r="2.1" fill="#b8483f" stroke="${INK}" stroke-width=".35"/>`}}
+    else if(id==='kiri'){for(let i=0;i<3;i++)fol+=heartLeaf(x+(R()-.5)*22,y+(R()-.5)*18,15+R()*6,a+(R()-.5)*2.4,R()<.5?'#6e8a44':'#81995a');
+      if(R()<.5){for(let k=0;k<9;k++){const yy=y-6-k*4,xx=x+(R()-.5)*(12-k);top+=`<ellipse cx="${f(xx)}" cy="${f(yy)}" rx="3.1" ry="2.2" fill="#9b86b8" stroke="${INK}" stroke-width=".35"/>`}}}
+    else if(id==='espinillo'){for(let i=0;i<8;i++)fol+=`<circle cx="${f(x+(R()-.5)*22)}" cy="${f(y+(R()-.5)*12)}" r="${f(2+R()*2.2)}" fill="${R()<.5?'#7f9450':'#94a660'}" fill-opacity=".85" stroke="${INK}" stroke-width=".35" stroke-opacity=".5"/>`;
+      for(let k=0;k<2;k++)if(R()<.55)top+=pompom(x+(R()-.5)*18,y+(R()-.5)*10,3.6);}
+    else if(id==='sauce'){for(let j=0;j<3;j++){let px=x+(R()-.5)*10,py=y;const len=110+R()*150,stepN=Math.floor(len/9);let d=`M${f(px)} ${f(py)}`;
+      for(let i=0;i<stepN;i++){const nx=px+Math.sin(i*.4+j)*1.2+(R()-.5)*.8,ny=py+9;d+=`L${f(nx)} ${f(ny)}`;if(i%1===0){fol+=leaf(nx,ny,10,1.7,Math.PI/2+(i%2?.55:-.55),R()<.5?'#93a65a':'#a5b56c',.9)}px=nx;py=ny;if(py>by-14)break}
+      br+=`<path d="${d}" stroke-width=".6"/>`}}
+  }
+  function b(x,y,a,len,d,w){
+    const bend=(R()-.5)*sp.wiggle,x2=x+Math.cos(a)*len,y2=y+Math.sin(a)*len;
+    const cx=(x+x2)/2+Math.cos(a+Math.PI/2)*len*bend,cy=(y+y2)/2+Math.sin(a+Math.PI/2)*len*bend;
+    br+=`<path d="M${f(x)} ${f(y)}Q${f(cx)} ${f(cy)} ${f(x2)} ${f(y2)}" stroke-width="${f(Math.max(.7,w))}"/>`;
+    if(d===0){tip(x2,y2,a);return}
+    if(id==='alamo'&&d<=3)tip(x2,y2,a);
+    for(let i=0;i<sp.kids;i++){const t=sp.kids===1?0:(i/(sp.kids-1)-.5);let na=a+t*sp.spread*2+(R()-.5)*sp.jit;
+      na=na*(1-sp.up)+(-Math.PI/2)*sp.up; if(sp.droop&&d<=sp.droopDepth)na+=sp.droop*(Math.cos(na)>0?1:-1);
+      b(x2,y2,na,len*sp.decay*(.86+R()*.28),d-1,w*sp.thin)}
+  }
+  b(bx,by,-Math.PI/2,sp.trunk,sp.depth,sp.width);
+  return wrapTree(`<g fill="none" stroke="${INK}" stroke-linecap="round">${br}</g>${fol}${top}`,bx,by);
+}
+function heartLeaf(x,y,s,a,fill){
+  const p=`M0 0C${-s*.9} ${-s*.25} ${-s*.95} ${-s*1.25} 0 ${-s*1.6}C${s*.95} ${-s*1.25} ${s*.9} ${-s*.25} 0 0Z`;
+  return `<path d="${p}" transform="translate(${f(x)} ${f(y)}) rotate(${f(a*57.3+90)})" fill="${fill}" fill-opacity=".85" stroke="${INK}" stroke-width=".5" stroke-opacity=".6"/>`;
+}
+function pompom(x,y,r){let o=`<circle cx="${f(x)}" cy="${f(y)}" r="${r}" fill="#d9a520" stroke="#8a6410" stroke-width=".4"/>`;
+  for(let i=0;i<14;i++){const a=i/14*Math.PI*2;o+=`<path d="M${f(x+Math.cos(a)*r*.6)} ${f(y+Math.sin(a)*r*.6)}L${f(x+Math.cos(a)*r*1.5)} ${f(y+Math.sin(a)*r*1.5)}" stroke="#c48f12" stroke-width=".5"/>`}return o}
+function wrapTree(inner,bx,by){
+  let g=`<path d="M40 ${by}C120 ${by-4} 280 ${by+3} 360 ${by-1}" stroke="${INK}" stroke-width="1" fill="none"/>`;
+  for(let i=0;i<22;i++){const x=60+i*13.5;g+=`<path d="M${x} ${by}l-2 -6M${x+3} ${by}l1 -7" stroke="${INK}" stroke-width=".5" opacity=".5"/>`}
+  return `<svg viewBox="0 0 400 520" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${g}${inner}${tape(bx,by-40,-8)}${tape(bx+2,by-92,6)}</svg>`;
+}
+function cypress(){
+  const R=rng(79),bx=200,by=462;let o=`<path d="M${bx-6} ${by}L${bx-3} ${by-70}L${bx+3} ${by-70}L${bx+6} ${by}Z" fill="#6b4a2e" stroke="${INK}" stroke-width=".8"/>`;
+  const topY=62,baseY=by-40;
+  for(let i=0;i<520;i++){const t=R(),y=baseY-(baseY-topY)*t,half=62*Math.pow(Math.sin(Math.PI*Math.min(1,(1-t)*.9+.08)),.9)*(1-t*.55);
+    const x=bx+(R()*2-1)*half;o+=leaf(x,y,9+R()*5,3.2,-Math.PI/2+(R()-.5)*1.1,R()<.5?'#3f5a3a':(R()<.5?'#4e6b45':'#5f7b4f'),.9)}
+  for(let k=0;k<7;k++){const y=baseY-R()*260,x=bx+(R()-.5)*60;o+=`<circle cx="${f(x)}" cy="${f(y)}" r="4.5" fill="#8a7a52" stroke="${INK}" stroke-width=".5"/>`}
+  return wrapTree(o,bx,by);
+}
+
+/* ---------- láminas menores ---------- */
+function det(id,which){
+  const R=rng(id.length*97+which*13);let o='';
+  const W=`<svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">`;
+  const stem=(d)=>`<path d="${d}" stroke="${INK}" stroke-width="1.4" fill="none" stroke-linecap="round"/>`;
+  if(id==='alamo'){o=which===0?stem('M110 205L110 160')+outlineLeaf(110,160,130,62,-Math.PI/2,'delta',1,'#86a058'):stem('M60 205Q90 160 110 150')+outlineLeaf(110,150,110,52,-Math.PI/2+.5,'delta',1,'#c9a13b')+outlineLeaf(80,175,70,32,-Math.PI/2-.6,'delta',1,'#b98d2e')}
+  else if(id==='acacia'){if(which===0)o=pinnate(38,192,175,-Math.PI/4,7,30,11,'#7e9150');else{o=stem('M30 40Q110 70 190 60');o+=`<path d="M40 52C80 66 140 80 196 64C190 84 120 96 44 74Z" fill="#7a5532" fill-opacity=".85" stroke="${INK}" stroke-width="1"/>`;for(let i=0;i<6;i++)o+=`<ellipse cx="${62+i*22}" cy="${f(70+i*1.2)}" rx="7" ry="4" fill="#5b3c22" opacity=".7"/>`;for(let k=0;k<12;k++)o+=`<path d="M${70+(k%6)*20} ${130+Math.floor(k/6)*34}c-6 -4 -6 -12 0 -14c6 2 6 10 0 14Z" fill="#f6f1de" stroke="${INK}" stroke-width=".7"/>`;o+=stem('M60 118L180 118')}}
+  else if(id==='aguaribay'){if(which===0){o=stem('M110 20Q118 110 104 205');for(let i=0;i<10;i++){const y=34+i*16,x=110+Math.sin(i*.3)*4;o+=outlineLeaf(x,y,58,7,Math.PI/2+1.05,'lance',0,'#6f8a4a')+outlineLeaf(x,y,58,7,Math.PI/2-1.05,'lance',0,'#7e9a55')}}
+    else{o=stem('M110 18L110 60M110 60Q80 90 70 140M110 60Q120 100 140 150M110 60Q100 120 108 180');for(let i=0;i<60;i++){const t=R(),br=i%3;const x=br===0?110-40*t+(R()-.5)*16:br===1?110+30*t+(R()-.5)*16:110-2*t+(R()-.5)*14,y=70+t*110+(R()-.5)*10;o+=`<circle cx="${f(x)}" cy="${f(y)}" r="${f(4+R()*1.5)}" fill="${R()<.6?'#b8483f':'#d26c5f'}" stroke="${INK}" stroke-width=".6"/>`}}}
+  else if(id==='kiri'){if(which===0)o=stem('M110 210L110 175')+(()=>{const s=88;return `<path d="M0 0C${-s*.95} ${-s*.2} ${-s*1.05} ${-s*1.3} 0 ${-s*1.7}C${s*1.05} ${-s*1.3} ${s*.95} ${-s*.2} 0 0Z" transform="translate(110 180)" fill="#6e8a44" fill-opacity=".88" stroke="${INK}" stroke-width="1"/><path d="M110 180L110 34" stroke="${INK}" stroke-width="1.1"/>`+[0,1,2,3,4].map(k=>{const y=165-k*28;return `<path d="M110 ${y}Q${80-k*2} ${y-14} ${50+k*10} ${y-30}M110 ${y}Q${140+k*2} ${y-14} ${170-k*10} ${y-30}" stroke="${INK}" stroke-width=".6" fill="none"/>`}).join('')})();
+    else{o=stem('M110 210L110 30');for(let k=0;k<9;k++){const y=40+k*18,side=k%2?1:-1,x=110+side*(14+(8-k)*1.5);o+=`<path d="M110 ${y+6}L${x} ${y}" stroke="${INK}" stroke-width=".8"/><path d="M${x} ${y}c${side*4} -8 ${side*22} -10 ${side*26} -2c-2 6 -6 10 -12 11c-8 0 -12 -4 -14 -9Z" fill="#9b86b8" stroke="${INK}" stroke-width=".8"/><circle cx="${x+side*20}" cy="${y-1}" r="3" fill="#5d4b7a"/>`}}}
+  else if(id==='espinillo'){if(which===0){o=stem('M30 180L195 70');for(let p=0;p<4;p++){const t=.18+p*.22,x=30+165*t,y=180-110*t;o+=pinnate(x,y,60,-Math.PI/2-.6,8,6,2.2,'#7f9450')+pinnate(x,y,50,.15,7,6,2.2,'#94a660');o+=`<path d="M${f(x)} ${f(y)}l-6 26M${f(x)} ${f(y)}l18 20" stroke="#e9e3cf" stroke-width="2.6" stroke-linecap="round"/><path d="M${f(x)} ${f(y)}l-6 26M${f(x)} ${f(y)}l18 20" stroke="${INK}" stroke-width=".5" fill="none"/>`}}
+    else{o=stem('M110 210Q100 160 110 130');o+=pompom(110,92,26)+pompom(56,150,15)+pompom(166,148,17);o+=stem('M106 160Q80 160 60 152M108 150Q140 150 162 150')}}
+  else if(id==='sauce'){if(which===0){o=stem('M110 10Q104 110 118 210');for(let i=0;i<9;i++){const y=26+i*20;o+=outlineLeaf(110+Math.sin(i)*3,y,84,8,Math.PI/2+(i%2?-.9:.9),'lance',1,i%2?'#93a65a':'#a5b56c')}}
+    else{o=stem('M40 40Q110 60 190 50');for(let k=0;k<3;k++){const x=60+k*55;o+=stem(`M${x} ${48+k*3}Q${x+4} ${70} ${x} ${90}`);for(let i=0;i<14;i++)o+=`<ellipse cx="${f(x+(i%2?3:-3))}" cy="${90+i*7}" rx="6" ry="4.5" fill="#d8c56a" stroke="${INK}" stroke-width=".6"/>`}}}
+  else if(id==='cipres'){if(which===0){o=stem('M110 210Q112 120 100 20');const Rr=rng(5);function sprig(x,y,a,len,d){const x2=x+Math.cos(a)*len,y2=y+Math.sin(a)*len;o+=`<path d="M${f(x)} ${f(y)}L${f(x2)} ${f(y2)}" stroke="#3f5a3a" stroke-width="${d+1.5}" stroke-linecap="round"/>`;for(let i=0;i<5;i++){const t=i/5;o+=leaf(x+(x2-x)*t,y+(y2-y)*t,6,2.4,a+(i%2?.5:-.5),'#4e6b45',.95)}if(d>0){sprig(x2,y2,a-.5+Rr()*.2,len*.72,d-1);sprig(x2,y2,a+.5-Rr()*.2,len*.72,d-1)}}sprig(108,150,-Math.PI/2-.4,40,3);sprig(110,180,-Math.PI/2+.5,36,3)}
+    else{o=stem('M110 210L110 150');o+=`<circle cx="110" cy="105" r="48" fill="#8a7a52" stroke="${INK}" stroke-width="1.2"/>`;for(let i=0;i<6;i++){const a=i/6*Math.PI*2;o+=`<path d="M110 105L${f(110+Math.cos(a)*48)} ${f(105+Math.sin(a)*48)}" stroke="${INK}" stroke-width="1"/><circle cx="${f(110+Math.cos(a+.52)*26)}" cy="${f(105+Math.sin(a+.52)*26)}" r="3.5" fill="${INK}" opacity=".55"/>`}o+=`<circle cx="110" cy="105" r="9" fill="#6f6040" stroke="${INK}"/>`}}
+  return W+o+tape(110,206,-4)+'</svg>';
+}
+
+/* ---------- datos ---------- */
+const CAB=[
+ {id:'alamo',n:'Álamo',lat:'Populus sp.',fam:'Salicáceas',min:4,max:6,tag:'La familiar',p:[140000,168000,205000],
+  inc:['Estar-comedor','Cocina completa','Dormitorios independientes','Asador','Aire frío/calor','WiFi','Cochera'],
+  ft:['sep','espacio'],d:['Hoja · detalle del borde','Hoja en otoño']},
+ {id:'acacia',n:'Acacia',lat:'fam. Fabáceas',fam:'Fabáceas',min:4,max:6,tag:'La amplia',p:[140000,168000,205000],
+  inc:['Amplia','Asador propio','Cocina equipada','WiFi','Aire acondicionado','Cochera'],
+  ft:['espacio'],d:['Hoja compuesta','Vaina y flores']},
+ {id:'aguaribay',n:'Aguaribay',lat:'Schinus areira',fam:'Anacardiáceas',min:2,max:4,tag:'La favorita',p:[115000,138000,165000],
+  inc:['Rústica, estilo serrano','Techo con vigas','Asador','WiFi','Aire acondicionado','Cochera'],
+  ft:['rustica'],d:['Hoja pinnada','Racimo de frutos rosados']},
+ {id:'kiri',n:'Kiri',lat:'Paulownia tomentosa',fam:'Paulowniáceas',min:2,max:2,tag:'Premium',p:[160000,190000,230000],
+  inc:['Suite con piscina privada','Deck privado','Galería cubierta','Cocina','Asador','Aire acondicionado','Cochera'],
+  ft:['pileta','galeria','intima'],d:['Hoja acorazonada','Panícula de flores lilas']},
+ {id:'espinillo',n:'Espinillo',lat:'Vachellia caven',fam:'Fabáceas',min:4,max:6,tag:'La de la galería',p:[135000,162000,195000],
+  inc:['Galería exterior','Cocina equipada','Asador','WiFi','Aire acondicionado','Cochera'],
+  ft:['galeria','espacio'],d:['Hoja bipinnada con espinas','Flores en pompón']},
+ {id:'sauce',n:'Sauce',lat:'Salix sp.',fam:'Salicáceas',min:2,max:3,tag:'La de la hamaca',p:[100000,120000,145000],
+  inc:['Galería cubierta con hamaca','Asador propio','Aire acondicionado','Cochera'],
+  ft:['galeria','intima'],d:['Ramita con hojas','Amentos']},
+ {id:'cipres',n:'Ciprés',lat:'Cupressus sp.',fam:'Cupresáceas',min:2,max:3,tag:'La íntima',p:[100000,120000,145000],
+  inc:['Íntima y tranquila','Cocina completa','Asador','Aire acondicionado','WiFi','Cochera'],
+  ft:['intima'],d:['Ramita de escamas','Gálbulo (fruto)']},
+];
+const FEAT=[['pileta','Pileta privada'],['galeria','Galería o hamaca'],['rustica','Estilo serrano'],['sep','Dormitorios separados'],['intima','Íntima, para dos'],['espacio','Más espacio']];
+const ROM=['i','ii','iii','iv','v','vi','vii'];
+const cap=c=>c.min===c.max?`${c.max} personas`:`${c.min} a ${c.max} personas`;
+const svgCache={};const getTree=id=>svgCache[id]||(svgCache[id]=tree(id));
+
+/* ---------- herbario ---------- */
+let sel='aguaribay',fPax=0,fSet=new Set();
+function renderIndex(){
+  $('#indice').innerHTML=CAB.map((c,i)=>{
+    const m=matches(c);const cls=[c.id===sel?'on':'',(fPax||fSet.size)?(m?'match':'off'):''].join(' ');
+    return `<li><button class="${cls}" data-c="${c.id}"><span class="r">${ROM[i]}.</span><span><span class="nm">${c.n}</span><span class="lt">${c.lat}</span></span><span class="cp">${c.min===c.max?c.max:c.min+'–'+c.max} p.</span></button></li>`}).join('');
+}
+function matches(c){if(fPax&&fPax>c.max)return false;for(const k of fSet)if(!c.ft.includes(k))return false;return true}
+function renderLamina(){
+  const i=CAB.findIndex(c=>c.id===sel),c=CAB[i];
+  $('#lamina').innerHTML=`
+   <div>
+    <figure class="lam-main">${getTree(c.id)}<figcaption>Lámina ${ROM[i].toUpperCase()} · ${c.n} (${c.lat})</figcaption></figure>
+    <div class="lam-min"><figure>${det(c.id,0)}<figcaption>${c.d[0]}</figcaption></figure><figure>${det(c.id,1)}<figcaption>${c.d[1]}</figcaption></figure></div>
+   </div>
+   <div class="ficha">
+    <div class="tag">${c.tag}</div>
+    <h3>${c.n}</h3>
+    <p class="latin">${c.lat} · ${c.fam}</p>
+    <dl class="etq">
+      <div><dt>Capacidad</dt><dd>${cap(c)}</dd></div>
+      <div><dt>Estadía</dt><dd>Mínimo 4 noches · entrada 14:00 · salida 10:00</dd></div>
+      <div><dt>Mascotas</dt><dd>Aceptadas</dd></div>
+    </dl>
+    ${c.id==='kiri'?'<div class="nota-kiri"><b>Kiri hoy está en Booking con ficha propia.</b> Acá se reserva desde el mismo lugar que las demás, con el mismo calendario.</div>':''}
+    <ul class="inc">${c.inc.map(x=>`<li>${x}</li>`).join('')}</ul>
+    <table class="tar-mini"><thead><tr><th>Temporada</th><th style="text-align:right">Por noche</th></tr></thead><tbody>
+      <tr><td>Alta · ene–feb</td><td>${money(c.p[2])}${PE}</td></tr>
+      <tr><td>Media · dic, Semana Santa, findes largos</td><td>${money(c.p[1])}${PE}</td></tr>
+      <tr><td>Baja · resto del año</td><td>${money(c.p[0])}${PE}</td></tr>
+    </tbody></table>
+    <div class="cta"><a class="btn" href="#reservar" data-res="${c.id}">Consultar ${c.n}</a><a class="btn alt" href="#calendario">Ver disponibilidad</a></div>
+   </div>`;
+}
+function renderVer(){
+  const m=CAB.filter(matches);let t,s;
+  if(!fPax&&!fSet.size){t='Elegí cuántos son y el herbario marca sus cabañas.';s='Las siete aceptan mascotas.'}
+  else if(!m.length){t='Ninguna junta todo eso.';s='Probá sacando una opción.'}
+  else{t=`Les sirve${m.length>1?'n':''}: ${m.map(c=>c.n).join(', ')}.`;s='Las siete aceptan mascotas.'}
+  $('#f-ver').innerHTML=`${t}<small>${s}</small>`;
+}
+function renderFinder(){
+  $('#f-pax').innerHTML=[1,2,3,4,5,6].map(n=>`<button type="button" class="${fPax===n?'on':''}" data-p="${n}" aria-label="${n} personas">${n}</button>`).join('');
+  $('#f-chips').innerHTML=FEAT.map(([k,l])=>`<button type="button" class="${fSet.has(k)?'on':''}" data-k="${k}">${l}</button>`).join('');
+  renderVer();renderIndex();
+}
+document.addEventListener('click',e=>{
+  const p=e.target.closest('[data-p]');if(p){const n=+p.dataset.p;fPax=fPax===n?0:n;const m=CAB.filter(matches);if(m.length&&!m.some(c=>c.id===sel)){sel=m[0].id;renderLamina()}renderFinder();if(fPax){state.pax=Math.max(1,fPax);syncPax()}return}
+  const k=e.target.closest('[data-k]');if(k){const v=k.dataset.k;fSet.has(v)?fSet.delete(v):fSet.add(v);const m=CAB.filter(matches);if(m.length&&!m.some(c=>c.id===sel)){sel=m[0].id;renderLamina()}renderFinder();return}
+  const c=e.target.closest('[data-c]');if(c){sel=c.dataset.c;renderIndex();renderLamina();if(window.innerWidth<980&&e.target.closest('.pl-cab'))document.getElementById('herbario').scrollIntoView();return}
+  const r=e.target.closest('[data-res]');if(r){$('#s-cab').value=r.dataset.res;update()}
+  if(e.target.closest('[data-duenio]'))openPanel();
+});
+
+/* ---------- plano del predio ---------- */
+function glyph(id,x,y){
+  const g='#6f8a4a';
+  if(id==='alamo')return `<ellipse cx="${x}" cy="${y-18}" rx="7" ry="20" fill="${g}" stroke="${INK}" stroke-width=".8"/>`;
+  if(id==='cipres')return `<path d="M${x} ${y-42}C${x+9} ${y-24} ${x+9} ${y-6} ${x} ${y}C${x-9} ${y-6} ${x-9} ${y-24} ${x} ${y-42}Z" fill="#3f5a3a" stroke="${INK}" stroke-width=".8"/>`;
+  if(id==='sauce')return `<path d="M${x-18} ${y}C${x-20} ${y-26} ${x-8} ${y-34} ${x} ${y-34}C${x+8} ${y-34} ${x+20} ${y-26} ${x+18} ${y}" fill="#a5b56c" stroke="${INK}" stroke-width=".8"/><path d="M${x-10} ${y-2}v-24M${x} ${y-2}v-28M${x+10} ${y-2}v-24" stroke="${INK}" stroke-width=".5"/>`;
+  if(id==='espinillo')return `<ellipse cx="${x}" cy="${y-20}" rx="22" ry="9" fill="#94a660" stroke="${INK}" stroke-width=".8"/><circle cx="${x-8}" cy="${y-22}" r="2.4" fill="#d9a520"/><circle cx="${x+7}" cy="${y-19}" r="2.4" fill="#d9a520"/>`;
+  if(id==='kiri')return `<circle cx="${x}" cy="${y-22}" r="16" fill="#6e8a44" stroke="${INK}" stroke-width=".8"/><circle cx="${x-5}" cy="${y-30}" r="3" fill="#9b86b8"/><circle cx="${x+6}" cy="${y-26}" r="3" fill="#9b86b8"/>`;
+  if(id==='aguaribay')return `<path d="M${x-17} ${y-12}C${x-20} ${y-34} ${x+20} ${y-34} ${x+17} ${y-12}" fill="#6f8a4a" stroke="${INK}" stroke-width=".8"/><circle cx="${x-9}" cy="${y-12}" r="2.2" fill="#b8483f"/><circle cx="${x+9}" cy="${y-12}" r="2.2" fill="#b8483f"/>`;
+  return `<circle cx="${x}" cy="${y-20}" r="15" fill="#7e9150" stroke="${INK}" stroke-width=".8"/>`;
+}
+function plano(){
+  const R=rng(3);let o=`<defs><pattern id="pasto" width="12" height="12" patternUnits="userSpaceOnUse"><path d="M2 10l1-4M7 11l1-5" stroke="#8b9a55" stroke-width=".7" opacity=".5"/></pattern></defs>`;
+  o+=`<path d="M40 70C120 40 260 30 380 44C480 52 590 60 610 110C626 190 612 300 590 360L60 372C34 300 24 160 40 70Z" fill="#e6e3c4" stroke="${INK}" stroke-width="1.3" stroke-dasharray="6 4"/>`;
+  o+=`<path d="M40 70C120 40 260 30 380 44C480 52 590 60 610 110C626 190 612 300 590 360L60 372C34 300 24 160 40 70Z" fill="url(#pasto)"/>`;
+  o+=`<path d="M0 410C160 396 420 402 640 392" stroke="#b9a77e" stroke-width="22" fill="none"/><path d="M0 410C160 396 420 402 640 392" stroke="${INK}" stroke-width=".7" stroke-dasharray="10 8" fill="none"/>`;
+  o+=`<text x="410" y="430" font-family="Palanquin" font-size="12" letter-spacing="2" fill="${INK}">CAMINO A PUERTA DE GARAY</text>`;
+  o+=`<path d="M300 400C300 360 310 320 330 290C350 250 330 190 300 150C280 120 250 110 220 120" stroke="#cdbf98" stroke-width="10" fill="none" stroke-linecap="round"/>`;
+  o+=`<path d="M330 290C380 300 430 270 470 250M330 220C390 210 450 170 500 150M300 150C350 120 400 110 440 100" stroke="#cdbf98" stroke-width="6" fill="none" stroke-linecap="round"/>`;
+  o+=`<rect x="200" y="230" width="88" height="44" rx="10" fill="#9fc4bd" stroke="${INK}" stroke-width="1"/><path d="M212 246q10 -5 20 0t20 0t20 0M212 258q10 -5 20 0t20 0t20 0" stroke="#fff" stroke-width="1.2" fill="none" opacity=".8"/><text x="244" y="292" text-anchor="middle" font-family="Palanquin" font-size="12" fill="${INK}">Pileta</text>`;
+  o+=`<rect x="320" y="360" width="34" height="14" fill="#f8f3e6" stroke="${INK}" stroke-width=".8"/><text x="337" y="355" text-anchor="middle" font-family="Palanquin" font-size="11" fill="${INK}">Entrada</text>`;
+  for(let i=0;i<40;i++){const x=60+R()*540,y=80+R()*270;if((x>190&&x<300&&y>220&&y<300))continue;o+=`<circle cx="${f(x)}" cy="${f(y)}" r="${f(2+R()*3)}" fill="#9aab68" opacity=".45"/>`}
+  const pos={alamo:[110,170],acacia:[160,320],aguaribay:[230,150],kiri:[520,300],espinillo:[400,245],sauce:[460,140],cipres:[540,190]};
+  CAB.forEach(c=>{const[x,y]=pos[c.id];o+=`<g class="pl-cab" data-c="${c.id}" tabindex="0" role="button" aria-label="Ver lámina de ${c.n}">${glyph(c.id,x,y)}<rect x="${x-14}" y="${y}" width="28" height="18" fill="#f8f3e6" stroke="${INK}" stroke-width="1"/><path d="M${x-17} ${y+1}L${x} ${y-8}L${x+17} ${y+1}" fill="#9a4726" stroke="${INK}" stroke-width=".8"/>${c.id==='kiri'?`<rect x="${x+18}" y="${y+4}" width="22" height="12" rx="3" fill="#9fc4bd" stroke="${INK}" stroke-width=".7"/>`:''}<circle class="pl-dot" cx="${x}" cy="${y+30}" r="3" fill="${INK}"/><text x="${x}" y="${y+48}" text-anchor="middle">${c.n}</text></g>`});
+  o+=`<g transform="translate(590 30)"><circle r="16" fill="#f8f3e6" stroke="${INK}"/><path d="M0 -12L4 0L0 12L-4 0Z" fill="${INK}"/><text y="-20" text-anchor="middle" font-family="Palanquin" font-size="11" fill="${INK}">N</text></g>`;
+  o+=`<text x="60" y="30" font-family="Almendra" font-size="20" fill="${INK}">Parque de La Amelia · ~2 ha</text>`;
+  $('#plano').innerHTML=o;
+  $('#plano').addEventListener('keydown',e=>{if(e.key==='Enter'){const g=e.target.closest('.pl-cab');if(g)g.dispatchEvent(new MouseEvent('click',{bubbles:true}))}});
+}
+function mapa(){
+  const T=(x,y,t,o={})=>`<text x="${x}" y="${y}" font-family="${o.alm?'Almendra':'Palanquin'}" font-size="${o.s||12}" fill="${o.c||INK}" ${o.a?`text-anchor="${o.a}"`:''} ${o.r?`transform="rotate(${o.r} ${x} ${y})"`:''}>${t}</text>`;
+  let o=`<rect width="520" height="380" fill="#efe9d6"/>`;
+  o+=`<path d="M390 0C400 90 410 150 440 220C460 280 470 330 480 380L520 380L520 0Z" fill="#d8d0b2"/>`;
+  [[430,60],[455,150],[500,330]].forEach(([x,y])=>o+=`<path d="M${x-14} ${y}l14 -16l14 16" stroke="${INK}" stroke-width="1" fill="none"/>`);
+  o+=T(470,190,'Sierras Grandes',{alm:1,s:15,r:78});
+  o+=`<path d="M440 230C380 222 330 200 280 196C250 194 232 196 214 200C170 210 120 200 40 214" stroke="#6f9fa0" stroke-width="5" fill="none" stroke-linecap="round"/>`;
+  o+=T(70,232,'río Mina Clavero',{s:11,c:'#3f6f70'});
+  o+=`<path d="M214 40L214 200L232 350" stroke="${INK}" stroke-width="1.3" fill="none"/>`;
+  o+=`<path d="M214 200C280 160 340 110 410 62" stroke="${INK}" stroke-width="2" stroke-dasharray="7 5" fill="none"/>`;
+  o+=T(296,160,'Camino de las Altas Cumbres',{s:11,r:-35});
+  o+=`<circle cx="214" cy="200" r="7" fill="#9a4726"/>`+T(204,184,'Mina Clavero',{alm:1,s:18,a:'end'});
+  o+=`<circle cx="214" cy="104" r="4.5" fill="${INK}"/>`+T(224,100,'Villa Cura Brochero',{s:12})+T(224,114,'a 3 km',{s:10.5,c:'#565c48'});
+  o+=`<circle cx="228" cy="320" r="4.5" fill="${INK}"/>`+T(238,324,'Nono',{s:12});
+  o+=`<circle cx="268" cy="344" r="4" fill="${INK}"/>`+T(278,348,'Museo Rocsen',{s:12});
+  o+=`<circle cx="410" cy="62" r="4.5" fill="${INK}"/>`+T(404,44,'Quebrada del Condorito',{s:12,a:'end'});
+  o+=`<circle cx="262" cy="196" r="3.5" fill="#fff" stroke="${INK}"/>`+T(258,220,'Los Elefantes',{s:10.5});
+  o+=`<circle cx="318" cy="204" r="3.5" fill="#fff" stroke="${INK}"/>`+T(330,236,'Nido del Águila',{s:10.5});
+  o+=`<path d="M318 208L330 226" stroke="${INK}" stroke-width=".5"/>`;
+  o+=`<path d="M214 214C190 240 160 256 120 268" stroke="${INK}" stroke-width="1.2" stroke-dasharray="3 3" fill="none"/>`;
+  o+=`<g transform="translate(104 270)"><path d="M0 0l14 -14l14 14Z" fill="#9a4726" stroke="${INK}"/><rect x="4" y="0" width="20" height="12" fill="#f8f3e6" stroke="${INK}"/></g>`;
+  o+=T(30,302,'Cabañas La Amelia',{alm:1,s:16,c:'#9a4726'})+T(30,318,'Camino a Puerta de Garay',{s:10.5})+T(30,331,'ubicación aproximada',{s:10,c:'#565c48'});
+  o+=`<g transform="translate(40 40)"><circle r="14" fill="#f8f3e6" stroke="${INK}"/><path d="M0 -10L3.5 0L0 10L-3.5 0Z" fill="${INK}"/></g>`+T(40,68,'N',{s:10,a:'middle'});
+  $('#mapa').innerHTML=o;
+}
+/* ---------- calendario ---------- */
+const OCC={alamo:'..BBBB....WWWW',acacia:'WWWW.....BBBBB',aguaribay:'.BBBBB..WWWW..',kiri:'KKKK..WWWWW...',espinillo:'....BBBBB.WWWW',sauce:'WWWWW....BBBB.',cipres:'.....WWWW.....'};
+const D0=new Date(2026,11,7);const DN=['dom','lun','mar','mié','jue','vie','sáb'];
+const lab={B:'BK',K:'BK',W:'WA'};
+function cal(){
+  let h='<thead><tr><th></th>';for(let i=0;i<14;i++){const d=new Date(D0);d.setDate(d.getDate()+i);h+=`<th class="d">${DN[d.getDay()]}<b>${d.getDate()}</b></th>`}h+='</tr></thead><tbody>';
+  CAB.forEach(c=>{h+=`<tr><td class="n">${c.n}</td>`+[...OCC[c.id]].map(ch=>`<td class="c ${ch!=='.'?ch:''}" title="${ch==='.'?'Libre':ch==='W'?'Reserva directa':'Booking'}">${ch==='.'?'':lab[ch]}</td>`).join('')+'</tr>';
+    if(c.id==='kiri')h+=`<tr class="sub"><td class="n" style="font:400 12px Palanquin;color:var(--oxido)">↳ fichas Booking</td>`+[...OCC.kiri].map(ch=>`<td class="c ${ch==='W'?'x':''}">${ch==='W'?'cerr.':''}</td>`).join('')+'</tr>'});
+  $('#cal').innerHTML=h+'</tbody><caption style="caption-side:bottom;text-align:left;font-size:12.5px;color:var(--tinta2);padding-top:8px">Semana del 7 al 20 de diciembre de 2026 · datos de ejemplo</caption>';
+}
+
+/* ---------- tarifas ---------- */
+function tarifas(){
+  let h='<thead><tr><th>Cabaña</th><th>Alta · ene–feb</th><th>Media</th><th>Baja</th></tr></thead><tbody>';
+  CAB.forEach(c=>{h+=`<tr><td class="nm">${c.n}<small>${cap(c)}</small></td>`+[2,1,0].map((k,i)=>`<td class="m" data-l="${['Alta','Media','Baja'][i]}"><span><b>${money(c.p[k])}</b>${PE}</span></td>`).join('')+'</tr>'});
+  $('#tarifas-t').innerHTML=h+'</tbody>';
+}
+
+/* ---------- simulador ---------- */
+const state={pax:4};
+const WA='5493544418292';
+function season(d){const y=d.getFullYear(),m=d.getMonth(),dd=d.getDate();
+  if(y===2027&&(m===0||m===1))return 2;
+  if(y===2026&&m===11)return 1;
+  const t=d.getTime();if(t>=new Date(2027,2,25).getTime()&&t<=new Date(2027,3,5).getTime())return 1;
+  return 0}
+const SN=['baja','media','alta'];
+function parse(v){if(!v)return null;const[a,b,c]=v.split('-').map(Number);return new Date(a,b-1,c)}
+const fmt=d=>d.toLocaleDateString('es-AR',{weekday:'short',day:'numeric',month:'short'}).replace(/[.,]/g,'');
+const fmtC=d=>d.toLocaleDateString('es-AR',{day:'numeric',month:'numeric',year:'numeric'});
+function syncPax(){$('#s-pax').textContent=state.pax;update()}
+function esc(s){return s.replace(/[&<>"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]))}
+let typingT;
+function update(){
+  const c=CAB.find(x=>x.id===$('#s-cab').value),di=parse($('#s-in').value),dout=parse($('#s-out').value);
+  const name=$('#s-name').value.trim(),pet=$('#s-pet').checked;
+  let aviso='',nights=0,total=0,cnt=[0,0,0];
+  if(di&&dout&&dout>di){nights=Math.round((dout-di)/864e5);for(let i=0;i<nights;i++){const d=new Date(di);d.setDate(d.getDate()+i);const s=season(d);cnt[s]++;total+=c.p[s]}}
+  else aviso='La salida tiene que ser después de la llegada.';
+  if(nights&&nights<4)aviso='La estadía mínima en La Amelia es de 4 noches.';
+  if(state.pax>c.max){const alt=CAB.filter(x=>x.max>=state.pax).map(x=>x.n).join(', ');aviso=`${c.n} es para hasta ${c.max}. Para ${state.pax} les sirve: ${alt||'consultar'}.`}
+  $('#s-aviso').textContent=aviso;
+  const senia=total*.5,saldo=total-senia;
+  let rows='';
+  [2,1,0].forEach(s=>{if(cnt[s])rows+=`<div class="r"><span>${cnt[s]} noche${cnt[s]>1?'s':''} temporada ${SN[s]} × ${money(c.p[s])}${PE}</span><span>${money(cnt[s]*c.p[s])}${PE}</span></div>`});
+  $('#s-res').innerHTML=rows+`<div class="r tot"><span>Total ${nights} noches</span><span>${money(total)}${PE}</span></div><div class="r sen"><span>Seña 50% para confirmar</span><span>${money(senia)}${PE}</span></div><div class="r"><span>Saldo al llegar</span><span>${money(saldo)}${PE}</span></div>`;
+  const temp=[2,1,0].filter(s=>cnt[s]).map(s=>SN[s]).join(' + ');
+  const msg=`Hola, Cabañas La Amelia! Soy ${name||'(tu nombre)'}.
+Quiero consultar por la cabaña *${c.n}*:
+• Llegada: ${di?fmt(di):'—'} (14:00)
+• Salida: ${dout?fmt(dout):'—'} (10:00)
+• ${nights} noches · ${state.pax} persona${state.pax>1?'s':''}${pet?' + mascota':''}
+• Total: ${money(total)} (temporada ${temp||'—'}, precio de ejemplo)
+• Seña 50%: ${money(senia)} · saldo ${money(saldo)} al llegar
+¿Me confirman si está libre? Gracias!`;
+  $('#b-typing').textContent='escribiendo…';clearTimeout(typingT);typingT=setTimeout(()=>$('#b-typing').textContent='',700);
+  const now=new Date();
+  $('#b-txt').innerHTML=esc(msg).replace(/\*([^*]+)\*/g,'<strong>$1</strong>')+`<span class="hora">${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')} ✓✓</span>`;
+  const ok=!aviso;
+  const wa=$('#s-wa');wa.href=`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`;wa.style.opacity=ok?1:.55;wa.title=ok?'':aviso;
+  $('#s-mp').dataset.s=senia;
+}
+function sim(){
+  $('#s-cab').innerHTML=CAB.map(c=>`<option value="${c.id}">${c.n} · ${cap(c)}</option>`).join('');
+  $('#s-cab').value='alamo';
+  ['#s-cab','#s-in','#s-out','#s-pet'].forEach(s=>$(s).addEventListener('change',update));
+  $('#s-in').addEventListener('input',update);$('#s-out').addEventListener('input',update);
+  $('#s-name').addEventListener('input',update);
+  $('#s-menos').onclick=()=>{state.pax=Math.max(1,state.pax-1);syncPax()};
+  $('#s-mas').onclick=()=>{state.pax=Math.min(6,state.pax+1);syncPax()};
+  $('#s-in').addEventListener('change',()=>{const di=parse($('#s-in').value),dout=parse($('#s-out').value);if(di&&(!dout||dout-di<4*864e5)){const d=new Date(di);d.setDate(d.getDate()+4);$('#s-out').value=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;update()}});
+  $('#s-mp').onclick=()=>toast(`Demo: acá se abriría el pago de la seña por ${money(+$('#s-mp').dataset.s||0)} (precio de ejemplo) en Mercado Pago.`);
+  update();
+}
+let tt;function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>el.classList.remove('on'),3600)}
+
+/* ---------- panel dueño ---------- */
+const CONS=[
+ {t:'hace 12 min',m:'Hola, Cabañas La Amelia! Soy Mariela.\nQuiero consultar por la cabaña *Kiri*:\n• Llegada: lun 18 ene (14:00)\n• Salida: vie 22 ene (10:00)\n• 4 noches · 2 personas\n• Total: $920.000 (temporada alta, precio de ejemplo)\n• Seña 50%: $460.000',e:'Seña pagada',ok:1},
+ {t:'hace 1 h',m:'Hola, Cabañas La Amelia! Soy Gustavo.\nQuiero consultar por la cabaña *Álamo*:\n• Llegada: sáb 2 ene · Salida: jue 7 ene\n• 5 noches · 6 personas + mascota\n• Total: $1.025.000 (precio de ejemplo)\n• Seña 50%: $512.500',e:'Esperando seña',ok:0},
+ {t:'ayer',m:'Hola, Cabañas La Amelia! Soy Ana.\nQuiero consultar por la cabaña *Aguaribay*:\n• Llegada: jue 25 mar · Salida: lun 29 mar\n• 4 noches · 3 personas\n• Total: $552.000 (temporada media, precio de ejemplo)',e:'Seña pagada',ok:1},
+];
+const SEN=[['Mariela','Kiri','18–22 ene',460000,1],['Ana','Aguaribay','25–29 mar',276000,1],['Pablo','Espinillo','17–21 dic',324000,1],['Sofía','Sauce','7–12 dic',300000,1],['Gustavo','Álamo','2–7 ene',512500,0]];
+function panel(){
+  const cobr=SEN.filter(s=>s[4]).reduce((a,s)=>a+s[3],0),directo=cobr*2;
+  const k=[['Consultas esta semana','14'],['Reservas directas','6'],['Señas cobradas',money(cobr)],['Ocupación 7–13 dic','57%']];
+  $('#kpis').innerHTML=k.map(([a,b],i)=>`<div><small>${a}</small><b>${b}</b>${i===2?PE:''}</div>`).join('');
+  $('#p-cons').innerHTML=CONS.map(c=>`<div class="consulta">${esc(c.m).replace(/\*([^*]+)\*/g,'<strong>$1</strong>').replace(/(\$[\d.]+)/g,'$1')}<div class="q"><span>${c.t}</span>${c.ok?`<b>✓ ${c.e}</b>`:`<span class="pend">${c.e}</span>`}</div></div>`).join('')+'<p class="muted" style="font-size:12.5px;margin:4px 0 0">Precios de ejemplo · Panel de ejemplo</p>';
+  let h='<thead><tr><th>Cabaña</th>';for(let i=0;i<7;i++){const d=new Date(D0);d.setDate(d.getDate()+i);h+=`<th style="text-align:center">${DN[d.getDay()].slice(0,2)} ${d.getDate()}</th>`}h+='</tr></thead><tbody>';
+  CAB.forEach(c=>{h+=`<tr><td>${c.n}</td>`+[...OCC[c.id].slice(0,7)].map(ch=>`<td class="c"><i class="${ch!=='.'?ch:''}"></i></td>`).join('')+'</tr>'});
+  $('#p-cupos').innerHTML=h+'</tbody>';
+  $('#p-senias').innerHTML='<thead><tr><th>Huésped · cabaña</th><th>Fechas</th><th>Seña</th><th>Estado</th></tr></thead><tbody>'+SEN.map(s=>`<tr><td>${s[0]}<br><span class="muted">${s[1]}</span></td><td>${s[2]}</td><td>${money(s[3])}${PE}</td><td class="${s[4]?'ok':'pend'}">${s[4]?'Cobrada':'Pendiente'}</td></tr>`).join('')+'</tbody>';
+  $('#p-ahorro').innerHTML=`<small style="letter-spacing:.14em;text-transform:uppercase;font-size:11px;color:#cfd6b4">Lo que no se llevó Booking (~15%)</small><br><b>${money(directo*.15)}</b>${PE}<br><span style="font-size:13.5px;color:#cfd6b4">Sobre ${money(directo)}${PE} reservados directo este mes. Panel de ejemplo.</span>`;
+}
+let lastFocus;
+function openPanel(){lastFocus=document.activeElement;$('#panel').classList.add('on');document.body.style.overflow='hidden';$('#p-cerrar').focus()}
+function closePanel(){$('#panel').classList.remove('on');document.body.style.overflow='';if(lastFocus)lastFocus.focus()}
+$('#p-cerrar').onclick=closePanel;
+$('#panel').addEventListener('click',e=>{if(e.target.id==='panel')closePanel()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#panel').classList.contains('on'))closePanel()});
+
+plano();mapa();renderFinder();renderLamina();cal();tarifas();sim();panel();
+window.__amelia={update,openPanel,closePanel};
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Cabañas La Amelia"></script>
+</body>
+</html>
