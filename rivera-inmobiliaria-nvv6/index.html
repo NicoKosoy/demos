@@ -1,0 +1,938 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Rivera Inmobiliaria · Prototipo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Domine:wght@400;500;600;700&family=Sarabun:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --tinta:#1F2F4A; --tinta-2:#2E4266; --papel:#F6F1E7; --papel-2:#EFE7D6; --hoja:#FFFDF8;
+  --sello:#B23A2E; --carton:#C9B48A; --carton-osc:#8F7748; --grafito:#2B2B2B; --gris:#5E5A52;
+  --linea:#D9CDB4; --oliva:#5F6F35;
+  --t-casa:#1F2F4A; --t-depto:#B23A2E; --t-terreno:#5F6F35; --t-campo:#8F7748; --t-galpon:#2B2B2B;
+  --wa:#075E54; --wa-burb:#DCF8C6; --wa-fondo:#ECE5DD;
+  color-scheme: light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--papel);color:var(--grafito);font-family:"Sarabun",system-ui,sans-serif;font-size:17px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}
+h1,h2,h3,h4{font-family:"Domine",Georgia,serif;color:var(--tinta);margin:0;line-height:1.15;font-weight:700}
+a{color:var(--tinta)}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--sello);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+.chico{font-size:.72rem;letter-spacing:.02em;color:var(--gris);font-weight:500}
+.ej{display:inline-block;font-size:.66rem;font-weight:600;letter-spacing:.03em;text-transform:uppercase;color:var(--carton-osc);border:1px solid var(--carton);border-radius:3px;padding:0 4px;margin-left:5px;vertical-align:middle;line-height:1.5;white-space:nowrap}
+.ej.pub{color:var(--oliva);border-color:#B9C29A}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* firma */
+.firma{border-bottom:1px solid var(--linea);font-size:.78rem;color:var(--gris);padding:6px 0;text-align:center}
+.firma b{font-weight:600;color:var(--tinta)}
+
+/* cabecera */
+header.top{border-bottom:2px solid var(--tinta);background:var(--papel)}
+.top .wrap{display:flex;align-items:center;gap:20px;padding-top:14px;padding-bottom:14px}
+.marca{display:flex;align-items:center;gap:12px;text-decoration:none;min-width:0}
+.marca img{height:46px;width:auto}
+.logo-alt{display:flex;align-items:center;gap:10px}
+.sello-r{width:44px;height:44px;border:2px solid var(--sello);border-radius:50%;display:grid;place-items:center;font-family:Domine,serif;font-weight:700;color:var(--sello);font-size:1.25rem;transform:rotate(-8deg);flex:none}
+.logo-alt span{font-family:Domine,serif;font-weight:700;font-size:1.2rem;color:var(--tinta);line-height:1}
+.logo-alt small{display:block;font-family:Sarabun;font-weight:500;font-size:.72rem;color:var(--gris);letter-spacing:.06em;text-transform:uppercase;margin-top:3px}
+.top nav{margin-left:auto;display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+.top nav a{text-decoration:none;font-weight:600;font-size:.9rem;padding:8px 10px;border-radius:4px}
+.top nav a:hover{background:var(--papel-2)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:2px solid var(--tinta);background:var(--tinta);color:var(--papel);font-weight:700;padding:10px 16px;border-radius:4px;cursor:pointer;text-decoration:none;font-size:.95rem;line-height:1.2}
+.btn:hover{background:var(--tinta-2)}
+.btn.ghost{background:transparent;color:var(--tinta)}
+.btn.ghost:hover{background:var(--papel-2)}
+.btn.rojo{background:var(--sello);border-color:var(--sello);color:#fff}
+.btn.wa{background:var(--wa);border-color:var(--wa);color:#fff}
+.btn.wa:hover{background:#064c44}
+.btn svg{width:18px;height:18px;flex:none}
+.dueno-btn{border-style:dashed}
+
+/* portada */
+.portada{padding:46px 0 30px}
+.portada .wrap{display:grid;grid-template-columns:1.05fr 1fr;gap:48px;align-items:end}
+.kicker{font-size:.82rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--sello);margin-bottom:14px}
+.portada h1{font-size:clamp(2rem,4.2vw,3.3rem);letter-spacing:-.01em}
+.portada h1 em{font-style:normal;color:var(--sello)}
+.portada ul.datos{list-style:none;padding:0;margin:22px 0 0;display:grid;gap:6px;font-size:.98rem}
+.portada ul.datos li{display:flex;gap:10px;align-items:baseline}
+.portada ul.datos li::before{content:"";width:14px;border-top:2px solid var(--carton-osc);flex:none;transform:translateY(-4px)}
+.portada .cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+
+/* estante de carpetas (lomos) */
+.estante{position:relative}
+.estante-cab{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--linea);padding-bottom:6px;margin-bottom:12px;font-size:.8rem;font-weight:600;color:var(--gris);text-transform:uppercase;letter-spacing:.06em}
+.lomos{display:flex;gap:10px;align-items:flex-end;height:300px;border-bottom:8px solid var(--carton-osc);padding:0 6px}
+.lomo{flex:1;min-width:0;border:none;cursor:pointer;background:var(--c);color:#fff;border-radius:4px 4px 0 0;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:12px 4px 14px;box-shadow:inset -6px 0 0 rgba(0,0,0,.12), inset 6px 0 0 rgba(255,255,255,.07);transition:transform .15s}
+.lomo:hover,.lomo[aria-pressed="true"]{transform:translateY(-10px)}
+.lomo[aria-pressed="true"]{outline:3px solid var(--sello);outline-offset:3px}
+.lomo .num{font-family:Domine,serif;font-weight:700;font-size:clamp(1.6rem,3.4vw,2.9rem);line-height:1}
+.lomo .eti{writing-mode:vertical-rl;transform:rotate(180deg);font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:.78rem}
+.lomo .aro{width:20px;height:20px;border-radius:50%;border:3px solid rgba(255,255,255,.75);background:rgba(0,0,0,.18)}
+.lomo .tarj{background:var(--hoja);color:var(--grafito);font-size:.6rem;font-weight:700;padding:2px 4px;border-radius:2px;letter-spacing:.04em}
+.estante-pie{margin-top:10px;font-size:.84rem;color:var(--gris);display:flex;gap:8px;align-items:flex-start}
+.estante-pie svg{flex:none;margin-top:3px}
+
+/* secciones */
+section{scroll-margin-top:10px}
+.sec{padding:56px 0}
+.sec-cab{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:24px}
+.sec-cab .n{font-family:Domine,serif;color:var(--sello);font-weight:700;font-size:.95rem;display:block;margin-bottom:6px}
+.sec-cab h2{font-size:clamp(1.6rem,3vw,2.3rem)}
+.sec-cab p{margin:6px 0 0;color:var(--gris);max-width:560px}
+
+/* filtros */
+.filtros{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:flex-end;background:var(--hoja);border:1px solid var(--linea);border-radius:6px;padding:14px;margin-bottom:22px}
+.campo{display:flex;flex-direction:column;gap:4px;min-width:0}
+.campo label,.campo .lab{font-size:.74rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--gris)}
+select,input[type=text],input[type=number]{color:var(--grafito);background:#fff;border:1.5px solid #BDB19A;border-radius:4px;padding:9px 10px;min-height:42px;width:100%}
+select:focus,input:focus{border-color:var(--tinta)}
+.seg{display:inline-flex;border:1.5px solid var(--tinta);border-radius:4px;overflow:hidden}
+.seg button{border:none;background:transparent;padding:9px 12px;cursor:pointer;font-weight:600;min-height:39px}
+.seg button+button{border-left:1.5px solid var(--tinta)}
+.seg button[aria-pressed="true"]{background:var(--tinta);color:var(--papel)}
+.filtros .limpiar{margin-left:auto;background:none;border:none;color:var(--sello);font-weight:700;text-decoration:underline;cursor:pointer;padding:10px 4px}
+
+/* bibliorato */
+.biblio{display:grid;grid-template-columns:1fr 150px;gap:0;align-items:start}
+.hoja{background:var(--hoja);border:1px solid var(--linea);border-radius:4px 0 4px 4px;box-shadow:6px 6px 0 var(--papel-2), 12px 12px 0 var(--linea);position:relative;min-height:520px;padding:28px 28px 22px 64px}
+.hoja::before{content:"";position:absolute;left:22px;top:40px;bottom:40px;width:18px;background:radial-gradient(circle at 9px 9px,var(--papel) 6px,#B7A986 7px,transparent 8px) 0 0/18px 120px repeat-y}
+.hoja::after{content:"";position:absolute;left:52px;top:0;bottom:0;border-left:1.5px solid #E8B9B3}
+.pestanas{display:flex;flex-direction:column;gap:6px;padding-top:26px}
+.pest{border:none;cursor:pointer;text-align:left;background:var(--c);color:#fff;font-weight:700;padding:10px 12px 10px 14px;border-radius:0 6px 6px 0;font-size:.86rem;display:flex;justify-content:space-between;gap:6px;opacity:.78;transition:transform .12s,opacity .12s;box-shadow:inset 4px 0 0 rgba(0,0,0,.18)}
+.pest .k{font-family:Domine,serif}
+.pest:hover{opacity:1}
+.pest[aria-pressed="true"]{opacity:1;transform:translateX(8px)}
+.ficha{display:grid;grid-template-columns:1.1fr 1fr;gap:26px}
+.foto{position:relative;border-radius:3px;overflow:hidden;background:var(--papel-2);aspect-ratio:4/3;border:1px solid var(--linea)}
+.foto img,.foto .ilus{width:100%;height:100%;object-fit:cover}
+.ilus svg{width:100%;height:100%;display:block}
+.foto .marca-foto{position:absolute;left:10px;bottom:10px;background:rgba(31,47,74,.88);color:#fff;font-size:.72rem;font-weight:600;padding:3px 8px;border-radius:3px}
+.cod{display:inline-flex;align-items:center;gap:8px;border:2px solid var(--sello);color:var(--sello);font-family:Domine,serif;font-weight:700;padding:3px 10px;border-radius:3px;transform:rotate(-2deg);font-size:.95rem;letter-spacing:.04em}
+.tipo-chip{display:inline-block;background:var(--c);color:#fff;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:3px 8px;border-radius:2px;margin-left:8px}
+.ficha h3{font-size:1.45rem;margin:12px 0 4px}
+.dir{display:flex;gap:6px;align-items:flex-start;color:var(--gris);font-weight:500}
+.dir svg{flex:none;margin-top:4px}
+.precio{margin:14px 0 12px;font-family:Domine,serif;font-weight:700;font-size:2rem;color:var(--tinta);display:flex;align-items:center;flex-wrap:wrap;gap:4px}
+table.carac{width:100%;border-collapse:collapse;font-size:.93rem;margin-bottom:14px}
+table.carac th{text-align:left;font-weight:600;color:var(--gris);padding:6px 10px 6px 0;width:42%;border-bottom:1px dashed var(--linea);vertical-align:top}
+table.carac td{padding:6px 0;border-bottom:1px dashed var(--linea);font-weight:600}
+table.carac td.nc{color:var(--gris);font-weight:500;font-style:italic}
+.plano{border:1px solid var(--linea);border-radius:3px;background:#FBF8F1;margin-top:18px}
+.plano svg{display:block;width:100%;height:auto}
+.plano-pie{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:.76rem;color:var(--gris);padding:6px 10px;border-top:1px solid var(--linea)}
+.plano-pie a{font-weight:700}
+.ficha-acc{display:flex;gap:8px;flex-wrap:wrap}
+.paginador{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:22px;padding-top:14px;border-top:1px solid var(--linea)}
+.paginador .pos{font-family:Domine,serif;font-weight:600;color:var(--tinta)}
+.vacia{display:grid;place-items:center;text-align:center;min-height:420px;padding:20px}
+.vacia .num{font-family:Domine,serif;font-size:4.5rem;font-weight:700;color:var(--c);line-height:1}
+.vacia ul{list-style:none;padding:0;margin:14px 0 18px;display:grid;gap:4px;color:var(--gris)}
+.indice-hojas{margin-top:34px}
+.indice-hojas h3{font-size:1rem;margin-bottom:8px}
+.indice-hojas ol{list-style:none;margin:0;padding:0;border-top:1px solid var(--linea)}
+.indice-hojas li button{width:100%;display:grid;grid-template-columns:70px 1fr auto;gap:10px;align-items:center;text-align:left;background:none;border:none;border-bottom:1px solid var(--linea);padding:10px 4px;cursor:pointer}
+.indice-hojas li button:hover,.indice-hojas li button[aria-current="true"]{background:var(--hoja)}
+.indice-hojas .c{font-family:Domine,serif;font-weight:700;color:var(--sello)}
+.indice-hojas .p{font-weight:700;white-space:nowrap}
+.indice-hojas .d{min-width:0}
+.indice-hojas .d small{display:block;color:var(--gris)}
+
+/* visita + burbuja */
+.visita{background:var(--papel-2);border-top:1px solid var(--linea);border-bottom:1px solid var(--linea)}
+.dos{display:grid;grid-template-columns:1fr 420px;gap:40px;align-items:start}
+.form{display:grid;gap:18px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid #BDB19A;background:#fff;border-radius:4px;padding:8px 12px;cursor:pointer;font-weight:600;font-size:.92rem;min-height:40px}
+.chip small{display:block;font-weight:500;font-size:.72rem;color:var(--gris)}
+.chip[aria-pressed="true"]{background:var(--tinta);border-color:var(--tinta);color:var(--papel)}
+.chip[aria-pressed="true"] small{color:#C9D3E6}
+.fila2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.chat{position:sticky;top:16px;border-radius:10px;overflow:hidden;border:1px solid #CFC6B5;background:var(--wa-fondo);box-shadow:0 10px 30px rgba(31,47,74,.12)}
+.chat-cab{background:var(--wa);color:#fff;display:flex;align-items:center;gap:10px;padding:10px 14px}
+.chat-cab .av{width:36px;height:36px;border-radius:50%;background:var(--papel);color:var(--sello);display:grid;place-items:center;font-family:Domine,serif;font-weight:700}
+.chat-cab b{display:block;font-size:.95rem}
+.chat-cab small{font-size:.74rem;opacity:.85}
+.chat-cuerpo{padding:16px 14px 14px;background-image:radial-gradient(rgba(0,0,0,.035) 1px,transparent 1px);background-size:14px 14px}
+.burb{background:var(--wa-burb);border-radius:8px 0 8px 8px;padding:10px 12px 18px;margin-left:24px;position:relative;font-size:.92rem;white-space:pre-wrap;word-wrap:break-word;color:#111;box-shadow:0 1px 0 rgba(0,0,0,.12);min-height:60px}
+.burb::after{content:"";position:absolute;right:-8px;top:0;border-left:8px solid var(--wa-burb);border-bottom:10px solid transparent}
+.burb .hora{position:absolute;right:8px;bottom:3px;font-size:.66rem;color:#5d6d5d;display:flex;gap:3px;align-items:center}
+.burb .cursor{display:inline-block;width:2px;height:1em;background:#111;vertical-align:-2px;animation:parp 1s steps(1) infinite}
+@keyframes parp{50%{opacity:0}}
+.chat-pie{padding:0 14px 14px;display:grid;gap:8px}
+.chat-pie .chico{text-align:center}
+.burb.in{background:#fff;border-radius:0 8px 8px 8px;margin-left:0;margin-right:24px}
+.burb.in::after{right:auto;left:-8px;border-left:none;border-right:8px solid #fff}
+
+/* pedido de búsqueda */
+.pedido .dos{grid-template-columns:400px 1fr}
+.ficha-pedido{background:var(--hoja);border:1px solid var(--linea);border-radius:4px;padding:22px;position:relative}
+.ficha-pedido::before{content:"PEDIDO DE BÚSQUEDA";position:absolute;top:-11px;left:18px;background:var(--sello);color:#fff;font-size:.7rem;font-weight:700;letter-spacing:.1em;padding:3px 8px;border-radius:2px}
+.ficha-pedido .form{gap:14px}
+.check{display:flex;gap:10px;align-items:center;font-weight:600;cursor:pointer}
+.check input{width:20px;height:20px;accent-color:var(--tinta)}
+.resultado h3{font-size:1.3rem;margin-bottom:4px}
+.coinc{list-style:none;padding:0;margin:14px 0;display:grid;gap:10px}
+.coinc li{display:grid;grid-template-columns:96px 1fr;gap:14px;align-items:center;background:var(--hoja);border:1px solid var(--linea);border-left:6px solid var(--c);border-radius:3px;padding:10px}
+.coinc .mini{aspect-ratio:4/3;overflow:hidden;border-radius:2px;background:var(--papel-2)}
+.coinc .mini img,.coinc .mini .ilus{width:100%;height:100%;object-fit:cover}
+.coinc b{font-family:Domine,serif;color:var(--tinta)}
+.coinc .cnf{font-size:.78rem;color:var(--carton-osc);font-weight:600}
+.coinc button{background:none;border:none;padding:0;color:var(--sello);font-weight:700;text-decoration:underline;cursor:pointer;font-size:.88rem}
+.sin{border:2px dashed var(--carton);border-radius:4px;padding:16px;margin:14px 0;background:var(--hoja)}
+.sin b{color:var(--sello)}
+.pedido .chat{position:static;margin-top:14px}
+
+/* tasación */
+.tasa{background:var(--tinta);color:#E9E3D6}
+.tasa h2,.tasa h3{color:var(--papel)}
+.tasa .sec-cab .n{color:var(--carton)}
+.tasa .sec-cab p{color:#C3CBDA}
+.tasa .campo label,.tasa .campo .lab{color:#C3CBDA}
+.tasa .chip{background:transparent;color:var(--papel);border-color:#56688A}
+.tasa .chip[aria-pressed="true"]{background:var(--papel);color:var(--tinta);border-color:var(--papel)}
+.tasa .pasos{list-style:none;padding:0;margin:0 0 22px;display:grid;grid-template-columns:repeat(4,auto);gap:8px 22px;justify-content:start;font-size:.9rem}
+.tasa .pasos li{display:flex;gap:8px;align-items:center}
+.tasa .pasos li span{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--carton);display:grid;place-items:center;font-size:.75rem;font-weight:700;color:var(--carton);flex:none}
+.tasa .chat{border-color:#3A4E73}
+
+/* dueño */
+#panel{display:none}
+body.modo-dueno #panel{display:block}
+body.modo-dueno .publico{display:none}
+.panel-cab{background:var(--grafito);color:var(--papel);padding:14px 0}
+.panel-cab .wrap{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.panel-cab .etq{background:var(--sello);color:#fff;font-weight:700;font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;padding:4px 8px;border-radius:2px}
+.panel-cab .btn{margin-left:auto;background:var(--papel);color:var(--tinta);border-color:var(--papel)}
+.tablero{display:grid;grid-template-columns:1.1fr 1fr;gap:28px;padding:34px 0 10px}
+.tablero>*,.dos>*,.ficha>*,.portada .wrap>*{min-width:0}
+.caja{background:var(--hoja);border:1px solid var(--linea);border-radius:4px;padding:20px}
+.caja h3{font-size:1.15rem;display:flex;justify-content:space-between;gap:10px;align-items:baseline;margin-bottom:12px;flex-wrap:wrap}
+.caja h3 .ej{font-family:Sarabun}
+.bandeja{background:var(--wa-fondo);border-radius:6px;padding:12px;display:grid;gap:10px;max-height:520px;overflow:auto}
+.bandeja .quien{font-size:.74rem;font-weight:700;color:var(--wa);margin-bottom:2px}
+.agenda{width:100%;border-collapse:collapse;font-size:.88rem}
+.agenda th{text-align:left;font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--gris);padding:6px 4px;border-bottom:2px solid var(--tinta)}
+.agenda td{padding:8px 4px;border-bottom:1px solid var(--linea);vertical-align:top}
+.agenda td.d{font-family:Domine,serif;font-weight:700;color:var(--tinta);white-space:nowrap;width:72px}
+.agenda .vis{display:inline-block;background:var(--papel-2);border-left:4px solid var(--c);padding:3px 8px;margin:0 4px 4px 0;border-radius:2px;font-size:.82rem}
+.agenda .libre{color:var(--gris);font-style:italic}
+.numeros{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.numeros div{border:1px solid var(--linea);border-radius:4px;padding:12px;background:#fff}
+.numeros b{display:block;overflow-wrap:anywhere;font-family:Domine,serif;font-size:1.5rem;color:var(--tinta);line-height:1.2}
+.numeros span{font-size:.82rem;color:var(--gris)}
+.ahorro{width:100%;border-collapse:collapse;font-size:.9rem;margin-top:4px}
+.ahorro td{padding:7px 0;border-bottom:1px dashed var(--linea)}
+.ahorro td:last-child{text-align:right;font-weight:700;padding-left:10px}
+.ahorro tr.tot td{border-top:2px solid var(--tinta);border-bottom:none;font-size:1rem;color:var(--sello)}
+.pedidos-g{list-style:none;padding:0;margin:0;display:grid;gap:8px;font-size:.9rem}
+.pedidos-g li{border-left:4px solid var(--c);padding:6px 10px;background:#fff}
+.paravos{border:2px solid var(--tinta);border-radius:4px;padding:26px;margin:26px 0 50px;display:grid;grid-template-columns:280px 1fr;gap:30px;background:var(--hoja)}
+.paravos h2{font-size:1.9rem}
+.paravos ul{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:14px 26px}
+.paravos li{padding-left:28px;position:relative}
+.paravos li svg{position:absolute;left:0;top:3px;color:var(--sello)}
+.paravos li b{display:block;color:var(--tinta)}
+
+/* pie */
+footer{background:var(--grafito);color:#D8D2C4;padding:40px 0 22px;font-size:.92rem}
+footer .cols{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:30px}
+footer h4{color:var(--papel);font-size:1.05rem;margin-bottom:8px}
+footer a{color:#fff}
+footer ul{list-style:none;padding:0;margin:0;display:grid;gap:4px}
+footer .legal{border-top:1px solid #4A4740;margin-top:28px;padding-top:14px;font-size:.78rem;color:#ABA494;text-align:center}
+
+@media (max-width:980px){
+  .portada .wrap,.dos,.pedido .dos,.tablero,.paravos{grid-template-columns:1fr}
+  .chat{position:sticky;top:auto;bottom:8px;z-index:5}
+  .chat .chat-cuerpo{max-height:34vh;overflow:auto}
+  .pedido .chat .chat-cuerpo{max-height:none}
+  .tasa .pasos{grid-template-columns:1fr 1fr}
+}
+@media (max-width:760px){
+  body{font-size:16px}
+  .wrap{padding:0 16px}
+  .top .wrap{flex-wrap:wrap;gap:10px}
+  .top nav{margin-left:0;width:100%;gap:2px}
+  .top nav a{padding:6px 8px;font-size:.85rem}
+  .top nav .dueno-btn{margin-left:auto;padding:7px 10px;font-size:.85rem}
+  .portada{padding-top:28px}
+  .lomos{height:220px;gap:6px;padding:0 2px}
+  .lomo .tarj,.lomo .aro{display:none}
+  .lomo{padding:10px 2px 10px}
+  .lomo .eti{font-size:.6rem;letter-spacing:.05em}
+  .chat .chat-cab{padding:6px 12px}
+  .chat .chat-cab small,.chat .chat-cab .av,.chat-pie .chico{display:none}
+  .visita .chat .chat-cuerpo,.tasa .chat .chat-cuerpo{max-height:24vh;padding:10px}
+  .chat-pie{padding:0 10px 10px}
+  .paginador .btn{padding:10px 12px}
+  .paginador .pos{text-align:center;font-size:.9rem;white-space:nowrap}
+  .paginador .pt{display:none}
+  .biblio{grid-template-columns:1fr}
+  .pestanas{flex-direction:row;overflow-x:auto;padding:0 0 0;gap:4px;order:-1;scrollbar-width:none}
+  .pest{border-radius:6px 6px 0 0;flex:none;padding:8px 10px;font-size:.8rem;box-shadow:none}
+  .pest[aria-pressed="true"]{transform:translateY(0);box-shadow:inset 0 -4px 0 rgba(0,0,0,.25)}
+  .hoja{padding:18px 14px 16px 34px;border-radius:0 0 4px 4px;box-shadow:4px 4px 0 var(--papel-2),8px 8px 0 var(--linea);min-height:0}
+  .hoja::before{left:8px;width:16px;background-size:16px 110px}
+  .hoja::after{left:28px}
+  .ficha{grid-template-columns:1fr;gap:14px}
+  .precio{font-size:1.6rem}
+  .fila2{grid-template-columns:1fr}
+  .paravos ul{grid-template-columns:1fr}
+  .paravos{padding:18px}
+  .numeros{grid-template-columns:minmax(0,1fr)}
+  footer .cols{grid-template-columns:1fr}
+  .coinc li{grid-template-columns:76px 1fr}
+  .indice-hojas li button{grid-template-columns:54px 1fr;}
+  .indice-hojas .p{grid-column:2}
+  .filtros .limpiar{margin-left:0}
+  .tasa .pasos{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
+</style>
+<script>
+/* ilustraciones de respaldo (sin fotos de stock) */
+function ilusSVG(kind,code){
+  var ink='#1F2F4A',c='#C9B48A',r='#B23A2E',p='#F6F1E7';
+  var fig='';
+  if(kind==='depto'){
+    fig='<rect x="120" y="40" width="120" height="170" fill="none" stroke="'+ink+'" stroke-width="3"/>';
+    for(var y=58;y<190;y+=30){for(var x=134;x<230;x+=32){fig+='<rect x="'+x+'" y="'+y+'" width="18" height="16" fill="'+c+'" opacity=".7"/>';}}
+    fig+='<rect x="170" y="186" width="20" height="24" fill="'+ink+'"/>';
+  }else if(kind==='galpon'){
+    fig='<path d="M80 210V120q100-60 200 0v90" fill="none" stroke="'+ink+'" stroke-width="3"/><rect x="150" y="150" width="60" height="60" fill="none" stroke="'+ink+'" stroke-width="3"/>';
+    for(var i=0;i<5;i++){fig+='<line x1="150" y1="'+(158+i*11)+'" x2="210" y2="'+(158+i*11)+'" stroke="'+c+'" stroke-width="3"/>';}
+    fig+='<rect x="236" y="150" width="34" height="60" fill="none" stroke="'+ink+'" stroke-width="2"/><rect x="236" y="170" width="34" height="3" fill="'+ink+'"/>';
+  }else{
+    fig='<path d="M100 210V130l80-60 80 60v80" fill="none" stroke="'+ink+'" stroke-width="3"/><rect x="166" y="160" width="28" height="50" fill="'+ink+'"/><rect x="118" y="146" width="30" height="26" fill="'+c+'" opacity=".7"/><rect x="212" y="146" width="30" height="26" fill="'+c+'" opacity=".7"/>';
+  }
+  return '<svg viewBox="0 0 360 270" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Ilustración de la ficha '+code+'"><rect width="360" height="270" fill="'+p+'"/>'+
+   '<g stroke="#E5DAC4" stroke-width="1">'+Array.from({length:14},function(_,i){return '<line x1="0" y1="'+(i*20)+'" x2="360" y2="'+(i*20)+'"/>'}).join('')+'</g>'+
+   '<line x1="40" y1="210" x2="320" y2="210" stroke="'+ink+'" stroke-width="3"/>'+fig+
+   '<g transform="translate(250 40) rotate(-8)"><rect width="84" height="30" fill="none" stroke="'+r+'" stroke-width="2"/><text x="42" y="20" text-anchor="middle" font-family="Domine,serif" font-weight="700" font-size="14" fill="'+r+'">'+code+'</text></g></svg>';
+}
+function fotoFalla(img){
+  var d=document.createElement('div');d.className='ilus';d.innerHTML=ilusSVG(img.dataset.ilus,img.dataset.code);
+  img.replaceWith(d);
+  window.__fallos=(window.__fallos||[]);window.__fallos.push(img.dataset.code);
+}
+function logoAlt(img){
+  var a=document.createElement('span');a.className='logo-alt';
+  a.innerHTML='<span class="sello-r" aria-hidden="true">R</span><span>Rivera Inmobiliaria<small>Martillero Martín Rivera · Mat. 422</small></span>';
+  img.replaceWith(a);
+}
+</script>
+</head>
+<body>
+
+<div class="firma">Prototipo preparado para <b>Rivera Inmobiliaria</b> · 27 de noviembre de 2026</div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="marca" href="#inicio" aria-label="Rivera Inmobiliaria, inicio">
+      <img src="https://riverainmobiliaria.com/wp-content/uploads/2024/07/logo3.png" alt="Rivera Inmobiliaria" data-logo onerror="logoAlt(this)">
+    </a>
+    <nav aria-label="Secciones">
+      <a href="#cartera">Cartera</a>
+      <a href="#pedido">Pedido de búsqueda</a>
+      <a href="#visita">Pedir visita</a>
+      <a href="#tasa">Tasá tu propiedad</a>
+      <button class="btn ghost dueno-btn" type="button" id="btnDueno" aria-pressed="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="1"/><path d="M3 9h18M8 4v5"/></svg>
+        Ver como dueño
+      </button>
+    </nav>
+  </div>
+</header>
+
+<main>
+<!-- ======== PANEL DEL DUEÑO ======== -->
+<section id="panel" aria-label="Panel del dueño">
+  <div class="panel-cab">
+    <div class="wrap">
+      <span class="etq">Panel de ejemplo</span>
+      <span>Así lo ve Martín desde el mostrador de 9 de Julio 588</span>
+      <button class="btn" type="button" id="btnVolver">Volver a la vista del cliente</button>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="tablero">
+      <div class="caja">
+        <h3>Consultas que entraron esta semana <span class="ej">Panel de ejemplo</span></h3>
+        <div class="bandeja" id="bandeja"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:minmax(0,1fr);gap:22px;align-content:start">
+        <div class="caja">
+          <h3>Agenda de visitas · 30 nov al 5 dic <span class="ej">Panel de ejemplo</span></h3>
+          <table class="agenda">
+            <thead><tr><th>Día</th><th>Visitas coordinadas</th></tr></thead>
+            <tbody>
+              <tr><td class="d">Lun 30</td><td><span class="vis" style="--c:var(--t-depto)">10 h · RV-03 · 2 pers.</span><span class="vis" style="--c:var(--t-galpon)">17 h · RV-01 · 1 pers.</span></td></tr>
+              <tr><td class="d">Mar 1</td><td><span class="libre">Sin visitas · día libre para tasaciones</span></td></tr>
+              <tr><td class="d">Mié 2</td><td><span class="vis" style="--c:var(--t-casa)">11 h · RV-02 Toay · 3 pers.</span></td></tr>
+              <tr><td class="d">Jue 3</td><td><span class="vis" style="--c:var(--t-depto)">18 h · RV-03 · 2 pers.</span></td></tr>
+              <tr><td class="d">Vie 4</td><td><span class="vis" style="--c:var(--t-terreno)">10 h · Tasación casa B° Villa Alonso</span></td></tr>
+              <tr><td class="d">Sáb 5</td><td><span class="vis" style="--c:var(--t-casa)">10 h · RV-02 Toay · 2 pers.</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="caja">
+          <h3>Reservas y señas <span class="ej">Panel de ejemplo</span></h3>
+          <div class="numeros">
+            <div><b>USD 2.000 <span class="ej">Monto de ejemplo</span></b><span>Reserva RV-03 recibida antes de firmar boleto</span></div>
+            <div><b>USD 1.000 <span class="ej">Monto de ejemplo</span></b><span>Reserva RV-01 en trámite</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="caja">
+        <h3>Lo que se ahorra frente a los portales <span class="ej">Panel de ejemplo</span></h3>
+        <table class="ahorro">
+          <tr><td>Avisos destacados en portal (33 propiedades)</td><td>$ 180.000/mes <span class="ej">Monto de ejemplo</span></td></tr>
+          <tr><td>Renovación de destacados en fichas nuevas</td><td>$ 45.000/mes <span class="ej">Monto de ejemplo</span></td></tr>
+          <tr><td>Catálogo propio con buscador y fichas</td><td>$ 0 por aviso <span class="ej">Monto de ejemplo</span></td></tr>
+          <tr class="tot"><td>Ahorro estimado al año</td><td>$ 2.700.000 <span class="ej">Monto de ejemplo</span></td></tr>
+        </table>
+      </div>
+      <div class="caja">
+        <h3>Pedidos de búsqueda esperando <span class="ej">Panel de ejemplo</span></h3>
+        <ul class="pedidos-g">
+          <li style="--c:var(--t-casa)"><b>Casa en Toay</b> · hasta USD 120.000 <span class="ej">Monto de ejemplo</span> · 3 dorm · apto crédito</li>
+          <li style="--c:var(--t-terreno)"><b>Terreno en Santa Rosa</b> · hasta USD 30.000 <span class="ej">Monto de ejemplo</span></li>
+          <li style="--c:var(--t-depto)"><b>Depto en alquiler, Centro</b> · 1 dorm</li>
+        </ul>
+        <p class="chico" style="margin:10px 0 0">Cuando carga una propiedad que coincide, el sistema le avisa a quién mandársela.</p>
+      </div>
+    </div>
+
+    <div class="paravos">
+      <div>
+        <span class="chico" style="text-transform:uppercase;letter-spacing:.08em;font-weight:700;color:var(--sello)">Servicio personalizado, sin perder la tarde en el teléfono</span>
+        <h2 style="margin-top:8px">Para vos, Martín</h2>
+      </div>
+      <ul>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg><b>Menos "¿sigue disponible?, ¿precio?"</b>Precio, dirección y datos ya están en la ficha. Te escriben para visitar.</li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg><b>La consulta llega con el código</b>RV-03, dirección, día, franja y cuántos van, en un solo mensaje.</li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg><b>Agenda de visitas ordenada</b>Por día y por propiedad, sin cruzar a dos interesados en Toay a la misma hora.</li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg><b>Sin pagar por aviso ni portal</b>Tus 33 propiedades en tu propio catálogo, con tu nombre y matrícula.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="publico">
+<!-- ======== PORTADA ======== -->
+<section class="portada" id="inicio">
+  <div class="wrap">
+    <div>
+      <div class="kicker">9 de Julio 588 · Santa Rosa, La Pampa · Servicio personalizado</div>
+      <h1>33 propiedades, de <em>Jujuy y Duval</em> a Saavedra 532 en Toay.</h1>
+      <ul class="datos">
+        <li>Martillero Martín Rivera · Matrícula 422</li>
+        <li>Venta y alquiler · Santa Rosa, Toay y Mar del Plata</li>
+        <li>Cada carpeta del estante es un tipo: tocala y se abre</li>
+      </ul>
+      <div class="cta">
+        <a class="btn" href="#cartera">Abrir el bibliorato</a>
+        <a class="btn ghost" href="#pedido">Dejar mi pedido de búsqueda</a>
+      </div>
+    </div>
+    <div class="estante">
+      <div class="estante-cab"><span>Índice de la cartera</span><span>33 publicaciones</span></div>
+      <div class="lomos" id="lomos"></div>
+      <div class="estante-pie">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16v.5"/></svg>
+        <span>Cantidades reales de la web actual. En este prototipo hay 4 fichas cargadas; las otras 29 se cargan todas al dejarlo funcionando.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== CARTERA / BIBLIORATO ======== -->
+<section class="sec" id="cartera" style="padding-top:30px">
+  <div class="wrap">
+    <div class="sec-cab">
+      <div>
+        <span class="n">Carpeta 1</span>
+        <h2>El bibliorato de la cartera</h2>
+        <p>Pasá las hojas o filtrá. Cada pestaña es un tipo de propiedad.</p>
+      </div>
+    </div>
+
+    <div class="filtros" role="group" aria-label="Filtros de la cartera">
+      <div class="campo">
+        <span class="lab" id="lOp">Operación</span>
+        <div class="seg" role="group" aria-labelledby="lOp" id="fOp">
+          <button type="button" data-v="" aria-pressed="true">Todas</button>
+          <button type="button" data-v="Venta" aria-pressed="false">Venta</button>
+          <button type="button" data-v="Alquiler" aria-pressed="false">Alquiler</button>
+        </div>
+      </div>
+      <div class="campo" style="flex:1 1 150px"><label for="fZona">Zona</label>
+        <select id="fZona"><option value="">Todas</option><option>Santa Rosa</option><option>Toay</option><option>Mar del Plata</option></select></div>
+      <div class="campo" style="flex:1 1 150px"><label for="fPrecio">Precio hasta</label>
+        <select id="fPrecio"><option value="">Sin tope</option><option value="50000">USD 50.000</option><option value="100000">USD 100.000</option><option value="150000">USD 150.000</option></select></div>
+      <div class="campo" style="flex:1 1 130px"><label for="fDorm">Dormitorios</label>
+        <select id="fDorm"><option value="">Cualquiera</option><option value="1">1 o más</option><option value="2">2 o más</option><option value="3">3 o más</option></select></div>
+      <button type="button" class="limpiar" id="fLimpiar">Limpiar filtros</button>
+    </div>
+
+    <div class="biblio">
+      <article class="hoja" id="hoja" aria-live="polite"></article>
+      <div class="pestanas" id="pestanas" role="group" aria-label="Pestañas por tipo"></div>
+    </div>
+
+    <div class="indice-hojas">
+      <h3>Índice de hojas cargadas</h3>
+      <ol id="indice"></ol>
+      <p class="chico" style="margin-top:8px">Las fichas sin dormitorios publicados no aparecen al filtrar por dormitorios.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======== PEDIDO DE BÚSQUEDA ======== -->
+<section class="sec pedido" id="pedido" style="padding-top:20px">
+  <div class="wrap">
+    <div class="sec-cab">
+      <div>
+        <span class="n">Carpeta 2</span>
+        <h2>¿No está? Dejá tu pedido de búsqueda</h2>
+        <p>Armás tu ficha y te mostramos qué hay hoy en la cartera que coincide.</p>
+      </div>
+    </div>
+    <div class="dos">
+      <div class="ficha-pedido">
+        <div class="form" id="formPedido">
+          <div class="campo"><span class="lab" id="lpOp">Operación</span>
+            <div class="chips" role="group" aria-labelledby="lpOp" data-grupo="pOp">
+              <button type="button" class="chip" data-v="Compra" aria-pressed="true">Comprar</button>
+              <button type="button" class="chip" data-v="Alquiler" aria-pressed="false">Alquilar</button>
+            </div></div>
+          <div class="fila2">
+            <div class="campo"><label for="pTipo">Tipo</label>
+              <select id="pTipo"><option value="">Cualquiera</option><option value="casa">Casa</option><option value="depto">Departamento</option><option value="terreno">Terreno</option><option value="campo">Campo</option><option value="galpon">Galpón</option></select></div>
+            <div class="campo"><label for="pZona">Zona</label>
+              <select id="pZona"><option>Santa Rosa</option><option>Toay</option><option value="Otra">Otra</option></select></div>
+          </div>
+          <div class="fila2">
+            <div class="campo"><label for="pMax">Presupuesto máximo (USD)</label>
+              <input type="number" id="pMax" inputmode="numeric" min="0" step="1000" placeholder="Ej. 95000"></div>
+            <div class="campo"><label for="pDorm">Dormitorios</label>
+              <select id="pDorm"><option value="">Indistinto</option><option value="1">1 o más</option><option value="2">2 o más</option><option value="3">3 o más</option></select></div>
+          </div>
+          <label class="check"><input type="checkbox" id="pCred"> Necesito que sea apto crédito</label>
+          <div class="campo"><label for="pNom">Tu nombre</label><input type="text" id="pNom" autocomplete="name" placeholder="Nombre y apellido"></div>
+        </div>
+      </div>
+      <div class="resultado" id="resPedido" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== VISITA + BURBUJA ======== -->
+<section class="sec visita" id="visita">
+  <div class="wrap">
+    <div class="sec-cab">
+      <div>
+        <span class="n">Carpeta 3</span>
+        <h2>Pedí la visita y mirá el mensaje que le llega a Martín</h2>
+        <p>Elegís y el WhatsApp se escribe solo, con la ficha ya indicada.</p>
+      </div>
+    </div>
+    <div class="dos">
+      <div class="form" id="formVisita">
+        <div class="campo"><label for="vProp">Propiedad</label><select id="vProp"></select></div>
+        <div class="campo"><span class="lab" id="lvOp">Operación</span>
+          <div class="chips" role="group" aria-labelledby="lvOp" data-grupo="vOp">
+            <button type="button" class="chip" data-v="compra" aria-pressed="true">Compra</button>
+            <button type="button" class="chip" data-v="consulta por alquiler" aria-pressed="false">Alquiler</button>
+          </div></div>
+        <div class="campo"><span class="lab" id="lvDia">Día para visitar</span>
+          <div class="chips" role="group" aria-labelledby="lvDia" data-grupo="vDia">
+            <button type="button" class="chip" data-v="sábado 28 de noviembre" aria-pressed="false">Sáb<small>28 nov</small></button>
+            <button type="button" class="chip" data-v="lunes 30 de noviembre" aria-pressed="false">Lun<small>30 nov</small></button>
+            <button type="button" class="chip" data-v="martes 1 de diciembre" aria-pressed="false">Mar<small>1 dic</small></button>
+            <button type="button" class="chip" data-v="miércoles 2 de diciembre" aria-pressed="false">Mié<small>2 dic</small></button>
+            <button type="button" class="chip" data-v="jueves 3 de diciembre" aria-pressed="false">Jue<small>3 dic</small></button>
+            <button type="button" class="chip" data-v="viernes 4 de diciembre" aria-pressed="false">Vie<small>4 dic</small></button>
+          </div></div>
+        <div class="campo"><span class="lab" id="lvFr">Franja</span>
+          <div class="chips" role="group" aria-labelledby="lvFr" data-grupo="vFr">
+            <button type="button" class="chip" data-v="por la mañana" aria-pressed="false">Mañana</button>
+            <button type="button" class="chip" data-v="después de la siesta" aria-pressed="false">Después de la siesta</button>
+            <button type="button" class="chip" data-v="a la tarde-noche" aria-pressed="false">Tarde-noche</button>
+          </div></div>
+        <div class="campo"><span class="lab" id="lvPer">¿Cuántos van?</span>
+          <div class="chips" role="group" aria-labelledby="lvPer" data-grupo="vPer">
+            <button type="button" class="chip" data-v="1" aria-pressed="false">1</button>
+            <button type="button" class="chip" data-v="2" aria-pressed="true">2</button>
+            <button type="button" class="chip" data-v="3" aria-pressed="false">3</button>
+            <button type="button" class="chip" data-v="4 o más" aria-pressed="false">4+</button>
+          </div></div>
+        <div class="campo"><span class="lab" id="lvPago">Forma de pago</span>
+          <div class="chips" role="group" aria-labelledby="lvPago" data-grupo="vPago">
+            <button type="button" class="chip" data-v="contado" aria-pressed="false">Contado</button>
+            <button type="button" class="chip" data-v="crédito hipotecario" aria-pressed="false">Crédito</button>
+            <button type="button" class="chip" data-v="ofrezco permuta" aria-pressed="false">Permuta</button>
+            <button type="button" class="chip" data-v="a conversar" aria-pressed="false">A conversar</button>
+          </div></div>
+        <div class="campo"><label for="vNom">Tu nombre</label><input type="text" id="vNom" autocomplete="name" placeholder="Nombre y apellido"></div>
+      </div>
+      <div class="chat" id="chatVisita">
+        <div class="chat-cab"><div class="av" aria-hidden="true">R</div><div><b>Martín Rivera · Rivera Inmobiliaria</b><small>2954-67-6504</small></div></div>
+        <div class="chat-cuerpo"><div class="burb" id="burbVisita"></div></div>
+        <div class="chat-pie">
+          <a class="btn wa" id="waVisita" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.3-.4.8-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.3c0-.1-.2-.2-.4-.3Z"/></svg>Enviar a Martín por WhatsApp</a>
+          <span class="chico">Se abre WhatsApp con este mismo texto</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== TASÁ TU PROPIEDAD ======== -->
+<section class="sec tasa" id="tasa">
+  <div class="wrap">
+    <div class="sec-cab">
+      <div>
+        <span class="n">Carpeta 4</span>
+        <h2>Tasá tu propiedad con un martillero matriculado</h2>
+        <p>Contale a Martín qué tenés y coordinan la visita de tasación.</p>
+      </div>
+    </div>
+    <ol class="pasos">
+      <li><span>1</span>Completás 5 datos</li>
+      <li><span>2</span>Llega por WhatsApp</li>
+      <li><span>3</span>Martín coordina la visita</li>
+      <li><span>4</span>Recibís la tasación</li>
+    </ol>
+    <div class="dos">
+      <div class="form" id="formTasa">
+        <div class="campo"><span class="lab" id="ltOp">Quiero</span>
+          <div class="chips" role="group" aria-labelledby="ltOp" data-grupo="tOp">
+            <button type="button" class="chip" data-v="vender" aria-pressed="true">Vender</button>
+            <button type="button" class="chip" data-v="alquilar" aria-pressed="false">Alquilar</button>
+            <button type="button" class="chip" data-v="solo saber cuánto vale" aria-pressed="false">Solo saber cuánto vale</button>
+          </div></div>
+        <div class="campo"><span class="lab" id="ltTipo">Tipo</span>
+          <div class="chips" role="group" aria-labelledby="ltTipo" data-grupo="tTipo">
+            <button type="button" class="chip" data-v="casa" aria-pressed="true">Casa</button>
+            <button type="button" class="chip" data-v="departamento" aria-pressed="false">Departamento</button>
+            <button type="button" class="chip" data-v="terreno" aria-pressed="false">Terreno</button>
+            <button type="button" class="chip" data-v="campo" aria-pressed="false">Campo</button>
+            <button type="button" class="chip" data-v="galpón" aria-pressed="false">Galpón</button>
+          </div></div>
+        <div class="fila2">
+          <div class="campo"><label for="tDir">Dirección o barrio</label><input type="text" id="tDir" placeholder="Ej. Pellegrini 900"></div>
+          <div class="campo"><label for="tLoc">Localidad</label><select id="tLoc"><option>Santa Rosa</option><option>Toay</option><option>Otra localidad de La Pampa</option></select></div>
+        </div>
+        <div class="fila2">
+          <div class="campo"><label for="tM2">Superficie aprox. (m²)</label><input type="number" id="tM2" min="0" inputmode="numeric" placeholder="Ej. 180"></div>
+          <div class="campo"><label for="tEst">Estado</label><select id="tEst"><option value="">Sin indicar</option><option>a estrenar</option><option>buen estado</option><option>para reciclar</option></select></div>
+        </div>
+        <div class="campo"><label for="tNom">Tu nombre</label><input type="text" id="tNom" autocomplete="name" placeholder="Nombre y apellido"></div>
+      </div>
+      <div class="chat">
+        <div class="chat-cab"><div class="av" aria-hidden="true">R</div><div><b>Martín Rivera · Tasaciones</b><small>Martillero · Mat. 422</small></div></div>
+        <div class="chat-cuerpo"><div class="burb" id="burbTasa"></div></div>
+        <div class="chat-pie">
+          <a class="btn wa" id="waTasa" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Z"/></svg>Pedir tasación por WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h4>Rivera Inmobiliaria</h4>
+        <ul>
+          <li>Servicio personalizado</li>
+          <li>Martillero Martín Rivera · Matrícula 422</li>
+          <li>9 de Julio 588, Santa Rosa, La Pampa</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contacto</h4>
+        <ul>
+          <li>WhatsApp <a href="https://wa.me/5492954676504">2954-67-6504</a></li>
+          <li>Fijo <a href="tel:+542954456046">02954-456046</a></li>
+          <li><a href="mailto:inmobiliariarivera@yahoo.com.ar">inmobiliariarivera@yahoo.com.ar</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Redes</h4>
+        <ul>
+          <li>Instagram <a href="https://www.instagram.com/rivera.inmobiliaria/" target="_blank" rel="noopener">@rivera.inmobiliaria</a></li>
+          <li><a href="https://www.google.com/maps/search/?api=1&query=9+de+Julio+588+Santa+Rosa+La+Pampa" target="_blank" rel="noopener">Cómo llegar a la oficina</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="legal">Prototipo de demostración preparado para Rivera Inmobiliaria por Resolviendo Kos · No es la web oficial</div>
+  </div>
+</footer>
+
+<script>
+var WA = '5492954676504';
+var TIPOS = {
+  casa:{n:'Casas',s:'Casa',k:18,c:'var(--t-casa)'},
+  depto:{n:'Departamentos',s:'Depto',k:6,c:'var(--t-depto)'},
+  terreno:{n:'Terrenos',s:'Terreno',k:6,c:'var(--t-terreno)'},
+  campo:{n:'Campos',s:'Campo',k:2,c:'var(--t-campo)'},
+  galpon:{n:'Galpón',s:'Galpón',k:1,c:'var(--t-galpon)'}
+};
+var U = 'https://riverainmobiliaria.com/wp-content/uploads/';
+var PROPS = [
+  {code:'RV-01', titulo:'Dos departamentos con garaje más galpón', dir:'Jujuy 402, esquina Jujuy y Duval', zona:'Santa Rosa', tipos:['depto','galpon'], tipoLabel:'Deptos + galpón', col:'var(--t-depto)', op:'Venta', usd:40000, dorm:null, ilus:'galpon',
+   foto:U+'2026/10/ebb83f59-b402-4abc-9c62-f98931ce8c8b.jpg',
+   carac:[['Operación','Venta'],['Qué incluye','2 departamentos con garaje + galpón'],['Ubicación','Esquina Jujuy y Duval'],['Superficie',null],['Apto crédito',null]],
+   plano:{a:'JUJUY',b:'DUVAL',mark:'Jujuy 402'}, q:'Jujuy 402, Santa Rosa, La Pampa'},
+  {code:'RV-02', titulo:'Propiedad en Saavedra 532', dir:'Saavedra 532', zona:'Toay', tipos:[], tipoLabel:'Tipo a confirmar', col:'var(--t-casa)', op:'Venta', usd:117000, dorm:null, ilus:'casa',
+   foto:U+'2026/10/e250e2fa-f7cc-4e07-aee2-be2f64de77e9.jpg',
+   carac:[['Operación','Venta'],['Localidad','Toay, La Pampa'],['Superficie',null],['Dormitorios',null],['Apto crédito',null]],
+   plano:{a:'SAAVEDRA',b:null,mark:'Saavedra 532'}, q:'Saavedra 532, Toay, La Pampa'},
+  {code:'RV-03', titulo:'Departamento en edificio Gemellus', dir:'Av. San Martín y Urquiza, Centro', zona:'Santa Rosa', tipos:['depto'], tipoLabel:'Departamento', col:'var(--t-depto)', op:'Venta', usd:90000, dorm:null, ilus:'depto',
+   foto:U+'2026/09/eac10194-9386-473f-8f3f-33e2b1999d54.jpg',
+   carac:[['Operación','Venta'],['Edificio','Gemellus'],['Barrio','Centro, Santa Rosa'],['Superficie',null],['Dormitorios',null]],
+   plano:{a:'AV. SAN MARTÍN',b:'URQUIZA',mark:'Ed. Gemellus'}, q:'Av. San Martín y Urquiza, Santa Rosa, La Pampa'},
+  {code:'RV-04', titulo:'Departamento frente al Bingo del Mar', dir:'Entre Ríos 2070', zona:'Mar del Plata', tipos:['depto'], tipoLabel:'Departamento', col:'var(--t-depto)', op:'Venta', usd:90000, dorm:2, ilus:'depto',
+   foto:U+'2026/10/7c99f203-c2b7-4dca-9222-e70c4e7c8b8d.jpg',
+   carac:[['Operación','Venta'],['Superficie','50 m²'],['Dormitorios','2'],['Baños','2'],['Expensas','$ 117.000 · publicado']],
+   plano:{a:'ENTRE RÍOS',b:null,mark:'Entre Ríos 2070',ref:'Bingo del Mar'}, q:'Entre Ríos 2070, Mar del Plata'}
+];
+
+function fmt(n){return n.toLocaleString('es-AR')}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function hora(){var d=new Date();return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)}
+
+function imgHTML(p){
+  return '<img src="'+p.foto+'" alt="Foto publicada de '+esc(p.titulo)+'" loading="lazy" data-ilus="'+p.ilus+'" data-code="'+p.code+'" onerror="fotoFalla(this)">';
+}
+
+/* plano esquemático */
+function planoSVG(p){
+  var pl=p.plano,s='<svg viewBox="0 0 520 170" role="img" aria-label="Plano esquemático de '+esc(p.dir)+'">';
+  s+='<rect width="520" height="170" fill="#FBF8F1"/>';
+  var blk='#EAE1CE';
+  [[20,14,150,50],[200,14,140,50],[370,14,130,50],[20,106,150,50],[200,106,140,50],[370,106,130,50]].forEach(function(b){s+='<rect x="'+b[0]+'" y="'+b[1]+'" width="'+b[2]+'" height="'+b[3]+'" fill="'+blk+'"/>'});
+  s+='<rect x="0" y="66" width="520" height="38" fill="#fff"/><line x1="0" y1="85" x2="520" y2="85" stroke="#C9B48A" stroke-dasharray="8 8"/>';
+  s+='<text x="30" y="90" font-family="Sarabun" font-weight="700" font-size="12" letter-spacing="2" fill="#1F2F4A">'+pl.a+'</text>';
+  if(pl.b){s+='<rect x="172" y="0" width="26" height="170" fill="#fff"/><text x="185" y="150" font-family="Sarabun" font-weight="700" font-size="11" letter-spacing="2" fill="#1F2F4A" transform="rotate(-90 185 150)">'+pl.b+'</text>';}
+  if(pl.ref){s+='<rect x="210" y="118" width="120" height="30" fill="none" stroke="#2B2B2B" stroke-dasharray="3 3"/><text x="270" y="137" text-anchor="middle" font-family="Sarabun" font-size="11" fill="#2B2B2B">'+pl.ref+' (enfrente)</text>';}
+  var mx=pl.b?150:260;
+  s+='<g transform="translate('+mx+' 40)"><circle r="13" fill="#B23A2E"/><circle r="5" fill="#fff"/></g>';
+  s+='<text x="'+(mx+20)+'" y="36" font-family="Domine,serif" font-weight="700" font-size="13" fill="#B23A2E">'+esc(pl.mark)+'</text>';
+  s+='<g transform="translate(492 140)"><path d="M0 -14 L6 4 L0 0 L-6 4Z" fill="#1F2F4A"/><text y="18" text-anchor="middle" font-size="10" font-family="Sarabun" fill="#1F2F4A">N</text></g>';
+  return s+'</svg>';
+}
+
+/* estado */
+var F={op:'',zona:'',precio:'',dorm:'',tipo:''};
+var lista=PROPS.slice(), idx=0;
+function filtra(){
+  lista=PROPS.filter(function(p){
+    if(F.op && p.op!==F.op) return false;
+    if(F.zona && p.zona!==F.zona) return false;
+    if(F.precio && p.usd>+F.precio) return false;
+    if(F.dorm && !(p.dorm && p.dorm>=+F.dorm)) return false;
+    if(F.tipo && p.tipos.indexOf(F.tipo)<0) return false;
+    return true;
+  });
+  if(idx>=lista.length) idx=0;
+  pinta();
+}
+function pinta(){
+  document.querySelectorAll('.pest').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.t===F.tipo))});
+  document.querySelectorAll('.lomo').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.t===F.tipo))});
+  var h=document.getElementById('hoja');
+  if(!lista.length){
+    var t=F.tipo?TIPOS[F.tipo]:null;
+    h.style.setProperty('--c',t?t.c:'var(--tinta)');
+    h.innerHTML='<div class="vacia"><div>'+
+      (t?'<div class="num">'+t.k+'</div><h3 style="margin-top:6px">Carpeta '+t.n+'</h3><ul><li>'+t.k+' publicaciones en la web actual de Rivera</li><li>Se cargan todas al dejarlo funcionando</li>'+(F.op||F.zona||F.precio||F.dorm?'<li>Con estos filtros no hay hojas cargadas</li>':'')+'</ul>'
+        :'<h3>Ninguna hoja cargada coincide</h3><ul><li>Probá con otros filtros</li><li>O dejá tu pedido y Martín te avisa</li></ul>')+
+      '<button class="btn rojo" type="button" id="aPedido">Dejar pedido de búsqueda'+(t?' de '+t.s.toLowerCase():'')+'</button></div></div>';
+    document.getElementById('aPedido').onclick=function(){
+      if(F.tipo) document.getElementById('pTipo').value=F.tipo;
+      if(F.op==='Alquiler') setGrupo('pOp','Alquiler');
+      if(F.zona==='Santa Rosa'||F.zona==='Toay') document.getElementById('pZona').value=F.zona;
+      pedido(); document.getElementById('pedido').scrollIntoView();
+    };
+  }else{
+    var p=lista[idx];
+    h.style.setProperty('--c',p.col);
+    var filas=p.carac.map(function(c){return '<tr><th>'+c[0]+'</th>'+(c[1]===null?'<td class="nc">Consultar</td>':'<td>'+esc(c[1])+'</td>')+'</tr>'}).join('');
+    h.innerHTML='<div class="ficha">'+
+      '<div><div class="foto">'+imgHTML(p)+'<span class="marca-foto">Foto publicada por Rivera</span></div>'+
+        '<div class="plano">'+planoSVG(p)+'<div class="plano-pie"><span>Plano esquemático, no a escala</span><a href="https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(p.q)+'" target="_blank" rel="noopener">Ver en Google Maps</a></div></div></div>'+
+      '<div><span class="cod">'+p.code+'</span><span class="tipo-chip" style="--c:'+p.col+'">'+p.tipoLabel+'</span>'+
+        '<h3>'+esc(p.titulo)+'</h3>'+
+        '<div class="dir"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span>'+esc(p.dir)+' · '+p.zona+'</span></div>'+
+        '<div class="precio">USD '+fmt(p.usd)+' <span class="ej pub">Precio publicado</span></div>'+
+        '<table class="carac">'+filas+'</table>'+
+        '<div class="ficha-acc"><button class="btn wa" type="button" data-visitar="'+p.code+'">Pedir visita a esta ficha</button></div>'+
+      '</div></div>'+
+      '<div class="paginador"><button class="btn ghost" type="button" id="ant" '+(lista.length<2?'disabled':'')+' aria-label="Hoja anterior">&larr;<span class="pt"> Anterior</span></button>'+
+      '<span class="pos">Hoja '+(idx+1)+' de '+lista.length+'</span>'+
+      '<button class="btn ghost" type="button" id="sig" '+(lista.length<2?'disabled':'')+' aria-label="Hoja siguiente"><span class="pt">Siguiente </span>&rarr;</button></div>';
+    document.getElementById('ant').onclick=function(){idx=(idx-1+lista.length)%lista.length;pinta()};
+    document.getElementById('sig').onclick=function(){idx=(idx+1)%lista.length;pinta()};
+    h.querySelector('[data-visitar]').onclick=function(){irVisita(this.dataset.visitar)};
+  }
+  var ol=document.getElementById('indice');
+  ol.innerHTML=lista.length?lista.map(function(p,i){return '<li><button type="button" data-i="'+i+'" aria-current="'+(i===idx)+'"><span class="c">'+p.code+'</span><span class="d">'+esc(p.titulo)+'<small>'+esc(p.dir)+' · '+p.zona+'</small></span><span class="p">USD '+fmt(p.usd)+' <span class="ej pub">Precio publicado</span></span></button></li>'}).join(''):'<li style="padding:10px 4px;color:var(--gris)">Sin hojas con estos filtros</li>';
+  ol.querySelectorAll('button').forEach(function(b){b.onclick=function(){idx=+b.dataset.i;pinta();document.getElementById('hoja').scrollIntoView({block:'start'})}});
+}
+
+/* pestañas y lomos */
+(function(){
+  var pe=document.getElementById('pestanas'),lo=document.getElementById('lomos');
+  var html='<button class="pest" type="button" data-t="" style="--c:var(--carton-osc)"><span>Todas</span><span class="k">4</span></button>';
+  Object.keys(TIPOS).forEach(function(k){var t=TIPOS[k];html+='<button class="pest" type="button" data-t="'+k+'" style="--c:'+t.c+'"><span>'+t.n+'</span><span class="k">'+t.k+'</span></button>'});
+  pe.innerHTML=html;
+  var max=18;
+  lo.innerHTML=Object.keys(TIPOS).map(function(k){var t=TIPOS[k];var hpx=Math.round(64+36*(t.k/max));
+    var cargadas=PROPS.filter(function(p){return p.tipos.indexOf(k)>=0}).length;
+    return '<button class="lomo" type="button" data-t="'+k+'" style="--c:'+t.c+';height:'+hpx+'%" aria-label="'+t.n+': '+t.k+' publicaciones, '+cargadas+' cargadas en el prototipo"><span class="num">'+t.k+'</span><span class="eti">'+t.n+'</span><span class="tarj">'+cargadas+(cargadas===1?' ficha':' fichas')+'</span><span class="aro"></span></button>'}).join('');
+  function clickTipo(b){F.tipo=(F.tipo===b.dataset.t&&b.classList.contains('lomo'))?'':b.dataset.t;idx=0;filtra()}
+  pe.querySelectorAll('.pest').forEach(function(b){b.onclick=function(){clickTipo(b)}});
+  lo.querySelectorAll('.lomo').forEach(function(b){b.onclick=function(){clickTipo(b);document.getElementById('cartera').scrollIntoView()}});
+})();
+
+/* filtros */
+document.querySelectorAll('#fOp button').forEach(function(b){b.onclick=function(){
+  document.querySelectorAll('#fOp button').forEach(function(x){x.setAttribute('aria-pressed',String(x===b))});F.op=b.dataset.v;idx=0;filtra()}});
+['Zona','Precio','Dorm'].forEach(function(n){document.getElementById('f'+n).onchange=function(){F[n.toLowerCase()]=this.value;idx=0;filtra()}});
+document.getElementById('fLimpiar').onclick=function(){F={op:'',zona:'',precio:'',dorm:'',tipo:''};
+  document.querySelectorAll('#fOp button').forEach(function(x,i){x.setAttribute('aria-pressed',String(i===0))});
+  ['fZona','fPrecio','fDorm'].forEach(function(i){document.getElementById(i).value=''});idx=0;filtra()};
+
+/* grupos de chips */
+var G={};
+function setGrupo(g,v){G[g]=v;document.querySelectorAll('[data-grupo="'+g+'"] .chip').forEach(function(c){c.setAttribute('aria-pressed',String(c.dataset.v===v))})}
+document.querySelectorAll('[data-grupo]').forEach(function(grp){
+  var on=grp.querySelector('[aria-pressed="true"]');if(on)G[grp.dataset.grupo]=on.dataset.v;
+  grp.querySelectorAll('.chip').forEach(function(c){c.onclick=function(){setGrupo(grp.dataset.grupo,c.dataset.v);todo()}});
+});
+
+/* escritura en vivo */
+var timers={};
+function escribe(id,txt){
+  var el=document.getElementById(id);
+  var prev=el.dataset.t||'';el.dataset.t=txt;
+  var i=0;while(i<prev.length&&i<txt.length&&prev[i]===txt[i])i++;
+  clearInterval(timers[id]);
+  var pos=i;
+  function r(){el.innerHTML=esc(txt.slice(0,pos))+(pos<txt.length?'<span class="cursor"></span>':'')+'<span class="hora">'+hora()+' <svg width="16" height="10" viewBox="0 0 16 10" fill="none" stroke="#34B7F1" stroke-width="1.6" aria-hidden="true"><path d="M1 5l3 3 6-7M6 8l1 1 6-8"/></svg></span>'}
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){pos=txt.length;r();return}
+  r();
+  timers[id]=setInterval(function(){pos=Math.min(txt.length,pos+3);r();if(pos>=txt.length)clearInterval(timers[id])},16);
+}
+
+/* visita */
+var sel=document.getElementById('vProp');
+sel.innerHTML=PROPS.map(function(p){return '<option value="'+p.code+'">'+p.code+' · '+esc(p.titulo)+' · USD '+fmt(p.usd)+'</option>'}).join('');
+sel.value='RV-03';
+function textoVisita(){
+  var p=PROPS.filter(function(x){return x.code===sel.value})[0];
+  var nom=document.getElementById('vNom').value.trim();
+  var L=[];
+  L.push('Hola Martín'+(nom?', soy '+nom:'')+'. Quiero visitar esta propiedad:');
+  L.push('*'+p.code+'* · '+p.titulo);
+  L.push(p.dir+', '+p.zona+' · USD '+fmt(p.usd));
+  L.push('');
+  L.push('• Operación: '+(G.vOp||'compra'));
+  L.push('• Visita: '+(G.vDia?G.vDia:'día a coordinar')+(G.vFr?', '+G.vFr:''));
+  L.push('• Vamos: '+(G.vPer||'—')+(G.vPer==='1'?' persona':' personas'));
+  L.push('• Forma de pago: '+(G.vPago||'a conversar'));
+  L.push('');
+  L.push('¿Me confirmás el horario? Gracias.');
+  return L.join('\n');
+}
+function visita(){var t=textoVisita();escribe('burbVisita',t);document.getElementById('waVisita').href='https://wa.me/'+WA+'?text='+encodeURIComponent(t)}
+sel.onchange=visita;document.getElementById('vNom').oninput=visita;
+function irVisita(code){sel.value=code;visita();document.getElementById('visita').scrollIntoView()}
+
+/* pedido de búsqueda */
+function pedido(){
+  var op=G.pOp||'Compra',tipo=document.getElementById('pTipo').value,zona=document.getElementById('pZona').value,
+      max=+document.getElementById('pMax').value||0,dorm=document.getElementById('pDorm').value,cred=document.getElementById('pCred').checked,
+      nom=document.getElementById('pNom').value.trim();
+  var res=PROPS.filter(function(p){
+    if(op==='Alquiler') return false;
+    if(tipo && p.tipos.indexOf(tipo)<0) return false;
+    if(zona!=='Otra' && p.zona!==zona) return false;
+    if(zona==='Otra' && (p.zona==='Santa Rosa'||p.zona==='Toay')) return false;
+    if(max && p.usd>max) return false;
+    if(dorm && p.dorm!==null && p.dorm<+dorm) return false;
+    return true;
+  });
+  var tl=tipo?TIPOS[tipo].s.toLowerCase():'cualquier tipo';
+  var L=['Hola Martín'+(nom?', soy '+nom:'')+'. Dejo mi pedido de búsqueda:','• Operación: '+op.toLowerCase(),'• Tipo: '+tl,'• Zona: '+(zona==='Otra'?'otra zona':zona),'• Presupuesto máx.: '+(max?'USD '+fmt(max):'a conversar'),'• Dormitorios: '+(dorm?dorm+' o más':'indistinto'),'• Apto crédito: '+(cred?'sí, lo necesito':'no es necesario')];
+  if(res.length){L.push('');L.push('Vi en la cartera '+res.map(function(p){return p.code}).join(', ')+'. ¿Podemos coordinar para verla'+(res.length>1?'s':'')+'?');L.push('Y si entra algo más así, avísenme.')}
+  else{L.push('');L.push('Hoy no vi nada que coincida. Avísenme cuando entre '+(tipo?'un'+(tipo==='casa'?'a ':' ')+tl:'algo')+' así'+(zona!=='Otra'?' en '+zona:'')+'.')}
+  var txt=L.join('\n');
+  var out=document.getElementById('resPedido');
+  var tipoTxt=tipo?TIPOS[tipo]:null;
+  var h='<h3>'+(res.length?res.length+' hoja'+(res.length>1?'s':'')+' de la cartera coincide'+(res.length>1?'n':'')+' hoy':'Hoy no hay hojas cargadas que coincidan')+'</h3>';
+  if(res.length){
+    h+='<ul class="coinc">'+res.map(function(p){
+      var falta=[];if(dorm&&p.dorm===null)falta.push('dormitorios');if(cred)falta.push('apto crédito');
+      return '<li style="--c:'+p.col+'"><div class="mini">'+imgHTML(p)+'</div><div><b>'+p.code+'</b> · '+esc(p.titulo)+'<br><span>'+esc(p.dir)+' · '+p.zona+' · USD '+fmt(p.usd)+' <span class="ej pub">Precio publicado</span></span>'+(falta.length?'<div class="cnf">A confirmar con Martín: '+falta.join(' y ')+'</div>':'')+'<div><button type="button" data-ver="'+p.code+'">Ver la hoja</button></div></div></li>'}).join('')+'</ul>';
+  }else{
+    h+='<div class="sin"><b>'+(op==='Alquiler'?'Las 4 hojas cargadas son de venta.':'Ninguna de las 4 hojas cargadas cumple todo.')+'</b>'+
+      (tipoTxt?'<br>En la web actual hay '+tipoTxt.k+' '+tipoTxt.n.toLowerCase()+'; se cargan todas al dejarlo funcionando.':'')+
+      '<br>Mandale tu pedido a Martín y te avisa cuando entre.</div>';
+  }
+  h+='<div class="chat"><div class="chat-cab"><div class="av" aria-hidden="true">R</div><div><b>Martín Rivera · Rivera Inmobiliaria</b><small>Pedido de búsqueda</small></div></div><div class="chat-cuerpo"><div class="burb" id="burbPedido" data-t="'+esc(out.dataset.last||'')+'"></div></div><div class="chat-pie"><a class="btn wa" id="waPedido" target="_blank" rel="noopener" href="https://wa.me/'+WA+'?text='+encodeURIComponent(txt)+'">'+(res.length?'Coordinar con Martín':'Avísenme cuando entre')+'</a></div></div>';
+  out.innerHTML=h;
+  escribe('burbPedido',txt);out.dataset.last=txt;
+  out.querySelectorAll('[data-ver]').forEach(function(b){b.onclick=function(){
+    document.getElementById('fLimpiar').click();idx=PROPS.findIndex(function(p){return p.code===b.dataset.ver});pinta();document.getElementById('cartera').scrollIntoView()}});
+}
+['pTipo','pZona','pDorm','pCred'].forEach(function(i){document.getElementById(i).onchange=pedido});
+['pMax','pNom'].forEach(function(i){document.getElementById(i).oninput=pedido});
+
+/* tasación */
+function tasa(){
+  var dir=document.getElementById('tDir').value.trim(),loc=document.getElementById('tLoc').value,m2=document.getElementById('tM2').value,
+      est=document.getElementById('tEst').value,nom=document.getElementById('tNom').value.trim();
+  var L=['Hola Martín'+(nom?', soy '+nom:'')+'. Quiero tasar mi propiedad:','• Quiero: '+(G.tOp||'vender'),'• Tipo: '+(G.tTipo||'casa'),'• Ubicación: '+(dir?dir+', ':'')+loc,'• Superficie aprox.: '+(m2?m2+' m²':'no sé exacto'),'• Estado: '+(est||'a ver en la visita'),'','¿Cuándo podés pasar a verla?'];
+  var t=L.join('\n');escribe('burbTasa',t);document.getElementById('waTasa').href='https://wa.me/'+WA+'?text='+encodeURIComponent(t);
+}
+['tDir','tM2','tNom'].forEach(function(i){document.getElementById(i).oninput=tasa});
+['tLoc','tEst'].forEach(function(i){document.getElementById(i).onchange=tasa});
+
+function todo(){visita();pedido();tasa()}
+
+/* dueño */
+var bandeja=[
+  {q:'Consulta de Lucía G. · hoy 9:42',t:'Hola Martín, soy Lucía G. Quiero visitar esta propiedad:\n*RV-03* · Departamento en edificio Gemellus\nAv. San Martín y Urquiza, Centro, Santa Rosa · USD 90.000\n\n• Operación: compra\n• Visita: lunes 30 de noviembre, por la mañana\n• Vamos: 2 personas\n• Forma de pago: crédito hipotecario'},
+  {q:'Pedido de búsqueda de Diego R. · ayer 21:10',t:'Hola Martín, soy Diego R. Dejo mi pedido de búsqueda:\n• Operación: compra\n• Tipo: casa\n• Zona: Toay\n• Dormitorios: 3 o más\n• Apto crédito: sí, lo necesito\n\nHoy no vi nada que coincida. Avísenme cuando entre una casa así en Toay.'},
+  {q:'Tasación de Norma P. · miércoles 18:05',t:'Hola Martín, soy Norma P. Quiero tasar mi propiedad:\n• Quiero: vender\n• Tipo: casa\n• Ubicación: Villa Alonso, Santa Rosa\n• Estado: buen estado\n\n¿Cuándo podés pasar a verla?'},
+  {q:'Consulta de Javier M. · miércoles 11:30',t:'Hola Martín, soy Javier M. Quiero visitar esta propiedad:\n*RV-02* · Propiedad en Saavedra 532\nSaavedra 532, Toay · USD 117.000\n\n• Operación: compra\n• Visita: miércoles 2 de diciembre, por la mañana\n• Vamos: 3 personas\n• Forma de pago: ofrezco permuta'}
+];
+document.getElementById('bandeja').innerHTML=bandeja.map(function(m){return '<div><div class="quien">'+m.q+'</div><div class="burb in">'+esc(m.t)+'</div></div>'}).join('');
+var bd=document.getElementById('btnDueno');
+function modo(on){document.body.classList.toggle('modo-dueno',on);bd.setAttribute('aria-pressed',String(on));bd.lastChild.textContent=on?' Ver como cliente':' Ver como dueño';window.scrollTo(0,0)}
+bd.onclick=function(){modo(!document.body.classList.contains('modo-dueno'))};
+document.getElementById('btnVolver').onclick=function(){modo(false)};
+document.querySelectorAll('.top nav a').forEach(function(a){a.addEventListener('click',function(){if(document.body.classList.contains('modo-dueno'))modo(false)})});
+
+filtra();todo();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Rivera Inmobiliaria"></script>
+</body>
+</html>
