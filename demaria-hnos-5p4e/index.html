@@ -1,0 +1,909 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Inmobiliaria Demaría Hermanos · Prototipo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Asap:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Staatliches&display=swap" rel="stylesheet">
+<style>
+:root{
+  --naranja:#E2611B; --naranja-osc:#B44812; --acero:#2E3338; --caliche:#EFE7DA; --caliche-2:#E6DCCB;
+  --negro:#141414; --linea:#B9B1A3; --papel:#F7F2EA; --wa:#D9FDD3; --wa-fondo:#E9E2D6; --verde:#1F7A4D;
+  --disp:'Staatliches',Impact,'Arial Narrow',sans-serif; --txt:'Asap',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--caliche);color:var(--acero);font-family:var(--txt);font-size:16px;line-height:1.45;overflow-x:hidden}
+img,svg{max-width:100%}
+a{color:inherit}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--naranja);outline-offset:2px}
+.wrap{max-width:1200px;margin:0 auto;padding:0 16px}
+.ej{display:inline-block;font-family:var(--txt);font-size:10.5px;font-weight:600;letter-spacing:.02em;text-transform:none;color:#6b6358;border:1px solid var(--linea);border-radius:2px;padding:0 4px;line-height:16px;vertical-align:middle;white-space:nowrap;background:var(--papel)}
+.pp{display:inline-block;font-size:10.5px;font-weight:600;color:var(--acero);border-bottom:1px solid var(--naranja);line-height:14px;white-space:nowrap}
+.mono{font-variant-numeric:tabular-nums}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* firma */
+.firma{font-size:12px;color:#5f584e;border-bottom:1px solid var(--linea);background:var(--caliche)}
+.firma .wrap{display:flex;gap:8px;justify-content:space-between;padding-top:6px;padding-bottom:6px;flex-wrap:wrap}
+
+/* header */
+header.top{background:var(--negro);color:var(--caliche);position:sticky;top:0;z-index:30}
+header.top .wrap{display:flex;align-items:center;gap:16px;min-height:62px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;min-width:0}
+.logo img{height:40px;width:auto;background:var(--caliche);padding:3px 6px;border-radius:2px}
+.logotipo{display:none;font-family:var(--disp);font-size:26px;letter-spacing:.04em;line-height:1;color:var(--caliche)}
+.logotipo b{color:var(--naranja);font-weight:400}
+.logo.sinimg img{display:none}.logo.sinimg .logotipo{display:block}
+nav.menu{display:flex;gap:4px;margin-left:auto;align-items:center}
+nav.menu a{text-decoration:none;font-size:14px;font-weight:600;padding:8px 10px;color:#d9d1c4}
+nav.menu a:hover{color:#fff}
+.vista{display:flex;border:1px solid #555;border-radius:2px;overflow:hidden;flex-shrink:0}
+.vista button{background:transparent;border:0;color:#d9d1c4;font-weight:700;font-size:13px;padding:8px 12px;cursor:pointer;text-transform:uppercase;letter-spacing:.04em}
+.vista button[aria-pressed="true"]{background:var(--naranja);color:var(--negro)}
+@media (max-width:900px){nav.menu{display:none}.vista{margin-left:auto}}
+@media (max-width:420px){.logo img{height:32px}.vista button{padding:8px 9px;font-size:12px}}
+
+/* hero hoja de ruta */
+.hoja{padding:28px 0 8px}
+.rotulo{display:grid;grid-template-columns:repeat(4,auto) 1fr;border:1.5px solid var(--negro);font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;background:var(--papel)}
+.rotulo div{padding:6px 10px;border-right:1px solid var(--negro)}
+.rotulo div:last-child{border-right:0;text-align:right}
+.rotulo b{display:block;font-family:var(--disp);font-size:17px;letter-spacing:.04em;font-weight:400;color:var(--negro);text-transform:none}
+@media (max-width:700px){.rotulo{grid-template-columns:1fr 1fr}.rotulo div{border-bottom:1px solid var(--negro)}.rotulo div:nth-child(2n){border-right:0}.rotulo div:last-child{grid-column:1/-1;text-align:left;border-bottom:0}}
+h1{font-family:var(--disp);font-weight:400;color:var(--negro);font-size:clamp(40px,6.4vw,86px);line-height:.92;letter-spacing:.01em;margin:26px 0 14px;max-width:15ch}
+h1 em{font-style:normal;color:var(--naranja-osc)}
+.bajada{display:flex;flex-wrap:wrap;gap:6px 18px;margin:0 0 22px;padding:0;list-style:none;font-size:15px}
+.bajada li{display:flex;gap:6px;align-items:center}
+.bajada li::before{content:"";width:8px;height:8px;background:var(--naranja);flex-shrink:0}
+
+/* recorrido */
+.recorrido{position:relative;margin:10px 0 0;border-top:1.5px solid var(--negro);border-bottom:1.5px solid var(--negro);padding:18px 0 16px}
+.recorrido .ruta{position:absolute;left:0;right:0;top:54px;height:14px;pointer-events:none}
+.paradas{position:relative;display:grid;grid-template-columns:1fr 1.3fr 1fr;gap:10px}
+.parada{background:transparent;border:0;text-align:left;cursor:pointer;padding:0;display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.parada:nth-child(2){align-items:center;text-align:center}
+.parada:nth-child(3){align-items:flex-end;text-align:right}
+.cartel{font-family:var(--disp);font-size:13px;letter-spacing:.08em;background:var(--acero);color:var(--caliche);padding:3px 8px;border-radius:3px;border:2px solid var(--caliche);box-shadow:0 0 0 1.5px var(--acero)}
+.parada .nodo{width:30px;height:30px;border-radius:50%;background:var(--caliche);border:4px solid var(--negro);margin:2px 0 4px;transition:background .15s}
+.parada:nth-child(2) .nodo{width:38px;height:38px;margin-top:-2px;background:var(--naranja)}
+.parada[aria-pressed="true"] .nodo{background:var(--naranja);box-shadow:0 0 0 5px rgba(226,97,27,.25)}
+.parada .tramo{font-family:var(--disp);font-size:30px;line-height:1;color:var(--negro);letter-spacing:.02em}
+.parada .lugar{font-weight:700;font-size:14px}
+.parada .cant{font-size:12.5px;color:#5f584e}
+.parada:hover .tramo{color:var(--naranja-osc)}
+.recorrido-nota{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:12.5px;color:#5f584e;margin-top:10px}
+@media (max-width:560px){.parada .tramo{font-size:22px}.parada .lugar{font-size:12.5px}.cartel{font-size:11px;padding:2px 5px}.paradas{gap:4px}.recorrido .ruta{top:50px}}
+
+/* servicios */
+.servicios{background:var(--acero);color:var(--caliche);margin-top:34px}
+.servicios .wrap{display:grid;grid-template-columns:200px repeat(4,1fr);align-items:stretch}
+.servicios h2{font-family:var(--disp);font-weight:400;font-size:24px;line-height:1;margin:0;padding:18px 16px 18px 0;color:var(--naranja);letter-spacing:.03em}
+.serv{border-left:1px solid #4a5157;padding:16px 14px;display:flex;flex-direction:column;gap:8px;text-decoration:none}
+.serv svg{width:34px;height:34px;color:var(--naranja)}
+.serv b{font-size:15px}
+.serv span{font-size:12.5px;color:#c4bcae;text-decoration:underline;text-underline-offset:3px}
+.serv:hover b{color:#fff}
+@media (max-width:900px){.servicios .wrap{grid-template-columns:1fr 1fr;padding:0}.servicios h2{grid-column:1/-1;padding:16px}.serv{border-top:1px solid #4a5157}.serv:nth-of-type(odd){border-left:0}}
+
+/* sección genérica */
+section.bloque{padding:52px 0 8px}
+.sec-tit{display:flex;align-items:flex-end;gap:14px;border-bottom:1.5px solid var(--negro);padding-bottom:8px;margin-bottom:18px;flex-wrap:wrap}
+.sec-tit .num{font-family:var(--disp);font-size:54px;line-height:.8;color:var(--naranja)}
+.sec-tit h2{font-family:var(--disp);font-weight:400;font-size:clamp(30px,4vw,44px);line-height:.95;margin:0;color:var(--negro);letter-spacing:.01em}
+.sec-tit p{margin:0 0 2px auto;font-size:13.5px;color:#5f584e;max-width:46ch}
+@media (max-width:700px){.sec-tit p{margin-left:0}}
+
+/* buscador */
+.buscador{display:grid;grid-template-columns:2fr repeat(5,1fr);gap:0;border:1.5px solid var(--negro);background:var(--papel)}
+.campo{display:flex;flex-direction:column;padding:8px 10px;border-right:1px solid var(--linea);min-width:0}
+.campo:last-child{border-right:0}
+.campo label,.campo .lbl{font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;color:#6b6358;margin-bottom:3px}
+.campo input,.campo select{border:0;background:transparent;padding:4px 0;font-size:15px;font-weight:600;color:var(--negro);width:100%;min-width:0}
+.campo select{cursor:pointer}
+@media (max-width:1000px){.buscador{grid-template-columns:1fr 1fr 1fr}.campo:first-child{grid-column:1/-1}.campo{border-bottom:1px solid var(--linea)}}
+@media (max-width:560px){.buscador{grid-template-columns:1fr 1fr}.campo:nth-child(odd){border-right:0}.campo:first-child{border-right:0}}
+.resumen-filtro{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:13.5px;margin:10px 0 4px;align-items:center}
+.resumen-filtro label{display:flex;gap:6px;align-items:center;cursor:pointer}
+.limpiar{background:none;border:0;text-decoration:underline;cursor:pointer;font-weight:600;padding:4px}
+
+/* tramos del catálogo */
+.tramo-bloque{margin-top:26px}
+.tramo-cab{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.tramo-cab .senal{font-family:var(--disp);background:var(--naranja);color:var(--negro);padding:4px 12px 2px;font-size:22px;letter-spacing:.05em;clip-path:polygon(0 0,calc(100% - 12px) 0,100% 50%,calc(100% - 12px) 100%,0 100%);padding-right:22px}
+.tramo-cab .donde{font-size:13.5px;font-weight:600}
+.tramo-cab hr{flex:1;border:0;border-top:1px dashed var(--negro);margin:0}
+.ficha{display:grid;grid-template-columns:112px 150px 1fr 210px;border:1.5px solid var(--negro);background:var(--papel);margin-top:-1.5px}
+.ficha > div{padding:14px 14px;min-width:0}
+.ficha .cod{border-right:1px solid var(--linea);display:flex;flex-direction:column;justify-content:space-between}
+.ficha .cod b{font-family:var(--disp);font-weight:400;font-size:44px;line-height:.85;color:var(--negro)}
+.ficha .cod small{font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:700}
+.ficha .dib{border-right:1px solid var(--linea);color:var(--acero);display:flex;align-items:center;justify-content:center;background:repeating-linear-gradient(0deg,transparent 0 19px,rgba(185,177,163,.35) 19px 20px),repeating-linear-gradient(90deg,transparent 0 19px,rgba(185,177,163,.35) 19px 20px)}
+.ficha .dib svg{width:118px;height:88px}
+.ficha h3{margin:0 0 4px;font-size:18px;line-height:1.2;color:var(--negro)}
+.ficha .dir{font-size:13.5px;margin:0 0 8px;color:#4c5359}
+.datos{display:flex;flex-wrap:wrap;gap:0;margin:0;padding:0;list-style:none;font-size:12.5px}
+.datos li{border:1px solid var(--linea);margin:0 -1px -1px 0;padding:3px 8px}
+.datos li b{font-weight:700}
+.ficha .precio{border-left:1px solid var(--linea);display:flex;flex-direction:column;gap:8px;justify-content:space-between}
+.monto{font-family:var(--disp);font-size:28px;line-height:1;color:var(--negro);letter-spacing:.01em}
+.monto.cons{font-size:24px;color:var(--acero)}
+.acciones{display:flex;flex-direction:column;gap:6px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1.5px solid var(--negro);background:var(--naranja);color:var(--negro);font-weight:700;font-size:14px;padding:9px 12px;cursor:pointer;text-decoration:none;border-radius:2px;line-height:1.1;text-align:center}
+.btn:hover{background:#f07a36}
+.btn.sec{background:transparent}
+.btn.sec:hover{background:var(--caliche-2)}
+.btn.wa{background:#25D366;border-color:#128C4A;color:#0b2b18}
+.btn.wa:hover{background:#3ee07a}
+.btn svg{width:18px;height:18px;flex-shrink:0}
+.estado{font-family:var(--disp);font-size:16px;letter-spacing:.08em;color:var(--caliche);background:var(--acero);padding:4px 8px;display:inline-block;transform:rotate(-3deg);border:2px dashed var(--caliche);outline:1.5px solid var(--acero)}
+.ficha.alquilado .dib,.ficha.alquilado h3,.ficha.alquilado .datos{opacity:.55}
+@media (max-width:900px){
+  .ficha{grid-template-columns:86px 1fr}
+  .ficha .cod b{font-size:34px}
+  .ficha .dib{display:none}
+  .ficha .info{border-left:0}
+  .ficha .precio{grid-column:1/-1;border-left:0;border-top:1px solid var(--linea);flex-direction:row;align-items:center;flex-wrap:wrap}
+  .ficha .precio .acciones{flex-direction:row;margin-left:auto}
+}
+@media (max-width:480px){.ficha .precio .acciones{width:100%;margin-left:0}.ficha .precio .acciones .btn{flex:1}}
+.vacio{border:1.5px dashed var(--negro);padding:18px;font-weight:600;background:var(--papel)}
+
+/* modal ficha */
+dialog{border:1.5px solid var(--negro);padding:0;max-width:940px;width:calc(100% - 24px);background:var(--papel);color:var(--acero);max-height:calc(100vh - 24px)}
+dialog::backdrop{background:rgba(20,20,20,.6)}
+.mod-cab{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1.5px solid var(--negro);background:var(--negro);color:var(--caliche);position:sticky;top:0;z-index:2}
+.mod-cab b{font-family:var(--disp);font-size:30px;font-weight:400;line-height:1;color:var(--naranja)}
+.mod-cab span{font-weight:600;font-size:15px;flex:1;min-width:0}
+.cerrar{background:transparent;border:1px solid #666;color:var(--caliche);width:38px;height:38px;cursor:pointer;font-size:22px;line-height:1;flex-shrink:0}
+.mod-cuerpo{display:grid;grid-template-columns:1.2fr 1fr}
+.laminas{border-right:1px solid var(--linea);padding:14px}
+.lam-tabs{display:flex;gap:0;margin-bottom:10px;flex-wrap:wrap}
+.lam-tabs button{border:1px solid var(--negro);background:transparent;padding:6px 10px;font-size:12.5px;font-weight:700;cursor:pointer;margin-right:-1px;text-transform:uppercase;letter-spacing:.05em}
+.lam-tabs button[aria-selected="true"]{background:var(--negro);color:var(--caliche)}
+.lamina{border:1px solid var(--negro);aspect-ratio:4/3;background:var(--caliche);display:flex;align-items:center;justify-content:center;position:relative;color:var(--acero)}
+.lamina svg{width:100%;height:100%}
+.lamina .pie-lam{position:absolute;left:0;bottom:0;right:0;font-size:11px;padding:4px 8px;border-top:1px solid var(--negro);background:var(--papel);display:flex;justify-content:space-between;gap:8px}
+.mod-info{padding:16px}
+.mod-info h3{margin:0 0 4px;font-size:20px;color:var(--negro)}
+.mod-info ul.car{margin:12px 0;padding:0;list-style:none;border-top:1px solid var(--linea)}
+.mod-info ul.car li{border-bottom:1px solid var(--linea);padding:6px 0;font-size:14.5px;display:flex;gap:8px}
+.mod-info ul.car li::before{content:"";width:10px;height:2px;background:var(--naranja);margin-top:10px;flex-shrink:0}
+.mod-info .monto{font-size:32px}
+@media (max-width:760px){.mod-cuerpo{grid-template-columns:1fr}.laminas{border-right:0;border-bottom:1px solid var(--linea)}}
+
+/* visita + burbuja */
+.visita{display:grid;grid-template-columns:1.1fr 1fr;gap:28px;align-items:start}
+.pasos{list-style:none;margin:0;padding:0;border:1.5px solid var(--negro);background:var(--papel)}
+.paso{display:grid;grid-template-columns:44px 1fr;border-bottom:1px solid var(--linea)}
+.paso:last-child{border-bottom:0}
+.paso .n{font-family:var(--disp);font-size:26px;color:var(--naranja-osc);border-right:1px solid var(--linea);display:flex;align-items:flex-start;justify-content:center;padding-top:10px}
+.paso .c{padding:10px 12px;min-width:0}
+.paso .c > label,.paso .c > .lbl{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;color:#6b6358;margin-bottom:6px}
+.paso select,.paso input[type=text]{width:100%;border:1px solid var(--linea);background:#fff;padding:9px 10px;font-size:15px;border-radius:2px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{border:1px solid var(--negro);background:transparent;padding:7px 10px;font-size:13.5px;font-weight:600;cursor:pointer;border-radius:2px}
+.chips button[aria-pressed="true"]{background:var(--negro);color:var(--caliche)}
+.chips.dias{display:grid;grid-template-columns:repeat(4,1fr)}
+.chips.dias button{padding:6px 4px;line-height:1.15}
+.chips.dias button small{display:block;font-size:11px;font-weight:500}
+@media (max-width:420px){.chips.dias{grid-template-columns:repeat(4,1fr)}.chips.dias button{font-size:12.5px}}
+.movil{position:sticky;top:78px}
+.telefono{border:1.5px solid var(--negro);background:var(--wa-fondo);background-image:radial-gradient(rgba(46,51,56,.07) 1px,transparent 1px);background-size:14px 14px}
+.tel-cab{display:flex;align-items:center;gap:10px;padding:10px 12px;background:#1f2c33;color:#e9edef}
+.tel-cab .av{width:34px;height:34px;border-radius:50%;background:var(--naranja);color:var(--negro);font-family:var(--disp);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.tel-cab b{display:block;font-size:14.5px}
+.tel-cab small{font-size:12px;color:#aebac1}
+.chat{padding:16px 12px 12px;min-height:260px}
+.burbuja{background:var(--wa);border-radius:8px 0 8px 8px;padding:8px 10px 18px;margin-left:auto;max-width:94%;box-shadow:0 1px 1px rgba(0,0,0,.13);font-size:14.5px;line-height:1.42;white-space:pre-wrap;word-wrap:break-word;position:relative;color:#111b21}
+.burbuja .hora{position:absolute;right:8px;bottom:3px;font-size:11px;color:#667781}
+.burbuja .falta{color:#8b8378;font-style:italic}
+.cursor{display:inline-block;width:2px;height:1em;background:#111b21;vertical-align:-2px;animation:t 1s steps(1) infinite}
+@keyframes t{50%{opacity:0}}
+.tel-pie{padding:10px 12px 12px;border-top:1px solid var(--linea);background:var(--papel);display:flex;flex-direction:column;gap:6px}
+.tel-pie .btn{width:100%;font-size:15px;padding:12px}
+.tel-pie small{font-size:12px;color:#5f584e}
+@media (max-width:900px){.visita{grid-template-columns:minmax(0,1fr)}.movil{position:static}}
+
+/* inversor */
+.calc{display:grid;grid-template-columns:1fr 1.25fr;border:1.5px solid var(--negro);background:var(--papel)}
+.calc-in{padding:16px;border-right:1px solid var(--negro)}
+.calc-in h3,.calc-out h3{font-family:var(--disp);font-weight:400;font-size:22px;margin:0 0 10px;color:var(--negro);letter-spacing:.02em}
+.op{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-bottom:14px}
+.op button{min-width:0;border:1.5px solid var(--negro);background:transparent;padding:10px;text-align:left;cursor:pointer;margin-right:-1.5px}
+.op button[aria-pressed="true"]{background:var(--negro);color:var(--caliche)}
+.op button[aria-pressed="true"] .pp{color:var(--caliche)}
+#oAnual{font-size:30px}
+.op button b{display:block;font-family:var(--disp);font-weight:400;font-size:22px;line-height:1.05}
+.op button span{font-size:12px}
+.entrada{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
+.entrada label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;color:#6b6358}
+.entrada .fila{display:flex;align-items:center;border:1.5px solid var(--negro);background:#fff}
+.entrada .fila span{padding:0 10px;font-weight:700;font-size:14px;border-right:1px solid var(--linea)}
+.entrada input{border:0;padding:10px;font-size:20px;font-weight:700;width:100%;min-width:0;background:transparent;font-variant-numeric:tabular-nums}
+.entrada input[type=range]{padding:0;accent-color:var(--naranja)}
+.calc-out{padding:16px}
+.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--negro)}
+.kpi{padding:10px 12px;border-right:1px solid var(--linea)}
+.kpi:last-child{border-right:0}
+.kpi .ej{white-space:normal}
+.kpi small{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.07em;font-weight:700;color:#6b6358}
+.kpi b{display:block;font-family:var(--disp);font-weight:400;font-size:40px;line-height:1;color:var(--negro);margin:6px 0 2px}
+.kpi b.nar{color:var(--naranja-osc)}
+.cota{margin:18px 0 6px}
+.cota-bar{position:relative;height:30px;border-left:1.5px solid var(--negro);border-right:1.5px solid var(--negro)}
+.cota-bar i{position:absolute;top:8px;left:0;height:14px;background:var(--naranja);border:1px solid var(--negro)}
+.cota-bar i.fin{background:var(--acero)}
+.cota-txt{display:flex;justify-content:space-between;font-size:12.5px;gap:8px;flex-wrap:wrap}
+table.tabla{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
+table.tabla th,table.tabla td{border:1px solid var(--linea);padding:7px 8px;text-align:left;vertical-align:top}
+table.tabla th{font-size:11px;text-transform:uppercase;letter-spacing:.06em;background:var(--caliche-2);color:var(--negro)}
+table.tabla td.r,table.tabla th.r{text-align:right}
+table.tabla td small.ej{margin-top:2px}
+.notas{list-style:none;padding:0;margin:12px 0 0;font-size:12.5px;color:#4c5359}
+.notas li{padding-left:14px;position:relative;margin-bottom:3px}
+.notas li::before{content:"";position:absolute;left:0;top:7px;width:6px;height:6px;border:1.5px solid var(--naranja)}
+@media (max-width:900px){.calc{grid-template-columns:minmax(0,1fr)}.calc-in{border-right:0;border-bottom:1px solid var(--negro)}}
+@media (max-width:480px){.cifra b{font-size:24px}.op button b{font-size:19px}.kpi b{font-size:30px}.kpi{padding:8px}.kpi small{font-size:10px}}
+.icl{display:grid;grid-template-columns:300px 1fr;border:1.5px solid var(--negro);background:var(--papel);margin-top:22px}
+.icl .calc-in{border-right:1px solid var(--negro)}
+.icl-tabla{padding:16px;overflow-x:auto}
+@media (max-width:900px){.icl{grid-template-columns:minmax(0,1fr)}.icl .calc-in{border-right:0;border-bottom:1px solid var(--negro)}}
+@media (max-width:480px){table.tabla{font-size:12.5px}table.tabla th,table.tabla td{padding:5px 4px}}
+
+/* tasación */
+.tasa{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+.form-tasa{border:1.5px solid var(--negro);background:var(--papel);display:grid;grid-template-columns:1fr 1fr}
+.form-tasa .campo{border-bottom:1px solid var(--linea);padding:10px 12px}
+.form-tasa .campo.full{grid-column:1/-1;border-right:0}
+.form-tasa .campo:nth-child(2n){border-right:0}
+.form-tasa .campo input,.form-tasa .campo select{border-bottom:1px solid var(--linea)}
+.form-tasa .envio{grid-column:1/-1;padding:12px}
+.como{list-style:none;margin:0;padding:0;counter-reset:c}
+.como li{counter-increment:c;display:grid;grid-template-columns:44px 1fr;border-top:1px solid var(--negro);padding:10px 0;font-size:15px}
+.como li::before{content:"0" counter(c);font-family:var(--disp);font-size:26px;color:var(--naranja-osc);line-height:1}
+@media (max-width:900px){.tasa{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:480px){.form-tasa{grid-template-columns:1fr}.form-tasa .campo{border-right:0}}
+
+/* dueño */
+#vistaDueno{display:none}
+body.dueno #vistaCliente{display:none}
+body.dueno #vistaDueno{display:block}
+.panel-cab{background:var(--negro);color:var(--caliche);padding:22px 0 18px}
+.panel-cab h2{font-family:var(--disp);font-weight:400;font-size:clamp(34px,5vw,56px);line-height:.95;margin:6px 0 4px}
+.panel-cab .ej{background:var(--naranja);color:var(--negro);border-color:var(--naranja)}
+.panel-cab p{margin:0;color:#c4bcae;font-size:14px}
+.panel-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:22px;padding-top:22px}
+.caja{border:1.5px solid var(--negro);background:var(--papel)}
+.caja > h3{margin:0;padding:10px 14px;border-bottom:1.5px solid var(--negro);font-family:var(--disp);font-weight:400;font-size:21px;letter-spacing:.03em;color:var(--negro);display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}
+.bandeja{background:var(--wa-fondo);padding:12px;display:flex;flex-direction:column;gap:12px;max-height:620px;overflow:auto}
+.bandeja .burbuja{margin-left:0;border-radius:0 8px 8px 8px;background:#fff;max-width:100%;font-size:13.5px}
+.bandeja .meta{font-size:11.5px;color:#4c5359;margin-bottom:3px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.bandeja .meta b{color:var(--negro)}
+.nueva{background:var(--naranja);color:var(--negro);font-size:10.5px;font-weight:700;padding:1px 5px}
+.agenda{display:grid;grid-template-columns:repeat(5,1fr);font-size:12.5px}
+.agenda .dia{border-right:1px solid var(--linea);min-height:180px;min-width:0}
+.agenda .dia:last-child{border-right:0}
+.agenda .dia > b{display:block;padding:6px 8px;border-bottom:1px solid var(--linea);font-size:12px;text-transform:uppercase;letter-spacing:.05em;background:var(--caliche-2)}
+.turno{margin:6px;padding:5px 6px;border-left:3px solid var(--naranja);background:#fff;line-height:1.25}
+.turno.libre{border-left-color:var(--linea);background:transparent;color:#6b6358;border:1px dashed var(--linea);border-left:3px solid var(--linea)}
+.turno i{font-style:normal;font-weight:700;display:block}
+@media (max-width:620px){.agenda{grid-template-columns:1fr}.agenda .dia{min-height:0;border-right:0;border-bottom:1px solid var(--linea);display:grid;grid-template-columns:70px 1fr}.agenda .dia > b{border-bottom:0;border-right:1px solid var(--linea)}}
+.cifras{display:grid;grid-template-columns:1fr 1fr}
+.cifra{padding:12px 14px;border-right:1px solid var(--linea);border-bottom:1px solid var(--linea)}
+.cifra:nth-child(2n){border-right:0}
+.cifra small{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.07em;font-weight:700;color:#6b6358}
+.cifra b{display:block;font-family:var(--disp);font-weight:400;font-size:32px;line-height:1.05;color:var(--negro);margin-top:4px}
+.lista-senas{list-style:none;margin:0;padding:0}
+.lista-senas li{display:flex;justify-content:space-between;gap:10px;padding:8px 14px;border-bottom:1px solid var(--linea);font-size:14px;flex-wrap:wrap}
+.lista-senas li:last-child{border-bottom:0}
+.paravos{margin-top:22px;border:1.5px solid var(--negro);background:var(--acero);color:var(--caliche);display:grid;grid-template-columns:260px 1fr}
+.paravos h3{font-family:var(--disp);font-weight:400;font-size:40px;line-height:.95;margin:0;padding:18px;color:var(--naranja);border-right:1px solid #4a5157}
+.paravos ul{list-style:none;margin:0;padding:8px 18px;display:grid;grid-template-columns:1fr 1fr;gap:0 24px}
+.paravos li{padding:10px 0;border-bottom:1px solid #4a5157;font-size:15px}
+.paravos li b{display:block;color:#fff}
+@media (max-width:900px){.panel-grid{grid-template-columns:minmax(0,1fr)}.paravos{grid-template-columns:1fr}.paravos h3{border-right:0;border-bottom:1px solid #4a5157}.paravos ul{grid-template-columns:1fr}}
+
+/* pie */
+footer{margin-top:60px;background:var(--negro);color:#d9d1c4;font-size:14px}
+.pie-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:0;padding-top:26px;padding-bottom:20px}
+.pie-grid > div{padding:0 16px 14px 0}
+.pie-grid h4{font-family:var(--disp);font-weight:400;font-size:18px;letter-spacing:.05em;color:var(--naranja);margin:0 0 8px}
+.pie-grid p{margin:0 0 4px}
+.pie-grid a{color:#efe7da}
+.pie-firma{border-top:1px solid #333;padding:12px 0 18px;font-size:12px;color:#a59d90}
+@media (max-width:900px){.pie-grid{grid-template-columns:1fr 1fr}}
+@media (max-width:480px){.pie-grid{grid-template-columns:1fr}}
+.contacto-flot{display:none}
+</style>
+</head>
+<body>
+
+<div class="firma"><div class="wrap"><span>Prototipo preparado para Inmobiliaria Demaría Hermanos · 27 de noviembre de 2026</span><span>Entre Ríos 607 · Neuquén</span></div></div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#inicio" id="logo" aria-label="Inmobiliaria Demaría Hermanos, inicio">
+      <img src="https://irp.cdn-website.com/35fd4c90/dms3rep/multi/opt/22813390-14ecb950-1920w.png" alt="Inmobiliaria Demaría Hermanos" onerror="this.parentNode.classList.add('sinimg')">
+      <span class="logotipo">Demaría <b>Hnos.</b></span>
+    </a>
+    <nav class="menu" aria-label="Secciones">
+      <a href="#catalogo">Catálogo</a>
+      <a href="#inversor">Inversor Añelo</a>
+      <a href="#icl">Ajuste ICL</a>
+      <a href="#visita">Coordinar visita</a>
+      <a href="#tasacion">Tasá tu propiedad</a>
+    </nav>
+    <div class="vista" role="group" aria-label="Cambiar vista">
+      <button type="button" id="btnCliente" aria-pressed="true">Cliente</button>
+      <button type="button" id="btnDueno" aria-pressed="false">Ver como dueño</button>
+    </div>
+  </div>
+</header>
+
+<main id="vistaCliente">
+  <div class="wrap hoja" id="inicio">
+    <div class="rotulo" aria-label="Rótulo de la hoja">
+      <div>Hoja<b>01 / Catálogo</b></div>
+      <div>Oficina<b>Entre Ríos 607</b></div>
+      <div>Martillera<b>Marina Demaria</b></div>
+      <div>Matrícula<b>CMyCPN 409</b></div>
+      <div>Atención<b>Lun a vie · 9 a 19 h</b></div>
+    </div>
+
+    <h1>Unidades en Añelo <em>alquiladas a petrolera por 2 años</em>, desde Entre Ríos 607</h1>
+    <ul class="bajada">
+      <li>Más de una década en Neuquén</li>
+      <li>Especialidad Vaca Muerta y Añelo</li>
+      <li>8 propiedades publicadas, con código</li>
+    </ul>
+
+    <div class="recorrido" aria-label="Hoja de ruta: filtrar el catálogo por tramo">
+      <svg class="ruta" viewBox="0 0 1200 14" preserveAspectRatio="none" aria-hidden="true">
+        <rect x="40" y="0" width="1120" height="14" fill="#2E3338"/>
+        <line x1="40" y1="7" x2="1160" y2="7" stroke="#EFE7DA" stroke-width="2" stroke-dasharray="22 16"/>
+      </svg>
+      <div class="paradas" id="paradas">
+        <button type="button" class="parada" data-tramo="lago" aria-pressed="false">
+          <span class="cartel">Ruta 237</span><span class="nodo"></span>
+          <span class="tramo">Lago</span><span class="lugar">Villa El Chocón</span><span class="cant" data-cant="lago"></span>
+        </button>
+        <button type="button" class="parada" data-tramo="ciudad" aria-pressed="false">
+          <span class="cartel">Entre Ríos 607</span><span class="nodo"></span>
+          <span class="tramo">Ciudad</span><span class="lugar">Neuquén capital</span><span class="cant" data-cant="ciudad"></span>
+        </button>
+        <button type="button" class="parada" data-tramo="yacimiento" aria-pressed="false">
+          <span class="cartel">Ruta 7 · Ruta 17</span><span class="nodo"></span>
+          <span class="tramo">Yacimiento</span><span class="lugar">Añelo</span><span class="cant" data-cant="yacimiento"></span>
+        </button>
+      </div>
+      <div class="recorrido-nota"><span>Tocá un tramo para ver sus propiedades.</span><span>Esquema de recorrido, no a escala.</span></div>
+    </div>
+  </div>
+
+  <div class="servicios" aria-labelledby="tServ">
+    <div class="wrap">
+      <h2 id="tServ">Además del catálogo</h2>
+      <a class="serv" data-serv="Predios industriales" href="#">
+        <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 34h32M6 34V14l8 5v-5l8 5v-5l8 5V6h4v28"/><path d="M11 27h4M19 27h4M27 27h4"/></svg>
+        <b>Predios industriales</b><span>Consultar por WhatsApp</span></a>
+      <a class="serv" data-serv="Galpones" href="#">
+        <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 34h34M6 34V16L20 7l14 9v18"/><path d="M13 34V22h14v12M13 26h14M13 30h14"/></svg>
+        <b>Galpones</b><span>Consultar por WhatsApp</span></a>
+      <a class="serv" data-serv="Tasación de fondo de comercio" href="#">
+        <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 15h30l-3-8H8z"/><path d="M7 15v19h26V15M15 34V23h10v11"/><path d="M5 15c0 3 5 3 5 0 0 3 5 3 5 0 0 3 5 3 5 0 0 3 5 3 5 0 0 3 5 3 5 0"/></svg>
+        <b>Tasaciones de fondo de comercio</b><span>Consultar por WhatsApp</span></a>
+      <a class="serv" data-serv="Remate de flota" href="#">
+        <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 28V14h18v14M21 18h8l6 6v4H21"/><circle cx="10" cy="30" r="3"/><circle cx="29" cy="30" r="3"/><path d="M13 30h13"/></svg>
+        <b>Remates de flota</b><span>Consultar por WhatsApp</span></a>
+    </div>
+  </div>
+
+  <section class="bloque" id="catalogo" aria-labelledby="tCat">
+    <div class="wrap">
+      <div class="sec-tit"><span class="num">01</span><h2 id="tCat">Catálogo por tramo</h2><p>Cada propiedad con código, datos y precio publicado. Sin fotos todavía: cada ficha lleva su lámina técnica.</p></div>
+
+      <div class="buscador" role="search">
+        <div class="campo"><label for="fTexto">Buscar</label><input id="fTexto" type="text" placeholder="Calle, código, “amoblado”…" autocomplete="off"></div>
+        <div class="campo"><label for="fOp">Operación</label><select id="fOp"><option value="">Todas</option><option value="venta">Venta</option><option value="alquiler">Alquiler</option></select></div>
+        <div class="campo"><label for="fTipo">Tipo</label><select id="fTipo"><option value="">Todos</option><option value="depto">Departamento</option><option value="casa">Casa / dúplex</option><option value="complejo">Complejo / unidad</option><option value="lote">Lote</option></select></div>
+        <div class="campo"><label for="fZona">Zona</label><select id="fZona"><option value="">Todo el recorrido</option><option value="ciudad">Ciudad · Neuquén</option><option value="yacimiento">Yacimiento · Añelo</option><option value="lago">Lago · El Chocón</option></select></div>
+        <div class="campo"><label for="fPrecio">Precio venta</label><select id="fPrecio"><option value="">Sin tope</option><option value="100000">Hasta USD 100.000</option><option value="160000">Hasta USD 160.000</option></select></div>
+        <div class="campo"><label for="fDorm">Dormitorios</label><select id="fDorm"><option value="">Cualquiera</option><option value="1">1 o más</option><option value="2">2 o más</option></select></div>
+      </div>
+      <div class="resumen-filtro">
+        <span id="cuenta" aria-live="polite"></span>
+        <span style="display:flex;gap:14px;flex-wrap:wrap"><label><input type="checkbox" id="fDisp"> Ocultar alquiladas</label><button type="button" class="limpiar" id="limpiar">Limpiar filtros</button></span>
+      </div>
+      <div id="listado"></div>
+    </div>
+  </section>
+
+  <section class="bloque" id="visita" aria-labelledby="tVis">
+    <div class="wrap">
+      <div class="sec-tit"><span class="num">02</span><h2 id="tVis">Coordinar visita</h2><p>Elegí y mirá a la derecha el mensaje exacto que le llega a la inmobiliaria.</p></div>
+      <div class="visita">
+        <ol class="pasos">
+          <li class="paso"><span class="n">1</span><div class="c"><label for="vProp">Propiedad</label><select id="vProp"></select></div></li>
+          <li class="paso"><span class="n">2</span><div class="c"><span class="lbl">Día de visita (lun a vie)</span><div class="chips dias" id="vDias"></div></div></li>
+          <li class="paso"><span class="n">3</span><div class="c"><span class="lbl">Franja horaria</span><div class="chips" id="vFranja"></div></div></li>
+          <li class="paso"><span class="n">4</span><div class="c"><span class="lbl">¿Cuántas personas van?</span><div class="chips" id="vPers"></div></div></li>
+          <li class="paso"><span class="n">5</span><div class="c"><span class="lbl" id="vPagoLbl">Forma de pago</span><div class="chips" id="vPago"></div></div></li>
+          <li class="paso"><span class="n">6</span><div class="c"><label for="vNombre">Tu nombre</label><input id="vNombre" type="text" autocomplete="name" placeholder="Nombre y apellido"></div></li>
+        </ol>
+        <div class="movil">
+          <div class="telefono" aria-label="Vista previa del mensaje de WhatsApp">
+            <div class="tel-cab"><span class="av">DH</span><div><b>Demaría Hnos.</b><small>(0299) 15 504-9456</small></div></div>
+            <div class="chat"><div class="burbuja" id="burbuja" aria-live="polite"></div></div>
+            <div class="tel-pie">
+              <a class="btn wa" id="btnWa" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg>Enviar por WhatsApp</a>
+              <small>Abre WhatsApp con este mismo texto. Nada se envía solo.</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bloque" id="inversor" aria-labelledby="tInv">
+    <div class="wrap">
+      <div class="sec-tit"><span class="num">03</span><h2 id="tInv">Calculadora del inversor en Añelo</h2><p>Unidad DM-02 · Complejo La Meseta. Cargá el alquiler que esperás y mirá la renta.</p></div>
+      <div class="calc">
+        <div class="calc-in">
+          <h3>Datos de entrada</h3>
+          <div class="op" role="group" aria-label="Modalidad de compra">
+            <button type="button" id="mContado" aria-pressed="true"><b>USD 150.000</b><span>Contado · <span class="pp">Precio publicado</span></span></button>
+            <button type="button" id="mFinan" aria-pressed="false"><b>USD 154.500</b><span>105.000 + 12 × 4.125 · <span class="pp">Precio publicado</span></span></button>
+          </div>
+          <div class="entrada">
+            <label for="iAlq">Alquiler mensual que esperás <span class="ej">Monto de ejemplo</span></label>
+            <div class="fila"><span>USD</span><input id="iAlq" type="number" inputmode="numeric" min="0" step="50" value="1500"></div>
+            <input type="range" id="iAlqR" min="300" max="4000" step="50" value="1500" aria-label="Ajustar alquiler mensual">
+          </div>
+          <div class="entrada">
+            <label for="iUni">Unidades (hay 2 publicadas)</label>
+            <div class="chips" id="iUni"><button type="button" data-u="1" aria-pressed="true">1 unidad</button><button type="button" data-u="2" aria-pressed="false">2 unidades</button></div>
+          </div>
+          <ul class="notas">
+            <li>2 dormitorios en suite, cochera, amoblado.</li>
+            <li>Hoy alquilada a petrolera por 2 años.</li>
+            <li>El alquiler real del contrato: consultar.</li>
+          </ul>
+        </div>
+        <div class="calc-out" aria-live="polite">
+          <h3>Resultado <span class="ej">Con monto de ejemplo</span></h3>
+          <div class="kpis">
+            <div class="kpi"><small>Renta bruta anual</small><b class="nar" id="oRenta">—</b><span class="ej">Monto de ejemplo</span></div>
+            <div class="kpi"><small>Años de recupero</small><b id="oAnios">—</b><span class="ej">Monto de ejemplo</span></div>
+            <div class="kpi"><small>Ingreso anual</small><b id="oAnual">—</b><span class="ej">Monto de ejemplo</span></div>
+          </div>
+          <div class="cota" aria-hidden="true">
+            <div class="cota-txt"><span>Contado</span><span id="cC"></span></div>
+            <div class="cota-bar"><i id="barC"></i></div>
+            <div class="cota-txt" style="margin-top:6px"><span>Financiado</span><span id="cF"></span></div>
+            <div class="cota-bar"><i class="fin" id="barF"></i></div>
+          </div>
+          <table class="tabla" style="margin-top:14px">
+            <thead><tr><th>Contado vs financiado</th><th class="r">Contado</th><th class="r">Financiado</th></tr></thead>
+            <tbody id="tComp"></tbody>
+          </table>
+          <ul class="notas">
+            <li>Renta bruta: no descuenta expensas, impuestos, vacancia ni comisiones.</li>
+            <li>Financiación publicada: USD 105.000 + 12 cuotas de USD 4.125.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="icl" id="icl" aria-labelledby="tIcl">
+        <div class="calc-in">
+          <h3 id="tIcl">Simulador de ajuste trimestral por ICL</h3>
+          <ul class="notas" style="margin:0 0 12px">
+            <li>Para alquileres con ajuste trimestral, como DM-04 (Edificio Küref).</li>
+            <li>Contrato de 2 años = 8 trimestres.</li>
+          </ul>
+          <div class="entrada">
+            <label for="iIni">Alquiler inicial mensual <span class="ej">Monto de ejemplo</span></label>
+            <div class="fila"><span>$</span><input id="iIni" type="number" inputmode="numeric" min="0" step="10000" value="650000"></div>
+          </div>
+          <div class="entrada">
+            <label for="iPct">Ajuste por trimestre (%) <span class="ej">Monto de ejemplo</span></label>
+            <div class="fila"><span>%</span><input id="iPct" type="number" inputmode="decimal" min="0" max="50" step="0.5" value="7"></div>
+          </div>
+          <ul class="notas"><li>Los índices ICL reales se cargan al publicarse cada mes; acá se usa un % fijo de ejemplo.</li></ul>
+        </div>
+        <div class="icl-tabla">
+          <table class="tabla">
+            <thead><tr><th>Trim.</th><th>Meses</th><th class="r">Alquiler mensual</th><th class="r">Total del trimestre</th></tr></thead>
+            <tbody id="tIclBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bloque" id="tasacion" aria-labelledby="tTas">
+    <div class="wrap">
+      <div class="sec-tit"><span class="num">04</span><h2 id="tTas">Tasá tu propiedad</h2><p>Para propietarios que quieren vender o alquilar en Neuquén, Añelo o El Chocón.</p></div>
+      <div class="tasa">
+        <div>
+          <ol class="como">
+            <li>Completás 6 datos de tu propiedad.</li>
+            <li>Se arma el mensaje y lo mandás por WhatsApp.</li>
+            <li>Coordinan visita para tasar, con martillera matriculada.</li>
+            <li>También fondos de comercio, galpones y predios.</li>
+          </ol>
+          <div class="telefono" style="margin-top:16px">
+            <div class="chat" style="min-height:0"><div class="burbuja" id="burbujaTasa"></div></div>
+          </div>
+        </div>
+        <form class="form-tasa" id="formTasa" onsubmit="return false">
+          <div class="campo"><label for="tQue">Qué querés hacer</label><select id="tQue"><option>Vender</option><option>Alquilar</option><option>Solo tasar</option></select></div>
+          <div class="campo"><label for="tTipo">Tipo</label><select id="tTipo"><option>Departamento</option><option>Casa</option><option>Dúplex</option><option>Lote</option><option>Galpón</option><option>Predio industrial</option><option>Fondo de comercio</option></select></div>
+          <div class="campo full"><label for="tDir">Dirección o zona</label><input id="tDir" type="text" placeholder="Ej.: calle y altura, barrio o localidad"></div>
+          <div class="campo"><label for="tM2">Superficie aprox. (m²)</label><input id="tM2" type="number" inputmode="numeric" min="0" placeholder="Ej.: 70"></div>
+          <div class="campo"><label for="tDorm">Dormitorios</label><select id="tDorm"><option>No aplica</option><option>1</option><option>2</option><option>3</option><option>4 o más</option></select></div>
+          <div class="campo full"><label for="tNom">Tu nombre</label><input id="tNom" type="text" autocomplete="name" placeholder="Nombre y apellido"></div>
+          <div class="envio"><a class="btn wa" id="btnTasa" href="#" target="_blank" rel="noopener" style="width:100%">Pedir tasación por WhatsApp</a></div>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<main id="vistaDueno" aria-labelledby="tDueno">
+  <div class="panel-cab">
+    <div class="wrap">
+      <span class="ej">Panel de ejemplo</span>
+      <h2 id="tDueno">Lo que ve Demaría Hnos. cada mañana</h2>
+      <p>Consultas, visitas y reservas de la semana. Datos de ejemplo para mostrar cómo funciona.</p>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="panel-grid">
+      <div class="caja">
+        <h3>Consultas que entraron <span class="ej">Panel de ejemplo</span></h3>
+        <div class="bandeja" id="bandeja"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:22px;min-width:0">
+        <div class="caja">
+          <h3>Visitas · semana del 30/11 <span class="ej">Panel de ejemplo</span></h3>
+          <div class="agenda" id="agenda"></div>
+        </div>
+        <div class="caja">
+          <h3>Reservas y señas cobradas <span class="ej">Panel de ejemplo</span></h3>
+          <ul class="lista-senas">
+            <li><span>DM-02 · La Meseta, unidad 1 · reserva</span><span><b class="mono">USD 3.000</b> <span class="ej">Monto de ejemplo</span></span></li>
+            <li><span>DM-04 · Küref 3° G · depósito</span><span><b class="mono">$ 650.000</b> <span class="ej">Monto de ejemplo</span></span></li>
+            <li><span>DM-08 · Loteo El Chocón · anticipo</span><span><b class="mono">USD 1.200</b> <span class="ej">Monto de ejemplo</span></span></li>
+          </ul>
+        </div>
+        <div class="caja">
+          <h3>Frente a los portales <span class="ej">Panel de ejemplo</span></h3>
+          <div class="cifras">
+            <div class="cifra"><small>Avisos pagos evitados / mes</small><b>$ 240.000</b><span class="ej">Monto de ejemplo</span></div>
+            <div class="cifra"><small>Destacados evitados / mes</small><b>$ 120.000</b><span class="ej">Monto de ejemplo</span></div>
+            <div class="cifra"><small>Ahorro en el año</small><b>$ 4.320.000</b><span class="ej">Monto de ejemplo</span></div>
+            <div class="cifra"><small>Consultas con código</small><b>100 %</b><span class="ej">Panel de ejemplo</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="paravos">
+      <h3>Para vos, Marina</h3>
+      <ul>
+        <li><b>Menos “¿sigue disponible?” y “¿precio?”</b>Cada ficha ya dice estado, precio publicado o “Consultar”.</li>
+        <li><b>La consulta llega con la propiedad indicada</b>Código, dirección, día, franja y personas en un solo mensaje.</li>
+        <li><b>Agenda de visitas ordenada</b>Solo de lunes a viernes, en las franjas que vos definís.</li>
+        <li><b>Sin pagar por aviso ni portal</b>El catálogo es tuyo: Añelo, ciudad y El Chocón en una sola web.</li>
+      </ul>
+    </div>
+    <p style="margin:18px 0 0"><button type="button" class="btn sec" id="volver">Volver a la vista del cliente</button></p>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap pie-grid">
+    <div><h4>Inmobiliaria Demaría Hermanos</h4><p>Entre Ríos 607 · Neuquén capital</p><p>Lunes a viernes de 9 a 19 h</p><p>Martillera Marina Demaria · Mat. CMyCPN 409</p></div>
+    <div><h4>WhatsApp</h4><p><a href="https://wa.me/5492995049456" target="_blank" rel="noopener">(0299) 15 504-9456</a></p></div>
+    <div><h4>Teléfonos</h4><p><a href="tel:+542995520992">299 552-0992</a></p><p><a href="tel:+542995900262">299 590-0262</a></p></div>
+    <div><h4>Mail · Instagram</h4><p><a href="mailto:inmobiliaria.demariahermanos@gmail.com" style="word-break:break-all">inmobiliaria.demariahermanos@gmail.com</a></p><p><a href="https://www.instagram.com/inmobiliaria.demaria.hnos/" target="_blank" rel="noopener">@inmobiliaria.demaria.hnos</a></p></div>
+  </div>
+  <div class="pie-firma"><div class="wrap">Prototipo de demostración preparado para Inmobiliaria Demaría Hermanos por Resolviendo Kos · No es la web oficial</div></div>
+</footer>
+
+<dialog id="modal" aria-labelledby="modTit">
+  <div class="mod-cab"><b id="modCod"></b><span id="modTit"></span><button type="button" class="cerrar" id="cerrar" aria-label="Cerrar ficha">×</button></div>
+  <div class="mod-cuerpo">
+    <div class="laminas">
+      <div class="lam-tabs" role="tablist" aria-label="Láminas">
+        <button type="button" role="tab" data-lam="0" aria-selected="true">Fachada</button>
+        <button type="button" role="tab" data-lam="1" aria-selected="false">Esquema</button>
+        <button type="button" role="tab" data-lam="2" aria-selected="false">Ubicación</button>
+      </div>
+      <div class="lamina" id="lamina" role="tabpanel"></div>
+    </div>
+    <div class="mod-info" id="modInfo"></div>
+  </div>
+</dialog>
+
+<script>
+(function(){
+var WA='5492995049456';
+var $=function(s,c){return (c||document).querySelector(s)};
+var $$=function(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s))};
+function fmt(n){return Math.round(n).toLocaleString('es-AR')}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+
+/* ---------- Dibujos de línea por tipo ---------- */
+var S='fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"';
+var DIB={
+ mono:'<svg viewBox="0 0 120 90" aria-hidden="true"><g '+S+'><rect x="22" y="14" width="76" height="62"/><path d="M22 52h30v24M66 14v20h32"/><rect x="72" y="50" width="20" height="10" rx="5"/><path d="M30 24h14v18H30z"/></g><g fill="#E2611B"><rect x="22" y="80" width="76" height="2"/></g></svg>',
+ depto:'<svg viewBox="0 0 120 90" aria-hidden="true"><g '+S+'><path d="M34 82V10h52v72"/><path d="M42 20h10v8H42zM68 20h10v8H68zM42 36h10v8H42zM68 36h10v8H68zM42 52h10v8H42zM68 52h10v8H68z"/><path d="M54 82V68h12v14M20 82h80"/></g><path d="M86 52h8v8h-8" fill="none" stroke="#E2611B" stroke-width="2"/></svg>',
+ duplex:'<svg viewBox="0 0 120 90" aria-hidden="true"><g '+S+'><path d="M16 82V36l22-18 22 18v46M60 82V36l22-18 22 18v46M10 82h100"/><path d="M28 48h20v10H28zM70 48h20v10H70zM32 82V68h12v14M74 82V68h12v14"/></g><path d="M44 82h32" stroke="#E2611B" stroke-width="3"/></svg>',
+ casa:'<svg viewBox="0 0 120 90" aria-hidden="true"><g '+S+'><path d="M18 82V42l38-28 38 28v40M10 82h102"/><path d="M30 52h18v14H30zM62 82V56h16v26"/><path d="M94 60h18v22"/></g><path d="M94 60h18" stroke="#E2611B" stroke-width="3"/></svg>',
+ complejo:'<svg viewBox="0 0 120 90" aria-hidden="true"><g '+S+'><path d="M8 82V40h32v42M44 82V30h32v52M80 82V40h32v42M4 82h112"/><path d="M16 50h16v8H16zM52 40h16v8H52zM88 50h16v8H88zM20 82V68h8v14M56 82V62h8v20M92 82V68h8v14"/></g><path d="M44 24h32" stroke="#E2611B" stroke-width="3"/></svg>',
+ modular:'<svg viewBox="0 0 120 90" aria-hidden="true"><g '+S+'><rect x="8" y="50" width="32" height="28"/><rect x="44" y="50" width="32" height="28"/><rect x="80" y="50" width="32" height="28"/><path d="M14 56v16M20 56v16M50 56v16M56 56v16M86 56v16M92 56v16"/><path d="M28 58h8v8h-8zM64 58h8v8h-8zM100 58h8v8h-8z"/><path d="M4 82h112"/></g><path d="M8 44h32M44 44h32M80 44h32" stroke="#E2611B" stroke-width="3"/></svg>',
+ lote:'<svg viewBox="0 0 120 90" aria-hidden="true"><g '+S+'><path d="M10 20h100v58H10z"/><path d="M10 39h100M10 58h100M35 20v58M60 20v58M85 20v58" stroke-dasharray="4 4"/></g><rect x="60" y="39" width="25" height="19" fill="#E2611B" opacity=".9"/><path d="M10 84h100" stroke="currentColor" stroke-width="1"/><path d="M10 81v6M110 81v6" stroke="currentColor" stroke-width="1"/></svg>'
+};
+
+/* ---------- Propiedades publicadas ---------- */
+var P=[
+ {c:'DM-01',t:'Monoambiente',tipo:'depto',d:'mono',op:'venta',tr:'ciudad',dir:'Belgrano 250, Neuquén',calle:'Belgrano',precio:80000,txt:'USD 80.000',dorm:0,datos:[['Sup.','≈ 40 m²'],['Amb.','1'],['Baño','con bañera']],car:['Monoambiente de unos 40 m²','Baño con bañera','Publicado como “ideal inversión”'],pago:'venta'},
+ {c:'DM-02',t:'Complejo La Meseta · 2 unidades',tipo:'complejo',d:'complejo',op:'venta',tr:'yacimiento',dir:'Av. Almirante Brown, Lote 12, Mz 219, Añelo',calle:'Av. Almirante Brown',precio:150000,txt:'USD 150.000',sub:'por unidad',dorm:2,datos:[['Dorm.','2 en suite'],['Cochera','sí'],['Amoblado','sí'],['Estado','alquilado a petrolera, 2 años']],car:['2 unidades a la venta','2 dormitorios en suite, cochera, amoblado','Alquilado a petrolera por 2 años','Financiación publicada: USD 105.000 + 12 cuotas de USD 4.125'],fin:true,pago:'venta'},
+ {c:'DM-03',t:'Complejo modular de 3 departamentos',tipo:'complejo',d:'modular',op:'venta',tr:'yacimiento',dir:'Añelo',calle:'Añelo',precio:null,dorm:2,datos:[['Unidades','3 × 60 m²'],['Dorm.','2 c/u'],['Baños','2 c/u'],['Aires','3 por casa']],car:['3 unidades de 60 m²','2 dormitorios y 2 baños cada una','Amoblados','3 aires acondicionados por casa'],pago:'venta'},
+ {c:'DM-04',t:'Departamento a estrenar · Edificio Küref',tipo:'depto',d:'depto',op:'alquiler',tr:'ciudad',dir:'Río Juramento 1100, 3° G, Neuquén',calle:'Río Juramento',precio:null,dorm:1,datos:[['Amb.','2'],['Dorm.','1'],['Baño','1'],['Ajuste','trimestral ICL']],car:['2 ambientes, 1 dormitorio, 1 baño','A estrenar, balcón con parrilla','Edificio con pileta, SUM y gimnasio','Contrato 2 años, ajuste trimestral por ICL'],icl:true,pago:'alq'},
+ {c:'DM-05',t:'Dúplex en complejo',tipo:'casa',d:'duplex',op:'alquiler',tr:'ciudad',dir:'Zona Bejarano y Lanín, Neuquén',calle:'Bejarano y Lanín',precio:null,dorm:1,datos:[['Dorm.','1'],['Baño','1'],['Vehículo','entrada']],car:['1 dormitorio, 1 baño','Dentro de un complejo','Entrada para vehículo'],pago:'alq'},
+ {c:'DM-06',t:'Departamento',tipo:'depto',d:'depto',op:'alquiler',tr:'ciudad',dir:'Las Golondrinas 1540, Neuquén',calle:'Las Golondrinas',precio:null,dorm:1,alquilado:true,datos:[['Dorm.','1'],['Baño','1'],['Vehículo','ingreso']],car:['1 dormitorio, 1 baño','Ingreso para vehículo','Estado: ALQUILADO'],pago:'alq'},
+ {c:'DM-07',t:'Casa amoblada',tipo:'casa',d:'casa',op:'alquiler',tr:'ciudad',dir:'Zona Terminal, Neuquén',calle:'Zona Terminal',precio:null,dorm:2,datos:[['Dorm.','2'],['Antebaño','sí'],['Cochera','cubierta']],car:['2 dormitorios y antebaño','Cochera cubierta','Amoblada'],pago:'alq'},
+ {c:'DM-08',t:'Loteo Villa El Chocón',tipo:'lote',d:'lote',op:'venta',tr:'lago',dir:'Ruta 237, Villa El Chocón',calle:'Ruta 237',precio:null,txt:'Anticipo desde USD 1.200',dorm:0,datos:[['Lotes','1.718'],['Superficie','257 ha'],['Plan','anticipo + 3 + 36 cuotas']],car:['1.718 lotes en 257 ha','Anticipo desde USD 1.200','30% en 3 cuotas','Saldo en 36 cuotas'],pago:'lote'}
+];
+var TR={ciudad:{n:'Ciudad',l:'Neuquén capital',s:'Entre Ríos 607'},yacimiento:{n:'Yacimiento',l:'Añelo · Vaca Muerta',s:'Ruta 7'},lago:{n:'Lago',l:'Villa El Chocón',s:'Ruta 237'}};
+
+$$('[data-cant]').forEach(function(el){var k=el.getAttribute('data-cant');var n=P.filter(function(p){return p.tr===k}).length;el.textContent=n+(n===1?' propiedad':' propiedades')});
+
+function precioHTML(p){
+  if(p.precio){return '<div><div class="monto mono">'+p.txt+'</div><div>'+(p.sub?'<small>'+p.sub+'</small> · ':'')+'<span class="pp">Precio publicado</span></div></div>'}
+  if(p.txt){return '<div><div class="monto mono" style="font-size:22px">'+p.txt+'</div><span class="pp">Precio publicado</span></div>'}
+  return '<div><div class="monto cons">Consultar</div><span class="pp">Consultar</span></div>';
+}
+function fichaHTML(p){
+  var acc=p.alquilado?'<span class="estado">Alquilado</span>':
+    '<div class="acciones"><button type="button" class="btn" data-visita="'+p.c+'">Coordinar visita</button><button type="button" class="btn sec" data-ver="'+p.c+'">Ver ficha</button></div>';
+  if(p.alquilado) acc='<div class="acciones"><span class="estado">Alquilado</span><button type="button" class="btn sec" data-ver="'+p.c+'">Ver ficha</button></div>';
+  return '<article class="ficha'+(p.alquilado?' alquilado':'')+'">'+
+    '<div class="cod"><b>'+p.c.replace('DM-','DM<br>')+'</b><small>'+(p.op==='venta'?'Venta':'Alquiler')+'</small></div>'+
+    '<div class="dib">'+DIB[p.d]+'</div>'+
+    '<div class="info"><h3>'+esc(p.t)+'</h3><p class="dir">'+esc(p.dir)+'</p><ul class="datos">'+p.datos.map(function(d){return '<li>'+d[0]+' <b>'+esc(d[1])+'</b></li>'}).join('')+'</ul></div>'+
+    '<div class="precio">'+precioHTML(p)+acc+'</div></article>';
+}
+
+var F={texto:$('#fTexto'),op:$('#fOp'),tipo:$('#fTipo'),zona:$('#fZona'),precio:$('#fPrecio'),dorm:$('#fDorm'),disp:$('#fDisp')};
+function norm(s){return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'')}
+function filtrar(){
+  var q=norm(F.texto.value.trim()),op=F.op.value,ti=F.tipo.value,zo=F.zona.value,pr=+F.precio.value||0,dm=+F.dorm.value||0,di=F.disp.checked;
+  var res=P.filter(function(p){
+    if(op&&p.op!==op)return false;
+    if(ti&&p.tipo!==ti)return false;
+    if(zo&&p.tr!==zo)return false;
+    if(pr&&!(p.op==='venta'&&p.precio&&p.precio<=pr))return false;
+    if(dm&&p.dorm<dm)return false;
+    if(di&&p.alquilado)return false;
+    if(q){var h=norm([p.c,p.t,p.dir,p.car.join(' '),p.datos.map(function(d){return d.join(' ')}).join(' '),TR[p.tr].n,TR[p.tr].l].join(' '));if(h.indexOf(q)<0)return false}
+    return true;
+  });
+  var html='';
+  ['ciudad','yacimiento','lago'].forEach(function(k){
+    var g=res.filter(function(p){return p.tr===k});if(!g.length)return;
+    html+='<div class="tramo-bloque"><div class="tramo-cab"><span class="senal">'+TR[k].n+'</span><span class="donde">'+TR[k].l+' · '+TR[k].s+'</span><hr></div>'+g.map(fichaHTML).join('')+'</div>';
+  });
+  $('#listado').innerHTML=html||'<div class="vacio">Ninguna propiedad coincide con esos filtros. Probá sacar alguno o consultá por WhatsApp: hay propiedades que todavía no están publicadas.</div>';
+  $('#cuenta').textContent=res.length+(res.length===1?' propiedad':' propiedades')+' de '+P.length;
+  $$('.parada').forEach(function(b){b.setAttribute('aria-pressed',String(b.getAttribute('data-tramo')===zo))});
+}
+['texto'].forEach(function(k){F[k].addEventListener('input',filtrar)});
+['op','tipo','zona','precio','dorm','disp'].forEach(function(k){F[k].addEventListener('change',filtrar)});
+$('#limpiar').addEventListener('click',function(){F.texto.value='';F.op.value='';F.tipo.value='';F.zona.value='';F.precio.value='';F.dorm.value='';F.disp.checked=false;filtrar()});
+$$('.parada').forEach(function(b){b.addEventListener('click',function(){var t=b.getAttribute('data-tramo');F.zona.value=(F.zona.value===t?'':t);filtrar();$('#catalogo').scrollIntoView({behavior:'smooth'})})});
+$('#listado').addEventListener('click',function(e){
+  var v=e.target.closest('[data-visita]');if(v){elegirProp(v.getAttribute('data-visita'));$('#visita').scrollIntoView({behavior:'smooth'});return}
+  var f=e.target.closest('[data-ver]');if(f)abrirFicha(f.getAttribute('data-ver'));
+});
+
+/* ---------- Ficha / láminas ---------- */
+var modal=$('#modal'),actual=null;
+function esquema(p){
+  var n=p.d==='lote'?0:(p.dorm||0);
+  var g='<svg viewBox="0 0 400 300" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2">';
+  if(p.d==='lote'){
+    for(var i=0;i<6;i++)for(var j=0;j<4;j++)g+='<rect x="'+(50+i*50)+'" y="'+(50+j*45)+'" width="46" height="41" stroke-dasharray="4 3"/>';
+    g+='</g><rect x="200" y="95" width="46" height="41" fill="#E2611B"/><text x="200" y="270" font-family="Asap,sans-serif" font-size="13" fill="currentColor" text-anchor="middle">1.718 lotes · 257 ha</text></svg>';
+    return g;
+  }
+  g+='<rect x="40" y="40" width="320" height="200"/>';
+  var w=n?Math.min(110,320/(n+2)):0;
+  for(var k=0;k<n;k++){g+='<rect x="'+(40+k*w)+'" y="40" width="'+w+'" height="100"/><text x="'+(40+k*w+w/2)+'" y="95" font-family="Asap,sans-serif" font-size="12" fill="currentColor" stroke="none" text-anchor="middle">DORM '+(k+1)+'</text>'}
+  g+='<rect x="'+(40+n*w)+'" y="40" width="60" height="60"/><text x="'+(40+n*w+30)+'" y="75" font-family="Asap,sans-serif" font-size="12" fill="currentColor" stroke="none" text-anchor="middle">BAÑO</text>';
+  g+='<text x="200" y="'+(n?195:160)+'" font-family="Asap,sans-serif" font-size="14" fill="currentColor" stroke="none" text-anchor="middle">'+(n?'ESTAR · COCINA':'AMBIENTE ÚNICO')+'</text>';
+  g+='</g><path d="M40 262h320M40 256v12M360 256v12" stroke="#E2611B" stroke-width="2"/></svg>';
+  return g;
+}
+function ubicacion(p){
+  var calle=esc(p.calle);
+  return '<svg viewBox="0 0 400 300" aria-hidden="true"><g stroke="#B9B1A3" stroke-width="1">'+
+   [60,120,180,240].map(function(y){return '<line x1="0" y1="'+y+'" x2="400" y2="'+y+'"/>'}).join('')+
+   [70,150,230,310].map(function(x){return '<line x1="'+x+'" y1="0" x2="'+x+'" y2="300"/>'}).join('')+
+   '</g><line x1="0" y1="150" x2="400" y2="150" stroke="#2E3338" stroke-width="14"/><line x1="0" y1="150" x2="400" y2="150" stroke="#EFE7DA" stroke-width="1.5" stroke-dasharray="12 9"/>'+
+   '<text x="16" y="138" font-family="Staatliches,Impact,sans-serif" font-size="20" fill="#141414">'+calle+'</text>'+
+   '<g transform="translate(250 150)"><path d="M0 0c-14-18-20-26-20-36a20 20 0 0 1 40 0c0 10-6 18-20 36z" fill="#E2611B" stroke="#141414" stroke-width="2"/><circle cx="0" cy="-36" r="7" fill="#141414"/></g>'+
+   '<text x="250" y="186" font-family="Asap,sans-serif" font-size="12" font-weight="700" fill="#141414" text-anchor="middle">'+p.c+'</text></svg>';
+}
+function lamina(i){
+  var p=actual,pies=['Lámina A · '+p.t,'Lámina B · Esquema ilustrativo, no es el plano real','Lámina C · Ubicación aproximada, no a escala'];
+  var cont=i===0?DIB[p.d].replace('viewBox="0 0 120 90"','viewBox="-10 -6 140 102"'):i===1?esquema(p):ubicacion(p);
+  $('#lamina').innerHTML=cont+'<div class="pie-lam"><span>'+esc(pies[i])+'</span><span>'+p.c+'</span></div>';
+  $$('.lam-tabs button').forEach(function(b){b.setAttribute('aria-selected',String(+b.getAttribute('data-lam')===i))});
+}
+$$('.lam-tabs button').forEach(function(b){b.addEventListener('click',function(){lamina(+b.getAttribute('data-lam'))})});
+function abrirFicha(c){
+  var p=P.filter(function(x){return x.c===c})[0];actual=p;
+  $('#modCod').textContent=p.c;$('#modTit').textContent=p.t;
+  var extra='';
+  if(p.fin)extra='<table class="tabla" style="margin:10px 0"><tr><th>Contado</th><td class="r">USD 150.000 <span class="pp">Precio publicado</span></td></tr><tr><th>Financiado</th><td class="r">USD 105.000 + 12 × 4.125 <span class="pp">Precio publicado</span></td></tr></table><a class="btn sec" href="#inversor" data-cerrar>Calcular la renta</a> ';
+  if(p.icl)extra='<a class="btn sec" href="#icl" data-cerrar style="margin-bottom:8px">Simular ajuste ICL</a> ';
+  $('#modInfo').innerHTML='<h3>'+esc(p.t)+'</h3><p class="dir" style="margin:0">'+esc(p.dir)+' · '+(p.op==='venta'?'Venta':'Alquiler')+'</p>'+
+    '<div style="margin-top:12px">'+precioHTML(p)+'</div>'+
+    '<ul class="car">'+p.car.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul>'+extra+
+    (p.alquilado?'<p><span class="estado">Alquilado</span></p><p style="font-size:14px">No disponible por ahora. Mirá DM-04, DM-05 o DM-07.</p>':'<p style="margin-top:10px"><button type="button" class="btn wa" data-visita-m="'+p.c+'" style="width:100%">Coordinar visita a '+p.c+'</button></p>');
+  lamina(0);
+  if(modal.showModal)modal.showModal();else modal.setAttribute('open','');
+}
+$('#cerrar').addEventListener('click',function(){modal.close()});
+modal.addEventListener('click',function(e){
+  if(e.target===modal)modal.close();
+  var v=e.target.closest('[data-visita-m]');if(v){modal.close();elegirProp(v.getAttribute('data-visita-m'));$('#visita').scrollIntoView({behavior:'smooth'})}
+  if(e.target.closest('[data-cerrar]'))modal.close();
+});
+
+/* ---------- Coordinar visita + burbuja ---------- */
+var V={prop:'',dia:'',franja:'',pers:'',pago:'',nombre:''};
+var sel=$('#vProp');
+sel.innerHTML='<option value="">Elegí una propiedad…</option>'+P.filter(function(p){return !p.alquilado}).map(function(p){return '<option value="'+p.c+'">'+p.c+' · '+esc(p.t)+' ('+(p.op==='venta'?'venta':'alquiler')+')</option>'}).join('');
+var MES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'],DS=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'],DC=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+var hoy=new Date(2026,10,27),dias=[],d=new Date(hoy);
+while(dias.length<8){d.setDate(d.getDate()+1);if(d.getDay()>0&&d.getDay()<6)dias.push(new Date(d))}
+function chips(el,items,key){
+  el.innerHTML=items.map(function(it){var v=it.v||it,l=it.l||it;return '<button type="button" data-v="'+esc(v)+'" aria-pressed="false">'+l+'</button>'}).join('');
+  el.onclick=function(e){var b=e.target.closest('button');if(!b)return;$$('button',el).forEach(function(x){x.setAttribute('aria-pressed','false')});b.setAttribute('aria-pressed','true');V[key]=b.getAttribute('data-v');escribir()};
+}
+chips($('#vDias'),dias.map(function(x){return {v:DS[x.getDay()]+' '+x.getDate()+' de '+MES[x.getMonth()],l:DC[x.getDay()]+'<small>'+x.getDate()+'/'+(x.getMonth()+1)+'</small>'}}),'dia');
+chips($('#vFranja'),['9 a 12 h','12 a 15 h','15 a 19 h'],'franja');
+chips($('#vPers'),['1','2','3','4','5 o más'],'pers');
+var PAGOS={venta:['Contado','Financiación publicada','Permuta','A conversar'],alq:['Particular','Empresa','A conversar'],lote:['Anticipo + cuotas publicado','Contado','A conversar']};
+function pagos(){
+  var p=P.filter(function(x){return x.c===V.prop})[0];var k=p?p.pago:'venta';
+  if(p&&p.c==='DM-01'||p&&p.c==='DM-03')k='venta3';
+  var lista=k==='venta3'?['Contado','Permuta','A conversar']:PAGOS[k];
+  $('#vPagoLbl').textContent=k==='alq'?'¿Alquilás como?':'Forma de pago';
+  V.pago='';chips($('#vPago'),lista,'pago');
+}
+function elegirProp(c){sel.value=c;V.prop=c;pagos();escribir()}
+sel.addEventListener('change',function(){V.prop=sel.value;pagos();escribir()});
+$('#vNombre').addEventListener('input',function(){V.nombre=this.value.trim();escribir()});
+function texto(){
+  var p=P.filter(function(x){return x.c===V.prop})[0];
+  var L=['Hola Demaría Hnos., quiero coordinar una visita.'];
+  L.push('• Propiedad: '+(p?p.c+' · '+p.t+' · '+p.dir:'(a elegir)'));
+  L.push('• Operación: '+(p?(p.op==='venta'?'Compra':'Alquiler'):'(a elegir)'));
+  L.push('• Día: '+(V.dia||'(a elegir)')+(V.franja?', de '+V.franja:''));
+  L.push('• Personas: '+(V.pers||'(a elegir)'));
+  L.push('• '+(p&&p.pago==='alq'?'Alquilo como':'Pago')+': '+(V.pago||'(a elegir)'));
+  L.push('• Nombre: '+(V.nombre||'(a completar)'));
+  L.push('Lo vi en el catálogo web.');
+  return L.join('\n');
+}
+function hora(){var n=new Date();return ('0'+n.getHours()).slice(-2)+':'+('0'+n.getMinutes()).slice(-2)}
+function escribir(){
+  var t=texto();
+  $('#burbuja').innerHTML=esc(t).replace(/\((a elegir|a completar)\)/g,'<span class="falta">($1)</span>')+'<span class="cursor"></span><span class="hora">'+hora()+'</span>';
+  $('#btnWa').href='https://wa.me/'+WA+'?text='+encodeURIComponent(t);
+}
+pagos();escribir();
+
+/* servicios */
+$$('.serv').forEach(function(a){var s=a.getAttribute('data-serv');a.href='https://wa.me/'+WA+'?text='+encodeURIComponent('Hola Demaría Hnos., quiero consultar por: '+s+'. Lo vi en el catálogo web.');a.target='_blank';a.rel='noopener'});
+
+/* ---------- Calculadora del inversor ---------- */
+var modo='contado',uni=1;
+var PRC={contado:150000,finan:154500};
+function calc(){
+  var a=Math.max(0,+$('#iAlq').value||0);
+  var anual=a*12*uni,base=PRC[modo]*uni;
+  var renta=base?anual/base*100:0,anios=anual?base/anual:0;
+  $('#oRenta').textContent=renta.toFixed(1).replace('.',',')+' %';
+  $('#oAnios').textContent=anual?anios.toFixed(1).replace('.',','):'—';
+  $('#oAnual').textContent='USD '+fmt(anual);
+  var rc=anual/(150000*uni)*100,rf=anual/(154500*uni)*100,ac=anual?150000*uni/anual:0,af=anual?154500*uni/anual:0;
+  var max=Math.max(ac,af,1);
+  $('#barC').style.width=(ac/ Math.max(max,1)*100*0.98)+'%';$('#barF').style.width=(af/Math.max(max,1)*100*0.98)+'%';
+  $('#cC').textContent=anual?ac.toFixed(1).replace('.',',')+' años de recupero':'—';
+  $('#cF').textContent=anual?af.toFixed(1).replace('.',',')+' años de recupero':'—';
+  var cuota=4125*uni,cubre=cuota?a*uni/cuota*100:0;
+  var E=' <span class="ej">Monto de ejemplo</span>',PP=' <span class="pp">Precio publicado</span>';
+  $('#tComp').innerHTML=
+    '<tr><td>Precio total</td><td class="r">USD '+fmt(150000*uni)+PP+'</td><td class="r">USD '+fmt(154500*uni)+PP+'</td></tr>'+
+    '<tr><td>Pago inicial</td><td class="r">USD '+fmt(150000*uni)+PP+'</td><td class="r">USD '+fmt(105000*uni)+PP+'</td></tr>'+
+    '<tr><td>Cuotas</td><td class="r">—</td><td class="r">12 × USD '+fmt(cuota)+PP+'</td></tr>'+
+    '<tr><td>Diferencia</td><td class="r">—</td><td class="r">+ USD '+fmt(4500*uni)+' (3,0 %)</td></tr>'+
+    '<tr><td>Renta bruta anual</td><td class="r">'+rc.toFixed(1).replace('.',',')+' %'+E+'</td><td class="r">'+rf.toFixed(1).replace('.',',')+' %'+E+'</td></tr>'+
+    '<tr><td>El alquiler cubre de cada cuota</td><td class="r">—</td><td class="r">'+Math.round(cubre)+' %'+E+'</td></tr>';
+}
+$('#iAlq').addEventListener('input',function(){$('#iAlqR').value=this.value;calc()});
+$('#iAlqR').addEventListener('input',function(){$('#iAlq').value=this.value;calc()});
+$('#mContado').addEventListener('click',function(){modo='contado';this.setAttribute('aria-pressed','true');$('#mFinan').setAttribute('aria-pressed','false');calc()});
+$('#mFinan').addEventListener('click',function(){modo='finan';this.setAttribute('aria-pressed','true');$('#mContado').setAttribute('aria-pressed','false');calc()});
+$('#iUni').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;uni=+b.getAttribute('data-u');$$('#iUni button').forEach(function(x){x.setAttribute('aria-pressed',String(x===b))});calc()});
+calc();
+
+/* ---------- ICL ---------- */
+function icl(){
+  var ini=Math.max(0,+$('#iIni').value||0),pct=Math.max(0,+$('#iPct').value||0)/100,h='',m=ini;
+  var E='<br><span class="ej">Monto de ejemplo</span>';
+  for(var q=1;q<=8;q++){
+    if(q>1)m=m*(1+pct);
+    h+='<tr><td>'+q+'°</td><td>'+((q-1)*3+1)+' a '+(q*3)+'</td><td class="r">$ '+fmt(m)+E+'</td><td class="r">$ '+fmt(m*3)+E+'</td></tr>';
+  }
+  h+='<tr><th colspan="2">Al final</th><th class="r" colspan="2">+'+((m/ (ini||1)-1)*100).toFixed(1).replace('.',',')+' % sobre el inicial <span class="ej">Monto de ejemplo</span></th></tr>';
+  $('#tIclBody').innerHTML=h;
+}
+$('#iIni').addEventListener('input',icl);$('#iPct').addEventListener('input',icl);icl();
+
+/* ---------- Tasación ---------- */
+function tasa(){
+  var g=function(id){return $(id).value.trim()};
+  var t='Hola Demaría Hnos., quiero tasar mi propiedad.\n• Quiero: '+g('#tQue')+'\n• Tipo: '+g('#tTipo')+'\n• Dirección / zona: '+(g('#tDir')||'(a completar)')+'\n• Superficie: '+(g('#tM2')?g('#tM2')+' m² aprox.':'(a completar)')+'\n• Dormitorios: '+g('#tDorm')+'\n• Nombre: '+(g('#tNom')||'(a completar)');
+  $('#burbujaTasa').innerHTML=esc(t).replace(/\(a completar\)/g,'<span class="falta">(a completar)</span>')+'<span class="hora">'+hora()+'</span>';
+  $('#btnTasa').href='https://wa.me/'+WA+'?text='+encodeURIComponent(t);
+}
+$$('#formTasa input,#formTasa select').forEach(function(el){el.addEventListener('input',tasa);el.addEventListener('change',tasa)});tasa();
+
+/* ---------- Vista dueño ---------- */
+var EJ=[
+ {de:'Consulta de ejemplo',h:'09:12',t:'Hola Demaría Hnos., quiero coordinar una visita.\n• Propiedad: DM-02 · Complejo La Meseta · 2 unidades · Av. Almirante Brown, Lote 12, Mz 219, Añelo\n• Operación: Compra\n• Día: martes 1 de diciembre, de 15 a 19 h\n• Personas: 2\n• Pago: Financiación publicada\n• Nombre: (nombre de ejemplo)\nLo vi en el catálogo web.'},
+ {de:'Consulta de ejemplo',h:'10:40',t:'Hola Demaría Hnos., quiero coordinar una visita.\n• Propiedad: DM-04 · Departamento a estrenar · Edificio Küref · Río Juramento 1100, 3° G, Neuquén\n• Operación: Alquiler\n• Día: lunes 30 de noviembre, de 12 a 15 h\n• Personas: 1\n• Alquilo como: Empresa\n• Nombre: (nombre de ejemplo)\nLo vi en el catálogo web.'},
+ {de:'Consulta de ejemplo',h:'11:05',t:'Hola Demaría Hnos., quiero tasar mi propiedad.\n• Quiero: Solo tasar\n• Tipo: Fondo de comercio\n• Dirección / zona: (zona de ejemplo)\n• Superficie: (de ejemplo)\n• Dormitorios: No aplica\n• Nombre: (nombre de ejemplo)'}
+];
+function bandeja(){
+  var propia=V.prop&&V.dia?[{de:'Recién armada en esta página',h:hora(),t:texto(),nueva:true}]:[];
+  $('#bandeja').innerHTML=propia.concat(EJ).map(function(c){return '<div><div class="meta">'+(c.nueva?'<span class="nueva">NUEVA</span>':'')+'<b>'+c.de+'</b> · '+c.h+'</div><div class="burbuja">'+esc(c.t)+'<span class="hora">'+c.h+'</span></div></div>'}).join('');
+}
+var AG=[
+ ['Lun 30',[['12 a 15 h','DM-04 · Küref','1 persona']]],
+ ['Mar 1',[['15 a 19 h','DM-02 · La Meseta','2 personas']]],
+ ['Mié 2',[]],
+ ['Jue 3',[['9 a 12 h','DM-07 · Zona Terminal','3 personas'],['15 a 19 h','DM-05 · Bejarano y Lanín','2 personas']]],
+ ['Vie 4',[['9 a 12 h','DM-03 · Modular Añelo','1 persona']]]
+];
+$('#agenda').innerHTML=AG.map(function(d){return '<div class="dia"><b>'+d[0]+'</b><div>'+(d[1].length?d[1].map(function(t){return '<div class="turno"><i>'+t[0]+'</i>'+t[1]+'<br>'+t[2]+'</div>'}).join(''):'<div class="turno libre">Sin visitas</div>')+'</div></div>'}).join('');
+
+function vista(dueno){
+  document.body.classList.toggle('dueno',dueno);
+  $('#btnDueno').setAttribute('aria-pressed',String(dueno));$('#btnCliente').setAttribute('aria-pressed',String(!dueno));
+  if(dueno)bandeja();
+  window.scrollTo(0,0);
+}
+$('#btnDueno').addEventListener('click',function(){vista(true)});
+$('#btnCliente').addEventListener('click',function(){vista(false)});
+$('#volver').addEventListener('click',function(){vista(false)});
+$('#logo').addEventListener('click',function(){if(document.body.classList.contains('dueno'))vista(false)});
+
+filtrar();
+})();
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="Inmobiliaria Demaría Hermanos"></script>
+</body>
+</html>
