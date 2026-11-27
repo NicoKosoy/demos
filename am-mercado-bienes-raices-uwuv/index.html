@@ -1,0 +1,963 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>AM Mercado de Bienes Raíces · Prototipo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Teko:wght@400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --graf:#121417; --graf2:#181b1f; --graf3:#20242a; --line:rgba(232,238,242,.13); --line2:rgba(232,238,242,.22);
+  --hielo:#E8EEF2; --muted:#a3afb7; --turq:#2BB3A3; --turq-d:#1f8a7e; --arena:#C8A97E; --blanco:#FAFAF7;
+  --wa-bg:#0b141a; --wa-out:#005c4b; --wa-in:#202c33;
+  --display:"Teko","Arial Narrow",sans-serif; --serif:"IBM Plex Serif",Georgia,serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--graf);color:var(--hielo);font-family:var(--serif);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:var(--turq)}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--arena);outline-offset:2px;border-radius:3px}
+.wrap{max-width:1280px;margin:0 auto;padding:0 24px}
+@media (max-width:640px){.wrap{padding:0 16px}}
+.num{font-family:var(--display);letter-spacing:.02em;line-height:.95}
+.tag{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-family:var(--serif);font-weight:500}
+.tag.ej{color:var(--arena)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* firma */
+.firma{font-size:12px;color:var(--muted);padding:8px 0;border-bottom:1px solid var(--line)}
+.firma .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+/* header */
+header.top{border-bottom:1px solid var(--line);position:sticky;top:0;z-index:30;background:rgba(18,20,23,.94);backdrop-filter:blur(8px)}
+.top .wrap{display:flex;align-items:center;gap:20px;min-height:64px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--blanco)}
+.brand .mk{font-family:var(--display);font-size:38px;font-weight:600;line-height:1;border:1.5px solid var(--arena);color:var(--arena);padding:6px 8px 0;border-radius:2px}
+.brand .nm{line-height:1.15}
+.brand .nm b{font-family:var(--display);font-weight:500;font-size:22px;letter-spacing:.04em;display:block;text-transform:uppercase}
+.brand .nm span{font-size:12px;color:var(--muted)}
+.top nav{margin-left:auto;display:flex;gap:6px;align-items:center}
+.top nav a{color:var(--hielo);text-decoration:none;font-size:14px;padding:8px 10px;border-radius:3px}
+.top nav a:hover{background:var(--graf3)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--line2);background:transparent;color:var(--hielo);padding:10px 14px;border-radius:3px;cursor:pointer;font-size:14px;text-decoration:none;min-height:42px}
+.btn:hover{border-color:var(--hielo)}
+.btn.pri{background:var(--turq);border-color:var(--turq);color:#06201d;font-weight:600}
+.btn.pri:hover{background:#35c6b5}
+.btn.ar{border-color:var(--arena);color:var(--arena)}
+.btn.ar[aria-pressed="true"]{background:var(--arena);color:var(--graf)}
+.btn svg{width:18px;height:18px;flex:none}
+#ownerBtn{white-space:nowrap}
+@media (max-width:420px){#ownerBtn svg{display:none}}
+@media (max-width:860px){.top nav a{display:none}.brand .nm span{display:none}}
+@media (max-width:420px){.brand .nm b{font-size:18px}.brand .mk{font-size:30px}.top .wrap{gap:10px}.btn.ar{padding:8px 10px;font-size:13px}}
+
+/* ticker */
+.ticker{border-bottom:1px solid var(--line);overflow:hidden;background:var(--graf2)}
+.ticker ul{display:flex;gap:0;margin:0;padding:0;list-style:none;width:max-content;animation:tk 60s linear infinite}
+.ticker:hover ul{animation-play-state:paused}
+.ticker li{padding:8px 22px;border-right:1px solid var(--line);white-space:nowrap;font-size:13px;color:var(--muted)}
+.ticker li b{font-family:var(--display);font-size:20px;font-weight:500;color:var(--hielo);margin:0 6px;letter-spacing:.03em}
+.ticker li i{font-style:normal;color:var(--turq);font-family:var(--display);font-size:18px}
+@keyframes tk{to{transform:translateX(-50%)}}
+
+/* hero */
+.hero{padding:44px 0 28px;border-bottom:1px solid var(--line)}
+.hero .wrap{display:grid;grid-template-columns:1.5fr 1fr;gap:40px;align-items:end}
+.kicker{color:var(--arena);font-size:13px;letter-spacing:.08em;text-transform:uppercase;margin:0 0 10px}
+h1{font-family:var(--display);font-weight:500;font-size:clamp(44px,6.4vw,84px);line-height:.88;margin:0;color:var(--blanco);letter-spacing:.005em}
+h1 em{font-style:normal;color:var(--turq)}
+h1 .ar{color:var(--arena)}
+.hero ul.facts{list-style:none;margin:18px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px 18px;font-size:14px;color:var(--muted)}
+.hero ul.facts li::before{content:"";display:inline-block;width:6px;height:6px;background:var(--arena);margin-right:8px;vertical-align:middle}
+.stats{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:3px}
+.stats div{padding:14px 16px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.stats div:nth-child(2n){border-right:0}
+.stats div:nth-last-child(-n+2){border-bottom:0}
+.stats .num{font-size:40px;color:var(--blanco);display:block}
+.stats .num small{font-size:20px;color:var(--muted)}
+.stats .lb{font-size:12.5px;color:var(--muted)}
+@media (max-width:900px){.hero .wrap{grid-template-columns:1fr;gap:24px}.hero{padding:30px 0 22px}}
+
+/* board */
+.board{padding:28px 0 10px}
+.board .wrap{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:28px;align-items:start}
+@media (max-width:1000px){.board .wrap{grid-template-columns:1fr}}
+h2{font-family:var(--display);font-weight:500;font-size:40px;line-height:.95;margin:0 0 4px;color:var(--blanco);letter-spacing:.01em}
+.sub{color:var(--muted);font-size:14px;margin:0 0 16px}
+.filters{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:flex-end;padding:14px;border:1px solid var(--line);border-radius:3px;background:var(--graf2);margin-bottom:14px}
+.fgrp{display:flex;flex-direction:column;gap:4px}
+.fgrp label,.fgrp .lbl{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.seg{display:flex;border:1px solid var(--line2);border-radius:3px;overflow:hidden}
+.seg button{border:0;background:transparent;padding:8px 11px;cursor:pointer;font-size:13.5px;border-right:1px solid var(--line2);min-height:38px}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--hielo);color:var(--graf)}
+.seg button:disabled{color:#6c767d;cursor:not-allowed}
+select,input[type=text],input[type=number]{background:var(--graf);border:1px solid var(--line2);border-radius:3px;padding:8px 10px;min-height:38px;font-size:14px}
+select{padding-right:28px}
+.tog{display:flex;align-items:center;gap:8px;font-size:13.5px;cursor:pointer;padding:8px 10px;border:1px solid var(--line2);border-radius:3px;min-height:38px;user-select:none}
+.tog input{accent-color:var(--turq);width:16px;height:16px;margin:0}
+.tog:has(input:checked){border-color:var(--turq);color:var(--turq)}
+@media (max-width:640px){.filters{padding:12px}.fgrp{flex:1 1 140px}.fgrp select{width:100%}.seg{flex-wrap:wrap}}
+
+/* tabla pizarra */
+.tbl{border:1px solid var(--line);border-radius:3px;overflow:hidden}
+.cols{display:grid;grid-template-columns:34px 54px minmax(0,2fr) 1.35fr .65fr 1.2fr .45fr .5fr;gap:0 10px;align-items:center}
+.thead{background:var(--graf3);padding:6px 12px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.thead button{background:none;border:0;padding:6px 0;cursor:pointer;text-align:left;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);display:inline-flex;gap:4px;align-items:center}
+.thead button[aria-sort]:not([aria-sort="none"]){color:var(--turq)}
+.thead button .ar{font-size:10px}
+.row{padding:10px 12px;border-top:1px solid var(--line);cursor:pointer;position:relative;transition:background .15s}
+.row:hover,.row.hl{background:#1b2226}
+.row.hl::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--turq)}
+.row .cmp{display:flex;align-items:center;justify-content:center}
+.row .cmp input{width:18px;height:18px;accent-color:var(--arena);margin:0;cursor:pointer}
+.row .thumb{width:54px;height:42px;border-radius:2px;overflow:hidden;background:var(--graf3)}
+.row .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.row .pr{min-width:0}
+.row .m2 .mx{display:none}
+.row .pr .cd{white-space:nowrap;font-family:var(--display);font-size:16px;color:var(--arena);letter-spacing:.06em;margin-right:6px}
+.row .pr .tp{font-weight:500;color:var(--blanco)}
+@media (max-width:720px){.row .pr .cd{display:block;line-height:1}.row .pr .tp{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
+.row .pr .ad{display:block;font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .pr .open{background:none;border:0;padding:0;cursor:pointer;text-align:left;width:100%}
+.row .pz .num{font-size:24px;color:var(--blanco);display:block;white-space:nowrap}
+.row .pz .num.c{font-size:20px;color:var(--hielo)}
+.row .m2 .num{font-size:21px}
+.row .m2 small{display:block;font-size:11px;color:var(--muted)}
+.row .um .num{font-size:21px;color:var(--turq)}
+.row .um small{font-size:11px;color:var(--muted)}
+.bar{display:block;height:4px;background:var(--graf3);border-radius:2px;margin-top:3px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--turq)}
+.row .dm .num,.row .an .num{font-size:21px}
+.row .an small{font-size:11px;color:var(--muted)}
+.empty{padding:28px 16px;text-align:center;color:var(--muted);border-top:1px solid var(--line)}
+.note{font-size:12px;color:var(--muted);margin:10px 0 0}
+@media (max-width:720px){
+  .thead{display:flex;flex-wrap:wrap;gap:6px;padding:10px}
+  .thead .hide-m{display:none}
+  .thead button{border:1px solid var(--line2);border-radius:3px;padding:6px 9px}
+  .row.cols{grid-template-columns:28px 64px minmax(0,1fr) auto;grid-template-areas:"c t p p" "c t z u" "c t m m";gap:2px 10px}
+  .row .cmp{grid-area:c}.row .thumb{grid-area:t;width:64px;height:52px}.row .pr{grid-area:p}.row .pz{grid-area:z;text-align:left}
+  .row .m2{grid-area:m;display:flex;gap:10px;font-size:13px;color:var(--muted);white-space:nowrap}
+  .row .um{grid-area:u;text-align:right;align-self:start}
+  .row .dm,.row .an{display:none}
+  .row .m2 .num{font-size:17px;color:var(--hielo)}
+  .row .m2 small{display:inline}
+  .row .bar{display:none}
+  .row .pz .num{font-size:20px}
+  .row .um .num{font-size:18px}
+  .row .um small .lb{display:none}
+  .row .m2 .mx{display:inline}
+}
+
+/* mapa */
+.mapcol{position:sticky;top:80px}
+.mapbox{border:1px solid var(--line);border-radius:3px;background:var(--graf2);overflow:hidden}
+.mapbox summary{list-style:none;cursor:pointer;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;font-size:14px}
+.mapbox summary::-webkit-details-marker{display:none}
+.mapbox summary .chev{transition:transform .2s}
+.mapbox[open] summary .chev{transform:rotate(180deg)}
+@media (min-width:1001px){.mapbox summary{display:none}}
+.maphead{padding:12px 14px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.maphead b{font-family:var(--display);font-weight:500;font-size:22px;letter-spacing:.03em}
+svg.plano{display:block;width:100%;height:auto}
+.plano .zone{fill:rgba(232,238,242,.035);stroke:rgba(232,238,242,.18);stroke-width:1}
+.plano .zone.on{fill:rgba(43,179,163,.12);stroke:var(--turq)}
+.plano .zl{fill:#9aa6ae;font-family:var(--serif);font-size:10.5px}
+.plano .rv{fill:none;stroke:#2c6f73;stroke-width:9;stroke-linecap:round;opacity:.85}
+.plano .rvl{fill:#58a7a6;font-family:var(--serif);font-style:italic;font-size:11px}
+.plano .pin{cursor:pointer}
+.plano .pin circle.o{fill:var(--graf);stroke:var(--arena);stroke-width:1.5;transition:r .15s}
+.plano .pin text{fill:var(--arena);font-family:var(--display);font-size:12px;text-anchor:middle;pointer-events:none}
+.plano .pin.on circle.o{fill:var(--turq);stroke:var(--blanco);r:15}
+.plano .pin.on text{fill:#06201d;font-size:14px}
+.plano .pin.off{opacity:.25}
+.mapinfo{padding:12px 14px;border-top:1px solid var(--line);font-size:13.5px;min-height:64px;color:var(--muted)}
+.mapinfo b{color:var(--blanco);font-weight:500}
+
+/* comparador */
+section.sec{padding:40px 0;border-top:1px solid var(--line)}
+.cmpgrid{display:grid;grid-template-columns:160px repeat(3,minmax(0,1fr));border:1px solid var(--line);border-radius:3px;overflow:hidden}
+.cmpgrid > div{padding:10px 12px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);min-width:0}
+.cmpgrid > div:nth-child(4n){border-right:0}
+.cmpgrid .k{color:var(--muted);font-size:12.5px;background:var(--graf2);display:flex;align-items:center}
+.cmpgrid .hd{background:var(--graf2)}
+.cmpgrid .hd .cd{font-family:var(--display);color:var(--arena);font-size:18px;letter-spacing:.05em}
+.cmpgrid .hd .t{display:block;font-size:13.5px;color:var(--blanco);line-height:1.3}
+.cmpgrid .hd .z{display:block;font-size:12px;color:var(--muted)}
+.cmpgrid .hd button{margin-top:6px;background:none;border:0;color:var(--muted);font-size:12px;cursor:pointer;padding:2px 0;text-decoration:underline}
+.cmpgrid .v .num{font-size:22px;display:block}
+.cmpgrid .v .bar{height:8px;margin-top:5px}
+.cmpgrid .v .bar i.ar{background:var(--arena)}
+.cmpgrid .v.best .num{color:var(--turq)}
+.cmpgrid .ck{display:inline-flex;align-items:center;gap:6px;font-size:13.5px}
+.cmpgrid .ck svg{width:18px;height:18px}
+.cmpgrid .ck.no{color:#7d878e}
+.cmpgrid .ph{color:#7d878e;font-size:13px;display:flex;align-items:center}
+@media (max-width:720px){
+  .cmpgrid{grid-template-columns:86px repeat(3,minmax(0,1fr));font-size:13px}
+  .cmpgrid > div{padding:8px 6px}
+  .cmpgrid .k{font-size:11px}
+  .cmpgrid .v .num{font-size:18px}
+  .cmpgrid .hd .t{font-size:12px}
+  .cmpgrid .ck span{display:none}
+  .cmpgrid .v .tag{font-size:9px;letter-spacing:.02em}
+}
+
+/* consulta */
+.cons{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:32px;align-items:start}
+@media (max-width:900px){.cons{grid-template-columns:1fr}}
+.form{display:grid;gap:14px}
+.form .fgrp select,.form .fgrp input{width:100%}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{border:1px solid var(--line2);background:transparent;border-radius:3px;padding:7px 10px;cursor:pointer;font-size:13.5px;min-height:38px;line-height:1.15}
+.chips button small{display:block;font-size:11px;color:var(--muted)}
+.chips button[aria-pressed="true"]{background:var(--turq);border-color:var(--turq);color:#06201d}
+.chips button[aria-pressed="true"] small{color:#0c3a35}
+.step{display:flex;align-items:center;border:1px solid var(--line2);border-radius:3px;width:max-content}
+.step button{width:40px;height:38px;background:none;border:0;cursor:pointer;font-size:18px}
+.step output{min-width:36px;text-align:center;font-family:var(--display);font-size:22px}
+.selprop{display:flex;gap:12px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:3px;background:var(--graf2)}
+.selprop .thumb{width:72px;height:54px;flex:none;border-radius:2px;overflow:hidden}
+.selprop img{width:100%;height:100%;object-fit:cover;display:block}
+.selprop .tx{font-size:13.5px;min-width:0}
+.selprop .tx b{font-weight:500;color:var(--blanco)}
+.warn{font-size:12.5px;color:var(--arena);margin-top:4px}
+.phone{background:var(--wa-bg);border-radius:14px;border:1px solid #233138;overflow:hidden;position:sticky;top:84px}
+.phone .wh{background:#202c33;padding:10px 14px;display:flex;align-items:center;gap:10px}
+.phone .av{width:36px;height:36px;border-radius:50%;background:var(--arena);color:var(--graf);display:grid;place-items:center;font-family:var(--display);font-size:20px;padding-top:3px}
+.phone .wh b{font-weight:500;font-size:14.5px;display:block;color:#e9edef;font-family:system-ui,sans-serif}
+.phone .wh span{font-size:12px;color:#8696a0;font-family:system-ui,sans-serif}
+.phone .chat{padding:18px 14px 14px;background-image:radial-gradient(rgba(255,255,255,.025) 1px,transparent 1px);background-size:14px 14px;min-height:280px}
+.bub{background:var(--wa-out);color:#e9edef;padding:8px 10px 18px;border-radius:8px 0 8px 8px;max-width:92%;margin-left:auto;position:relative;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:14.2px;line-height:1.42;white-space:pre-wrap;word-wrap:break-word}
+.bub::after{content:"";position:absolute;right:-7px;top:0;border-left:8px solid var(--wa-out);border-bottom:8px solid transparent}
+.bub .hr{position:absolute;right:8px;bottom:4px;font-size:11px;color:#8fb8ae}
+.bub.in{background:var(--wa-in);margin-left:0;margin-right:auto;border-radius:0 8px 8px 8px}
+.bub.in::after{right:auto;left:-7px;border-left:0;border-right:8px solid var(--wa-in)}
+.bub .caret{display:inline-block;width:2px;height:15px;background:#e9edef;vertical-align:-2px;animation:bl 1s steps(1) infinite}
+@keyframes bl{50%{opacity:0}}
+.phone .foot{padding:12px 14px;background:#111b21;display:grid;gap:8px}
+.phone .foot .btn{width:100%}
+.phone .foot p{margin:0;font-size:12px;color:#8696a0;font-family:system-ui,sans-serif}
+.btn.wa{background:#25d366;border-color:#25d366;color:#062b16;font-weight:600}
+
+/* tasacion */
+.tas{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px}
+@media (max-width:900px){.tas{grid-template-columns:1fr}}
+.tas .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:480px){.tas .grid2{grid-template-columns:1fr}}
+.ref{border:1px solid var(--line);border-left:3px solid var(--arena);padding:12px 14px;border-radius:3px;background:var(--graf2);font-size:13.5px}
+.ref .num{font-size:30px;color:var(--arena)}
+ul.how{list-style:none;padding:0;margin:0;display:grid;gap:8px;font-size:14px}
+ul.how li{display:flex;gap:10px}
+ul.how li b{font-family:var(--display);font-size:22px;color:var(--turq);line-height:1;min-width:18px}
+
+/* para vos */
+.pv{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:32px;align-items:start}
+@media (max-width:900px){.pv{grid-template-columns:1fr}}
+.pv ul{list-style:none;padding:0;margin:0;border-top:1px solid var(--line)}
+.pv li{display:grid;grid-template-columns:40px 1fr;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
+.pv li svg{width:28px;height:28px;color:var(--turq)}
+.pv li b{display:block;color:var(--blanco);font-weight:500}
+.pv li span{font-size:14px;color:var(--muted)}
+
+/* owner */
+#owner{display:none}
+body.owner #owner{display:block}
+body.owner main#buyer{display:none}
+.obar{background:var(--arena);color:var(--graf);padding:10px 0;font-size:14px}
+.obar .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.obar b{font-family:var(--display);font-size:22px;font-weight:500;letter-spacing:.04em}
+.obar .btn{border-color:var(--graf);color:var(--graf);min-height:36px;padding:6px 12px}
+.ogrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line);border-radius:3px;margin:24px 0}
+.ogrid > div{padding:14px 16px;border-right:1px solid var(--line)}
+.ogrid > div:last-child{border-right:0}
+.ogrid .num{font-size:40px;color:var(--blanco);display:block}
+.ogrid .lb{font-size:13px;color:var(--muted)}
+@media (max-width:820px){.ogrid .num{font-size:28px;white-space:nowrap}.ogrid{grid-template-columns:1fr 1fr}.ogrid > div:nth-child(2){border-right:0}.ogrid > div:nth-child(-n+2){border-bottom:1px solid var(--line)}}
+.ocols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:28px;align-items:start}
+@media (max-width:900px){.ocols{grid-template-columns:1fr}}
+.inbox{display:grid;gap:12px}
+.inbox .msg{background:var(--wa-bg);border:1px solid #233138;border-radius:10px;padding:12px}
+.inbox .meta{display:flex;justify-content:space-between;font-size:12px;color:#8696a0;margin-bottom:8px;font-family:system-ui,sans-serif}
+.inbox .bub{max-width:100%;margin:0;font-size:13.5px}
+.agenda{display:grid;grid-template-columns:70px repeat(6,minmax(0,1fr));border:1px solid var(--line);border-radius:3px;overflow:hidden;font-size:12.5px}
+.agenda > div{padding:8px 6px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);min-height:52px;min-width:0}
+.agenda .h{background:var(--graf2);color:var(--muted);min-height:auto;font-size:11.5px;text-transform:uppercase;letter-spacing:.04em}
+.agenda .slot{background:rgba(43,179,163,.14);border-left:3px solid var(--turq);color:var(--hielo)}
+.agenda .slot b{font-family:var(--display);font-size:16px;color:var(--arena);font-weight:500;display:block;line-height:1}
+@media (max-width:640px){.agenda{grid-template-columns:52px repeat(6,minmax(0,1fr));font-size:10.5px}.agenda > div{padding:5px 3px}.agenda .slot span{display:none}.agenda .slot b{font-size:14px}}
+table.otab{width:100%;border-collapse:collapse;font-size:14px}
+table.otab th,table.otab td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+table.otab th{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500}
+table.otab td .num{font-size:21px;color:var(--blanco)}
+table.otab td .tag{display:block}
+h3{font-family:var(--display);font-weight:500;font-size:26px;letter-spacing:.02em;margin:0 0 10px;color:var(--blanco)}
+
+/* ficha dialog */
+dialog#ficha{width:min(980px,calc(100vw - 24px));max-height:calc(100vh - 24px);padding:0;border:1px solid var(--line2);border-radius:4px;background:var(--graf);color:var(--hielo)}
+dialog#ficha::backdrop{background:rgba(5,7,9,.75)}
+.fi{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr)}
+@media (max-width:820px){.fi{grid-template-columns:1fr}}
+@media (min-width:821px){#ficha .fi .ph{aspect-ratio:auto;min-height:440px}}
+h3#fiT{line-height:1}
+.fi .ph{position:relative;background:var(--graf3);aspect-ratio:4/3;min-width:0;overflow:hidden}
+.fi .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.fi .ph .gal{position:absolute;left:10px;bottom:10px;display:flex;gap:6px}
+.fi .ph .gal button{background:rgba(18,20,23,.85);border:1px solid var(--line2);border-radius:3px;padding:6px 10px;font-size:12.5px;cursor:pointer}
+.fi .ph .gal button[aria-pressed="true"]{border-color:var(--turq);color:var(--turq)}
+.fi .ph .mini{position:absolute;inset:0;background:var(--graf2);display:none}
+.fi .ph.map .mini{display:block}
+.fi .ph .mini svg{width:100%;height:100%}
+.fi .bd{padding:20px 22px;display:grid;gap:14px;align-content:start}
+#ficha .x{position:absolute;color:var(--hielo);right:10px;top:10px;width:40px;height:40px;border-radius:50%;background:rgba(18,20,23,.9);border:1px solid var(--line2);cursor:pointer;display:grid;place-items:center;z-index:2}
+.fi .pp .num{font-size:46px;color:var(--blanco);white-space:nowrap}
+.fi table{width:100%;border-collapse:collapse;font-size:14px}
+.fi td{padding:6px 0;border-bottom:1px solid var(--line)}
+.fi td:last-child{white-space:nowrap;text-align:right;font-family:var(--display);font-size:19px;letter-spacing:.03em}
+.fi ul.dest{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:6px}
+.fi ul.dest li{border:1px solid var(--line2);border-radius:3px;padding:4px 9px;font-size:13px}
+.fi .acts{display:flex;gap:8px;flex-wrap:wrap}
+
+/* fallback ilustración */
+img[data-fb]{object-fit:contain!important;background:var(--graf3)}
+
+footer{border-top:1px solid var(--line);padding:30px 0 40px;font-size:14px;color:var(--muted)}
+footer .wrap{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:24px}
+footer b{color:var(--blanco);font-weight:500}
+footer ul{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:4px}
+footer .sig{grid-column:1/-1;border-top:1px solid var(--line);padding-top:16px;font-size:12px}
+@media (max-width:760px){footer .wrap{grid-template-columns:1fr}}
+</style>
+<script>
+/* Ilustración propia si la foto externa no carga */
+function fbSvg(code,kind){
+  var roof = kind==='casa' ? '<path d="M60 120 L150 60 L240 120" fill="none" stroke="#C8A97E" stroke-width="3"/><rect x="78" y="120" width="144" height="80" fill="none" stroke="#E8EEF2" stroke-opacity=".5" stroke-width="2"/><rect x="138" y="152" width="26" height="48" fill="#2BB3A3" fill-opacity=".5"/>'
+   : '<rect x="96" y="40" width="108" height="160" fill="none" stroke="#E8EEF2" stroke-opacity=".5" stroke-width="2"/>'+[0,1,2,3,4].map(function(i){return '<rect x="110" y="'+(54+i*28)+'" width="30" height="16" fill="#2BB3A3" fill-opacity="'+(i==2?'.7':'.25')+'"/><rect x="160" y="'+(54+i*28)+'" width="30" height="16" fill="#C8A97E" fill-opacity=".3"/>'}).join('');
+  var s='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 225"><rect width="300" height="225" fill="#20242a"/><path d="M0 200 H300" stroke="#E8EEF2" stroke-opacity=".2"/>'+roof+'<text x="16" y="28" fill="#C8A97E" font-family="Arial Narrow,sans-serif" font-size="18" letter-spacing="2">'+code+'</text></svg>';
+  return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(s);
+}
+function fb(img){img.onerror=null;img.dataset.fb='1';img.src=fbSvg(img.dataset.code||'AM',img.dataset.kind||'depto');}
+</script>
+</head>
+<body>
+
+<div class="firma"><div class="wrap"><span>Prototipo preparado para AM Mercado de Bienes Raíces · 27 de noviembre de 2026</span><span>Martillera Ailén Mena · Mat. 441 CMyCPN</span></div></div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="AM Mercado de Bienes Raíces, inicio">
+      <span class="mk">AM</span>
+      <span class="nm"><b>Mercado de Bienes Raíces</b><span>Río Diamante 628, Of. 2 · Neuquén</span></span>
+    </a>
+    <nav aria-label="Secciones">
+      <a href="#pizarra">Pizarra</a>
+      <a href="#comparador">Comparador</a>
+      <a href="#consulta">Consultar</a>
+      <a href="#tasacion">Tasá tu propiedad</a>
+      <button class="btn ar" id="ownerBtn" aria-pressed="false" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 12s3.5-7 9-7 9 7 9 7-3.5 7-9 7-9-7-9-7z"/><circle cx="12" cy="12" r="3"/></svg>
+        <span>Ver como dueño</span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<div class="ticker" aria-hidden="true"><ul id="ticker"></ul></div>
+
+<!-- ============ VISTA COMPRADOR ============ -->
+<main id="buyer">
+  <section class="hero" id="top">
+    <div class="wrap">
+      <div>
+        <p class="kicker">Cartera en venta · Neuquén y Centenario</p>
+        <h1>De <em>USD 120.000</em> en Santa Genoveva a <span class="ar">USD 450.000</span> sobre Av. Argentina</h1>
+        <ul class="facts">
+          <li>8 avisos publicados, con precio y USD por m²</li>
+          <li>Ordená, filtrá y compará hasta 3</li>
+          <li>Atención de 9 a 19 h</li>
+        </ul>
+      </div>
+      <div class="stats" id="stats" aria-label="Resumen de la pizarra"></div>
+    </div>
+  </section>
+
+  <section class="board" id="pizarra" aria-labelledby="pzT">
+    <div class="wrap">
+      <div>
+        <h2 id="pzT">Pizarra de cotizaciones</h2>
+        <p class="sub">Tocá una fila para ver la ficha. La casilla de la izquierda la suma al comparador.</p>
+        <div class="filters" role="group" aria-label="Filtros">
+          <div class="fgrp"><span class="lbl">Operación</span>
+            <div class="seg"><button type="button" aria-pressed="true">Venta (8)</button><button type="button" disabled title="Sin avisos de alquiler cargados">Alquiler (0)</button></div>
+          </div>
+          <div class="fgrp"><span class="lbl">Tipo</span>
+            <div class="seg" id="fTipo">
+              <button type="button" data-v="" aria-pressed="true">Todos</button>
+              <button type="button" data-v="depto" aria-pressed="false">Deptos</button>
+              <button type="button" data-v="casa" aria-pressed="false">Casas</button>
+              <button type="button" data-v="plex" aria-pressed="false">Dúplex / PH</button>
+            </div>
+          </div>
+          <div class="fgrp"><label for="fZona">Zona</label>
+            <select id="fZona"><option value="">Todas</option></select>
+          </div>
+          <div class="fgrp"><label for="fPrecio">Precio hasta</label>
+            <select id="fPrecio"><option value="">Sin tope</option><option value="150000">USD 150.000</option><option value="300000">USD 300.000</option><option value="400000">USD 400.000</option></select>
+          </div>
+          <div class="fgrp"><label for="fDorm">Dormitorios</label>
+            <select id="fDorm"><option value="0">Cualquiera</option><option value="2">2 o más</option><option value="3">3 o más</option><option value="4">4 o más</option></select>
+          </div>
+          <label class="tog"><input type="checkbox" id="fCred"> Solo apto crédito</label>
+          <label class="tog"><input type="checkbox" id="fPerm"> Acepta permuta</label>
+        </div>
+
+        <div class="tbl" role="table" aria-label="Propiedades en venta">
+          <div class="thead cols" role="row">
+            <span class="hide-m" role="columnheader"><span class="sr">Comparar</span></span>
+            <span class="hide-m" role="columnheader"><span class="sr">Foto</span></span>
+            <span class="hide-m" role="columnheader">Propiedad</span>
+            <span role="columnheader"><button type="button" data-k="precio" aria-sort="ascending">Precio <span class="ar">▲</span></button></span>
+            <span role="columnheader"><button type="button" data-k="m2" aria-sort="none">m² <span class="ar"></span></button></span>
+            <span role="columnheader"><button type="button" data-k="usdm2" aria-sort="none">USD/m² <span class="ar"></span></button></span>
+            <span role="columnheader"><button type="button" data-k="dorm" aria-sort="none">Dorm. <span class="ar"></span></button></span>
+            <span role="columnheader"><button type="button" data-k="antig" aria-sort="none">Años <span class="ar"></span></button></span>
+          </div>
+          <div id="rows" role="rowgroup"></div>
+        </div>
+        <p class="note">USD/m² = precio publicado ÷ superficie cubierta; si el aviso no la separa, sobre la superficie publicada (se indica en cada fila). Los "Consultar" van al final.</p>
+      </div>
+
+      <aside class="mapcol" aria-label="Plano de zonas">
+        <details class="mapbox" id="mapDet">
+          <summary><span>Ver plano de zonas</span><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
+          <div class="maphead"><b>Plano de zonas</b><span class="tag">Esquemático · no a escala</span></div>
+          <div id="mapHolder"></div>
+          <div class="mapinfo" id="mapInfo">Pasá por una fila o tocá un pin para ubicarla.</div>
+        </details>
+      </aside>
+    </div>
+  </section>
+
+  <section class="sec" id="comparador" aria-labelledby="cmpT">
+    <div class="wrap">
+      <h2 id="cmpT">Comparador</h2>
+      <p class="sub" id="cmpSub">Hasta 3 propiedades lado a lado. Las barras se escalan contra la mayor del grupo.</p>
+      <div class="cmpgrid" id="cmpGrid"></div>
+    </div>
+  </section>
+
+  <section class="sec" id="consulta" aria-labelledby="coT">
+    <div class="wrap cons">
+      <div>
+        <h2 id="coT">Pedí una visita</h2>
+        <p class="sub">Elegí y mirá a la derecha el mensaje exacto que le llega a Ailén.</p>
+        <div class="form">
+          <div class="fgrp"><label for="cProp">Propiedad</label><select id="cProp"></select></div>
+          <div class="selprop" id="cSel"></div>
+          <div class="fgrp"><span class="lbl">Operación</span>
+            <div class="chips" id="cOp"><button type="button" data-v="Compra" aria-pressed="true">Compra</button><button type="button" data-v="Compra, quiero hacer una oferta" aria-pressed="false">Quiero ofertar</button></div>
+          </div>
+          <div class="fgrp"><span class="lbl">Día de visita</span><div class="chips" id="cDia"></div></div>
+          <div class="fgrp"><span class="lbl">Franja (de 9 a 19 h)</span>
+            <div class="chips" id="cFr">
+              <button type="button" data-v="mañana (9 a 12 h)" aria-pressed="false">Mañana<small>9 a 12 h</small></button>
+              <button type="button" data-v="mediodía (12 a 15 h)" aria-pressed="false">Mediodía<small>12 a 15 h</small></button>
+              <button type="button" data-v="tarde (15 a 19 h)" aria-pressed="true">Tarde<small>15 a 19 h</small></button>
+            </div>
+          </div>
+          <div class="fgrp"><span class="lbl" id="pLbl">Personas que van a la visita</span>
+            <div class="step" role="group" aria-labelledby="pLbl"><button type="button" id="pMin" aria-label="Una persona menos">−</button><output id="pOut">2</output><button type="button" id="pMas" aria-label="Una persona más">+</button></div>
+          </div>
+          <div class="fgrp"><span class="lbl">Forma de pago</span>
+            <div class="chips" id="cPago">
+              <button type="button" data-v="contado" aria-pressed="false">Contado</button>
+              <button type="button" data-v="crédito hipotecario" aria-pressed="true">Crédito hipotecario</button>
+              <button type="button" data-v="permuta más diferencia" aria-pressed="false">Permuta + diferencia</button>
+              <button type="button" data-v="a definir" aria-pressed="false">A definir</button>
+            </div>
+            <div class="warn" id="cWarn" hidden></div>
+          </div>
+          <div class="fgrp"><label for="cNom">Tu nombre</label><input type="text" id="cNom" placeholder="Ej.: Julieta" autocomplete="given-name" maxlength="40"></div>
+        </div>
+      </div>
+      <div class="phone" aria-label="Vista previa del mensaje de WhatsApp">
+        <div class="wh"><span class="av">AM</span><div><b>AM Mercado de Bienes Raíces</b><span>Ailén Mena · martillera</span></div></div>
+        <div class="chat"><div class="bub" id="bub" aria-live="polite"></div></div>
+        <div class="foot">
+          <a class="btn wa" id="waBtn" href="#" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.4.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg>
+            Enviar por WhatsApp
+          </a>
+          <p>Se abre WhatsApp con este mismo texto. Ailén lo recibe con el código del aviso.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="tasacion" aria-labelledby="taT">
+    <div class="wrap tas">
+      <div>
+        <h2 id="taT">Tasá tu propiedad</h2>
+        <p class="sub">¿Querés vender? Cargá lo básico y Ailén te contacta para tasar.</p>
+        <ul class="how" style="margin-bottom:18px">
+          <li><b>1</b><span>Completás tipo, zona y metros.</span></li>
+          <li><b>2</b><span>Ves la referencia de USD/m² de la pizarra en tu zona.</span></li>
+          <li><b>3</b><span>Mandás el pedido armado por WhatsApp.</span></li>
+        </ul>
+        <div class="form">
+          <div class="grid2">
+            <div class="fgrp"><label for="tTipo">Tipo</label><select id="tTipo"><option>Departamento</option><option>Casa</option><option>Dúplex / PH</option><option>Lote</option><option>Local u oficina</option></select></div>
+            <div class="fgrp"><label for="tZona">Zona</label><select id="tZona"></select></div>
+            <div class="fgrp"><label for="tM2">m² cubiertos (aprox.)</label><input type="number" id="tM2" min="10" max="2000" value="90" inputmode="numeric"></div>
+            <div class="fgrp"><label for="tDorm">Dormitorios</label><select id="tDorm"><option>1</option><option selected>2</option><option>3</option><option>4 o más</option></select></div>
+            <div class="fgrp"><label for="tAnt">Antigüedad</label><select id="tAnt"><option>A estrenar</option><option>Hasta 10 años</option><option selected>10 a 30 años</option><option>Más de 30 años</option></select></div>
+            <div class="fgrp"><label for="tQ">Quiero</label><select id="tQ"><option>vender</option><option>solo saber cuánto vale</option><option>vender y comprar otra</option></select></div>
+          </div>
+          <div class="fgrp"><label for="tNom">Tu nombre</label><input type="text" id="tNom" placeholder="Ej.: Hernán" maxlength="40"></div>
+          <div class="ref" id="tRef"></div>
+        </div>
+      </div>
+      <div class="phone" aria-label="Vista previa del pedido de tasación">
+        <div class="wh"><span class="av">AM</span><div><b>AM Mercado de Bienes Raíces</b><span>Pedido de tasación</span></div></div>
+        <div class="chat"><div class="bub" id="tBub" aria-live="polite"></div></div>
+        <div class="foot"><a class="btn wa" id="tWa" href="#" target="_blank" rel="noopener">Enviar pedido por WhatsApp</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="paravos" aria-labelledby="pvT">
+    <div class="wrap pv">
+      <div>
+        <p class="kicker">Del otro lado del mostrador</p>
+        <h2 id="pvT">Para vos, Ailén</h2>
+        <p class="sub">Lo que cambia en tu día con un catálogo propio.</p>
+        <button type="button" class="btn ar" id="ownerBtn2">Ver como dueño</button>
+      </div>
+      <ul>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 5h16v10H8l-4 4z"/><path d="M8 9h8M8 12h5"/></svg><div><b>Menos "¿sigue disponible?" y "¿precio?"</b><span>El precio y el USD/m² ya están a la vista.</span></div></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="1"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><div><b>Agenda de visitas ordenada</b><span>Cada pedido trae día y franja dentro de 9 a 19 h.</span></div></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><div><b>La consulta llega con la propiedad indicada</b><span>Código AM, dirección, personas y forma de pago.</span></div></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12l4 4 10-10"/></svg><div><b>Sin pagar por aviso ni por portal</b><span>El catálogo es tuyo; los portales quedan como vidriera extra.</span></div></li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<!-- ============ VISTA DUEÑO ============ -->
+<section id="owner" aria-labelledby="owT">
+  <div class="obar"><div class="wrap"><b id="owT">Panel de ejemplo · lo que ve Ailén</b><button class="btn" type="button" id="ownerBack">Volver a la pizarra</button></div></div>
+  <div class="wrap">
+    <div class="ogrid">
+      <div><span class="num">14</span><span class="lb">Consultas esta semana</span><span class="tag ej" style="display:block">Dato de ejemplo</span></div>
+      <div><span class="num">6</span><span class="lb">Visitas agendadas</span><span class="tag ej" style="display:block">Dato de ejemplo</span></div>
+      <div><span class="num">USD 3.000</span><span class="lb">Reservas cobradas</span><span class="tag ej" style="display:block">Monto de ejemplo</span></div>
+      <div><span class="num">$ 380.000</span><span class="lb">Ahorro por mes frente a portales</span><span class="tag ej" style="display:block">Monto de ejemplo</span></div>
+    </div>
+    <div class="ocols">
+      <div>
+        <h3>Consultas que entraron</h3>
+        <div class="inbox" id="inbox"></div>
+      </div>
+      <div>
+        <h3>Agenda de visitas · semana</h3>
+        <div class="agenda" id="agenda"></div>
+        <p class="note">Panel de ejemplo. Cada visita sale de un pedido como el de la burbuja.</p>
+
+        <h3 style="margin-top:26px">Reservas cobradas</h3>
+        <table class="otab">
+          <thead><tr><th>Propiedad</th><th>Comprador</th><th>Reserva</th></tr></thead>
+          <tbody>
+            <tr><td>AM-03 · Santa Genoveva</td><td>Gabriel P.</td><td><span class="num">USD 1.000</span><span class="tag ej">Monto de ejemplo</span></td></tr>
+            <tr><td>AM-02 · La Peregrina</td><td>Lucía y Martín</td><td><span class="num">USD 2.000</span><span class="tag ej">Monto de ejemplo</span></td></tr>
+          </tbody>
+        </table>
+
+        <h3 style="margin-top:26px">Frente a los portales</h3>
+        <table class="otab">
+          <thead><tr><th>Concepto</th><th>Portal</th><th>Catálogo propio</th></tr></thead>
+          <tbody>
+            <tr><td>Plan mensual de avisos</td><td><span class="num">$ 300.000</span><span class="tag ej">Monto de ejemplo</span></td><td><span class="num">$ 0</span><span class="tag ej">Monto de ejemplo</span></td></tr>
+            <tr><td>Destacados por aviso</td><td><span class="num">$ 80.000</span><span class="tag ej">Monto de ejemplo</span></td><td><span class="num">$ 0</span><span class="tag ej">Monto de ejemplo</span></td></tr>
+            <tr><td>Consulta con código y pago</td><td>No siempre</td><td>Siempre</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <section class="sec" style="border-top:1px solid var(--line);margin-top:34px">
+      <div class="pv">
+        <div><h2>Para vos, Ailén</h2><p class="sub">Panel de ejemplo armado con tu cartera publicada.</p></div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 5h16v10H8l-4 4z"/></svg><div><b>Menos mensajes repetidos</b><span>Nadie pregunta "¿precio?": ya lo vio con su USD/m².</span></div></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="1"/><path d="M3 10h18"/></svg><div><b>Agenda con franjas</b><span>Mañana, mediodía o tarde, de lunes a sábado.</span></div></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 7h18v12H3z"/><path d="M3 11h18"/></svg><div><b>Reserva antes de confirmar</b><span>El comprador interesado deja su reserva y la operación avanza.</span></div></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12l4 4 10-10"/></svg><div><b>Sin comisión ni plan de portal</b><span>Tus avisos, tu dominio, tus contactos.</span></div></li>
+        </ul>
+      </div>
+    </section>
+  </div>
+</section>
+
+<dialog id="ficha" aria-labelledby="fiT"><div id="fiBody"></div></dialog>
+
+<footer>
+  <div class="wrap">
+    <div><b>AM Mercado de Bienes Raíces</b>
+      <ul><li>Martillera Ailén Mena · Mat. 441 CMyCPN</li><li>Agente asociado: Federico Er Junca</li></ul>
+    </div>
+    <div><b>Oficina</b>
+      <ul><li>Río Diamante 628, Of. 2 · Neuquén capital</li><li>De 9 a 19 h</li></ul>
+    </div>
+    <div><b>Contacto</b>
+      <ul><li><a href="mailto:ailenmena@hotmail.com">ailenmena@hotmail.com</a></li><li><a href="https://www.instagram.com/ammercadobienesraices/" target="_blank" rel="noopener">@ammercadobienesraices</a></li></ul>
+    </div>
+    <p class="sig">Prototipo de demostración preparado para AM Mercado de Bienes Raíces por Resolviendo Kos · No es la web oficial</p>
+  </div>
+</footer>
+
+<script>
+/* Completar con el número de WhatsApp de AM en formato internacional, sin "+" ni espacios (ej. 549299XXXXXXX). Vacío = WhatsApp pide elegir el contacto. */
+const WA_NUMBER = "";
+const waLink = t => "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(t);
+
+const P = [
+ {c:"AM-01",tipo:"Semipiso",k:"depto",dir:"Av. Argentina 700",zona:"Centro Este",z:"ce",precio:450000,cub:139,tot:145,amb:4,dorm:3,banos:3,coch:1,antig:13,cred:true,perm:false,masc:false,exp:null,
+  dest:["Suite con jacuzzi","Pileta climatizada","SUM","Balcón terraza"],img:"https://www.argenprop.com/static-content/86827502/87bc1562-aa63-4eb3-a081-15a93d2b4552_u_medium.jpg",x:262,y:232},
+ {c:"AM-02",tipo:"Dúplex",k:"plex",dir:"Barrio La Peregrina",zona:"Altos del Limay",z:"al",precio:255000,cub:114,tot:176,amb:4,dorm:3,banos:2,coch:1,antig:10,cred:true,perm:false,masc:true,exp:"$180.000",
+  dest:["A una cuadra del río","Vista a la laguna","Parrilla"],img:"https://www.buscainmueble.com/static-content/94303791/5b8b5c06-abd0-4d21-b84e-f6cc4296fc8b_u_medium.jpg",x:82,y:352},
+ {c:"AM-03",tipo:"Departamento",k:"depto",dir:"Basavilbaso esq. Miguel A. Camino",zona:"Santa Genoveva",z:"sg",precio:120000,cub:null,tot:50,amb:3,dorm:2,banos:1,coch:null,antig:30,cred:false,perm:true,masc:false,exp:"$50.000",
+  dest:["Frente a una placita","Balcón","Apto profesional"],img:"https://www.argenprop.com/static-content/16213791/25e23af6-bf79-4e96-b365-c30059fd4e56_u_medium.jpg",x:196,y:170},
+ {c:"AM-04",tipo:"Casa",k:"casa",dir:"Los Nogales 2000",zona:"Confluencia Urbana",z:"cu",precio:null,cub:null,tot:188,lote:215,amb:4,dorm:3,banos:2,coch:1,antig:null,cred:true,perm:false,masc:false,exp:null,
+  dest:["Una planta","Estudio","Galería con parrilla"],img:"https://www.argenprop.com/static-content/42718602/9012ef4d-9613-4e11-abea-bfc471fdf239_u_medium.jpg",x:168,y:322},
+ {c:"AM-05",tipo:"Departamento",k:"depto",dir:"Periodistas Neuquinos 100",zona:"Centro Oeste",z:"co",precio:150000,cub:null,tot:85,amb:4,dorm:3,banos:1,coch:null,antig:50,cred:true,perm:true,masc:true,exp:null,
+  dest:["Reciclado","Balcón cerrado"],img:"https://www.argenprop.com/static-content/72689602/ec455714-43a5-438c-94f1-859487d22613_u_medium.jpg",x:208,y:256},
+ {c:"AM-06",tipo:"Casa",k:"casa",dir:"Brown 1100",zona:"Centro Este",z:"ce",precio:365000,cub:null,tot:255,amb:5,dorm:4,banos:4,coch:2,antig:null,cred:true,perm:false,masc:false,exp:null,
+  dest:["Pileta","Parque al frente","Quincho"],img:"https://www.argenprop.com/static-content/23982791/8058d23d-981a-4f3f-8130-9b2c8b71d05f_u_medium.jpg",x:304,y:262},
+ {c:"AM-07",tipo:"Tríplex (PH)",k:"plex",dir:"Abuela Dolores 1600",zona:"Terrazas del Neuquén",z:"tn",precio:null,cub:87,tot:100,amb:3,dorm:2,banos:2,coch:1,antig:4,cred:false,perm:false,masc:false,exp:null,
+  dest:["Estado excelente","Caldera","Balcón","Apto profesional"],img:"https://www.argenprop.com/static-content/60103791/d0203b50-f03b-4d53-b69b-1421df8704a9_u_medium.jpg",x:206,y:82},
+ {c:"AM-08",tipo:"Casa",k:"casa",dir:"Los Nonos, Calle 4",zona:"Centenario",z:"cn",precio:300000,cub:195,tot:322,amb:null,dorm:3,banos:4,coch:4,antig:null,cred:false,perm:false,masc:false,exp:null,
+  dest:["Pileta climatizada"],img:"https://www.argenprop.com/static-content/83303791/d921bbf1-2b92-4c90-8ca7-8711ef6b2645_u_medium.jpg",x:64,y:56}
+];
+P.forEach(p=>{
+  p.m2 = p.cub || p.tot;
+  p.m2lbl = p.cub ? "cub." : (p.k==="casa"&&p.c==="AM-06" ? "tot." : "publ.");
+  p.usdm2 = p.precio ? Math.round(p.precio/p.m2) : null;
+});
+const fmt = n => n.toLocaleString("es-AR");
+const usd = n => "USD " + fmt(n);
+const byC = c => P.find(p=>p.c===c);
+const priced = P.filter(p=>p.precio);
+const maxUm = Math.max(...priced.map(p=>p.usdm2));
+const esc = s => String(s).replace(/[&<>"]/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch]));
+const imgTag = (p,alt) => `<img src="${p.img}" alt="${esc(alt||"")}" loading="lazy" referrerpolicy="no-referrer" data-code="${p.c}" data-kind="${p.k==='casa'?'casa':'depto'}" onerror="fb(this)">`;
+
+/* ticker y stats */
+(function(){
+  const items = P.map(p=>`<li>${p.c}<b>${p.precio?usd(p.precio):"Consultar"}</b>${p.usdm2?`<i>${fmt(p.usdm2)}/m²</i>`:""} · ${esc(p.zona)}</li>`).join("");
+  document.getElementById("ticker").innerHTML = items + items;
+  const ums = priced.map(p=>p.usdm2).sort((a,b)=>a-b);
+  const med = ums.length%2 ? ums[(ums.length-1)/2] : Math.round((ums[ums.length/2-1]+ums[ums.length/2])/2);
+  document.getElementById("stats").innerHTML = `
+   <div><span class="num">8</span><span class="lb">propiedades en venta</span></div>
+   <div><span class="num">6<small>/8</small></span><span class="lb">con precio publicado</span></div>
+   <div><span class="num">${fmt(ums[0])}–${fmt(ums[ums.length-1])}</span><span class="lb">rango USD/m² de la pizarra</span></div>
+   <div><span class="num">${fmt(med)}</span><span class="lb">USD/m² mediana (6 con precio)</span></div>`;
+})();
+
+/* plano SVG */
+const ZONES = {
+  tn:{n:"Terrazas del Neuquén",r:[142,58,130,44],lx:150,ly:72},
+  sg:{n:"Santa Genoveva",r:[150,140,92,58],lx:156,ly:154},
+  co:{n:"Centro Oeste",r:[160,212,88,74],lx:166,ly:226},
+  ce:{n:"Centro Este",r:[252,212,90,74],lx:258,ly:226},
+  cu:{n:"Confluencia Urbana",r:[118,294,104,50],lx:124,ly:308},
+  al:{n:"Altos del Limay · La Peregrina",r:[22,326,130,46],lx:28,ly:340},
+  cn:{n:"Centenario",r:[14,22,110,56],lx:22,ly:38}
+};
+function planoSVG(id, onlyC){
+  let z = Object.entries(ZONES).map(([k,v])=>`<rect class="zone" data-z="${k}" x="${v.r[0]}" y="${v.r[1]}" width="${v.r[2]}" height="${v.r[3]}" rx="4"/><text class="zl" x="${v.lx}" y="${v.ly}">${v.n}</text>`).join("");
+  const pins = P.filter(p=>!onlyC||p.c===onlyC).map(p=>`<g class="pin${onlyC?' on':''}" data-c="${p.c}" tabindex="${onlyC?-1:0}" role="button" aria-label="${p.c}, ${esc(p.tipo)} en ${esc(p.zona)}"><circle class="o" cx="${p.x}" cy="${p.y}" r="11"/><text x="${p.x}" y="${p.y+4.5}">${p.c.slice(3)}</text></g>`).join("");
+  return `<svg class="plano" id="${id}" viewBox="0 0 400 440" role="img" aria-label="Plano esquemático de Neuquén con las zonas de la cartera">
+   <rect width="400" height="440" fill="#15181b"/>
+   <path d="M130 118 C200 104 270 110 360 126" fill="none" stroke="#C8A97E" stroke-opacity=".5" stroke-dasharray="4 5"/>
+   <text class="zl" x="292" y="112" fill="#C8A97E">barda</text>
+   <path class="rv" d="M352 0 C356 100 392 200 378 300 C372 340 366 372 362 396"/>
+   <path class="rv" d="M0 386 C90 404 240 426 362 396"/>
+   <path class="rv" d="M362 396 C380 404 392 410 404 414" />
+   <text class="rvl" x="372" y="170" transform="rotate(80 372 170)">Río Neuquén</text>
+   <text class="rvl" x="170" y="434">Río Limay</text>
+   <line x1="250" y1="122" x2="250" y2="300" stroke="#E8EEF2" stroke-opacity=".35" stroke-width="2"/>
+   <text class="zl" x="254" y="138" fill="#c9d3d9">Av. Argentina</text>
+   <line x1="120" y1="205" x2="360" y2="205" stroke="#E8EEF2" stroke-opacity=".22" stroke-dasharray="2 3"/>
+   <rect x="8" y="8" width="124" height="80" rx="4" fill="#121417" stroke="#C8A97E" stroke-opacity=".5"/>
+   <text class="zl" x="16" y="82" font-size="9">fuera de escala, al NO</text>
+   ${z}
+   <g transform="translate(372 46)"><path d="M0 -14 L6 4 L0 0 L-6 4z" fill="#E8EEF2" fill-opacity=".6"/><text x="0" y="18" text-anchor="middle" class="zl">N</text></g>
+   ${pins}
+  </svg>`;
+}
+document.getElementById("mapHolder").innerHTML = planoSVG("plano");
+const plano = document.getElementById("plano");
+const mapInfo = document.getElementById("mapInfo");
+function hl(c){
+  document.querySelectorAll(".row").forEach(r=>r.classList.toggle("hl", r.dataset.c===c));
+  plano.querySelectorAll(".pin").forEach(g=>g.classList.toggle("on", g.dataset.c===c));
+  const p = byC(c);
+  plano.querySelectorAll(".zone").forEach(r=>r.classList.toggle("on", p && r.dataset.z===p.z));
+  if(p){
+    const pin = plano.querySelector(`.pin[data-c="${c}"]`); if(pin) pin.parentNode.appendChild(pin);
+    mapInfo.innerHTML = `<b>${p.c} · ${esc(p.tipo)}</b>, ${esc(p.dir)} (${esc(p.zona)})<br>${p.precio?usd(p.precio)+' <span class="tag">Precio publicado</span>':'Consultar'}${p.usdm2?` · <span style="color:var(--turq)">${fmt(p.usdm2)} USD/m² ${p.m2lbl}</span>`:''}`;
+  }
+}
+plano.addEventListener("click",e=>{const g=e.target.closest(".pin"); if(g){hl(g.dataset.c); const r=document.querySelector(`.row[data-c="${g.dataset.c}"]`); if(r) r.scrollIntoView({block:"nearest",behavior:"smooth"});}});
+plano.addEventListener("keydown",e=>{const g=e.target.closest(".pin"); if(g&&(e.key==="Enter"||e.key===" ")){e.preventDefault();openFicha(g.dataset.c);}});
+plano.addEventListener("mouseover",e=>{const g=e.target.closest(".pin"); if(g) hl(g.dataset.c);});
+const mapDet = document.getElementById("mapDet");
+const mq = matchMedia("(min-width:1001px)");
+const syncMap = ()=>{ if(mq.matches) mapDet.open = true; };
+syncMap(); mq.addEventListener("change",syncMap);
+
+/* filtros y orden */
+const st = {tipo:"",zona:"",precio:0,dorm:0,cred:false,perm:false,sk:"precio",dir:1};
+const cmpSel = ["AM-02","AM-05","AM-03"];
+const fZona = document.getElementById("fZona");
+[...new Set(P.map(p=>p.zona))].forEach(z=>fZona.insertAdjacentHTML("beforeend",`<option>${esc(z)}</option>`));
+
+function list(){
+  let L = P.filter(p=>
+    (!st.tipo || p.k===st.tipo) && (!st.zona || p.zona===st.zona) &&
+    (!st.precio || (p.precio && p.precio<=st.precio)) && (p.dorm>=st.dorm) &&
+    (!st.cred || p.cred) && (!st.perm || p.perm));
+  L.sort((a,b)=>{
+    const va=a[st.sk], vb=b[st.sk];
+    if(va==null && vb==null) return a.c.localeCompare(b.c);
+    if(va==null) return 1; if(vb==null) return -1;
+    return (va-vb)*st.dir || a.c.localeCompare(b.c);
+  });
+  return L;
+}
+function render(){
+  const L = list();
+  const R = document.getElementById("rows");
+  if(!L.length){ R.innerHTML = `<div class="empty">Ninguna propiedad cumple con esos filtros. Probá sacar uno.</div>`; return; }
+  R.innerHTML = L.map(p=>`
+   <div class="row cols" role="row" data-c="${p.c}">
+     <span class="cmp" role="cell"><input type="checkbox" aria-label="Comparar ${p.c}" ${cmpSel.includes(p.c)?"checked":""} data-cmp="${p.c}"></span>
+     <span class="thumb" role="cell">${imgTag(p,"Foto del aviso "+p.c)}</span>
+     <span class="pr" role="cell"><button type="button" class="open" data-open="${p.c}"><span class="cd">${p.c}</span><span class="tp">${esc(p.tipo)}</span><span class="ad">${esc(p.dir)} · ${esc(p.zona)}</span></button></span>
+     <span class="pz" role="cell">${p.precio?`<span class="num">${usd(p.precio)}</span><span class="tag">Precio publicado</span>`:`<span class="num c">Consultar</span>`}</span>
+     <span class="m2" role="cell"><span><span class="num">${p.m2}</span><small>m² ${p.m2lbl}</small></span><span class="mx">${p.dorm} dorm.${p.antig!=null?` · ${p.antig} años`:""}</span></span>
+     <span class="um" role="cell">${p.usdm2?`<span class="num">${fmt(p.usdm2)}</span> <small>/m²<span class="lb"> ${p.m2lbl}</span></small><span class="bar"><i style="width:${Math.round(p.usdm2/maxUm*100)}%"></i></span>`:`<small>—</small>`}</span>
+     <span class="dm" role="cell"><span class="num">${p.dorm}</span></span>
+     <span class="an" role="cell">${p.antig!=null?`<span class="num">${p.antig}</span>`:`<small>s/d</small>`}</span>
+   </div>`).join("");
+  plano.querySelectorAll(".pin").forEach(g=>g.classList.toggle("off", !L.some(p=>p.c===g.dataset.c)));
+}
+const rowsEl = document.getElementById("rows");
+rowsEl.addEventListener("mouseover",e=>{const r=e.target.closest(".row"); if(r) hl(r.dataset.c);});
+rowsEl.addEventListener("focusin",e=>{const r=e.target.closest(".row"); if(r) hl(r.dataset.c);});
+rowsEl.addEventListener("click",e=>{
+  const cb = e.target.closest("input[data-cmp]");
+  if(cb){ toggleCmp(cb.dataset.cmp, cb); return; }
+  const r = e.target.closest(".row"); if(r){ hl(r.dataset.c); openFicha(r.dataset.c); }
+});
+document.querySelectorAll("#fTipo button").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll("#fTipo button").forEach(x=>x.setAttribute("aria-pressed", x===b)); st.tipo=b.dataset.v; render();
+}));
+fZona.onchange=e=>{st.zona=e.target.value;render();};
+document.getElementById("fPrecio").onchange=e=>{st.precio=+e.target.value;render();};
+document.getElementById("fDorm").onchange=e=>{st.dorm=+e.target.value;render();};
+document.getElementById("fCred").onchange=e=>{st.cred=e.target.checked;render();};
+document.getElementById("fPerm").onchange=e=>{st.perm=e.target.checked;render();};
+document.querySelectorAll(".thead button").forEach(b=>b.addEventListener("click",()=>{
+  const k=b.dataset.k;
+  if(st.sk===k) st.dir*=-1; else {st.sk=k; st.dir = (k==="precio"||k==="usdm2"||k==="antig")?1:-1;}
+  document.querySelectorAll(".thead button").forEach(x=>{
+    const on=x.dataset.k===st.sk;
+    x.setAttribute("aria-sort", on?(st.dir>0?"ascending":"descending"):"none");
+    x.querySelector(".ar").textContent = on?(st.dir>0?"▲":"▼"):"";
+  });
+  render();
+}));
+
+/* comparador */
+const ICK = '<svg viewBox="0 0 24 24" fill="none" stroke="#2BB3A3" stroke-width="2.4" aria-hidden="true"><path d="M5 12l4 4 10-10"/></svg>';
+const INO = '<svg viewBox="0 0 24 24" fill="none" stroke="#7d878e" stroke-width="2" aria-hidden="true"><path d="M7 12h10"/></svg>';
+function toggleCmp(c, cb){
+  const i = cmpSel.indexOf(c);
+  if(i>=0) cmpSel.splice(i,1);
+  else { if(cmpSel.length>=3){ cmpSel.shift(); } cmpSel.push(c); }
+  render(); renderCmp();
+  if(cb){ const n=document.querySelector(`input[data-cmp="${c}"]`); if(n) n.focus(); }
+}
+function renderCmp(){
+  const S = cmpSel.map(byC);
+  const g = document.getElementById("cmpGrid");
+  const cols = [0,1,2].map(i=>S[i]||null);
+  const head = `<div class="k">${S.length}/3 elegidas</div>` + cols.map(p=>p?`<div class="hd"><span class="cd">${p.c}</span><span class="t">${esc(p.tipo)}</span><span class="z">${esc(p.zona)}</span><button type="button" data-rm="${p.c}">Quitar</button></div>`:`<div class="hd ph">Tildá una fila de la pizarra</div>`).join("");
+  const metric = (lbl,key,opt={})=>{
+    const vals = S.map(p=>p[key]).filter(v=>v!=null);
+    const mx = Math.max(1,...vals);
+    const best = vals.length>1 ? (opt.low?Math.min(...vals):Math.max(...vals)) : null;
+    return `<div class="k">${lbl}</div>` + cols.map(p=>{
+      if(!p) return `<div class="ph"></div>`;
+      const v=p[key];
+      if(v==null) return `<div class="v"><span class="num" style="color:#7d878e">${opt.nullTxt||"s/d"}</span></div>`;
+      return `<div class="v${v===best?' best':''}"><span class="num">${opt.f?opt.f(v):v}</span>${opt.sub?`<span class="tag${opt.subEj?' ej':''}" style="display:block">${typeof opt.sub==='function'?opt.sub(p):opt.sub}</span>`:""}<span class="bar"><i class="${opt.ar?'ar':''}" style="width:${Math.round(v/mx*100)}%"></i></span></div>`;
+    }).join("");
+  };
+  const flag = (lbl,key)=>`<div class="k">${lbl}</div>`+cols.map(p=>!p?`<div class="ph"></div>`:(p[key]?`<div><span class="ck">${ICK}<span>Sí</span></span></div>`:`<div><span class="ck no">${INO}<span>No informa</span></span></div>`)).join("");
+  g.innerHTML = head
+   + metric("Precio","precio",{f:usd,sub:"Precio publicado",nullTxt:"Consultar",ar:true,low:true})
+   + metric("USD/m²","usdm2",{f:fmt,sub:p=>"sobre m² "+p.m2lbl,nullTxt:"—",low:true})
+   + metric("m² de ref.","m2",{f:v=>v+" m²",ar:true})
+   + metric("Dormitorios","dorm")
+   + metric("Baños","banos")
+   + metric("Cocheras","coch",{nullTxt:"s/d"})
+   + flag("Apto crédito","cred") + flag("Acepta permuta","perm") + flag("Mascotas","masc");
+  document.getElementById("cmpSub").textContent = S.length ? "Las barras se escalan contra la mayor del grupo. En turquesa, el mejor valor (menor precio y USD/m²; más dormitorios, baños y cocheras)." : "Tildá hasta 3 filas en la pizarra para compararlas.";
+}
+document.getElementById("cmpGrid").addEventListener("click",e=>{const b=e.target.closest("[data-rm]"); if(b) toggleCmp(b.dataset.rm);});
+
+/* ficha */
+const dlg = document.getElementById("ficha");
+function openFicha(c){
+  const p = byC(c);
+  const rows = [
+    ["Superficie cubierta", p.cub? p.cub+" m²":"s/d"],
+    ["Superficie total / publicada", p.tot+" m²"],
+    p.lote?["Lote", p.lote+" m²"]:null,
+    ["Ambientes", p.amb??"s/d"], ["Dormitorios", p.dorm], ["Baños", p.banos], ["Cocheras", p.coch??"s/d"],
+    ["Antigüedad", p.antig!=null? p.antig+" años":"s/d"],
+    p.exp?["Expensas (publicadas)", p.exp]:null
+  ].filter(Boolean);
+  const flags = [p.cred&&"Apto crédito", p.perm&&"Acepta permuta", p.masc&&"Admite mascotas"].filter(Boolean);
+  document.getElementById("fiBody").innerHTML = `
+   <button class="x" type="button" aria-label="Cerrar ficha" id="fiX"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+   <div class="fi">
+     <div class="ph" id="fiPh">${imgTag(p,`${p.tipo} en ${p.dir}`)}<div class="mini">${planoSVG("plMini",p.c)}</div>
+       <div class="gal"><button type="button" aria-pressed="true" data-g="f">Foto del aviso</button><button type="button" aria-pressed="false" data-g="m">Plano de la zona</button></div></div>
+     <div class="bd">
+       <div><span class="tag" style="color:var(--arena)">${p.c} · Venta · ${esc(p.zona)}</span>
+         <h3 id="fiT" style="margin:4px 0 0;font-size:32px">${esc(p.tipo)} · ${esc(p.dir)}</h3></div>
+       <div class="pp">${p.precio?`<span class="num">${usd(p.precio)}</span> <span class="tag">Precio publicado</span>`:`<span class="num">Consultar</span> <span class="tag">Consultar</span>`}
+         ${p.usdm2?`<div style="color:var(--turq);font-size:14px">${fmt(p.usdm2)} USD/m² sobre ${p.m2} m² ${p.m2lbl==="cub."?"cubiertos":(p.m2lbl==="tot."?"totales":"publicados")}</div>`:""}</div>
+       <table>${rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join("")}</table>
+       <ul class="dest">${p.dest.concat(flags).map(d=>`<li>${esc(d)}</li>`).join("")}</ul>
+       <div class="acts"><button class="btn pri" type="button" id="fiCons">Pedir visita por WhatsApp</button><button class="btn" type="button" id="fiCmp">${cmpSel.includes(p.c)?"Quitar del comparador":"Sumar al comparador"}</button></div>
+     </div>
+   </div>`;
+  const ph = document.getElementById("fiPh");
+  ph.querySelectorAll(".gal button").forEach(b=>b.onclick=()=>{ph.classList.toggle("map", b.dataset.g==="m"); ph.querySelectorAll(".gal button").forEach(x=>x.setAttribute("aria-pressed", x===b));});
+  const zr = ph.querySelector(`.zone[data-z="${p.z}"]`); if(zr) zr.classList.add("on");
+  document.getElementById("fiX").onclick=()=>dlg.close();
+  document.getElementById("fiCons").onclick=()=>{dlg.close(); cProp.value=p.c; upd(); document.getElementById("consulta").scrollIntoView();};
+  document.getElementById("fiCmp").onclick=()=>{toggleCmp(p.c); dlg.close(); document.getElementById("comparador").scrollIntoView();};
+  if(!dlg.open) dlg.showModal();
+}
+dlg.addEventListener("click",e=>{ if(e.target===dlg) dlg.close(); });
+
+/* consulta + burbuja */
+const cProp = document.getElementById("cProp");
+P.forEach(p=>cProp.insertAdjacentHTML("beforeend",`<option value="${p.c}">${p.c} · ${esc(p.tipo)} · ${esc(p.zona)}</option>`));
+cProp.value = "AM-02";
+const DN = ["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
+const cDia = document.getElementById("cDia");
+(function(){
+  const d = new Date(); let n=0, i=1;
+  while(n<6){ const x=new Date(d.getFullYear(),d.getMonth(),d.getDate()+i++); if(x.getDay()===0) continue;
+    const lbl = DN[x.getDay()]+" "+x.getDate()+"/"+(x.getMonth()+1);
+    cDia.insertAdjacentHTML("beforeend",`<button type="button" data-v="${lbl}" aria-pressed="${n===1}">${DN[x.getDay()].slice(0,3)}<small>${x.getDate()}/${x.getMonth()+1}</small></button>`); n++; }
+})();
+let pers = 2;
+function pick(id){ const b=document.querySelector(`#${id} button[aria-pressed="true"]`); return b?b.dataset.v:""; }
+function chipGroup(id){ document.querySelectorAll(`#${id} button`).forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll(`#${id} button`).forEach(x=>x.setAttribute("aria-pressed",x===b)); upd();})); }
+["cOp","cDia","cFr","cPago"].forEach(chipGroup);
+document.getElementById("pMin").onclick=()=>{pers=Math.max(1,pers-1);upd();};
+document.getElementById("pMas").onclick=()=>{pers=Math.min(8,pers+1);upd();};
+cProp.onchange=upd; document.getElementById("cNom").oninput=upd;
+function msgText(o){
+  const p=byC(o.c);
+  return `Hola Ailén, soy ${o.nom||"…"}. Te escribo desde tu catálogo.\n`+
+   `Me interesa ${p.c} · ${p.tipo} en ${p.dir} (${p.zona}), ${p.precio?usd(p.precio):"precio a consultar"}.\n`+
+   `Operación: ${o.op.toLowerCase()}.\n`+
+   `Visita: ${o.dia||"día a coordinar"}, ${o.fr||"franja a coordinar"}.\n`+
+   `Vamos: ${o.pers} ${o.pers===1?"persona":"personas"}.\n`+
+   `Pago: ${o.pago}.\n¿Me confirmás el horario?`;
+}
+let typeT=null, shown="";
+function typeInto(el,txt){
+  clearTimeout(typeT);
+  let i=0; while(i<shown.length && i<txt.length && shown[i]===txt[i]) i++;
+  const step=()=>{ shown=txt.slice(0,i); el.innerHTML=esc(shown)+(i<txt.length?'<span class="caret"></span>':'')+'<span class="hr">'+hora()+'</span>'; if(i<txt.length){ i=Math.min(txt.length,i+3); typeT=setTimeout(step,12);} };
+  step();
+}
+const hora=()=>{const d=new Date();return String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");};
+function upd(){
+  const p=byC(cProp.value);
+  document.getElementById("cSel").innerHTML = `<span class="thumb">${imgTag(p,"")}</span><span class="tx"><b>${p.c} · ${esc(p.tipo)}</b><br>${esc(p.dir)} · ${esc(p.zona)}<br>${p.precio?usd(p.precio)+' <span class="tag">Precio publicado</span>':'Consultar'}</span>`;
+  const pago = pick("cPago"); const w=document.getElementById("cWarn");
+  if(pago.startsWith("permuta") && !p.perm){ w.hidden=false; w.textContent="El aviso de "+p.c+" no informa permuta: Ailén te dirá si la evalúa."; }
+  else if(pago.startsWith("crédito") && !p.cred){ w.hidden=false; w.textContent="El aviso de "+p.c+" no dice apto crédito: conviene confirmarlo en la visita."; }
+  else w.hidden=true;
+  document.getElementById("pOut").textContent=pers;
+  const t = msgText({c:p.c,op:pick("cOp"),dia:pick("cDia"),fr:pick("cFr"),pers,pago,nom:document.getElementById("cNom").value.trim()});
+  typeInto(document.getElementById("bub"),t);
+  document.getElementById("waBtn").href = waLink(t);
+}
+
+/* tasación */
+const tZona=document.getElementById("tZona");
+[...new Set(P.map(p=>p.zona))].concat(["Otra zona"]).forEach(z=>tZona.insertAdjacentHTML("beforeend",`<option>${esc(z)}</option>`));
+tZona.value="Centro Este";
+function updT(){
+  const z=tZona.value, m2=+document.getElementById("tM2").value||0;
+  const ref = priced.filter(p=>p.zona===z);
+  const R=document.getElementById("tRef");
+  if(ref.length){
+    const lo=Math.min(...ref.map(p=>p.usdm2)), hi=Math.max(...ref.map(p=>p.usdm2));
+    R.innerHTML = `<span class="tag">Referencia de la pizarra en ${esc(z)}</span><br><span class="num">${lo===hi?fmt(lo):fmt(lo)+"–"+fmt(hi)}</span> USD/m²<br><span style="color:var(--muted)">Sale de ${ref.length} aviso${ref.length>1?"s":""} publicado${ref.length>1?"s":""} (${ref.map(p=>p.c).join(", ")}). No es una tasación.</span>`;
+  } else R.innerHTML = `<span class="tag">Referencia de la pizarra</span><br>Sin avisos con precio en ${esc(z)}. Ailén tasa con comparables de la zona.`;
+  const nom=document.getElementById("tNom").value.trim();
+  const t = `Hola Ailén, soy ${nom||"…"}. Quiero ${document.getElementById("tQ").value} mi propiedad.\n`+
+    `Tipo: ${document.getElementById("tTipo").value}.\nZona: ${z}.\nSuperficie: ${m2||"?"} m² cubiertos aprox.\n`+
+    `Dormitorios: ${document.getElementById("tDorm").value}.\nAntigüedad: ${document.getElementById("tAnt").value.toLowerCase()}.\n¿Cuándo podés venir a tasarla?`;
+  document.getElementById("tBub").innerHTML = esc(t)+'<span class="hr">'+hora()+'</span>';
+  document.getElementById("tWa").href = waLink(t);
+}
+["tTipo","tZona","tM2","tDorm","tAnt","tQ","tNom"].forEach(id=>document.getElementById(id).addEventListener("input",updT));
+
+/* panel dueño */
+(function(){
+  const ej = [
+    {c:"AM-02",op:"Compra",dia:"martes 1/12",fr:"tarde (15 a 19 h)",pers:2,pago:"crédito hipotecario",nom:"Lucía",t:"Hoy 10:14"},
+    {c:"AM-05",op:"Compra",dia:"jueves 3/12",fr:"mañana (9 a 12 h)",pers:1,pago:"permuta más diferencia",nom:"Marcos",t:"Ayer 18:40"},
+    {c:"AM-01",op:"Compra, quiero hacer una oferta",dia:"sábado 5/12",fr:"mediodía (12 a 15 h)",pers:3,pago:"contado",nom:"Gabriela",t:"Ayer 11:02"}
+  ];
+  document.getElementById("inbox").innerHTML = ej.map(o=>`<div class="msg"><div class="meta"><span>${o.nom} · ${o.c}</span><span>${o.t} · Ejemplo</span></div><div class="bub in">${esc(msgText(o))}</div></div>`).join("");
+  const days=["Lun","Mar","Mié","Jue","Vie","Sáb"], fr=["9–12","12–15","15–19"];
+  const slots={"1-2":["AM-02","Lucía · 2 pers."],"3-0":["AM-05","Marcos · 1 pers."],"5-1":["AM-01","Gabriela · 3 pers."],"0-2":["AM-06","Rodrigo · 2 pers."],"4-0":["AM-03","Gabriel · 1 pers."],"2-2":["AM-08","Silvia · 4 pers."]};
+  let h=`<div class="h"></div>`+days.map(d=>`<div class="h">${d}</div>`).join("");
+  fr.forEach((f,fi)=>{ h+=`<div class="h">${f}</div>`; days.forEach((d,di)=>{const s=slots[di+"-"+fi]; h+= s?`<div class="slot"><b>${s[0]}</b><span>${s[1]}</span></div>`:`<div></div>`;}); });
+  document.getElementById("agenda").innerHTML=h;
+})();
+function setOwner(on){
+  document.body.classList.toggle("owner",on);
+  document.getElementById("ownerBtn").setAttribute("aria-pressed",on);
+  document.querySelector("#ownerBtn span").textContent = on?"Ver como cliente":"Ver como dueño";
+  window.scrollTo(0,0);
+}
+document.getElementById("ownerBtn").onclick=()=>setOwner(!document.body.classList.contains("owner"));
+document.getElementById("ownerBtn2").onclick=()=>setOwner(true);
+document.getElementById("ownerBack").onclick=()=>setOwner(false);
+
+render(); renderCmp(); upd(); updT(); hl("AM-01");
+</script>
+<script defer src="https://visitas.resolviendokos.com/v/t.js" data-negocio="AM Mercado de Bienes Raíces"></script>
+</body>
+</html>
